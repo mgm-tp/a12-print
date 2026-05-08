@@ -1,0 +1,300 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Common Properties of Print Model Elements [[CommonProperties]]
+
+== Detail View [[DetailView]]
+
+The Detail View allows the editing of the properties of each specific Element.
+The modeling options available in the Detail View is determined by the type of element that has been selected.
+
+The Detail View has no "Save" button, since every change is saved automatically to the <<CommitChangesTab, commit history>>.
+Simply click on "Close" in the top right-hand corner of the Detail View or select the next Element in the Editor Stage.
+
+image::chapter03/03_text_detail_view.png[Element Detail View,title="Element Detail View"]
+
+=== Input Source [[InputSource]]
+This feature allows users to explicitly define the source of values, enhancing data clarity and input control.
+
+By specifying the value source, it resolves ambiguity between unset and default values and clarifies contexts that affect the value. Users can make informed decisions by understanding the precise origin of values in their results, preventing confusion or incorrect assumptions.
+
+There are four types of sources applied to fields:
+
+* *Default*: The default value will be used for the field
+* *Input*: The value is provided by the user
+* *Unset*: No value will be assigned
+* *Inherited*: The value is inherited from its parent
+
+[cols="a,a,a,a",frame=none,grid=none]
+|===
+|
+image::chapter03/03_input_source_default.png[Input Source Default,title="Input Source Default",width=210]
+|
+image::chapter03/03_input_source_input.png[Input Source Input,title="Input Source Input",width=210]
+|
+image::chapter03/03_input_source_unset.png[Input Source Unset,title="Input Source Unset",width=210]
+|
+image::chapter03/03_input_source_inherited.png[Input Source Inherited,title="Input Source Inherited",width=210]
+|===
+
+You can change the input source by hovering over the currently selected input source icon. The available options will appear, allowing you to select a different source.
+
+Refer to the table below for fields that apply the input source and their respective source types.
+
+.Input source fields
+[%header, cols="1,1,1,1,1"]
+|===
+|Element | Field  3+|Source
+2+| | *Default* | *Input* | *Unset*
+
+.4+| *Table* | Max row count | ✘ | ✔ | ✔
+| Sum row label | ✘ | ✔ | ✔
+| Column's label | ✔ (value: Column)  | ✔ | ✘
+| Column's width | ✘  | ✔ | ✔
+
+.2+| *Listing* | Column's label | ✔ (value: Column) | ✔ | ✔
+| Column's width | ✘ | ✔ | ✔
+
+.2+| *Table Layout* | Row options: minimum height | ✔ (value: 10mm) | ✔ | ✘
+| Column options: width | ✘ | ✔ | ✔
+
+.3+| *Line Chart* | Title | ✘ | ✔ | ✔
+| Label X-Axis | ✘ | ✔ | ✔
+| Label Y-Axis | ✘ | ✔ | ✔
+
+.3+| *Bar Chart* | Title | ✘ | ✔ | ✔
+| Label X-Axis | ✘ | ✔ | ✔
+| Label Y-Axis | ✘ | ✔ | ✔
+
+| *Pie Chart* | Title | ✘ | ✔ | ✔
+|===
+
+[[TextPropertiesInputSource]]
+.Text properties source fields
+[%header, cols="1,1,1,1"]
+|===
+| *Text Properties* | *Default* | *Input* | *Inherited*
+| Text Style | ✔ (value: Default Text Style) | ✔ | ✔
+| Bold | ✔ (value: true for header properties, otherwise false) | ✔ | ✔
+| Italic | ✔ (value: false) | ✔ | ✔
+| Underline | ✔ (value: false) | ✔ | ✔
+| Color | ✔ (value: #000000) | ✔ | ✔
+| Background Color | ✔ (value: #ffffff) | ✔  | ✔
+|===
+
+== Text Properties [[TextProperties]]
+
+Allows the definition of properties affecting the text portions of the element.
+
+Text Style:: Selection of a <<TextStylesTab, Text Style>>.
+Bold, Italic, Underline:: Toggles the respective property.
+Color:: Hexadecimal code for the text color.
+Background Color:: Hexadecimal code for the background color of the text.
+Alignment:: Selection of a text alignment.
++
+* Left
+* Center
+* Right
+* Justify
+
+image::chapter03/03_text_properties_detail_view.png[Text Properties detail view,title="Text Properties detail view"]
+
+When the source is Default, the default values are applied. See the table in <<TextPropertiesInputSource,Text Properties Source Fields>> for details.
+
+== Border Properties [[BorderProperties]]
+
+Allows the definition of a border around the element.
+
+Border Width:: Sets the width of the border in `pt`.
+Border Style:: Sets the style of the border.
++
+* None
+* Solid
+* Dashed
+* Dotted
+
+Border Color:: Hexadecimal code for the border color.
+
+image::chapter03/03_border_properties_detail_view.png[Border Properties detail view,title="Border Properties detail view"]
+
+== Hide Conditions [[HideConditions]]
+
+Hide Conditions allow the definition of conditions that will hide elements from being displayed in the resulting PDF document.
+The Hide Conditions can be edited by right-clicking an element and selecting the "Hide Conditions" option.
+The conditions are written as <<Computations>> in the link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language] syntax.
+It is expected that the condition returns a boolean value, where _True_ leads to the element being hidden.
+
+If an element is hidden from being displayed in the resulting PDF document, the elements below the hidden element are move upwards as much as possible.
+
+image::chapter03/03_hide_conditions_detail_view.png[Hide Conditions detail view,title="Hide Conditions detail view"]
+
+=== Example [[HideConditionsExample]]
+
+Consider the example displayed below, that was introduced in the <<MarginLayoutFigures, Margin Layout example>>.
+
+* If element *A* is hidden by a Hide Condition, all elements below are moved upwards a distance equal to the height of element *A,* and it's bottom margin.
+* If element *B* is hidden, no other element is moved.
+Element *D* cannot be moved upwards, since it is blocked by element *C,* and it's bottom margin.
+* If element *C* is hidden, no other element is moved.
+Element *D* cannot be moved upwards, since it is blocked by element *B,* and it's bottom margin.
+* If element *B* and *C* are hidden, element *D* is moved upwards a distance equal to element *B*'s height and bottom margin.
+* If element *A*, *B* and *C* are hidden, element *D* is moved upwards to the initial position of element *A*.
+
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter01/01_margin_layout_without_margins.png[Margin layout example,title="Margin layout example without displayed margins.",width=500]
+|
+image::chapter01/01_margin_layout_with_margins.png[Margin layout example with margins,title="Margin layout example with displayed margins.",width=500]
+|===
+
+== Computations [[Computations]]
+
+Computations in Print Models use the link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language] syntax to dynamically calculate values or evaluate conditions.
+Depending on the context, computations in the Print Model serve different purposes:
+
+=== Conditions
+
+Used for conditionally showing or hiding content. This can be used in:
+
+* <<HideConditions, Hide Conditions>> - to conditionally hide elements
+* <<Switch, Switch Cases>> - to conditionally display different content
+* <<WatermarkTab, Watermarks>> - to conditionally display watermarks
+
+=== Computation Alternatives
+
+Used for computing dynamic values. This can be used in:
+
+* <<Calculation, Calculation Elements>> - to compute and display dynamic values
+* <<Listing, Listing Elements>> - to compute cell values and properties
+
+Each Computation Alternative consists of:
+
+Precondition:: A condition that must evaluate to _True_ for the operation to be applied. If no precondition is specified, the operation is always applied.
+Operation:: The expression that computes the result value.
+
+The Computation Alternatives are evaluated in order, and the first one with a matching precondition (or no precondition) will be used.
+
+=== Referencing Document Model Data
+
+In computations, you can reference fields and groups from the Document Model using their paths:
+
+----
+[CustomerDM/customer/firstName]
+----
+
+=== Document Model Metadata Fields [[MetadataFieldsInComputations]]
+
+In addition to referencing Document Model fields and groups, you can access metadata properties of Document Model elements using the `metadata/...` prefix.
+
+----
+metadata/<element-path>/<metadata-field>
+----
+
+For example, to access the `label` metadata of a field at `/customer/firstName`:
+
+----
+[metadata/customer/firstName/label]
+----
+
+This would return the localized label of the field, e.g. "First Name".
+
+==== Available Metadata Fields
+
+The following metadata fields are available:
+
+.Available Metadata Fields
+[%header, cols="1,1,2"]
+|===
+|Metadata Field |Applies To |Description
+
+|`required`
+|Fields, Groups
+|Whether the element is required. Returns a boolean value.
+
+|`externalDescription`
+|Fields, Groups
+|The external description of the element.
+
+|`path`
+|Fields, Groups
+|The path of the element as a string with leading and trailing slashes (e.g. `"/customer/addresses/"`).
+
+|`label`
+|Fields only
+|The label of the field.
+
+|`repeatability`
+|Groups only
+|The repeatability setting of the group.
+
+|`errorMessage`
+|Enumeration Fields only
+|The error message defined for the enumeration field.
+|===
+
+=== Annotation Fields [[AnnotationFieldsInComputations]]
+
+You can also access annotations of Document Model elements using the `annotations/...` prefix:
+
+----
+annotations/<element-path>/<annotation-name>
+----
+
+For example:
+
+----
+[annotations/customer/firstName/myCustomAnnotation]
+----
+
+=== Listing-specific Computation Fields
+
+The <<Listing, Listing Element>> supports additional computation fields for accessing information about the current row's entity.
+See <<ListingAdditionalFields, Additional Computation Fields>> in the Listing documentation for details.
+
+== Page Break Behavior [[PageBreakBehavior]]
+Page break behavior allows users to define how an element interacts with page breaks in the resulting PDF document.
+This setting is only available on the <<SegmentTab, Segment Tab>>. To edit it, double-click the element in the <<LayoutMode, Layout Mode>> to open the Detail View. The page break behavior options are located under the page break settings.
+
+image::chapter03/03_page_break_behavior_detail_view.png[Page Break Behavior detail view,title="Page Break Behavior detail view"]
+
+The <<InputSource, Input Source>> is used to define the source for the page break behavior value. There are three sources available:
+
+* *Default*: The default value is applied. The default value is *Allow*.
+* *Input*: The user can select between the two behavior options described below.
+* *Inherited*: The value is inherited from its parent element. This is only applicable for elements inside container elements (Bounding Box/Area/Switch).
+
+The page break behavior options are:
+
+Allow:: The element can be split across pages.
+
+Avoid:: The element will not be split across pages.
++
+* *For container elements* (Bounding Box/Area/Switch): If the element (including gaps between child elements and child elements that are also set to 'Avoid') falls on a page break, the whole element is pushed to the next page, even if it won't fit completely.
+* *For standalone elements*: If the element falls on a page break, it is pushed to the next page to avoid splitting. If it won't fit on the next page at all, it remains in its current position.
+
+NOTE: For repeatable Areas and Switch elements, the page break behavior is *not* applied to the entire element, but rather to each repetition/case of the element. This means that if an Area or Switch is set to *Avoid*, each repetition/case of that Area or Switch will try to avoid being split across pages, but different repetitions/cases may end up on different pages.
+
+If an element is set to *Avoid*, it is indicated by a small icon in the top right corner of the element in the Layout Editor Stage.
+
+image::chapter03/03_page_break_behavior_indicator.png[Page Break Behavior Indicator,title="Page Break Behavior Indicator"]
+
+=== Default Input Source for New Elements
+* In the Segment stage: When creating a new element, the page break behavior's source is set to *Default*.
+* In the stage of container elements (Bounding Box/Area/Switch): When creating a new element, the page break behavior's source is set to *Inherited* and references the page break behavior of the container element containing it.
+
+CAUTION: The page break behavior is not available on <<legacy_rendering_mode, Legacy Rendering Mode>>

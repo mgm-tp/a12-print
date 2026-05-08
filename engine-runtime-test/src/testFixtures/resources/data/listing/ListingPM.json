@@ -1,0 +1,834 @@
+{
+  "header": {
+    "id": "ListingPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "createdVersion",
+        "value": "0.202206000.0-rc.6"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "ListingDM",
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "ListingDM"
+      }
+    ],
+    "description": "Complex Listing Showcase"
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "ID_40224b2d-c966-4d30-8d16-fa7f89e1129c",
+      "metadata": {
+        "id": "ID_109816a2-1f7f-4b5c-8684-442c275acec4",
+        "titleComputation": [
+          {
+            "id": "3jcnyMdVKd8dEBBupA99Q",
+            "operation": "\"Complex Listing Showcase\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "7_l9qjxZRV0eVFIDwIWIL",
+            "operation": "\"Complex Listing Showcase\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "j77zxWdJjL2_bSi8ShVxX",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "adTOkVKtjddIz96DUyaox",
+            "operation": "\"Robert Bielinski\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "ID_4150443f-2a42-4323-bd18-30a8cd745689",
+        "fontSize": 12,
+        "model": "ListingDM"
+      },
+      "runtimeVariables": [],
+      "textStyles": [
+        {
+          "id": "ID_d314546c-9add-4bd2-bf38-4c2982279bb1"
+        }
+      ],
+      "structure": [
+        {
+          "id": "ID_84cd238a-2b5e-43d8-9821-d07874ae32ed"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "ID_5404a770-6b18-4c19-aa02-61edb4e69a7b",
+      "definitions": [
+        {
+          "id": "ID_84cd238a-2b5e-43d8-9821-d07874ae32ed",
+          "title": "S1",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "ID_761a4060-4eab-49a4-b188-b086c8fec7a8",
+            "pageOrientation": "Landscape"
+          },
+          "elementReferences": [
+            {
+              "id": "ID_33fc9a44-af16-4924-87d4-bcca9e3f2ed8",
+              "refId": "mzB2c6pygYoRNh77Zmd5i",
+              "position": {
+                "id": "ID_b975110a-cc06-4b7a-8002-dfefdd7fca2d",
+                "x": {
+                  "id": "ID_cedaa275-0d8d-4c7b-9512-ac8c4f9cac41",
+                  "value": 20,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_8e24e675-cfea-45a4-8b11-ae978374471a",
+                  "value": 21,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ID_3c01776d-21bc-424a-89e5-bcb690d91ec6",
+                "minWidth": {
+                  "id": "ID_6b45977d-fcd1-41f9-aa08-1b6e1a62cf94",
+                  "value": 257,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_ec7ce94f-e6c7-4145-a1d7-d701fb579d99",
+                  "value": 7,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "ID_093fc212-2b3f-4ab9-a25c-3ab4cd46966b",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "roV9eqmJkqhhQie97FSpq",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "sections": {
+      "id": "ID_f4b8cb2e-eb21-4097-85b9-9a12e452de96",
+      "definitions": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "mzB2c6pygYoRNh77Zmd5i",
+        "type": "Listing",
+        "borderProperties": {
+          "id": "ID_3135ca2a-c127-4e52-b264-7c2be36fcd19",
+          "borderWidth": 0.38,
+          "borderStyle": "Solid",
+          "borderColor": "#000000"
+        },
+        "listing": {
+          "id": "ID_08e900aa-bf85-46f7-aafc-aeb8b65b8b96",
+          "model": "ListingDM",
+          "basePath": "/general",
+          "hideHeader": true,
+          "rowPropertyComputations": [],
+          "columns": [
+            {
+              "id": "ID_214cdd49-49d4-47c0-bdcd-11eaf6955431",
+              "label": {
+                "id": "ID_d24eff4f-2471-4d4e-89d1-1917e5da46a1",
+                "value": "Index",
+                "path": "/content/elementDefinitions/listing/columns/label/value/",
+                "source": "INPUT"
+              },
+              "width": {
+                "id": "ID_938da451-8024-4444-84a1-696bca646401",
+                "path": "/content/elementDefinitions/listing/columns/width/value/",
+                "source": "UNSET",
+                "unit": "Percent"
+              },
+              "isSortingIndex": true,
+              "default": {
+                "id": "ID_c9bc9289-0612-42b5-846a-8c4784f1ec6f",
+                "propertyComputations": [
+                  {
+                    "id": "ID_2b6b6eed-4ace-44eb-bdc6-7cd47d7507aa",
+                    "property": "IsHidden",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_3e6c9c46-bf18-4829-bddc-fd0344547f66",
+                        "operation": "True"
+                      }
+                    ]
+                  }
+                ],
+                "valueComputationAlternatives": [
+                  {
+                    "id": "ID_92a108bd-e6b7-4e79-bbdf-ecb3d5b021c5",
+                    "operation": "\"0\"",
+                    "precondition": "[name] == \"general\" OR [name] == \"phone\""
+                  },
+                  {
+                    "id": "ID_3e83a3ee-fe3e-4fd7-9a64-a7a1e8c3c372",
+                    "operation": "\"1\"",
+                    "precondition": "[name] == \"name\" OR [name] == \"number\""
+                  },
+                  {
+                    "id": "ID_029fb60f-ccfa-4772-8bd2-3c365047c322",
+                    "operation": "\"2\"",
+                    "precondition": "[name] == \"salutation\" OR [name] == \"amount\""
+                  },
+                  {
+                    "id": "ID_ba766383-d0ec-41ad-b84a-9727fd3fd71a",
+                    "operation": "\"3\"",
+                    "precondition": "[name] == \"birth_date\" OR [name] == \"scope\""
+                  },
+                  {
+                    "id": "ID_9660b660-392c-400e-9335-ae8c1d945654",
+                    "operation": "\"4\"",
+                    "precondition": "[name] == \"birth_time\""
+                  },
+                  {
+                    "id": "ID_f968423a-5940-45b3-b9f7-359cdb4f7cb9",
+                    "operation": "\"5\"",
+                    "precondition": "[name] == \"image\""
+                  }
+                ]
+              },
+              "group": {
+                "id": "ID_6b52cf86-f73e-4be8-83f9-9e3b83ee9f2b",
+                "propertyComputations": [],
+                "valueComputationAlternatives": []
+              },
+              "field": [],
+              "borderProperties": {
+                "id": "ID_8ce54ee9-33ff-4ecf-8104-f751da025859"
+              }
+            },
+            {
+              "id": "ID_0a9c17fb-ef11-422d-963b-96f058f1f9df",
+              "label": {
+                "id": "ID_585cf80d-e8f7-4ec2-b670-e01d61687abe",
+                "value": "Label",
+                "path": "/content/elementDefinitions/listing/columns/label/value/",
+                "source": "INPUT"
+              },
+              "width": {
+                "id": "ID_02f5e64d-bf03-4e5e-afab-1851c65b4306",
+                "value": 35,
+                "path": "/content/elementDefinitions/listing/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              },
+              "hasCustomTextProperties": true,
+              "default": {
+                "id": "ID_b2c4070d-0633-427b-9cec-121d55860be2",
+                "propertyComputations": [
+                  {
+                    "id": "ID_b7486baf-3efe-4562-99ba-20f5246561a2",
+                    "property": "IsHidden",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_f6ce24c2-75eb-453c-8068-1861e1e5be56",
+                        "operation": "True",
+                        "precondition": "[parentPath] == \"/general/phone/\" AND [repetitionsOfParent] < 2"
+                      },
+                      {
+                        "id": "ID_34465fd4-a725-4f5a-829c-2893b0df534f",
+                        "operation": "True",
+                        "precondition": "[path] == \"/general/phone/\" AND [repetitions] < 2"
+                      }
+                    ]
+                  }
+                ],
+                "valueComputationAlternatives": [
+                  {
+                    "id": "ID_076109fe-2f87-44b4-acbb-55275e66126c",
+                    "operation": "[relativeMetadata/label]",
+                    "precondition": "[isField] == True"
+                  },
+                  {
+                    "id": "ID_fda74e58-7479-4c7b-a0cc-e001e877592e",
+                    "operation": "[path]",
+                    "precondition": "[isField] == False"
+                  }
+                ]
+              },
+              "group": {
+                "id": "ID_9b8be7c7-ecf4-42ae-990b-0998c21183fb",
+                "propertyComputations": [
+                  {
+                    "id": "ID_52d95296-a67f-45e4-bb33-5619134348de",
+                    "property": "ColumnSpan",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_5bec493d-f854-4807-921c-4e4ef6078478",
+                        "operation": "4"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ID_488cd682-4a0a-4a50-acaf-7e4081a76e00",
+                    "property": "FontSize",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_e890b144-707f-4edb-bcea-4403b63c5d11",
+                        "operation": "22",
+                        "precondition": "[depth] == 1"
+                      },
+                      {
+                        "id": "ID_f7304ad4-81ae-4609-a51b-369f0f3aeeb5",
+                        "operation": "12",
+                        "precondition": "[depth] == 2"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ID_4ba04672-eb02-4608-99f3-08873f07c4d9",
+                    "property": "Italic",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_ff2dfadf-6268-4195-93ec-9505e27dec42",
+                        "operation": "True",
+                        "precondition": "[depth] >= 2"
+                      }
+                    ]
+                  }
+                ],
+                "valueComputationAlternatives": []
+              },
+              "field": [],
+              "textProperties": {
+                "id": "ID_8a0f06e3-42c3-4db6-8bbc-366226b7070a",
+                "textStyleId": {
+                  "id": "GMlkUuA2x8bg5fp2hRhto",
+                  "source": "INPUT",
+                  "value": "ID_d314546c-9add-4bd2-bf38-4c2982279bb1",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/textStyleId/value/"
+                },
+                "alignment": {
+                  "id": "ltm1usVAr0EPj-0IlfwPO",
+                  "source": "INPUT",
+                  "value": "Left",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/alignment/value/"
+                },
+                "bold": {
+                  "id": "8SgAFRTyviohwjioRQZXU",
+                  "source": "INPUT",
+                  "value": true,
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/bold/value/"
+                },
+                "italic": {
+                  "id": "qjJC4nvlW-4XWWJEEc66A",
+                  "source": "INPUT",
+                  "value": false,
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/italic/value/"
+                },
+                "underlined": {
+                  "id": "ISP7xzEmoGskZcGsTWVhI",
+                  "source": "INPUT",
+                  "value": false,
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/underlined/value/"
+                },
+                "color": {
+                  "id": "1cILXQpHxw1pNq84w9ben",
+                  "source": "INPUT",
+                  "value": "#000000",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/color/value/"
+                },
+                "backgroundColor": {
+                  "id": "Q4w8xiU_fOMKwzg9YWxg8",
+                  "source": "INPUT",
+                  "value": "#d6d6d6",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/backgroundColor/value/"
+                }
+              },
+              "borderProperties": {
+                "id": "ID_5ff72e1a-40db-4eeb-a265-9aa5ee6467dc"
+              }
+            },
+            {
+              "id": "ID_9fa6fd03-0c0a-4529-894f-8fa09cc715dd",
+              "label": {
+                "id": "ID_1f8809b0-7549-488c-9c0f-0ad9a3bc003c",
+                "value": "Wert",
+                "path": "/content/elementDefinitions/listing/columns/label/value/",
+                "source": "INPUT"
+              },
+              "width": {
+                "id": "ID_b269d524-3032-4399-9535-0a1c02279913",
+                "value": 20,
+                "path": "/content/elementDefinitions/listing/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              },
+              "default": {
+                "id": "ID_e820df34-6213-4b2f-9a26-66580116b783",
+                "propertyComputations": [
+                  {
+                    "id": "ID_69904ec1-5fa8-4898-a7e6-59b16fa171d0",
+                    "property": "BackgroundColor",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_3383bcfb-5885-41bf-9de7-f43df9000289",
+                        "operation": "\"#DDDDDD\"",
+                        "precondition": "[repetitionsOfParent] > 1 AND RoundDown([currentRepetitionOfParent] / 2, 0) != RoundUp([currentRepetitionOfParent] / 2, 0)"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ID_3c515d0c-2f3b-483f-bcc0-97c8672ed005",
+                    "property": "IsHidden",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_41a1783c-2922-4372-ac1d-9f8647e68292",
+                        "operation": "True",
+                        "precondition": "[parentPath] == \"/general/phone/\" AND [repetitionsOfParent] < 2"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "Yqu3JyQ_UrU8h3A_N0w3_",
+                    "property": "Color",
+                    "computationAlternatives": [
+                      {
+                        "id": "Ahjb2mEQkh4ydaQdLjrc_",
+                        "operation": "\"#9a07f5\"",
+                        "precondition": "[name] == \"content\"\n"
+                      }
+                    ]
+                  }
+                ],
+                "valueComputationAlternatives": [
+                  {
+                    "id": "ID_b8cc032d-b258-476e-a23f-791493a17079",
+                    "operation": "[value]"
+                  }
+                ]
+              },
+              "group": {
+                "id": "ID_8dba7d7f-0ad1-4392-84b1-5245dba24c29",
+                "propertyComputations": [
+                  {
+                    "id": "ID_d7c79a3a-bb40-423e-80f8-284ac987da84",
+                    "property": "IsHidden",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_9c7f3334-6ac3-43b5-8f01-46d961c95775",
+                        "operation": "True"
+                      }
+                    ]
+                  }
+                ],
+                "valueComputationAlternatives": []
+              },
+              "field": [
+                {
+                  "id": "ID_95dd61c8-b8b2-4814-b659-1f9f22ef2325",
+                  "propertyComputations": [],
+                  "valueComputationAlternatives": [
+                    {
+                      "id": "ID_32cfdd47-7324-4851-8bf1-33a09d99dfef",
+                      "operation": "[value]"
+                    }
+                  ],
+                  "inputFieldTypeSerialized": "{\"type\":\"EnumerationType\",\"EnumerationType\":{\"values\":[{\"value\":\"mister\",\"label\":[{\"locale\":\"en\",\"text\":\"Mister\"},{\"locale\":\"de\",\"text\":\"Herr\"}]},{\"value\":\"madam\",\"label\":[{\"locale\":\"en\",\"text\":\"Madam\"},{\"locale\":\"de\",\"text\":\"Frau\"}]}]}}",
+                  "outputFieldTypeSerialized": "{\"type\":\"EnumerationType\",\"EnumerationType\":{\"values\":[{\"value\":\"mister\",\"label\":[{\"locale\":\"en\",\"text\":\"Mister\"},{\"locale\":\"de\",\"text\":\"Herr\"}]},{\"value\":\"madam\",\"label\":[{\"locale\":\"en\",\"text\":\"Madam\"},{\"locale\":\"de\",\"text\":\"Frau\"}]}]}}",
+                  "displayOptions": {
+                    "id": "ID_2854046c-0b66-4688-a829-0971b41ac773"
+                  }
+                },
+                {
+                  "id": "ID_f6373b56-60c4-40c9-bfe0-331302a3d315",
+                  "propertyComputations": [],
+                  "valueComputationAlternatives": [
+                    {
+                      "id": "ID_8f110fb0-1d5f-4eb2-b896-6cb55cb516db",
+                      "operation": "[value]"
+                    }
+                  ],
+                  "inputFieldTypeSerialized": "{\"type\":\"DateType\",\"DateType\":{\"format\":\"yyyy-MM-dd\"}}",
+                  "outputFieldTypeSerialized": "{\"type\":\"DateType\",\"DateType\":{\"format\":\"yyyy-MM-dd\"}}",
+                  "displayOptions": {
+                    "id": "ID_f5be296a-2273-4b62-b4e2-8b5b0aacd68f"
+                  }
+                },
+                {
+                  "id": "ID_e8185f7f-2763-4351-920c-c31ef709104e",
+                  "propertyComputations": [
+                    {
+                      "id": "ID_3ffee027-d3c7-4b13-8082-8a20078b8b03",
+                      "property": "Color",
+                      "computationAlternatives": [
+                        {
+                          "id": "ID_566034e3-6b24-442e-a417-cb10ecf51704",
+                          "operation": "\"#FF0000\"",
+                          "precondition": "[value] < ([ListingDM/general/NumberField1] - [ListingDM/general/NumberField2])"
+                        },
+                        {
+                          "id": "ID_471279e3-91f9-4177-a69d-0bc816a61d74",
+                          "operation": "\"#33FF33\"",
+                          "precondition": "[value] >= ([ListingDM/general/NumberField1] - [ListingDM/general/NumberField2])"
+                        }
+                      ]
+                    },
+                    {
+                      "id": "ID_5b908041-1186-46eb-b7b7-abc53887e639",
+                      "property": "Bold",
+                      "computationAlternatives": [
+                        {
+                          "id": "ID_7e7f3fc6-dc2b-4ad2-8c81-4ac07090ec5c",
+                          "operation": "True",
+                          "precondition": "[value] < ([ListingDM/general/NumberField1] - [ListingDM/general/NumberField2])"
+                        }
+                      ]
+                    }
+                  ],
+                  "valueComputationAlternatives": [
+                    {
+                      "id": "K1knuy1UjuNV292_uUv5Y",
+                      "operation": "[value]"
+                    }
+                  ],
+                  "inputFieldTypeSerialized": "{\"type\":\"NumberType\",\"NumberType\":{\"minFractionalDigits\":2,\"maxFractionalDigits\":2,\"trait\":\"amount\"}}",
+                  "outputFieldTypeSerialized": "{\"type\":\"NumberType\",\"NumberType\":{\"minFractionalDigits\":2,\"maxFractionalDigits\":2,\"trait\":\"amount\"}}",
+                  "displayOptions": {
+                    "id": "ID_72cc3b67-9804-48dd-961b-d6f2375a03b2"
+                  }
+                },
+                {
+                  "id": "ID_6a7a232c-42d0-4951-81f4-10ff0f74e196",
+                  "propertyComputations": [],
+                  "valueComputationAlternatives": [
+                    {
+                      "id": "ID_c05e6c1f-0b3d-47cd-b12a-abc3ffa3ec1c",
+                      "operation": "[value]"
+                    }
+                  ],
+                  "inputFieldTypeSerialized": "{\"type\":\"TimeType\",\"TimeType\":{\"format\":\"HH:mm:ss\"}}",
+                  "outputFieldTypeSerialized": "{\"type\":\"TimeType\",\"TimeType\":{\"format\":\"HH:mm:ss\"}}",
+                  "displayOptions": {
+                    "id": "ID_bd017e90-72a6-4dde-a81e-c20f38745ecd"
+                  }
+                }
+              ],
+              "borderProperties": {
+                "id": "ID_bfcf0975-8e03-44e1-b1ad-a435ddf1d4e5"
+              }
+            },
+            {
+              "id": "ID_a6f20e4d-99b7-440e-8d0f-31daf3c013e5",
+              "label": {
+                "id": "ID_009195ba-abda-4fe0-9561-e3546b9dd76a",
+                "value": "> 35,00 €",
+                "path": "/content/elementDefinitions/listing/columns/label/value/",
+                "source": "INPUT"
+              },
+              "width": {
+                "id": "ID_a0932a5a-a6d5-472b-824c-05ad0eeac547",
+                "value": 15,
+                "path": "/content/elementDefinitions/listing/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              },
+              "default": {
+                "id": "ID_e2f04cb3-e24a-420c-a9a9-a147168dba7f",
+                "propertyComputations": [
+                  {
+                    "id": "ID_6785140c-24d9-44de-a6a0-bc3386a51f33",
+                    "property": "BackgroundColor",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_6164c7ec-770a-4cdd-a946-41798523e8dc",
+                        "operation": "\"#DDDDDD\"",
+                        "precondition": "[repetitionsOfParent] > 1 AND RoundDown([currentRepetitionOfParent] / 2, 0) != RoundUp([currentRepetitionOfParent] / 2, 0)"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ID_c86a53f3-41ad-4468-8f71-061a8551ac2e",
+                    "property": "IsHidden",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_37828d2b-806c-46a8-bd18-8e6366fb453b",
+                        "operation": "True",
+                        "precondition": "[parentPath] == \"/general/phone/\" AND [repetitionsOfParent] < 2"
+                      }
+                    ]
+                  }
+                ],
+                "valueComputationAlternatives": [
+                  {
+                    "id": "ID_aab6e404-e315-488d-ab2d-6d9985bde72d",
+                    "operation": "\" --- \""
+                  }
+                ]
+              },
+              "group": {
+                "id": "ID_91f1bb13-e109-4b86-97a7-8bf101885b07",
+                "propertyComputations": [
+                  {
+                    "id": "ID_c145eb72-b955-4430-ae52-c9cf57cf10db",
+                    "property": "IsHidden",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_3f9b9af9-f6b2-4212-a5ba-9c6c7a3211ea",
+                        "operation": "True"
+                      }
+                    ]
+                  }
+                ],
+                "valueComputationAlternatives": []
+              },
+              "field": [
+                {
+                  "id": "ID_28a2ddea-e1f8-4529-aefe-92cc69a21b7c",
+                  "propertyComputations": [
+                    {
+                      "id": "ID_56cf551e-1521-4a7f-82a3-2a2bf605f7c6",
+                      "property": "Font",
+                      "computationAlternatives": [
+                        {
+                          "id": "ID_6575d7eb-885b-4c35-8fef-93954dcc8d24",
+                          "operation": "\"Noto Sans Symbols\""
+                        }
+                      ]
+                    }
+                  ],
+                  "valueComputationAlternatives": [
+                    {
+                      "id": "ID_fa755d9a-4ab4-4e7b-96e5-1767803f7d78",
+                      "operation": "\"true\"",
+                      "precondition": "[value] >= ([ListingDM/general/NumberField1] - [ListingDM/general/NumberField2])"
+                    },
+                    {
+                      "id": "ID_93e7b763-974d-4c40-abb1-95a72263bfc6",
+                      "operation": "\"false\"",
+                      "precondition": "[value] < ([ListingDM/general/NumberField1] - [ListingDM/general/NumberField2])"
+                    }
+                  ],
+                  "inputFieldTypeSerialized": "{\"type\":\"NumberType\",\"NumberType\":{\"minFractionalDigits\":2,\"maxFractionalDigits\":2,\"trait\":\"amount\"}}",
+                  "outputFieldTypeSerialized": "{\"type\":\"BooleanType\"}",
+                  "displayOptions": {
+                    "id": "ID_2beb7457-6655-46fa-aab9-1bbeeb545cd9",
+                    "displayType": "Checkbox",
+                    "checkboxChecked": "☑",
+                    "checkboxUnchecked": "☐"
+                  }
+                }
+              ],
+              "borderProperties": {
+                "id": "ID_6ccfb716-c2f4-4146-809e-9b8014f2b011"
+              }
+            },
+            {
+              "id": "ID_d9838138-3157-46e8-8ec7-931e650b22c9",
+              "label": {
+                "id": "ID_8844b651-ea52-458d-b03c-25b3285c57c0",
+                "value": "Annotations",
+                "path": "/content/elementDefinitions/listing/columns/label/value/",
+                "source": "INPUT"
+              },
+              "width": {
+                "id": "ID_45302783-7741-4eb9-8606-c2f7207d0857",
+                "value": 20,
+                "path": "/content/elementDefinitions/listing/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              },
+              "default": {
+                "id": "ID_bc7515e1-8ccd-4886-aadd-7fb61f1d5e4d",
+                "propertyComputations": [
+                  {
+                    "id": "ID_ceb6020e-d1b3-48cb-9ea5-abc5d25a74a7",
+                    "property": "BackgroundColor",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_c1844a62-1fab-4877-a343-c51f502700d6",
+                        "operation": "\"#DDDDDD\"",
+                        "precondition": "[repetitionsOfParent] > 1 AND RoundDown([currentRepetitionOfParent] / 2, 0) != RoundUp([currentRepetitionOfParent] / 2, 0)"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ID_ae3c6c83-7b6f-441d-b982-70cc3b791ad5",
+                    "property": "IsHidden",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_3710f848-8ee7-4298-8998-6ee974e709e8",
+                        "operation": "True",
+                        "precondition": "[parentPath] == \"/general/phone/\" AND [repetitionsOfParent] < 2"
+                      }
+                    ]
+                  }
+                ],
+                "valueComputationAlternatives": [
+                  {
+                    "id": "ID_f4d29c5e-5911-4e57-9da4-9fde8ad8ee62",
+                    "operation": "\"Annotation foo : \" + [relativeAnnotation/foo] + \"; value : \" + [value]",
+                    "precondition": "FieldFilled(relativeAnnotation/foo)"
+                  },
+                  {
+                    "id": "ID_3c4aaf18-a4ea-43ea-8649-a6df3ac6397a",
+                    "operation": "\"Annotation bar: \" + [relativeAnnotation/bar] + \"; name : \" + [ListingDM/general/name]",
+                    "precondition": "FieldFilled(relativeAnnotation/bar)"
+                  },
+                  {
+                    "id": "ID_475a1413-4ecf-48ea-a0db-b82fdc3b5fc7",
+                    "operation": "\" --- \"",
+                    "precondition": "FieldNotFilled(relativeAnnotation/foo)"
+                  }
+                ]
+              },
+              "group": {
+                "id": "ID_ba480c42-30ab-444b-a097-3d963054a1a3",
+                "propertyComputations": [
+                  {
+                    "id": "ID_2b8af234-b325-45b7-bc88-cc2f00e48440",
+                    "property": "IsHidden",
+                    "computationAlternatives": [
+                      {
+                        "id": "ID_d7d2f89d-1565-4780-b4ed-52a1ba390d6d",
+                        "operation": "True"
+                      }
+                    ]
+                  }
+                ],
+                "valueComputationAlternatives": []
+              },
+              "field": [],
+              "borderProperties": {
+                "id": "ID_856e7447-b3d4-452c-a176-5867993dc741"
+              }
+            }
+          ],
+          "headerTextProperties": {
+            "id": "ID_4a2cbf47-3d48-4327-ad96-7dbb0af747db",
+            "textStyleId": {
+              "id": "4umxLyASU2h7t5eYJMtV9",
+              "source": "INPUT",
+              "value": "ID_d314546c-9add-4bd2-bf38-4c2982279bb1",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/textStyleId/value/"
+            },
+            "alignment": {
+              "id": "48L9QxydiudRAnCmOfp5K",
+              "source": "INPUT",
+              "value": "Left",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/alignment/value/"
+            },
+            "bold": {
+              "id": "VEpzetHUxo1YcTJWbzYqj",
+              "source": "INPUT",
+              "value": true,
+              "path": "/content/elementDefinitions/listing/headerTextProperties/bold/value/"
+            },
+            "italic": {
+              "id": "3Qi1xdGjOc60mD_3noCf2",
+              "source": "DEFAULT",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/italic/value/"
+            },
+            "underlined": {
+              "id": "pHyKfTPCE0_ry0uB9d9U5",
+              "source": "DEFAULT",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/underlined/value/"
+            },
+            "color": {
+              "id": "W4KbNYi_GMc1uRKEn-7Mx",
+              "source": "DEFAULT",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/color/value/"
+            },
+            "backgroundColor": {
+              "id": "T1AfCWkpiYfaShd_Rs-CS",
+              "source": "DEFAULT",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/backgroundColor/value/"
+            }
+          }
+        },
+        "textProperties": {
+          "id": "DFO03YAVcqTgz07eisb3t",
+          "textStyleId": {
+            "id": "Me6DZ0yGfu5CCvSBWwJMl",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "oYmnPNG1MjSSnHaD6uHwq",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          },
+          "bold": {
+            "id": "8RZ4Neovmq-2LcXHWUjcD",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/bold/value/"
+          },
+          "italic": {
+            "id": "DTVl8v0Pmv8aGWnFJM3XP",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/italic/value/"
+          },
+          "underlined": {
+            "id": "g790kN7FUvQxEURuO8t4g",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/"
+          },
+          "color": {
+            "id": "F0zNaRstnIbhnJoJ6rQwi",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/color/value/"
+          },
+          "backgroundColor": {
+            "id": "s-3wS9WbB3-jirz18zsb_",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/"
+          }
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "ID_833c6947-812a-4b6a-ba16-4526510b9081",
+      "definitions": [
+        {
+          "id": "ID_d314546c-9add-4bd2-bf38-4c2982279bb1",
+          "name": "Open Sans@12.0 within 18.0",
+          "font": "Open Sans",
+          "fontSize": 12,
+          "lineHeight": 18,
+          "semantic": "P"
+        }
+      ]
+    }
+  }
+}

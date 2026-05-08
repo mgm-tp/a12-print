@@ -1,0 +1,174 @@
+{
+  "header": {
+    "id": "BoundingBoxDM",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "BoundingBoxDM",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_cb782",
+          "name": "general",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_82b10",
+                "name": "first",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Text"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Text"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_82b11",
+                "name": "last",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Text"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Text"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_82b12",
+                "name": "enabled1",
+                "Field": {
+                  "fieldType": {
+                    "type": "BooleanType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Text1"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Text1"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_82b13",
+                "name": "enabled2",
+                "Field": {
+                  "fieldType": {
+                    "type": "BooleanType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Text2"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Text2"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_82b14",
+                "name": "agb",
+                "Field": {
+                  "fieldType": {
+                    "type": "ConfirmType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Text3"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Text3"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_6120f",
+                "name": "dateRange",
+                "Field": {
+                  "fieldType": {
+                    "type": "DateRangeType",
+                    "DateRangeType": {
+                      "format": "yyyy-MM-dd",
+                      "rangeSeparator": "/"
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Date Range"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Datumsbereich"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

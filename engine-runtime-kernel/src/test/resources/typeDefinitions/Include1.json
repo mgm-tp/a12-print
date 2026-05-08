@@ -1,0 +1,85 @@
+{
+  "header": {
+    "id": "Include1",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "annotations": [],
+    "modelReferences": [
+      {
+        "alias": "Include2",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "Include2"
+      }
+    ]
+  },
+  "content": {
+    "modelInfo": {
+      "name": "Include1",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "typeDefinitions": [
+      {
+        "id": "typedef_779247b5-405b-4042-b88d-57430253c490",
+        "name": "TypeDefinition",
+        "fieldType": {
+          "type": "DateType",
+          "DateType": {
+            "format": "yyyy-MM-dd"
+          }
+        }
+      }
+    ],
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_d0706",
+          "name": "root",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Group",
+                "id": "include_0d29e",
+                "name": "Include2",
+                "Group": {
+                  "repeatability": 1,
+                  "modelAlias": "Include2"
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_befcf",
+                "name": "field",
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_779247b5-405b-4042-b88d-57430253c490"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

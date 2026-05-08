@@ -1,0 +1,74 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Area [[Area]]
+
+The Area element provides the ability to group elements in a specific region.
+Once created, the Area content can be edited on a separate Area stage.
+
+Layout calculations of the Area content are done separately to the elements outside the Area.
+This way, the Area with its content interacts exactly as one single element.
+If the Area content grows outside the Area, the Area grows to fit its content.
+
+Repeatability Settings::
+Document Model::: Select a Document Model referenced in the <<SchemaTab, Schema Tab>>.
+Group::: A Group can be selected as a data context in the Area configuration.
+If the selected group is repeatable, then the Area will be repeated for each instance of the repeatable group in the provided A12 Document.
+
+The Area element is also configurable using <<BorderProperties, Border Properties>>.
+
+image::chapter03/03_area_detail_view.png[Area element detail view,title="Area element detail view"]
+
+To access the <<AreaStage, Area Stage View>>, hover over the Area and click the revealed "Edit" button in the top right-hand corner of the Area.
+
+== Area Stage View [[AreaStage]]
+The Area Stage functions similar to the <<EditorStage, Editor Stage>>.
+
+The main difference between these Editor Stage Views are:
+
+* The Area Stage has the dimensions of the corresponding Area
+* The Area Stage displays the borders of the corresponding Area
+* At the lower border of the Area Stage, an extension point is accessible, which can be dragged to define the <<AreaOverflowHeight, Overflow Height>> of the Area.
+
+Elements inside an Area are positioned in relation to the Areas upper left corner.
+
+Leave the Area Stage View by clicking on the desired level in the Breadcrumb navigation displayed in the top left-hand corner.
+
+[NOTE]
+====
+* The positioning of the Elements inside an Area is unaffected of the Area border. Therefore, the Elements and the Area border may overlap.
+* The height calculation and positioning of the Elements inside the Area are done independently of Elements outside the Area.
+====
+
+.Area Stage View
+image::chapter03/03_area_EditorStage.png[Area Stage View, title="Area Stage View"]
+
+
+=== Overflow Height [[AreaOverflowHeight]]
+The height of the <<AreaStage, Area Stage>> can be increased by the definition of an Overflow Height.
+Drag-and-drop the lower border of the Area to edit the Overflow Height.
+The Overflow Height allows the user to place additional Elements inside the Area.
+
+[TIP]
+====
+This works well in combination with the usage of <<HideConditions, Hide Conditions>>.
+====
+
+[NOTE]
+====
+The distance between the lowest Element inside the Area to its lower bounds will stay always the same.
+====

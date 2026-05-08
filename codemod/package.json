@@ -1,0 +1,53 @@
+{
+  "name": "@com.mgmtp.a12.print/print-engine-codemod",
+  "version": "3.2.3",
+  "license": "(EUPL-1.2 OR LicenseRef-commercial)",
+  "description": "Codemods for Print Engine",
+  "type": "module",
+  "scripts": {
+    "compile": "pnpm run /^compile:.*/",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings 0",
+    "format": "prettier --check \"./*.{js,cjs,mjs}\" \"src/**/*.{ts,tsx}\"",
+    "start": "node lib/cli.js",
+    "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest",
+    "clean": "rimraf lib",
+    "compile:lint": "pnpm run lint && pnpm run format",
+    "compile:typescript": "tsc -p tsconfig.build.json",
+    "fix": "pnpm run /^.*:fix$/",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format:fix": "prettier --write \"./*.{js,cjs,mjs}\" \"src/**/*.{ts,tsx}\"",
+    "test:watch": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest --watchAll",
+    "test:report": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest --coverage"
+  },
+  "files": [
+    "package.json",
+    "lib",
+    "src/main/typescript",
+    "cyclonedx.json",
+    "licenses",
+    "LICENSE",
+    "NOTICE",
+    "THIRD_PARTY_NOTICES"
+  ],
+  "bin": "lib/cli.js",
+  "dependencies": {
+    "@com.mgmtp.a12.devtools/codemod": "catalog:a12"
+  },
+  "devDependencies": {
+    "@com.mgmtp.a12.print/print-dev-tools": "workspace:*",
+    "@swc/core": "catalog:",
+    "@swc/jest": "catalog:",
+    "@types/jest": "catalog:",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-plugin-jest": "catalog:",
+    "eslint-plugin-prettier": "catalog:",
+    "eslint-plugin-unused-imports": "catalog:",
+    "jest": "catalog:",
+    "jest-junit": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:"
+  }
+}

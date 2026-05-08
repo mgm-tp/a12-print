@@ -1,0 +1,10 @@
+{
+	"fileExtensions": ["js", "ts"],
+	"tsConfig": "./tsconfig.json",
+	"excludeRegExp": ["generated", "lib"],
+	"detectiveOptions": {
+		"ts": {
+			"skipTypeImports": true
+		}
+	}
+}

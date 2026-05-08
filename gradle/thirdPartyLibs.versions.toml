@@ -1,0 +1,116 @@
+# SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+#
+# Copyright (c) 2012-2026 mgm technology partners GmbH
+#
+# Dual License
+# ------------
+# This source file is part of the mgm A12 Platform and available under
+# a choice of two different licenses:
+#
+# 1. Open-Source License - EUPL v1.2
+#    You may redistribute and/or modify this file under the terms of the
+#    European Union Public License, version 1.2 - see https://eupl.eu/.
+#
+# 2. Commercial License
+#    Alternatively, you may obtain a commercial license from
+#    mgm technology partners GmbH, that permits use of this software
+#    under different terms (including support and maintenance services).
+#
+#    Please contact a12-license@mgm-tp.com for more information.
+#
+# You must select and comply with exactly one of the above license options.
+#
+# Warranty Disclaimer (applies to either option)
+# ----------------------------------------------
+# THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND,
+# WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
+# LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+[versions]
+antlr4 = "4.13.2"
+assertj = "3.27.6"
+collections4 = "4.5.0"
+commonmark = "0.26.0"
+commonsIO = "2.20.0"
+commonsLang3 = "3.20.0"
+commonsText = "1.14.0"
+cyclonedxBom = "3.0.1"
+dependencyManagement = "1.1.7"
+freemarker = "2.3.34"
+guava = "33.4.8-jre"
+imageComparison = "4.4.0"
+jackson = "2.20.1"
+jacksonAnnotations = "2.20"
+jacksonDatatypeJsr = "2.20.0"
+jaxb = "4.0.6"
+jmh = "1.37"
+jsoup = "1.21.2"
+jupiter = "5.11.4"
+logback = "1.5.18"
+lombok = "8.14.2"
+mockito = "5.17.0"
+nashorn = "15.7"
+nodeGradle = "7.1.0"
+owasp = "20240325.1"
+pdfbox = "2.0.25"
+shell = "3.4.1"
+slf4j = "2.0.17"
+springBoot = "3.5.9"
+veraPdf = "1.28.2"
+# Please be aware that after a XChart update, the reflection code for localizing PieCharts will either continue to be supported or will no longer be required
+xchart = "3.8.8"
+xmlBind = "4.0.2"
+
+[libraries]
+antlr4 = { module = "org.antlr:antlr4", version.ref = "antlr4" }
+assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+collections4 = { module = "org.apache.commons:commons-collections4", version.ref = "collections4" }
+commonmark = { module = "org.commonmark:commonmark", version.ref = "commonmark" }
+commonsIO = { module = "commons-io:commons-io", version.ref = "commonsIO" }
+commonsLang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commonsLang3" }
+commonsText = { module = "org.apache.commons:commons-text", version.ref = "commonsText" }
+freemarker = { module = "org.freemarker:freemarker", version.ref = "freemarker" }
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+imageComparison = { module = "com.github.romankh3:image-comparison", version.ref = "imageComparison" }
+jackson = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+jacksonAnnotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jacksonAnnotations" }
+jacksonCore = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
+jacksonDatabind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jacksonDatatypeJdk8 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jdk8", version.ref = "jackson" }
+jacksonDatatypeJsr = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jacksonDatatypeJsr" }
+jacksonYaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
+jaxb = { module = "org.glassfish.jaxb:jaxb-runtime", version.ref = "jaxb" }
+jaxbJxc = { module = "org.glassfish.jaxb:jaxb-jxc", version.ref = "jaxb" }
+jmhCore = { module = "org.openjdk.jmh:jmh-core", version.ref = "jmh" }
+jmhGenreratorBytecode = { module = "org.openjdk.jmh:jmh-generator-bytecode", version.ref = "jmh" }
+jmhGeneratorAnnprocess = { module = "org.openjdk.jmh:jmh-generator-annprocess", version.ref = "jmh" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+jupiterApi = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiter" }
+jupiterEngine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jupiter" }
+jupiterParams = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jupiter" }
+logbackClassic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+mockitoCore = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockitoJunitJupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
+nashornCore = { module = "org.openjdk.nashorn:nashorn-core", version.ref = "nashorn" }
+nodeGradle = { module = "com.github.node-gradle:gradle-node-plugin", version.ref = "nodeGradle" }
+owaspJavaHtmlSanitizer = { module = "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer", version.ref = "owasp" }
+pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
+slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4jSimple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+slf4jNop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
+springBootGradle = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "springBoot" }
+springBootStarter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBoot" }
+springBootStarterTest = { module = "org.springframework.boot:spring-boot-starter-test" }
+springLoaderTools = { module = "org.springframework.boot:spring-boot-loader-tools", version.ref = "springBoot" }
+springShellStarter = { module = "org.springframework.shell:spring-shell-starter", version.ref = "shell" }
+springShellTest = { module = "org.springframework.shell:spring-shell-test", version.ref = "shell" }
+springShellTestAuto = { module = "org.springframework.shell:spring-shell-test-autoconfigure", version.ref = "shell" }
+veraPdfValidationModelJakarta = { module = "org.verapdf:validation-model-jakarta", version.ref = "veraPdf" }
+xchart = { module = "org.knowm.xchart:xchart", version.ref = "xchart" }
+xmlBind = { module = "jakarta.xml.bind:jakarta.xml.bind-api", version.ref = "xmlBind" }
+
+[plugins]
+cyclonedxBom = { id = "org.cyclonedx.bom", version.ref = "cyclonedxBom" }
+lombok = { id = "io.freefair.lombok", version.ref = "lombok" }
+springDependencyManagement = { id = "io.spring.dependency-management" }

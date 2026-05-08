@@ -1,0 +1,10 @@
+diff --git a/lib/index.esm.js b/lib/index.esm.js
+index b2e1bc2a20b8e3e321460738850602df66c93d37..a05a857a9c639fec5487b012413be9b0c35a7b46 100644
+--- a/lib/index.esm.js
++++ b/lib/index.esm.js
+@@ -600,4 +600,4 @@ var composeDecorators = composeDecorators$1;
+ 
+ //the editors editor html element is not supported in the draft js typescript interface
+ 
+-export { composeDecorators, createEditorStateWithText, PluginEditor$1 as default };
++export { PluginEditor, composeDecorators, createEditorStateWithText, PluginEditor$1 as default };

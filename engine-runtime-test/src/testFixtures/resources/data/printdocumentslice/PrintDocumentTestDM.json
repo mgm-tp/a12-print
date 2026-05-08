@@ -1,0 +1,321 @@
+{
+  "header": {
+    "id": "PrintDocumentTestDM",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "de"
+      },
+      {
+        "code": "en"
+      },
+      {
+        "code": "de_DE"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "PrintDocumentTestDM"
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_5d1ef",
+          "name": "Repeatable",
+          "Group": {
+            "repeatability": 99999,
+            "elements": [
+              {
+                "type": "Group",
+                "id": "group_bc210",
+                "name": "NestedRepeatable",
+                "Group": {
+                  "repeatability": 9999,
+                  "elements": [
+                    {
+                      "type": "Group",
+                      "id": "group_263b1",
+                      "name": "NestedNestedRepeatable",
+                      "Group": {
+                        "repeatability": 99999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_b79f4",
+                            "name": "RNN_S1",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_856c4",
+                            "name": "RNN_S2",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_7d3fc",
+                            "name": "RNN_S3",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_bca2b",
+                            "name": "RNN_S4",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_d1ee8",
+                      "name": "R_NoneRepeatable",
+                      "Group": {
+                        "repeatability": 1,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_3127b",
+                            "name": "RNR_S1",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_85f56",
+                            "name": "RNR_S2",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_4de6d",
+                            "name": "RNR_S3",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_a2dc7",
+                            "name": "RNR_S4",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Group",
+          "id": "group_72ddb",
+          "name": "NoneRepeatable",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Group",
+                "id": "group_9424d",
+                "name": "NR_Repeatable",
+                "Group": {
+                  "repeatability": 99999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_a77eb",
+                      "name": "NNR_S1",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_9d97c",
+                      "name": "NNR_S2",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_51c93",
+                      "name": "NNR_S3",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_1438f",
+                      "name": "NNR_S4",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_23b6c",
+                "name": "NR_S1",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_0b086",
+                "name": "NR_S2",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_e6689",
+                "name": "NR_S3",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_24f8b",
+                "name": "NR_S4",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_002b5",
+                "name": "NR_S5",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  }
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_f333c",
+                "name": "NR_Repeatable2",
+                "Group": {
+                  "repeatability": 99999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_6fc34",
+                      "name": "NNR_S1",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_24bcb",
+                      "name": "NNR_S2",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_2125a",
+                      "name": "NNR_S3",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_01ddf",
+                      "name": "NNR_S4",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

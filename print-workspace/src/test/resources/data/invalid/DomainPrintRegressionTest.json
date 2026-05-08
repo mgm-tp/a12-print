@@ -1,0 +1,71 @@
+{
+  "header": {
+    "id": "DomainPrintRegressionTest",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "DomainPrintRegressionTest",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "DomainPrintRegressionTest"
+      }
+    ]
+  },
+  "content": {
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_aa1ae",
+          "name": "RepeatableRoot",
+          "Group": {
+            "label": [
+              {
+                "locale": "en",
+                "text": "Repeatable Group"
+              },
+              {
+                "locale": "de",
+                "text": "Wiederholbare Gruppe"
+              }
+            ],
+            "repeatability": 99,
+            "elements": [
+              {
+                "type": "Group",
+                "id": "include_a0206",
+                "name": "MeasureField",
+                "Group": {
+                  "repeatability": 1,
+                  "modelAlias": "DomainMeasure"
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_a9977",
+                "name": "CustomString",
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_43de5dfb-bb43-47a7-8ec1-878bb630ad55"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

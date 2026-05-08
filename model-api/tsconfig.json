@@ -1,0 +1,32 @@
+{
+	"extends": "./node_modules/@com.mgmtp.a12.print/print-dev-tools/tsconfig.json",
+	"include": [
+    "src/main/typescript/**/*",
+    "src/test/typescript/**/*",
+    "src/main/typescript/generated/internal/model/*.json"
+  ],
+	"compilerOptions": {
+    "outDir": "./lib",
+		"rootDirs": ["./src/main/typescript", "./src/test/typescript"],
+		"allowSyntheticDefaultImports": true,
+		"types": ["jest", "node"],
+    "typeRoots": [
+      "src/main/typescript/types/antlr4",
+      "node_modules/@types"
+    ],
+	},
+	"typedocOptions": {
+		"name": "Print Model API",
+		"out": "./build/docs/typedoc",
+		"theme": "default",
+		"excludeInternal": "true",
+		"excludePrivate": "false",
+		"readme": "none",
+		"entryPoints": ["src/main/typescript/"],
+		"entryPointStrategy": "expand",
+		"exclude": ["**/internal/**/*", "**/__tests__/**/*", "**/node_modules/**/*"],
+    "validation": {
+      "notExported": false
+    }
+	}
+}

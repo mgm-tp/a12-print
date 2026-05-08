@@ -1,0 +1,16 @@
+{
+  "general": {
+    "enumField": "NO",
+    "stringField": "stringField1",
+    "repeatableGroup": [
+      {
+        "enumField": "TRUE",
+        "stringField": "stringField2"
+      },
+      {
+        "enumField": "FALSE",
+        "stringField": "stringField3"
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "general": {
+    "htmlContent": "<span>Hello <b>World</b></span>",
+    "repeatable": [
+      {
+        "repeatableHtmlContent": "<span>Hello <i>Table</i> 1</span>"
+      },{
+        "repeatableHtmlContent": "<span>Hello <i>Table</i> 2</span>"
+      }
+    ],
+    "listingGroup": {
+      "listingHtmlContent": "<span>Hello <del>Listing</del></span>",
+      "listingNonHtmlContent": 5
+    }
+  }
+}

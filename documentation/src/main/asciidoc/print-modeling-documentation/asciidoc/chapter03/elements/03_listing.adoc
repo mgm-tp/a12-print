@@ -1,0 +1,258 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Listing [[Listing]]
+
+The Listing element inserts a tabular representation of a specific subtree of a Document into the resulting PDF.
+Each row of the generated table corresponds to one field or group instance of the selected Document.
+
+[NOTE]
+====
+Due to the complex nature of the customization options, the Listing Element is recommended for more experienced users.
+
+Consider modeling a <<Table, Table>> if the use-case allows it.
+====
+
+The columns of the table are configured on the Listing Element.
+The cells content and styles are defined by link:/docs/KERNEL/kernel-documentation-ba-en/index.html[A12 Kernel Computations] set in the respective column configuration.
+These computations are executed on the respective field or group instance of the row to determine its result values.
+
+Document Model:: Select a Document Model referenced in the <<SchemaTab, Schema Tab>>.
+Group:: The path to the Group in the Document Model that defines the root of the Table Element.
+This Group and every Group or Field inside it will be generating a row in the resulting table.
+Columns:: Each Column of the Table Element pertains to a defined nested Element.
+Click "Add" to add new columns or click on the Column in the table to edit it.
+See <<ListingColumn>> for more details.
+Row Property Computations:: Property Computations may be modeled that apply to each row of the Listing. See <<PropertyComputation>> for more details.
+Group Property Computations:: Group Property Computations may be modeled that apply to the selected Group Instance. See <<GroupPropertyComputation>> for more details.
+
+Additionally, the Listing Element is configurable using <<BorderProperties, Border Properties>> and separate configurations of <<TextProperties, Text Properties>> for the header and body of the Listing.
+
+image::chapter03/03_listing_detail_view.png[Listing element detail view,title="Listing element detail view",width=415.13]
+
+== Listing Columns [[ListingColumn]]
+
+Column label:: The label of the Column in the Table Element header.
+See <<InputSource>> for more details on these settings.
++
+* *Default Value*
+* *User Input*
+* *Unset Value*
+Column Width:: Percentage width of the Column in respect to the Listing Elements width.
+If no width is set, the default HTML-table behavior is applied.
+The value must be an integer between 1 and 100.
+The sum of all widths will also be validated to ensure that it is 100 or less.
+Sort group content by this column:: The resulting table rows will be sorted by the content of this column.
++
+[NOTE]
+====
+The nesting structure of the A12 Document will be kept intact by the sorting.
+The contents of any Group will be restructured regarding the sorting, but no instance within a Group will be moved outside.
+====
+Column has custom text properties:: Allows full configuration of the <<TextProperties, Text Properties>> for the current column.
+The Text Properties are shown at the bottom of the Listing Column Editor.
+
+Column has custom border properties:: Allows full configuration of the <<BorderProperties, Border Properties>> for the current column.
+The Border Properties are shown at the bottom of the Listing Column Editor.
+
+=== Default Computations [[ListingDefaultComputation]]
+
+A set of <<ValueComputations, Value Computations>> and <<PropertyComputation, Property Computations>> that will be executed if neither <<ListingGroupComputation,Group Computations>> nor <<ListingFieldComputation,Field Computations>> are holding for the rows respective instance.
+
+Value Computations:: A Computation Table is modeled to return a specific value under a specific set of conditions.
+See <<ValueComputations>> for more details
+
+Property Computations:: Property Computations may be modeled that apply to each row of this Listing Column. See <<PropertyComputation>> for more details.
+
+image::chapter03/03_listing_column_detail_view.png[Listing column detail view,title="Listing column detail view",width=400]
+
+=== Group Computations [[ListingGroupComputation]]
+
+A set of <<ValueComputations, Value Computations>> and <<PropertyComputation, Property Computations>> that will be executed on any row corresponding to a Group Instance.
+
+=== Field Computations [[ListingFieldComputation]]
+
+A set of <<ValueComputations, Value Computations>> and <<PropertyComputation, Property Computations>> that will be executed on any row corresponding to a Field Instance with a Field Type that matches the Document Field Type.
+
+Select the field type of the results of the value computations:: Expected input Field Type for the Field Value Computation.
+
+Computation Output Type:: Expected output Field Type for the Field Value Computations.
+The output of the Value Computation should match this Field Type.
+
+Field Type:: The formatting can be modified based on the Field type of the instance, by selecting one of the following types:
++
+* *HTML:* Formats a Field instance containing HTML content. HTML tags are processed and rendered in the resulting PDF.
+* *Date:* Formats a Date Field instance into a readable date format based on the locale. The formatting can be customized by defining a specific pattern for evaluation. For example, the pattern `YYYY.MM.dd` evaluates to e.g. `2025.02.17`, while the pattern `dd'th of' MMMM YYYY 'at' HH:mm 'o''clock'` evaluates to `17th of February 2025 at 13:54 o'clock`.
+* *Date range:* Formats a DateRange Field instance into a readable format based on the locale. The formatting of the start date, end date, and separator can be customized by defining an evaluation pattern.
++
+[NOTE]
+====
+You can find more thorough information about evaluation patterns for dates by clicking the Info Icon next to the pattern input field or by reading through the
+https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html[official Java documentation].
+====
++
+* *Checkbox:* Formats a Boolean Field instance based on its value. You can specify which value should be displayed for `true` and `false`.
++
+[NOTE]
+====
+To display special characters such as ☐ or ☑ as the display value for the checkbox type, ensure that the selected <<TextStylesTab, Text Style>> uses a font that supports these characters.
+The Print Model Editor provides the font <<DefaultFonts, Noto Sans Symbols>>, which is compatible with these symbols.
+====
+
+Suffix:: Model a suffix for the formatted string data.
+
+== Value Computations [[ValueComputations]]
+In addition to the Operators and Language Constructs in the
+link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language] and the Fields and Groups in the referenced Document Model, the <<Computations, Computations>> used in the Listing Element support the usage of <<ListingAdditionalFields, Additional Computation Fields>>.
+The Additional Computation Fields allow the access of properties relative to the Field or Group instance of the current row.
+
+=== Additional Computation Fields [[ListingAdditionalFields]]
+
+The computations inside the complex listing support references to the following Fields to access information about the entity of the current row:
+
+* `value` - reference to the value of the current Field. Not filled for Groups.
+* `path` - reference to the path of the current Field or Group.
+* `name` - reference to the name of the current Field or Group.
+* `depth`: reference to the nesting depth of the current Field or Group inside the document model. Root Groups have `[depth] == 0`.
+* `isField`: results in _True_ if the current entity is a Field, _False_ otherwise.
+* `currentRepetition`: the repetition index of the current entity.
+* `repetitions`: the repetitions value of the current entity.
+* `relativeMetadata/...`: prefix for accessing the <<MetadataFieldsInComputations, Metadata>> of the current entity.
+* `relativeAnnotation/...`: prefix for accessing the <<AnnotationFieldsInComputations, Annotations>> of the current entity.
+
+Furthermore, the user can use references to the following Fields to access information of the current entities' parent Group:
+
+* `currentRepetitionOfParent`: the repetition index of the current entities' parent Group.
+* `repetitionsOfParent`: the repetitions value of the current entities' parent Group.
+* `parentName`: the name of the current entities' parent Group.
+* `parentPath`: the path of the current entities' parent Group.
+
+.Simple Examples of Preconditions using Additional Computation Fields
+[%header, cols="3a,2"]
+|===
+|Preconditions with Additional Field|Result
+|``[depth] == 1``
+|Returns `_True_` for each child of the Document Model's root Group
+|``FieldFilled(relativeAnnotation/annotationA)``
+|Returns in `_True_` if the current entity has the annotation annotationA
+|===
+
+.Simple Examples of Operations using Additional Computation Fields
+[%header, cols="3a,2"]
+|===
+|Operations with Additional Field|Result
+|``[value]``
+|Returns the value of the current Field.
+|``[relativeMetadata/label]``
+|Returns the Label of the current entity.
+|===
+
+.Advanced Examples of Preconditions using Additional Computation Fields
+[%header, cols="3a,2"]
+|===
+|Precondition with Additional Fields|Result
+|``[parentPath] == "/general/phone/" AND [repetitionsOfParent] < 2``
+|Returns `_True_` for every child of the Group /general/phone/ if the Group has less than 2 instances.
+|``[repetitionsOfParent] > 1 AND RoundDown ([currentRepetitionOfParent] / 2, 0) != RoundUp([currentRepetitionOfParent] / 2, 0)``
+|Returns `_True_` for every 2nd child of a repeatable Group.
+|===
+
+== Property Computation [[PropertyComputation]]
+
+A Property Computation consists of a target Property, and a set of Computation Alternatives that each consist of a Precondition and an Operation.
+A wide range of Properties can be set as the target Property including:
+
+* <<TextProperties, Text Properties>>
+* <<BorderProperties, Border Properties>>
+* <<TextStylesTab, Text Styles>>
+
+In addition, the following properties may be set:
+
+* *Vertical Alignment:* Defines the vertical alignment of the cells content.
+* *Hide Cell:* A boolean value, that if set to _True_, hides the cell completely.
+* *Hide Value:* A boolean value, that if set to _True_, hides the value of the cell. (Only available for Property Computations in <<ListingColumn, Listing Columns>>)
+* *Column Span:* A numeric value, that defines the number of columns that the cell spans. (Only available or Property Computations in <<ListingColumn, Listing Columns>>)
+
+The <<ListingAdditionalFields, Additional Computational Fields>> may also be used in the Preconditions and Operations of Property Computations.
+
+
+== Group Property Computation [[GroupPropertyComputation]]
+
+A Group Property Computation applies properties to all Listing rows that correspond to a selected Group instance.
+It consists of a target Property, a Group instance, and a set of Computation Alternatives that each consist of a Precondition and an Operation.
+
+At the moment, only *Hide Group* can be used as the target Property for Group Property Computations.
+If the Computation Alternatives evaluate to _True_, all rows belonging to the selected Group instance are hidden.
+
+WARNING: The precondition is only allowed to evaluate to true for fields and groups within the selected group path.
+
+=== Hide Group Example
+
+The following example demonstrates how to hide a repeating `addresses` group based on a condition.
+
+image::chapter03/03_listing_hide_group_detail_view.png[Hide Group Property Computation detail view,title="Hide Group Property Computation detail view",width=400]
+
+.Example: Hiding an repeatable address group when it is marked as not public
+* **Group Path:** `/customer/addresses`
+* **Precondition:** `[path] == [metadata/customer/addresses/isPublic/path] And [value] == False`
+* **Operation:** `True`
+
+In this example, all rows belonging to the `addresses` group will be hidden when the `isPublic` field's value is `False`. The following images show the rendered PDF output:
+
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter03/03_listing_hide_group_no_condition.png[Result without condition,title="All Groups visible",width=300]
+|
+image::chapter03/03_listing_hide_group_with_condition.png[Result with condition,title="Non Public Groups hidden",width=300]
+|===
+
+NOTE: You can use the `path` metadata field in computations to reference an element's path as a string value.
+For example, `[metadata/customer/addresses/isPublic/path]` resolves to `"/customer/addresses/isPublic/"`.
+
+
+== Attachments [[ListingAttachment]]
+
+Attachments in the Listing element are included in the generated PDF if the selected group contains attachment groups. These attachments are added at the end of the PDF, after all Print Model content has been rendered. Each attachment starts on a new page.
+
+=== Rendering of Attachments
+
+Attachments can be resolved in two ways:
+
+- **Embedded Attachment**: The content of the attachment is embedded in the document data.
+- **Referenced Attachment**: To reference an attachment by setting the attachment ID. The AttachmentProvider will use this ID to provide the attachment content at render time
+
+==== Rendering behavior:
+- If the attachment content is present, it will be rendered.
+- If the attachment ID is present, the referenced attachment will be rendered.
+- If both content and ID are specified, the content takes precedence and will be rendered.
+
+To allow referenced attachments, you need to use the link:/docs/PRINT_ENGINE/print-technical-documentation/index.html#attachment_provider[AttachmentProvider].
+
+- **Attachment Fields**: In the rendered listing, all attachment fields are displayed, but the content field will be shown as a link referencing the rendered attachment.
+- **Image Size**: The image size is scaled to fully fit the page's width.
+- **Supported Attachment Types**:
+  * Images: `png`, `jpg`
+  * PDFs: `pdf`
+
+[NOTE]
+====
+* If the attachment type is not supported, the content field is not shown in the listing result, and the attachment is not rendered.
+* The rendering of attachments may differ when using <<legacy_rendering_mode, Legacy Rendering Mode>>.
+====
+
+

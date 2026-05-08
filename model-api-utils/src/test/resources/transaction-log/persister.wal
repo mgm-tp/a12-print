@@ -1,0 +1,17 @@
+INTERACTION_0		1683292682329	Description			SET		stage	ID_segment
+	INTERACTION_0	ID_segment	segment	string	ID_reference			ID_segment	elementReferences	PUSH
+	INTERACTION_0	ID_segment	segment			string	ID_refID	ID_reference	refId	SET
+	INTERACTION_0	ID_segment	segment	string	ID_dimensions			ID_reference	dimensions	SET
+	INTERACTION_0	ID_segment	segment			number	160	ID_dimensions	minWidth	SET
+	INTERACTION_0	ID_segment	segment			number	24	ID_dimensions	minHeight	SET
+	INTERACTION_0	ID_segment	segment	string	ID_position			ID_reference	position	SET
+	INTERACTION_0	ID_segment	segment			number	580	ID_position	x	SET
+	INTERACTION_0	ID_segment	segment			boolean	false	ID_position	boolField	SET
+	INTERACTION_0	ID_segment	segment	string	ID_screenReadingOrder			ID_reference	screenReadingOrder	SET
+	INTERACTION_1	ID_element	Text	string	ID_textElementProperties			ID_refID	text	SET
+INTERACTION_1		1683292682329	Description			SET		form	ID_element
+	INTERACTION_0	ID_segment	segment			number	0	ID_screenReadingOrder	screenReadingOrderWeight	SET
+	INTERACTION_1	ID_element	Text			string	<p><span style=\"\">Lorem I'psum</span></p>	ID_textElementProperties	text	SET
+	INTERACTION_1	ID_element	Text			string	<p><span style=\"\">Lorem\tI'psum</span></p>	ID_textElementProperties	text	SET
+	INTERACTION_1	ID_element	Text			string	<p><span style=\"\">dhhdhdhd</span></p>\n<p><span style=\"\">\u00E4\u00E4\u00E4</span></p>\n<p><span style=\"\">\u00F6\u00F6'\u00F6</span></p>\n<p><span style=\"\">\u00FC\u00FC\u00FC</span></p>\n<p><span style=\"\">?</span></p>\n<p><span style=\"\">dkddj\\ndjd</span></p>	ID_textElementProperties	text	SET
+	INTERACTION_1	ID_element	Text

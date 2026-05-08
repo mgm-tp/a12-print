@@ -1,0 +1,258 @@
+{
+  "header": {
+    "id": "Print-model-with-overlap",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "description": "Complex Listing Showcase",
+    "annotations": [
+      {
+        "name": "createdVersion",
+        "value": "0.202206000.0-rc.6"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "labels": [],
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "reference": "ListingDM",
+        "alias": "ListingDM",
+        "purpose": "data binding"
+      }
+    ]
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "Z5_1o0cYBy4rkcsCJHKdj",
+        "titleComputation": [
+          {
+            "id": "__xe1JgOuett4_xutULI1",
+            "operation": "\"ListingPM_COPY\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "sXOqyLri55gX8TGVfnvWe",
+            "operation": "\"Complex Listing Showcase\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "OCMs1_nLgw9wZtB9ETzXc",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "qbqLpLmtXSPL4sfNOWbyx",
+            "operation": "\"Robert Bielinski\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "7rHLlU9M0bwmcA-gjl-1F",
+        "fontSize": 12,
+        "model": "ListingDM"
+      },
+      "structure": [
+        {
+          "id": "wyDwGkcw--PgZHwP4cerV"
+        }
+      ],
+      "sections": [],
+      "watermarks": [],
+      "runtimeVariables": [],
+      "textStyles": [
+        {
+          "id": "xorDuJGL7O05LNdThOyMF"
+        }
+      ]
+    },
+    "segments": {
+      "id": "IHWzd4OACrQ-vnLAmCR2n",
+      "definitions": [
+        {
+          "id": "wyDwGkcw--PgZHwP4cerV",
+          "title": "S1",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "_J9fAy5R5l-YCoOcy-pDi",
+            "pageOrientation": "Landscape"
+          },
+          "elementReferences": [
+            {
+              "id": "S69kmhxYH6cOyyOJlNtyS",
+              "refId": "q7qEwOY_63VB51x89djXM",
+              "position": {
+                "id": "DV2n7ZYbNHx0yvE5k2_yy",
+                "x": {
+                  "id": "9b_DA_qqS0nF3qC8O_q0O",
+                  "value": 104,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "9qhI9z1D4lOeq9OOh9j7S",
+                  "value": 27,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "BX7tgKcz_mXuaLGaNA9Gj",
+                "minHeight": {
+                  "id": "yFxU8AtE1jyJEJvSZ4rD-",
+                  "value": 6,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "OqaHRshFZyIb2VyGhdKHW",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "xX4KEtjN0LjoBAgmYmqt4"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "jmzyZecPxgflw6227vsRq",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "FBLxrxd4sJQaM2Et5WIeT",
+              "refId": "kyJOhE3ulUNf_W_Sdq9Zw",
+              "position": {
+                "id": "wOy3XnexW21ov5TL-ZBiz",
+                "x": {
+                  "id": "krg_2AhivKH96Uzm-p69P",
+                  "value": 126,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "nm-cSp1q9XIhXSmQgbERB",
+                  "value": 30,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "u6Zd0ul2uqe5erouyd7wo",
+                "minHeight": {
+                  "id": "AnuLtb7qd-EJRdoWk0lIp",
+                  "value": 6,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "s2zYYcv04JIE51GG5mLb3",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "nL4XeqqYl5mB33dAlnVpo"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "pXUZmSL8eOtXkQWQR_yIl",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "sections": {
+      "id": "aKlGrXxgPTLxpANofv6R7",
+      "definitions": []
+    },
+    "watermarks": {
+      "id": "AntZjuUKBv47FRQkKRvAa",
+      "definitions": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "q7qEwOY_63VB51x89djXM",
+        "type": "Text",
+        "text": {
+          "id": "l0bh_ZzHlArz9z2Ss3sJI",
+          "text": "<p><span style=\"\">no</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "xrc8NbqFSAABE1qTET7-C",
+          "textStyleId": {
+            "id": "Ityb8w0XR__0N-uxqjgw-",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "DEFAULT"
+          },
+          "alignment": {
+            "id": "bn7YK3ymmQRk2aw5B0xwi",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "ZHtVWkYJr4ZMMY7AHrdc1"
+        }
+      },
+      {
+        "id": "kyJOhE3ulUNf_W_Sdq9Zw",
+        "type": "Text",
+        "text": {
+          "id": "Q3KaYG6wv-sHfacDT7lKv",
+          "text": "<p><span style=\"\">error</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "agpAweGpB0S4PdTBfh5I_",
+          "textStyleId": {
+            "id": "Vu3kdXaA-0KY66n5G9cOB",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "DEFAULT"
+          },
+          "alignment": {
+            "id": "OPllE2JJNmxG-DWkfXwvQ",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "A4wBmG4cB5_BB_kpSOsCL"
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "yJAya7O2juqDMHt8YfnmE",
+      "definitions": [
+        {
+          "id": "xorDuJGL7O05LNdThOyMF",
+          "name": "Open Sans@12.0 within 18.0",
+          "font": "Open Sans",
+          "fontSize": 12,
+          "lineHeight": 18,
+          "semantic": "P"
+        }
+      ]
+    }
+  }
+}

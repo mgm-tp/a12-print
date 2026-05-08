@@ -1,0 +1,211 @@
+{
+  "header": {
+    "id": "TestPrintModel-CustomType",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "DomainTableLayout",
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "DomainTableLayout"
+      }
+    ],
+    "description": "Test Beschreibung"
+  },
+  "content": {
+    "id": "id_content",
+    "general": {
+      "id": "id_general",
+      "metadata": {
+        "id": "id_detail",
+        "titleComputation": [
+          {
+            "id": "JtSMlwaUbmmgU-Z7YgS-_",
+            "operation": "\"Test Titel\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "RJdKREhHmRhWJnvrG1pJw",
+            "operation": "\"Test Beschreibung\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "dsNtZlrAaf28brDOyST6n",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "Z-PW_E7eI2e-cXekWwbQX",
+            "operation": "\"Test Autor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "id_segmentDefault",
+        "fontSize": 12,
+        "model": "DomainTableLayout"
+      },
+      "runtimeVariables": [],
+      "textStyles": [],
+      "structure": [
+        {
+          "id": "segment1"
+        },
+        {
+          "id": "segment2"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "id_segments",
+      "definitions": [
+        {
+          "id": "segment1",
+          "title": "Erste Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "id_defaultSegment",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "ID_58e71aa7-717e-489b-b471-3f07f2f0e37d",
+              "refId": "tableLayout1",
+              "position": {
+                "id": "id_pos",
+                "x": {
+                  "id": "ID_88c53449-8f70-4f0c-a184-54f65216d40e",
+                  "value": 25,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_cfabecbd-9be7-472b-8b37-bd764eb79916",
+                  "value": 25,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "id_dim",
+                "minWidth": {
+                  "id": "ID_0a03cdc7-7a69-4f27-9bec-cb3bec3d55a1",
+                  "value": 87,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_63313d97-1a55-4070-8b5a-e07e5eef385a",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "id_sRO",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "BX5E7615caOXDaJGea87y",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        },
+        {
+          "id": "segment2",
+          "title": "Zweite Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "id_defaultSegment_2",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "ID_4bd41b09-3595-47d2-a7d6-c5cbe6f4ba53",
+              "refId": "tableLayout2",
+              "position": {
+                "id": "id_pos_2",
+                "x": {
+                  "id": "ID_b397b415-fbc7-4036-9a8d-47840fecdd1a",
+                  "value": 25,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_a36cc4cd-be9f-4e70-8883-7e95637ca5ce",
+                  "value": 25,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "id_dim_2",
+                "minWidth": {
+                  "id": "ID_d743000c-c9c8-4d29-a548-86f6d287f0c6",
+                  "value": 87,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_b1499492-d8fb-439e-b082-96a888759770",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "id_pos_2",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "BX5E7615caOXDaJGea87y",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "Bh8Qr9ZG9283i87Z7587",
+        "type": "Field",
+        "field": {
+          "id": "id_f",
+          "model": "DomainTableLayout",
+          "path": "/general/StringField1",
+          "displayOptions": {
+            "id": "id_dO",
+            "dateFormat": "<dateFormat>"
+          }
+        }
+      }
+    ]
+  }
+}

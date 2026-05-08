@@ -1,0 +1,486 @@
+{
+  "header": {
+    "id": "DomainElementReference",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "de"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "DomainMeasure",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "DomainMeasure"
+      },
+      {
+        "alias": "DomainMargin",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "DomainMargin"
+      },
+      {
+        "alias": "DomainPageBreakBehavior",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "DomainPageBreakBehavior"
+      }
+    ]
+  },
+  "content": {
+    "modelInfo": {
+      "name": "DomainElementReference"
+    },
+    "modelConfig": {
+      "timeZone": "UTC",
+      "decimalSeparator": ".",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_1c7f6",
+          "name": "elementReference",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_f7585",
+                "name": "id",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "ID"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "ID"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_d4a4f",
+                "name": "refId",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Referenzierte ID"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Referenced ID"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_32ebf",
+                "name": "position",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_203f5",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "de",
+                            "text": "ID"
+                          },
+                          {
+                            "locale": "en",
+                            "text": "ID"
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "include_2fe3f",
+                      "name": "x",
+                      "Group": {
+                        "repeatability": 1,
+                        "modelAlias": "DomainMeasure"
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_3b840",
+                      "name": "xFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../x/value",
+                        "errorCode": "Error rule_3b840",
+                        "errorCondition": "GroupFilled(RuleGroup) and FieldNotFilled(x/value)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "de",
+                            "text": "Die x Position muss angegeben sein"
+                          },
+                          {
+                            "locale": "en",
+                            "text": "The x position is required"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "include_6866b",
+                      "name": "y",
+                      "Group": {
+                        "repeatability": 1,
+                        "modelAlias": "DomainMeasure"
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_3dfeb",
+                      "name": "yFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../y/value",
+                        "errorCode": "Error rule_3dfeb",
+                        "errorCondition": "GroupFilled(RuleGroup) and FieldNotFilled(y/value)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "de",
+                            "text": "Die y Position muss angegeben sein"
+                          },
+                          {
+                            "locale": "en",
+                            "text": "The y position is required"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_d0764",
+                "name": "dimensions",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_3d222",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "de",
+                            "text": "ID"
+                          },
+                          {
+                            "locale": "en",
+                            "text": "ID"
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "include_88381",
+                      "name": "minHeight",
+                      "Group": {
+                        "repeatability": 1,
+                        "modelAlias": "DomainMeasure"
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_43c5e",
+                      "name": "minHeightFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../minHeight/value",
+                        "errorCode": "Error rule_43c5e",
+                        "errorCondition": "GroupFilled(RuleGroup) and FieldNotFilled(minHeight/value)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "de",
+                            "text": "Die Mindesthöhe muss angegeben sein"
+                          },
+                          {
+                            "locale": "en",
+                            "text": "The min height is required"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "include_07cbf",
+                      "name": "minWidth",
+                      "Group": {
+                        "repeatability": 1,
+                        "modelAlias": "DomainMeasure"
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_88eb8",
+                      "name": "minWidthFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../minWidth/value",
+                        "errorCode": "Error rule_88eb8",
+                        "errorCondition": "GroupFilled(RuleGroup) and FieldNotFilled(minWidth/value)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "de",
+                            "text": "Die Mindestbreite muss angegeben sein"
+                          },
+                          {
+                            "locale": "en",
+                            "text": "The min width is required"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_8d585",
+                "name": "hideConditions",
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_ac6b3",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "de",
+                            "text": "ID"
+                          },
+                          {
+                            "locale": "en",
+                            "text": "ID"
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_f3cbf",
+                      "name": "precondition",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "de",
+                            "text": "Vorbedingung"
+                          },
+                          {
+                            "locale": "en",
+                            "text": "Precondition"
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_b2f8a",
+                "name": "screenReadingOrder",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_0ca0a",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "de",
+                            "text": "ID"
+                          },
+                          {
+                            "locale": "en",
+                            "text": "ID"
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_a62ac",
+                      "name": "screenReadingOrderWeight",
+                      "Field": {
+                        "fieldType": {
+                          "type": "NumberType"
+                        },
+                        "label": [
+                          {
+                            "locale": "de",
+                            "text": "Gewicht der Bildschirmlesereihenfolge"
+                          },
+                          {
+                            "locale": "en",
+                            "text": "Screen Reading Order Weight"
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_62c8d",
+                "name": "margins",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_7013a",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_a5522",
+                      "name": "idFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../id",
+                        "errorCode": "Error rule_a5522",
+                        "errorCondition": "GroupFilled(RuleGroup) And FieldNotFilled(id)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "de",
+                            "text": "Die id muss angegeben werden."
+                          },
+                          {
+                            "locale": "en",
+                            "text": "The Id is required."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "include_1f89f",
+                      "name": "top",
+                      "Group": {
+                        "repeatability": 1,
+                        "modelAlias": "DomainMargin"
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "include_dba10",
+                      "name": "bottom",
+                      "Group": {
+                        "repeatability": 1,
+                        "modelAlias": "DomainMargin"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "include_aae79",
+                "name": "pageBreakBehavior",
+                "annotations": [
+                  {
+                    "name": "inheritedCondition",
+                    "value": "ElementType=BoundingBox, ElementType=Area, ElementType=Override"
+                  }
+                ],
+                "Group": {
+                  "repeatability": 1,
+                  "modelAlias": "DomainPageBreakBehavior"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

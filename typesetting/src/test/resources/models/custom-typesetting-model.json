@@ -1,0 +1,51 @@
+{
+  "header": {
+    "id": "CustomTypeSetting",
+    "modelType": "typesetting",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "internal": {},
+    "customHyphenationExclusions": [
+      {
+        "word": "tettttet",
+        "index": [
+          {
+            "v": 3
+          }
+        ]
+      }
+    ],
+    "preventLineBreakRules": [
+      {
+        "pattern": "l'."
+      },
+      {
+        "pattern": ".pha."
+      },
+      {
+        "pattern": "owin."
+      },
+      {
+        "pattern": "owing"
+      }
+    ],
+    "orphan": 2,
+    "widow": 2
+  }
+}

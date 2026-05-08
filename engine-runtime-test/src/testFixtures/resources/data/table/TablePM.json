@@ -1,0 +1,1783 @@
+{
+  "header": {
+    "id": "TablePM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "description": "Test Beschreibung",
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "labels": [],
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "reference": "TableDM",
+        "alias": "DomainLine",
+        "purpose": "data binding"
+      }
+    ]
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "ID_9b2e58c3-9aa8-4677-92b0-620d73c5e1e4",
+        "titleComputation": [
+          {
+            "id": "fGDpRr--m1A8LJ9uqNj6z",
+            "operation": "\"Test Titel\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "3W0gwYVbANB1_FqhZuAJo",
+            "operation": "\"Test Beschreibung\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "zYUjoupTSEdSgQhsgwcf2",
+            "operation": "\"Test Autor\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "w9K0xu65pkkOeombN_-AV",
+            "operation": "\"DE\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "ID_ccd7a52e-1c41-460d-9778-a589b0506157",
+        "fontSize": 12,
+        "model": "TableDM"
+      },
+      "structure": [
+        {
+          "id": "ID_0224fd81-0d09-4b62-98b8-4e7e74306866"
+        },
+        {
+          "id": "fz6vhEil6Eenekdwtv0i4"
+        },
+        {
+          "id": "Qkh5XFgogwPk8EGAe9Xyo"
+        },
+        {
+          "id": "oBE940o9ewdiWBuIl0SzO"
+        },
+        {
+          "id": "zs2ZmZVpWj3Ssr0RxiMZt"
+        }
+      ],
+      "sections": [],
+      "watermarks": [],
+      "runtimeVariables": [],
+      "textStyles": [
+        {
+          "id": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc"
+        }
+      ]
+    },
+    "segments": {
+      "id": "ID_114add80-de47-4ab2-8a82-4d6863ba4d80",
+      "definitions": [
+        {
+          "id": "ID_0224fd81-0d09-4b62-98b8-4e7e74306866",
+          "title": "Erste Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "ID_009f5d3a-1044-44eb-ac3c-9743375e8e3c",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "ID_27b8647a-1317-48da-88ed-97c34c591aaf",
+              "refId": "aymJotzgBFBPVVufjeG4o",
+              "position": {
+                "id": "ID_8d8582c3-a803-4297-b882-0694acbf88c8",
+                "x": {
+                  "id": "ID_d01db8e7-c5b4-4aa0-b150-06f83f6a235a",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_bb580708-56c4-4ad2-bcb9-7d7fa2f21955",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ID_4ac558f6-9f9f-4bd1-a577-c5a1bccafe06",
+                "minHeight": {
+                  "id": "ID_c27ca29b-2428-4aa5-842b-4cb2f79eec45",
+                  "value": 9,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "ID_5c4275ad-50b2-4ee9-b78c-f33831a81eb0",
+                  "value": 125,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "ID_5c999925-1173-4382-9a9c-02cf1e982d6d",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "z8Hr_CifG_pwm1umn-lTs",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/",
+                "source": "DEFAULT"
+              }
+            }
+          ],
+          "dataContexts": []
+        },
+        {
+          "id": "fz6vhEil6Eenekdwtv0i4",
+          "title": "Zweite Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "odrlaelMsXdVXSjWLIxkI",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "29hl4YProsxqF9rndFsbu",
+              "refId": "bNzRjT3R7JvLXHWHUbZQi",
+              "position": {
+                "id": "vFMn9cqP_JNxAW9NR6yY5",
+                "x": {
+                  "id": "p7KL3ei7t_f697AEqaNdA",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "-nrumwiQafbg1mjmGbMsd",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "7IaVqeG4ok6DZSmGdX38_",
+                "minHeight": {
+                  "id": "MvP0ckfnR1NkYhkLOktv5",
+                  "value": 9,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "55urlNBQ2qb1m-KllJg7p",
+                  "value": 93,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "nxyQObeCNmm9-RESGf6O2",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "5gzneJO6WPOMixzMm1KgV",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/",
+                "source": "DEFAULT"
+              }
+            },
+            {
+              "id": "Qst4-ZIWH5ml7CutQ6zxT",
+              "refId": "WL-Szo7uB33_hfdlUrKxt",
+              "position": {
+                "id": "gueVZf64WlOrzHEENcyhM",
+                "x": {
+                  "id": "lx5oizLPrljZ_SNbewfYw",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "xTCm1pe1PZzNMNFpyCMpN",
+                  "value": 69,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "nWiQdXvzaKgRMyro_wJm2",
+                "minHeight": {
+                  "id": "zVNrh68GzqG2GqzUo2TX9",
+                  "value": 9,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "suYqjl6nUrVKA4yEeHG4I",
+                  "value": 93,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "BF4IrUruTtQQajY5UqXcP"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "X4HBuI_X9cpVRoMBjLrrk",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/",
+                "source": "DEFAULT"
+              }
+            }
+          ],
+          "dataContexts": []
+        },
+        {
+          "id": "Qkh5XFgogwPk8EGAe9Xyo",
+          "title": "Dritte Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "H7Z9rBNLP0dPvOWL5Z3gS",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "YGEwesHglQr_U9f9pFN1H",
+              "refId": "Ys_yNGNdD9kHqxANLUsu6",
+              "position": {
+                "id": "w4qP4WCTBAEoJq1GoMt7n",
+                "x": {
+                  "id": "GAWxspGdz3o8Gn6cvT48I",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "YQKQctIxHo_80b7sMTc-2",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "NjXjCWl2JSv81HHI2eDEB",
+                "minHeight": {
+                  "id": "3hAa5shja6_Xb69XjwKwv",
+                  "value": 9,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "GoiBn-xuBqwIPDMMPY3XP",
+                  "value": 93,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "ev0vkSv8edRI9g6kYXiEz",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "op-i7znkjrk0gIZGOR5oL",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/",
+                "source": "DEFAULT"
+              }
+            }
+          ],
+          "dataContexts": []
+        },
+        {
+          "id": "oBE940o9ewdiWBuIl0SzO",
+          "title": "Vierte Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "bYmAlOiGx4yy2MAKSHUEU",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "wsC9Q0zU9DHAefnLhSHVN",
+              "refId": "1TmVY2mY6_kS0ONhyjr9a",
+              "position": {
+                "id": "e-Mieu_9TRNf_hBXPT9MF",
+                "x": {
+                  "id": "nUcuKyAxv_LByH05tC2Af",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "g_b1af__anEq7-aczdGNy",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "OI6sibUusbNB4_a3zJg8r",
+                "minHeight": {
+                  "id": "MoHct-QykEuXG1LgBDZtj",
+                  "value": 9,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "aTm5kE8zD_fi3ZmDhlWZA",
+                  "value": 93,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "3AVP9XUiUewPQuMNnVLyf",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "KwMv9W3nPLNUETlREdKVl",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/",
+                "source": "DEFAULT"
+              }
+            }
+          ],
+          "dataContexts": []
+        },
+        {
+          "id": "zs2ZmZVpWj3Ssr0RxiMZt",
+          "title": "Fünfte Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "fx3oTxqtZSB1bBCufNYSo",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "XZ7RMpHXut-DEcNeEahS1",
+              "refId": "4YGDDLpf0zqeh9nXJfs7a",
+              "position": {
+                "id": "1RFp1PUX3BBUj2Jod39J8",
+                "x": {
+                  "id": "Mx58YICWTbETMahr7dsGR",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "Xnhej9mYpPBgfjzMKLbOM",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "gxwNsrGb2L0gmVQz5jvV3",
+                "minHeight": {
+                  "id": "r16CenH4MhXbXe30YyHq-",
+                  "value": 9,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "qzTiByx_0pzFQNRDHoa-J",
+                  "value": 93,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "agaFFPJY0KcVuVkdHxOG7",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "YD5KwL41V5Y9OJb2OCoNx",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/",
+                "source": "DEFAULT"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "aymJotzgBFBPVVufjeG4o",
+        "type": "Table",
+        "table": {
+          "id": "ID_9af0a268-ac1f-4f7f-a3b5-fcfabfc82b21",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "headerTextProperties": {
+            "id": "ID_c0208728-e746-4b5a-9721-283b09774417",
+            "textStyleId": {
+              "id": "Pn66E_KHhsVkzyJRmE2nN",
+              "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+              "path": "/content/elementDefinitions/table/headerTextProperties/textStyleId/value/",
+              "source": "INPUT"
+            },
+            "bold": {
+              "id": "jM8QbXBanxf6Jy1bEem9I",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/bold/value/",
+              "source": "INPUT"
+            },
+            "italic": {
+              "id": "lZMVxEeA2lCtNKHMmsB27",
+              "value": false,
+              "path": "/content/elementDefinitions/table/headerTextProperties/italic/value/",
+              "source": "INPUT"
+            },
+            "underlined": {
+              "id": "CEw8uSD5M9dHL3IQphZSt",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/underlined/value/",
+              "source": "INPUT"
+            },
+            "alignment": {
+              "id": "kHHx7WZiculfNHIC438-G",
+              "value": "Left",
+              "path": "/content/elementDefinitions/table/headerTextProperties/alignment/value/",
+              "source": "INPUT"
+            },
+            "color": {
+              "id": "QA4tOlPE74MBQfGvUSeK6",
+              "path": "/content/elementDefinitions/table/headerTextProperties/color/value/",
+              "source": "DEFAULT"
+            },
+            "backgroundColor": {
+              "id": "YTkC2oiGJvPSncfp30UEc",
+              "path": "/content/elementDefinitions/table/headerTextProperties/backgroundColor/value/",
+              "source": "DEFAULT"
+            }
+          },
+          "maxRowCount": {
+            "id": "ID_7cdc7bf9-ca2b-4056-b96b-a0bb8b19aa56",
+            "value": 4,
+            "path": "/content/elementDefinitions/table/maxRowCount/value/",
+            "source": "INPUT"
+          },
+          "sumLabel": {
+            "id": "ID_c2c7e866-59fe-4313-a18c-015f9e46381a",
+            "value": "Summe1",
+            "path": "/content/elementDefinitions/table/sumLabel/value/",
+            "source": "INPUT"
+          },
+          "hideHeader": false,
+          "columns": [
+            {
+              "id": "ID_07455983-ea85-4060-86ee-5a4e52ba2b6a",
+              "refId": "COLUMN1_element",
+              "headerLabelHidden": true,
+              "label": {
+                "id": "ID_01d5c268-6276-4dd3-812a-eeda45ad59eb",
+                "value": "String",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": false,
+              "width": {
+                "id": "ID_fff69867-b543-437d-9929-06f7bf60d68f",
+                "value": 70,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            },
+            {
+              "id": "ID_66f06dea-a447-434a-a189-740742bc28c8",
+              "refId": "COLUMN2_element",
+              "headerLabelHidden": false,
+              "label": {
+                "id": "ID_5e9a8655-1993-4c5d-8b94-e877e58b94c1",
+                "value": "Integer",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": true,
+              "width": {
+                "id": "ID_453a82ca-e4ca-4248-9c77-6b721ba56fcb",
+                "value": 30,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "ID_d813c144-3c0a-472a-aa22-fa147b9780de",
+          "borderStyle": "Dashed",
+          "borderWidth": 3.75,
+          "borderColor": "#0000ff"
+        },
+        "textProperties": {
+          "id": "ID_cdf8a67d-de3a-4d01-a259-999fb0292e1b",
+          "textStyleId": {
+            "id": "5F8xMBCVRUgHb8SQl5R4V",
+            "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "bold": {
+            "id": "Wmj2lRprNz_RSQ1LzgyU5",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INPUT"
+          },
+          "italic": {
+            "id": "Q6Qmk6P5XcpIaumikUaI_",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INPUT"
+          },
+          "underlined": {
+            "id": "XDSTEfdbZm59WfkuXxZc9",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "MN7gc52IVWO0BRbr5aPG7",
+            "value": "Left",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INPUT"
+          },
+          "color": {
+            "id": "Gp5o5j1eBjLb2f-mImMR0",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "DEFAULT"
+          },
+          "backgroundColor": {
+            "id": "7LLayaIrZuA-AwCo8KvtT",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "DEFAULT"
+          }
+        }
+      },
+      {
+        "id": "COLUMN1_element",
+        "type": "Expression",
+        "expression": {
+          "id": "ID_96eb1255-ca95-4ef3-ae9f-0a6cc6d20217",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "text": "[string_field]"
+        },
+        "textProperties": {
+          "id": "DiHA1dKBcDud8c2vwgYjS",
+          "textStyleId": {
+            "id": "ZxcG9y2OPxHiOoptAYn7l",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INHERITED",
+            "reference": "aymJotzgBFBPVVufjeG4o"
+          },
+          "bold": {
+            "id": "ptiy20aaqlD_-D_plajQk",
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INHERITED",
+            "reference": "aymJotzgBFBPVVufjeG4o"
+          },
+          "italic": {
+            "id": "QT5-T4hxog6fQFy9hzjtE",
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INHERITED",
+            "reference": "aymJotzgBFBPVVufjeG4o"
+          },
+          "underlined": {
+            "id": "O8KFPY7OaYWNWOddVxlZd",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INHERITED",
+            "reference": "aymJotzgBFBPVVufjeG4o"
+          },
+          "alignment": {
+            "id": "ZDWn340zknlwIkceLIK0E",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INHERITED",
+            "reference": "aymJotzgBFBPVVufjeG4o"
+          },
+          "color": {
+            "id": "hpXKpYhy2MN9hoMYIqb1c",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "INHERITED",
+            "reference": "aymJotzgBFBPVVufjeG4o"
+          },
+          "backgroundColor": {
+            "id": "Hy5W4Jjf2SZQx8e74Crlu",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "INHERITED",
+            "reference": "aymJotzgBFBPVVufjeG4o"
+          }
+        }
+      },
+      {
+        "id": "COLUMN2_element",
+        "type": "Field",
+        "field": {
+          "id": "ID_4912db1c-815d-434e-a71f-1626073db128",
+          "model": "TableDM",
+          "path": "/general/repeatable/integer_field"
+        }
+      },
+      {
+        "id": "bNzRjT3R7JvLXHWHUbZQi",
+        "type": "Table",
+        "table": {
+          "id": "edzvd3oy2HuUD3QRQIJwh",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "filterExpression": "[string_field] = \"ROW A\"",
+          "headerTextProperties": {
+            "id": "kETtXSGnJT3su4WFOJrod",
+            "textStyleId": {
+              "id": "7GEeEnE_mG0f5guVmmjcG",
+              "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+              "path": "/content/elementDefinitions/table/headerTextProperties/textStyleId/value/",
+              "source": "INPUT"
+            },
+            "bold": {
+              "id": "JPC05PUr0b3EYx3M0mNfw",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/bold/value/",
+              "source": "INPUT"
+            },
+            "italic": {
+              "id": "bMYfzTfEbgdF10ABRz7DB",
+              "value": false,
+              "path": "/content/elementDefinitions/table/headerTextProperties/italic/value/",
+              "source": "INPUT"
+            },
+            "underlined": {
+              "id": "gA7aoFFpxzaH7e8O9Uuo0",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/underlined/value/",
+              "source": "INPUT"
+            },
+            "alignment": {
+              "id": "UxJVJytWA7mnt5eQGGI3T",
+              "value": "Left",
+              "path": "/content/elementDefinitions/table/headerTextProperties/alignment/value/",
+              "source": "INPUT"
+            },
+            "color": {
+              "id": "zRwdwlnOEkUnX7gcXFQ_z",
+              "path": "/content/elementDefinitions/table/headerTextProperties/color/value/",
+              "source": "DEFAULT"
+            },
+            "backgroundColor": {
+              "id": "qSwVohbY4V_7eZHQOECtH",
+              "path": "/content/elementDefinitions/table/headerTextProperties/backgroundColor/value/",
+              "source": "DEFAULT"
+            }
+          },
+          "maxRowCount": {
+            "id": "ID_f3b41466-baea-4294-b8b5-5d8f7384604b",
+            "value": 4,
+            "path": "/content/elementDefinitions/table/maxRowCount/value/",
+            "source": "INPUT"
+          },
+          "sumLabel": {
+            "id": "ID_9c725b0a-9184-452a-a80b-1fae56a8c949",
+            "value": "Summe2",
+            "path": "/content/elementDefinitions/table/sumLabel/value/",
+            "source": "INPUT"
+          },
+          "hideHeader": false,
+          "columns": [
+            {
+              "id": "j7DBM9Qr6oOlOCi8TDeHA",
+              "refId": "bifUxzcrSFOQ_3HgEmXUk",
+              "headerLabelHidden": true,
+              "label": {
+                "id": "ID_f4cacc8d-183f-44d7-b532-599a2c356dd0",
+                "value": "String",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": false,
+              "width": {
+                "id": "ID_62c3029b-fa96-4770-9e40-cf3eea30abb7",
+                "value": 70,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            },
+            {
+              "id": "7B1ZwKpGw6CPobb4qaBxl",
+              "refId": "wE90PdFDHAqnWrHmP9C_e",
+              "headerLabelHidden": false,
+              "label": {
+                "id": "ID_f4795111-36b2-4d9e-a331-7d0350fe3009",
+                "value": "Integer",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": true,
+              "width": {
+                "id": "ID_c2f29e7d-5ebf-4a3e-8ccb-2d84e1419de5",
+                "value": 30,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "zvbNumnZOe4f4nOiSOOJu",
+          "borderStyle": "Dashed",
+          "borderWidth": 3.75,
+          "borderColor": "#0000ff"
+        },
+        "textProperties": {
+          "id": "fVCPouIgUGrbbULPSJ3ks",
+          "textStyleId": {
+            "id": "2O6AzJdZd4rbnk2Gr6iqX",
+            "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "bold": {
+            "id": "HmQfPRbbmXARD82vR6t57",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INPUT"
+          },
+          "italic": {
+            "id": "vVi4UYl822z--nPgl4m3u",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INPUT"
+          },
+          "underlined": {
+            "id": "3XHl_Ijj5yhl8PJQ-D_Td",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "6xhcbKnALqWWPjIvr8-HX",
+            "value": "Left",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INPUT"
+          },
+          "color": {
+            "id": "iB-p4408xpRZLimJJTjaG",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "DEFAULT"
+          },
+          "backgroundColor": {
+            "id": "qXvuR8JDUXtGQbBCef4Bq",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "DEFAULT"
+          }
+        }
+      },
+      {
+        "id": "bifUxzcrSFOQ_3HgEmXUk",
+        "type": "Expression",
+        "expression": {
+          "id": "pOjg3zEpdr0KbLtEaVeI1",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "text": "[string_field]"
+        },
+        "textProperties": {
+          "id": "-arJ92FaBs6adZ1mO0KjT",
+          "textStyleId": {
+            "id": "l7YhN8lXQV_98ABqQ9_Yw",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INHERITED",
+            "reference": "bNzRjT3R7JvLXHWHUbZQi"
+          },
+          "bold": {
+            "id": "Zy6elwnd4hgbsx7mM_U8z",
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INHERITED",
+            "reference": "bNzRjT3R7JvLXHWHUbZQi"
+          },
+          "italic": {
+            "id": "90k-6LgPpHGptIJzOl11M",
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INHERITED",
+            "reference": "bNzRjT3R7JvLXHWHUbZQi"
+          },
+          "underlined": {
+            "id": "AMCq9OyLRDE308eNRttRP",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INHERITED",
+            "reference": "bNzRjT3R7JvLXHWHUbZQi"
+          },
+          "alignment": {
+            "id": "L_zORlgFemAb0dX4kpxRG",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INHERITED",
+            "reference": "bNzRjT3R7JvLXHWHUbZQi"
+          },
+          "color": {
+            "id": "AQCr8U8zlfCNJNjFk8XcA",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "INHERITED",
+            "reference": "bNzRjT3R7JvLXHWHUbZQi"
+          },
+          "backgroundColor": {
+            "id": "MchcchmeZ7VlgczJ_B0Ux",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "INHERITED",
+            "reference": "bNzRjT3R7JvLXHWHUbZQi"
+          }
+        }
+      },
+      {
+        "id": "wE90PdFDHAqnWrHmP9C_e",
+        "type": "Field",
+        "field": {
+          "id": "nt_9eEyG8b8Znp-LnAO06",
+          "model": "TableDM",
+          "path": "/general/repeatable/integer_field"
+        }
+      },
+      {
+        "id": "WL-Szo7uB33_hfdlUrKxt",
+        "type": "Table",
+        "table": {
+          "id": "73sfOkm0FUGv6m56-klr5",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "filterExpression": "[string_field] != \"ROW A\"",
+          "headerTextProperties": {
+            "id": "1s4lxOD3IEKZvpiPVzWv5",
+            "textStyleId": {
+              "id": "7GEeEnE_mG0f5guVmmjcG",
+              "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+              "path": "/content/elementDefinitions/table/headerTextProperties/textStyleId/value/",
+              "source": "INPUT"
+            },
+            "bold": {
+              "id": "MRKmmqlAERT5Ukuur0su8",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/bold/value/",
+              "source": "INPUT"
+            },
+            "italic": {
+              "id": "WiGCuu50y0sk-DGk-WP_J",
+              "value": false,
+              "path": "/content/elementDefinitions/table/headerTextProperties/italic/value/",
+              "source": "INPUT"
+            },
+            "underlined": {
+              "id": "R1P-0nPQjHu_D7Z2i_xSP",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/underlined/value/",
+              "source": "INPUT"
+            },
+            "alignment": {
+              "id": "Bue7R0DnvMlmULOqCF3eF",
+              "value": "Left",
+              "path": "/content/elementDefinitions/table/headerTextProperties/alignment/value/",
+              "source": "INPUT"
+            },
+            "color": {
+              "id": "QSmkhQZgz3uUHMyRQ5hIP",
+              "path": "/content/elementDefinitions/table/headerTextProperties/color/value/",
+              "source": "DEFAULT"
+            },
+            "backgroundColor": {
+              "id": "Y7rCer0iNAHgHLwUT9mSJ",
+              "path": "/content/elementDefinitions/table/headerTextProperties/backgroundColor/value/",
+              "source": "DEFAULT"
+            }
+          },
+          "maxRowCount": {
+            "id": "gefGlMglJ5Pv32vMkwaoK",
+            "value": 4,
+            "path": "/content/elementDefinitions/table/maxRowCount/value/",
+            "source": "INPUT"
+          },
+          "sumLabel": {
+            "id": "EJcOdGt7xRQV0CFejSv7D",
+            "value": "Summe2",
+            "path": "/content/elementDefinitions/table/sumLabel/value/",
+            "source": "INPUT"
+          },
+          "hideHeader": false,
+          "columns": [
+            {
+              "id": "P9uQ2pf7N5IruGc_qq7DD",
+              "refId": "RqFnI5xswC_vqlbtwZo90",
+              "headerLabelHidden": true,
+              "label": {
+                "id": "YS595w07j4n1SkfV6Kib2",
+                "value": "String",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": false,
+              "width": {
+                "id": "AnM9fYzteamnqkeXSZ2ad",
+                "value": 70,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            },
+            {
+              "id": "8o2saiOFkNpXJvksjZFgL",
+              "refId": "T00czOO5Q7pc5tYsyFcyM",
+              "headerLabelHidden": false,
+              "label": {
+                "id": "c_V7RoG7-KJqt9ZyLKP9b",
+                "value": "Integer",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": true,
+              "width": {
+                "id": "LZL0IOTRlnxXopTQ2YHgE",
+                "value": 30,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "uqU9nVMQ56U7HXWwu_8VW",
+          "borderStyle": "Dashed",
+          "borderWidth": 3.75,
+          "borderColor": "#0000ff"
+        },
+        "textProperties": {
+          "id": "vuZ3RjxtJ_4ulV2M8_Q8Y",
+          "textStyleId": {
+            "id": "2O6AzJdZd4rbnk2Gr6iqX",
+            "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "bold": {
+            "id": "VnWADXtY-kbFn6lU936Cc",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INPUT"
+          },
+          "italic": {
+            "id": "xLLhkN2x3yd88v_ssrhiF",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INPUT"
+          },
+          "underlined": {
+            "id": "duN_Gcelz6bpZVD6G3lYH",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "7jhjGLehJSgsBlbw-YT97",
+            "value": "Left",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INPUT"
+          },
+          "color": {
+            "id": "pzn3id4mJBx0Nqhe7l6Wg",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "DEFAULT"
+          },
+          "backgroundColor": {
+            "id": "orhTSiJdeI18qmhRuSQGc",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "DEFAULT"
+          }
+        }
+      },
+      {
+        "id": "RqFnI5xswC_vqlbtwZo90",
+        "type": "Expression",
+        "expression": {
+          "id": "6EDvtj3BIOTGBixtKlhyv",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "text": "[string_field]"
+        },
+        "textProperties": {
+          "id": "97_M52gBiyTcsROpV3HED",
+          "textStyleId": {
+            "id": "l7YhN8lXQV_98ABqQ9_Yw",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INHERITED",
+            "reference": "bNzRjT3R7JvLXHWHUbZQi"
+          },
+          "bold": {
+            "id": "3o1JuVpcs32c_o_3CTvtn",
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INHERITED",
+            "reference": "WL-Szo7uB33_hfdlUrKxt"
+          },
+          "italic": {
+            "id": "GVLkdMzr2ufb0SXt4alrN",
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INHERITED",
+            "reference": "WL-Szo7uB33_hfdlUrKxt"
+          },
+          "underlined": {
+            "id": "3lb8hvVXavdLZuYTs7kWT",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INHERITED",
+            "reference": "WL-Szo7uB33_hfdlUrKxt"
+          },
+          "alignment": {
+            "id": "NaAqHgTWqqD_o0umdjVTB",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INHERITED",
+            "reference": "WL-Szo7uB33_hfdlUrKxt"
+          },
+          "color": {
+            "id": "eKo8a9peaKMiv2gBDWhc6",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "INHERITED",
+            "reference": "WL-Szo7uB33_hfdlUrKxt"
+          },
+          "backgroundColor": {
+            "id": "eUXhk15Qc-15PuLxq_e0j",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "INHERITED",
+            "reference": "WL-Szo7uB33_hfdlUrKxt"
+          }
+        }
+      },
+      {
+        "id": "T00czOO5Q7pc5tYsyFcyM",
+        "type": "Field",
+        "field": {
+          "id": "5-6zhWRIfxBLrgUb1rqBm",
+          "model": "TableDM",
+          "path": "/general/repeatable/integer_field"
+        }
+      },
+      {
+        "id": "Ys_yNGNdD9kHqxANLUsu6",
+        "type": "Table",
+        "table": {
+          "id": "LG8FH_6Js6UF_LbxqGdrl",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "filterExpression": "[integer_field] = \"7\"",
+          "headerTextProperties": {
+            "id": "UZ806W5a-PKKKBKlUfbeJ",
+            "textStyleId": {
+              "id": "m6DTRvjHQZGTcKt9pfzyR",
+              "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+              "path": "/content/elementDefinitions/table/headerTextProperties/textStyleId/value/",
+              "source": "INPUT"
+            },
+            "bold": {
+              "id": "XEH-vnerdSXg9_UB5dNbO",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/bold/value/",
+              "source": "INPUT"
+            },
+            "italic": {
+              "id": "1878BtmFDNAP1WC-fmQsm",
+              "value": false,
+              "path": "/content/elementDefinitions/table/headerTextProperties/italic/value/",
+              "source": "INPUT"
+            },
+            "underlined": {
+              "id": "zeDRP_VHhmxhrZNZoEr-Z",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/underlined/value/",
+              "source": "INPUT"
+            },
+            "alignment": {
+              "id": "XXYIbefKAP_KRPvTut1n2",
+              "value": "Left",
+              "path": "/content/elementDefinitions/table/headerTextProperties/alignment/value/",
+              "source": "INPUT"
+            },
+            "color": {
+              "id": "29dx7tZEqLu3cdKlZXDcb",
+              "path": "/content/elementDefinitions/table/headerTextProperties/color/value/",
+              "source": "DEFAULT"
+            },
+            "backgroundColor": {
+              "id": "w01PXIwTlnPX6F8xuDZJn",
+              "path": "/content/elementDefinitions/table/headerTextProperties/backgroundColor/value/",
+              "source": "DEFAULT"
+            }
+          },
+          "maxRowCount": {
+            "id": "ID_0f009e7b-b047-44f2-bba6-526d0cddb5ba",
+            "value": 4,
+            "path": "/content/elementDefinitions/table/maxRowCount/value/",
+            "source": "INPUT"
+          },
+          "sumLabel": {
+            "id": "ID_4ed16876-4e1f-4fa7-99a1-a44c266a3e6e",
+            "value": "Summe3",
+            "path": "/content/elementDefinitions/table/sumLabel/value/",
+            "source": "INPUT"
+          },
+          "hideHeader": false,
+          "columns": [
+            {
+              "id": "Tv12J2PfSQRrg60bDVg-u",
+              "refId": "DcnhGhDAz53x_gcn8p6wa",
+              "headerLabelHidden": true,
+              "label": {
+                "id": "ID_63300a5b-4d24-4352-b45f-fa2ed174bb4f",
+                "value": "String",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": false,
+              "width": {
+                "id": "ID_17d2a8b6-7a93-48bf-96d2-211c64f423fe",
+                "value": 70,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            },
+            {
+              "id": "JkLeiwmPhfzyCgES9e2mF",
+              "refId": "-VCo2ilxNKsAsnP3_pb4Y",
+              "headerLabelHidden": false,
+              "label": {
+                "id": "ID_770bc24a-18e4-420c-b9b4-5a478bda35cf",
+                "value": "Integer",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": true,
+              "width": {
+                "id": "ID_d07a15a1-194a-4b80-ac54-5eb27e3f2fca",
+                "value": 30,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "DLAFYfKMsU6dx3rez-Qay",
+          "borderStyle": "Dashed",
+          "borderWidth": 3.75,
+          "borderColor": "#0000ff"
+        },
+        "textProperties": {
+          "id": "HnWaLZpyABwUPq8ByDgFl",
+          "textStyleId": {
+            "id": "riNnNzBkySzXQC5n9xPc3",
+            "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "bold": {
+            "id": "deSus66wWVryfeGzQu_H8",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INPUT"
+          },
+          "italic": {
+            "id": "wXlgtlKf_bDUZTaN29vnO",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INPUT"
+          },
+          "underlined": {
+            "id": "tsjA8wykhfsYDEPylGfE6",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "VHtQnKby3aP3HUj9KBVgD",
+            "value": "Left",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INPUT"
+          },
+          "color": {
+            "id": "Da7AO-cdycvWg74jxNBmW",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "DEFAULT"
+          },
+          "backgroundColor": {
+            "id": "BDG3hduYa2DwEK_6opPE1",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "DEFAULT"
+          }
+        }
+      },
+      {
+        "id": "DcnhGhDAz53x_gcn8p6wa",
+        "type": "Expression",
+        "expression": {
+          "id": "8j1VM7nOB0PT-rjzcWJGD",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "text": "[string_field]"
+        },
+        "textProperties": {
+          "id": "yBMljdmRQ1j5ibxCHOGQq",
+          "textStyleId": {
+            "id": "5U8IpCQtUFrQKRBKV1XTy",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INHERITED",
+            "reference": "Ys_yNGNdD9kHqxANLUsu6"
+          },
+          "bold": {
+            "id": "UZshiCvQEaoeIVunjs-Z6",
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INHERITED",
+            "reference": "Ys_yNGNdD9kHqxANLUsu6"
+          },
+          "italic": {
+            "id": "hVwjVWN_OxUNWSg9kqQY9",
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INHERITED",
+            "reference": "Ys_yNGNdD9kHqxANLUsu6"
+          },
+          "underlined": {
+            "id": "Nlz-75cAGa2P6pmbB4Nsc",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INHERITED",
+            "reference": "Ys_yNGNdD9kHqxANLUsu6"
+          },
+          "alignment": {
+            "id": "9R7oSGWv1ZO-bRU61glxN",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INHERITED",
+            "reference": "Ys_yNGNdD9kHqxANLUsu6"
+          },
+          "color": {
+            "id": "C3XV0xsD3ZPfS1NjpNfLH",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "INHERITED",
+            "reference": "Ys_yNGNdD9kHqxANLUsu6"
+          },
+          "backgroundColor": {
+            "id": "Ge-WVIAhlabvRk4gD3Sjt",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "INHERITED",
+            "reference": "Ys_yNGNdD9kHqxANLUsu6"
+          }
+        }
+      },
+      {
+        "id": "-VCo2ilxNKsAsnP3_pb4Y",
+        "type": "Field",
+        "field": {
+          "id": "FfpEtGWdsd69vm1VHlzW0",
+          "model": "TableDM",
+          "path": "/general/repeatable/integer_field"
+        }
+      },
+      {
+        "id": "1TmVY2mY6_kS0ONhyjr9a",
+        "type": "Table",
+        "table": {
+          "id": "hTmoXKsdapkpYt7G3fm8I",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "filterExpression": "[boolean_field] = \"True\"",
+          "headerTextProperties": {
+            "id": "To46O4HnaGBuTT1LNS71d",
+            "textStyleId": {
+              "id": "2ORgc-aZGnmBT-PH4VgbT",
+              "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+              "path": "/content/elementDefinitions/table/headerTextProperties/textStyleId/value/",
+              "source": "INPUT"
+            },
+            "bold": {
+              "id": "TJAunOJvj7A9jVsCVfvzo",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/bold/value/",
+              "source": "INPUT"
+            },
+            "italic": {
+              "id": "1oj59sh7P-bOormbEqB0h",
+              "value": false,
+              "path": "/content/elementDefinitions/table/headerTextProperties/italic/value/",
+              "source": "INPUT"
+            },
+            "underlined": {
+              "id": "4XEwmhv8A1w4UX1AV94DD",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/underlined/value/",
+              "source": "INPUT"
+            },
+            "alignment": {
+              "id": "KLPe7qljKnY1PwRfuTQur",
+              "value": "Left",
+              "path": "/content/elementDefinitions/table/headerTextProperties/alignment/value/",
+              "source": "INPUT"
+            },
+            "color": {
+              "id": "9UK5dWYC7-jRWXhTQNMXa",
+              "path": "/content/elementDefinitions/table/headerTextProperties/color/value/",
+              "source": "DEFAULT"
+            },
+            "backgroundColor": {
+              "id": "To8qjscJLpsUxsf-ifuCA",
+              "path": "/content/elementDefinitions/table/headerTextProperties/backgroundColor/value/",
+              "source": "DEFAULT"
+            }
+          },
+          "maxRowCount": {
+            "id": "ID_81664340-857f-44f7-a028-2caed763b593",
+            "value": 4,
+            "path": "/content/elementDefinitions/table/maxRowCount/value/",
+            "source": "INPUT"
+          },
+          "sumLabel": {
+            "id": "ID_196be7c6-56e5-432e-b2d5-09c21fe5378e",
+            "value": "Summe4",
+            "path": "/content/elementDefinitions/table/sumLabel/value/",
+            "source": "INPUT"
+          },
+          "hideHeader": false,
+          "columns": [
+            {
+              "id": "wHt-hNzl02Z0OJjheF13w",
+              "refId": "eIqn8Ka6F4M2yQlX1dL-j",
+              "headerLabelHidden": true,
+              "label": {
+                "id": "ID_1809eb68-9b09-48da-8f6c-88b2d17a1a87",
+                "value": "String",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": false,
+              "width": {
+                "id": "ID_45f1cf3d-b897-41ad-ac9a-56552bb14317",
+                "value": 70,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            },
+            {
+              "id": "Kepfc5rfW6yxVr8IzdtP_",
+              "refId": "Fkf875Zmkkh0w330gQ2oG",
+              "headerLabelHidden": false,
+              "label": {
+                "id": "ID_c70cf926-8127-4c12-b3a1-6d2bb0a807de",
+                "value": "Integer",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": true,
+              "width": {
+                "id": "ID_51d80a68-5ac5-4ce7-bac8-e6b8298f2832",
+                "value": 15,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            },
+            {
+              "id": "41SCChgzI-iHULNBUdj_T",
+              "refId": "iCCWQZqmlO6zdbWbv25qu",
+              "label": {
+                "id": "ID_80d8667e-650d-4330-aa99-b672d8260c17",
+                "value": "Boolean",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "width": {
+                "id": "ID_345a1ed1-425a-4d9d-bbad-b3a927ba646c",
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "UNSET",
+                "unit": "Percent"
+              }
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "ff2QlajaMtwngEd9lR3Uq",
+          "borderStyle": "Dashed",
+          "borderWidth": 3.75,
+          "borderColor": "#0000ff"
+        },
+        "textProperties": {
+          "id": "9hwWplsmv1e4ePhkITOih",
+          "textStyleId": {
+            "id": "dspgzhCtl-cyLC8gQKE_N",
+            "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "bold": {
+            "id": "0PV2cHWfCBwlN0pFpRvg-",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INPUT"
+          },
+          "italic": {
+            "id": "1ahSKKcZHUj8Du1MQddJX",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INPUT"
+          },
+          "underlined": {
+            "id": "SKgZFucDWUMFJfiMNE_is",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "xaRhuwAoEqpiknkm-ZnjE",
+            "value": "Left",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INPUT"
+          },
+          "color": {
+            "id": "HK4CWFfUY-mMHkU-isbqL",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "DEFAULT"
+          },
+          "backgroundColor": {
+            "id": "hhS7drn8T1axC-t_y1l8K",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "DEFAULT"
+          }
+        }
+      },
+      {
+        "id": "eIqn8Ka6F4M2yQlX1dL-j",
+        "type": "Expression",
+        "expression": {
+          "id": "WN6LnCL59mljy__TRXj2d",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "text": "[string_field]"
+        },
+        "textProperties": {
+          "id": "zC6Q2pzgrP8rB_EcVGVhv",
+          "textStyleId": {
+            "id": "_cgiEopSrLk61hYcsQFJa",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INHERITED",
+            "reference": "1TmVY2mY6_kS0ONhyjr9a"
+          },
+          "bold": {
+            "id": "72CPurWa84ksxJqzFOiWT",
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INHERITED",
+            "reference": "1TmVY2mY6_kS0ONhyjr9a"
+          },
+          "italic": {
+            "id": "pYQZ_IarQ6PXw5Q3xA1Ss",
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INHERITED",
+            "reference": "1TmVY2mY6_kS0ONhyjr9a"
+          },
+          "underlined": {
+            "id": "imUvVBKVwxbjy5rfNVGRo",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INHERITED",
+            "reference": "1TmVY2mY6_kS0ONhyjr9a"
+          },
+          "alignment": {
+            "id": "TmrBA-ILZRMJQYS6WgYJN",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INHERITED",
+            "reference": "1TmVY2mY6_kS0ONhyjr9a"
+          },
+          "color": {
+            "id": "FWree9fWQdRzTpiAG2I8m",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "INHERITED",
+            "reference": "1TmVY2mY6_kS0ONhyjr9a"
+          },
+          "backgroundColor": {
+            "id": "RlFclqShgsUzOF5mP4xKE",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "INHERITED",
+            "reference": "1TmVY2mY6_kS0ONhyjr9a"
+          }
+        }
+      },
+      {
+        "id": "Fkf875Zmkkh0w330gQ2oG",
+        "type": "Field",
+        "field": {
+          "id": "SDgVARPY5xLkWDCJy7snQ",
+          "model": "TableDM",
+          "path": "/general/repeatable/integer_field"
+        }
+      },
+      {
+        "id": "iCCWQZqmlO6zdbWbv25qu",
+        "type": "Field",
+        "field": {
+          "id": "seusark0lqm0FE6j1iDln",
+          "model": "TableDM",
+          "path": "/general/repeatable/boolean_field"
+        }
+      },
+      {
+        "id": "4YGDDLpf0zqeh9nXJfs7a",
+        "type": "Table",
+        "table": {
+          "id": "amLfRzbDd43PEL2gXlQlg",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "filterExpression": "kontext(nested) {[nested_field]} = \"Nested C\"",
+          "headerTextProperties": {
+            "id": "SjxInXAZ1b_W2bqJegb1t",
+            "textStyleId": {
+              "id": "Hzol1yHlE_r22dr1dWz5U",
+              "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+              "path": "/content/elementDefinitions/table/headerTextProperties/textStyleId/value/",
+              "source": "INPUT"
+            },
+            "bold": {
+              "id": "KmLLZNHbbHJTc3xO74n_U",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/bold/value/",
+              "source": "INPUT"
+            },
+            "italic": {
+              "id": "qlRKuItfkycuG3AHsJ7Rb",
+              "value": false,
+              "path": "/content/elementDefinitions/table/headerTextProperties/italic/value/",
+              "source": "INPUT"
+            },
+            "underlined": {
+              "id": "lAb99wIbWrhd9vAwO1sQj",
+              "value": true,
+              "path": "/content/elementDefinitions/table/headerTextProperties/underlined/value/",
+              "source": "INPUT"
+            },
+            "alignment": {
+              "id": "SUyUBsd9UO5xXKoRyatcA",
+              "value": "Left",
+              "path": "/content/elementDefinitions/table/headerTextProperties/alignment/value/",
+              "source": "INPUT"
+            },
+            "color": {
+              "id": "gDZH6kiGdJoCqEvnj57BS",
+              "path": "/content/elementDefinitions/table/headerTextProperties/color/value/",
+              "source": "DEFAULT"
+            },
+            "backgroundColor": {
+              "id": "ystzGY3sKhd3q4jNjS4HO",
+              "path": "/content/elementDefinitions/table/headerTextProperties/backgroundColor/value/",
+              "source": "DEFAULT"
+            }
+          },
+          "maxRowCount": {
+            "id": "ID_10e418b4-92ed-45b1-be78-0a21fe2bb412",
+            "value": 4,
+            "path": "/content/elementDefinitions/table/maxRowCount/value/",
+            "source": "INPUT"
+          },
+          "sumLabel": {
+            "id": "ID_0b17340f-9f3d-4332-8166-10057bdb6d58",
+            "value": "Summe5",
+            "path": "/content/elementDefinitions/table/sumLabel/value/",
+            "source": "INPUT"
+          },
+          "hideHeader": false,
+          "columns": [
+            {
+              "id": "LSOvedqQQg0xKbV8JSh8Y",
+              "refId": "AiKTrJqsGqR-0tfsPPyWG",
+              "headerLabelHidden": true,
+              "label": {
+                "id": "ID_c9f5a371-6f11-43b0-bb90-80383818be23",
+                "value": "String",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": false,
+              "width": {
+                "id": "ID_f5e466d2-bbdc-4628-8d85-d16ad5f3665b",
+                "value": 70,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            },
+            {
+              "id": "Wc4QL2mr0Rj0OMX2XKzbG",
+              "refId": "RVsNuYY6Qx86dNHAM55kU",
+              "headerLabelHidden": false,
+              "label": {
+                "id": "ID_ba64ea5d-29b9-4f41-ac96-f1b2ee5cf5da",
+                "value": "Integer",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "sumColumn": false,
+              "width": {
+                "id": "ID_0d9c6e11-c5c2-4b74-a8f6-2b8e717cc3a7",
+                "value": 15,
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              }
+            },
+            {
+              "id": "qgjsNXnIiF9harJ1x_B8v",
+              "refId": "Kxeyi_63kXVQZ1HzC5Uno",
+              "label": {
+                "id": "ID_5d5d64dd-3a52-4c3c-9832-19c5ec73a643",
+                "value": "Nested",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "INPUT"
+              },
+              "width": {
+                "id": "ID_c607d549-3fc0-4e73-9549-1ebc432dc185",
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "UNSET",
+                "unit": "Percent"
+              }
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "-WqA3SBwWoAFc2Valle77",
+          "borderStyle": "Dashed",
+          "borderWidth": 3.75,
+          "borderColor": "#0000ff"
+        },
+        "textProperties": {
+          "id": "E8f8WOjVMR8oNNHqFs7t4",
+          "textStyleId": {
+            "id": "mYWUlghmYaDqgxb47mrMl",
+            "value": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "bold": {
+            "id": "TnqITQPPCzw19q7HkBIjr",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INPUT"
+          },
+          "italic": {
+            "id": "IL5lqzBn_f7guhegoTIfz",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INPUT"
+          },
+          "underlined": {
+            "id": "lXkG-Tj4BV5S6DWxU_xbe",
+            "value": false,
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "hUCpyIOBrtQfRKwM9nsak",
+            "value": "Left",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INPUT"
+          },
+          "color": {
+            "id": "75VQ0Cnq7kzJUavLmWzKC",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "DEFAULT"
+          },
+          "backgroundColor": {
+            "id": "letNJ3FOjKkQ_GVK1OnxA",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "DEFAULT"
+          }
+        }
+      },
+      {
+        "id": "AiKTrJqsGqR-0tfsPPyWG",
+        "type": "Expression",
+        "expression": {
+          "id": "DyLfWQUICoJB05Fj5BQQR",
+          "model": "TableDM",
+          "basePath": "/general/repeatable",
+          "text": "[string_field]"
+        },
+        "textProperties": {
+          "id": "-bhKCKFQK9mgo1WiIin51",
+          "textStyleId": {
+            "id": "yMS8PUjLXs-JQNqQEQkFc",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INHERITED",
+            "reference": "4YGDDLpf0zqeh9nXJfs7a"
+          },
+          "bold": {
+            "id": "PobuINWVqlrVqtOvkhbu6",
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INHERITED",
+            "reference": "4YGDDLpf0zqeh9nXJfs7a"
+          },
+          "italic": {
+            "id": "xNb4uM4np3QAmxCmk92vZ",
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INHERITED",
+            "reference": "4YGDDLpf0zqeh9nXJfs7a"
+          },
+          "underlined": {
+            "id": "JL9-9-EP09QEiY1mHftVR",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INHERITED",
+            "reference": "4YGDDLpf0zqeh9nXJfs7a"
+          },
+          "alignment": {
+            "id": "OFE8-GY8d2dRf7T4PuRjf",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INHERITED",
+            "reference": "4YGDDLpf0zqeh9nXJfs7a"
+          },
+          "color": {
+            "id": "-jyLLITRbPaKnwI5yHrIz",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "INHERITED",
+            "reference": "4YGDDLpf0zqeh9nXJfs7a"
+          },
+          "backgroundColor": {
+            "id": "CUv_NkwCbqIRkm0bWkxLS",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "INHERITED",
+            "reference": "4YGDDLpf0zqeh9nXJfs7a"
+          }
+        }
+      },
+      {
+        "id": "RVsNuYY6Qx86dNHAM55kU",
+        "type": "Field",
+        "field": {
+          "id": "-S_BNPYKL1idwWEWgI1lI",
+          "model": "TableDM",
+          "path": "/general/repeatable/integer_field"
+        }
+      },
+      {
+        "id": "Kxeyi_63kXVQZ1HzC5Uno",
+        "type": "Field",
+        "field": {
+          "id": "_D9uqAAA6NjQoo0Mg6BdE",
+          "model": "TableDM",
+          "path": "/general/repeatable/nested/nested_field"
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "ID_d693e0ee-1d26-4abb-b6ad-db8a93766eeb",
+      "definitions": [
+        {
+          "id": "ID_ee5f105e-c82b-40e8-a038-a7c3a7e075dc",
+          "name": "Open Sans@4.0 within 18.0",
+          "font": "Open Sans",
+          "fontSize": 4,
+          "lineHeight": 18,
+          "semantic": "H2"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/@com.mgmtp.a12.migrationtool/migrationtool-utils/config.schema.json",
+  "stepsDirPath": "./src/main/typescript/internal/print-model/steps",
+  "referenceModelPath": "./node_modules/@com.mgmtp.a12.print/print-model-api/src/main/typescript/generated/internal/dto/PrintModelDTO.ts",
+  "stepModelFileName": "print-model.ts",
+  "modelInterfaceName": "PrintModelDTO",
+  "persistentSchema": true
+}

@@ -1,0 +1,80 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Image [[Image]]
+
+The Image element inserts an image into the resulting PDF.
+
+Image source type:: The image data can be inserted from two different sources:
++
+* <<Attachment, Attachment>>
+* <<ImageField, Field>>
+
+Alternative Text:: The text that will be accessed by screen readers.
+This is required for accessibility purposes.
+Height:: The height in millimeters that the image will be scaled to.
+If not set, the image height will be scaled according to its aspect ratio with respect to the provided image width.
+Width:: The width in millimeters, that the image will be scaled to.
+This is required for images with source type _Field_.
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Accessibility Hint*
+
+For accessibility standards, the alternative text should be short but descriptive of the image content. For info graphics the description can be more extensive.
+
+Do not use images that contain important textual information (exception for logos), use the text element instead.
+====
+
+== Attachment  [[Attachment]]
+
+The image content is uploaded in the Print Model Editor as an image attachment. This way the image will be stored as static content in your Print Model.
+The original image dimensions are used if they are not overwritten by the user input. If only the `width` property is provided by the user (with leaving the `height` property empty), the image will be scaled while keeping the original aspect ratio.
+
+NOTE: The supported image formats are: `GIF`, `BMP`, `JPEG`, `JPG`, and `PNG`. When using `GIF` images, only the first frame will be displayed in the PDF.
+
+image::chapter03/03_image_attachment_detail_view.png[Image element detail view using attachment,title="Image element detail view using attachment"]
+
+
+== Field [[ImageField]]
+
+The image content is inserted from an A12 field instance during the printing process, allowing the image to be dynamically sourced from Document Model data.
+The content of the field instance must be a valid base64-encoded string to be correctly rendered in the resulting PDF.
+
+
+Document Model:: Select a Document Model referenced in the <<SchemaTab, Schema Tab>>.
+Field:: Navigate to the desired field by expanding Groups in the selected Document Model then click on the Field.
++
+The following Fields from the Attachment Group should be selected when referencing Attachments from the Document Model:
++
+* `content` Field when using Attachments in Embedded mode.
+* `attachment_id` Field when using Attachments in Reference mode.
+
+[NOTE]
+====
+Any other Field in a Document Model that contains a valid base64-encoded image string may also be selected.
+====
+
+
+[CAUTION]
+====
+Please note that the <<Preview, Print Preview>> will not work with the `attachment_id` selected. This functionality is intended for use in A12 applications that have an _AttachmentProvider_ implemented.
+====
+
+Since the image dimensions are not available during the editing, the width must be explicitly set by the user.
+
+image::chapter03/03_image_field_detail_view.png[Image element detail view using field,title="Image element detail view using field"]

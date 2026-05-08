@@ -1,0 +1,158 @@
+<#--
+  ~ SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+  ~
+  ~ Copyright (c) 2012-2026 mgm technology partners GmbH
+  ~
+  ~ Dual License
+  ~ ------------
+  ~ This source file is part of the mgm A12 Platform and available under
+  ~ a choice of two different licenses:
+  ~
+  ~ 1. Open-Source License - EUPL v1.2
+  ~    You may redistribute and/or modify this file under the terms of the
+  ~    European Union Public License, version 1.2 - see https://eupl.eu/.
+  ~
+  ~ 2. Commercial License
+  ~    Alternatively, you may obtain a commercial license from
+  ~    mgm technology partners GmbH, that permits use of this software
+  ~    under different terms (including support and maintenance services).
+  ~
+  ~    Please contact a12-license@mgm-tp.com for more information.
+  ~
+  ~ You must select and comply with exactly one of the above license options.
+  ~
+  ~ Warranty Disclaimer (applies to either option)
+  ~ ----------------------------------------------
+  ~ THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND,
+  ~ WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  ~ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  ~ NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
+  ~ LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+  -->
+<#macro headerStyle containerId pageOrientation sections totalPageCount overflowHidden pageNumberGlobalStyles isInSection>
+<#-- @ftlvariable name="containerId" type="String" -->
+<#-- @ftlvariable name="overflowHidden" type="boolean" -->
+<#-- @ftlvariable name="isInSection" type="boolean" -->
+<#-- @ftlvariable name="pageOrientation" type="com.mgmtp.a12.print.model.api.model.element.properties.PageOrientation" -->
+<#-- @ftlvariable name="sections" type="com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.MatchingSections" -->
+<#-- @ftlvariable name="totalPageCount" type="int" -->
+<#-- @ftlvariable name="pageNumberGlobalStyles" type="java.util.Map<String, String>" -->
+<style>
+	<#-- @ftlvariable name="firstSection" type="com.mgmtp.a12.print.model.api.model.section.ModelSection" -->
+	<#assign firstSection = findSection(sections, true)!"">
+	<#if firstSection?has_content>
+		<#assign footerHeight = firstSection.footerHeight>
+		<#assign headerHeight = firstSection.headerHeight>
+		<#if footerHeight.value?has_content || headerHeight.value?has_content>
+			 @page:first {
+				size: A4 ${orientation(pageOrientation)};
+				margin: 0;
+
+			<#if headerHeight.value?has_content>
+				<@sectionDefinition section=firstSection height=headerHeight isFooter=false />
+			</#if>
+			<#if footerHeight.value?has_content>
+				<@sectionDefinition section=firstSection height=footerHeight />
+			</#if>
+			}
+		</#if>
+	</#if>
+
+	@page {
+
+	size: A4 ${orientation(pageOrientation)};
+	margin: 0;
+
+		<#assign remainingSection = findSection(sections, false)!"">
+		<#if remainingSection?has_content>
+			<#assign footerHeight = remainingSection.footerHeight>
+			<#assign headerHeight = remainingSection.headerHeight>
+			<#if footerHeight.value?has_content || headerHeight.value?has_content>
+				<#if headerHeight.value?has_content>
+					<@sectionDefinition section=remainingSection height=headerHeight isFooter=false />
+				</#if>
+				<#if footerHeight.value?has_content>
+					<@sectionDefinition section=remainingSection height=footerHeight />
+				</#if>
+			</#if>
+		</#if>
+	}
+	tag-${containerId} {
+		page: tag-${containerId};
+	<#--
+		maybe we need to remove this line,
+		but with display: block; there is a nullpointer in openhtmltopdf.
+		Without display: block; the footer is not visible.
+		The invisible border is a workaround.
+	-->
+		border: 1px solid transparent;
+		box-sizing: border-box;
+		page-break-before: always;
+		position: relative;
+		box-sizing: border-box;
+		<#if overflowHidden>
+			overflow-y: hidden;
+		</#if>
+	}
+
+	span[entity-type="PageNumberTotal"]::after {
+		content: <#if totalPageCount == 0>counter(pages)<#else>"${totalPageCount}"</#if>;
+		margin: 0;
+	}
+
+	<#list pageNumberGlobalStyles?keys as entityId>
+		span[entity-id="${entityId}"]::after {
+			<#noautoesc>${pageNumberGlobalStyles[entityId]}</#noautoesc>
+		}
+	</#list>
+
+	<#-- element in section should not use orphans/widows -->
+	<#if isInSection>
+		body {
+			margin: 0;
+			font-family: 'Open Sans', serif;
+			orphans: 0;
+			widows: 0;
+		}
+	</#if>
+</style>
+</#macro>
+
+<#macro sectionDefinition section height isFooter=true>
+<#-- @ftlvariable name="section" type="com.mgmtp.a12.print.model.api.model.section.ModelSection" -->
+<#-- @ftlvariable name="height" type="com.mgmtp.a12.print.model.api.model.element.base.Measure" -->
+	<#if isFooter>margin-bottom<#else>margin-top</#if>: ${height.value}mm;
+
+	@<#if isFooter>bottom-center<#else>top-center</#if> {
+		content: element(tag-${section.id}-<#if isFooter>footer<#else>header</#if>);
+		height: ${height.value}mm;
+		width: ${section.pageOrientation.getPageWidth()}mm;
+	<@defaultSectionStyles />
+	}
+</#macro>
+
+<#macro defaultSectionStyles>
+	font-family: 'Open Sans', serif;
+	display: block;
+	text-align: left;
+	vertical-align: top;
+	margin: 0;
+	padding: 0;
+</#macro>
+
+<#function orientation pageOrientation>
+<#-- @ftlvariable name="pageOrientation" type="com.mgmtp.a12.print.model.api.model.element.properties.PageOrientation" -->
+	<#return pageOrientation.name()?lower_case>
+</#function>
+
+<#function findSection sections shouldBeFirst>
+<#-- @ftlvariable name="sections" type="com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.MatchingSections" -->
+	<#if sections?has_content>
+		<#if shouldBeFirst && sections.firstPageSection?has_content>
+			<#return sections.firstPageSection>
+		</#if>
+		<#if !shouldBeFirst && sections.remainingPageSection?has_content>
+			<#return sections.remainingPageSection>
+		</#if>
+	</#if>
+</#function>

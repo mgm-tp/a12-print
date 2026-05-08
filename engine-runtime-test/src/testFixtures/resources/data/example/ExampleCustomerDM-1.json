@@ -1,0 +1,29 @@
+{
+  "customer": {
+    "FirstName": "John",
+    "LastName": "Doe",
+    "addresses": [
+      {
+        "Street": "Musterstr. 1",
+        "City": "01234 Musterstadt",
+        "isPublic": true,
+        "isPublic_number": 1,
+        "isPublic_string": "true"
+      },
+      {
+        "City": "01234 Musterstadt",
+        "Street": "Bahnhofstr. 5",
+        "isPublic": false,
+        "isPublic_number": 0,
+        "isPublic_string": "false"
+      },
+      {
+        "City": "56789 Neu-Musterstadt",
+        "Street": "Musterstr. 100",
+        "isPublic": true,
+        "isPublic_number": 1,
+        "isPublic_string": "true"
+      }
+    ]
+  }
+}

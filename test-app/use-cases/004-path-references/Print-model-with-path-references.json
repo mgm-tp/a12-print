@@ -1,0 +1,2071 @@
+{
+  "header": {
+    "id": "Print-model-with-path-references",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "description": "Description",
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "labels": [],
+    "locales": [
+      {
+        "code": "en"
+      }
+    ],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "reference": "Person",
+        "purpose": "data binding"
+      },
+      {
+        "modelType": "print",
+        "reference": "DINTemplatePrintModel",
+        "alias": "DINTemplatePrintModel",
+        "purpose": "DINTemplate"
+      }
+    ]
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "ttdNZeNak_-VkQLFJCO-f",
+        "titleComputation": [
+          {
+            "id": "ogjcaM5P33n6x9UHEGyvn",
+            "operation": "\"test-partial-walker\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "zCH1Hfd3juSkOWF_06v-s",
+            "operation": "\"Description\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "BHVH2o6qPTWQVdqijvKqX",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "3_V8PRiisvApIyKnbLxhU",
+            "operation": "\"Print Model Editor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "Y6Vx1je4L_gPHaSSEELsQ",
+        "fontSize": 12
+      },
+      "structure": [
+        {
+          "id": "-NW73-HFobf9d1fUXskSj"
+        },
+        {
+          "id": "3fqRnN5Vcn_vMhUypAcWb"
+        }
+      ],
+      "sections": [],
+      "watermarks": [
+        {
+          "id": "_57Dv2ul3vyNuykXcMigH"
+        },
+        {
+          "id": "FNgp17LWAfHG8_6J7uJGA"
+        }
+      ],
+      "runtimeVariables": [
+        {
+          "id": "id1",
+          "name": "string_var",
+          "type": "String"
+        },
+        {
+          "id": "id2",
+          "name": "bool_var",
+          "type": "Boolean"
+        },
+        {
+          "id": "id3",
+          "name": "string_array_var",
+          "type": "StringArray"
+        }
+      ],
+      "textStyles": []
+    },
+    "segments": {
+      "id": "jhyM_kodBqFq9XavvYJOM",
+      "definitions": [
+        {
+          "id": "-NW73-HFobf9d1fUXskSj",
+          "title": "First Segment",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "IRT3Ca9oXw7jp39Ug1Smz",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "oi1DQ0tElWYkB4EZ3p57M",
+              "refId": "XtL4oSQmOQNOgMCDCWezQ",
+              "position": {
+                "id": "Fz8MQVrkmh6wYUw63Pb3N",
+                "x": {
+                  "id": "G5lhx4rr6rm-g_xq-poCK",
+                  "value": 17,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "iII7UXZdQp43L3wIfhEKr",
+                  "value": 13,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "AUqlTV17ZQSGsdZdDzjwT",
+                "minHeight": {
+                  "id": "mUu0BKqYwn0tV7oi9AbjE",
+                  "value": 31,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "GM7fUjwjzk-SGOxt7ZFbJ",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "4Ge2zh65FJJLvMtlp4uuJ"
+              },
+              "hideConditions": [
+                {
+                  "id": "HIDE_CONDITION_COMPUTATION_1",
+                  "precondition": "FieldNotFilled(Person/person/date)"
+                }
+              ],
+              "pageBreakBehavior": {
+                "id": "1sT4k8dqfNyKkkoer_Lsf",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "275nwsxcLrOGbCGxJDC4j",
+              "refId": "7xMMPEFrs6E6mW9uzknG2",
+              "position": {
+                "id": "ZcytkT42E3MeHeuy3u6Er",
+                "x": {
+                  "id": "iwu3cTC1bVxCmB5ZnV_9B",
+                  "value": 17,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "S85MVYSxxkzqRG8bDqTdV",
+                  "value": 62,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "-j6kFC39Rs_2WIxoHyphb",
+                "minHeight": {
+                  "id": "dSMfLyERlpvniObBXjCA1",
+                  "value": 0,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "x_H7YhSr5r4RF2E5NCHge",
+                  "value": 163,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "UyFGlM22yPNKZP_6Xv3Oe"
+              },
+              "hideConditions": [
+                {
+                  "id": "HIDE_CONDITION_COMPUTATION_2",
+                  "precondition": "FieldFilled(Person/person/date)"
+                },
+                {
+                  "id": "HIDE_CONDITION_COMPUTATION_3",
+                  "precondition": "FieldFilled(Person/person/name1)"
+                }
+              ],
+              "pageBreakBehavior": {
+                "id": "DfXQrHgMs9w_AHkqgFnuT",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "rq5zln2QlSE4zrS57dHkR",
+              "refId": "lj3AEZrNF7GlwsSQVAUwB",
+              "position": {
+                "id": "uN0Dk4pFiLAToqUjpCN-j",
+                "x": {
+                  "id": "TuRbBfEiTovpZh7BCdDOU",
+                  "value": 17,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "Z_lrTM9t0AnlhAgBFLF0r",
+                  "value": 83,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "EUJxVxonbrr9tShYvbJPB",
+                "minHeight": {
+                  "id": "DVxUvq-4PtZqMvcqi2HCz",
+                  "value": 6,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "MN77qZsCiY01RtjWvbLLE",
+                  "value": 163,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "CRy0FZPa83nUdai3mOLNa"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "g4xNNQqsNT43VOULApFdn",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "FJX-lKQTfl5bMPbmDVhaV",
+              "refId": "RxOPxGkiOZqV5ktYjovUi",
+              "position": {
+                "id": "4zgV-yclJBASz4uxp1Ikh",
+                "x": {
+                  "id": "5WTBJkUEdYvLo86x3Pegv",
+                  "value": 17,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "PJsfOkA5B1gF0zzveIVOo",
+                  "value": 105,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "Rr0oQ18aN8z03WQ4Fr4W2",
+                "minHeight": {
+                  "id": "WJ_iKKVqHBkpgrkycDj0W",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "LUKpm4Cgr1khgG8XoIkMf",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "OMjvnzzkTr9Sc2ULM8ok1"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "mMWkkFxFrec8xSRVO9iz-",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "n-7D34u1F2E0cQX0G4s0E",
+              "refId": "gYLsP0tPJYXnXySxUha_m",
+              "position": {
+                "id": "MphBazghPeRSmicE8BJ0D",
+                "x": {
+                  "id": "9o_LgLR3SY5igi6lLNuDP",
+                  "value": 86,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "WT-r9cJpggoXTLIUVrf7h",
+                  "value": 105,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "WynR2ligGEvSIhtzUwEx4",
+                "minHeight": {
+                  "id": "b8D1eQTDi3s3jnZYg7sG5",
+                  "value": 6,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "t1tVdZJgXCMsKD0I-urAY",
+                  "value": 94,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "ZLaxa2qIgYfxUlyTtvc7M"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "HEQiH9gbkv0bVeSTq9cbR",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "hdL0XNBs2odkJbkmZj6Si",
+              "refId": "6eMbRdAUqHYk2cyiEUHf2",
+              "position": {
+                "id": "boRxGC_7z7kgx3mQdqC-R",
+                "x": {
+                  "id": "JnDHt1Wz0-JWb4IvNThIm",
+                  "value": 86,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "dQ7RlYaF7Z6rbzv4TCVFU",
+                  "value": 124,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "8F0ya-NeGpovQE8mDgzWf",
+                "minHeight": {
+                  "id": "_bf7gcpJF2dko3xQTP5My",
+                  "value": 30,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "EQWRqYN4ZPs_BFnryBuho",
+                  "value": 95,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "zdEPB5ysic_IkNsr-Ip_f"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "kNCvs3ZVcekSEzvdYSwZd",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "_AAm_yRWyOeTiLZz4s_SM",
+              "refId": "vx7M29TzOkzTRtlg_i41N",
+              "position": {
+                "id": "L2K6jyuYRURTRn5LRC7uU",
+                "x": {
+                  "id": "OqWsLi0wUdu4S_la2kyd4",
+                  "value": 17,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "jjNBNS_X9rrrOKSZSWoW3",
+                  "value": 177,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "4wetUPj1OZc0vAraXqolv",
+                "minHeight": {
+                  "id": "sCMsZLkM2RB65PfSHLUXA",
+                  "value": 5,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "8Nk_UhRYK2FUDjemB8IuU",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "qLi_l3V1X8DLL9OR0VLa2"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "JqWoOGvcuobW3TJ3m640W",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "WWWSSFmRc0G0ViedFDteu",
+              "refId": "hbfbVER8VMWH5-J_1N25o",
+              "position": {
+                "id": "Xj8lKkj3s_xZSiehmCrRO",
+                "x": {
+                  "id": "LvA3SAd1pN-Eh9j1Q9iye",
+                  "value": 86,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "OLJ6drUjb7FKaLWOkTu_4",
+                  "value": 177,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "8Cj0EwYBIRmr30gIApqV5",
+                "minHeight": {
+                  "id": "s1BrIm8-sD-kr7X_oWcJK",
+                  "value": 5,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "aO1ax8fPCm0LlLCCNgF-J",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "XLwxrp89jxH_wwrBSAVfh"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "lAYQBT_4vZYftPebehg_7",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "MJEGrylgiiaCyvkb9KjAa",
+              "refId": "1P7LmpygIT5vvOzJ47EUM",
+              "position": {
+                "id": "s6Sl5-YabFlOZukLwNs5m",
+                "x": {
+                  "id": "2qUeFK1OHEDeteqqMqYej",
+                  "value": 19,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "mgIWK5Vb4VOktTvzI7JnM",
+                  "value": 306,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "1EK6eDueb_nqs6ZPvWolE",
+                "minHeight": {
+                  "id": "IRotKtZmrBAr1En2NbvfF",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "zGUf4BLzvYXr3QQOYBhYJ",
+                  "value": 176,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "PDsjrWdIXDVjrj7tze12Q"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "DjWZGTRs_MMeX0qFsFNUH",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "3eZQJk3amEmC-_Ae2XcU2",
+              "refId": "B-6leiISZNRltK8mFOUkV",
+              "position": {
+                "id": "vqgUFTFN3YN5LhIaqp25N",
+                "x": {
+                  "id": "pM_jcoZFs47Kw21Mzk5Ph",
+                  "value": 19,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "Ics5MmwAsLBErG-taKuaH",
+                  "value": 377,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "BCtvoMybjEjxnjuhFFoRF",
+                "minHeight": {
+                  "id": "Z_HJlkFdSmW-vqPWae5iY",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "Ea4dH2ElUe0ZQN-At4EyM",
+                  "value": 178,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "XFunxH57sTjc6pBJIGNX-"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "1cExk3rAwfMAdgRXeojaq",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "NCcm9pGdr-3fWNu2iP4-M",
+              "refId": "GEu41ZVxIW9f7f8iI9oW5",
+              "position": {
+                "id": "NsUkpVBwOInBElF-OaElg",
+                "x": {
+                  "id": "6cG8m7qWBHorYNzVUm39_",
+                  "value": 19,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "72Ho2djiD2nA6QBNG1jB8",
+                  "value": 522,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "SHLUfRKXWdduNd3EkAO4I",
+                "minHeight": {
+                  "id": "Wrfudt-dwZliMAqrQ5ZpN",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "4dASFbx7sbEMJaV7mqws2",
+                  "value": 177,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "kIl87XY-20EeEofBzSpi4"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "hhPmSUBFWm08hKWfScSbV",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "fz0oHC3FqhhXBuPBk1JSv",
+              "refId": "v7ZE6NaGF-Mi2sJYvhR-X",
+              "position": {
+                "id": "R_bBEQlJdfVmXwIoQfE4_",
+                "x": {
+                  "id": "Wlso4p86D7qVfp7STL6GX",
+                  "value": 160,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "m1uOy12erjjlSgH0WqC5P",
+                  "value": 177,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ZoxNY5sPFhaj9ixwQZqwh",
+                "minHeight": {
+                  "id": "YoIUYx7GoZs6hMjfUoNc1",
+                  "value": 6,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "Dwx7jCqdhnOYZsQ8g7GhB",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "L5EoBN3MJ7cSlyQbvwDRf"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "qGW9yuhnaJEvvCMwDoNzx",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "8wRMQ_QnNkQtuUE5VT9tC",
+              "refId": "TeJ2pZ87xFZj0aOuCoQTs",
+              "position": {
+                "id": "DB5Ld2LwKuN0t3uTltdGl",
+                "x": {
+                  "id": "3LaA7ntJwNnwt8996L-WF",
+                  "value": 19,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "dqmt_-Sd4xvzqFxy5Cv-m",
+                  "value": 449,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "s_JpFTJfRkQdg5_NWQNS9",
+                "minHeight": {
+                  "id": "uxi4foM0Z0CgoveiB2oWn",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "6IF9PKherl_rlOm-QwFt2",
+                  "value": 178,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "a307dPRfkpmFEb7OWdCLS",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "L5AuFXvln7RNXCsCTg7eM",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        },
+        {
+          "id": "3fqRnN5Vcn_vMhUypAcWb",
+          "title": "Repeatable",
+          "type": "Repeatable",
+          "defaultSegment": {
+            "id": "3xC5y2kwSnKRzjXe_1Y5M",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "tATEb2StoHcSHcbe5Pat8",
+              "refId": "aMgyrcA9UuRQFeiFrjS1e",
+              "position": {
+                "id": "LFPXlTSTKs1YJbliHCKu-",
+                "x": {
+                  "id": "zxrTRkkvSr135JGg15P-K",
+                  "value": 89,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "iMP2EKeb3W5RLA91xjSdM",
+                  "value": 19,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "-0kIarnMcseMCDU2wZiPp",
+                "minHeight": {
+                  "id": "p4eTV6e7GJZfHPva6YFkJ",
+                  "value": 18,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "PyoH-Dh7QCqW2kDdyMm-Q",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "a_NzmjRK1FnwEP380HsjS"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "nRqZKSFnTPR_MWBIHHCp1",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": [
+            {
+              "id": "REPEATABLE_SEGMENT_1",
+              "model": "Person",
+              "path": "/person/repeat",
+              "isRepetition": true
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "id": "sYb2a66RWMTB0lF_15rNI",
+          "purpose": "DINTemplate",
+          "referenceModel": "DINTemplatePrintModel",
+          "direction": "OutgoingReference",
+          "refIds": []
+        }
+      ]
+    },
+    "watermarks": {
+      "id": "xYWC_W7NaiMStQw_j7J9a",
+      "definitions": [
+        {
+          "id": "_57Dv2ul3vyNuykXcMigH",
+          "title": "Portrait",
+          "pageOrientation": "Portrait",
+          "conditions": [
+            {
+              "id": "WATERMARK_COMPUTATION_1",
+              "precondition": "FieldFilled(Person/person/date)"
+            }
+          ],
+          "elementReferences": []
+        },
+        {
+          "id": "FNgp17LWAfHG8_6J7uJGA",
+          "title": "Landscape",
+          "pageOrientation": "Landscape",
+          "conditions": [
+            {
+              "id": "WATERMARK_PRECONDITION_2",
+              "precondition": "FieldFilled(Person/person/date)"
+            }
+          ],
+          "elementReferences": []
+        }
+      ]
+    },
+    "elementDefinitions": [
+      {
+        "id": "XtL4oSQmOQNOgMCDCWezQ",
+        "type": "Text",
+        "text": {
+          "id": "kZrTRTRdV3UFTeI_8Q6Bt",
+          "text": "<p><span style=\"\">Text</span></p>\n<p><br></p>\n<p><span entity-id=\"AI6Mm1yjXa-V3yyrLnKWl\" entity-type=\"Field\"><span style=\"\">Person/person/date</span></span></p>\n<p><br></p>\n<p><br></p>\n<p><span entity-id=\"ImjR21frIiC8yPp2koODl\" entity-type=\"Calculation\"><span style=\"\">Calculation</span></span></p>",
+          "entities": [
+            {
+              "id": "GikYFgRmoZ9iyWa3lRGJR",
+              "refId": "AI6Mm1yjXa-V3yyrLnKWl"
+            },
+            {
+              "id": "CS30Si5bQ6TLHyhHCjQnm",
+              "refId": "ImjR21frIiC8yPp2koODl"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "KDabtpTWFEd7fY_AG2KmR",
+          "textStyleId": {
+            "id": "KsdJRlTwp0gX3wIOzQeyL",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "A-LIZabu2HHc0fExwFoBG",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "heFlyrDtX5WKboI9NXJBq"
+        }
+      },
+      {
+        "id": "AI6Mm1yjXa-V3yyrLnKWl",
+        "type": "Field",
+        "field": {
+          "id": "FIELD_2",
+          "model": "Person",
+          "path": "/person/date"
+        }
+      },
+      {
+        "id": "ImjR21frIiC8yPp2koODl",
+        "type": "Calculation",
+        "calculation": {
+          "id": "En3CJkfnkgaBavl7sQOVx",
+          "model": "Person",
+          "name": "Calculation",
+          "computationAlternatives": [
+            {
+              "id": "CALCULATION_COMPUTATION_1",
+              "operation": "[Person/person/date]",
+              "precondition": "True"
+            }
+          ]
+        }
+      },
+      {
+        "id": "7xMMPEFrs6E6mW9uzknG2",
+        "type": "Line",
+        "borderProperties": {
+          "id": "MYrNce4gKp2ywDADk6C0M"
+        }
+      },
+      {
+        "id": "lj3AEZrNF7GlwsSQVAUwB",
+        "type": "Table",
+        "table": {
+          "id": "TABLE_1",
+          "model": "Person",
+          "basePath": "/person",
+          "headerTextProperties": {
+            "id": "w3LrS6qBvJjlwbja5eNpo",
+            "textStyleId": {
+              "id": "mTRIZY0dGQg6NF_lnVVmc",
+              "path": "/content/elementDefinitions/table/headerTextProperties/textStyleId/value/",
+              "source": "DEFAULT"
+            },
+            "bold": {
+              "id": "stKvieHj9Ptb0to2fIIBn",
+              "path": "/content/elementDefinitions/table/headerTextProperties/bold/value/",
+              "source": "DEFAULT"
+            },
+            "italic": {
+              "id": "dlM4QhthJi3B51puAD2LG",
+              "path": "/content/elementDefinitions/table/headerTextProperties/italic/value/",
+              "source": "DEFAULT"
+            },
+            "underlined": {
+              "id": "UacFxVFioz9WZOD0ZXvEx",
+              "path": "/content/elementDefinitions/table/headerTextProperties/underlined/value/",
+              "source": "DEFAULT"
+            },
+            "alignment": {
+              "id": "hKxkCaGh6lr_kA8BhITiY",
+              "path": "/content/elementDefinitions/table/headerTextProperties/alignment/value/",
+              "source": "DEFAULT"
+            },
+            "color": {
+              "id": "0yGLNWtwPhq68U-djYut-",
+              "path": "/content/elementDefinitions/table/headerTextProperties/color/value/",
+              "source": "DEFAULT"
+            },
+            "backgroundColor": {
+              "id": "49pzFqmFCb4-ybMh3zckL",
+              "path": "/content/elementDefinitions/table/headerTextProperties/backgroundColor/value/",
+              "source": "DEFAULT"
+            }
+          },
+          "maxRowCount": {
+            "id": "G1Buu9Gw7tFFdLI5WItK5",
+            "path": "/content/elementDefinitions/table/maxRowCount/value/",
+            "source": "UNSET"
+          },
+          "sumLabel": {
+            "id": "oSoM3EAdf33iQ3LZSwGzE",
+            "path": "/content/elementDefinitions/table/sumLabel/value/",
+            "source": "UNSET"
+          },
+          "columns": [
+            {
+              "id": "R_UlIJF3VjzKjCSY_ZSPi",
+              "refId": "atVAYEv-HGemRwN8HLYWi",
+              "label": {
+                "id": "oxlo_YvqRNmwhi5bVqoAj",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "DEFAULT"
+              },
+              "width": {
+                "id": "rFGg0r1TzCr6uBBu8lvaZ",
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "UNSET",
+                "unit": "Percent"
+              }
+            },
+            {
+              "id": "iYi3OiVLoYTqY9mjXikHz",
+              "refId": "C7X9iiHjXgUHm18jnd2Yu",
+              "label": {
+                "id": "P-XEDLeYrfvx9CvBuNEd2",
+                "path": "/content/elementDefinitions/table/columns/label/value/",
+                "source": "DEFAULT"
+              },
+              "width": {
+                "id": "BDFyJPbWwLqevs6ujGyX9",
+                "path": "/content/elementDefinitions/table/columns/width/value/",
+                "source": "UNSET",
+                "unit": "Percent"
+              }
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "fCyDVgYfHjK-53Sn50KEo"
+        },
+        "textProperties": {
+          "id": "o5JWTPrqL-d19rDfzjpif",
+          "textStyleId": {
+            "id": "lBeU7oTDIwTiQcfOyHgTY",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "DEFAULT"
+          },
+          "bold": {
+            "id": "D5Jo0atLTwxduliqwkMHC",
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "DEFAULT"
+          },
+          "italic": {
+            "id": "x_gXja0Lffuysi1cbxFUf",
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "DEFAULT"
+          },
+          "underlined": {
+            "id": "oJY4QaCCiAQzKG38Skl84",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "DEFAULT"
+          },
+          "alignment": {
+            "id": "ph77cgasZSNNzw8AcBI9G",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          },
+          "color": {
+            "id": "CSvJULyxZ0XbfZahcnbbd",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "DEFAULT"
+          },
+          "backgroundColor": {
+            "id": "wDGBA8RWishVJBtVHBorL",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "DEFAULT"
+          }
+        }
+      },
+      {
+        "id": "atVAYEv-HGemRwN8HLYWi",
+        "type": "Field",
+        "field": {
+          "id": "FIELD_3",
+          "model": "Person",
+          "path": "/person/name1"
+        }
+      },
+      {
+        "id": "C7X9iiHjXgUHm18jnd2Yu",
+        "type": "Expression",
+        "expression": {
+          "id": "EXPRESSION_1",
+          "model": "Person",
+          "basePath": "/person",
+          "text": "kontext(person) {\n  [name1]\n}"
+        },
+        "textProperties": {
+          "id": "Gh6rVUShXMLVQrdZIZjby",
+          "textStyleId": {
+            "id": "6UsGRTuH6B_pMqUyfflX1",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INHERITED",
+            "reference": "lj3AEZrNF7GlwsSQVAUwB"
+          },
+          "bold": {
+            "id": "LZvkc2_41F05EDAmTXjtm",
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "INHERITED",
+            "reference": "lj3AEZrNF7GlwsSQVAUwB"
+          },
+          "italic": {
+            "id": "BJV7NUy9I7sJI5S8dd46z",
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "INHERITED",
+            "reference": "lj3AEZrNF7GlwsSQVAUwB"
+          },
+          "underlined": {
+            "id": "8wuVWsjOluWUKJoCjIYwO",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "INHERITED",
+            "reference": "lj3AEZrNF7GlwsSQVAUwB"
+          },
+          "alignment": {
+            "id": "euQSghvi_bOZ_wC5ionL1",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "INHERITED",
+            "reference": "lj3AEZrNF7GlwsSQVAUwB"
+          },
+          "color": {
+            "id": "7CXEHm2mwbfO8ICc8mUFu",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "INHERITED",
+            "reference": "lj3AEZrNF7GlwsSQVAUwB"
+          },
+          "backgroundColor": {
+            "id": "RmXGf76aHW0JgqhgESjDl",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "INHERITED",
+            "reference": "lj3AEZrNF7GlwsSQVAUwB"
+          }
+        }
+      },
+      {
+        "id": "RxOPxGkiOZqV5ktYjovUi",
+        "type": "Image",
+        "image": {
+          "id": "LSSHd3GEr6b-Yi04tgKva",
+          "imageSrcType": "Field",
+          "alternativeText": "Alternative",
+          "dimensions": {
+            "id": "qeMzKotLMNlBjLIp_23Ld",
+            "height": {
+              "id": "HcYstoQJasJXJFcicHldu",
+              "value": 50,
+              "unit": "Millimeter"
+            },
+            "width": {
+              "id": "JH-Vc2E8-3Z5AtnBUm2zB",
+              "value": 50,
+              "unit": "Millimeter"
+            }
+          },
+          "attachmentSource": {
+            "imageAttachment": {}
+          },
+          "fieldSource": {
+            "id": "IMAGE_SOURCE",
+            "model": "Person",
+            "path": "/person/date"
+          }
+        },
+        "borderProperties": {
+          "id": "zp-Sq1Ihiz3sg6goVzNhQ"
+        }
+      },
+      {
+        "id": "gYLsP0tPJYXnXySxUha_m",
+        "type": "Listing",
+        "listing": {
+          "id": "LISTING_1",
+          "model": "Person",
+          "basePath": "/person/address",
+          "headerTextProperties": {
+            "id": "PSs9K0l-JDpUPgtvk3sFA",
+            "textStyleId": {
+              "id": "Y93NwKlQyQkOJZNdDmm0h",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/textStyleId/value/",
+              "source": "DEFAULT"
+            },
+            "bold": {
+              "id": "e1oJWFa3mqpKdOTu78E3v",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/bold/value/",
+              "source": "DEFAULT"
+            },
+            "italic": {
+              "id": "apdYKr4lAYz3YmsJXMXYS",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/italic/value/",
+              "source": "DEFAULT"
+            },
+            "underlined": {
+              "id": "i0fpAia7-MmfbWxUgYn5V",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/underlined/value/",
+              "source": "DEFAULT"
+            },
+            "alignment": {
+              "id": "f88gHPg4F6SLnsvBrlCSV",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/alignment/value/",
+              "source": "DEFAULT"
+            },
+            "color": {
+              "id": "87A_MIM1dfaIGLkW7tgG2",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/color/value/",
+              "source": "DEFAULT"
+            },
+            "backgroundColor": {
+              "id": "BAcDFIQXjnMJ0jKiih_LM",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/backgroundColor/value/",
+              "source": "DEFAULT"
+            }
+          },
+          "columns": [
+            {
+              "id": "5QetSjGWjs5Ccvzk91OnB",
+              "label": {
+                "id": "ZYEP5ABeIN4_-Vpmp4YLV",
+                "path": "/content/elementDefinitions/listing/columns/label/value/",
+                "source": "DEFAULT"
+              },
+              "width": {
+                "id": "zMU-4xCfNTTeCMYBHkimj",
+                "path": "/content/elementDefinitions/listing/columns/width/value/",
+                "source": "UNSET",
+                "unit": "Percent"
+              },
+              "default": {
+                "id": "PTk5Sfbf1OjpWgGz8Izs3",
+                "propertyComputations": [
+                  {
+                    "id": "Hbb5F18w2zdza4HWPVH0q",
+                    "property": "Underline",
+                    "computationAlternatives": [
+                      {
+                        "id": "LISTING_COLUMN_PROPERTY_COMPUTATION_1",
+                        "operation": "[value]",
+                        "precondition": "FieldFilled(Person/person/date)"
+                      }
+                    ]
+                  }
+                ],
+                "valueComputationAlternatives": [
+                  {
+                    "id": "LISTING_COLUMN_VALUE_COMPUTATION_1",
+                    "operation": "[value]"
+                  }
+                ]
+              },
+              "group": {
+                "id": "e0TdMWw89PWuZsjHCuEn5",
+                "propertyComputations": [
+                  {
+                    "id": "mZYF6sPZnORXRn2YSjoHX",
+                    "property": "Underline",
+                    "computationAlternatives": [
+                      {
+                        "id": "LISTING_COLUMN_GROUP_PROPERTY_COMPUTATION_1",
+                        "operation": "[value]",
+                        "precondition": "FieldFilled(Person/person/date)"
+                      }
+                    ]
+                  }
+                ],
+                "valueComputationAlternatives": [
+                  {
+                    "id": "LISTING_COLUMN_GROUP_VALUE_COMPUTATION_1",
+                    "operation": "[value]",
+                    "precondition": "FieldFilled(Person/person/date)"
+                  }
+                ]
+              },
+              "field": [
+                {
+                  "id": "0VnwMgiX9qYUC0bl4VPdN",
+                  "inputFieldTypeSerialized": "{\"type\":\"DateTimeType\",\"DateTimeType\":{\"format\":\"yyyy-MM-dd'T'HH:mm:ss\"}}",
+                  "outputFieldTypeSerialized": "{\"type\":\"DateTimeType\",\"DateTimeType\":{\"format\":\"yyyy-MM-dd'T'HH:mm:ss\"}}",
+                  "propertyComputations": [
+                    {
+                      "id": "dUReu5JLuisL51muEHXFQ",
+                      "property": "Underline",
+                      "computationAlternatives": [
+                        {
+                          "id": "LISTING_COLUMN_FIELD_PROPERTY_COMPUTATION_1",
+                          "operation": "[value]",
+                          "precondition": "FieldFilled(Person/person/date)"
+                        }
+                      ]
+                    }
+                  ],
+                  "valueComputationAlternatives": [
+                    {
+                      "id": "LISTING_COLUMN_FIELD_VALUE_COMPUTATION_1",
+                      "operation": "[value]",
+                      "precondition": "FieldFilled(Person/person/date)"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "AD4K-kJvz6mNP_9e5t1N9",
+              "label": {
+                "id": "bwIQtJfvG9-Ql71W3jFI7",
+                "path": "/content/elementDefinitions/listing/columns/label/value/",
+                "source": "DEFAULT"
+              },
+              "width": {
+                "id": "tNLqxWvwIkyEUtJnG4YKE",
+                "path": "/content/elementDefinitions/listing/columns/width/value/",
+                "source": "UNSET",
+                "unit": "Percent"
+              },
+              "default": {
+                "id": "t6tirEwA-hk9p9Phab1oH",
+                "propertyComputations": [],
+                "valueComputationAlternatives": [
+                  {
+                    "id": "LISTING_COLUMN_VALUE_COMPUTATION_2",
+                    "operation": "[Person/person/repeat/name]",
+                    "precondition": "[Person/person/repeat/name] != \"John Doe\""
+                  }
+                ]
+              },
+              "field": [],
+              "textProperties": {
+                "id": "kU-QOIRZ_YfLzcPC1-3kr",
+                "textStyleId": {
+                  "id": "MKSJsZB_wjTL5Tilz8Q5V",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/textStyleId/value/",
+                  "source": "DEFAULT"
+                },
+                "bold": {
+                  "id": "_tT6BCLI-fhp8QOxLpafN",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/bold/value/",
+                  "source": "DEFAULT"
+                },
+                "italic": {
+                  "id": "DmB8eqjnVXANe5MQBe3vR",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/italic/value/",
+                  "source": "DEFAULT"
+                },
+                "underlined": {
+                  "id": "xDGWX8LL4UWqB7WLRC6yn",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/underlined/value/",
+                  "source": "DEFAULT"
+                },
+                "alignment": {
+                  "id": "0IxenFM0dhT-2DfwvdEIB",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/alignment/value/",
+                  "source": "DEFAULT"
+                },
+                "color": {
+                  "id": "khWKUvEnm_Y58qIK4P_FV",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/color/value/",
+                  "source": "DEFAULT"
+                },
+                "backgroundColor": {
+                  "id": "bLXwXsl0Lra6yc5TC2ZOs",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/backgroundColor/value/",
+                  "source": "DEFAULT"
+                }
+              }
+            },
+            {
+              "id": "NfdVLU0vJXJc0_tCTZSjS",
+              "label": {
+                "id": "w5nyLXXVzMrB8DkeBGlG8",
+                "path": "/content/elementDefinitions/listing/columns/label/value/",
+                "source": "DEFAULT"
+              },
+              "width": {
+                "id": "YyyO0Puy5uovEXiQigpdl",
+                "path": "/content/elementDefinitions/listing/columns/width/value/",
+                "source": "UNSET",
+                "unit": "Percent"
+              },
+              "default": {
+                "id": "lq9v4xmIX0fFt7BrzkIMY",
+                "propertyComputations": [],
+                "valueComputationAlternatives": [
+                  {
+                    "id": "LISTING_COLUMN_VALUE_COMPUTATION_3",
+                    "operation": "[Person/person/name1]",
+                    "precondition": "[Person/person/name1] != \"John Doe\""
+                  }
+                ]
+              },
+              "field": [],
+              "textProperties": {
+                "id": "vrXVBYwNh7NiBOULrZUT8",
+                "textStyleId": {
+                  "id": "ZCRpYT3UMB-f5fFhpFyMt",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/textStyleId/value/",
+                  "source": "DEFAULT"
+                },
+                "bold": {
+                  "id": "MdT-PiDfVrT8DTmQrbAVL",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/bold/value/",
+                  "source": "DEFAULT"
+                },
+                "italic": {
+                  "id": "R_a1W3TxY-EQp6g0s6LCo",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/italic/value/",
+                  "source": "DEFAULT"
+                },
+                "underlined": {
+                  "id": "WflKknOjSgEiHmHoBfMG4",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/underlined/value/",
+                  "source": "DEFAULT"
+                },
+                "alignment": {
+                  "id": "k5muGP1-Imk32qvBDOZ_7",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/alignment/value/",
+                  "source": "DEFAULT"
+                },
+                "color": {
+                  "id": "wDXTqv35IUNjsZ-sH5T2O",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/color/value/",
+                  "source": "DEFAULT"
+                },
+                "backgroundColor": {
+                  "id": "Jqxy9Jl7pdNdpTmI-tzbM",
+                  "path": "/content/elementDefinitions/listing/columns/textProperties/backgroundColor/value/",
+                  "source": "DEFAULT"
+                }
+              }
+            }
+          ],
+          "rowPropertyComputations": [
+            {
+              "id": "vLtxWKUHcmWbh_SS47Do9",
+              "property": "Underline",
+              "computationAlternatives": [
+                {
+                  "id": "LISTING_ROW_PROPERTY_COMPUTATION_1",
+                  "operation": "[value]",
+                  "precondition": "FieldFilled(Person/person/date)"
+                }
+              ]
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "sasmC91pZJezg-lNbnmve"
+        },
+        "textProperties": {
+          "id": "_XcVz6DAmnAkI9S74Dx_9",
+          "textStyleId": {
+            "id": "bnXQ-KrD7IU2MHYBZmQ0g",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "DEFAULT"
+          },
+          "bold": {
+            "id": "dbANpVpx5m0jwWDlIAfOF",
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "DEFAULT"
+          },
+          "italic": {
+            "id": "eiTeEx4Qi5wFu3PPqGX2m",
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "DEFAULT"
+          },
+          "underlined": {
+            "id": "NgyBUI-T50jHHCw9KDb64",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "DEFAULT"
+          },
+          "alignment": {
+            "id": "49fQdqC_xSXf8idl39EPA",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          },
+          "color": {
+            "id": "LPMJm3KGv9gwfFBfcdHWP",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "DEFAULT"
+          },
+          "backgroundColor": {
+            "id": "gpSNteGEH9mZH8ZNWoypX",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "DEFAULT"
+          }
+        }
+      },
+      {
+        "id": "6eMbRdAUqHYk2cyiEUHf2",
+        "type": "TableLayout",
+        "tableLayout": {
+          "id": "2GYH29CUI7tDS9zRv5hx_",
+          "columnCount": 3,
+          "rowCount": 3,
+          "columnProperties": [],
+          "rowProperties": [],
+          "cells": [
+            {
+              "id": "9RLOIhew34eiP1WmcN0G_",
+              "refId": "Sa9aRRqJc63l-C2Yq8L-x",
+              "column": 0,
+              "row": 0
+            },
+            {
+              "id": "rIfMXgZkYNiyJGPp6kVJp",
+              "refId": "lyvsetcPXilQmMb4q4heG",
+              "column": 2,
+              "row": 0
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "ipgWT2VNrP_BTWJ2NaSS2",
+          "borderStyle": "Solid",
+          "borderWidth": 1,
+          "borderColor": "#b94646"
+        }
+      },
+      {
+        "id": "Sa9aRRqJc63l-C2Yq8L-x",
+        "type": "Text",
+        "text": {
+          "id": "IOU-IPft0YTutG59ONd7S",
+          "text": "<p><span entity-id=\"cQiIumVpRRGHTWp6zqPNd\" entity-type=\"Field\"><span style=\"\">Person/person/name1</span></span></p>",
+          "entities": [
+            {
+              "id": "8axRuu2EBHCwl2gGBDfYN",
+              "refId": "cQiIumVpRRGHTWp6zqPNd"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "NNWabADmNixPff1CyrexR",
+          "textStyleId": {
+            "id": "EbW1k82ZLjYEZjyMDtPr2",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "ZtGB3X69JxxxRXlddAJxX",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        }
+      },
+      {
+        "id": "cQiIumVpRRGHTWp6zqPNd",
+        "type": "Field",
+        "field": {
+          "id": "FIELD_1",
+          "model": "Person",
+          "path": "/person/name1"
+        }
+      },
+      {
+        "id": "lyvsetcPXilQmMb4q4heG",
+        "type": "Text",
+        "text": {
+          "id": "EA8chyRq15F_8vtiXUrg5",
+          "text": "<p><span entity-id=\"fSze_ZrWUV33cqLm79vrn\" entity-type=\"Calculation\"><span style=\"\">Calculation</span></span></p>",
+          "entities": [
+            {
+              "id": "bvCrpkJU-qdLbFB5FEjwH",
+              "refId": "fSze_ZrWUV33cqLm79vrn"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "yhwc_DwrQCojN3LZCO1fT",
+          "textStyleId": {
+            "id": "JFpN9QMIICcgc17lRzZYb",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "a76u9OLXsGPvveD11YEVH",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        }
+      },
+      {
+        "id": "fSze_ZrWUV33cqLm79vrn",
+        "type": "Calculation",
+        "calculation": {
+          "id": "FEtDQ_UQP779f6m0GyCRa",
+          "model": "Person",
+          "name": "Calculation",
+          "computationAlternatives": [
+            {
+              "id": "CALCULATION_COMPUTATION_2",
+              "operation": "[Person/person/date]"
+            }
+          ]
+        }
+      },
+      {
+        "id": "vx7M29TzOkzTRtlg_i41N",
+        "type": "LineChart",
+        "lineChart": {
+          "id": "LINE_CHART_BASE_1",
+          "model": "Person",
+          "basePath": "/person/repeat",
+          "dimensions": {
+            "id": "BHPZo46bueaD58x7neKVw",
+            "height": {
+              "id": "354_iacKV-kCrwENFJ_BD",
+              "value": 50,
+              "unit": "Millimeter"
+            },
+            "width": {
+              "id": "jl0lhCytdrv2oY3UQ3tuE",
+              "value": 40,
+              "unit": "Millimeter"
+            }
+          },
+          "labelX": {
+            "id": "okQntTek8VdbdICsniYFT",
+            "path": "/content/elementDefinitions/lineChart/labelX/value/",
+            "source": "UNSET"
+          },
+          "labelY": {
+            "id": "m-HsGTDSFd7QLwb7WD9rP",
+            "path": "/content/elementDefinitions/lineChart/labelY/value/",
+            "source": "UNSET"
+          },
+          "orientation": "Horizontal",
+          "title": {
+            "id": "_JaNzeqf-UfClY7fWfpgB",
+            "path": "/content/elementDefinitions/lineChart/title/value/",
+            "source": "UNSET"
+          },
+          "data": [
+            {
+              "id": "LINE_CHART_DATA_1",
+              "valueField": "/person/repeat/name"
+            },
+            {
+              "id": "8L1oixVtAM18oD3OqbMnD",
+              "valueField": "/person/repeat/name"
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "f1bcMsbY-_QjDGHDw9nwI"
+        }
+      },
+      {
+        "id": "hbfbVER8VMWH5-J_1N25o",
+        "type": "PieChart",
+        "pieChart": {
+          "id": "PIE_CHART_BASE_1",
+          "model": "Person",
+          "basePath": "/person/repeat",
+          "dimensions": {
+            "id": "N-KLN3MDF5OhWDSyj_vOH",
+            "height": {
+              "id": "j2u1CH_TtDTwp3fKj11Df",
+              "value": 50,
+              "unit": "Millimeter"
+            },
+            "width": {
+              "id": "yndJxRd16OsgJxJ4jNlTZ",
+              "value": 40,
+              "unit": "Millimeter"
+            }
+          },
+          "title": {
+            "id": "rBdPtprKd0SYLh4-tU4jH",
+            "path": "/content/elementDefinitions/pieChart/title/value/",
+            "source": "UNSET"
+          },
+          "data": {
+            "id": "PIE_CHART_DATA_1",
+            "keyField": "/person/repeat/name",
+            "labelIsNumeration": true,
+            "valueField": "/person/repeat/name"
+          }
+        },
+        "borderProperties": {
+          "id": "f5MoM9LCAi8BciF3Kbsv5"
+        }
+      },
+      {
+        "id": "1P7LmpygIT5vvOzJ47EUM",
+        "type": "BoundingBox",
+        "boundingBox": {
+          "id": "nmc2lMXm1YYUfpE_9vEEY",
+          "dimensions": {
+            "id": "1EK6eDueb_nqs6ZPvWolE",
+            "height": {
+              "id": "-E2L1MW0HuyNfIsBhH6_K",
+              "value": 50,
+              "unit": "Millimeter"
+            },
+            "width": {
+              "id": "aJPD86B94PPCSYkBuahWb",
+              "value": 176,
+              "unit": "Millimeter"
+            }
+          },
+          "elementReferences": []
+        },
+        "borderProperties": {
+          "id": "S35tE-y5m-FUL-DJfCpYP"
+        }
+      },
+      {
+        "id": "B-6leiISZNRltK8mFOUkV",
+        "type": "Area",
+        "area": {
+          "id": "k0ATz4i9DJ_lf02RMIeVW",
+          "dimensions": {
+            "id": "yJFM4b_oYnG_x3c8KFB8E",
+            "height": {
+              "id": "X0OSFsyZ1i3J30NG95jmv",
+              "value": 50,
+              "unit": "Millimeter"
+            },
+            "width": {
+              "id": "NmzV05lLno2Pmp29m8OVk",
+              "value": 178,
+              "unit": "Millimeter"
+            },
+            "overflowHeight": {
+              "id": "eHneveh1_kLDLogs5yGXj",
+              "value": 0,
+              "unit": "Millimeter"
+            }
+          },
+          "elementReferences": [],
+          "dataContexts": []
+        },
+        "borderProperties": {
+          "id": "d0gdZp03zvsGheZ0XPdW-"
+        }
+      },
+      {
+        "id": "GEu41ZVxIW9f7f8iI9oW5",
+        "type": "Switch",
+        "switch": {
+          "id": "xvALMwAzgf-cbCniVvap6",
+          "name": "Switch",
+          "model": "Person",
+          "dimensions": {
+            "id": "q8JTUCvF7K0jPPPZGgGIR",
+            "height": {
+              "id": "qb99mHFC9ZiAi_uTxqncy",
+              "value": 50,
+              "unit": "Millimeter"
+            },
+            "width": {
+              "id": "5Grco7vPRbP4voIBL4bzU",
+              "value": 177,
+              "unit": "Millimeter"
+            }
+          },
+          "cases": [
+            {
+              "id": "SWITCH_CASE_COMPUTATION_1",
+              "precondition": "[Person/person/date]",
+              "refId": "1h4gHRp-F8IiGGROB5vWp"
+            },
+            {
+              "id": "SWITCH_CASE_COMPUTATION_2",
+              "precondition": "[Person/person/name1]",
+              "refId": "sL2q81D6dhyWcOemGpkMB"
+            }
+          ]
+        }
+      },
+      {
+        "id": "1h4gHRp-F8IiGGROB5vWp",
+        "type": "Area",
+        "area": {
+          "id": "ge_YrhgmkbHF5AfhREqXH",
+          "dimensions": {
+            "id": "q8JTUCvF7K0jPPPZGgGIR",
+            "height": {
+              "id": "qb99mHFC9ZiAi_uTxqncy",
+              "value": 50,
+              "unit": "Millimeter"
+            },
+            "width": {
+              "id": "5Grco7vPRbP4voIBL4bzU",
+              "value": 177,
+              "unit": "Millimeter"
+            },
+            "overflowHeight": {
+              "id": "caT5bZlPqi46G2SL5Kjih",
+              "value": 0,
+              "unit": "Millimeter"
+            }
+          },
+          "elementReferences": [],
+          "dataContexts": []
+        }
+      },
+      {
+        "id": "sL2q81D6dhyWcOemGpkMB",
+        "type": "Area",
+        "area": {
+          "id": "p9FNnfQFqH_dhJbLv0dJV",
+          "dimensions": {
+            "id": "q8JTUCvF7K0jPPPZGgGIR",
+            "height": {
+              "id": "qb99mHFC9ZiAi_uTxqncy",
+              "value": 50,
+              "unit": "Millimeter"
+            },
+            "width": {
+              "id": "5Grco7vPRbP4voIBL4bzU",
+              "value": 177,
+              "unit": "Millimeter"
+            },
+            "overflowHeight": {
+              "id": "yDluwsB8nuron7RPbpz6V",
+              "value": 0,
+              "unit": "Millimeter"
+            }
+          },
+          "elementReferences": [
+            {
+              "id": "w5BY-kU6DjwOAsd9-AunS",
+              "refId": "fQ_Ea16k9eUMYdKVRmtoU",
+              "position": {
+                "id": "UP41jY5qRG0-FAGUDSTlO",
+                "x": {
+                  "id": "7B17KHeimo2G8AiadCWyj",
+                  "value": 57,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "dEBrLfgSa25alDFREBLxM",
+                  "value": 16,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "1MbcGSQxeqD3IV5M2TUnU",
+                "minHeight": {
+                  "id": "pIUAneEwpZdnkSDtgBkSa",
+                  "value": 18,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "BGrZ3NgoRufU-LVAbFskC",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "5yWCHTe2Eo0S9NPy-cJeD"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "QBgZioQa4dG6mnnmS9LOH",
+                "source": "INHERITED",
+                "path": "/content/elementDefinitions/area/elementReferences/pageBreakBehavior/value/",
+                "reference": "NCcm9pGdr-3fWNu2iP4-M"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      },
+      {
+        "id": "fQ_Ea16k9eUMYdKVRmtoU",
+        "type": "Text",
+        "text": {
+          "id": "6Fy0ayV-yKzugjI_TxRh-",
+          "text": "<p><span entity-id=\"FpgjGTNIMCKROLyjySa9N\" entity-type=\"Field\"><span style=\"\">Person/person/name1</span></span></p>\n<p><br></p>\n<p><span entity-id=\"WESIB4zVSBsVPT4puZ_AY\" entity-type=\"Calculation\"><span style=\"\">Calculation Switch</span></span></p>",
+          "entities": [
+            {
+              "id": "0CLoDXRfM_Fhg_q5f7aTo",
+              "refId": "FpgjGTNIMCKROLyjySa9N"
+            },
+            {
+              "id": "wGkPEDwGUfPb46R57vNJ4",
+              "refId": "WESIB4zVSBsVPT4puZ_AY"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "QPHdt9EeanC4x9NCiaQl-",
+          "textStyleId": {
+            "id": "nNhA38hC4BKL7cFEWmvHC",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "f441sdHwZbxgRgza5BipV",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "3vJSv8Mc0AmYq0Y6h6odO"
+        }
+      },
+      {
+        "id": "FpgjGTNIMCKROLyjySa9N",
+        "type": "Field",
+        "field": {
+          "id": "FIELD_6",
+          "model": "Person",
+          "path": "/person/name1"
+        }
+      },
+      {
+        "id": "WESIB4zVSBsVPT4puZ_AY",
+        "type": "Calculation",
+        "calculation": {
+          "id": "0OXMqi3HXzEm5WwqGwhfQ",
+          "model": "Person",
+          "name": "Calculation Switch",
+          "computationAlternatives": [
+            {
+              "id": "CALCULATION_COMPUTATION_5",
+              "operation": "[Person/person/name1]",
+              "precondition": "FieldFilled(Person/person/date)"
+            }
+          ]
+        }
+      },
+      {
+        "id": "v7ZE6NaGF-Mi2sJYvhR-X",
+        "type": "BarChart",
+        "barChart": {
+          "id": "BAR_CHART_BASE_1",
+          "model": "Person",
+          "basePath": "/person/repeat",
+          "dimensions": {
+            "id": "xlmK18dItDIVLrwAsP9rl",
+            "height": {
+              "id": "fXT3bvYb7PIQ9RJvEzaA5",
+              "value": 50,
+              "unit": "Millimeter"
+            },
+            "width": {
+              "id": "BiuTpE7FjO5WrwDspFITT",
+              "value": 40,
+              "unit": "Millimeter"
+            }
+          },
+          "labelX": {
+            "id": "mGPBZs1WQ57Llf-WfYIPY",
+            "path": "/content/elementDefinitions/barChart/labelX/value/",
+            "source": "UNSET"
+          },
+          "labelY": {
+            "id": "SyqLCJ72Epsu7GYezDubw",
+            "path": "/content/elementDefinitions/barChart/labelY/value/",
+            "source": "UNSET"
+          },
+          "orientation": "Horizontal",
+          "title": {
+            "id": "tUWbaMulhhv0hid1vtWJr",
+            "path": "/content/elementDefinitions/barChart/title/value/",
+            "source": "UNSET"
+          },
+          "data": [
+            {
+              "id": "BAR_CHART_DATA_1",
+              "valueField": "/person/repeat/name",
+              "keyField": "/person/repeat/name"
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "a742HqHNk1sjBh5Hj0iUj"
+        }
+      },
+      {
+        "id": "TeJ2pZ87xFZj0aOuCoQTs",
+        "type": "Area",
+        "area": {
+          "id": "l4VDV80s0RbbwIJDzSfWg",
+          "dimensions": {
+            "id": "uIZHbS2scJIp9KEnuykMy",
+            "height": {
+              "id": "QEkqMyyH19mkBPGMdFH0P",
+              "value": 50,
+              "unit": "Millimeter"
+            },
+            "width": {
+              "id": "A6zwXHolh7qAfD68cqFck",
+              "value": 178,
+              "unit": "Millimeter"
+            },
+            "overflowHeight": {
+              "id": "Uv6xwvuM1nYh2wh1ObDWS",
+              "value": 0,
+              "unit": "Millimeter"
+            }
+          },
+          "elementReferences": [
+            {
+              "id": "kCiUyoVmZt_wDS6QSl_0Z",
+              "refId": "lrEHo7CNJ7iJF57kfGVfU",
+              "position": {
+                "id": "kNQjOe2mLUv-fnfy3BRAM",
+                "x": {
+                  "id": "VF5n8KcrLxLtLsdPhKFqV",
+                  "value": 59,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "84z1fnGSOvORohLPkRuFy",
+                  "value": 16,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "pMWQJMFnl_KUV36kRxzUV",
+                "minHeight": {
+                  "id": "dnXNsPz8h3uIOUu-Mkvs-",
+                  "value": 6,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "f_bF-6K2Bk9iTC3hfJjsU",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "_YhdQgizrslO3zw0jXUb2"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "yCgLpEpjNnti3S16LyRM5",
+                "source": "INHERITED",
+                "path": "/content/elementDefinitions/area/elementReferences/pageBreakBehavior/value/",
+                "reference": "8wRMQ_QnNkQtuUE5VT9tC"
+              }
+            }
+          ],
+          "dataContexts": [
+            {
+              "id": "REPEATABLE_AREA_1",
+              "model": "Person",
+              "path": "/person/repeat",
+              "isRepetition": true
+            }
+          ]
+        },
+        "borderProperties": {
+          "id": "IWVBeLZgiRGCagEnW2CqG"
+        }
+      },
+      {
+        "id": "lrEHo7CNJ7iJF57kfGVfU",
+        "type": "Text",
+        "text": {
+          "id": "6UXb4yge3-Uu9YZbeCucB",
+          "text": "<p><span entity-id=\"oXfBNFneib9D0Eq5crHMZ\" entity-type=\"Field\"><span style=\"\">Person/person/repeat/name</span></span><span style=\"\"> </span><span entity-id=\"-4_3w1aV8Cu4PYfSgCnxW\" entity-type=\"Calculation\"><span style=\"\">Calculation</span></span></p>",
+          "entities": [
+            {
+              "id": "amLa67-AtDY0CxxtURwKR",
+              "refId": "oXfBNFneib9D0Eq5crHMZ"
+            },
+            {
+              "id": "Dunb2GSkPUE5uCWLBg65Z",
+              "refId": "-4_3w1aV8Cu4PYfSgCnxW"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "1wMfimWCvOc0HSTuLho6O",
+          "textStyleId": {
+            "id": "q-SEkibh4TwVKQWmdQL9a",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "ZIn6ff3SFKUD1UeJZQw-K",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "qlhHInUACkgxAN99iaXmf"
+        }
+      },
+      {
+        "id": "oXfBNFneib9D0Eq5crHMZ",
+        "type": "Field",
+        "field": {
+          "id": "FIELD_4",
+          "model": "Person",
+          "path": "/person/repeat/name"
+        }
+      },
+      {
+        "id": "-4_3w1aV8Cu4PYfSgCnxW",
+        "type": "Calculation",
+        "calculation": {
+          "id": "CvEeP6giy57LCxC5o2tZl",
+          "model": "Person",
+          "name": "Calculation",
+          "computationAlternatives": [
+            {
+              "id": "CALCULATION_COMPUTATION_3",
+              "operation": "[Person/person/date]",
+              "precondition": "FieldFilled(Person/person/date)"
+            }
+          ],
+          "displayOptions": {
+            "id": "Tu0ccK6wUaPrDDvsAvJ1M",
+            "displayType": "Date"
+          },
+          "fieldType": {
+            "id": "h5ixoBhxDDsknQYELavit",
+            "fieldType": "String"
+          }
+        }
+      },
+      {
+        "id": "aMgyrcA9UuRQFeiFrjS1e",
+        "type": "Text",
+        "text": {
+          "id": "nP33Nro7R_C2b577yKLl1",
+          "text": "<p><span entity-id=\"ZWJCUS4E4-N3OKmlvnJ5z\" entity-type=\"Field\"><span style=\"\">Person/person/repeat/name</span></span></p>\n<p><br></p>\n<p><span entity-id=\"HVYOI4WfybfQpXmwKFyYo\" entity-type=\"Calculation\"><span style=\"\">Calculation</span></span></p>",
+          "entities": [
+            {
+              "id": "A4zLCH4rEa2Kk-MI-ST5s",
+              "refId": "ZWJCUS4E4-N3OKmlvnJ5z"
+            },
+            {
+              "id": "Ki9Ty5CL0MniRjEJ45Wa5",
+              "refId": "HVYOI4WfybfQpXmwKFyYo"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "ffDIiIw6FacbvrUArOHGi",
+          "textStyleId": {
+            "id": "fQM0sCbZoJzqqnXRwQK0o",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "1msnRjrEUskZb5zph2TEG",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "YeRjcCfFNxHSI_2EFCnBr"
+        }
+      },
+      {
+        "id": "ZWJCUS4E4-N3OKmlvnJ5z",
+        "type": "Field",
+        "field": {
+          "id": "FIELD_5",
+          "model": "Person",
+          "path": "/person/repeat/name"
+        }
+      },
+      {
+        "id": "HVYOI4WfybfQpXmwKFyYo",
+        "type": "Calculation",
+        "calculation": {
+          "id": "HNr0rEyFMzqksBEuAKGKT",
+          "model": "Person",
+          "name": "Calculation",
+          "computationAlternatives": [
+            {
+              "id": "CALCULATION_COMPUTATION_4",
+              "operation": "[Person/person/repeat/name]",
+              "precondition": "FieldFilled(Person/person/date)"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "example": {
+    "stringField": "str",
+    "numberField": 999,
+    "dateField": "2023-11-01T09:30:00",
+    "repeatable": [
+      {
+        "stringField": "entry4",
+        "numberField": 44
+      },
+      {
+        "stringField": "entry5",
+        "numberField": 55
+      }
+    ]
+  }
+}

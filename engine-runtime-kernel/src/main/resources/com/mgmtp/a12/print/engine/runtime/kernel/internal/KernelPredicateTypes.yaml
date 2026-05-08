@@ -1,0 +1,1193 @@
+# SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+#
+# Copyright (c) 2012-2026 mgm technology partners GmbH
+#
+# Dual License
+# ------------
+# This source file is part of the mgm A12 Platform and available under
+# a choice of two different licenses:
+#
+# 1. Open-Source License - EUPL v1.2
+#    You may redistribute and/or modify this file under the terms of the
+#    European Union Public License, version 1.2 - see https://eupl.eu/.
+#
+# 2. Commercial License
+#    Alternatively, you may obtain a commercial license from
+#    mgm technology partners GmbH, that permits use of this software
+#    under different terms (including support and maintenance services).
+#
+#    Please contact a12-license@mgm-tp.com for more information.
+#
+# You must select and comply with exactly one of the above license options.
+#
+# Warranty Disclaimer (applies to either option)
+# ----------------------------------------------
+# THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND,
+# WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
+# LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+predicates:
+    Abs:
+        type:
+            - NUMBER
+        parameters:
+            -   Value:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+                        - CONSTANT
+    AbsValue:
+        type:
+            - NUMBER
+        parameters:
+            -   Field:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+    AddDays:
+        type:
+            - DATE
+            - DATE_TIME
+        parameters:
+            -   Date:
+                    type:
+                        - DATE
+                        - DATE_TIME
+                    accepts:
+                        - PREDICATE
+                        - CONSTANT
+            -   Integer:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+                        - CONSTANT
+    AddHours:
+        type:
+            - DATE_TIME
+        parameters:
+            -   DateTime:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - PREDICATE
+                        - CONSTANT
+            -   Integer:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+                        - CONSTANT
+    AddMinutes:
+        type:
+            - DATE_TIME
+        parameters:
+            -   DateTime:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - PREDICATE
+                        - CONSTANT
+            -   Integer:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+                        - CONSTANT
+    AddMonths:
+        type:
+            - DATE
+            - DATE_TIME
+        parameters:
+            -   Date:
+                    type:
+                        - DATE
+                        - DATE_TIME
+                    accepts:
+                        - PREDICATE
+                        - CONSTANT
+            -   Integer:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+                        - CONSTANT
+    AddSeconds:
+        type:
+            - DATE_TIME
+        parameters:
+            -   DateTime:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - PREDICATE
+                        - CONSTANT
+            -   Integer:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+                        - CONSTANT
+    AddYears:
+        type:
+            - DATE
+            - DATE_TIME
+        parameters:
+            -   Date:
+                    type:
+                        - DATE
+                        - DATE_TIME
+                    accepts:
+                        - PREDICATE
+                        - CONSTANT
+            -   Integer:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+                        - CONSTANT
+    AllFieldsFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    AllGroupsFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   GroupList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    AtLeastOneDateRangeOverlaps:
+        type:
+            - BOOLEAN
+        inclusion:
+            left:
+                -   Field:
+                        type:
+                            - DATE_RANGE
+                        accepts:
+                            - VARIABLE
+            right:
+                -   FieldList:
+                        type:
+                            - UNKNOWN
+                        accepts:
+                            - VARIABLE
+    AtLeastOneFieldFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    AtLeastOneFieldValueIncludedInValueList:
+        type:
+            - BOOLEAN
+        inclusion:
+            left:
+                -   FieldList:
+                        type:
+                            - UNKNOWN
+                        accepts:
+                            - VARIABLE
+            right:
+                -   ValueList:
+                        type:
+                            - UNKNOWN
+                        accepts:
+                            - DEREFERENCE
+    AtLeastOneGroupFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   GroupList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    CurrentRepetition:
+        type:
+            - NUMBER
+        parameters:
+            -   Group:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    CustomCondition:
+        type:
+            - BOOLEAN
+        parameters:
+            -   Condition:
+                    type:
+                        - STRING
+                    accepts:
+                        - CONSTANT
+    Date:
+        type:
+            - DATE
+        parameters:
+            -   Day:
+                    type:
+                        - NUMBER
+                        - STRING
+                    accepts:
+                        - CONSTANT
+                        - VARIABLE
+                        - PREDICATE
+            -   Month:
+                    type:
+                        - NUMBER
+                        - STRING
+                    accepts:
+                        - CONSTANT
+                        - VARIABLE
+                        - PREDICATE
+            -   Century:
+                    type:
+                        - NUMBER
+                        - STRING
+                    accepts:
+                        - CONSTANT
+                        - VARIABLE
+                        - PREDICATE
+            -   Year:
+                    type:
+                        - NUMBER
+                        - STRING
+                    accepts:
+                        - CONSTANT
+                        - VARIABLE
+                        - PREDICATE
+    DateFromDateTime:
+        type:
+            - DATE
+        parameters:
+            -   DateTime:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+                        - VARIABLE
+                        - PREDICATE
+    DateRangesOverlap:
+        type:
+            - BOOLEAN
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    DateTime:
+        type:
+            - DATE_TIME
+        parameters:
+            -   Date:
+                    type:
+                        - STRING
+                        - DATE
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+                        - CONSTANT
+            -   Time:
+                    type:
+                        - TIME
+                        - STRING
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+                        - CONSTANT
+    DayFromDate:
+        type:
+            - NUMBER
+        parameters:
+            -   X:
+                    type:
+                        - DATE
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    DifferenceInDays:
+        type:
+            - NUMBER
+        parameters:
+            -   date1:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+            -   date2:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    DifferenceInHours:
+        type:
+            - NUMBER
+        parameters:
+            -   date1:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+            -   date2:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    DifferenceInMinutes:
+        type:
+            - NUMBER
+        parameters:
+            -   date1:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+            -   date2:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    DifferencesInMonths:
+        type:
+            - NUMBER
+        parameters:
+            -   date1:
+                    type:
+                        - DATE
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+            -   date2:
+                    type:
+                        - DATE
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    DifferenceInSeconds:
+        type:
+            - NUMBER
+        parameters:
+            -   date1:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+            -   date2:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    DifferenceInYears:
+        type:
+            - NUMBER
+        parameters:
+            -   date1:
+                    type:
+                        - DATE
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+            -   date2:
+                    type:
+                        - DATE
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    DiffersWithToleranceRange1:
+        type:
+            - BOOLEAN
+        parameters:
+            -   left:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+            -   right:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+    DiffersWithToleranceRange2:
+        type:
+            - BOOLEAN
+        parameters:
+            -   left:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+            -   right:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+    DiffersWithToleranceRange5:
+        type:
+            - BOOLEAN
+        parameters:
+            -   left:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+            -   right:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+    DiffersWithToleranceRange10:
+        type:
+            - BOOLEAN
+        parameters:
+            -   left:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+            -   right:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+    EndOfDateRange:
+        type:
+            - DATE
+        parameters:
+            -   DateRange:
+                    type:
+                        - DATE_RANGE
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    FieldFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   Field:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    FieldNotFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   Field:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    FieldValueIncludedInValueList:
+        type:
+            - BOOLEAN
+        parameters:
+            -   Field:
+                    type:
+                        - NUMBER
+                        - STRING
+                        - ENUMERATION
+                    accepts:
+                        - VARIABLE
+            -   ValueList:
+                    type:
+                        - NUMBER
+                        - STRING
+                        - ENUMERATION
+                    accepts:
+                        - CONSTANT
+    FieldValueNotIncludedInValueList:
+        type:
+            - BOOLEAN
+        parameters:
+            -   Field:
+                    type:
+                        - NUMBER
+                        - STRING
+                        - ENUMERATION
+                    accepts:
+                        - VARIABLE
+            -   ValueList:
+                    type:
+                        - NUMBER
+                        - STRING
+                        - ENUMERATION
+                    accepts:
+                        - CONSTANT
+    FieldValuesNotUnique:
+        type:
+            - BOOLEAN
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    FieldValueAsString:
+        type:
+            - STRING
+        parameters:
+            -   Field:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+    FieldValueAsNumber:
+        type:
+            - NUMBER
+        parameters:
+            -   Field:
+                    type:
+                        - STRING
+                        - ENUMERATION
+                    accepts:
+                        - VARIABLE
+    FieldsNotCollectivelyFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    FirstFilledValue:
+        type:
+            - BOOLEAN
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    GroupFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   Group:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    GroupsNotCollectivelyFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   GroupList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    GroupNotFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   Group:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    HoursFromTime:
+        type:
+            - NUMBER
+        parameters:
+            -   X:
+                    type:
+                        - TIME
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    Invalid:
+        type:
+            - BOOLEAN
+        parameters$either:
+            DateConstruct:
+                parameters:
+                    -   X:
+                            type:
+                                - DATE
+                                - DATE_TIME
+                            accepts:
+                                - VARIABLE
+                                - CONSTANT
+                                - PREDICATE
+            CustomType:
+                parameters:
+                    -   X:
+                            type:
+                                - UNKNOWN
+                            accepts:
+                                - VARIABLE
+                    -   CustomType:
+                            type:
+                                - CUSTOM
+                            accepts:
+                                - CONSTANT
+    Length:
+        type:
+            - NUMBER
+        parameters:
+            -   Field:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    Max:
+        type:
+            - DATE
+            - NUMBER
+        parameters:
+            -   ValueList:
+                    type:
+                        - DATE
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+                        - CONSTANT
+    MaxValue:
+        type:
+            - DATE
+            - NUMBER
+        parameters:
+            -   FieldList:
+                    type:
+                        - DATE
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+    Min:
+        type:
+            - DATE
+            - NUMBER
+        parameters:
+            -   ValueList:
+                    type:
+                        - DATE
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+                        - CONSTANT
+    MinValue:
+        type:
+            - DATE
+            - NUMBER
+        parameters:
+            -   FieldList:
+                    type:
+                        - DATE
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+    MinutesFromTime:
+        type:
+            - NUMBER
+        parameters:
+            -   X:
+                    type:
+                        - TIME
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    MonthFromDate:
+        type:
+            - DATE
+        parameters:
+            -   DateTime:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+                        - VARIABLE
+                        - PREDICATE
+    MoreThanOneFieldFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    NoFieldFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    NoFieldValueIncludedInValueList:
+        type:
+            - BOOLEAN
+        inclusion:
+            left:
+                -   FieldList:
+                        type:
+                            - UNKNOWN
+                        accepts:
+                            - VARIABLE
+            right:
+                -   ValueList:
+                        type:
+                            - STRING
+                            - NUMBER
+                            - ENUMERATION
+                        accepts:
+                            - CONSTANT
+                            - VARIABLE
+    NoGroupFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   GroupList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    NotAllFieldsFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    NotAllFieldValuesIncludedInValueList:
+        type:
+            - BOOLEAN
+        inclusion:
+            left:
+                -   FieldList:
+                        type:
+                            - NUMBER
+                            - STRING
+                            - ENUMERATION
+                        accepts:
+                            - VARIABLE
+            right:
+                -   ValueList:
+                        type:
+                            - STRING
+                            - NUMBER
+                            - ENUMERATION
+                        accepts:
+                            - CONSTANT
+                            - VARIABLE
+    NotAllGroupsFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   GroupList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    NotExactlyOneFieldFilled:
+        type:
+            - BOOLEAN
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    Now:
+        type:
+            - DATE_TIME
+        parameters:
+    NumberOfDifferentValues:
+        type:
+            - NUMBER
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    NumberOfFilledFields:
+        type:
+            - NUMBER
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    NumberOfFilledGroups:
+        type:
+            - NUMBER
+        parameters:
+            -   GroupList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    NumberOfValueInFields:
+        type:
+            - NUMBER
+        inclusion:
+            left:
+                -   Constant:
+                        type:
+                            - NUMBER
+                            - STRING
+                            - ENUMERATION
+                            - BOOLEAN
+                        accepts:
+                            - CONSTANT
+            right:
+                -   FieldList:
+                        type:
+                            - STRING
+                            - NUMBER
+                            - ENUMERATION
+                        accepts:
+                            - VARIABLE
+    PatternMatched:
+        type:
+            - BOOLEAN
+        parameters:
+            -   StringField:
+                    type:
+                        - STRING
+                    accepts:
+                        - VARIABLE
+    PatternViolated:
+        type:
+            - BOOLEAN
+        parameters:
+            -   StringField:
+                    type:
+                        - STRING
+                    accepts:
+                        - VARIABLE
+    QuarterFromDate:
+        type:
+            - NUMBER
+        parameters:
+            -   X:
+                    type:
+                        - DATE
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    RepetitionNotUnique:
+        type:
+            - BOOLEAN
+        parameters:
+            -   FieldList:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    RangeAsNumber:
+        type:
+            - NUMBER
+        parameters:
+            -   Field:
+                    type:
+                        - STRING
+                        - DATE_FRAGMENT
+                    accepts:
+                        - VARIABLE
+            -   Start:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+            -   End:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+    RangeAsString:
+        type:
+            - STRING
+        parameters:
+            -   Field:
+                    type:
+                        - STRING
+                        - DATE_FRAGMENT
+                    accepts:
+                        - VARIABLE
+            -   Start:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+            -   End:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+    RoundAccounting:
+        type:
+            - NUMBER
+        parameters:
+            -   Value:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+            -   DecimalPlaces:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+    RoundAccountingValue:
+        type:
+            - NUMBER
+        parameters:
+            -   Value:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+            -   DecimalPlaces:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+    RoundDown:
+        type:
+            - NUMBER
+        parameters:
+            -   Value:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+            -   DecimalPlaces:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+    RoundDownValue:
+        type:
+            - NUMBER
+        parameters:
+            -   Value:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+            -   DecimalPlaces:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+    RoundUp:
+        type:
+            - NUMBER
+        parameters:
+            -   Value:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - DEREFERENCE
+            -   DecimalPlaces:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+    RoundUpValue:
+        type:
+            - NUMBER
+        parameters:
+            -   Value:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+            -   DecimalPlaces:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+    SecondsFromTime:
+        type:
+            - NUMBER
+        parameters:
+            -   X:
+                    type:
+                        - TIME
+                        - DATE_TIME
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    StartOfDateRange:
+        type:
+            - DATE
+        parameters:
+            -   DateRange:
+                    type:
+                        - DATE_RANGE
+                    accepts:
+                        - VARIABLE
+                        - PREDICATE
+    Sum:
+        type:
+            - NUMBER
+        parameters:
+            -   FieldList:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+    SumOfProducts:
+        type:
+            - NUMBER
+        parameters:
+            -   Field1:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+            -   Field2:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - VARIABLE
+    Time:
+        type:
+            - TIME
+        parameters:
+            -   Hours:
+                    type:
+                        - NUMBER
+                        - STRING
+                    accepts:
+                        - CONSTANT
+                        - VARIABLE
+                        - PREDICATE
+            -   Minutes:
+                    type:
+                        - NUMBER
+                        - STRING
+                    accepts:
+                        - CONSTANT
+                        - VARIABLE
+                        - PREDICATE
+            -   Seconds:
+                    type:
+                        - NUMBER
+                        - STRING
+                    accepts:
+                        - CONSTANT
+                        - VARIABLE
+                        - PREDICATE
+    TimeFromDateTime:
+        type:
+            - TIME
+        parameters:
+            -   DateTime:
+                    type:
+                        - DATE_TIME
+                    accepts:
+                        - PREDICATE
+                        - VARIABLE
+    Today:
+        type:
+            - DATE
+        parameters:
+    Valid:
+        type:
+            - BOOLEAN
+        parameters$either:
+            DateConstruct:
+                parameters:
+                    -   X:
+                            type:
+                                - DATE
+                                - DATE_TIME
+                            accepts:
+                                - VARIABLE
+                                - CONSTANT
+                                - PREDICATE
+            CustomType:
+                parameters:
+                    -   X:
+                            type:
+                                - UNKNOWN
+                            accepts:
+                                - VARIABLE
+                    -   CustomType:
+                            type:
+                                - CUSTOM
+                            accepts:
+                                - CONSTANT
+    ValueAsDate:
+        type:
+            - DATE
+        parameters:
+            -   Field:
+                    type:
+                        - DATE_FRAGMENT
+                    accepts:
+                        - VARIABLE
+            -   DateSpecification:
+                    type:
+                        - UNKNOWN
+                    accepts:
+                        - VARIABLE
+    ValueNotConsistent:
+        type:
+            - BOOLEAN
+        consistence:
+            left:
+                -   Field:
+                        type:
+                            - ENUMERATION
+                        accepts:
+                            - VARIABLE
+            right:
+                -   FieldList:
+                        type:
+                            - UNKNOWN
+                        accepts:
+                            - VARIABLE
+                            - CONSTANT
+    YearFromDate:
+        type:
+            - DATE
+        parameters:
+            -   DateTime:
+                    type:
+                        - NUMBER
+                    accepts:
+                        - CONSTANT
+                        - VARIABLE
+                        - PREDICATE

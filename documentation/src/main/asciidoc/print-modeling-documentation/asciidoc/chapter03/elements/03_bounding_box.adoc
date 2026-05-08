@@ -1,0 +1,46 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Bounding Box [[BoundingBox]]
+
+The Bounding Box element provides the ability to group elements in a specific region.
+The Bounding Box functions analog to the Area, except that it does not grow with its contents and provides no option to set a data context.
+
+The properties of the Bounding Box element are determined by its <<BorderProperties, Border Properties>>.
+
+To access the <<BoundingBoxStage, Bounding Box Stage View>>,  hover over the Bounding Box and click the revealed "Edit" button in the top right-hand corner of the Bounding Box.
+
+== Bounding Box Stage View [[BoundingBoxStage]]
+The Bounding Box Stage View functions similar to the <<EditorStage, Editor Stage>>.
+
+The main difference between these Editor Stage Views are:
+
+* The Bounding Box Stage View has the dimensions of the corresponding Bounding Box.
+* The Bounding Box Stage View displays the borders of the corresponding Bounding Box.
+
+Elements inside a Bounding Box are positioned in relation to the Bounding Boxes upper left corner.
+
+Leave the Bounding Box Stage View by clicking on the desired level in the Breadcrumb navigation displayed in the top left-hand corner.
+
+[NOTE]
+====
+* The positioning of the Elements inside a Bounding Box is unaffected of the Bounding Box border. Therefore, the Elements and the Bounding Box border may overlap.
+* The height calculation and positioning of the Elements inside the Bounding Box are done independently of Elements outside the Bounding Box.
+====
+
+.Bounding Box Stage View
+image::chapter03/03_boundingBox_EditorStage.png[Bounding Box Stage View, title="Bounding Box Stage View"]

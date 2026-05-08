@@ -1,0 +1,267 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule Editor Suggestor - getRootSuggester should get suggestions for root 1`] = `
+[
+  "runtime",
+]
+`;
+
+exports[`Rule Editor Suggestor - getRootSuggester should get suggestions for root with Document Model Id 1`] = `
+[
+  "runtime",
+  "DM1",
+]
+`;
+
+exports[`Rule Editor Suggestor - getRootSuggester should get suggestions for root with Document Model Id and Document Model Alias 1`] = `
+[
+  "runtime",
+  "Alias",
+]
+`;
+
+exports[`Rule Editor Suggestor - getSuggester should get suggestions for field 1`] = `
+[
+  "Person/person/enum_field",
+  "Person/person/name1",
+  "Person/person/date",
+  "Person/person/repeat/repeat_enum_field",
+  "Person/person/repeat/name",
+  "metadata/person/enum_field/required",
+  "metadata/person/enum_field/externalDescription",
+  "metadata/person/enum_field/path",
+  "metadata/person/enum_field/label",
+  "metadata/person/enum_field/errorMessage",
+  "Person/person/enum_field_text",
+  "metadata/person/name1/required",
+  "metadata/person/name1/externalDescription",
+  "metadata/person/name1/path",
+  "metadata/person/name1/label",
+  "annotations/person/name1/annotation_person_name1",
+  "metadata/person/date/required",
+  "metadata/person/date/externalDescription",
+  "metadata/person/date/path",
+  "metadata/person/date/label",
+  "metadata/person/repeat/repeat_enum_field/required",
+  "metadata/person/repeat/repeat_enum_field/externalDescription",
+  "metadata/person/repeat/repeat_enum_field/path",
+  "metadata/person/repeat/repeat_enum_field/label",
+  "metadata/person/repeat/repeat_enum_field/errorMessage",
+  "Person/person/repeat/repeat_enum_field_text",
+  "metadata/person/repeat/name/required",
+  "metadata/person/repeat/name/externalDescription",
+  "metadata/person/repeat/name/path",
+  "metadata/person/repeat/name/label",
+  "annotations/person/repeat/name/annotation_person_repeat_name",
+  "metadata/person/repeat/required",
+  "metadata/person/repeat/externalDescription",
+  "metadata/person/repeat/path",
+  "metadata/person/repeat/repeatability",
+  "metadata/person/required",
+  "metadata/person/externalDescription",
+  "metadata/person/path",
+  "metadata/person/repeatability",
+  "runtime/string_var",
+  "runtime/bool_var",
+  "runtime/string_array_var*/value",
+]
+`;
+
+exports[`Rule Editor Suggestor - getSuggester should get suggestions for field listing 1`] = `
+[
+  "value",
+  "path",
+  "name",
+  "depth",
+  "isField",
+  "currentRepetition",
+  "repetitions",
+  "currentRepetitionOfParent",
+  "repetitionsOfParent",
+  "parentName",
+  "parentPath",
+  "relativeMetadata/label",
+  "relativeMetadata/required",
+  "relativeMetadata/externalDescription",
+  "relativeMetadata/repeatability",
+  "relativeMetadata/errorMessage",
+  "relativeAnnotation/annotation.person.name1",
+  "relativeAnnotation/annotation.person.repeat.name",
+  "Person/person/enum_field",
+  "Person/person/name1",
+  "Person/person/date",
+  "metadata/person/enum_field/required",
+  "metadata/person/enum_field/externalDescription",
+  "metadata/person/enum_field/path",
+  "metadata/person/enum_field/label",
+  "metadata/person/enum_field/errorMessage",
+  "Person/person/enum_field_text",
+  "metadata/person/name1/required",
+  "metadata/person/name1/externalDescription",
+  "metadata/person/name1/path",
+  "metadata/person/name1/label",
+  "annotations/person/name1/annotation_person_name1",
+  "metadata/person/date/required",
+  "metadata/person/date/externalDescription",
+  "metadata/person/date/path",
+  "metadata/person/date/label",
+  "metadata/person/repeat/repeat_enum_field/required",
+  "metadata/person/repeat/repeat_enum_field/externalDescription",
+  "metadata/person/repeat/repeat_enum_field/path",
+  "metadata/person/repeat/repeat_enum_field/label",
+  "metadata/person/repeat/repeat_enum_field/errorMessage",
+  "Person/person/repeat/repeat_enum_field_text",
+  "metadata/person/repeat/name/required",
+  "metadata/person/repeat/name/externalDescription",
+  "metadata/person/repeat/name/path",
+  "metadata/person/repeat/name/label",
+  "annotations/person/repeat/name/annotation_person_repeat_name",
+  "metadata/person/repeat/required",
+  "metadata/person/repeat/externalDescription",
+  "metadata/person/repeat/path",
+  "metadata/person/repeat/repeatability",
+  "metadata/person/required",
+  "metadata/person/externalDescription",
+  "metadata/person/path",
+  "metadata/person/repeatability",
+  "runtime/string_var",
+  "runtime/bool_var",
+  "runtime/string_array_var*/value",
+]
+`;
+
+exports[`Rule Editor Suggestor - getSuggester should get suggestions for group 1`] = `
+[
+  "Person/person/repeat",
+  "Person/person",
+]
+`;
+
+exports[`Rule Editor Suggestor - getSuggester should get suggestions for group listing 1`] = `
+[
+  "Person/person",
+]
+`;
+
+exports[`Rule Editor Suggestor - getSuggester should get suggestions with Alias for field 1`] = `
+[
+  "PersonAlias/person/enum_field",
+  "PersonAlias/person/name1",
+  "PersonAlias/person/date",
+  "PersonAlias/person/repeat/repeat_enum_field",
+  "PersonAlias/person/repeat/name",
+  "metadata/person/enum_field/required",
+  "metadata/person/enum_field/externalDescription",
+  "metadata/person/enum_field/path",
+  "metadata/person/enum_field/label",
+  "metadata/person/enum_field/errorMessage",
+  "PersonAlias/person/enum_field_text",
+  "metadata/person/name1/required",
+  "metadata/person/name1/externalDescription",
+  "metadata/person/name1/path",
+  "metadata/person/name1/label",
+  "annotations/person/name1/annotation_person_name1",
+  "metadata/person/date/required",
+  "metadata/person/date/externalDescription",
+  "metadata/person/date/path",
+  "metadata/person/date/label",
+  "metadata/person/repeat/repeat_enum_field/required",
+  "metadata/person/repeat/repeat_enum_field/externalDescription",
+  "metadata/person/repeat/repeat_enum_field/path",
+  "metadata/person/repeat/repeat_enum_field/label",
+  "metadata/person/repeat/repeat_enum_field/errorMessage",
+  "PersonAlias/person/repeat/repeat_enum_field_text",
+  "metadata/person/repeat/name/required",
+  "metadata/person/repeat/name/externalDescription",
+  "metadata/person/repeat/name/path",
+  "metadata/person/repeat/name/label",
+  "annotations/person/repeat/name/annotation_person_repeat_name",
+  "metadata/person/repeat/required",
+  "metadata/person/repeat/externalDescription",
+  "metadata/person/repeat/path",
+  "metadata/person/repeat/repeatability",
+  "metadata/person/required",
+  "metadata/person/externalDescription",
+  "metadata/person/path",
+  "metadata/person/repeatability",
+  "runtime/string_var",
+  "runtime/bool_var",
+  "runtime/string_array_var*/value",
+]
+`;
+
+exports[`Rule Editor Suggestor - getSuggester should get suggestions with Alias for field listing 1`] = `
+[
+  "value",
+  "path",
+  "name",
+  "depth",
+  "isField",
+  "currentRepetition",
+  "repetitions",
+  "currentRepetitionOfParent",
+  "repetitionsOfParent",
+  "parentName",
+  "parentPath",
+  "relativeMetadata/label",
+  "relativeMetadata/required",
+  "relativeMetadata/externalDescription",
+  "relativeMetadata/repeatability",
+  "relativeMetadata/errorMessage",
+  "relativeAnnotation/annotation.person.name1",
+  "relativeAnnotation/annotation.person.repeat.name",
+  "PersonAlias/person/enum_field",
+  "PersonAlias/person/name1",
+  "PersonAlias/person/date",
+  "metadata/person/enum_field/required",
+  "metadata/person/enum_field/externalDescription",
+  "metadata/person/enum_field/path",
+  "metadata/person/enum_field/label",
+  "metadata/person/enum_field/errorMessage",
+  "PersonAlias/person/enum_field_text",
+  "metadata/person/name1/required",
+  "metadata/person/name1/externalDescription",
+  "metadata/person/name1/path",
+  "metadata/person/name1/label",
+  "annotations/person/name1/annotation_person_name1",
+  "metadata/person/date/required",
+  "metadata/person/date/externalDescription",
+  "metadata/person/date/path",
+  "metadata/person/date/label",
+  "metadata/person/repeat/repeat_enum_field/required",
+  "metadata/person/repeat/repeat_enum_field/externalDescription",
+  "metadata/person/repeat/repeat_enum_field/path",
+  "metadata/person/repeat/repeat_enum_field/label",
+  "metadata/person/repeat/repeat_enum_field/errorMessage",
+  "PersonAlias/person/repeat/repeat_enum_field_text",
+  "metadata/person/repeat/name/required",
+  "metadata/person/repeat/name/externalDescription",
+  "metadata/person/repeat/name/path",
+  "metadata/person/repeat/name/label",
+  "annotations/person/repeat/name/annotation_person_repeat_name",
+  "metadata/person/repeat/required",
+  "metadata/person/repeat/externalDescription",
+  "metadata/person/repeat/path",
+  "metadata/person/repeat/repeatability",
+  "metadata/person/required",
+  "metadata/person/externalDescription",
+  "metadata/person/path",
+  "metadata/person/repeatability",
+  "runtime/string_var",
+  "runtime/bool_var",
+  "runtime/string_array_var*/value",
+]
+`;
+
+exports[`Rule Editor Suggestor - getSuggester should get suggestions with Alias for group 1`] = `
+[
+  "PersonAlias/person/repeat",
+  "PersonAlias/person",
+]
+`;
+
+exports[`Rule Editor Suggestor - getSuggester should get suggestions with Alias for group listing 1`] = `
+[
+  "PersonAlias/person",
+]
+`;

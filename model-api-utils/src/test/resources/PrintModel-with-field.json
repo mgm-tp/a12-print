@@ -1,0 +1,204 @@
+{
+  "header": {
+    "id": "LIZaGfXaMcuNB3POeNZqJ",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "DomainPerson",
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "DomainPerson"
+      }
+    ],
+    "description": "Test Beschreibung"
+  },
+  "content": {
+    "id": "ID_8305013a-ab83-4105-83f2-9094d12664ad",
+    "general": {
+      "id": "ID_aed875a1-a660-4273-966b-c43a8c86b4f1",
+      "metadata": {
+        "id": "ID_98523b41-f2c5-4b5b-b067-b963395663bb",
+        "titleComputation": [
+          {
+            "id": "mSDEgRiArd0c-bjQd6ID-",
+            "operation": "\"Test Titel\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "pnEe4Vp2LhiA237_vQ82I",
+            "operation": "\"Test Beschreibung\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "a25ALdiSPAbfmeqDZ1WvE",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "5dGLplJXP7bEelsysCjX2",
+            "operation": "\"Test Autor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "ID_882b9736-cf6e-49cb-9dca-d48f58e950a7",
+        "fontSize": 12,
+        "model": "DomainPerson"
+      },
+      "runtimeVariables": [],
+      "textStyles": [
+        {
+          "id": "ID_16ee7898-ae39-4593-a91c-30f34d050d72"
+        }
+      ],
+      "structure": [
+        {
+          "id": "ID_5c34fba0-e15c-4ac0-8e8b-9be0a79a829e"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "ID_44aa4e83-4276-4ca5-b37c-22c14495e1ae",
+      "definitions": [
+        {
+          "id": "ID_5c34fba0-e15c-4ac0-8e8b-9be0a79a829e",
+          "title": "Erste Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "ID_2df2d070-e53f-473c-8cca-256a4ffe5528",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "ID_6aa3ad82-7e22-446f-9972-5ffd8b7e2d6b",
+              "refId": "m9eY5Yb6ccJww4yvM_hQM",
+              "position": {
+                "id": "ID_97a64521-9af2-404a-aefa-8ad40e16e503",
+                "x": {
+                  "id": "ID_a7cb83c1-9b31-443a-b5d3-418ed10f0f47",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_cfe3e0d5-d23a-4efb-bb3f-47eac63940a4",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ID_0158eb0d-05a8-46f7-bf30-652206539fee",
+                "minWidth": {
+                  "id": "ID_80694e01-3a53-4ab4-9949-366c40e3fefe",
+                  "value": 20,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_e31dbe4f-907d-47b7-94c9-34e84b9f34d7",
+                  "value": 10,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "ID_98ad6a8d-089f-4995-87a5-48352c75a098",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "Kz56TlLDtqytxTYj-DT4c",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "kbIBQQ17N57ElN9UwZ7xP",
+        "type": "Field",
+        "field": {
+          "id": "ID_006d02c6-9e80-45c9-85a5-7a2cf801c766",
+          "model": "DomainPerson",
+          "path": "/general/first"
+        }
+      },
+      {
+        "id": "m9eY5Yb6ccJww4yvM_hQM",
+        "type": "Text",
+        "textProperties": {
+          "id": "ID_2433ed88-4d51-4e56-b138-bb85fc296cd2",
+          "textStyleId": {
+            "id": "EPo0Jq-XzuJzXZdD88QBV",
+            "source": "INPUT",
+            "value": "ID_16ee7898-ae39-4593-a91c-30f34d050d72",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "_3sn7LNdt1P5TJ2r-_LL8",
+            "source": "INPUT",
+            "value": "Right",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        },
+        "borderProperties": {
+          "id": "ID_2ed3030e-06d0-481d-8828-3c1536876dec",
+          "borderWidth": 0.75,
+          "borderStyle": "Dashed",
+          "borderColor": "#000"
+        },
+        "text": {
+          "id": "ID_860b7013-8bcb-44ce-8b52-ef698bf91de1",
+          "text": "<p><span entity-id=\"kbIBQQ17N57ElN9UwZ7xP\" entity-type=\"field\">DomainPerson/general/first</span></p>",
+          "entities": [
+            {
+              "id": "ID_2aad037a-3f11-4bcf-94a9-b56d8f0c4d1e",
+              "refId": "kbIBQQ17N57ElN9UwZ7xP"
+            }
+          ]
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "ID_0343d7c3-b265-447e-88c0-d76ac93b5cfa",
+      "definitions": [
+        {
+          "id": "ID_16ee7898-ae39-4593-a91c-30f34d050d72",
+          "name": "Noto Sans Mono@16.0 within 32.0",
+          "font": "Noto Sans Mono",
+          "fontSize": 16,
+          "lineHeight": 32,
+          "semantic": "P"
+        }
+      ]
+    }
+  }
+}

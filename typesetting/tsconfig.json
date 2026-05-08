@@ -1,0 +1,11 @@
+{
+  "extends": "./node_modules/@com.mgmtp.a12.print/print-dev-tools/tsconfig.json",
+  "include": [
+    "src/main/typescript/**/*",
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./lib",
+    "rootDir": "./src/main/typescript",
+  }
+}

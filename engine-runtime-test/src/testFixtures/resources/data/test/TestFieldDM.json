@@ -1,0 +1,249 @@
+{
+  "header": {
+    "id": "TestFieldDM",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "TestFieldDM",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_cb782",
+          "name": "general",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_f00e9",
+                "name": "number_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "NumberType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Number"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Number"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_82b10",
+                "name": "text_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Text"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Text"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_28c7a",
+                "name": "boolean_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "BooleanType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Boolean"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Boolean"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_631b7",
+                "name": "date_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "DateType",
+                    "DateType": {
+                      "format": "yyyy-MM-dd"
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Date"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Date"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_a1559",
+                "name": "date_time_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "DateTimeType",
+                    "DateTimeType": {
+                      "format": "yyyy-MM-dd'T'HH:mm:ss"
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "DateTime"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "DateTime"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_f0aac",
+                "name": "time_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "TimeType",
+                    "TimeType": {
+                      "format": "HH:mm:ss"
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Time"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Time"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_bd616",
+                "name": "enum_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "EnumerationType",
+                    "EnumerationType": {
+                      "values": [
+                        {
+                          "value": "yes",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "yes"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "ja"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "no",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "no"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "nein"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Enum"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Enum"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_dbb62",
+                "name": "confirm_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "ConfirmType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Confirm"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Confirm"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

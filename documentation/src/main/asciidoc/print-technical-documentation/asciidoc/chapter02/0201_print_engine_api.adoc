@@ -1,0 +1,126 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+[#print_engine_api]
+= Print Engine API
+This section covers the _Print Engine API_, a package that provides the core abstraction and API for the usage of the Print Engine in a Java application.
+
+[#print_job]
+== PrintJob
+
+A `PrintJob` is a _job description_ for the Print Engine that executes a specific print operation for a PrintModel.
+The properties `locale` and `timezone` are needed for the localization of language specific content and dates.
+
+[source,java,title="PrintJob interface"]
+----
+include::../../sourceCode/engine-api/PrintJob.java[tag=!*]
+----
+
+[#job_manager]
+== JobManager
+
+The `JobManager` is an interface for the creation of new <<print_job, PrintJobs>> for a given <<print_model_id, _Print Model ID_>>
+and the _preparation_ of the Print Models.
+Preparing a Print Model optimizes the Print Model beforehand, analyzing its Calculations, Conditions and other dynamic elements to optimize the print operations that use the given Print Model.
+
+NOTE: The preparation is necessary for the execution of a PrintJob, but needs to be only done once for each Print Model.
+If not done manually beforehand, it will be automatically done before the start of the first PrintJob of a given Print Model.
+To optimize the calculation time of a PrintJob, is recommended to prepare all necessary Print Models manually before the PrintJob is started.
+
+[source,java,title="JobManager interface"]
+----
+include::../../sourceCode/engine-api/JobManager.java[tag=!*]
+----
+
+[#print_engine]
+== PrintEngine
+
+The `PrintEngine` is an interface for the execution of a given <<print_job, PrintJob>>, that returns a <<print_result, PrintResult>>.
+
+[source,java,title="PrintEngine interface"]
+----
+include::../../sourceCode/engine-api/PrintEngine.java[]
+----
+
+[#pdf_box_print_engine]
+== PdfBoxPrintEngine
+
+The `PdfBoxPrintEngine` is an interface for the execution of a given <<print_job, PrintJob>>, that returns a <<pdf_print_result, PdfPrintResult>>.
+
+[source,java,title="PdfBoxPrintEngine interface"]
+----
+include::../../sourceCode/engine-api/PdfBoxPrintEngine.java[]
+----
+
+[#pdf_print_engine]
+== PdfPrintEngine (Deprecated)
+
+CAUTION: Will be replaced with <<pdf_box_print_engine, PdfBoxPrintEngine>> in 2026.06.
+
+The `PdfPrintEngine` is an interface for the execution of a given <<print_job, PrintJob>>, that returns a <<pdf_print_result, PdfPrintResult>>.
+
+[source,java,title="PdfPrintEngine interface"]
+----
+include::../../sourceCode/engine-api/PdfPrintEngine.java[]
+----
+
+[#print_model_id]
+== PrintModelId
+
+[source,java,title="PrintModelId interface"]
+----
+include::../../sourceCode/engine-api/PrintModelId.java[]
+----
+
+[#print_result]
+== PrintResult
+
+A `PrintResult` is a general interface for the results of the <<print_engine, PrintEngine>>.
+It provides the option to copy the resulting PDF directly into the serverless stream instead of copying the resulting data from buffer to buffer.
+
+[source,java,title="PrintResult interface"]
+----
+include::../../sourceCode/engine-api/PrintResult.java[tag=!*]
+----
+
+[#pdf_print_result]
+== PdfPrintResult
+
+A `PdfPrintResult` is an interface for a PDF-based <<print_result, PrintResult>>.
+
+[source,java,title="PdfPrintResult interface"]
+----
+include::../../sourceCode/engine-api/PdfPrintResult.java[indent=0]
+----
+
+[#pdf_box_print_engine_config]
+== PdfBoxPrintEngineConfig
+
+The `PdfBoxPrintEngineConfig` provides options for the configuration of the Print Engine. It currently only allows integrating custom fonts.
+
+[#print_engine_config]
+== PrintEngineConfig (Deprecated)
+
+CAUTION: Will be replaced with <<pdf_box_print_engine_config, PdfBoxPrintEngineConfig>> in 2026.06.
+
+The `PrintEngineConfig` provides options for the configuration of the Print Engine.
+It allows integrating custom fonts, setting a default font and configuring the HTML-element and CSS-style whitelists.
+
+[source,java,title="PrintEngineConfig interface"]
+----
+include::../../sourceCode/engine-api/PrintEngineConfig.java[tag=!*]
+----

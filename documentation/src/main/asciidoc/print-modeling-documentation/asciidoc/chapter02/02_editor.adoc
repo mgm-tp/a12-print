@@ -1,0 +1,543 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Print Model Editor
+
+This chapter serves as an overview over the basic features and views of the Print Model Editor.
+
+== Overview [[Editing]]
+
+The Print Model Editor can be divided into 4 main areas:
+
+. Editor Header
+. Sidebar
+. Tab
+. Editor Stage
+
+=== Editor Header [[EditorHeader]]
+The Header of the Print Model Editor contains the following buttons.
+These can be found in the top right-hand corner of the editor:
+
+Undo:: Reverts the last change in the current view.
+Redo:: Reverts the last *Undo* in the current view.
+Errors:: Shows the number of error messages for the current Print Model.
+Warnings:: Shows the number of warning messages for the current Print Model.
+Print:: Opens the <<Preview, Preview>> for the current Print Model.
+Close:: Close the Current Model
+
+=== Sidebar [[SidebarPME]]
+The Sidebar serves as the main navigation.
+The Sidebar can be used to open the following tabs:
+
+. General
+. Schema
+. Text Styles
+. Segment
+. Section
+. Watermark
+. Commit changes
+
+The standard "Save", "Cancel" and "Deploy" buttons are present at the bottom of the Sidebar. In the Print Model Editor, the "Save" button at the bottom of the sidebar opens the <<CommitChangesTab, Commit Changes Tab>>.
+
+=== Tab [[TabPME]]
+Once an item is selected in the Sidebar, the respective Tab is opened.
+The Tab may be maximized, minimized or closed using the buttons in the top right-hand corner of the Tab.
+
+[NOTE]
+====
+Only Tabs with an <<EditorStage, Editor Stage>> may be maximized, minimized or closed.
+
+The "General", "Text Styles" and "Commit Changes" Tab therefore do not have these options.
+====
+
+=== Editor Stage [[EditorStage]]
+The Editor Stage is used for placing and editing Print Model Elements.
+The Editor Stage can be accessed from the following tabs:
+
+* <<SegmentTab, Segment Tab>>
+* <<SectionTab, Section Tab>>
+* <<WatermarkTab, Watermark Tab>>
+
+[CAUTION]
+====
+The Editor Stage is shown when the <<SchemaTab, Schema Tab>> is open to give a better overview of the current model.
+
+Placing and editing of the Print Model Elements should nevertheless be made through the respective tabs to ensure the correct Segment, Section or Watermark is being edited.
+====
+
+There are two modes available in the Editor Stage: <<StageMode, Stage Mode>> and <<LayoutMode, Layout Mode>>. Effortlessly switch between them using the conveniently located buttons at the top of the Editor Stage.
+
+image::chapter02/02_editor_modes.png[Switch the Editor mode, title="Switch the Editor mode"]
+
+==== Stage Mode (Default) [[StageMode]]
+The Stage Model allows Print Model Elements to be moved, resized and their content edited.
+Each Print Model Element is edited with a dedicated Detail Editor as described in <<PrintModelElement, Editors for Model Elements>>.
+
+image::chapter02/02_add_element_toolbar.png[Add element library,title="Add element library"]
+
+New Elements can be added by clicking on the "Element Library" in the top-left of the Editor Stage and dragging and dropping the desired Element onto the Editor Stage whilst in "Default" mode.
+
+Existing elements can be moved and resized by drag and drop.
+Alternatively, the position or size may be precisely defined using the following settings in the Element Stage header:
+
+* Position Top
+* Position Left
+* Width
+* Height
+
+Right-clicking an Element opens a Context Menu with the following options:
+
+* Copy
+* Delete
+* <<GroupIntoArea, Group into Area>>
+* <<HideConditions, Hide Conditions>>
+
+[NOTE]
+====
+Print Model Elements may be copied or deleted using:
+
+* "Delete selected elements" and "Copy selected elements" buttons in the Element Stage header
+* Keyboard shortcuts, Delete and Ctrl+C
+====
+[TIP]
+====
+Copied Elements may be pasted by:
+
+* Right-clicking on the Stage and selecting "Paste" in the context menu
+* Keyboard shortcut, Ctrl+V
+====
+
+To open the detail view of an element, you can double-click the element, or select the element and click the "Open Detail Edit" button in the right-hand corner of the Stage Header.
+
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter02/02_editor_topbar.png[Editor Stage options,title="Editor Stage options",width=800]
+|
+image::chapter02/02_element_context_menu.png[Element context menu,title="Element context menu",width=300]
+|===
+
+===== Group into Area [[GroupIntoArea]]
+This feature allows users to group multiple selected elements into an Area element, enabling them to be affected by the <<PageBreakBehavior, Page Break Behavior>> configuration of the new Area.
+
+To group elements into an Area:
+
+. Select multiple elements in the Editor Stage.
+. Right-click and select "Group into Area" from the context menu, or click the "Group selected elements into Area" button in the right-hand corner of the Stage Header.
+
+The selected elements will be grouped into an Area element.
+
+When elements are grouped into an Area, their <<PageBreakBehavior, Page Break Behavior>> settings are automatically adjusted:
+
+* Elements whose page break behavior's source is *Default* will be changed to *Inherited*, inheriting the page break behavior from the new parent Area.
+* Elements whose page break behavior's source is already *Inherited* will continue inheriting, but now from the new parent Area instead of their previous parent.
+* Elements whose page break behavior's source is *Input* will remain unchanged, keeping their explicitly defined page break behavior.
+
+[NOTE]
+====
+* The "Group into Area" option is disabled when selecting a single Area, Bounding Box, or Switch element. Since these elements already function as containers, wrapping a single container in another Area would create redundant nesting without providing additional functionality.
+====
+
+==== Layout Mode [[LayoutMode]]
+The Layout Mode is used to view and modify margins for existing Print Model Elements.
+This allows precise control of the layout as described in <<PositioningLayout>>.
+
+The margin values are displayed at the top and bottom of the element.
+
+The margin value can be adjusted by:
+
+* Drag and drop
+* The input fields in the Editor Stage header
+
+[NOTE]
+====
+Top and Bottom margins added in the Layout Mode will also be displayed in the Stage Mode (Default).
+====
+
+image::chapter02/02_adjust_margins.png[Adjust margins,title="Adjust margins"]
+
+== General Tab [[GeneralTab]]
+
+In the General tab, the meta information of the model can be edited.
+The following properties can be edited in this tab:
+
+Description:: The internal description of this Print Model.
+Roles:: The allowed roles for this Print Model.
+Annotations:: The annotations of this Print Model.
+
+You can select roles from the workspace by clicking the btn:[Add] and selecting
+an option from the dropdown. Roles can be deleted by clicking the red button in the row
+and confirming your choice.
+
+=== PDF Metadata
+
+The PDF Metadata section allows you to configure PDF metadata fields that will be embedded in the generated document.
+These metadata fields are essential for PDF/UA accessibility compliance, as they provide important document information for assistive technologies.
+All metadata fields are configured as a list of <<Computations, computation alternatives>>, allowing for dynamic values based on Document Model data.
+
+Document Model (optional):: The Document Model to use for metadata field computations. This determines which data paths are available for the computation operations.
+
+Title:: The title of the PDF document.
+Description:: The description/subject of the PDF document.
+Author:: The author of the PDF document.
+Language:: The language of the PDF document.
+
+Each computation alternative consists of:
+
+* *Operation*: A link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language] expression that computes the metadata value. This can be a path reference to a field in the Document Model, a static value, or any valid Kernel Language calculation.
+* *Precondition* (optional): A link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language] expression that determines whether this computation alternative should be used. The computation is only applied if the precondition evaluates to _True_.
+
+The computation alternatives are evaluated in order, and the first one with a matching precondition will be used.
+
+NOTE: Metadata Default values are automatically set for new Print Models. It is recommended to customize these metadata fields with meaningful values specific to your document to ensure proper accessibility compliance.
+
+CAUTION: If all preconditions evaluate to _False_ or produce an empty result, no metadata value will be set for that field. This will negatively affect PDF accessibility compliance.
+
+image::chapter02/02_general_tab.png[General tab,title="General tab"]
+
+== Schema Tab [[SchemaTab]]
+
+In the Schema tab, the model references of the Print Model can be edited.
+The Print Model can reference Document Models to allow for the inclusion of dynamic content.
+An alias can be set for Document Model References, that allows for easier distinction of the referenced Models.
+
+Additionally, you can add Print Model References to include template segments, and Typesetting Model References to manage typography settings.
+
+CAUTION: The referenced Document Model must not contain dots in its name. It is possible to rename the Document Model or to use an alias without any dot to bypass this restriction.
+
+NOTE: You can add multiple Document Models in the Schema Tab, but currently only one can be used as reference in the Print Model.
+
+Document Model References:: The list of referenced Document Models and their optional alias in this Print Model.
+The "Open Setting" button may be used to update the given alias.
+
+Print Model References:: The list of referenced <<PrintModelTemplates, Print Model Templates>>. The Print Model Editor will only offer Print Models which conform to the <<CreateTemplate,Template specification>>.
+
+[NOTE]
+====
+If changes are made to the referenced Document Model, the field references used by the elements of the Print Model may become invalid.
+In such cases, you need to manually update the field references in the Print Model to ensure consistency.
+
+Changes to referenced Templates will be detected when modeling a Segment which references the updated Template.
+This change will create updates that need to be committed.
+====
+
+Typesetting Model References:: The list of referenced Typesetting Models will be used for the Text Styles. Typesetting Models can be created using the <<Typesetting,Typesetting Model Editor>>.
+
+image::chapter02/02_schema_tab.png[Schema tab,title="Schema tab"]
+
+== Text Styles Tab [[TextStylesTab]]
+
+In the Text Styles tab, Text Styles can be created, edited and removed.
+The upper part of the Text Styles tab displays an example of the current Text Style, for which the properties can be edited below.
+A newly created Print Model comes with a default Text Style which cannot be deleted.
+
+The Text Styles that have been modeled are shown in the list on the left-hand side.
+
+The currently selected Text Style is applied to the preview text at the top of the Text Styles view.
+This Text Style can be edited using the modeling settings described below.
+
+image::chapter02/02_text_styles_tab.png[Text Styles tab,title="Text Styles tab"]
+
+Click "Add New Text Style" in the bottom right-hand corner to add a new Text Style.
+
+=== Text Style Settings
+General configuration options for Text Styles:
+
+Name:: The name of the Text Style.
+Used to distinguish the Text Styles.
+Semantic:: The semantic purpose of the Text Style.
+Possible values are `Paragraph`, `Headline 1`, ..., `Headline 6`.
+Selecting a `Headline` semantic, will mark the <<Text, Text>> elements that use the Text Style as headings for accessibility purposes.
+
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Accessibility Hint*
+In order to improve navigation and readability it is important to use the correct semantic structure for your headlines, subheadings and paragraphs.
+
+If you want to create a heading, select the appropriate `Headline` semantic based on the heading level. You can only use `Headline 2` as a subheading after `Headline 1`, `Headline 3` after `Headline 2`, and so on.
+
+If you want to create a new standard paragraph Text Style, select the `Paragraph` semantic.
+
+The relationship between font size and line height is crucial for readability, especially for people with visual impairments, dyslexia, or cognitive disabilities.
+We recommend a line height of at least 1.5 times the font size, with a minimum recommended font size for body text of 12 pt.
+====
+
+
+=== Typography Settings [[TypographySettings]]
+Options that affect the appearance and behavior of text:
+
+Typesetting Model:: Specifies the typesetting model applied when this Text Style is used.
+Available models are added via the <<SchemaTab, Schema Tab>>
+
+Static Hyphenation:: Applies language-specific hyphenation rules to text.
+Available options include:
+* en_US: English
+* de_1996: German (with the hyphenation rules that were introduced with the spelling reform of 1996)
+* fr: French
+* cs: Czech
+* pt: Portuguese
+* vi: Vietnamese
+
+
+Font:: The font family of the Text Style.
+The available fonts are defined during the initial setup of the Print Engine.
+Extra fonts can be added using a <<ConfigureCustomFonts, Print Setting Model>>.
+Font Size:: The font size of the Text Style in `pt`.
+Line Height:: The line height of the Text Style in `pt`.
+
+CAUTION: Typesetting Model and Static Hyphenation are not compatible with the <<legacy_rendering_mode, Legacy Rendering Mode>> in the <<Preview,Preview>>.
+
+NOTE: If a Text Style employs a font that has not been configured in the Print Engine, any elements applying that Text Style will be displayed and printed with the default font.
+
+=== Custom Fonts [[ConfigureCustomFonts]]
+
+As described in <<SettingModelConfiguration, Setting Model Configuration>>, Print Engine empowers you to configure your own fonts.
+Those fonts will be synchronized from the Print Settings Model in your workspace and can be used in Print Model Editor.
+The customized fonts will be available in Print Model Editor, and can be used to define <<TextStylesTab, Text Styles>>.
+
+image::chapter02/02_utilize_custom_fonts.png[Text Styles tab with custom fonts,title="Text Styles tab with custom fonts"]
+
+NOTE: In the event that any text styles in your print model were previously associated with fonts not present in the new customized list, a notification toast will promptly alert you to these inconsistencies.
+
+NOTE: To ensure the consistency, take a moment to reselect those fonts for affected text styles.
+Elements associated with these styles will adopt the default font if not addressed.
+
+image::chapter02/02_text_style_employ_unconfigured_font.png[A Text Style that uses un-configured font,title="A Text Style that uses un-configured font"]
+
+== Segment Tab [[SegmentTab]]
+
+In the Segment Tab, Segments can be created, edited, reordered and deleted.
+
+Model Segments are containers for elements that each result in one or more DIN-A4 pages in the PDF document.
+Multiple Segments may be added to the Print Model and each segment starts on a new page and defines the page orientation of these pages.
+
+The Segments will be added to the final Document in the Order that they are shown in the Segment Tab.
+Existing Segments can be modified using the following buttons:
+
+Open Setting:: Edit the Name or Repeatability Settings of the selected Segment.
+Open Editor:: Open the <<StageMode, Editor Stage>> to edit the Segment's content.
+Open Menu::
+Duplicate::: Duplicate the selected Segment.
+Delete::: Delete the selected Segment.
+
+[NOTE]
+====
+Clicking on the Segment in the List will also cause the <<StageMode, Editor Stage>> to open.
+====
+
+A Document Model Group can be selected as a data context in the Segment Settings.
+If the selected group is repeatable, then the Segment will be repeated for each instance of the repeatable group in the provided Document, with each instance creating a new page.
+
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter03/03_repeatable_segments_select_document_model.png[Repeatable Segment: Select Document Model,title="Repeatable Segment: Select Document Model",width=400]
+|
+image::chapter03/03_repeatable_segments_select_group.png[Repeatable Segment: Select repeatable Group,title="Repeatable Segment: Select repeatable Group",width=400]
+|===
+
+New Segments may be added at the bottom of the List.
+
+Name:: The Name of the new Segment
+Orientation::
+* Portrait
+* Landscape
+
+Template Segment (optional):: A <<PrintModelTemplates, Template>> from one of the referenced Print Models in the <<SchemaTab, Schema Tab>>.
+
+Once a Name and Orientation have been given the "Add" button must be clicked to add the new Segment to the list of Segments.
+
+image::chapter02/02_segment_tab.png[Segment tab,title="Segment tab"]
+
+=== Print Model References (Templates) [[PrintModelTemplates]]
+
+You can use Print Model References as Templates in other Print Models.
+This allows you to define regions with a set height and static layout, enabling the creation of Print Models that conform to various standards (e.g. DIN standards).
+
+==== Create Template [[CreateTemplate]]
+
+To create a Template, you need to create a Print Model with a <<SegmentTab, Segment>>.
+This Segment can be used to define the layout of your Template using <<BoundingBox, Bounding Box>> elements.
+
+[CAUTION]
+====
+A Print Model Segment can only be used as a Template Segment if it contains only Bounding Box elements or nested Bounding Box elements.
+====
+
+[NOTE]
+====
+A Template Print Model can include multiple Template Segments.
+====
+
+==== Use Template
+
+To use a Template, you must add an existing Template Print Model in the <<SchemaTab, Schema Tab>> to your current Print Model.
+The Segments of the Template can then be used as Template Segments in your current Print Model.
+
+image::chapter03/03_select_template_segment.png[Select Template Segment, title="Select Template Segment", width=400]
+
+[NOTE]
+====
+If changes have been made to the Template, the Print Model Editor automatically reloads the Template each time you visit a Segment that uses it. This will create updates that need to be <<CommittingChanges, committed>>.
+====
+
+== Section Tab [[SectionTab]]
+
+In the Section tab, Sections can be created, edited and deleted.
+
+Sections are optional containers for elements that result in headers and footers in the resulting PDF document.
+
+[TIP]
+====
+If you chose to model Sections, it is often easier to model the Section first and then the Segments.
+====
+
+Which Section is applied to which page is defined by the two central properties of the Section:
+
+Page Orientation:: A section is only applied to pages of the selected page orientation.
+Section Usage:: A section is either applied to only the first page of the PDF document, or to all remaining pages.
+This allows the definition of a specific header & footer for a cover page.
+On first pages, sections that are specifically marked for the first page are prioritized.
+
+Each combination of _Page Orientation_ and _Section Usage_ properties has a specific slot listed in the Section tab.
+Modeling a Section leads to the modeled header and footer areas being grayed-out in the respective <<SegmentTab, Segment>>.
+
+Sections may be added and modified with the following buttons:
+
+Add:: Add a Section for this _Page Orientation_ and _Section Usage_.
+Open Editor:: Open the <<StageMode, Editor Stage>> to edit the Section's content.
+Delete:: Delete the selected Section.
+
+[NOTE]
+====
+Clicking on the Section in the List will also cause the <<StageMode, Editor Stage>> to open.
+====
+
+image::chapter02/02_section_tab.png[Section tab,title="Section tab"]
+
+== Watermark Tab [[WatermarkTab]]
+
+In the Watermark tab, watermarks can be created, edited, and deleted.
+
+Watermarks are optional containers for elements that result in overlays on their respective segments.
+There are two watermarks that can be set according to segment orientation: portrait and landscape.
+
+Watermarks may be added and modified with the following buttons:
+
+Add:: Add a Watermark for this _Page Orientation_.
+Open Setting:: Edit the Opacity or the Conditions under which the selected Watermark is shown.
+Opacity::: Define the opacity of the element of the watermark pages
+Condition::: Using link:/docs/KERNEL/kernel-documentation-ba-en/index.html[ Kernel Language]
+to define conditions. If any of the conditions are evaluated as true, or no condition is defined, the watermark will be printed.
+Open Editor:: Open the <<StageMode, Editor Stage>> to edit the Watermark's content.
+Delete:: Delete the selected Watermark.
+
+NOTE: The attachments of <<Listing, Listing Element>> are not added to the end of the document when used inside a Watermark.
+
+image::chapter02/02_watermark_tab.png[Watermark tab,title="Watermark tab"]
+
+== Commit Changes Tab [[CommitChangesTab]]
+
+In the Commit Changes tab, the pending changes of the Print Model can be committed and thus finalized.
+The top of this tab shows the change history, a list of changes made in the editor.
+To commit the changes the user can make a selection in the change list and then click the "COMMIT SELECTED CHANGES AND TRUNCATE HISTORY" button.
+
+Pre-default, all changes are selected.
+To de-select a change, click on the Status of the Change to toggle the Status from "Commit" to "Pending".
+
+
+On the right-hand side, validation errors related to the selected changes are displayed in an error tree.
+By clicking on the "Go to" icon of an error in the tree, the user will be navigated to the place where the error has occurred.
+
+image::chapter02/02_commit_changes_tab.png[Commit Changes,title="Commit Changes tab"]
+
+== Preview [[Preview]]
+
+When the "Print" button is pressed, the Print Preview window will open for the currently open Print Model. You can have a preview window open simultaneously for each print model in your workspace.
+
+This screen displays the resulting PDF preview. The PDF is automatically reloaded when <<CommitChangesTab, committing>> changes to the Print Model or when the preview settings are changed.
+
+=== Preview Settings
+At the top of the Preview, there is a toolbar that provides the following settings for the resulting PDF Preview:
+
+Test Document:: Select a Document (from Workspace Data) based on the Document Model referenced in the Print Model to use for printing.
+Reload Button:: Manually regenerate the PDF with the current preview settings.
+Localization Dropdown:: Change the locale of the resulting PDF. Locale options are obtained from the referenced Document Model used for printing.
+Time Zone Dropdown:: Change the time zone of the resulting PDF. The user's current time zone is selected as the default and appears first in the dropdown list.
+Switching Rendering Mode:: Switch between <<legacy_rendering_mode, Legacy Rendering Mode>> and the new rendering mode for the preview. Legacy Rendering is not compatible with Typesetting Models and language-specific hyphenation rules.
+Using Print model with pending changes:: Used to generate the preview with pending changes, which will re-render the PDF with each change made in the editor. When toggled off, only committed changes will be displayed.
+
+image::chapter02/02_preview_window.png[Preview window,title="Preview window"]
+
+[NOTE]
+====
+The PDF Preview can be downloaded or printed using the standard buttons in the top-right hand corner of the Preview.
+====
+
+[TIP]
+====
+You can create Test Documents in several ways:
+
+* Using **Ad Hoc Testing** in the Document Model Editor
+* With the **Form Model Preview** in the Form Model Editor
+* From the documents available in **Workspace Data**
+
+Please refer to the Document or Form Modeling Documentation for more details.
+====
+
+[#legacy_rendering_mode]
+=== Legacy Rendering Mode
+
+The Legacy Rendering Mode is an alternative rendering pipeline in the `PrintEngine`.
+It is incompatible with advanced features like <<TypeSettingModel, Typesetting Models>> and will be deprecated in the 2026.06 release.
+
+To disable/enable the different rendering modes, you can use, depending on the context, the toggle button in the <<Preview, Preview>> toolbar, the flag in the <<print_shell_printing, Print-Shell>> or the variable in the Print Engine configuration (see link:/docs/PRINT_ENGINE/print-technical-documentation/index.html#print_job_manager[PrintJobManager]).
+
+[#noticeable_differences]
+==== Noticeable Differences in the Legacy Rendering Mode
+
+1. Table Rows are spread over a page break instead of being moved completely to the next page if possible
+2. Image Elements that are larger than a page will not be scaled down to fit the page size
+3. Watermarks are also applied to attachment pages
+4. Attachments are printed, whether or not they are linked inside the main document body
+5. If a text can not be printed with the selected font or the defined fallback font, it will instead be printed with Open Sans
+6. Expression elements background color will apply to the whole element area, not just the text area
+7. Listing Property Computations can use other color descriptions beside hex color codes (e.g. "red", "blue", etc.)
+
+==== Performance Differences
+
+According to our benchmarks the Legacy Rendering Mode is generally slower than the default rendering mode.
+However, the performance can vary based on the specific Print Model and Document used.
+
+== Validation
+
+The Print Model is automatically validated after every user interaction to ensure consistency and correctness.
+This includes two layers of validation:
+
+* *Internal Validation*:
+Ensures the Print Model structure is valid and complete.
+This includes checks for required fields, value ranges, and correct formats.
+
+* *Reference Validation*:
+Checks whether references to Document Models are valid.
+This includes all field references (e.g. fields in Text Elements, Tables, ...) and computations (formulas that refer to fields in the Document Model).
+
+CAUTION: References inside Expression elements are currently not validated.
+
+Validation errors are displayed directly in the Editor to provide immediate feedback.
+The modeler must resolve all validation errors, otherwise it is not possible to print or commit the changes.

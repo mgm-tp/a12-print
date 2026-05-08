@@ -1,0 +1,63 @@
+/*
+ * SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+ *
+ * Copyright (c) 2012-2026 mgm technology partners GmbH
+ *
+ * Dual License
+ * ------------
+ * This source file is part of the mgm A12 Platform and available under
+ * a choice of two different licenses:
+ *
+ * 1. Open-Source License - EUPL v1.2
+ *    You may redistribute and/or modify this file under the terms of the
+ *    European Union Public License, version 1.2 - see https://eupl.eu/.
+ *
+ * 2. Commercial License
+ *    Alternatively, you may obtain a commercial license from
+ *    mgm technology partners GmbH, that permits use of this software
+ *    under different terms (including support and maintenance services).
+ *
+ *    Please contact a12-license@mgm-tp.com for more information.
+ *
+ * You must select and comply with exactly one of the above license options.
+ *
+ * Warranty Disclaimer (applies to either option)
+ * ----------------------------------------------
+ * THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND,
+ * WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
+ * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+ */
+import { actionCreatorFactory } from "typescript-fsa";
+
+import { Header } from "@com.mgmtp.a12.base/base-model-api/lib/main/header/index.js";
+import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/model/typesetting-model.js";
+
+import { DINTemplatePrintModels } from "../../api/index.js";
+
+const factory = actionCreatorFactory("Print/RequestApi");
+
+export namespace RequestApiActions {
+	export const loadPrintModel = factory<string>("LOAD_PRINT_MODEL");
+	export const loadPrintModelHeaders = factory<void>("LOAD_PRINT_MODEL_HEADERS");
+	export const loadReferencedPrintModel = factory<string>("LOAD_REFERENCED_PRINT_MODEL");
+	export const loadReferencedPrintModels = factory<void>("LOAD_REFERENCED_PRINT_MODELS");
+	export const loadDocumentModelIds = factory<void>("LOAD_DOCUMENT_MODEL_IDS");
+	export const loadDINTemplatePrintModels = factory<void>("LOAD_DIN_TEMPLATE_PRINT_MODELS");
+	export const loadTypesettingModelHeaders = factory<void>("LOAD_TYPE_SETTING_MODEL_HEADERS");
+	export const loadTypesettingModel = factory<string>("LOAD_TYPE_SETTING_MODEL");
+	export const loadTypesettingModels = factory<void>("LOAD_TYPE_SETTING_MODELS");
+
+	export const setPrintModel = factory<PrintModel>("SET_PRINT_MODEL");
+	export const setPrintModelHeaders = factory<Header[]>("SET_PRINT_MODEL_HEADERS");
+	export const setDocumentModelIds = factory<string[]>("SET_DOCUMENT_MODEL_IDS");
+	export const setPrintModelData = factory<{ id: string; printModel: PrintModel }>("SET_PRINT_MODEL_DATA");
+	export const setDINTemplatePrintModels = factory<DINTemplatePrintModels[]>("SET_DIN_TEMPLATE_PRINT_MODELS");
+	export const setTypesettingModelHeaders = factory<Header[]>("SET_TYPE_SETTING_MODEL_HEADERS");
+	export const setTypesettingModel = factory<TypesettingModel>("SET_TYPE_SETTING_MODEL");
+	export const setTypesettingModels = factory<TypesettingModel[]>("SET_TYPE_SETTING_MODELS");
+
+	export const initializePrintModel = factory<string>("INITIALIZE_PRINT_MODEL");
+}

@@ -1,0 +1,198 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Charts [[Charts]]
+
+The Chart elements insert a chart representation of repeatable A12 field instances into the resulting PDF document.
+The chart will be generated as an image and inserted into the PDF document.
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Accessibility Hint*
+
+This element is currently not recommended, as the Chart element does not generate a meaningful description of its content for accessibility software like screen readers.
+
+If you have this requirement in your project, please reach out to Print Engine team.
+====
+
+Charts have the following common modeling settings:
+
+Height:: The height of the Chart Element in centimeters. One decimal place may be used, for example, 7.5 cm.
+Width:: The width of the Chart Element in centimeters. One decimal place may be used, for example, 7.5 cm.
+[NOTE]
+====
+The height and width of Charts can only be edited in the Page <<DetailView, Detail View>>.
+They cannot be adjusted by dragging and dropping the Element in the Editor Stage.
+====
+Document Model:: Select a Document Model referenced in the <<SchemaTab, Schema Tab>>.
+Group::
+The Diagram element requires selecting a group of a document model to read from.
+The root group is selected by default, but it's possible to select an inner group using the model tree widget, then the resulted data set only contains the fields of the selected group.
+
+Data::
+The Data used by the chart is specified below the Group.
+The way that the Chart Data is specified depends on the type of Chart.
+
+[%header, cols="1,1a,1a,1"]
+|===
+|Chart|Data Type|Modeling Settings|Multiple Data Sets allowed
+|Line Chart|Series| Field with value|Yes
+.2+|Bar Chart|Series| Field with value|Yes
+|Categorized|
+
+* Field with value
+* Field for labels
+|Yes
+|Pie Chart|Categorized|
+
+* Field with value
+* Field for labels
+|No
+
+|===
+
+== Line Chart [[LineChart]]
+Displays multiple continuous lines in a horizontal or vertical orientation, each line corresponding to a separate set of values.
+These sets of values are modeled by adding one or more series data sets.
+
+Label X-Axis:: The X-Axis Label may be entered or set to undefined.
+Label Y-Axis:: The Y-Axis Label may be entered or set to undefined.
+Orientation:: There are two types of orientation to select from:
++
+* *Horizontal*: The Value will be displayed on the X Axis
+* *Vertical*: The Value will be displayed on the Y Axis
+
+image::chapter03/03_line_chart_detail_view.png[Line Chart element detail view,title="Line Chart element detail view"]
+
+=== Series Data [[SeriesData]]
+Series Data is modeled by selecting a repeatable field.
+The value of this field on the axis defined by the Orientation.
+The other axis will count through the repetitions of the selected Field.
+
+Field with value:: Specify the Field from the selected Document Model that contains the Series Data.
+Name of series:: The name of this Series Data in the Print Model.
+
+==== Example [[SeriesExample]]
+
+The Document Model contains a repeatable Group, `Person`, with two Number Fields, `income` and `tax`.
+The following Data is modeled:
+
+.Series Data Example
+[%header]
+|===
+|Field with value|Name of series
+|`root/Person/income`|DataSet1
+|`root/Person/tax`|DataSet2
+|===
+
+Based on the following data in the Document:
+[source,,options="nowrap"]
+----
+Person[0]:
+  income: 10
+  tax: 1
+
+Person[1]:
+  income: 20
+  tax: 4
+
+Person[2]:
+  income: 15
+  tax: 6
+----
+
+The result will be two Datasets:
+[source,,options="nowrap"]
+----
+DataSet1: [10,20,15]
+DataSet2: [1,4,6]
+----
+
+== Bar Chart [[BarChart]]
+Displays multiple sets of bars in a horizontal or vertical orientation, each set of bars corresponding to a separate set of values.
+
+Label X-Axis:: The X-Axis Label may be entered or set to undefined.
+Label Y-Axis:: The Y-Axis Label may be entered or set to undefined.
+Orientation:: There are two types of orientation to select from:
++
+* *Horizontal*: The Value will be displayed on the X Axis
+* *Vertical*: The Value will be displayed on the Y Axis
+
+Bar Charts accept <<SeriesData, Series Data>> and <<CategorizedData, Categorized Data>>.
+To model Series Data, simply leave the "Field for labels" blank.
+
+image::chapter03/03_bar_chart_detail_view.png[Bar Chart element detail view,title="Bar Chart element detail view"]
+
+=== Categorized Data [[CategorizedData]]
+
+The Category DataSet is created based on two Fields from the Document Model so that each value has a label.
+
+Field with value:: Specify the Field from the selected Document Model that contains category values.
+Field for labels:: Select the label Field which is used for the categorization process.
+
+The result is a Dataset which includes each unique Field for labels value.
+The Field with value data will be created by summing up the value fields with matching labels.
+
+==== Example
+
+The Document Model contains a repeatable Group, `Person`, with a Number Field, `income` and a String Field `occupation`.
+The following Data is modeled:
+
+.Categorized Data Example
+[%header]
+|===
+|Field with value|Field for labels
+|`root/Person/income`|`root/Person/occupation`
+|===
+Based on the following data in the Document:
+[source,,options="nowrap"]
+----
+Person[0]:
+  occupation: "A"
+  income: 1
+
+Person[1]:
+  occupation: "A"
+  income: 2
+
+Person[2]:
+ occupation: "B"
+ income: 1
+----
+
+The Dataset consists of two data points, one for each unique value of `occupation`.
+The Value of the datapoint is the Sum of all the Field Values with this label:
+
+[source,,options="nowrap"]
+----
+A : 3
+B : 1
+----
+
+== Pie Chart [[PieChart]]
+Displays a pie distribution chart based on a single set of <<CategorizedData, Categorized Data>>.
+
+Use numeration as label:: Select "Use numeration as label" If the data shouldn't be grouped.
+Each Value will be represented by its own with a unique incrementing
+number being its label.
++
+[NOTE]
+====
+"Field for labels" may be left blank when "Use numeration as label" is selected.
+====
+
+image::chapter03/03_pie_chart_detail_view.png[Pie Chart element detail view,title="Pie Chart element detail view"]

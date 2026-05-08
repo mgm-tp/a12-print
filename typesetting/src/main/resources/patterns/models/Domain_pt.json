@@ -1,0 +1,1378 @@
+{
+  "header": {
+    "id": "Domain_pt",
+    "modelType": "typesetting",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "internal": {
+      "hyphenation": {
+        "general": {
+          "title": "Hyphenation patterns for Portuguese",
+          "language": {
+            "name": "Portuguese",
+            "tag": "pt"
+          },
+          "notice": "This file is part of the hyph-utf8 package. See http://www.hyphenation.org/tex for more information.",
+          "copyright": "Copyright (C) 1987, 1994, 1996, 2015 Pedro J. de Rezende, 1996, 2015 J. Joao Dias Almeida, 2024 Leonardo Araujo and Aline Benevides",
+          "version": "1.4 2024-07-13",
+          "licence": {
+            "name": "BSD 3-clause licence",
+            "text": "Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: * Redistributions of source code must retain the above copyright\n  notice, this list of conditions and the following disclaimer.\n* Redistributions in binary form must reproduce the above copyright\n  notice, this list of conditions and the following disclaimer in the\n  documentation and/or other materials provided with the\n  distribution.\n* Neither the name of the University of Campinas, of the University\n  of Minho nor the names of its contributors may be used to endorse\n  or promote products derived from this software without specific\n  prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL PEDRO J. DE REZENDE OR J.JOAO DIAS ALMEIDA BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n",
+            "url": "https://opensource.org/licenses/BSD-3-Clause"
+          },
+          "texlive": {
+            "encoding": "ec",
+            "babelname": "portuguese",
+            "legacy_patterns": "pthyph.tex",
+            "message": "Portuguese hyphenation patterns"
+          },
+          "hyphenmins": {
+            "typesetting": {
+              "left": 2,
+              "right": 3
+            }
+          },
+          "authors": [
+            {
+              "name": "Pedro J. de Rezende",
+              "contact": "rezende (at) ic.unicamp.br"
+            },
+            {
+              "name": "J. Joao Dias Almeida",
+              "contact": "jj (at) di.uminho.pt"
+            },
+            {
+              "name": "Leonardo Araujo",
+              "contact": "leolca (at) gmail.com"
+            },
+            {
+              "name": "Aline Benevides",
+              "contact": "benevides.aline12 (at) gmail.com"
+            }
+          ],
+          "checksum": "ea4fd4d7ec5bd24f5f1e42c4f309a7e0"
+        },
+        "patterns": [
+          {
+            "v": "1b2l"
+          },
+          {
+            "v": "1b2r"
+          },
+          {
+            "v": "1ba"
+          },
+          {
+            "v": "1be"
+          },
+          {
+            "v": "1bi"
+          },
+          {
+            "v": "1bo"
+          },
+          {
+            "v": "1bu"
+          },
+          {
+            "v": "1bá"
+          },
+          {
+            "v": "1bâ"
+          },
+          {
+            "v": "1bã"
+          },
+          {
+            "v": "1bé"
+          },
+          {
+            "v": "1bí"
+          },
+          {
+            "v": "1bó"
+          },
+          {
+            "v": "1bú"
+          },
+          {
+            "v": "1bê"
+          },
+          {
+            "v": "1bõ"
+          },
+          {
+            "v": "1c2h"
+          },
+          {
+            "v": "1c2l"
+          },
+          {
+            "v": "1c2r"
+          },
+          {
+            "v": "1ca"
+          },
+          {
+            "v": "1ce"
+          },
+          {
+            "v": "1ci"
+          },
+          {
+            "v": "1co"
+          },
+          {
+            "v": "1cu"
+          },
+          {
+            "v": "1cá"
+          },
+          {
+            "v": "1câ"
+          },
+          {
+            "v": "1cã"
+          },
+          {
+            "v": "1cé"
+          },
+          {
+            "v": "1cí"
+          },
+          {
+            "v": "1có"
+          },
+          {
+            "v": "1cú"
+          },
+          {
+            "v": "1cê"
+          },
+          {
+            "v": "1cõ"
+          },
+          {
+            "v": "1ça"
+          },
+          {
+            "v": "1çe"
+          },
+          {
+            "v": "1çi"
+          },
+          {
+            "v": "1ço"
+          },
+          {
+            "v": "1çu"
+          },
+          {
+            "v": "1çá"
+          },
+          {
+            "v": "1çâ"
+          },
+          {
+            "v": "1çã"
+          },
+          {
+            "v": "1çé"
+          },
+          {
+            "v": "1çí"
+          },
+          {
+            "v": "1çó"
+          },
+          {
+            "v": "1çú"
+          },
+          {
+            "v": "1çê"
+          },
+          {
+            "v": "1çõ"
+          },
+          {
+            "v": "1d2l"
+          },
+          {
+            "v": "1d2r"
+          },
+          {
+            "v": "1da"
+          },
+          {
+            "v": "1de"
+          },
+          {
+            "v": "1di"
+          },
+          {
+            "v": "1do"
+          },
+          {
+            "v": "1du"
+          },
+          {
+            "v": "1dá"
+          },
+          {
+            "v": "1dâ"
+          },
+          {
+            "v": "1dã"
+          },
+          {
+            "v": "1dé"
+          },
+          {
+            "v": "1dí"
+          },
+          {
+            "v": "1dó"
+          },
+          {
+            "v": "1dú"
+          },
+          {
+            "v": "1dê"
+          },
+          {
+            "v": "1dõ"
+          },
+          {
+            "v": "1f2l"
+          },
+          {
+            "v": "1f2r"
+          },
+          {
+            "v": "1fa"
+          },
+          {
+            "v": "1fe"
+          },
+          {
+            "v": "1fi"
+          },
+          {
+            "v": "1fo"
+          },
+          {
+            "v": "1fu"
+          },
+          {
+            "v": "1fá"
+          },
+          {
+            "v": "1fâ"
+          },
+          {
+            "v": "1fã"
+          },
+          {
+            "v": "1fé"
+          },
+          {
+            "v": "1fí"
+          },
+          {
+            "v": "1fó"
+          },
+          {
+            "v": "1fú"
+          },
+          {
+            "v": "1fê"
+          },
+          {
+            "v": "1fõ"
+          },
+          {
+            "v": "1g2l"
+          },
+          {
+            "v": "1g2r"
+          },
+          {
+            "v": "1ga"
+          },
+          {
+            "v": "1ge"
+          },
+          {
+            "v": "1gi"
+          },
+          {
+            "v": "1go"
+          },
+          {
+            "v": "1gu"
+          },
+          {
+            "v": "1gu4a"
+          },
+          {
+            "v": "1gu4e"
+          },
+          {
+            "v": "1gu4i"
+          },
+          {
+            "v": "1gu4o"
+          },
+          {
+            "v": "1gá"
+          },
+          {
+            "v": "1gâ"
+          },
+          {
+            "v": "1gã"
+          },
+          {
+            "v": "1gé"
+          },
+          {
+            "v": "1gí"
+          },
+          {
+            "v": "1gó"
+          },
+          {
+            "v": "1gú"
+          },
+          {
+            "v": "1gê"
+          },
+          {
+            "v": "1gõ"
+          },
+          {
+            "v": "1ja"
+          },
+          {
+            "v": "1je"
+          },
+          {
+            "v": "1ji"
+          },
+          {
+            "v": "1jo"
+          },
+          {
+            "v": "1ju"
+          },
+          {
+            "v": "1já"
+          },
+          {
+            "v": "1jâ"
+          },
+          {
+            "v": "1jã"
+          },
+          {
+            "v": "1jé"
+          },
+          {
+            "v": "1jí"
+          },
+          {
+            "v": "1jó"
+          },
+          {
+            "v": "1jú"
+          },
+          {
+            "v": "1jê"
+          },
+          {
+            "v": "1jõ"
+          },
+          {
+            "v": "1k2l"
+          },
+          {
+            "v": "1k2r"
+          },
+          {
+            "v": "1ka"
+          },
+          {
+            "v": "1ke"
+          },
+          {
+            "v": "1ki"
+          },
+          {
+            "v": "1ko"
+          },
+          {
+            "v": "1ku"
+          },
+          {
+            "v": "1ká"
+          },
+          {
+            "v": "1kâ"
+          },
+          {
+            "v": "1kã"
+          },
+          {
+            "v": "1ké"
+          },
+          {
+            "v": "1kí"
+          },
+          {
+            "v": "1kó"
+          },
+          {
+            "v": "1kú"
+          },
+          {
+            "v": "1kê"
+          },
+          {
+            "v": "1kõ"
+          },
+          {
+            "v": "1l2h"
+          },
+          {
+            "v": "1la"
+          },
+          {
+            "v": "1le"
+          },
+          {
+            "v": "1li"
+          },
+          {
+            "v": "1lo"
+          },
+          {
+            "v": "1lu"
+          },
+          {
+            "v": "1lá"
+          },
+          {
+            "v": "1lâ"
+          },
+          {
+            "v": "1lã"
+          },
+          {
+            "v": "1lé"
+          },
+          {
+            "v": "1lí"
+          },
+          {
+            "v": "1ló"
+          },
+          {
+            "v": "1lú"
+          },
+          {
+            "v": "1lê"
+          },
+          {
+            "v": "1lõ"
+          },
+          {
+            "v": "1ma"
+          },
+          {
+            "v": "1me"
+          },
+          {
+            "v": "1mi"
+          },
+          {
+            "v": "1mo"
+          },
+          {
+            "v": "1mu"
+          },
+          {
+            "v": "1má"
+          },
+          {
+            "v": "1mâ"
+          },
+          {
+            "v": "1mã"
+          },
+          {
+            "v": "1mé"
+          },
+          {
+            "v": "1mí"
+          },
+          {
+            "v": "1mó"
+          },
+          {
+            "v": "1mú"
+          },
+          {
+            "v": "1mê"
+          },
+          {
+            "v": "1mõ"
+          },
+          {
+            "v": "1n2h"
+          },
+          {
+            "v": "1na"
+          },
+          {
+            "v": "1ne"
+          },
+          {
+            "v": "1ni"
+          },
+          {
+            "v": "1no"
+          },
+          {
+            "v": "1nu"
+          },
+          {
+            "v": "1ná"
+          },
+          {
+            "v": "1nâ"
+          },
+          {
+            "v": "1nã"
+          },
+          {
+            "v": "1né"
+          },
+          {
+            "v": "1ní"
+          },
+          {
+            "v": "1nó"
+          },
+          {
+            "v": "1nú"
+          },
+          {
+            "v": "1nê"
+          },
+          {
+            "v": "1nõ"
+          },
+          {
+            "v": "1p2l"
+          },
+          {
+            "v": "1p2r"
+          },
+          {
+            "v": "1pa"
+          },
+          {
+            "v": "1pe"
+          },
+          {
+            "v": "1pi"
+          },
+          {
+            "v": "1po"
+          },
+          {
+            "v": "1pu"
+          },
+          {
+            "v": "1pá"
+          },
+          {
+            "v": "1pâ"
+          },
+          {
+            "v": "1pã"
+          },
+          {
+            "v": "1pé"
+          },
+          {
+            "v": "1pí"
+          },
+          {
+            "v": "1pó"
+          },
+          {
+            "v": "1pú"
+          },
+          {
+            "v": "1pê"
+          },
+          {
+            "v": "1põ"
+          },
+          {
+            "v": "1qu4a"
+          },
+          {
+            "v": "1qu4e"
+          },
+          {
+            "v": "1qu4i"
+          },
+          {
+            "v": "1qu4o"
+          },
+          {
+            "v": "1ra"
+          },
+          {
+            "v": "1re"
+          },
+          {
+            "v": "1ri"
+          },
+          {
+            "v": "1ro"
+          },
+          {
+            "v": "1ru"
+          },
+          {
+            "v": "1rá"
+          },
+          {
+            "v": "1râ"
+          },
+          {
+            "v": "1rã"
+          },
+          {
+            "v": "1ré"
+          },
+          {
+            "v": "1rí"
+          },
+          {
+            "v": "1ró"
+          },
+          {
+            "v": "1rú"
+          },
+          {
+            "v": "1rê"
+          },
+          {
+            "v": "1rõ"
+          },
+          {
+            "v": "1sa"
+          },
+          {
+            "v": "1se"
+          },
+          {
+            "v": "1si"
+          },
+          {
+            "v": "1so"
+          },
+          {
+            "v": "1su"
+          },
+          {
+            "v": "1sá"
+          },
+          {
+            "v": "1sâ"
+          },
+          {
+            "v": "1sã"
+          },
+          {
+            "v": "1sé"
+          },
+          {
+            "v": "1sí"
+          },
+          {
+            "v": "1só"
+          },
+          {
+            "v": "1sú"
+          },
+          {
+            "v": "1sê"
+          },
+          {
+            "v": "1sõ"
+          },
+          {
+            "v": "1t2l"
+          },
+          {
+            "v": "1t2r"
+          },
+          {
+            "v": "1ta"
+          },
+          {
+            "v": "1te"
+          },
+          {
+            "v": "1ti"
+          },
+          {
+            "v": "1to"
+          },
+          {
+            "v": "1tu"
+          },
+          {
+            "v": "1tá"
+          },
+          {
+            "v": "1tâ"
+          },
+          {
+            "v": "1tã"
+          },
+          {
+            "v": "1té"
+          },
+          {
+            "v": "1tí"
+          },
+          {
+            "v": "1tó"
+          },
+          {
+            "v": "1tú"
+          },
+          {
+            "v": "1tê"
+          },
+          {
+            "v": "1tõ"
+          },
+          {
+            "v": "1v2l"
+          },
+          {
+            "v": "1v2r"
+          },
+          {
+            "v": "1va"
+          },
+          {
+            "v": "1ve"
+          },
+          {
+            "v": "1vi"
+          },
+          {
+            "v": "1vo"
+          },
+          {
+            "v": "1vu"
+          },
+          {
+            "v": "1vá"
+          },
+          {
+            "v": "1vâ"
+          },
+          {
+            "v": "1vã"
+          },
+          {
+            "v": "1vé"
+          },
+          {
+            "v": "1ví"
+          },
+          {
+            "v": "1vó"
+          },
+          {
+            "v": "1vú"
+          },
+          {
+            "v": "1vê"
+          },
+          {
+            "v": "1võ"
+          },
+          {
+            "v": "1w2l"
+          },
+          {
+            "v": "1w2r"
+          },
+          {
+            "v": "1xa"
+          },
+          {
+            "v": "1xe"
+          },
+          {
+            "v": "1xi"
+          },
+          {
+            "v": "1xo"
+          },
+          {
+            "v": "1xu"
+          },
+          {
+            "v": "1xá"
+          },
+          {
+            "v": "1xâ"
+          },
+          {
+            "v": "1xã"
+          },
+          {
+            "v": "1xé"
+          },
+          {
+            "v": "1xí"
+          },
+          {
+            "v": "1xó"
+          },
+          {
+            "v": "1xú"
+          },
+          {
+            "v": "1xê"
+          },
+          {
+            "v": "1xõ"
+          },
+          {
+            "v": "1za"
+          },
+          {
+            "v": "1ze"
+          },
+          {
+            "v": "1zi"
+          },
+          {
+            "v": "1zo"
+          },
+          {
+            "v": "1zu"
+          },
+          {
+            "v": "1zá"
+          },
+          {
+            "v": "1zâ"
+          },
+          {
+            "v": "1zã"
+          },
+          {
+            "v": "1zé"
+          },
+          {
+            "v": "1zí"
+          },
+          {
+            "v": "1zó"
+          },
+          {
+            "v": "1zú"
+          },
+          {
+            "v": "1zê"
+          },
+          {
+            "v": "1zõ"
+          },
+          {
+            "v": "a3a"
+          },
+          {
+            "v": "a3e"
+          },
+          {
+            "v": "a3o"
+          },
+          {
+            "v": "c3c"
+          },
+          {
+            "v": "e3a"
+          },
+          {
+            "v": "e3e"
+          },
+          {
+            "v": "e3o"
+          },
+          {
+            "v": "i3a"
+          },
+          {
+            "v": "i3e"
+          },
+          {
+            "v": "i3i"
+          },
+          {
+            "v": "i3o"
+          },
+          {
+            "v": "i3â"
+          },
+          {
+            "v": "i3ê"
+          },
+          {
+            "v": "i3ô"
+          },
+          {
+            "v": "o3a"
+          },
+          {
+            "v": "o3e"
+          },
+          {
+            "v": "o3o"
+          },
+          {
+            "v": "r3r"
+          },
+          {
+            "v": "s3s"
+          },
+          {
+            "v": "u3a"
+          },
+          {
+            "v": "u3e"
+          },
+          {
+            "v": "u3o"
+          },
+          {
+            "v": "u3u"
+          },
+          {
+            "v": ".p2si"
+          },
+          {
+            "v": ".p2sí"
+          },
+          {
+            "v": ".g2no"
+          },
+          {
+            "v": ".g2nó"
+          },
+          {
+            "v": ".g2nô"
+          },
+          {
+            "v": "t2c"
+          },
+          {
+            "v": "1p2neu"
+          },
+          {
+            "v": ".t2m"
+          },
+          {
+            "v": ".p2t"
+          },
+          {
+            "v": "su2b3r"
+          },
+          {
+            "v": "su2b3l"
+          },
+          {
+            "v": ".su3b4li"
+          },
+          {
+            "v": "a1ir."
+          },
+          {
+            "v": "u1ir."
+          },
+          {
+            "v": "1qu"
+          },
+          {
+            "v": "1vô"
+          },
+          {
+            "v": "1lô"
+          },
+          {
+            "v": "1cô"
+          },
+          {
+            "v": "1gô"
+          },
+          {
+            "v": "1bô"
+          },
+          {
+            "v": "1tô"
+          },
+          {
+            "v": "1rô"
+          },
+          {
+            "v": "1pô"
+          },
+          {
+            "v": "a1é"
+          },
+          {
+            "v": "a1í"
+          },
+          {
+            "v": "a1ó"
+          },
+          {
+            "v": "a1ú"
+          },
+          {
+            "v": "e1á"
+          },
+          {
+            "v": "e1â"
+          },
+          {
+            "v": "e1ã"
+          },
+          {
+            "v": "e1é"
+          },
+          {
+            "v": "e1ê"
+          },
+          {
+            "v": "e1í"
+          },
+          {
+            "v": "e1ó"
+          },
+          {
+            "v": "é1o"
+          },
+          {
+            "v": "e1ú"
+          },
+          {
+            "v": "i1á"
+          },
+          {
+            "v": "i1ã"
+          },
+          {
+            "v": "í1a"
+          },
+          {
+            "v": "i1é"
+          },
+          {
+            "v": "i1í"
+          },
+          {
+            "v": "i1ó"
+          },
+          {
+            "v": "í1o"
+          },
+          {
+            "v": "i1u"
+          },
+          {
+            "v": "i1ú"
+          },
+          {
+            "v": "o1á"
+          },
+          {
+            "v": "o1é"
+          },
+          {
+            "v": "o1í"
+          },
+          {
+            "v": "o1ó"
+          },
+          {
+            "v": "u1á"
+          },
+          {
+            "v": "u1ã"
+          },
+          {
+            "v": "u1â"
+          },
+          {
+            "v": "u1í"
+          },
+          {
+            "v": "ú1o"
+          },
+          {
+            "v": "1qu2á"
+          },
+          {
+            "v": "1qu2â"
+          },
+          {
+            "v": "1qu2í"
+          },
+          {
+            "v": "1gu2í"
+          },
+          {
+            "v": "a1ind"
+          },
+          {
+            "v": "a1i1nh"
+          },
+          {
+            "v": "e1imp"
+          },
+          {
+            "v": "e1inc"
+          },
+          {
+            "v": "e1inf"
+          },
+          {
+            "v": "e1ing"
+          },
+          {
+            "v": "e1ins"
+          },
+          {
+            "v": "e1int"
+          },
+          {
+            "v": "e1inv"
+          },
+          {
+            "v": "u1iz."
+          },
+          {
+            "v": "a1iz."
+          },
+          {
+            "v": "4a."
+          },
+          {
+            "v": "4e."
+          },
+          {
+            "v": "4o."
+          },
+          {
+            "v": "1gu2á"
+          },
+          {
+            "v": "1gu2ã"
+          },
+          {
+            "v": "1qu2ã"
+          },
+          {
+            "v": ".m2n"
+          },
+          {
+            "v": "c2za"
+          },
+          {
+            "v": ".s2"
+          },
+          {
+            "v": "1p2seu1d"
+          },
+          {
+            "v": "1dô"
+          },
+          {
+            "v": "1fô"
+          },
+          {
+            "v": "1mô"
+          },
+          {
+            "v": "1nô"
+          },
+          {
+            "v": "1sô"
+          },
+          {
+            "v": "1zô"
+          },
+          {
+            "v": "tu1i"
+          },
+          {
+            "v": "tu2it"
+          },
+          {
+            "v": "tu2id"
+          },
+          {
+            "v": "bu1i"
+          },
+          {
+            "v": "nu1i"
+          },
+          {
+            "v": "o1in"
+          },
+          {
+            "v": "u1in"
+          },
+          {
+            "v": "su1i"
+          },
+          {
+            "v": "í1e"
+          },
+          {
+            "v": "ju1i"
+          },
+          {
+            "v": "fu1i"
+          },
+          {
+            "v": "du1i"
+          },
+          {
+            "v": "do1im"
+          },
+          {
+            "v": "au1i"
+          },
+          {
+            "v": "u1i1ç"
+          },
+          {
+            "v": "u1ê"
+          },
+          {
+            "v": "1gu2ê"
+          },
+          {
+            "v": "1qu2ê"
+          },
+          {
+            "v": "1çô"
+          },
+          {
+            "v": "u1é"
+          },
+          {
+            "v": "1gu2é"
+          },
+          {
+            "v": "1qu2é"
+          },
+          {
+            "v": "1xô"
+          },
+          {
+            "v": "a1â"
+          },
+          {
+            "v": "a1ã"
+          },
+          {
+            "v": "a1ô"
+          },
+          {
+            "v": "e1ô"
+          },
+          {
+            "v": ".ne4o"
+          },
+          {
+            "v": "o1ã"
+          },
+          {
+            "v": "o1ê"
+          },
+          {
+            "v": "o1im"
+          },
+          {
+            "v": "o2i1na"
+          },
+          {
+            "v": "pro1i1b"
+          },
+          {
+            "v": "co2ima"
+          },
+          {
+            "v": ".t2"
+          },
+          {
+            "v": "1-"
+          }
+        ],
+        "exclusions": [
+          {
+            "word": "hardware",
+            "index": [
+              {
+                "v": 4
+              }
+            ]
+          },
+          {
+            "word": "software",
+            "index": [
+              {
+                "v": 4
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "customHyphenationExclusions": [],
+    "preventLineBreakRules": []
+  }
+}

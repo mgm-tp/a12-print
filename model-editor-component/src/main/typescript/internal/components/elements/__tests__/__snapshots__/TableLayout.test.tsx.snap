@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableLayout FilledCell should renders correctly 1`] = `
+.c5 {
+  display: flex;
+  gap: 2px;
+}
+
+.c2 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.c3 {
+  display: none;
+}
+
+.c1:hover .c3 {
+  display: inline-block;
+}
+
+.c0 {
+  position: relative;
+  height: auto;
+  width: auto;
+}
+
+.c4 {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+<div>
+  <table>
+    <tbody>
+      <tr>
+        <td
+          class="c0"
+        >
+          <div
+            style="font-family: print_font_Open Sans; font-size: 12pt; line-height: 18pt; height: 100%;"
+          >
+            foo
+          </div>
+          <div
+            class="c1 c2"
+          >
+            <div
+              class=""
+              offset="0"
+              style="position: absolute; top: 0pt; right: 0pt;"
+            >
+              <div
+                class="c3"
+              />
+            </div>
+          </div>
+          <div
+            class="c4"
+          >
+            <div
+              class="c5"
+              contenteditable="false"
+            />
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

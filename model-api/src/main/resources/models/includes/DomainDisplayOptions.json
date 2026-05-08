@@ -1,0 +1,307 @@
+{
+  "header": {
+    "id": "DomainDisplayOptions",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "de"
+      },
+      {
+        "code": "en"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "DomainDisplayOptions",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "typeDefinitions": [
+      {
+        "id": "typedef_5566a0dd-a43a-4caa-8112-834a338dfc2d",
+        "name": "dateFormat",
+        "fieldType": {
+          "type": "CustomFieldType",
+          "CustomFieldType": {
+            "name": "PrintDateTimeFormat",
+            "displayName": "Print Custom DateTimeFormat"
+          }
+        }
+      },
+      {
+        "id": "typedef_ddd6da1c-a013-45ec-becc-fb09fd3e44ac",
+        "name": "displayType",
+        "fieldType": {
+          "type": "EnumerationType",
+          "EnumerationType": {
+            "values": [
+              {
+                "value": "Html",
+                "label": [
+                  {
+                    "locale": "de",
+                    "text": "HTML"
+                  },
+                  {
+                    "locale": "en",
+                    "text": "HTML"
+                  }
+                ]
+              },
+              {
+                "value": "Date",
+                "label": [
+                  {
+                    "locale": "de",
+                    "text": "Datum"
+                  },
+                  {
+                    "locale": "en",
+                    "text": "Date"
+                  }
+                ]
+              },
+              {
+                "value": "Checkbox",
+                "label": [
+                  {
+                    "locale": "de",
+                    "text": "Checkbox"
+                  },
+                  {
+                    "locale": "en",
+                    "text": "Checkbox"
+                  }
+                ]
+              },
+              {
+                "value": "DateRange",
+                "label": [
+                  {
+                    "locale": "de",
+                    "text": "Datumsbereich"
+                  },
+                  {
+                    "locale": "en",
+                    "text": "Date Range"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_286ac",
+          "name": "displayOptions",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_37f31",
+                "name": "id",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "ID"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "ID"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_19c72",
+                "name": "displayType",
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_ddd6da1c-a013-45ec-becc-fb09fd3e44ac"
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Feldtyp"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Field type"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_ecf11",
+                "name": "dateFormat",
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_5566a0dd-a43a-4caa-8112-834a338dfc2d"
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Datumsformat"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Date format"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_ce5fd",
+                "name": "dateRangeFormatStart",
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_5566a0dd-a43a-4caa-8112-834a338dfc2d"
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Datumsformat (Start)"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Date Format (Start)"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_8cddb",
+                "name": "dateRangeFormatEnd",
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_5566a0dd-a43a-4caa-8112-834a338dfc2d"
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Datumsformat (Ende)"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Date Format (End)"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_0a995",
+                "name": "dateRangeDelimiter",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_76246",
+                "name": "checkboxChecked",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Checkbox-Symbol (aktiviert)"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Checkbox Icon (checked)"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_733a0",
+                "name": "checkboxUnchecked",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Kontrollkästchen-Symbol (deaktiviert)"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Checkbox Icon (unchecked)"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_1617a",
+                "name": "suffix",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Nachsilbe"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Suffix"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

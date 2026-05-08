@@ -1,0 +1,2958 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/PrintModelDTO",
+  "definitions": {
+    "PrintModelDTO": {
+      "type": "object",
+      "properties": {
+        "header": {
+          "$ref": "#/definitions/HeaderDTO"
+        },
+        "content": {
+          "$ref": "#/definitions/ContentDTO"
+        }
+      },
+      "required": [
+        "header",
+        "content"
+      ],
+      "additionalProperties": false
+    },
+    "HeaderDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "modelType": {
+          "type": "string"
+        },
+        "modelVersion": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "locales": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LocalesDTO"
+          }
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LabelsDTO"
+          }
+        },
+        "annotations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AnnotationsDTO"
+          }
+        },
+        "modelReferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ModelReferencesDTO"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "modelType",
+        "modelVersion",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "LocalesDTO": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "LabelsDTO": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "locale",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "AnnotationsDTO": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "ModelReferencesDTO": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string"
+        },
+        "modelType": {
+          "type": "string"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "reference",
+        "modelType"
+      ],
+      "additionalProperties": false
+    },
+    "ContentDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "general": {
+          "$ref": "#/definitions/GeneralDTO"
+        },
+        "segments": {
+          "$ref": "#/definitions/SegmentsDTO"
+        },
+        "sections": {
+          "$ref": "#/definitions/SectionsDTO_1"
+        },
+        "elementDefinitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ElementDefinitionsDTO"
+          }
+        },
+        "textStyles": {
+          "$ref": "#/definitions/TextStylesDTO_1"
+        },
+        "watermarks": {
+          "$ref": "#/definitions/WatermarksDTO_1"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "GeneralDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "details": {
+          "$ref": "#/definitions/DetailsDTO"
+        },
+        "segmentDefaults": {
+          "$ref": "#/definitions/SegmentDefaultsDTO"
+        },
+        "runtimeVariables": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RuntimeVariablesDTO"
+          }
+        },
+        "textStyles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TextStylesDTO"
+          }
+        },
+        "structure": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/StructureDTO"
+          }
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SectionsDTO"
+          }
+        },
+        "watermarks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/WatermarksDTO"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "DetailsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "language": {
+          "$ref": "#/definitions/Enumeration_Details_LanguageDTO"
+        }
+      },
+      "required": [
+        "id",
+        "author",
+        "language"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Details_LanguageDTO": {
+      "type": "string",
+      "const": "DE"
+    },
+    "SegmentDefaultsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "fontSize": {
+          "type": "number"
+        },
+        "model": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "fontSize"
+      ],
+      "additionalProperties": false
+    },
+    "RuntimeVariablesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Enumeration_RuntimeVariables_TypeDTO"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_RuntimeVariables_TypeDTO": {
+      "type": "string",
+      "enum": [
+        "Boolean",
+        "String",
+        "StringArray"
+      ]
+    },
+    "TextStylesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "StructureDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "SectionsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "WatermarksDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "SegmentsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DefinitionsDTO"
+          }
+        },
+        "references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReferencesDTO"
+          }
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "DefinitionsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Enumeration_Definitions_TypeDTO"
+        },
+        "defaultSegment": {
+          "$ref": "#/definitions/DefaultSegmentDTO"
+        },
+        "elementReferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ElementReferencesDTO"
+          }
+        },
+        "dinTemplate": {
+          "$ref": "#/definitions/DinTemplateDTO"
+        },
+        "dataContexts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DataContextsDTO"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Definitions_TypeDTO": {
+      "type": "string",
+      "enum": [
+        "Default",
+        "Repeatable"
+      ]
+    },
+    "DefaultSegmentDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "pageOrientation": {
+          "$ref": "#/definitions/Enumeration_DefaultSegment_PageOrientationDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_DefaultSegment_PageOrientationDTO": {
+      "type": "string",
+      "enum": [
+        "Portrait",
+        "Landscape"
+      ]
+    },
+    "ElementReferencesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "refId": {
+          "type": "string"
+        },
+        "position": {
+          "$ref": "#/definitions/PositionDTO"
+        },
+        "dimensions": {
+          "$ref": "#/definitions/DimensionsDTO"
+        },
+        "hideConditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/HideConditionsDTO"
+          }
+        },
+        "screenReadingOrder": {
+          "$ref": "#/definitions/ScreenReadingOrderDTO"
+        },
+        "margins": {
+          "$ref": "#/definitions/MarginsDTO"
+        }
+      },
+      "required": [
+        "id",
+        "refId"
+      ],
+      "additionalProperties": false
+    },
+    "PositionDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "x": {
+          "$ref": "#/definitions/XDTO"
+        },
+        "y": {
+          "$ref": "#/definitions/YDTO"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "XDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_X_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_X_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "YDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_Y_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_Y_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "DimensionsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "minHeight": {
+          "$ref": "#/definitions/MinHeightDTO"
+        },
+        "minWidth": {
+          "$ref": "#/definitions/MinWidthDTO"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "MinHeightDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_MinHeight_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_MinHeight_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "MinWidthDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_MinWidth_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_MinWidth_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "HideConditionsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "precondition": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "precondition"
+      ],
+      "additionalProperties": false
+    },
+    "ScreenReadingOrderDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "screenReadingOrderWeight": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "screenReadingOrderWeight"
+      ],
+      "additionalProperties": false
+    },
+    "MarginsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "top": {
+          "$ref": "#/definitions/TopDTO"
+        },
+        "bottom": {
+          "$ref": "#/definitions/BottomDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TopDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Enumeration_Top_TypeDTO"
+        },
+        "margin": {
+          "$ref": "#/definitions/MarginDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_Top_TypeDTO": {
+      "type": "string",
+      "enum": [
+        "Implicit",
+        "Explicit"
+      ]
+    },
+    "MarginDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_Margin_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_Margin_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "BottomDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Enumeration_Bottom_TypeDTO"
+        },
+        "margin": {
+          "$ref": "#/definitions/MarginDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_Bottom_TypeDTO": {
+      "type": "string",
+      "enum": [
+        "Implicit",
+        "Explicit"
+      ]
+    },
+    "DinTemplateDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "referenceId": {
+          "type": "string"
+        },
+        "refId": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "DataContextsDTO": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "isRepetition": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "isRepetition",
+        "id",
+        "model"
+      ],
+      "additionalProperties": false
+    },
+    "ReferencesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "purpose": {
+          "$ref": "#/definitions/Enumeration_References_PurposeDTO"
+        },
+        "direction": {
+          "$ref": "#/definitions/Enumeration_References_DirectionDTO"
+        },
+        "referenceModel": {
+          "type": "string"
+        },
+        "refIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RefIdsDTO"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "purpose",
+        "direction",
+        "referenceModel"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_References_PurposeDTO": {
+      "type": "string",
+      "const": "DINTemplate"
+    },
+    "Enumeration_References_DirectionDTO": {
+      "type": "string",
+      "enum": [
+        "IncomingReference",
+        "OutgoingReference"
+      ]
+    },
+    "RefIdsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "refId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "refId"
+      ],
+      "additionalProperties": false
+    },
+    "SectionsDTO_1": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DefinitionsDTO_1"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "DefinitionsDTO_1": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "sectionUsage": {
+          "$ref": "#/definitions/Enumeration_Definitions_SectionUsageDTO"
+        },
+        "pageOrientation": {
+          "$ref": "#/definitions/Enumeration_Definitions_PageOrientationDTO"
+        },
+        "headerHeight": {
+          "$ref": "#/definitions/HeaderHeightDTO"
+        },
+        "footerHeight": {
+          "$ref": "#/definitions/FooterHeightDTO"
+        },
+        "elementReferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ElementReferencesDTO"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "sectionUsage",
+        "pageOrientation"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Definitions_SectionUsageDTO": {
+      "type": "string",
+      "enum": [
+        "First",
+        "Remaining"
+      ]
+    },
+    "Enumeration_Definitions_PageOrientationDTO": {
+      "type": "string",
+      "enum": [
+        "Portrait",
+        "Landscape"
+      ]
+    },
+    "HeaderHeightDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_HeaderHeight_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_HeaderHeight_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "FooterHeightDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_FooterHeight_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_FooterHeight_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "ElementDefinitionsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Enumeration_ElementDefinitions_TypeDTO"
+        },
+        "field": {
+          "$ref": "#/definitions/FieldDTO"
+        },
+        "calculation": {
+          "$ref": "#/definitions/CalculationDTO"
+        },
+        "text": {
+          "$ref": "#/definitions/TextElementDTO"
+        },
+        "expression": {
+          "$ref": "#/definitions/ExpressionDTO"
+        },
+        "image": {
+          "$ref": "#/definitions/ImageDTO"
+        },
+        "table": {
+          "$ref": "#/definitions/TableDTO"
+        },
+        "tableLayout": {
+          "$ref": "#/definitions/TableLayoutDTO"
+        },
+        "listing": {
+          "$ref": "#/definitions/ListingDTO"
+        },
+        "barChart": {
+          "$ref": "#/definitions/BarChartDTO"
+        },
+        "lineChart": {
+          "$ref": "#/definitions/LineChartDTO"
+        },
+        "pieChart": {
+          "$ref": "#/definitions/PieChartDTO"
+        },
+        "area": {
+          "$ref": "#/definitions/AreaDTO"
+        },
+        "switch": {
+          "$ref": "#/definitions/SwitchDTO"
+        },
+        "boundingBox": {
+          "$ref": "#/definitions/BoundingBoxDTO"
+        },
+        "override": {
+          "$ref": "#/definitions/OverrideDTO"
+        },
+        "borderProperties": {
+          "$ref": "#/definitions/BorderPropertiesDTO"
+        },
+        "textProperties": {
+          "$ref": "#/definitions/TextPropertiesDTO"
+        }
+      },
+      "required": [
+        "id",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_ElementDefinitions_TypeDTO": {
+      "type": "string",
+      "enum": [
+        "Text",
+        "Expression",
+        "Image",
+        "Table",
+        "TableLayout",
+        "Listing",
+        "BarChart",
+        "LineChart",
+        "PieChart",
+        "Line",
+        "Field",
+        "Calculation",
+        "PageNumber",
+        "PageNumberTotal",
+        "BoundingBox",
+        "Override",
+        "Area",
+        "Switch"
+      ]
+    },
+    "FieldDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "displayOptions": {
+          "$ref": "#/definitions/DisplayOptionsDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "DisplayOptionsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "displayType": {
+          "$ref": "#/definitions/Enumeration_DisplayOptions_DisplayTypeDTO"
+        },
+        "dateFormat": {
+          "type": "string"
+        },
+        "dateRangeFormatStart": {
+          "type": "string"
+        },
+        "dateRangeFormatEnd": {
+          "type": "string"
+        },
+        "dateRangeDelimiter": {
+          "type": "string"
+        },
+        "checkboxChecked": {
+          "type": "string"
+        },
+        "checkboxUnchecked": {
+          "type": "string"
+        },
+        "suffix": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_DisplayOptions_DisplayTypeDTO": {
+      "type": "string",
+      "enum": [
+        "Html",
+        "Date",
+        "Checkbox",
+        "DateRange"
+      ]
+    },
+    "CalculationDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "fieldType": {
+          "$ref": "#/definitions/FieldTypeDTO"
+        },
+        "computationAlternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ComputationAlternativesDTO"
+          }
+        },
+        "displayOptions": {
+          "$ref": "#/definitions/DisplayOptionsDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "FieldTypeDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "fieldType": {
+          "$ref": "#/definitions/Enumeration_FieldType_FieldTypeDTO"
+        },
+        "typeDefinition": {
+          "$ref": "#/definitions/TypeDefinitionDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_FieldType_FieldTypeDTO": {
+      "type": "string",
+      "enum": [
+        "Boolean",
+        "Number",
+        "String",
+        "TypeDefinition"
+      ]
+    },
+    "TypeDefinitionDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ComputationAlternativesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        },
+        "precondition": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "operation"
+      ],
+      "additionalProperties": false
+    },
+    "TextElementDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "hideIfEmpty": {
+          "type": "boolean"
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EntitiesDTO"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "EntitiesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "refId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "refId"
+      ],
+      "additionalProperties": false
+    },
+    "ExpressionDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "basePath": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "hideIfEmpty": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ImageDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "imageSrcType": {
+          "$ref": "#/definitions/Enumeration_Image_ImageSrcTypeDTO"
+        },
+        "alternativeText": {
+          "type": "string"
+        },
+        "dimensions": {
+          "$ref": "#/definitions/DimensionsDTO_1"
+        },
+        "attachmentSource": {
+          "$ref": "#/definitions/AttachmentSourceDTO"
+        },
+        "fieldSource": {
+          "$ref": "#/definitions/FieldSourceDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_Image_ImageSrcTypeDTO": {
+      "type": "string",
+      "enum": [
+        "Attachment",
+        "Field"
+      ]
+    },
+    "DimensionsDTO_1": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "height": {
+          "$ref": "#/definitions/HeightDTO"
+        },
+        "width": {
+          "$ref": "#/definitions/WidthDTO"
+        },
+        "originalHeight": {
+          "$ref": "#/definitions/OriginalHeightDTO"
+        },
+        "originalWidth": {
+          "$ref": "#/definitions/OriginalWidthDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "HeightDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_Height_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_Height_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "WidthDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_Width_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_Width_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "OriginalHeightDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_OriginalHeight_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_OriginalHeight_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "OriginalWidthDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_OriginalWidth_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_OriginalWidth_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "AttachmentSourceDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "imageAttachment": {
+          "$ref": "#/definitions/ImageAttachmentDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ImageAttachmentDTO": {
+      "type": "object",
+      "properties": {
+        "original_filename": {
+          "type": "string"
+        },
+        "internal_filename": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "attachment_id": {
+          "type": "string"
+        },
+        "size": {
+          "type": "number"
+        },
+        "mime_type": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "FieldSourceDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TableDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "basePath": {
+          "type": "string"
+        },
+        "filterExpression": {
+          "type": "string"
+        },
+        "hideHeader": {
+          "type": "boolean"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ColumnsDTO"
+          }
+        },
+        "headerTextProperties": {
+          "$ref": "#/definitions/HeaderTextPropertiesDTO"
+        },
+        "sumLabel": {
+          "$ref": "#/definitions/SumLabelDTO"
+        },
+        "maxRowCount": {
+          "$ref": "#/definitions/MaxRowCountDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ColumnsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "refId": {
+          "type": "string"
+        },
+        "headerLabelHidden": {
+          "type": "boolean"
+        },
+        "sumColumn": {
+          "type": "boolean"
+        },
+        "hasCustomTextProperties": {
+          "type": "boolean"
+        },
+        "width": {
+          "$ref": "#/definitions/MeasureInputSourceDTO"
+        },
+        "label": {
+          "$ref": "#/definitions/LabelDTO"
+        }
+      },
+      "required": [
+        "id",
+        "refId"
+      ],
+      "additionalProperties": false
+    },
+    "MeasureInputSourceDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_Width_SourceDTO"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_Width_UnitDTO"
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "unit"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Width_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "LabelDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_Label_SourceDTO"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Label_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "HeaderTextPropertiesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "color": {
+          "$ref": "#/definitions/ColorDTO"
+        },
+        "backgroundColor": {
+          "$ref": "#/definitions/BackgroundColorDTO"
+        },
+        "alignment": {
+          "$ref": "#/definitions/AlignmentDTO"
+        },
+        "bold": {
+          "$ref": "#/definitions/BoldDTO"
+        },
+        "italic": {
+          "$ref": "#/definitions/ItalicDTO"
+        },
+        "underlined": {
+          "$ref": "#/definitions/UnderlinedDTO"
+        },
+        "textStyleId": {
+          "$ref": "#/definitions/TextStyleIdDTO"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "ColorDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_Color_SourceDTO"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Color_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "BackgroundColorDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_BackgroundColor_SourceDTO"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_BackgroundColor_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "AlignmentDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_Alignment_SourceDTO"
+        },
+        "path": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/Enumeration_Alignment_ValueDTO"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Alignment_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "Enumeration_Alignment_ValueDTO": {
+      "type": "string",
+      "enum": [
+        "Left",
+        "Center",
+        "Right",
+        "Justify"
+      ]
+    },
+    "BoldDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "boolean"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_Bold_SourceDTO"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Bold_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "ItalicDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "boolean"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_Italic_SourceDTO"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Italic_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "UnderlinedDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "boolean"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_Underlined_SourceDTO"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Underlined_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "TextStyleIdDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_TextStyleId_SourceDTO"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_TextStyleId_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "SumLabelDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_SumLabel_SourceDTO"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_SumLabel_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "MaxRowCountDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_MaxRowCount_SourceDTO"
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_MaxRowCount_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "TableLayoutDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "rowCount": {
+          "type": "number"
+        },
+        "columnCount": {
+          "type": "number"
+        },
+        "rowProperties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RowPropertiesDTO"
+          }
+        },
+        "columnProperties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ColumnPropertiesDTO"
+          }
+        },
+        "cells": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CellsDTO"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "RowPropertiesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "index": {
+          "type": "number"
+        },
+        "minHeight": {
+          "$ref": "#/definitions/MeasureInputSourceDTO"
+        }
+      },
+      "required": [
+        "id",
+        "index"
+      ],
+      "additionalProperties": false
+    },
+    "ColumnPropertiesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "index": {
+          "type": "number"
+        },
+        "verticalAlignment": {
+          "$ref": "#/definitions/Enumeration_ColumnProperties_VerticalAlignmentDTO"
+        },
+        "width": {
+          "$ref": "#/definitions/MeasureInputSourceDTO"
+        }
+      },
+      "required": [
+        "id",
+        "index"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_ColumnProperties_VerticalAlignmentDTO": {
+      "type": "string",
+      "enum": [
+        "Top",
+        "Middle",
+        "Bottom"
+      ]
+    },
+    "CellsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "refId": {
+          "type": "string"
+        },
+        "row": {
+          "type": "number"
+        },
+        "column": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "refId",
+        "row",
+        "column"
+      ],
+      "additionalProperties": false
+    },
+    "ListingDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "basePath": {
+          "type": "string"
+        },
+        "showRepeatedGroupEntries": {
+          "type": "boolean"
+        },
+        "hideHeader": {
+          "type": "boolean"
+        },
+        "rowPropertyComputations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RowPropertyComputationsDTO"
+          }
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ColumnsDTO_1"
+          }
+        },
+        "headerTextProperties": {
+          "$ref": "#/definitions/HeaderTextPropertiesDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RowPropertyComputationsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "property": {
+          "$ref": "#/definitions/Enumeration_RowPropertyComputations_PropertyDTO"
+        },
+        "computationAlternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ComputationAlternativesDTO"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "property"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_RowPropertyComputations_PropertyDTO": {
+      "type": "string",
+      "enum": [
+        "Bold",
+        "Italic",
+        "Underline",
+        "Font",
+        "FontSize",
+        "LineHeight",
+        "HorizontalAlignment",
+        "VerticalAlignment",
+        "Color",
+        "BackgroundColor",
+        "BorderStyle",
+        "BorderWidth",
+        "BorderColor",
+        "IsHidden",
+        "PaddingTop",
+        "PaddingBottom",
+        "PaddingLeft",
+        "PaddingRight"
+      ]
+    },
+    "ColumnsDTO_1": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "isSortingIndex": {
+          "type": "boolean"
+        },
+        "hasCustomTextProperties": {
+          "type": "boolean"
+        },
+        "hasCustomBorderProperties": {
+          "type": "boolean"
+        },
+        "default": {
+          "$ref": "#/definitions/DefaultDTO"
+        },
+        "group": {
+          "$ref": "#/definitions/GroupDTO"
+        },
+        "field": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FieldDTO_1"
+          }
+        },
+        "borderProperties": {
+          "$ref": "#/definitions/BorderPropertiesDTO"
+        },
+        "textProperties": {
+          "$ref": "#/definitions/TextPropertiesDTO"
+        },
+        "width": {
+          "$ref": "#/definitions/MeasureInputSourceDTO"
+        },
+        "label": {
+          "$ref": "#/definitions/LabelDTO"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "DefaultDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "propertyComputations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PropertyComputationsDTO"
+          }
+        },
+        "valueComputationAlternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ValueComputationAlternativesDTO"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "PropertyComputationsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "property": {
+          "$ref": "#/definitions/Enumeration_PropertyComputations_PropertyDTO"
+        },
+        "computationAlternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ComputationAlternativesDTO"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "property"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_PropertyComputations_PropertyDTO": {
+      "type": "string",
+      "enum": [
+        "Bold",
+        "Italic",
+        "Underline",
+        "Font",
+        "FontSize",
+        "LineHeight",
+        "HorizontalAlignment",
+        "VerticalAlignment",
+        "Color",
+        "BackgroundColor",
+        "BorderStyle",
+        "BorderWidth",
+        "BorderColor",
+        "IsHidden",
+        "IsContentHidden",
+        "ColumnSpan",
+        "PaddingTop",
+        "PaddingBottom",
+        "PaddingLeft",
+        "PaddingRight"
+      ]
+    },
+    "ValueComputationAlternativesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "operation": {
+          "type": "string"
+        },
+        "precondition": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "operation"
+      ],
+      "additionalProperties": false
+    },
+    "GroupDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "propertyComputations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PropertyComputationsDTO"
+          }
+        },
+        "valueComputationAlternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ValueComputationAlternativesDTO"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "FieldDTO_1": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "inputFieldTypeSerialized": {
+          "type": "string"
+        },
+        "outputFieldTypeSerialized": {
+          "type": "string"
+        },
+        "propertyComputations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PropertyComputationsDTO"
+          }
+        },
+        "valueComputationAlternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ValueComputationAlternativesDTO"
+          }
+        },
+        "displayOptions": {
+          "$ref": "#/definitions/DisplayOptionsDTO"
+        }
+      },
+      "required": [
+        "id",
+        "inputFieldTypeSerialized",
+        "outputFieldTypeSerialized"
+      ],
+      "additionalProperties": false
+    },
+    "BorderPropertiesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "borderWidth": {
+          "type": "number"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "borderStyle": {
+          "$ref": "#/definitions/Enumeration_BorderProperties_BorderStyleDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_BorderProperties_BorderStyleDTO": {
+      "type": "string",
+      "enum": [
+        "Solid",
+        "Dotted",
+        "Dashed"
+      ]
+    },
+    "TextPropertiesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "color": {
+          "$ref": "#/definitions/InputSourceDTO%3Cstring%3E"
+        },
+        "backgroundColor": {
+          "$ref": "#/definitions/InputSourceDTO%3Cstring%3E"
+        },
+        "alignment": {
+          "$ref": "#/definitions/InputSourceDTO%3CEnumeration_Alignment_ValueDTO%3E"
+        },
+        "bold": {
+          "$ref": "#/definitions/InputSourceDTO%3Cboolean%3E"
+        },
+        "italic": {
+          "$ref": "#/definitions/InputSourceDTO%3Cboolean%3E"
+        },
+        "underlined": {
+          "$ref": "#/definitions/InputSourceDTO%3Cboolean%3E"
+        },
+        "textStyleId": {
+          "$ref": "#/definitions/InputSourceDTO%3Cstring%3E"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "InputSourceDTO<string>": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_Color_SourceDTO"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "InputSourceDTO<Enumeration_Alignment_ValueDTO>": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/Enumeration_Alignment_ValueDTO"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_Color_SourceDTO"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "InputSourceDTO<boolean>": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "boolean"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_Color_SourceDTO"
+        },
+        "reference": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "BarChartDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "basePath": {
+          "type": "string"
+        },
+        "orientation": {
+          "$ref": "#/definitions/Enumeration_BarChart_OrientationDTO"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DataDTO"
+          }
+        },
+        "dimensions": {
+          "$ref": "#/definitions/DimensionsDTO_2"
+        },
+        "title": {
+          "$ref": "#/definitions/TitleDTO"
+        },
+        "labelX": {
+          "$ref": "#/definitions/LabelXDTO"
+        },
+        "labelY": {
+          "$ref": "#/definitions/LabelYDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_BarChart_OrientationDTO": {
+      "type": "string",
+      "enum": [
+        "Horizontal",
+        "Vertical"
+      ]
+    },
+    "DataDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "valueField": {
+          "type": "string"
+        },
+        "keyField": {
+          "type": "string"
+        },
+        "seriesName": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "labelIsNumeration": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "valueField"
+      ],
+      "additionalProperties": false
+    },
+    "DimensionsDTO_2": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "height": {
+          "$ref": "#/definitions/HeightDTO"
+        },
+        "width": {
+          "$ref": "#/definitions/WidthDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TitleDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_Title_SourceDTO"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Title_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "LabelXDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_LabelX_SourceDTO"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_LabelX_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "LabelYDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/definitions/Enumeration_LabelY_SourceDTO"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_LabelY_SourceDTO": {
+      "type": "string",
+      "enum": [
+        "INPUT",
+        "DEFAULT",
+        "UNSET",
+        "INHERITED"
+      ]
+    },
+    "LineChartDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "basePath": {
+          "type": "string"
+        },
+        "orientation": {
+          "$ref": "#/definitions/Enumeration_LineChart_OrientationDTO"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DataDTO_1"
+          }
+        },
+        "dimensions": {
+          "$ref": "#/definitions/DimensionsDTO_2"
+        },
+        "title": {
+          "$ref": "#/definitions/TitleDTO"
+        },
+        "labelX": {
+          "$ref": "#/definitions/LabelXDTO"
+        },
+        "labelY": {
+          "$ref": "#/definitions/LabelYDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_LineChart_OrientationDTO": {
+      "type": "string",
+      "enum": [
+        "Horizontal",
+        "Vertical"
+      ]
+    },
+    "DataDTO_1": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "valueField": {
+          "type": "string"
+        },
+        "seriesName": {
+          "type": "string"
+        },
+        "labelIsNumeration": {
+          "type": "boolean"
+        },
+        "color": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "valueField"
+      ],
+      "additionalProperties": false
+    },
+    "PieChartDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "basePath": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/DataDTO_2"
+        },
+        "dimensions": {
+          "$ref": "#/definitions/DimensionsDTO_2"
+        },
+        "title": {
+          "$ref": "#/definitions/TitleDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "DataDTO_2": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "valueField": {
+          "type": "string"
+        },
+        "keyField": {
+          "type": "string"
+        },
+        "labelIsNumeration": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AreaDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "dimensions": {
+          "$ref": "#/definitions/DimensionsDTO_3"
+        },
+        "elementReferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ElementReferencesDTO"
+          }
+        },
+        "dataContexts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DataContextsDTO"
+          }
+        },
+        "maxRepetitions": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "DimensionsDTO_3": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "width": {
+          "$ref": "#/definitions/WidthDTO"
+        },
+        "height": {
+          "$ref": "#/definitions/HeightDTO"
+        },
+        "overflowHeight": {
+          "$ref": "#/definitions/OverflowHeightDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "OverflowHeightDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/Enumeration_OverflowHeight_UnitDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_OverflowHeight_UnitDTO": {
+      "type": "string",
+      "enum": [
+        "Millimeter",
+        "Percent"
+      ]
+    },
+    "SwitchDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "dimensions": {
+          "$ref": "#/definitions/DimensionsDTO_2"
+        },
+        "cases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CasesDTO"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "CasesDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "precondition": {
+          "type": "string"
+        },
+        "refId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "precondition",
+        "refId"
+      ],
+      "additionalProperties": false
+    },
+    "BoundingBoxDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "dimensions": {
+          "$ref": "#/definitions/DimensionsDTO_2"
+        },
+        "elementReferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ElementReferencesDTO"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "OverrideDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "refId": {
+          "type": "string"
+        },
+        "overrideType": {
+          "$ref": "#/definitions/Enumeration_Override_OverrideTypeDTO"
+        },
+        "source": {
+          "$ref": "#/definitions/SourceDTO"
+        },
+        "boundingBox": {
+          "$ref": "#/definitions/BoundingBoxDTO_1"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_Override_OverrideTypeDTO": {
+      "type": "string",
+      "const": "BoundingBox"
+    },
+    "SourceDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sourceType": {
+          "$ref": "#/definitions/Enumeration_Source_SourceTypeDTO"
+        },
+        "referenceType": {
+          "$ref": "#/definitions/Enumeration_Source_ReferenceTypeDTO"
+        },
+        "referenceElementId": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Enumeration_Source_SourceTypeDTO": {
+      "type": "string",
+      "const": "Reference"
+    },
+    "Enumeration_Source_ReferenceTypeDTO": {
+      "type": "string",
+      "const": "Segment"
+    },
+    "BoundingBoxDTO_1": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "elementReferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ElementReferencesDTO"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "TextStylesDTO_1": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DefinitionsDTO_2"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "DefinitionsDTO_2": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "font": {
+          "type": "string"
+        },
+        "fontSize": {
+          "type": "number"
+        },
+        "lineHeight": {
+          "type": "number"
+        },
+        "semantic": {
+          "$ref": "#/definitions/Enumeration_Definitions_SemanticDTO"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "font",
+        "fontSize",
+        "lineHeight",
+        "semantic"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Definitions_SemanticDTO": {
+      "type": "string",
+      "enum": [
+        "P",
+        "H1",
+        "H2",
+        "H3",
+        "H4",
+        "H5",
+        "H6"
+      ]
+    },
+    "WatermarksDTO_1": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "definitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DefinitionsDTO_3"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "DefinitionsDTO_3": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "pageOrientation": {
+          "$ref": "#/definitions/Enumeration_Definitions_PageOrientationDTO"
+        },
+        "opacity": {
+          "type": "number"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConditionsDTO"
+          }
+        },
+        "elementReferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ElementReferencesDTO"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "pageOrientation"
+      ],
+      "additionalProperties": false
+    },
+    "ConditionsDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "precondition": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "precondition"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,110 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Table [[Table]]
+
+The Table element inserts a table into the resulting PDF, which points to a selected repeatable group in a referenced A12 Document Model.
+Each row of the resulting table corresponds to one instance of the repeatable group.
+The Table can have any number of columns, but needs at least one column to be displayed correctly.
+Each column can have a title, which will be displayed in the header and is based on an Element type:
+
+* Field
+* Expression
+
+If a column is marked as a _sum column_, one additional row will be generated at the bottom of the table, which will contain the sums of each sum column.
+To indicate this last row as a sum row, you can define a _sum label_. This label will be rendered in the first column of a table if at least one _sum column_ is defined in the other columns of the table.
+
+Document Model:: Select a Document Model referenced in the <<SchemaTab, Schema Tab>>.
+Group:: The path to the Group in the Document Model that defines the root of the Table Element.
+Every row of the Table Element corresponds to one repetition of this Group.
++
+[NOTE]
+====
+Only Groups can be selected, that are either non-repeatable or are repeatable Groups that are not children of other Repeatable Groups.
+====
+Columns:: Each Column of the Table Element pertains to a defined nested Element.
+Click "Add" to add new columns or click on the Column in the table to edit it.
+See <<TableColumn>> for more details.
+General Properties::
+Maximum Row Count::: Numerical value that specifies the maximum number of rows that will be generated for the Table Element.
+Click "Unset Value" to skip this setting.
+See <<InputSource>> for more details on these settings.
+Sum Row Label::: A String label that is displayed in the first cell of the row containing the results of the Sum Columns.
+If the Sum Row Label is unset, no label will appear.
+See <<InputSource>> for more details on these settings.
++
+[NOTE]
+====
+If the first Column is marked as a Sum Column, the row will not have a label.
+====
+Filtering::
+Filter Expression::: A filter expression that applies a filter on the set of rows.
+Its syntax conforms to the Filter Expression Syntax used in the Form Model.
+The row is displayed if the condition is fulfilled.
+
+Additionally, the Table element is configurable using <<BorderProperties, Border Properties>> and separate configurations of <<TextProperties, Text Properties>> for the header and body of the table.
+
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter03/03_table_detail_view.png[Table element detail view,title="Table detail view",width=436.7688]
+|
+image::chapter03/03_table_properties_detail_view.png[Table properties detail view,title="Table element detail view (continued)",width=400]
+|===
+
+== Columns [[TableColumn]]
+
+Element type:: The type of this Element must be selected as it defines the content of the respective Column.
++
+* *Field*: Each cell of the column is inserted directly from a specific field instance, analog to the <<Field, Field>> element.
+* *Expression*: Each cell is the result of an expression evaluated on the repeatable group instance, analog to the <<Expression, Expression>> element.
+Label:: The label of the Column in the Table Element header.
+See <<InputSource>> for more details on these settings.
++
+* *Default Value*
+* *User Input*
+Hide label?:: Hides the label for this column
+Width:: Percentage width of the Column in respect to the Listing Elements width.
+If no width is set, the default HTML-table behavior is applied.
+The value must be an integer between 1 and 100.
+The sum of all widths will also be validated to ensure that it is 100 or less.
+Sum Column:: Marks the Column to be summed up at the bottom of the table.
++
+[NOTE]
+====
+A Column can only be marked as a Sum Column, if the Element Type is a Field that is a Number Field.
+====
+
+Click "Back" to return to the Table Editor.
+
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter03/03_table_column_field_detail_view.png[Table column field detail view,title="Table field column detail view",width=400]
+|
+image::chapter03/03_table_column_expression_detail_view.png[Table column expression detail view,title="Table expression column detail view",width=400]
+|===
+
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Accessibility Hint*
+
+For accessibility purposes, a table element should have more than one column and more than one row.
+
+Do not use the "Hide Label" option for columns and the "Hide Header" option for the table.
+====

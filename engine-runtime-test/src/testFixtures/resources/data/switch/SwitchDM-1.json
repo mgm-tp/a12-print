@@ -1,0 +1,285 @@
+{
+  "NonRepeatableGroup": {
+    "NumberField": 500,
+    "StringField1": "String Field 1",
+    "StringField2": "String Field 2",
+    "StringField3": "String Field 3",
+    "EmptyField": null
+  },
+  "RepeatableGroupRoot": [
+    {
+      "StringField": "StringField1",
+      "NumberField": 500,
+      "NestedRepeatableGroup1": [
+        {
+          "StringField": "StringField1-1",
+          "NumberField": 10000,
+          "RepeatableGroup": [
+            {
+              "StringField": "StringField1-1-1-1",
+              "NumberField": 10000
+            },
+            {
+              "StringField": "StringField1-1-1-2",
+              "NumberField": 20000
+            }
+          ],
+          "RepeatableGroup2": [
+            {
+              "StringField": "StringField1-1-2-1",
+              "NumberField": 10000
+            },
+            {
+              "StringField": "StringField1-1-2-2",
+              "NumberField": 20000
+            }
+          ],
+          "NonRepeatableGroup": {
+            "StringField": "StringField1-1-3",
+            "NumberField": 20000
+          }
+        },
+        {
+          "StringField": "StringField1-2",
+          "NumberField": 20000,
+          "RepeatableGroup": [
+            {
+              "StringField": "StringField1-2-1-1",
+              "NumberField": 10000
+            },
+            {
+              "StringField": "StringField1-2-1-2",
+              "NumberField": 20000
+            }
+          ],
+          "RepeatableGroup2": [
+            {
+              "StringField": "StringField1-2-2-1",
+              "NumberField": 10000
+            },
+            {
+              "StringField": "StringField1-2-2-2",
+              "NumberField": 20000
+            }
+          ],
+          "NonRepeatableGroup": {
+            "StringField": "StringField1-2-3",
+            "NumberField": 20000
+          }
+        },
+        {
+          "StringField": "StringField1-3",
+          "NumberField": 30000,
+          "RepeatableGroup": [
+            {
+              "StringField": "StringField1-3-1-1",
+              "NumberField": 10000
+            },
+            {
+              "StringField": "StringField1-3-1-2",
+              "NumberField": 20000
+            }
+          ],
+          "RepeatableGroup2": [
+            {
+              "StringField": "StringField1-3-2-1",
+              "NumberField": 10000
+            },
+            {
+              "StringField": "StringField1-3-2-2",
+              "NumberField": 20000
+            }
+          ],
+          "NonRepeatableGroup": {
+            "StringField": "StringField1-3-3",
+            "NumberField": 20000
+          }
+        }
+      ],
+      "NestedRepeatableGroup2": [
+        {
+          "StringField": "StringField1-2-1",
+          "NumberField": 40000
+        },
+        {
+          "StringField": "StringField1-2-2",
+          "NumberField": 50000
+        },
+        {
+          "StringField": "StringField1-2-3",
+          "NumberField": 60000
+        }
+      ]
+    },
+    {
+      "StringField": "StringField2",
+      "NumberField": 10000,
+      "NestedRepeatableGroup1": [
+        {
+          "StringField": "StringField2-1",
+          "NumberField": 2000,
+          "RepeatableGroup": [
+            {
+              "StringField": "StringField2-1-1-1",
+              "NumberField": 30000
+            },
+            {
+              "StringField": "StringField2-1-1-2",
+              "NumberField": 25000
+            }
+          ],
+          "RepeatableGroup2": [
+            {
+              "StringField": "StringField2-1-2-1",
+              "NumberField": 35000
+            },
+            {
+              "StringField": "StringField2-1-2-2",
+              "NumberField": 36000
+            }
+          ],
+          "NonRepeatableGroup": {
+            "StringField": "StringField2-1-3",
+            "NumberField": 37000
+          }
+        },
+        {
+          "StringField": "StringField2-2",
+          "NumberField": 38000,
+          "RepeatableGroup": [
+            {
+              "StringField": "StringField2-2-1-1",
+              "NumberField": 39000
+            },
+            {
+              "StringField": "StringField2-2-1-2",
+              "NumberField": 40000
+            }
+          ],
+          "RepeatableGroup2": [
+            {
+              "StringField": "StringField2-2-2-1",
+              "NumberField": 41000
+            },
+            {
+              "StringField": "StringField2-2-2-2",
+              "NumberField": 42000
+            }
+          ],
+          "NonRepeatableGroup": {
+            "StringField": "StringField2-2-3",
+            "NumberField": 43000
+          }
+        },
+        {
+          "StringField": "StringField2-3",
+          "NumberField": 43000,
+          "RepeatableGroup": [
+            {
+              "StringField": "StringField2-3-1-1",
+              "NumberField": 43100
+            },
+            {
+              "StringField": "StringField2-3-1-2",
+              "NumberField": 43200
+            }
+          ],
+          "RepeatableGroup2": [
+            {
+              "StringField": "StringField2-3-2-1",
+              "NumberField": 44100
+            },
+            {
+              "StringField": "StringField2-3-2-2",
+              "NumberField": 44200
+            }
+          ],
+          "NonRepeatableGroup": {
+            "StringField": "StringField2-3-3",
+            "NumberField": 50000
+          }
+        }
+      ],
+      "NestedRepeatableGroup2": [
+        {
+          "StringField": "StringField2-2-1",
+          "NumberField": 40000
+        },
+        {
+          "StringField": "StringField2-2-2",
+          "NumberField": 50000
+        },
+        {
+          "StringField": "StringField2-2-3",
+          "NumberField": 60000
+        }
+      ]
+    }
+  ],
+  "RepeatableGroupRoot2": [
+    {
+      "StringField": "StringField3",
+      "NumberField": 500,
+      "NestedRepeatableGroup21": [
+        {
+          "StringField": "StringField3-1-1",
+          "NumberField": 15000
+        },
+        {
+          "StringField": "StringField3-1-2",
+          "NumberField": 30000
+        },
+        {
+          "StringField": "StringField3-1-3",
+          "NumberField": 45000
+        }
+      ],
+      "NestedRepeatableGroup22": [
+        {
+          "StringField": "StringField3-2-1",
+          "NumberField": 60000
+        },
+        {
+          "StringField": "StringField3-2-2",
+          "NumberField": 65000
+        },
+        {
+          "StringField": "StringField3-2-3",
+          "NumberField": 80000
+        }
+      ]
+    },
+    {
+      "StringField": "StringField4",
+      "NumberField": 500,
+      "NestedRepeatableGroup21": [
+        {
+          "StringField": "StringField4-1-1",
+          "NumberField": 15000
+        },
+        {
+          "StringField": "StringField4-1-2",
+          "NumberField": 30000
+        },
+        {
+          "StringField": "StringField4-1-3",
+          "NumberField": 45000
+        }
+      ],
+      "NestedRepeatableGroup22": [
+        {
+          "StringField": "StringField4-2-1",
+          "NumberField": 60000
+        },
+        {
+          "StringField": "StringField4-2-2",
+          "NumberField": 65000
+        },
+        {
+          "StringField": "StringField4-2-3",
+          "NumberField": 80000
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "header": {
+    "id": "PrintWithShell",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "DomainShell"
+      }
+    ],
+    "description": "Description"
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "52648bf4",
+        "titleComputation": [
+          {
+            "id": "q80R9hD3fZUnv9PsZ-rMa",
+            "operation": "\"PrintWithShell\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "h08s-hV2Q5RIhznd27Ksb",
+            "operation": "\"Description\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "XZkxZEYUhJSqYYIYV6WbS",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "_SVeBSEoFZtGnxqSurnm7",
+            "operation": "\"Print Model Editor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "1aae3995",
+        "fontSize": 12
+      },
+      "runtimeVariables": [],
+      "textStyles": [],
+      "structure": [
+        {
+          "id": "xGGh-kEfhINteZGsJAe4P"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "64a8d059",
+      "definitions": [
+        {
+          "id": "xGGh-kEfhINteZGsJAe4P",
+          "title": "Segment 1",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "77SZIcrhzvL9Rr89g6bCz",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "X5JHlYUarn-TLPUg08WTL",
+              "refId": "NWXboB48dW7oQ4rvVz2vH",
+              "position": {
+                "id": "IfAsn6XUXdN9CwT2Z_Jca",
+                "x": {
+                  "id": "WRCjdkz3pCzpgWJnEYi0K",
+                  "value": 46,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "n_Hdk9PdlZrnNAMonDT4s",
+                  "value": 20,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "nfcJDjQT6D6LRNokXKAef",
+                "minWidth": {
+                  "id": "iWLLOur-WqlCnlHult55g",
+                  "value": 40,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ZYz059QAjG0iF1ZQVZVnM",
+                  "value": 6,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "xmchYg52Xtl8qBDmZWYe8",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "Q3u_MO4uv1UEyiwfCPeXb",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "NWXboB48dW7oQ4rvVz2vH",
+        "type": "Text",
+        "text": {
+          "id": "OY42-IeQSaq0uTBCljyYO",
+          "text": "<p><span style=\"\">Test: </span><span entity-id=\"AkwsfG2m_vT3sX3ouM3u9\" entity-type=\"Field\"><span style=\"\">DomainShell/general/test</span></span></p>",
+          "entities": [
+            {
+              "id": "aq8e6wULKZlq7W5xeKq4-",
+              "refId": "AkwsfG2m_vT3sX3ouM3u9"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "lypbeWQNTTmss9u0zK7qH",
+          "textStyleId": {
+            "id": "MI53cyHu14Nhip9nfsvHP",
+            "source": "INPUT",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "md6rxeb5XyNim9jJ1cGA4",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        }
+      },
+      {
+        "id": "AkwsfG2m_vT3sX3ouM3u9",
+        "type": "Field",
+        "field": {
+          "id": "ISxwotnf65Z6k7Kr60yir",
+          "model": "DomainShell",
+          "path": "/general/test"
+        }
+      }
+    ]
+  }
+}

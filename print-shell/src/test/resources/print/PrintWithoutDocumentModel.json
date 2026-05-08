@@ -1,0 +1,154 @@
+{
+  "header": {
+    "id": "PrintWithoutDocumentModel",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [],
+    "description": "Description"
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "631df75a",
+        "titleComputation": [
+          {
+            "id": "gQ084SaZXQzZCw3Oz5IX0",
+            "operation": "\"PrintWithoutDocumentModel\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "WLeOQjP2R4gonCGFidrFT",
+            "operation": "\"Description\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "F7KmTqeGyekYrkYi1nE9S",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "1-FY6fqpArfpXeImUrOtW",
+            "operation": "\"Print Model Editor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "4c71be06",
+        "fontSize": 12
+      },
+      "runtimeVariables": [],
+      "textStyles": [],
+      "structure": [
+        {
+          "id": "xibCXCGi56vNQFC0c9ADW"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "86b50554",
+      "definitions": [
+        {
+          "id": "xibCXCGi56vNQFC0c9ADW",
+          "title": "Segment 1",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "zJdy38xZ6x-CedlPb3V2A",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "zeRy8S0o2GxTLnsq0jQwD",
+              "refId": "mIV9ESpYH6cRQO8UXyMU0",
+              "position": {
+                "id": "ExwoqhzoE1PeIasjyH0CQ",
+                "x": {
+                  "id": "AZXMY1Ue1yctI9phUM4cP",
+                  "value": 31,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "SGk062wk7OgAQ-si6xWqV",
+                  "value": 11,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "rq8tBAYkJ_Vg3rqqBdHXp",
+                "minWidth": {
+                  "id": "IMXhaGcWoPf1wUKWPXbLZ",
+                  "value": 40,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "1ithnbR1I-fzoI3BMYa7g",
+                  "value": 6,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "oYttN1w6gonJMnOfc7HeT",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "minY7Rb5gGwIZZnUUOX4h",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "mIV9ESpYH6cRQO8UXyMU0",
+        "type": "Text",
+        "text": {
+          "id": "qUBL8bj560pdIblwNWCD3",
+          "text": "<p><span style=\"\">Test</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "VHdXC_f_v6CR6GqLr58tN",
+          "textStyleId": {
+            "id": "oUscaGBPCuPjXbnMqkNSX",
+            "source": "INPUT",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "IpiZvnvhBr5BLvlMhxB-t",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        }
+      }
+    ]
+  }
+}

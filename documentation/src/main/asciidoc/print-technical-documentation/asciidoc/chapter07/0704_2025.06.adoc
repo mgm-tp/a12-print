@@ -1,0 +1,179 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= 2025.06
+
+== Breaking Changes
+
+=== Input Value Source
+Due to the introduction of the Input Value Source for certain fields, these fields now represent breaking changes at the API level. The value of each field depends on its source. To retrieve the value, please use the Input Value Source's API
+
+**Java usage**
+[source,java]
+----
+// Old model api
+String title = chart.getChartProperties().getTitle();
+
+// New model api
+Optional<String> title = InputValueSourceResolver.getInputValue(chart.getChartProperties().getTitle())
+----
+
+**Typescript usage**
+[source,typescript]
+----
+// Old model api
+const title = lineChart.title;
+
+// New model api
+const title = InputValueSourceResolver.getSourceInputValue(lineChart.title, lineChart, "lineChart.title")
+----
+
+
+.Fields that have an input source applied
+[%header, cols="1,1"]
+|===
+
+|Element | Field
+
+.4+| *Table*
+| maxRowCount
+| sumLabel
+| columns.label
+| columns.width
+
+.2+| *Listing*
+| columns.label
+| columns.width
+
+.2+| *Table Layout*
+| rowProperties.minHeight
+| columnProperties.width
+
+.3+| *Line Chart*
+| title
+| labelX
+| labelY
+
+.3+| *Bar Chart*
+| title
+| labelX
+| labelY
+
+.1+| *Pie Chart*
+| title
+|===
+
+
+The following elements contain text properties that need to be adapted to the new API:
+
+* Text: Text properties
+* Expression: Text properties
+* Table: Text properties, header text properties
+* Listing: Text properties, header text properties, column's text properties
+
+.Text Properties – Input Source Fields
+[%header, cols="1,1"]
+|===
+|Element | Field
+.7+| *Text Properties*
+| textStyleId
+| color
+| backgroundColor
+| bold
+| italic
+| underlined
+| alignment
+|===
+
+=== Move the description to the header
+The description field used to belong to `content.general` is moved to header of the model.
+
+[source,json]
+----
+{
+	"header": {
+		"id": "print-model",
+		"modelType": "print",
+		"modelVersion": "3.0.0",
+		"description": "Description"
+	},
+	"content": { ... }
+}
+----
+
+=== Roles Annotations in the SME are now separated by comma instead of semicolon
+
+In versions prior to 3.0.0 creating a Print Model with roles in the SME would generate an annotation with
+each role being separated with a semicolon.
+Now a comma-separated list is created instead, bringing it in line with the rest of the A12 ecosystem.
+
+[source,json]
+----
+{
+	"header": {
+		"id": "print-model",
+		"modelType": "print",
+		"modelVersion": "3.0.0",
+		"description": "Description",
+		"annotations": [
+			{
+				"name": "roles",
+				"value": "admin,modeler,tester,reviewer"
+			}
+		]
+	},
+	"content": { ... }
+}
+----
+
+=== Move the Marshaller to model-api-utils package and validating model references
+In versions prior to 3.0.0, the Marshaller lived in the`@com.mgmtp.a12.print/print-model-api`, in version 3.0.0, it has been moved to package `@com.mgmtp.a12.print/print-model-api-utils`.
+
+To use the Marshaller, import it from the new package and pass document models when calling serialize/deserialize to ensure that referenced document models can be validated correctly.
+
+[source,typescript]
+----
+import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/lib/marshaller/index.js";
+
+const printModelMarshaller = new PrintModelMarshaller();
+const deserializedResult = printModelMarshaller.deserialize(printModel, documentModels);
+----
+
+To skip reference validation, pass the `SKIP_REFERENCES` mode to the serialize/deserialize function
+[source,typescript]
+----
+const deserializedResult = printModelMarshaller.deserialize(printModel, [], PrintValidationMode.SKIP_REFERENCES);
+----
+
+=== Move serialization package to model-api-utils module
+
+In version 3.0.0, the `model-impl` module has been removed. The serialization package was moved to the `model-api-utils` module.
+
+To use the serialization package, update all references and imports accordingly.
+
+[source,java]
+----
+- com.mgmtp.a12.print.model.impl.serialization
++ com.mgmtp.a12.print.model.api.utils.serialization
+----
+
+== Deprecation
+
+=== Java
+
+* Since the migration to Document V2, the Document V1 provider `KernelDocumentProvider` has been deprecated. Please use `KernelDocumentV2Provider` instead.
+* The `migration` command of the `print-shell` tool is deprecated since version 3.0.0. Use the <<migration-with-node, Node Based Tool>> from this version onwards.

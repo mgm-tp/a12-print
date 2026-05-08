@@ -1,0 +1,51 @@
+# SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+#
+# Copyright (c) 2012-2026 mgm technology partners GmbH
+#
+# Dual License
+# ------------
+# This source file is part of the mgm A12 Platform and available under
+# a choice of two different licenses:
+#
+# 1. Open-Source License - EUPL v1.2
+#    You may redistribute and/or modify this file under the terms of the
+#    European Union Public License, version 1.2 - see https://eupl.eu/.
+#
+# 2. Commercial License
+#    Alternatively, you may obtain a commercial license from
+#    mgm technology partners GmbH, that permits use of this software
+#    under different terms (including support and maintenance services).
+#
+#    Please contact a12-license@mgm-tp.com for more information.
+#
+# You must select and comply with exactly one of the above license options.
+#
+# Warranty Disclaimer (applies to either option)
+# ----------------------------------------------
+# THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND,
+# WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
+# LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+[versions]
+a12Base = "29.3.0"
+a12Kernel = "30.8.1"
+a12Openhtmltopdf = "0.2.2"
+
+[libraries]
+baseModelApi = { module = "com.mgmtp.a12.base:base-model-api", version.ref = "a12Base" }
+baseModelConsistency = { module = "com.mgmtp.a12.base:base-model-consistency", version.ref = "a12Base" }
+baseModelUtils = { module = "com.mgmtp.a12.base:base-model-utils", version.ref = "a12Base" }
+kernelAccessor = { module = "com.mgmtp.a12.kernel:kernel-md-typed-accessor-gen", version.ref = "a12Kernel" }
+kernelCoreRuntime = { module = "com.mgmtp.a12.kernel:kernel-core-runtime-30-8", version.ref = "a12Kernel" }
+kernelMdA12internal = { module = "com.mgmtp.a12.kernel:kernel-md-a12internal", version.ref = "a12Kernel" }
+kernelMdModelApi = { module = "com.mgmtp.a12.kernel:kernel-md-model-api", version.ref = "a12Kernel" }
+kernelMdDocument = { module = "com.mgmtp.a12.kernel:kernel-md-document-v2", version.ref = "a12Kernel" }
+kernelMdDocumentApi = { module = "com.mgmtp.a12.kernel:kernel-md-document-api", version.ref = "a12Kernel" }
+kernelMdModel = { module = "com.mgmtp.a12.kernel:kernel-md-model", version.ref = "a12Kernel" }
+kernelMdRuntimeApi = { module = "com.mgmtp.a12.kernel:kernel-md-runtime-api", version.ref = "a12Kernel" }
+kernelMdSerializer = { module = "com.mgmtp.a12.kernel:kernel-md-serializer", version.ref = "a12Kernel" }
+kernelMdFacade = { module = "com.mgmtp.a12.kernel:kernel-md-facade", version.ref = "a12Kernel" }
+kernelToolMigration = { module = "com.mgmtp.a12.kernel:kernel-tool-model-migration", version.ref = "a12Kernel" }
+openhtmltopdfCore = { module = "com.mgmtp.a12.print:print-openhtmltopdf-core", version.ref = "a12Openhtmltopdf" }
+openhtmltopdfPdfbox = { module = "com.mgmtp.a12.print:print-openhtmltopdf-pdfbox", version.ref = "a12Openhtmltopdf" }

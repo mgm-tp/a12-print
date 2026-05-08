@@ -1,0 +1,89 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+[#configuration]
+= Configuration
+
+This section covers the core configurations of the Print Engine, necessary for printing valid PDF-documents.
+
+You can either create these configurations directly or if you are using Spring you can do so by using the `@Bean` annotation in the Configuration class.
+
+== Direct Configuration
+
+=== Creating the PrintJobManagerApi
+
+First of all, we need to define the PrintJobManagerApi.
+
+NOTE: the PrintJobManagerApi may be called by any thread from the ExecutorService.
+These threads will not carry a `SecurityContext`.
+
+[source,java]
+----
+include::../../sourceCode/engine-runtime/test/java/com/mgmtp/a12/print/engine/runtime/utils/PrintEngineTestExecutor.java[tag=PrintJobManagerApi,indent=0]
+----
+
+<1> This should be changed by your local service accordingly.
+<2> This should be changed by your local service accordingly.
+
+=== Creating the ExecutorService
+
+The <<print_engine_runtime, Print Engine Runtime>> provides a default implementation for the ExecutorService:
+[source,java]
+
+----
+ExecutorServiceFactory.getInstance(Runtime.getRuntime().availableProcessors(), "print-pool");
+----
+
+Alternatively, you can declare your own ExecutorService:
+
+[source,java]
+----
+include::../../sourceCode/engine-runtime-test/com/mgmtp/a12/print/engine/runtime/test/internal/PrintTestUtil.java[tag=ExecutorService,indent=0]
+----
+
+[#print_job_manager]
+=== Creating PrintJobManager and PrintEngine
+
+Then we can create PrintJobManager and <<pdf_box_print_engine_runtime, PdfBoxPrintEngine>> or <<pdf_print_engine_runtime, PdfPrintEngine (Deprecated)>>.
+
+[CAUTION]
+====
+Please be aware of using the `usePdfBoxPrintProcess` flag during the creation of the `PrintJobManager`.
+It is set to false by default, which means that Legacy Rendering Mode (see link:/docs/PRINT_ENGINE/print-modeling-documentation/index.html#legacy_rendering_mode[Legacy Rendering Mode]) will be used. For the default rendering mode, set it to be true. With the deprecation of the Legacy Rendering Mode in the 2026.06 release, this flag will be removed.
+====
+
+[source,java]
+----
+include::../../sourceCode/engine-runtime/test/java/com/mgmtp/a12/print/engine/runtime/utils/PrintEngineTestExecutor.java[tags="PrintJobManager,PdfPrintEngine",indent=0]
+----
+
+The possibilities of the configs are described in <<pdf_box_print_engine_config, PdfBoxPrintEngineConfig>> or <<print_engine_config, PrintEngineConfig (Deprecated)>>.
+
+== Using the `@Bean` Annotation
+
+Example::
+
+[source,java,title="Configuration class"]
+----
+include::../../sourceCode/print-shell/PrintShellConfiguration.java[tag=!*]
+----
+
+<1> Load Print Model content.
+The implementation should be changed by your local service accordingly.
+<2> Load IDocumentModel.
+The implementation should be changed by your local service accordingly.
+<3> Customization fonts could be set for the PrintEngineConfig.

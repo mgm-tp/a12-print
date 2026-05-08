@@ -1,0 +1,573 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PartialPrintModelWalker Test Print Model Paths Should resolve the same paths for each starting point 1`] = `
+Map {
+  "oi1DQ0tElWYkB4EZ3p57M" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[1]",
+  },
+  "GikYFgRmoZ9iyWa3lRGJR" => Set {
+    "content[1].elementDefinitions[1].text[1].entities[1]",
+  },
+  "AI6Mm1yjXa-V3yyrLnKWl" => Set {
+    "content[1].elementDefinitions[2].field[1]",
+  },
+  "CS30Si5bQ6TLHyhHCjQnm" => Set {
+    "content[1].elementDefinitions[1].text[1].entities[2]",
+  },
+  "ImjR21frIiC8yPp2koODl" => Set {
+    "content[1].elementDefinitions[3].calculation[1]",
+  },
+  "XtL4oSQmOQNOgMCDCWezQ" => Set {
+    "content[1].elementDefinitions[1].text[1]",
+  },
+  "275nwsxcLrOGbCGxJDC4j" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[2]",
+  },
+  "7xMMPEFrs6E6mW9uzknG2" => Set {
+    "content[1].elementDefinitions[4].line[1]",
+  },
+  "rq5zln2QlSE4zrS57dHkR" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[3]",
+  },
+  "R_UlIJF3VjzKjCSY_ZSPi" => Set {
+    "content[1].elementDefinitions[5].table[1].coulumns[1]",
+  },
+  "atVAYEv-HGemRwN8HLYWi" => Set {
+    "content[1].elementDefinitions[6].field[1]",
+  },
+  "iYi3OiVLoYTqY9mjXikHz" => Set {
+    "content[1].elementDefinitions[5].table[1].coulumns[2]",
+  },
+  "C7X9iiHjXgUHm18jnd2Yu" => Set {
+    "content[1].elementDefinitions[7].expression[1]",
+  },
+  "lj3AEZrNF7GlwsSQVAUwB" => Set {
+    "content[1].elementDefinitions[5].table[1]",
+  },
+  "FJX-lKQTfl5bMPbmDVhaV" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[4]",
+  },
+  "RxOPxGkiOZqV5ktYjovUi" => Set {
+    "content[1].elementDefinitions[8].image[1]",
+  },
+  "n-7D34u1F2E0cQX0G4s0E" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[5]",
+  },
+  "gYLsP0tPJYXnXySxUha_m" => Set {
+    "content[1].elementDefinitions[9].listing[1]",
+  },
+  "hdL0XNBs2odkJbkmZj6Si" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[6]",
+  },
+  "9RLOIhew34eiP1WmcN0G_" => Set {
+    "content[1].elementDefinitions[10].tableLayout[1].cells[1]",
+  },
+  "8axRuu2EBHCwl2gGBDfYN" => Set {
+    "content[1].elementDefinitions[11].text[1].entities[1]",
+  },
+  "cQiIumVpRRGHTWp6zqPNd" => Set {
+    "content[1].elementDefinitions[12].field[1]",
+  },
+  "Sa9aRRqJc63l-C2Yq8L-x" => Set {
+    "content[1].elementDefinitions[11].text[1]",
+  },
+  "rIfMXgZkYNiyJGPp6kVJp" => Set {
+    "content[1].elementDefinitions[10].tableLayout[1].cells[2]",
+  },
+  "bvCrpkJU-qdLbFB5FEjwH" => Set {
+    "content[1].elementDefinitions[13].text[1].entities[1]",
+  },
+  "fSze_ZrWUV33cqLm79vrn" => Set {
+    "content[1].elementDefinitions[14].calculation[1]",
+  },
+  "lyvsetcPXilQmMb4q4heG" => Set {
+    "content[1].elementDefinitions[13].text[1]",
+  },
+  "6eMbRdAUqHYk2cyiEUHf2" => Set {
+    "content[1].elementDefinitions[10].tableLayout[1]",
+  },
+  "_AAm_yRWyOeTiLZz4s_SM" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[7]",
+  },
+  "vx7M29TzOkzTRtlg_i41N" => Set {
+    "content[1].elementDefinitions[15].lineChart[1]",
+  },
+  "WWWSSFmRc0G0ViedFDteu" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[8]",
+  },
+  "hbfbVER8VMWH5-J_1N25o" => Set {
+    "content[1].elementDefinitions[16].pieChart[1]",
+  },
+  "7TmByTBA01JHZiIwoTCcc" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[9]",
+  },
+  "fAy_mgnw5wo434hrDsj08" => Set {
+    "content[1].elementDefinitions[17].pieChart[1]",
+  },
+  "MJEGrylgiiaCyvkb9KjAa" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[10]",
+  },
+  "1P7LmpygIT5vvOzJ47EUM" => Set {
+    "content[1].elementDefinitions[18].boundingBox[1]",
+  },
+  "3eZQJk3amEmC-_Ae2XcU2" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[11]",
+  },
+  "B-6leiISZNRltK8mFOUkV" => Set {
+    "content[1].elementDefinitions[19].area[1]",
+  },
+  "NCcm9pGdr-3fWNu2iP4-M" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[12]",
+  },
+  "mDPtSgu5Qi6vDfqOa9bAl" => Set {
+    "content[1].elementDefinitions[20].switch[1].cases[1]",
+  },
+  "1h4gHRp-F8IiGGROB5vWp" => Set {
+    "content[1].elementDefinitions[21].area[1]",
+  },
+  "GEu41ZVxIW9f7f8iI9oW5" => Set {
+    "content[1].elementDefinitions[20].switch[1]",
+  },
+  "tL7Vd0xcQDRlxw5Ynapts" => Set {
+    "content[1].segments[1].definitions[1].elementReferences[13]",
+  },
+  "EiysauJedU-D6-y1u44OA" => Set {
+    "content[1].elementDefinitions[40].expression[1]",
+  },
+  "-NW73-HFobf9d1fUXskSj" => Set {
+    "content[1].segments[1].definitions[1]",
+  },
+  "_TmjFgaY-ygxnAUlWlGcB" => Set {
+    "content[1].segments[1].definitions[2].elementReferences[1]",
+  },
+  "p_wHgA1CszmDMNkTTPZuf" => Set {
+    "content[1].elementDefinitions[22].text[1]",
+  },
+  "thzBvJtOb9po-X8zNhryj" => Set {
+    "content[1].segments[1].definitions[2].elementReferences[2]",
+  },
+  "P8HUEGky32lHQjo2pd9Wh" => Set {
+    "content[1].elementDefinitions[23].boundingBox[1].elementReferences[1]",
+  },
+  "kJ1MC4PQbs2geoerbZ9RR" => Set {
+    "content[1].elementDefinitions[24].area[1].elementReferences[1]",
+  },
+  "Lb0eQi_MIpXwQmNM9mZh0" => Set {
+    "content[1].elementDefinitions[25].switch[1].cases[1]",
+  },
+  "PrkznPt8FjQw7n5ZHe7tG" => Set {
+    "content[1].elementDefinitions[26].area[1].elementReferences[1]",
+  },
+  "gAHIVnhg1VOu0wiHc-uEY" => Set {
+    "content[1].elementDefinitions[27].tableLayout[1].cells[1]",
+  },
+  "HHB3YMLzafNQvYybfnbvO" => Set {
+    "content[1].elementDefinitions[28].text[1].entities[1]",
+  },
+  "cuThWvPNPOHfbuCsvn3nf" => Set {
+    "content[1].elementDefinitions[29].field[1]",
+  },
+  "RNrSMVuUAZQNUksYjBBRC" => Set {
+    "content[1].elementDefinitions[28].text[1]",
+  },
+  "o5V-9k8GmW8lx8YVoAqbd" => Set {
+    "content[1].elementDefinitions[27].tableLayout[1].cells[2]",
+  },
+  "uHAOrVA9tCTlRVq-e71ba" => Set {
+    "content[1].elementDefinitions[30].text[1].entities[1]",
+  },
+  "s6LwhVpn6TrZu0m1_hBc-" => Set {
+    "content[1].elementDefinitions[31].calculation[1]",
+  },
+  "SiFHUHk-iZMH-Kz_3xTZV" => Set {
+    "content[1].elementDefinitions[30].text[1]",
+  },
+  "FqB2N7GxkZ-Wm_RR3xFKO" => Set {
+    "content[1].elementDefinitions[27].tableLayout[1]",
+  },
+  "G65uP03RA_WgfMhZGkzGK" => Set {
+    "content[1].elementDefinitions[26].area[1]",
+  },
+  "hCramMv3DJ-MZV1DBeyH4" => Set {
+    "content[1].elementDefinitions[25].switch[1]",
+  },
+  "KQ5EPhMIZ_sQCH7EwLhpN" => Set {
+    "content[1].elementDefinitions[24].area[1]",
+  },
+  "5ZpbdCF8-z3E-1lH3E7UU" => Set {
+    "content[1].elementDefinitions[23].boundingBox[1]",
+  },
+  "1JmoX0gxWHlpZKzmPMxzK" => Set {
+    "content[1].segments[1].definitions[2]",
+  },
+  "Epc-Ak8woveGLe2OmOtdX" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[1]",
+  },
+  "nS-cDMIfgaqbm_VreILmg" => Set {
+    "content[1].elementDefinitions[41].text[1]",
+  },
+  "mU-zG0-flTa3e_CbkYHek" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[2]",
+  },
+  "oHvHkhWsj5m5uGRcl5X0Z" => Set {
+    "content[1].elementDefinitions[42].text[1].entities[1]",
+  },
+  "_p2F2ttEfAv3RIOVX-NKg" => Set {
+    "content[1].elementDefinitions[44].calculation[1]",
+  },
+  "LJ9J4VUcvDCRsvFvFbZ_c" => Set {
+    "content[1].elementDefinitions[42].text[1].entities[2]",
+  },
+  "GoWzIKJJcNyWX2HeVMKmf" => Set {
+    "content[1].elementDefinitions[43].field[1]",
+  },
+  "X8bCn9O38_X-RCz57hWWS" => Set {
+    "content[1].elementDefinitions[42].text[1]",
+  },
+  "6L05ufLmr9FR-glbDyETA" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[3]",
+  },
+  "2vXA_xPmX8Ud-rSJ0q2Wj" => Set {
+    "content[1].elementDefinitions[45].table[1]",
+  },
+  "k6nlqHqPt4qQSBTUSvIah" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[4]",
+  },
+  "hC3kIo6k4ySywLIaFLS7e" => Set {
+    "content[1].elementDefinitions[46].image[1]",
+  },
+  "Ny6DFJZ7GR4TVMAj31zPC" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[5]",
+  },
+  "TgfK9a4HwrKKYD40DzkB-" => Set {
+    "content[1].elementDefinitions[47].expression[1]",
+  },
+  "aQiCOEmCO_wh5kpvArJ7f" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[6]",
+  },
+  "TO3Yhqn66tb-OlMKAeWqx" => Set {
+    "content[1].elementDefinitions[48].listing[1]",
+  },
+  "aIj_j8jCTDqjSW_Ym-8Ss" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[7]",
+  },
+  "GcCrytj3txDg_x5iNon1e" => Set {
+    "content[1].elementDefinitions[49].tableLayout[1]",
+  },
+  "9IS7Ye5Lmefd6IBjWZiVV" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[8]",
+  },
+  "KklZHFhDhThrlZ0dCDWMb" => Set {
+    "content[1].elementDefinitions[50].tableLayout[1].cells[1]",
+  },
+  "6CyCWksXKvWnE1TkuRl-Z" => Set {
+    "content[1].elementDefinitions[51].text[1]",
+  },
+  "c80HB_ybxn41c0Lz9K9EU" => Set {
+    "content[1].elementDefinitions[50].tableLayout[1].cells[2]",
+  },
+  "7TIkEnHM1zCztHw9NsoRg" => Set {
+    "content[1].elementDefinitions[52].text[1].entities[1]",
+  },
+  "gYv9qBBoOHWT9UpPpwiOr" => Set {
+    "content[1].elementDefinitions[54].calculation[1]",
+  },
+  "A4a4NjTS6oa2UVGye4w1W" => Set {
+    "content[1].elementDefinitions[52].text[1].entities[2]",
+  },
+  "dV9wLPCTHbL23ytFMqU83" => Set {
+    "content[1].elementDefinitions[53].field[1]",
+  },
+  "iLQHlDXvL0bf-gXlyDEhj" => Set {
+    "content[1].elementDefinitions[52].text[1]",
+  },
+  "qiohyG14UFmuByfL0LcRq" => Set {
+    "content[1].elementDefinitions[50].tableLayout[1]",
+  },
+  "NC30KnP8CFQL9GBrdV2DI" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[9]",
+  },
+  "ojBohJFG5ndgBRY5t9KMx" => Set {
+    "content[1].elementDefinitions[55].lineChart[1]",
+  },
+  "0bLV3cebIRmaKrCmo3w6q" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[10]",
+  },
+  "1w7hqsQX5yYELA5z99t0d" => Set {
+    "content[1].elementDefinitions[56].barChart[1]",
+  },
+  "hcRoL5uLVugF3nau-3SzU" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[11]",
+  },
+  "fHb_JwAq_u5tfURE76pNF" => Set {
+    "content[1].elementDefinitions[57].pieChart[1]",
+  },
+  "HUw_hpiFdl19QoFQugLUl" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[12]",
+  },
+  "_XwMP-wmc4Yx4pXmQMN0m" => Set {
+    "content[1].elementDefinitions[58].area[1]",
+  },
+  "eKNvTo8PrIRRLc4rp4oRl" => Set {
+    "content[1].segments[1].definitions[3].elementReferences[13]",
+  },
+  "AFxpy9KL9J-AEy2mtVoWy" => Set {
+    "content[1].elementDefinitions[59].switch[1].cases[1]",
+  },
+  "-78XeUxtKcS868IzZqHJI" => Set {
+    "content[1].elementDefinitions[60].area[1].elementReferences[1]",
+  },
+  "GesxT_HzryVAz_sXLq3bP" => Set {
+    "content[1].elementDefinitions[61].text[1]",
+  },
+  "M8DEwtcTOWT0q3cKfpl__" => Set {
+    "content[1].elementDefinitions[60].area[1]",
+  },
+  "Mege53XmErvPWDeFiLQZ7" => Set {
+    "content[1].elementDefinitions[59].switch[1]",
+  },
+  "dr3CJqxwctMmUOpPA8aC4" => Set {
+    "content[1].segments[1].definitions[3]",
+  },
+  "glBtb3OusUqlJJLTIn9Nk" => Set {
+    "content[1].segments[1].definitions[4].elementReferences[1]",
+  },
+  "AhBGGAMggsdV8MaaBgI_d" => Set {
+    "content[1].elementDefinitions[62].override[1].boundingBox[1].elementReferences[1]",
+  },
+  "3ozaEE1bvL-XfqDMGuxk-" => Set {
+    "content[1].elementDefinitions[63].override[1]",
+  },
+  "PDccRxmqiat1EISKfOz6w" => Set {
+    "content[1].elementDefinitions[62].override[1]",
+  },
+  "Iyh_03f30Fj9E6MHmjsMj" => Set {
+    "content[1].segments[1].definitions[4].elementReferences[2]",
+  },
+  "zoq9oUfHILCRPRxHa4kf_" => Set {
+    "content[1].elementDefinitions[64].override[1]",
+  },
+  "Me3eVsncwJHn_XdBG49MG" => Set {
+    "content[1].segments[1].definitions[4]",
+  },
+  "Otm2O2pURzbTn7bw8-q5C" => Set {
+    "content[1].sections[1].definitions[1].elementReferences[1]",
+  },
+  "De8BYbQZ2UNS9xCBJMQ-W" => Set {
+    "content[1].elementDefinitions[32].text[1].entities[1]",
+  },
+  "VZ0fCih_t7CrLpbW0dIBk" => Set {
+    "content[1].elementDefinitions[33].pageNumber[1]",
+  },
+  "nQ5j5-XB4okW4tjrpukrq" => Set {
+    "content[1].elementDefinitions[32].text[1].entities[2]",
+  },
+  "G4lpNF-8wSfAiJfBuN3xj" => Set {
+    "content[1].elementDefinitions[34].pageNumberTotal[1]",
+  },
+  "50MVUdTxoRwaqFGk1UhHT" => Set {
+    "content[1].elementDefinitions[32].text[1]",
+  },
+  "P53Ud1vuLXR0-bXxL6-iI" => Set {
+    "content[1].sections[1].definitions[1]",
+  },
+  "0-AXyyCb-D17x8rMEu65_" => Set {
+    "content[1].sections[1].definitions[2].elementReferences[1]",
+  },
+  "s0V2fVyBBTs6WK3lTFNN4" => Set {
+    "content[1].elementDefinitions[35].text[1].entities[1]",
+  },
+  "hA0jFdHsSNwlwMDyeQmOX" => Set {
+    "content[1].elementDefinitions[36].pageNumber[1]",
+  },
+  "H9W0rzU0_2_nzPcaGlKRD" => Set {
+    "content[1].elementDefinitions[35].text[1].entities[2]",
+  },
+  "kq7QelaORecLIxfZjwn82" => Set {
+    "content[1].elementDefinitions[37].pageNumberTotal[1]",
+  },
+  "WrodpXuVbP608dJ0uc2_S" => Set {
+    "content[1].elementDefinitions[35].text[1]",
+  },
+  "jAGFP2jTPE6-UWTT42tML" => Set {
+    "content[1].sections[1].definitions[2]",
+  },
+  "05Jd9UjpKrDdVh1RrLUYf" => Set {
+    "content[1].watermarks[1].definitions[1].elementReferences[1]",
+  },
+  "ZuLb25_-jMcRQ7Kv4982H" => Set {
+    "content[1].elementDefinitions[38].text[1]",
+  },
+  "DqApWGpiAvCeHUVek1QN0" => Set {
+    "content[1].watermarks[1].definitions[1]",
+  },
+  "jxBINzvKwrziaMq-i6ZnZ" => Set {
+    "content[1].watermarks[1].definitions[2].elementReferences[1]",
+  },
+  "jMex6fyMPyjU6zIyLJs1t" => Set {
+    "content[1].elementDefinitions[39].text[1]",
+  },
+  "JNptbBLFA0MvZj_8IGs-J" => Set {
+    "content[1].watermarks[1].definitions[2]",
+  },
+}
+`;
+
+exports[`PartialPrintModelWalker Test Print Model Paths Should track paths correct 1`] = `
+Map {
+  "visitPlaceableReference" => [
+    "content[1].segments[1].definitions[1].elementReferences[1]",
+    "content[1].segments[1].definitions[1].elementReferences[2]",
+    "content[1].segments[1].definitions[1].elementReferences[3]",
+    "content[1].segments[1].definitions[1].elementReferences[4]",
+    "content[1].segments[1].definitions[1].elementReferences[5]",
+    "content[1].segments[1].definitions[1].elementReferences[6]",
+    "content[1].segments[1].definitions[1].elementReferences[7]",
+    "content[1].segments[1].definitions[1].elementReferences[8]",
+    "content[1].segments[1].definitions[1].elementReferences[9]",
+    "content[1].segments[1].definitions[1].elementReferences[10]",
+    "content[1].segments[1].definitions[1].elementReferences[11]",
+    "content[1].segments[1].definitions[1].elementReferences[12]",
+    "content[1].segments[1].definitions[1].elementReferences[13]",
+    "content[1].segments[1].definitions[2].elementReferences[1]",
+    "content[1].segments[1].definitions[2].elementReferences[2]",
+    "content[1].elementDefinitions[23].boundingBox[1].elementReferences[1]",
+    "content[1].elementDefinitions[24].area[1].elementReferences[1]",
+    "content[1].elementDefinitions[26].area[1].elementReferences[1]",
+    "content[1].segments[1].definitions[3].elementReferences[1]",
+    "content[1].segments[1].definitions[3].elementReferences[2]",
+    "content[1].segments[1].definitions[3].elementReferences[3]",
+    "content[1].segments[1].definitions[3].elementReferences[4]",
+    "content[1].segments[1].definitions[3].elementReferences[5]",
+    "content[1].segments[1].definitions[3].elementReferences[6]",
+    "content[1].segments[1].definitions[3].elementReferences[7]",
+    "content[1].segments[1].definitions[3].elementReferences[8]",
+    "content[1].segments[1].definitions[3].elementReferences[9]",
+    "content[1].segments[1].definitions[3].elementReferences[10]",
+    "content[1].segments[1].definitions[3].elementReferences[11]",
+    "content[1].segments[1].definitions[3].elementReferences[12]",
+    "content[1].segments[1].definitions[3].elementReferences[13]",
+    "content[1].elementDefinitions[60].area[1].elementReferences[1]",
+    "content[1].segments[1].definitions[4].elementReferences[1]",
+    "content[1].elementDefinitions[62].override[1].boundingBox[1].elementReferences[1]",
+    "content[1].segments[1].definitions[4].elementReferences[2]",
+    "content[1].sections[1].definitions[1].elementReferences[1]",
+    "content[1].sections[1].definitions[2].elementReferences[1]",
+    "content[1].watermarks[1].definitions[1].elementReferences[1]",
+    "content[1].watermarks[1].definitions[2].elementReferences[1]",
+  ],
+  "visitTextEntityReference" => [
+    "content[1].elementDefinitions[1].text[1].entities[1]",
+    "content[1].elementDefinitions[1].text[1].entities[2]",
+    "content[1].elementDefinitions[11].text[1].entities[1]",
+    "content[1].elementDefinitions[13].text[1].entities[1]",
+    "content[1].elementDefinitions[28].text[1].entities[1]",
+    "content[1].elementDefinitions[30].text[1].entities[1]",
+    "content[1].elementDefinitions[42].text[1].entities[1]",
+    "content[1].elementDefinitions[42].text[1].entities[2]",
+    "content[1].elementDefinitions[52].text[1].entities[1]",
+    "content[1].elementDefinitions[52].text[1].entities[2]",
+    "content[1].elementDefinitions[32].text[1].entities[1]",
+    "content[1].elementDefinitions[32].text[1].entities[2]",
+    "content[1].elementDefinitions[35].text[1].entities[1]",
+    "content[1].elementDefinitions[35].text[1].entities[2]",
+  ],
+  "defaultVisitElement" => [
+    "content[1].elementDefinitions[2].field[1]",
+    "content[1].elementDefinitions[3].calculation[1]",
+    "content[1].elementDefinitions[1].text[1]",
+    "content[1].elementDefinitions[4].line[1]",
+    "content[1].elementDefinitions[6].field[1]",
+    "content[1].elementDefinitions[7].expression[1]",
+    "content[1].elementDefinitions[5].table[1]",
+    "content[1].elementDefinitions[8].image[1]",
+    "content[1].elementDefinitions[9].listing[1]",
+    "content[1].elementDefinitions[12].field[1]",
+    "content[1].elementDefinitions[11].text[1]",
+    "content[1].elementDefinitions[14].calculation[1]",
+    "content[1].elementDefinitions[13].text[1]",
+    "content[1].elementDefinitions[10].tableLayout[1]",
+    "content[1].elementDefinitions[15].lineChart[1]",
+    "content[1].elementDefinitions[16].pieChart[1]",
+    "content[1].elementDefinitions[17].pieChart[1]",
+    "content[1].elementDefinitions[18].boundingBox[1]",
+    "content[1].elementDefinitions[19].area[1]",
+    "content[1].elementDefinitions[21].area[1]",
+    "content[1].elementDefinitions[20].switch[1]",
+    "content[1].elementDefinitions[40].expression[1]",
+    "content[1].elementDefinitions[22].text[1]",
+    "content[1].elementDefinitions[29].field[1]",
+    "content[1].elementDefinitions[28].text[1]",
+    "content[1].elementDefinitions[31].calculation[1]",
+    "content[1].elementDefinitions[30].text[1]",
+    "content[1].elementDefinitions[27].tableLayout[1]",
+    "content[1].elementDefinitions[26].area[1]",
+    "content[1].elementDefinitions[25].switch[1]",
+    "content[1].elementDefinitions[24].area[1]",
+    "content[1].elementDefinitions[23].boundingBox[1]",
+    "content[1].elementDefinitions[41].text[1]",
+    "content[1].elementDefinitions[44].calculation[1]",
+    "content[1].elementDefinitions[43].field[1]",
+    "content[1].elementDefinitions[42].text[1]",
+    "content[1].elementDefinitions[45].table[1]",
+    "content[1].elementDefinitions[46].image[1]",
+    "content[1].elementDefinitions[47].expression[1]",
+    "content[1].elementDefinitions[48].listing[1]",
+    "content[1].elementDefinitions[49].tableLayout[1]",
+    "content[1].elementDefinitions[51].text[1]",
+    "content[1].elementDefinitions[54].calculation[1]",
+    "content[1].elementDefinitions[53].field[1]",
+    "content[1].elementDefinitions[52].text[1]",
+    "content[1].elementDefinitions[50].tableLayout[1]",
+    "content[1].elementDefinitions[55].lineChart[1]",
+    "content[1].elementDefinitions[56].barChart[1]",
+    "content[1].elementDefinitions[57].pieChart[1]",
+    "content[1].elementDefinitions[58].area[1]",
+    "content[1].elementDefinitions[61].text[1]",
+    "content[1].elementDefinitions[60].area[1]",
+    "content[1].elementDefinitions[59].switch[1]",
+    "content[1].elementDefinitions[63].override[1]",
+    "content[1].elementDefinitions[62].override[1]",
+    "content[1].elementDefinitions[64].override[1]",
+    "content[1].elementDefinitions[33].pageNumber[1]",
+    "content[1].elementDefinitions[34].pageNumberTotal[1]",
+    "content[1].elementDefinitions[32].text[1]",
+    "content[1].elementDefinitions[36].pageNumber[1]",
+    "content[1].elementDefinitions[37].pageNumberTotal[1]",
+    "content[1].elementDefinitions[35].text[1]",
+    "content[1].elementDefinitions[38].text[1]",
+    "content[1].elementDefinitions[39].text[1]",
+  ],
+  "visitTableColumnReference" => [
+    "content[1].elementDefinitions[5].table[1].coulumns[1]",
+    "content[1].elementDefinitions[5].table[1].coulumns[2]",
+  ],
+  "visitTableLayoutCellReference" => [
+    "content[1].elementDefinitions[10].tableLayout[1].cells[1]",
+    "content[1].elementDefinitions[10].tableLayout[1].cells[2]",
+    "content[1].elementDefinitions[27].tableLayout[1].cells[1]",
+    "content[1].elementDefinitions[27].tableLayout[1].cells[2]",
+    "content[1].elementDefinitions[50].tableLayout[1].cells[1]",
+    "content[1].elementDefinitions[50].tableLayout[1].cells[2]",
+  ],
+  "visitSwitchCaseReference" => [
+    "content[1].elementDefinitions[20].switch[1].cases[1]",
+    "content[1].elementDefinitions[25].switch[1].cases[1]",
+    "content[1].elementDefinitions[59].switch[1].cases[1]",
+  ],
+  "visitSegment" => [
+    "content[1].segments[1].definitions[1]",
+    "content[1].segments[1].definitions[2]",
+    "content[1].segments[1].definitions[3]",
+    "content[1].segments[1].definitions[4]",
+  ],
+  "visitSection" => [
+    "content[1].sections[1].definitions[1]",
+    "content[1].sections[1].definitions[2]",
+  ],
+  "visitWatermark" => [
+    "content[1].watermarks[1].definitions[1]",
+    "content[1].watermarks[1].definitions[2]",
+  ],
+}
+`;

@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~ SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+  ~
+  ~ Copyright (c) 2012-2026 mgm technology partners GmbH
+  ~
+  ~ Dual License
+  ~ ============
+  ~ This source file is part of the mgm A12 Platform and available under
+  ~ a choice of two different licenses:
+  ~
+  ~ 1. Open-Source License - EUPL v1.2
+  ~    You may redistribute and/or modify this file under the terms of the
+  ~    European Union Public License, version 1.2 - see https://eupl.eu/.
+  ~
+  ~ 2. Commercial License
+  ~    Alternatively, you may obtain a commercial license from
+  ~    mgm technology partners GmbH, that permits use of this software
+  ~    under different terms (including support and maintenance services).
+  ~
+  ~    Please contact a12-license@mgm-tp.com for more information.
+  ~
+  ~ You must select and comply with exactly one of the above license options.
+  ~
+  ~ Warranty Disclaimer (applies to either option)
+  ~ ==============================================
+  ~ THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND,
+  ~ WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  ~ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  ~ NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
+  ~ LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+  -->
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="area" type="areaElementXml"/>
+
+  <xs:element name="barChart" type="barChartElementXml"/>
+
+  <xs:element name="boundingBox" type="boundingBoxElementXml"/>
+
+  <xs:element name="calculation" type="calculationElementXml"/>
+
+  <xs:element name="document" type="printDocumentXml"/>
+
+  <xs:element name="expression" type="expressionElementXml"/>
+
+  <xs:element name="field" type="fieldElementXml"/>
+
+  <xs:element name="horizontalLine" type="horizontalLineElementXml"/>
+
+  <xs:element name="image" type="imageElementXml"/>
+
+  <xs:element name="imageAttachment" type="imageAttachmentXml"/>
+
+  <xs:element name="lineChart" type="lineChartElementXml"/>
+
+  <xs:element name="listing" type="listingElementXml"/>
+
+  <xs:element name="listingCellXml" type="listingCellXml"/>
+
+  <xs:element name="listingRowXml" type="listingRowXml"/>
+
+  <xs:element name="pageNumber" type="pageNumberElementXml"/>
+
+  <xs:element name="pageNumberTotal" type="pageNumberTotalElementXml"/>
+
+  <xs:element name="pdfAttachment" type="pdfAttachmentXml"/>
+
+  <xs:element name="pieChart" type="pieChartElementXml"/>
+
+  <xs:element name="section" type="printSectionXml"/>
+
+  <xs:element name="segment" type="printSegmentXml"/>
+
+  <xs:element name="sumCellXml" type="sumCellXml"/>
+
+  <xs:element name="switch" type="switchElementXml"/>
+
+  <xs:element name="table" type="tableElementXml"/>
+
+  <xs:element name="tableCellXml" type="tableCellXml"/>
+
+  <xs:element name="tableLayout" type="tableLayoutElementXml"/>
+
+  <xs:element name="tableLayoutCellXml" type="tableLayoutCellXml"/>
+
+  <xs:element name="tableLayoutRowXml" type="tableLayoutRowXml"/>
+
+  <xs:element name="tableRowXml" type="tableRowXml"/>
+
+  <xs:element name="text" type="textElementXml"/>
+
+  <xs:element name="watermark" type="printWatermarkXml"/>
+
+  <xs:complexType name="printDocumentXml">
+    <xs:sequence>
+      <xs:element name="segments" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="segment" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="attachments" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element ref="pdfAttachment"/>
+              <xs:element ref="imageAttachment"/>
+            </xs:choice>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="language" type="xs:string" use="required"/>
+    <xs:attribute name="title" type="xs:string" use="required"/>
+    <xs:attribute name="author" type="xs:string" use="required"/>
+    <xs:attribute name="description" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="printSegmentXml">
+    <xs:complexContent>
+      <xs:extension base="printEntityXml">
+        <xs:sequence>
+          <xs:element ref="watermark" minOccurs="0"/>
+          <xs:element name="headerSections" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="section" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="elements" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element ref="image"/>
+                  <xs:element ref="pieChart"/>
+                  <xs:element ref="lineChart"/>
+                  <xs:element ref="barChart"/>
+                  <xs:element ref="expression"/>
+                  <xs:element ref="listing"/>
+                  <xs:element ref="table"/>
+                  <xs:element ref="tableLayout"/>
+                  <xs:element ref="horizontalLine"/>
+                  <xs:element ref="text"/>
+                  <xs:element ref="boundingBox"/>
+                  <xs:element ref="area"/>
+                  <xs:element ref="switch"/>
+                </xs:choice>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="footerSections" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element ref="section" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="pageOrientation" type="pageOrientationXml" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="printEntityXml">
+    <xs:sequence/>
+    <xs:attribute name="id" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="printWatermarkXml">
+    <xs:complexContent>
+      <xs:extension base="printEntityXml">
+        <xs:sequence>
+          <xs:element name="elements" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element ref="image"/>
+                  <xs:element ref="pieChart"/>
+                  <xs:element ref="lineChart"/>
+                  <xs:element ref="barChart"/>
+                  <xs:element ref="expression"/>
+                  <xs:element ref="listing"/>
+                  <xs:element ref="table"/>
+                  <xs:element ref="tableLayout"/>
+                  <xs:element ref="horizontalLine"/>
+                  <xs:element ref="text"/>
+                  <xs:element ref="boundingBox"/>
+                  <xs:element ref="area"/>
+                  <xs:element ref="switch"/>
+                </xs:choice>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="imageElementXml">
+    <xs:complexContent>
+      <xs:extension base="imageBasedElementXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="imageBasedElementXml" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="printElementXml">
+        <xs:sequence>
+          <xs:element name="alternativeText" type="xs:string"/>
+          <xs:element name="base64" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="printElementXml" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="printEntityXml">
+        <xs:sequence/>
+        <xs:attribute name="type" type="printElementTypeXml" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="pieChartElementXml">
+    <xs:complexContent>
+      <xs:extension base="imageBasedElementXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="lineChartElementXml">
+    <xs:complexContent>
+      <xs:extension base="imageBasedElementXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="barChartElementXml">
+    <xs:complexContent>
+      <xs:extension base="imageBasedElementXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="expressionElementXml">
+    <xs:complexContent>
+      <xs:extension base="textBasedElementXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="textBasedElementXml" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="printElementXml">
+        <xs:sequence>
+          <xs:element name="value" type="xs:string"/>
+          <xs:element name="text" type="xs:string" minOccurs="0"/>
+          <xs:element name="entities" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element ref="calculation"/>
+                  <xs:element ref="field"/>
+                  <xs:element ref="pageNumber"/>
+                  <xs:element ref="pageNumberTotal"/>
+                </xs:choice>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="isNested" type="xs:boolean" use="required"/>
+        <xs:attribute name="valueIsRenderedAsHtml" type="xs:boolean" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="calculationElementXml">
+    <xs:complexContent>
+      <xs:extension base="textBasedElementXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="fieldElementXml">
+    <xs:complexContent>
+      <xs:extension base="textBasedElementXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="pageNumberElementXml">
+    <xs:complexContent>
+      <xs:extension base="printElementXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="pageNumberTotalElementXml">
+    <xs:complexContent>
+      <xs:extension base="printElementXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="listingElementXml">
+    <xs:complexContent>
+      <xs:extension base="printElementXml">
+        <xs:sequence>
+          <xs:element name="headerRow" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="headerCell" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="bodyRows" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="row" type="listingRowXml" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="listingRowXml">
+    <xs:sequence>
+      <xs:element name="cell" type="listingCellXml" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="listingCellXml">
+    <xs:sequence>
+      <xs:element name="value" type="xs:string" minOccurs="0"/>
+      <xs:element name="text" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="valueIsRenderedAsHtml" type="xs:boolean" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="tableElementXml">
+    <xs:complexContent>
+      <xs:extension base="printElementXml">
+        <xs:sequence>
+          <xs:element name="headerRow" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="headerCell" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="bodyRows" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="row" type="tableRowXml" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="tableRowXml">
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="cell" type="tableCellXml"/>
+        <xs:element name="sumCell" type="sumCellXml"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tableCellXml">
+    <xs:choice>
+      <xs:element ref="field"/>
+      <xs:element ref="expression"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="sumCellXml">
+    <xs:complexContent>
+      <xs:extension base="printEntityXml">
+        <xs:sequence>
+          <xs:element name="value" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="type" type="sumCellTypeXml" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="tableLayoutElementXml">
+    <xs:complexContent>
+      <xs:extension base="printElementXml">
+        <xs:sequence>
+          <xs:element name="bodyRows" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="row" type="tableLayoutRowXml" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="tableLayoutRowXml">
+    <xs:sequence>
+      <xs:element name="cell" type="tableLayoutCellXml" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="tableLayoutCellXml">
+    <xs:sequence>
+      <xs:element ref="text" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="textElementXml">
+    <xs:complexContent>
+      <xs:extension base="textBasedElementXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="horizontalLineElementXml">
+    <xs:complexContent>
+      <xs:extension base="printElementXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="boundingBoxElementXml">
+    <xs:complexContent>
+      <xs:extension base="printElementNestedContainerXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="printElementNestedContainerXml" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="printEntityXml">
+        <xs:sequence>
+          <xs:element name="elements" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element ref="image"/>
+                  <xs:element ref="pieChart"/>
+                  <xs:element ref="lineChart"/>
+                  <xs:element ref="barChart"/>
+                  <xs:element ref="expression"/>
+                  <xs:element ref="listing"/>
+                  <xs:element ref="table"/>
+                  <xs:element ref="tableLayout"/>
+                  <xs:element ref="horizontalLine"/>
+                  <xs:element ref="text"/>
+                  <xs:element ref="boundingBox"/>
+                  <xs:element ref="area"/>
+                  <xs:element ref="switch"/>
+                </xs:choice>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="type" type="printElementTypeXml" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="areaElementXml">
+    <xs:complexContent>
+      <xs:extension base="printElementNestedContainerXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="switchElementXml">
+    <xs:complexContent>
+      <xs:extension base="printElementNestedContainerXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="printSectionXml">
+    <xs:complexContent>
+      <xs:extension base="printEntityXml">
+        <xs:sequence>
+          <xs:element name="elements" minOccurs="0">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                  <xs:element ref="image"/>
+                  <xs:element ref="pieChart"/>
+                  <xs:element ref="lineChart"/>
+                  <xs:element ref="barChart"/>
+                  <xs:element ref="expression"/>
+                  <xs:element ref="listing"/>
+                  <xs:element ref="table"/>
+                  <xs:element ref="tableLayout"/>
+                  <xs:element ref="horizontalLine"/>
+                  <xs:element ref="text"/>
+                  <xs:element ref="boundingBox"/>
+                  <xs:element ref="area"/>
+                  <xs:element ref="switch"/>
+                </xs:choice>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="type" type="printSectionTypeXml" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="pdfAttachmentXml">
+    <xs:complexContent>
+      <xs:extension base="printAttachmentXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="printAttachmentXml" abstract="true">
+    <xs:complexContent>
+      <xs:extension base="printEntityXml">
+        <xs:sequence>
+          <xs:element name="base64" type="xs:string"/>
+          <xs:element name="alternativeText" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="type" type="attachmentTypeXml" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="imageAttachmentXml">
+    <xs:complexContent>
+      <xs:extension base="printAttachmentXml">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="printElementTypeXml">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EXPRESSION"/>
+      <xs:enumeration value="LISTING"/>
+      <xs:enumeration value="TABLE"/>
+      <xs:enumeration value="TABLE_LAYOUT"/>
+      <xs:enumeration value="HORIZONTAL_LINE"/>
+      <xs:enumeration value="IMAGE"/>
+      <xs:enumeration value="PAGE_NUMBER"/>
+      <xs:enumeration value="PAGE_NUMBER_TOTAL"/>
+      <xs:enumeration value="CALCULATION"/>
+      <xs:enumeration value="FIELD"/>
+      <xs:enumeration value="TEXT"/>
+      <xs:enumeration value="BAR_CHART"/>
+      <xs:enumeration value="LINE_CHART"/>
+      <xs:enumeration value="PIE_CHART"/>
+      <xs:enumeration value="BOUNDING_BOX"/>
+      <xs:enumeration value="OVERRIDE"/>
+      <xs:enumeration value="AREA"/>
+      <xs:enumeration value="SWITCH"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="sumCellTypeXml">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SUM_LABEL"/>
+      <xs:enumeration value="SUM_VALUE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="printSectionTypeXml">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FIRST"/>
+      <xs:enumeration value="REMAINING"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="pageOrientationXml">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PORTRAIT"/>
+      <xs:enumeration value="LANDSCAPE"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="attachmentTypeXml">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="IMAGE"/>
+      <xs:enumeration value="PDF"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

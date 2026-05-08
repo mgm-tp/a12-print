@@ -1,0 +1,261 @@
+{
+  "header": {
+    "id": "EnumerationDM",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [
+      {
+        "locale": "en",
+        "text": "Enumeration"
+      },
+      {
+        "locale": "de",
+        "text": "Aufzählung"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "EnumerationDM",
+      "immutable": false
+    },
+    "modelConfig": {
+      "timeZone": "UTC",
+      "decimalSeparator": ".",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "typeDefinitions": [
+      {
+        "id": "typedef_7ebb3b60-408d-4d46-9e33-a26cb0160f71",
+        "name": "NumberDefinition",
+        "fieldType": {
+          "type": "NumberType",
+          "NumberType": {
+            "minFractionalDigits": 2,
+            "maxFractionalDigits": 2,
+            "minValue": 0,
+            "maxValue": 4,
+            "trait": "amount"
+          }
+        }
+      }
+    ],
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_cb782",
+          "name": "general",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_f4612",
+                "name": "enumField",
+                "annotations": [
+                  {
+                    "name": "foo",
+                    "value": "Value1"
+                  }
+                ],
+                "Field": {
+                  "fieldType": {
+                    "type": "EnumerationType",
+                    "EnumerationType": {
+                      "values": [
+                        {
+                          "value": "1",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "YES"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "JA"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "2",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "NO"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "NEIN"
+                            }
+                          ]
+                        }
+                      ],
+                      "categories": []
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Enumeration"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Aufzählung"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_db470",
+                "name": "stringField",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "String"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Zeichenfolge"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_9af4a",
+                "name": "repeatableGroup",
+                "Group": {
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": ""
+                    },
+                    {
+                      "locale": "de",
+                      "text": ""
+                    }
+                  ],
+                  "repeatability": 500,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_6a4de",
+                      "name": "enumField",
+                      "annotations": [
+                        {
+                          "name": "foo",
+                          "value": "Value1"
+                        }
+                      ],
+                      "Field": {
+                        "fieldType": {
+                          "type": "EnumerationType",
+                          "EnumerationType": {
+                            "values": [
+                              {
+                                "value": "1",
+                                "label": [
+                                  {
+                                    "locale": "en",
+                                    "text": "TRUE"
+                                  },
+                                  {
+                                    "locale": "de",
+                                    "text": "WAHR"
+                                  }
+                                ]
+                              },
+                              {
+                                "value": "2",
+                                "label": [
+                                  {
+                                    "locale": "en",
+                                    "text": "FALSE"
+                                  },
+                                  {
+                                    "locale": "de",
+                                    "text": "FALSCH"
+                                  }
+                                ]
+                              }
+                            ],
+                            "categories": []
+                          }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Enumeration"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Aufzählung"
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_731e8",
+                      "name": "stringField",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "String"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Zeichenfolge"
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

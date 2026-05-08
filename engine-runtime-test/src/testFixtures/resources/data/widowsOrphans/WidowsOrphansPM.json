@@ -1,0 +1,669 @@
+{
+  "header": {
+    "id": "WidowsOrphansPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "description": "Description",
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "modeler"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "labels": [],
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "modelReferences": [
+      {
+        "modelType": "typesetting",
+        "reference": "custom_prevent_break_line_rule",
+        "purpose": "data binding"
+      }
+    ]
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "TZqa_psfcVBioEbc_4BSs",
+        "titleComputation": [
+          {
+            "id": "dkd815PqFHv8eLTqM6na1",
+            "operation": "\"NewPrintModel\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "UpqE5z1I-eaFCLASoSyIA",
+            "operation": "\"Description\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "URzMgTQZyZmBuoNnneLWE",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "1p7kvOS-IU6qujFxOL97O",
+            "operation": "\"Print Model Editor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "MPFhmStZuJG7BfEQtp7O_",
+        "fontSize": 12
+      },
+      "structure": [
+        {
+          "id": "FzdEAR6KIJI8v27XBLiaz"
+        },
+        {
+          "id": "08T3jFB66_l031C3uz0AF"
+        }
+      ],
+      "sections": [],
+      "watermarks": [],
+      "runtimeVariables": [],
+      "textStyles": [
+        {
+          "id": "l8GTC-ECjs5aV8a-jz8hV"
+        }
+      ]
+    },
+    "segments": {
+      "id": "lplmX_YW82jgpauu4TNXg",
+      "definitions": [
+        {
+          "id": "FzdEAR6KIJI8v27XBLiaz",
+          "title": "Seg1",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "mv8zteHRTUijtSURKejmx",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "QmpeQzL9VB5OR_cU5Thmy",
+              "refId": "hk7EiuRLY3XTEP756K6Jt",
+              "position": {
+                "id": "4mCGKHlkk7PoDh7fy0N1c",
+                "x": {
+                  "id": "_CtNoqd_8EaNL-euSl90p",
+                  "value": 66,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "jPqjBFtzi3GOB4SAcv7sZ",
+                  "value": 284,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "TDcnqg7OXPWjIamGoL16X",
+                "minHeight": {
+                  "id": "1wSBxhvctC1zl4QKudwSD",
+                  "value": 192,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "L9jYlvVTnkdIn8uiB9Dwx",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "ucCl24Yd52vIZN-CQoAio"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "_LDJsRQ7DTDUWhGXOQiYF",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "Mv2iVp60jdyqaH3ydpY9b",
+              "refId": "HPYPZQqrNkJYslmo2U7nh",
+              "position": {
+                "id": "ROf7US3UFEfVn47ciBO-2",
+                "x": {
+                  "id": "z84tGWb-RNWHPyC-NOCAR",
+                  "value": 20,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "33YvlwnC_DBE19t02bcI5",
+                  "value": 80,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "Mnph9ZMainmyqHi7nlarP",
+                "minHeight": {
+                  "id": "4rU5gVPsexErOs4MAUJZj",
+                  "value": 192,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "BiytLLBTlkVnKRPFfOJ5C",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "eIFHzR8C8lu-Ca-QcdFri"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "RFwBExUsoJhmPHCmU5Fly",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "2wIypE9UF3EfaUjtBQUEn",
+              "refId": "GSnc9k1HfcnHUgIblDFHD",
+              "position": {
+                "id": "AZafV9GqPPtWO71-oI_q2",
+                "x": {
+                  "id": "rVgbbglkK2xCnYxOsmFPA",
+                  "value": 110,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "a0r2UX3Ktf-gQ0_59R64D",
+                  "value": 236,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "9NNYWYmBUQgiYqcZM79In",
+                "minHeight": {
+                  "id": "vag5uMIBCCWybvhNM8lk8",
+                  "value": 60,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "jO57JeLDsUzwHdbQu6Rv0",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "_Zcs8oMgl6XDKkf7IHUyf",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "_Q_H_ZpPlUSlfzDCNcqS6",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "ElXeI1m8FWWU-_XJ2I4ly",
+              "refId": "xdlPPFkCHvF-Wy7P6pD0a",
+              "position": {
+                "id": "o2C33GwOgyU1iSFZzJN6u",
+                "x": {
+                  "id": "Exz44aMNLY9RnSFocNJXt",
+                  "value": 153,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "vNHW4jq6w2BpQCoo1VGzX",
+                  "value": 242,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "_d8MiQPAmO7MQJ3JY7YWT",
+                "minHeight": {
+                  "id": "_e38B523QtzHsCLj3--FR",
+                  "value": 54,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "kr7kBLWW3u7a7xPbX6OzD",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "yE595MF4Ys-6skWscrTbk"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "4DedxDZzkHIcrxq_NntHE",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        },
+        {
+          "id": "08T3jFB66_l031C3uz0AF",
+          "title": "Seg2",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "3Kr_qymsTpESdDRE27_I8",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "FqnZJuoY750T9R86CczQU",
+              "refId": "H-A2aIVqnKcPsRFBa6HY1",
+              "position": {
+                "id": "90qWJ26H8_ja4XgYpc42y",
+                "x": {
+                  "id": "FLavcJ3lvpRcp5dwfWKmV",
+                  "value": 9,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "iFWenlrb9uSOFIiRCtxOo",
+                  "value": 215,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "_St4-tnMdiaxe7r_JSXRQ",
+                "minHeight": {
+                  "id": "_-wYZ6BMCVLU7UCZXA7N6",
+                  "value": 198,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "M3AOuZd_BDAOjEgwQGikv",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "KNnt27u782XAxNbqWmfC7",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "KECle8NK2BnehDUDnhW-T",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "OGKDp5tUg8XCfSxRGbwmZ",
+              "refId": "9haUzsmpyL4lP4WwCNEju",
+              "position": {
+                "id": "UcOFGV-V42S16ZuUE1jI3",
+                "x": {
+                  "id": "FbYBdMuIi6ea9yjhzfinC",
+                  "value": 57,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "SRZ1jJ8S3SpJXH89ksReX",
+                  "value": 186,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "lk-_4nWqXEyWDRcVgs9Dl",
+                "minHeight": {
+                  "id": "J_rd47RgNTteECst4aYEf",
+                  "value": 198,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "dbn4gfulIVooiYMVIbdt_",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "xezhP4QNCtJz3rKbytA4G",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "jOykmEBEGhuGj5KxCX5od",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "QBEN2uBWD2RdLsgFM77Zz",
+              "refId": "f7MUTrmzTRJnqj2ydcfyF",
+              "position": {
+                "id": "WMBBpdeK90E5sMAF9jYEK",
+                "x": {
+                  "id": "HBwmb3sAl4N6QZnGFaFOX",
+                  "value": 107,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "K93moCct1yKoPFnNnOC7C",
+                  "value": 138,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "S6k3M0UMfuq7raAdLJtTn",
+                "minHeight": {
+                  "id": "GFOkeSH9W8cEnu5miXDHt",
+                  "value": 198,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "E9Gl6Summcc1plVIRj0yH",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "jD_olb9U_bJVuNfZtzKA6",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "lsKVIUQbemEAjZuEhraGW",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "16Ovp5jPj4QrbZ18nTehu",
+              "refId": "pYDIxVXYU8f-iLH_WpnXX",
+              "position": {
+                "id": "zFidCcuGl61AB-K5p6s7g",
+                "x": {
+                  "id": "WgEjceTKRh6FjWf1eK6Q2",
+                  "value": 154,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "_wqHp94F64iT-ka1RrmOE",
+                  "value": 104,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "Mci_HlfRkz07NYhqtSCPT",
+                "minHeight": {
+                  "id": "7UmkOhWuVOzUv1kcCb7hC",
+                  "value": 198,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "ID5AyANseN3fU0rhmOtwr",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "7jVdPmxc0ZJeeTXB8n11I",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "pDygT0aoMeYdXA5Sxmcyy",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "sections": {
+      "id": "DgY3A1Z63wiua4JvcXW_6",
+      "definitions": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "hk7EiuRLY3XTEP756K6Jt",
+        "type": "Text",
+        "text": {
+          "id": "gOQQ72giCebf60EM27VvF",
+          "text": "<p><span style=\"\">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "qb-MEtFEOiq9Wbbga5oAf",
+          "textStyleId": {
+            "id": "kPWt8pTqjsr15vkx5K3oA",
+            "value": "l8GTC-ECjs5aV8a-jz8hV",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "fKBujADfGPUK0NsQevXRR",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "N2fk03J3eOQ1WRQD2EfUh"
+        }
+      },
+      {
+        "id": "HPYPZQqrNkJYslmo2U7nh",
+        "type": "Text",
+        "text": {
+          "id": "eb7mNCMQ5RDuMIi2PagM8",
+          "text": "<p><span style=\"\">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "UzC8yGjzqrCp9hHqjtj4k",
+          "textStyleId": {
+            "id": "kPWt8pTqjsr15vkx5K3oA",
+            "value": "l8GTC-ECjs5aV8a-jz8hV",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "Oyo5jDaOH7C-P2ZjPRawE",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "UTRKFzVBjpqJsOvOkJ1M6"
+        }
+      },
+      {
+        "id": "GSnc9k1HfcnHUgIblDFHD",
+        "type": "Text",
+        "text": {
+          "id": "muelna2E6T7O1yywAN-EG",
+          "text": "<p><span style=\"\">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonsetetur sadipscing elitr, sed diam nonsetetur sadipscing elitr, sed diam nonsetetur sadipscing elitr, sed diam no</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "-a03ve1h505EywkPAuzK9",
+          "textStyleId": {
+            "id": "kPWt8pTqjsr15vkx5K3oA",
+            "value": "l8GTC-ECjs5aV8a-jz8hV",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "l7PMosGE1bD1rxL5SIBZ6",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "7__U6Yumpy6lN_nMepu4G"
+        }
+      },
+      {
+        "id": "xdlPPFkCHvF-Wy7P6pD0a",
+        "type": "Text",
+        "text": {
+          "id": "g8DOIHfjD_5tc4r7_1MBS",
+          "text": "<p><span style=\"\">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nosadipscing elitr, sed diam nosadipscing elitr, sed diam nodiam nosadipscing elitr, sed diam no</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "MDbmrJGdz6DtyM5GazU34",
+          "textStyleId": {
+            "id": "kPWt8pTqjsr15vkx5K3oA",
+            "value": "l8GTC-ECjs5aV8a-jz8hV",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "CznFiYjtRgHBPcdYEEa1C",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "dG82HyhRMQLOxQVcwUeui"
+        }
+      },
+      {
+        "id": "H-A2aIVqnKcPsRFBa6HY1",
+        "type": "Text",
+        "text": {
+          "id": "oNOaNRhmhrf8AdIx_ul8W",
+          "text": "<p><span style=\"color: #19802a\">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum</span></p>\n<p><span style=\"color: #2b45ab\">. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed&nbsp;</span></p>\n<p><span style=\"color: #9aa136\">diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "17LQc5FXPFjNiCu03CT8v",
+          "textStyleId": {
+            "id": "kPWt8pTqjsr15vkx5K3oA",
+            "value": "l8GTC-ECjs5aV8a-jz8hV",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "awGm8D8_t0lAawzNzoOD6",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "ExJ4VmoL1vAQy6hZmx6Yk"
+        }
+      },
+      {
+        "id": "9haUzsmpyL4lP4WwCNEju",
+        "type": "Text",
+        "text": {
+          "id": "sCYX8dcGTJa8HUCS4nvXD",
+          "text": "<p><span style=\"color: #19802a\">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum</span></p>\n<p><span style=\"color: #2b45ab\">. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed&nbsp;</span></p>\n<p><span style=\"color: #9aa136\">diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "z2sZK3druDswXA5XOM2Hy",
+          "textStyleId": {
+            "id": "kPWt8pTqjsr15vkx5K3oA",
+            "value": "l8GTC-ECjs5aV8a-jz8hV",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "PJLHApiULwqgVM84iroap",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "0GnANWadJAyjm8pCCKp4r"
+        }
+      },
+      {
+        "id": "f7MUTrmzTRJnqj2ydcfyF",
+        "type": "Text",
+        "text": {
+          "id": "LphXLpRz3Y3_9foOjmCtk",
+          "text": "<p><span style=\"color: #19802a\">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum</span></p>\n<p><span style=\"color: #2b45ab\">. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed&nbsp;</span></p>\n<p><span style=\"color: #9aa136\">diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "gtqjrjzvdkueEvbfJJc0U",
+          "textStyleId": {
+            "id": "kPWt8pTqjsr15vkx5K3oA",
+            "value": "l8GTC-ECjs5aV8a-jz8hV",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "bhIaf6rJq_w7xiSVYeBYv",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "FM8CCPeAFI7TBcDUQGbwW"
+        }
+      },
+      {
+        "id": "pYDIxVXYU8f-iLH_WpnXX",
+        "type": "Text",
+        "text": {
+          "id": "cYQx3v9cZS0DaC2zRkH2U",
+          "text": "<p><span style=\"color: #19802a\">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum</span></p>\n<p><span style=\"color: #2b45ab\">. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed&nbsp;</span></p>\n<p><span style=\"color: #9aa136\">diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "caHeD3DreBKDnKPpbBD40",
+          "textStyleId": {
+            "id": "kPWt8pTqjsr15vkx5K3oA",
+            "value": "l8GTC-ECjs5aV8a-jz8hV",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "dRf-hEQhNToKruK1IwFWD",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "wLqg7blAZOmKkYVdPUNjK"
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "df4bY162i4LJo9QfJv63s",
+      "definitions": [
+        {
+          "id": "l8GTC-ECjs5aV8a-jz8hV",
+          "name": "Custom Prevent Line Break Rule",
+          "font": "Open Sans",
+          "fontSize": 12,
+          "lineHeight": 18,
+          "semantic": "P",
+          "typesettingModelName": "CustomTypesettingTSM"
+        }
+      ]
+    }
+  }
+}

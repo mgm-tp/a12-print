@@ -1,0 +1,257 @@
+<!--
+  ~ SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+  ~
+  ~ Copyright (c) 2012-2026 mgm technology partners GmbH
+  ~
+  ~ Dual License
+  ~ ------------
+  ~ This source file is part of the mgm A12 Platform and available under
+  ~ a choice of two different licenses:
+  ~
+  ~ 1. Open-Source License - EUPL v1.2
+  ~    You may redistribute and/or modify this file under the terms of the
+  ~    European Union Public License, version 1.2 - see https://eupl.eu/.
+  ~
+  ~ 2. Commercial License
+  ~    Alternatively, you may obtain a commercial license from
+  ~    mgm technology partners GmbH, that permits use of this software
+  ~    under different terms (including support and maintenance services).
+  ~
+  ~    Please contact a12-license@mgm-tp.com for more information.
+  ~
+  ~ You must select and comply with exactly one of the above license options.
+  ~
+  ~ Warranty Disclaimer (applies to either option)
+  ~ ----------------------------------------------
+  ~ THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND,
+  ~ WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  ~ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  ~ NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
+  ~ LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+  -->
+<style>
+	body {
+		font-family: "Open Sans", "DejaVu Sans", sans-serif;
+	}
+
+	#toctitle {
+		color: #0072CE;
+	}
+
+	/* General */
+
+	#header {
+		padding: 0 25px;
+	}
+
+	#content {
+		padding: 0 25px;
+	}
+
+	#footer {
+		display: none;
+	}
+
+	/* External Links */
+
+	/* Admonition CUSTOM */
+
+	.admonitionblock>table {
+		border-radius: 4px;
+		border: 1px solid rgba(0, 0, 0, 0.5);
+	}
+
+	.admonitionblock>table td.content {
+		border-left: none;
+		border-radius: 0 4px 4px 0;
+	}
+
+	.admonitionblock>table td.icon [class^="fa icon-"] {
+		font-size: 1.8em;
+		text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+		border-radius: 4px 0 0 4px;
+	}
+
+	.admonitionblock>table td.icon [class^="fa icon-"]:before {
+		color: #fff;
+	}
+
+	/* TIP */
+
+	.admonitionblock.tip table {
+		border: 1px solid #46B278;
+	}
+
+	.admonitionblock.tip td.icon {
+		background-color: #46B278;
+	}
+
+	.admonitionblock.tip td.content {
+		background-color: #F5FFFD;
+	}
+
+	/* NOTE */
+
+	.admonitionblock.note table {
+		border: 1px solid #0072CE;
+	}
+
+	.admonitionblock.note td.icon {
+		background-color: #0072CE;
+	}
+
+	.admonitionblock.note td.content {
+		background-color: #EBF8FF;
+	}
+
+	/* IMPORTANT */
+
+	.admonitionblock.important table {
+		border: 1px solid #C62828;
+	}
+
+	.admonitionblock.important td.icon {
+		background-color: #C62828;
+	}
+
+	.admonitionblock.important td.content {
+		background-color: #FFF0F0;
+	}
+
+	/* WARNING */
+
+	.admonitionblock.warning table {
+		border: 1px solid #fbbe09;
+	}
+
+	.admonitionblock.warning td.icon {
+		background-color: #fbbe09;
+	}
+
+	.admonitionblock.warning td.content {
+		background-color: #fdfaf1;
+	}
+
+	/* CAUTION */
+
+	.admonitionblock.caution table {
+		border: 1px solid #e4ad7d
+	}
+
+	.admonitionblock.caution td.icon {
+		background-color: #fb7909;
+	}
+
+	.admonitionblock.caution td.content {
+		background-color: #fdf6f4;
+	}
+
+	/* Headline Styles */
+
+	#toctitle, .sidebarblock>.content>.title, h1, h2, h3, h4, h5, h6 {
+		font-weight: 600;
+	}
+
+	.sidebarblock {
+		background: #F7F7F7;
+		border: none;
+		border-radius: 0;
+	}
+
+	.img-placeholder {
+		background: #F7F7F7;
+		padding: 40px 0;
+		text-align: center;
+	}
+
+	/* Comparison */
+
+	.comparison {
+		display: table;
+		table-layout: fixed;
+		margin: 0 -8px;
+		margin-bottom: 1.25rem !important;
+		width: calc(100% + 16px);
+		border-spacing: 8px 0;
+		height: 0px;
+		/*Fix for Crome, to have same height for both admonitionblocks */
+	}
+
+	.comparison>.content {
+		display: table-row;
+	}
+
+	.comparison .admonitionblock {
+		display: table-cell;
+		height: 100%;
+		height: 100%;
+		vertical-align: top;
+	}
+
+	.comparison .admonitionblock table {
+		height: 100%;
+		margin: 0;
+		/*Fix for Edge, to have same height for both admonitionblocks*/
+	}
+
+	.comparison .admonitionblock:last-child>table {
+		direction: rtl;
+	}
+
+	.comparison .admonitionblock>table td.icon {
+		height: 100%;
+	}
+
+	.comparison .admonitionblock table .content {
+		vertical-align: top;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+	}
+
+	.comparison .imageblock {
+		margin: 4px 0 8px;
+		height: 100%;
+	}
+
+	.comparison .imageblock>.content {
+		display: flex;
+		align-content: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+	}
+
+	.comparison.h_topAlign .imageblock>.content {
+		justify-content: flex-start;
+	}
+
+	.comparison.h_bottomAlign .imageblock>.content {
+		justify-content: flex-end;
+	}
+
+	.comparison .imageblock img {
+		align-self: center;
+		/* Else the img is stretched*/
+	}
+
+	/* Without this, assciidoc  will create a "Figure X ..." title below an image */
+	.comparison__imgTitle p {
+		margin: 0 0 4px !important;
+		text-align: left;
+		font-family: Noto Serif, DejaVu Serif, serif;
+		font-size: 1rem;
+		font-style: italic;
+		text-rendering: optimizeLegibility;
+		line-height: 1.45;
+		color: #7a2518;
+		font-weight: 400;
+		direction: ltr;
+	}
+
+	/* Side Noted, e.g. for A12 Tool Limitations */
+	.sidenote {
+		color: #aaa;
+		font-style: italic;
+	}
+</style>

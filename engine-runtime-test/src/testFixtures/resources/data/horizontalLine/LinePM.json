@@ -1,0 +1,157 @@
+{
+  "header": {
+    "id": "LinePM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "LineDM",
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "LineDM"
+      }
+    ],
+    "description": "Test Beschreibung"
+  },
+  "content": {
+    "id": "ID_a48c3749-1c15-4aac-911b-3cb031574748",
+    "general": {
+      "id": "ID_155123b8-9f83-45d0-a361-791c8e38f1a6",
+      "metadata": {
+        "id": "ID_c567d75e-336a-4bef-86a5-4a1a1ca1dfa2",
+        "titleComputation": [
+          {
+            "id": "wYGviFBwNE7h8MsJRCeg6",
+            "operation": "\"Test Titel\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "KEY_jxIjtuAdQzz9kr-0K",
+            "operation": "\"Test Beschreibung\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "6BKDbz3OuzXKsfPL5cjAz",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "Ts2diHCi0PRIv3oxbwQ7q",
+            "operation": "\"Test Autor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "ID_f045d8eb-1b82-4ce2-ac46-8a3b06953d61",
+        "fontSize": 12,
+        "model": "LineDM"
+      },
+      "runtimeVariables": [],
+      "textStyles": [],
+      "structure": [
+        {
+          "id": "ID_525d974f-5417-4f3e-ba10-e5eaec055c55"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "ID_f39e3b46-60d9-4989-820b-1d7aa85e6125",
+      "definitions": [
+        {
+          "id": "ID_525d974f-5417-4f3e-ba10-e5eaec055c55",
+          "title": "Erste Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "ID_ff486a4a-0a4a-4eee-98d5-492962ec4d5f",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "ID_34fcb55c-5923-4f5d-82bc-900485b26cba",
+              "refId": "aymJotzgBFBPVVufjeG4o",
+              "position": {
+                "id": "ID_ed854416-205d-449f-b616-90993cbc58e6",
+                "x": {
+                  "id": "ID_f8146bef-8b51-4d51-b7a4-ed5e9be10d57",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_575b1f47-be9d-4c73-9919-b814649b817b",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ID_2e990e71-2782-4fdb-97fc-628c3fe42afe",
+                "minWidth": {
+                  "id": "ID_7a3af131-577b-49e9-8469-ede6b22fe4a8",
+                  "value": 25,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_434b4f81-3df6-4af4-ab9c-0bc5adadcd94",
+                  "value": 10,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "ID_288daf48-9d63-4a02-b166-ff5a6bb0bea5",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "u4zu1UlnCRjALatCsXti5",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "aymJotzgBFBPVVufjeG4o",
+        "type": "Line",
+        "borderProperties": {
+          "id": "ID_2218291f-2536-4494-bcb2-6619f0024e2a",
+          "borderWidth": 3.75,
+          "borderStyle": "Solid",
+          "borderColor": "#000000"
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "ID_b9450450-c106-4034-98c0-5dd642003cad",
+      "definitions": []
+    }
+  }
+}

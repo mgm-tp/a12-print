@@ -1,0 +1,956 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ElementLibrary with selected segment renders correctly 1`] = `
+.c3 {
+  box-sizing: border-box;
+  color: #7F8C9B;
+  display: inline-block;
+  direction: ltr;
+  font-family: Material Icons;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+}
+
+.c3 >span {
+  display: inline-block;
+}
+
+.c3.c3 {
+  max-width: unset;
+}
+
+.c15 {
+  box-sizing: border-box;
+  color: #7F8C9B;
+  display: inline-block;
+  direction: ltr;
+  font-family: Material Icons Outlined;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+}
+
+.c15 >span {
+  display: inline-block;
+}
+
+.c15.c15 {
+  max-width: unset;
+}
+
+.c18 .c2 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c18 .c2 {
+  color: inherit;
+}
+
+.c18 .c2 {
+  font-size: inherit;
+}
+
+.h_inlineBlock.h_middleAlign .c18.c18 >.c2 {
+  display: block;
+}
+
+.c1 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  height: 2rem;
+  min-height: 0;
+  padding: 0;
+  width: 2rem;
+  background: transparent;
+  color: #0568ae;
+  border-radius: 50%;
+  box-shadow: none;
+  background: #297a24;
+  color: #fff;
+}
+
+.c1 .c2 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c1 .c2 {
+  color: inherit;
+}
+
+.c1 .c2 {
+  font-size: inherit;
+}
+
+.c1:not(:disabled):focus {
+  outline: 1px dotted #333;
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.c1:not(:disabled):focus {
+  background-color: #fff;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.h_inlineBlock.h_middleAlign .c1.c1 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c1.c1 >.c2 {
+  display: block;
+}
+
+.c11 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  height: 2rem;
+  min-height: 0;
+  padding: 0;
+  width: 2rem;
+  background: transparent;
+  color: #0568ae;
+}
+
+.c11 .c2 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c11 .c2 {
+  color: inherit;
+}
+
+.c11 .c2 {
+  font-size: inherit;
+}
+
+.c11:not(:disabled):focus {
+  outline: 1px dotted #333;
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.h_inlineBlock.h_middleAlign .c11.c11 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c11.c11 >.c2 {
+  display: block;
+}
+
+.c17 {
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+}
+
+.c7 {
+  background-color: #ffe180;
+  box-shadow: 0px 0px 20px 0px rgba(22,25,29,0.3);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  padding: 16px 16px;
+  padding-top: 0;
+}
+
+.c8 {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  flex-shrink: 0;
+  min-height: 48px;
+}
+
+.c9 {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.c9>*:first-child {
+  font-family: "Open Sans",sans-serif;
+  font-weight: 700;
+  color: #4d4d4d;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.c10 {
+  align-self: center;
+  display: flex;
+  flex: none;
+  gap: 8px;
+}
+
+.c10 .c0 {
+  font-size: 1.25rem;
+  width: auto;
+  height: auto;
+  min-height: 0;
+}
+
+.c10 .c2 {
+  font-size: 1.25rem;
+}
+
+.c12 {
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+  padding: 16px 16px;
+  position: relative;
+}
+
+.c12:not(:empty) {
+  min-height: 72px;
+}
+
+.c12:not(:empty)+.StyledCalloutFooter-sc-fyqXHy {
+  border-top: 1px solid #e2e6e9;
+  max-height: calc(100% - 72px - 48px);
+}
+
+.c12>.StyledGrid-sc-dOvSfP {
+  width: inherit;
+}
+
+.c12:focus {
+  outline: 1px dotted #333;
+}
+
+.c6 {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  outline: 1px solid transparent;
+  position: relative;
+  width: 490px;
+}
+
+.c4 {
+  height: 100%;
+  outline: none;
+  transform-origin: top left;
+}
+
+.c4 .c5 {
+  width: 490px;
+}
+
+.c4>*:not(.c5) {
+  width: 100%;
+}
+
+.c4>*:only-child {
+  box-shadow: 0 0 20px 0 rgba(22,25,29,0.3);
+  height: 100%;
+  overflow: auto;
+}
+
+.c4>*:only-child>*:only-child {
+  flex-grow: 1;
+}
+
+.c4 .handle {
+  cursor: move;
+}
+
+.c4 .handle>* {
+  cursor: move!important;
+}
+
+.c4.resize-and-drag-content-animate-enter {
+  background: #fff;
+  transform: scaleX(0) scaleY(0);
+}
+
+.c4.resize-and-drag-content-animate-enter>* {
+  opacity: 0;
+}
+
+.c4.resize-and-drag-content-animate-enter-active,
+.c4.resize-and-drag-content-animate-exit {
+  transform: scaleX(1) scaleY(1);
+}
+
+.c4.resize-and-drag-content-animate-enter-active>*,
+.c4.resize-and-drag-content-animate-exit>* {
+  transition: opacity 0ms ease-in-out 0ms;
+  opacity: 1;
+}
+
+.c4.resize-and-drag-content-animate-enter-active {
+  transition: transform 0ms cubic-bezier(0.17, 0.88, 0.33, 1.13);
+}
+
+.c4.resize-and-drag-content-animate-exit {
+  background: #fff;
+}
+
+.c4.resize-and-drag-content-animate-exit-active {
+  transform: scaleX(0) scaleY(0);
+  transition: transform 0ms cubic-bezier(0.17, 0.88, 0.33, 1);
+}
+
+.c4.resize-and-drag-content-animate-exit-active>* {
+  opacity: 0;
+  transition: opacity 0ms ease-in-out;
+}
+
+.c4.resize-and-drag-content-animate-exit-done {
+  opacity: 0;
+}
+
+.c13 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 0;
+}
+
+.c14 {
+  border: 1px solid #fff;
+  width: 130px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.c16 {
+  margin: 6px;
+}
+
+@media (pointer: coarse) {
+
+}
+
+@media (pointer: fine) {
+
+}
+
+@media (pointer: fine) {
+
+}
+
+@media (pointer: coarse) {
+
+}
+
+@media (pointer: fine) {
+
+}
+
+@media (pointer: coarse) {
+
+}
+
+@media (pointer: fine) {
+
+}
+
+@media (pointer: coarse) {
+  .c1:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c1:not(:disabled):hover {
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c1:hover {
+    outline: 1px solid transparent;
+  }
+}
+
+@media (pointer: coarse) {
+
+}
+
+@media (pointer: fine) {
+
+}
+
+@media (pointer: coarse) {
+  .c1:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #fff;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c1:not(:disabled):hover {
+    background-color: #fff;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c11:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c11:not(:disabled):hover {
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c11:hover {
+    outline: 1px solid transparent;
+  }
+}
+
+@media (pointer: coarse) {
+
+}
+
+@media (pointer: fine) {
+
+}
+
+<body>
+  <div>
+    <button
+      aria-label="Open/Close Element Library"
+      class="c0 c1 button button--icon button--primary"
+      data-role="button"
+      data-type="icon"
+      data-variant-type="primary"
+      title="Open/Close Element Library"
+      type="button"
+    >
+      <i
+        class="c2 c3 plasma-icon"
+        data-role="plasma-icon"
+      >
+        <span
+          aria-hidden="true"
+        >
+          category
+        </span>
+      </i>
+    </button>
+  </div>
+  <div
+    class="portal base"
+    data-role="portal"
+  >
+    <div>
+      <div
+        class="react-draggable-disabled react-draggable-contains-handle react-draggable"
+        style="position: absolute; user-select: auto; width: 100px; height: 300px; display: inline-block; top: 0px; left: 0px; cursor: auto; transform: translate(0px,300px); max-width: 1024px; max-height: 768px; min-height: 300px; box-sizing: border-box; flex-shrink: 0;"
+      >
+        <div
+          class="c4 resize-and-drag-content-wrapper resize-and-drag-content-animate-enter resize-and-drag-content-animate-enter-active"
+          data-role="resize-and-drag-content"
+          role="dialog"
+          style="outline: 1px solid transparent;"
+          tabindex="-1"
+        >
+          <div
+            class="c5 c6 callout "
+            data-role="callout"
+            style="width: 240px;"
+          >
+            <div
+              class="c7 callout__inner"
+              data-role="callout-inner"
+            >
+              <div
+                class="c8 callout__header"
+                data-role="callout-header"
+              >
+                <div
+                  class="c9 callout__header-title handle"
+                  data-role="callout-header-title"
+                >
+                  <p>
+                    Add Element
+                  </p>
+                </div>
+                <div
+                  class="c10 callout__header-suffix"
+                  data-role="callout-header-suffix"
+                >
+                  <button
+                    aria-label="Change to floating Element Library"
+                    class="c0 c11 button button--icon"
+                    data-role="button"
+                    data-type="icon"
+                    title="Change to floating Element Library"
+                    type="button"
+                  >
+                    <i
+                      class="c2 c3 plasma-icon"
+                      data-role="plasma-icon"
+                    >
+                      <span
+                        aria-hidden="true"
+                      >
+                        open_in_new
+                      </span>
+                    </i>
+                  </button>
+                  <button
+                    aria-label="Close"
+                    class="c0 c11 button button--icon"
+                    data-role="button"
+                    data-type="icon"
+                    title="Close"
+                    type="button"
+                  >
+                    <i
+                      class="c2 c3 plasma-icon"
+                      data-role="plasma-icon"
+                    >
+                      <span
+                        aria-hidden="true"
+                      >
+                        close
+                      </span>
+                    </i>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="c12 callout__body"
+                data-role="callout-body"
+                style="padding: 0px;"
+              >
+                <div
+                  class="c13"
+                >
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          title
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Text
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          horizontal_rule
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Line
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          window
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Table
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          image
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Image
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          functions
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Expression
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          list
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Listing
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          grid_on
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Table Layout
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          show_chart
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Line Chart
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          bar_chart
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Bar Chart
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          pie_chart
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Pie Diagram
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          filter_frames
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Bounding Box
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          crop_free
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Area
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    draggable="true"
+                    style="color: rgb(77, 77, 77);"
+                  >
+                    <div
+                      class="c14"
+                    >
+                      <i
+                        class="c2 c15 plasma-icon plasma-icon--outlined"
+                        data-role="plasma-icon"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          account_tree
+                        </span>
+                      </i>
+                      <span
+                        class="c16"
+                      >
+                        Switch
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="tab-sandbox-supporter"
+          data-role="tab-sandbox-supporter"
+          tabindex="0"
+        />
+        <div />
+      </div>
+      <div
+        class="c17"
+        data-role="portal-placeholder"
+      />
+    </div>
+  </div>
+</body>
+`;

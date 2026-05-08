@@ -1,0 +1,17 @@
+{
+  "example": {
+    "stringField": "str",
+    "numberField": 555,
+    "dateField": "1996-07-07T10:30:00",
+    "repeatable": [
+      {
+        "stringField": "entry1",
+        "numberField": 11
+      },
+      {
+        "stringField": "entry2",
+        "numberField": 22
+      }
+    ]
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "header": {
+    "id": "EscapeXmlCommentPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "EscapeXmlCommentDM",
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "EscapeXmlCommentDM"
+      }
+    ],
+    "description": "Test for escaping XML comments."
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "ID_2abf4cae-bc52-4e60-b03d-b69656408256",
+        "titleComputation": [
+          {
+            "id": "4MGQU7Uzwjb7L_tQ1ax-z",
+            "operation": "\"Test for escaping XML comments.\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "JL9blGDRUuSayLzfh6VFB",
+            "operation": "\"Test for escaping XML comments.\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "gaTYYe6V4UXFwYsjfcifG",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "6ZPllQneyze2C2q3MTZ_F",
+            "operation": "\"Test Autor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "ID_a3819174-ec75-412f-8516-2ca60a4d002e",
+        "fontSize": 12,
+        "model": "EscapeXmlCommentDM"
+      },
+      "runtimeVariables": [],
+      "textStyles": [
+        {
+          "id": "ID_eaec83d5-b064-4874-916e-2fe62af0ef24"
+        }
+      ],
+      "structure": [
+        {
+          "id": "ID_291d178b-85c4-4d9f-ac6f-12ea4e62083f"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "ID_44097cfd-f77c-46ed-a27a-e2d09fa0bc6d",
+      "definitions": [
+        {
+          "id": "ID_291d178b-85c4-4d9f-ac6f-12ea4e62083f",
+          "title": "Erste Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "ID_e9c443fc-78f3-4236-ac76-6e425e7afb34",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "ID_cb694269-26d8-468e-9fe4-e19f17821923",
+              "refId": "aym---Jotzg-----BFBPV--VufjeG56",
+              "position": {
+                "id": "ID_296f3a7c-b4ae-4d34-8cb2-e725ed831dbc",
+                "x": {
+                  "id": "ID_dfd9e364-dd5d-4394-bb8f-ff826ae512c8",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_f1429137-a8eb-464d-a6b3-ee314be0a11b",
+                  "value": 100,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ID_92d212f1-f19b-4137-a8bc-3fa21975c1dd",
+                "minWidth": {
+                  "id": "ID_08e878c6-9c87-4498-bef0-bf34c519604a",
+                  "value": 75,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_6575d28b-9916-40d7-ac1c-edd9aed30a77",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "ID_bb83997a-0612-4ffc-abd2-f8c3b4220739",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "AqgvifpXXupwb9QL1d4C9",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "sections": {
+      "id": "mqWE6e0sgD15Z49SYW1-2",
+      "definitions": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "aym---Jotzg-----BFBPV--VufjeG56",
+        "type": "Text",
+        "textProperties": {
+          "id": "ID_fdd32429-95aa-4d07-a86a-d2a286b0df07",
+          "textStyleId": {
+            "id": "jxKrRjGiWxF2Ajaao6VeP",
+            "source": "INPUT",
+            "value": "ID_eaec83d5-b064-4874-916e-2fe62af0ef24",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "S4lNQ4USeroWCZXm8g_JL",
+            "source": "INPUT",
+            "value": "Left",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        },
+        "borderProperties": {
+          "id": "ID_4542d340-42db-40df-821c-66b3e9bc61c9",
+          "borderWidth": 0.75,
+          "borderColor": "#000"
+        },
+        "text": {
+          "id": "ID_5831a195-ae7f-451c-ab5a-4d6777912fe0",
+          "text": "<p><span entity-id=\"Bh8Qr9ZG9283i87ZIPcY_\" entity-type=\"Field\">EscapeXmlCommentDM/general/StringField</span></p>",
+          "entities": [
+            {
+              "id": "ID_d859e0ec-3cc3-427d-a146-70b4f27a65a7",
+              "refId": "Bh8Qr9ZG9283i87ZIPcY_"
+            }
+          ]
+        }
+      },
+      {
+        "id": "Bh8Qr9ZG9283i87ZIPcY_",
+        "type": "Field",
+        "field": {
+          "id": "ID_2c38bfdd-0d7e-4a51-904d-8ac2921d65b7",
+          "model": "EscapeXmlCommentDM",
+          "path": "/general/StringField"
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "ID_623ff47e-beb9-4216-b492-bdfe2e081aeb",
+      "definitions": [
+        {
+          "id": "ID_eaec83d5-b064-4874-916e-2fe62af0ef24",
+          "name": "Open Sans@14.0 within 21.0",
+          "font": "Open Sans",
+          "fontSize": 14,
+          "lineHeight": 21,
+          "semantic": "H1"
+        }
+      ]
+    }
+  }
+}

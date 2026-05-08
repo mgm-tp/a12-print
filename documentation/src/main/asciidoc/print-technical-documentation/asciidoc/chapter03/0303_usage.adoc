@@ -1,0 +1,84 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+[#usage]
+= Usage
+
+== Creating a PrintJob
+
+Next step is the creation of a PrintJob, where document provider, locale, timezone are configured.
+
+[source,java]
+----
+include::../../sourceCode/engine-runtime/test/java/com/mgmtp/a12/print/engine/runtime/utils/PrintEngineTestExecutor.java[tags="PrintJob,PrintJobProvider",indent=0]
+----
+
+<1> This could be replaced with the KernelDocumentProvider implementation from the <<kernel_document_provider,Print Engine Runtime>>, where `documentToPrint` is an IDocument.
+Usage: `printJob.withProvider(KernelDocumentProvider.fromDocument(documentToPrint));`
+<2> This is the integration point for your own document provider.
+
+=== KernelDocumentV2Provider
+
+Next to the `KernelDocumentProvider` it is possible to use the `KernelDocumentV2Provider` to print with a `DocumentV2` instead of the `IDocument`.
+
+[source,java]
+----
+include::../../sourceCode/engine-runtime/test/java/com/mgmtp/a12/print/engine/runtime/utils/PrintEngineTestExecutor.java[tags="PrintJobProviderV2",indent=0]
+----
+
+<1> This could be replaced with the KernelDocumentV2Provider implementation from the <<kernel_document_v2_provider,Print Engine Runtime>>, where `documentToPrint` is an DocumentV2.
+Usage: `printJob.withProvider(KernelDocumentV2Provider.fromDocument(documentToPrint));`
+<2> This is the integration point for your own document provider.
+
+=== TypesettingModelProvider
+
+Within the <<typesetting_model_provider,TypesettingModelProvider>> it is possible to provide Typesetting Models to the <<pdf_box_print_engine_runtime, PdfBoxPrintEngine>>.
+
+[source,java]
+----
+include::../../sourceCode/engine-runtime/test/java/com/mgmtp/a12/print/engine/runtime/utils/PrintEngineTestExecutor.java[tags="TypesettingModelProvider",indent=0]
+----
+
+=== AttachmentProvider
+
+The usage of the <<attachment_provider,AttachmentProvider>> is similar to the KernelDocumentProvider, but in the AttachmentProvider the attachments needs to be provided as _ByteArrayInputStream_.
+
+[source,java]
+----
+include::../../sourceCode/engine-runtime/test/java/com/mgmtp/a12/print/engine/runtime/utils/PrintEngineTestExecutor.java[tags="AttachmentPrintJobProvider",indent=0]
+----
+
+=== PageRangeRestriction
+
+Next to the Providers it is possible to define a <<page_range_restriction,PageRangeRestriction>>.
+
+[source,java]
+----
+include::../../sourceCode/engine-runtime/test/java/com/mgmtp/a12/print/engine/runtime/utils/PrintEngineTestExecutor.java[tags="PageRangeRestriction",indent=0]
+----
+
+== Executing a PrintJob
+
+Once everything is <<configuration, set up>>.
+You can print the provided Print Model by calling the `execute` method of the `PdfPrintEngine`.
+
+Example::
+
+[source,java]
+----
+PdfPrintResult pdfPrintResult = pdfPrintEngine.execute(printJob);
+----

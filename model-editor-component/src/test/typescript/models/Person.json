@@ -1,0 +1,199 @@
+{
+  "header": {
+    "id": "Person",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "Address",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "Address"
+      }
+    ]
+  },
+  "content": {
+    "modelInfo": {
+      "name": "Person",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_28db7",
+          "name": "person",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_17363",
+                "name": "enum_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "EnumerationType",
+                    "EnumerationType": {
+                      "values": [
+                        {
+                          "value": "first",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "first"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "first"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "second",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "second"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "second"
+                            }
+                          ]
+                        }
+                      ],
+                      "categories": []
+                    }
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_ce16b",
+                "name": "name1",
+                "annotations": [
+                  {
+                    "name": "annotation.person.name1",
+                    "value": "some value"
+                  }
+                ],
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  }
+                }
+              },
+              {
+                "type": "Group",
+                "id": "include_99803",
+                "name": "address",
+                "Group": {
+                  "repeatability": 1,
+                  "modelAlias": "Address"
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_94ed2",
+                "name": "date",
+                "Field": {
+                  "fieldType": {
+                    "type": "DateTimeType",
+                    "DateTimeType": {
+                      "format": "yyyy-MM-dd'T'HH:mm:ss"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_d500e",
+                "name": "repeat",
+                "Group": {
+                  "repeatability": 999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_19514",
+                      "name": "repeat_enum_field",
+                      "Field": {
+                        "fieldType": {
+                          "type": "EnumerationType",
+                          "EnumerationType": {
+                            "values": [
+                              {
+                                "value": "first",
+                                "label": [
+                                  {
+                                    "locale": "en",
+                                    "text": "first"
+                                  },
+                                  {
+                                    "locale": "de",
+                                    "text": "first"
+                                  }
+                                ]
+                              },
+                              {
+                                "value": "second",
+                                "label": [
+                                  {
+                                    "locale": "en",
+                                    "text": "second"
+                                  },
+                                  {
+                                    "locale": "de",
+                                    "text": "second"
+                                  }
+                                ]
+                              }
+                            ],
+                            "categories": []
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_dabe1",
+                      "name": "name",
+                      "annotations": [
+                        {
+                          "name": "annotation.person.repeat.name",
+                          "value": "some value"
+                        }
+                      ],
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

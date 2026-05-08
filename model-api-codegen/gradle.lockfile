@@ -1,0 +1,31 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+com.fasterxml.jackson.core:jackson-annotations:2.20=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-core:2.20.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.fasterxml.jackson.core:jackson-databind:2.20.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.fasterxml.jackson:jackson-bom:2.20.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.mgmtp.a12.base:base-model-api:29.3.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.mgmtp.a12.base:base-model-consistency:29.3.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.mgmtp.a12.kernel:kernel-conversion-java:30.8.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.mgmtp.a12.kernel:kernel-core-base-utils:30.8.1=runtimeClasspath,testRuntimeClasspath
+com.mgmtp.a12.kernel:kernel-core-parsetree-api:30.8.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.mgmtp.a12.kernel:kernel-core-tool-api:30.8.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.mgmtp.a12.kernel:kernel-md-a12internal:30.8.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.mgmtp.a12.kernel:kernel-md-document-api:30.8.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.mgmtp.a12.kernel:kernel-md-document-v2:30.8.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.mgmtp.a12.kernel:kernel-md-model-api:30.8.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+com.mgmtp.a12.kernel:kernel-md-serializer:30.8.1=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+commons-io:commons-io:2.20.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.apache.commons:commons-collections4:4.5.0=runtimeClasspath,testRuntimeClasspath
+org.apache.commons:commons-lang3:3.20.0=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.freemarker:freemarker:2.3.34=compileClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
+org.jacoco:org.jacoco.agent:0.8.14=jacocoAgent,jacocoAnt
+org.jacoco:org.jacoco.ant:0.8.14=jacocoAnt
+org.jacoco:org.jacoco.core:0.8.14=jacocoAnt
+org.jacoco:org.jacoco.report:0.8.14=jacocoAnt
+org.ow2.asm:asm-commons:9.9=jacocoAnt
+org.ow2.asm:asm-tree:9.9=jacocoAnt
+org.ow2.asm:asm:9.9=jacocoAnt
+org.slf4j:slf4j-api:2.0.17=runtimeClasspath,testRuntimeClasspath
+empty=annotationProcessor,cyclonedxBom,testAnnotationProcessor

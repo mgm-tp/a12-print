@@ -1,0 +1,208 @@
+{
+  "header": {
+    "id": "DomainPageBreakBehavior",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "annotations": [],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "DomainPageBreakBehavior"
+    },
+    "modelConfig": {
+      "timeZone": "UTC",
+      "decimalSeparator": ".",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "typeDefinitions": [
+      {
+        "id": "typedef_80b07803-b5e7-45a8-bc96-a2b891521938",
+        "name": "pageBreakBehavior",
+        "fieldType": {
+          "type": "EnumerationType",
+          "EnumerationType": {
+            "values": [
+              {
+                "value": "Allow",
+                "label": []
+              },
+              {
+                "value": "Avoid",
+                "label": []
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "typedef_fc34f107-df66-46dc-868c-99a695067cde",
+        "name": "sourceType",
+        "fieldType": {
+          "type": "EnumerationType",
+          "EnumerationType": {
+            "values": [
+              {
+                "value": "INPUT",
+                "label": []
+              },
+              {
+                "value": "DEFAULT",
+                "label": []
+              },
+              {
+                "value": "UNSET",
+                "label": []
+              },
+              {
+                "value": "INHERITED",
+                "label": []
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_9a367",
+          "name": "pageBreakBehavior",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_71429",
+                "name": "id",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "requirednessConfig": {
+                    "mode": "relativeToParent"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_69318",
+                "name": "path",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "requirednessConfig": {
+                    "mode": "relativeToParent"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_c0beb",
+                "name": "source",
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_fc34f107-df66-46dc-868c-99a695067cde"
+                    }
+                  },
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_f19e0",
+                "name": "value",
+                "annotations": [
+                  {
+                    "name": "required",
+                    "value": "true"
+                  },
+                  {
+                    "name": "inherited",
+                    "value": "true"
+                  }
+                ],
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_80b07803-b5e7-45a8-bc96-a2b891521938"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_5a545",
+                "name": "reference",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  }
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_f3b3a",
+                "name": "valueFilled",
+                "Rule": {
+                  "errorEntityRelPath": "../value",
+                  "errorCode": "Error rule_f3b3a",
+                  "errorCondition": "GroupFilled(RuleGroup) And [source] == \"INPUT\" And FieldNotFilled(value)",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "Please specify a value"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Bitte gib einen Wert an"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_74a85",
+                "name": "referenceFilled",
+                "Rule": {
+                  "errorEntityRelPath": "../reference",
+                  "errorCode": "Error rule_74a85",
+                  "errorCondition": "GroupFilled(RuleGroup) And [source] == \"INHERITED\" And FieldNotFilled(reference)",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "Please specify a value"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Bitte gib einen Wert an"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

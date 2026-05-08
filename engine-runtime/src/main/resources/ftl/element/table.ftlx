@@ -1,0 +1,84 @@
+<#ftl output_format="XHTML">
+<#--
+  ~ SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+  ~
+  ~ Copyright (c) 2012-2026 mgm technology partners GmbH
+  ~
+  ~ Dual License
+  ~ ------------
+  ~ This source file is part of the mgm A12 Platform and available under
+  ~ a choice of two different licenses:
+  ~
+  ~ 1. Open-Source License - EUPL v1.2
+  ~    You may redistribute and/or modify this file under the terms of the
+  ~    European Union Public License, version 1.2 - see https://eupl.eu/.
+  ~
+  ~ 2. Commercial License
+  ~    Alternatively, you may obtain a commercial license from
+  ~    mgm technology partners GmbH, that permits use of this software
+  ~    under different terms (including support and maintenance services).
+  ~
+  ~    Please contact a12-license@mgm-tp.com for more information.
+  ~
+  ~ You must select and comply with exactly one of the above license options.
+  ~
+  ~ Warranty Disclaimer (applies to either option)
+  ~ ----------------------------------------------
+  ~ THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND,
+  ~ WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+  ~ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+  ~ NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
+  ~ LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+  -->
+<#-- @ftlvariable name="cssUtil" type="com.mgmtp.a12.print.engine.runtime.internal.engine.rendering.CssUtil" -->
+<#-- @ftlvariable name="context" type="com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.markup.table.TableHtmlTemplateParameters" -->
+<table class="${cssUtil.getCssClasses(context.table)}" id="${context.table.id}"
+	   style="${cssUtil.getStyle(context.table, context.parent, context.textStyle, context.referenceInputSourceResolver)}">
+	<colgroup>
+	<#list context.colGroups as column>
+		<col <#if column.present>width="${column.get()}%"</#if>/>
+	</#list>
+	</colgroup>
+	<thead>
+		<#if context.headerCells??>
+			<@tableHead table=context.table headerCells=context.headerCells textStyle=context.headerTextStyle referenceInputSourceResolver=context.referenceInputSourceResolver />
+		</#if>
+	</thead>
+	<tbody>
+		<@tableBody table=context.table rows=context.rows referenceInputSourceResolver=context.referenceInputSourceResolver />
+	</tbody>
+</table>
+
+<#macro headLine textStyle>${cssUtil.getHeadingTag(textStyle)}</#macro>
+<#macro headLineStyle cssUtil table textStyle referenceInputSourceResolver>class="table_cell" style="${cssUtil.getHeadingSemanticTableRowStyle(table, false, textStyle, referenceInputSourceResolver)}"</#macro>
+
+<#macro tableHead table textStyle referenceInputSourceResolver headerCells>
+<#-- @ftlvariable name="table" type="com.mgmtp.a12.print.model.api.model.element.type.table.Table" -->
+<#-- @ftlvariable name="textStyle" type="com.mgmtp.a12.print.model.api.model.textStyle.TextStyle" -->
+<#-- @ftlvariable name="headerCells" type="java.util.List<String>" -->
+	<tr>
+		<#list headerCells as headerCell>
+			<th class="table_cell" style="${cssUtil.getTableRowStyle(table, true, textStyle, referenceInputSourceResolver)}">
+				${headerCell}
+			</th>
+		</#list>
+	</tr>
+</#macro>
+
+<#macro tableBody table rows referenceInputSourceResolver>
+<#-- @ftlvariable name="table" type="com.mgmtp.a12.print.model.api.model.element.type.table.Table" -->
+<#-- @ftlvariable name="rows" type="java.util.List<java.util.List<String>>" -->
+	<#list rows as row>
+		<tr>
+			<#list row as cell>
+			<td class="table_cell" style="${cssUtil.getTableRowStyle(table, false, context.textStyle, referenceInputSourceResolver)}">
+					<#if context.textStyle?? && cssUtil.getHeadingTag(context.textStyle) != "">
+						<<@headLine textStyle=context.textStyle /> <@headLineStyle cssUtil=cssUtil table=table textStyle=context.textStyle referenceInputSourceResolver=referenceInputSourceResolver/>><#noautoesc>${cell}</#noautoesc></<@headLine textStyle=context.textStyle />>
+					<#else>
+						<#noautoesc>${cell}</#noautoesc>
+					</#if>
+			</td>
+			</#list>
+		</tr>
+	</#list>
+</#macro>

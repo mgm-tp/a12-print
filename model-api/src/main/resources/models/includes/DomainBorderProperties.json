@@ -1,0 +1,190 @@
+{
+  "header": {
+    "id": "DomainBorderProperties",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "DomainBorderProperties",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "typeDefinitions": [
+      {
+        "id": "typedef_9986e85b-f88f-480d-8c25-fae4cf4cdc45",
+        "name": "borderStyle",
+        "fieldType": {
+          "type": "EnumerationType",
+          "EnumerationType": {
+            "values": [
+              {
+                "value": "Solid",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "Solid"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "Linie"
+                  }
+                ]
+              },
+              {
+                "value": "Dotted",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "Dotted"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "Gepunktete Linie"
+                  }
+                ]
+              },
+              {
+                "value": "Dashed",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "Dashed"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "Gestrichelte Linie"
+                  }
+                ]
+              }
+            ],
+            "categories": []
+          }
+        }
+      }
+    ],
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_1dc4d",
+          "name": "borderProperties",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_0670c",
+                "name": "id",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "ID"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "ID"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_fd915",
+                "name": "borderWidth",
+                "Field": {
+                  "fieldType": {
+                    "type": "NumberType",
+                    "NumberType": {
+                      "maxFractionalDigits": 2,
+                      "minValue": 0
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Border width"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Randgröße"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_ea3cf",
+                "name": "borderColor",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Border color"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Randfarbe"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_f1345",
+                "name": "borderStyle",
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_9986e85b-f88f-480d-8c25-fae4cf4cdc45"
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Border style"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Randart"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

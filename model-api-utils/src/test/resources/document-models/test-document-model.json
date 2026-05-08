@@ -1,0 +1,93 @@
+{
+  "header": {
+    "id": "test-document-model",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "us"
+      }
+    ],
+    "labels": [],
+    "annotations": [],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "test-document-model"
+    },
+    "modelConfig": {
+      "timeZone": "UTC",
+      "decimalSeparator": ".",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_91523",
+          "name": "group",
+          "annotations": [
+            {
+              "name": "anno_group",
+              "value": "test"
+            }
+          ],
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_a76bc",
+                "name": "enum_field",
+                "annotations": [
+                  {
+                    "name": "anno_enum_field",
+                    "value": "test"
+                  }
+                ],
+                "Field": {
+                  "fieldType": {
+                    "type": "EnumerationType",
+                    "EnumerationType": {
+                      "values": [
+                        {
+                          "value": "enum_value",
+                          "label": [
+                            {
+                              "locale": "us",
+                              "text": "test"
+                            }
+                          ]
+                        }
+                      ],
+                      "categories": []
+                    }
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_26cda",
+                "name": "number_field",
+                "annotations": [
+                  {
+                    "name": "anno_number_field",
+                    "value": "test"
+                  }
+                ],
+                "Field": {
+                  "fieldType": {
+                    "type": "NumberType"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

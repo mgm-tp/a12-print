@@ -1,0 +1,63 @@
+# Output Directories #
+/.pnpm
+/*/build
+build/
+*/bin
+*/out
+*/lib
+**/typescript-test-report.xml
+*/target
+dist
+.target/
+platform-server.log*
+services-server.log*
+dataservices-server.log*
+spring-shell.log
+package-lock.json
+npm-shrinkwrap.json
+lombok.config
+development.log
+# Dependency directory #
+node_modules
+.node_modules
+
+# Optional npm cache directory #
+.npm
+
+npm-debug.log.*
+npm-debug.log
+pnpm-debug.log
+pnpm-debug.log.*
+# IDE Directories / Files #
+.metadata
+.project
+*.iml
+.pnpm-debug.log
+
+# External tool builders #
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations" #
+*.launch
+
+# OS Files #
+.DS_Store
+
+# Misc #
+*~
+.classpath
+.settings/
+.gradle
+
+# history #
+.history
+
+# Wal files
+*.wal
+!test-app/use-cases/**/*.wal
+
+test-app/use-cases/**/*.pdf
+
+# Kotlin
+.kotlin/
+**/settings-gradle.lockfile

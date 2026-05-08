@@ -1,0 +1,370 @@
+{
+  "header": {
+    "id": "TableLayoutPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "TableLayoutDM",
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "TableLayoutDM"
+      }
+    ],
+    "description": "Test Beschreibung"
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "ID_8a8b8768-0dd0-46be-b88d-706783f1c9c2",
+      "metadata": {
+        "id": "ID_35d6448f-e837-4246-98e6-22b1913977ee",
+        "titleComputation": [
+          {
+            "id": "n7gtpPLH8dx8rJlDuW-9Y",
+            "operation": "\"Test Titel\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "evqL3Yd_ljhLaGbxPvz-J",
+            "operation": "\"Test Beschreibung\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "IMYEtb_VeTGb1bEl-nNHr",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "UInip6JOfT-Wn3MRnLO3r",
+            "operation": "\"Test Autor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "ID_06fa762d-2531-420d-9203-1cb440b2cae3",
+        "fontSize": 12,
+        "model": "TableLayoutDM"
+      },
+      "runtimeVariables": [],
+      "textStyles": [],
+      "structure": [
+        {
+          "id": "ID_0208b1d0-bffc-4e56-87a2-28b430b6183a"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "ID_24eb4577-4662-4400-ae29-37f1ffcb02fb",
+      "definitions": [
+        {
+          "id": "ID_0208b1d0-bffc-4e56-87a2-28b430b6183a",
+          "title": "Erste Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "ID_7aaab39c-2438-4bf5-9e25-a29359a0fa7c",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "ID_b64b184a-2de7-4ebe-abb4-377b9cb35132",
+              "refId": "tableLayout1",
+              "position": {
+                "id": "ID_c5508e94-2c2b-4790-973f-4190cbb11bce",
+                "x": {
+                  "id": "ID_a568e685-d838-4248-a1b3-28322928437e",
+                  "value": 25,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_d8116eeb-f68b-49e5-9bdb-a43718dbe3e6",
+                  "value": 25,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ID_0a786fa0-92df-4b97-b0b5-086ad265bc94",
+                "minWidth": {
+                  "id": "ID_796923cf-9752-4bd1-a0e6-63d60ac4c7a2",
+                  "value": 87,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_c55da41d-a518-4cf4-a395-01cf1f6e1469",
+                  "value": 482,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "ID_eead5154-0711-4015-a2e2-5e5fc34e8779",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "LCr5KPRst9Ng1xEMPx-a3",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "Bh8Qr9ZG9283i87Z7587",
+        "type": "Field",
+        "field": {
+          "id": "ID_353f5318-dab1-4842-80a8-8b0a8cba7c23",
+          "model": "TableLayoutDM",
+          "path": "/general/StringField1"
+        }
+      },
+      {
+        "id": "text1",
+        "type": "Text",
+        "text": {
+          "id": "ID_006c6361-6db6-487a-897a-ef148b85dccc",
+          "text": "<p><span entity-id=\"Bh8Qr9ZG9283i87Z7587\" entity-type=\"Field\">TableLayoutDM/general/StringField1</span></p>",
+          "entities": [
+            {
+              "id": "ID_9eac4c8c-82d8-4037-8378-425ffde46e07",
+              "refId": "Bh8Qr9ZG9283i87Z7587"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "HuCqsmJ8Sw0meyzDHPYqA",
+          "textStyleId": {
+            "id": "e6HjfUHfkR2lpxXYxrC-B",
+            "source": "INPUT",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "sSum5JFgyhmjYPhUKY5wx",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        }
+      },
+      {
+        "id": "Bh8Qr9ZG9283i87Z75976",
+        "type": "Calculation",
+        "calculation": {
+          "id": "Bh8Qr9ZG9283i87Z759763444",
+          "name": "Bh8Qr9ZG9283i87Z75976",
+          "model": "TableLayoutDM",
+          "fieldType": {
+            "id": "k2I1sNhwEyTV07sfnSfdSbW",
+            "fieldType": "String"
+          },
+          "computationAlternatives": [
+            {
+              "id": "ID_ed737f62-212e-4090-9dd0-b4d8fd13c28c",
+              "operation": "[TableLayoutDM/general/StringField2]"
+            }
+          ]
+        }
+      },
+      {
+        "id": "text2",
+        "type": "Text",
+        "text": {
+          "id": "ID_6f3e8da4-8ee3-4918-b2df-b4306f6c1f18",
+          "text": "<p><span entity-id=\"Bh8Qr9ZG9283i87Z75976\" entity-type=\"Calculation\">Computation</span></p>",
+          "entities": [
+            {
+              "id": "ID_61b4d35f-a4de-4bb7-be94-aaf8fc04ea39",
+              "refId": "Bh8Qr9ZG9283i87Z75976"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "oQiwJY09Mavg3L1CNBT81",
+          "textStyleId": {
+            "id": "655sArYvCM1PAs-802opd",
+            "source": "INPUT",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "Ilv6HAodnjweq4YcNF-cL",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        }
+      },
+      {
+        "id": "text3",
+        "type": "Text",
+        "borderProperties": {
+          "id": "ID_db50dbf1-0254-438a-aafc-8f2657a40ff5",
+          "borderWidth": 1.5,
+          "borderStyle": "Dashed",
+          "borderColor": "#FF0000"
+        },
+        "text": {
+          "id": "ID_8c6e1427-1c48-4f23-9e81-887b2dd5553e",
+          "text": "<p><span style=\"\">Test TextFlow: </span><span entity-id=\"cEgCQVzGu7vZQUekRFSjG\" entity-type=\"Field\"><span style=\"\">TableLayoutDM/general/StringField1</span></span><span style=\"\"> </span><span entity-id=\"XLZj_gEvnx5s3DqouFs1z\" entity-type=\"Calculation\"><span style=\"\">Calculation</span></span></p>\n<p><br></p>\n<p><span style=\"color: #cd1313\">Farbe</span></p>\n<p><br></p>\n<p><span style=\"background-color: #1c8415\">Hintergrund</span></p>\n<p><br></p>\n<p><span style=\"font-size: 24pt\">Größe</span></p>",
+          "entities": [
+            {
+              "id": "ID_f27f1ca5-362e-47de-b954-973689b0ca87",
+              "refId": "cEgCQVzGu7vZQUekRFSjG"
+            },
+            {
+              "id": "ID_ca99a744-48b9-40f8-aa64-8ed73ee87b4e",
+              "refId": "XLZj_gEvnx5s3DqouFs1z"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "dtJFLODjmx4xWFXcTAcW3",
+          "textStyleId": {
+            "id": "E_j9Fmgn7QkcvZRnT5Rfc",
+            "source": "INPUT",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "Krf_7nFKjLuzs2itQn383",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        }
+      },
+      {
+        "id": "tableLayout1",
+        "type": "TableLayout",
+        "tableLayout": {
+          "id": "ID_7757d1f8-b62c-4f45-af07-21ae6cfb3bbf",
+          "rowCount": 2,
+          "columnCount": 2,
+          "rowProperties": [
+            {
+              "id": "ID_20054bee-920d-49e2-8310-1d12232f3845",
+              "index": 2,
+              "minHeight": {
+                "id": "ID_0bddd40c-f324-4eaf-9ae6-32d9a9aa06cb",
+                "value": 125,
+                "path": "/content/elementDefinitions/tableLayout/rowProperties/minHeight/value/",
+                "source": "INPUT",
+                "unit": "Millimeter"
+              }
+            }
+          ],
+          "columnProperties": [
+            {
+              "id": "ID_d2fed281-a6db-47b6-96bb-e4f810fabc53",
+              "index": 1,
+              "width": {
+                "id": "ID_91d74d11-d98c-46f7-9716-8e48b733690d",
+                "value": 70,
+                "path": "/content/elementDefinitions/tableLayout/columnProperties/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              },
+              "verticalAlignment": "Middle"
+            },
+            {
+              "id": "ID_236cba81-c3f9-4135-9e09-d189f1a7d9e3",
+              "index": 2,
+              "width": {
+                "id": "ID_67451678-e693-4b2e-b938-0e65aa837e16",
+                "value": 30,
+                "path": "/content/elementDefinitions/tableLayout/columnProperties/width/value/",
+                "source": "INPUT",
+                "unit": "Percent"
+              },
+              "verticalAlignment": "Top"
+            }
+          ],
+          "cells": [
+            {
+              "id": "ID_e8dd66e2-9a7f-42f5-b1aa-0178adb8c0ac",
+              "refId": "text1",
+              "row": 0,
+              "column": 0
+            },
+            {
+              "id": "ID_88c8cf8d-ed8f-407f-86ac-bfbe105d1be5",
+              "refId": "text2",
+              "row": 0,
+              "column": 1
+            },
+            {
+              "id": "ID_c7229786-ced2-4af3-a248-2007790ec4c0",
+              "refId": "text3",
+              "row": 1,
+              "column": 0
+            }
+          ]
+        }
+      },
+      {
+        "id": "cEgCQVzGu7vZQUekRFSjG",
+        "type": "Field",
+        "field": {
+          "id": "Fq98rfaujVPNaexQX2JR8",
+          "model": "TableLayoutDM",
+          "path": "/general/StringField1"
+        }
+      },
+      {
+        "id": "XLZj_gEvnx5s3DqouFs1z",
+        "type": "Calculation",
+        "calculation": {
+          "id": "XLZj_gEvnx5s3DqouFs1z",
+          "name": "Calculation",
+          "model": "TableLayoutDM",
+          "displayOptions": {
+            "id": "wMAQGFbpmOSQfE9JGCEtX",
+            "displayType": "Html"
+          },
+          "fieldType": {
+            "id": "k2I1sNhwEyTV07nSfdSbW",
+            "fieldType": "String"
+          },
+          "computationAlternatives": [
+            {
+              "id": "kPBhzKy2dCEvc3qPGKxIe",
+              "operation": "[TableLayoutDM/general/StringField3]",
+              "precondition": "FieldFilled(TableLayoutDM/general/StringField3)"
+            }
+          ]
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "ID_8a522844-7080-4736-93d7-a2117e4c3d2e",
+      "definitions": []
+    }
+  }
+}

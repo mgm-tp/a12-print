@@ -1,0 +1,74 @@
+{
+  "id": "tableLayout1",
+  "type": "TableLayout",
+  "borderProperties": {
+    "id": "id_bP",
+    "borderColor": "#000000",
+    "borderWidth": 1,
+    "borderStyle": "Solid"
+  },
+  "tableLayout": {
+    "id": "id_tL",
+    "rowCount": 2,
+    "columnCount": 2,
+    "rowProperties": [
+      {
+        "id": "id_rP",
+        "index": 2,
+        "minHeight": {
+          "id": "id_rPmH_1",
+          "value": 66,
+          "unit": "Millimeter",
+          "path": "/content/elementDefinitions/tableLayout/rowProperties/minHeight/value/",
+          "source": "INPUT"
+        }
+      }
+    ],
+    "columnProperties": [
+      {
+        "id": "id_cP_1",
+        "index": 1,
+        "width": {
+          "id": "id_cPw_1",
+          "value": 70,
+          "unit": "Percent",
+          "path": "/content/elementDefinitions/tableLayout/columnProperties/width/value/",
+          "source": "INPUT"
+        },
+        "verticalAlignment": "Middle"
+      },
+      {
+        "id": "id_cP_2",
+        "index": 4,
+        "width": {
+          "id": "id_cPw_2",
+          "value": 30,
+          "unit": "Percent",
+          "path": "/content/elementDefinitions/tableLayout/columnProperties/width/value/",
+          "source": "INPUT"
+        },
+        "verticalAlignment": "Top"
+      }
+    ],
+    "cells": [
+      {
+        "id": "id_cell_1",
+        "refId": "text1",
+        "row": 0,
+        "column": 0
+      },
+      {
+        "id": "id_cell_2",
+        "refId": "text2",
+        "row": 0,
+        "column": 1
+      },
+      {
+        "id": "id_cell_3",
+        "refId": "text3",
+        "row": 1,
+        "column": 0
+      }
+    ]
+  }
+}

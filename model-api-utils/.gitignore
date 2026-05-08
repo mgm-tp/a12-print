@@ -1,0 +1,5 @@
+/coverage
+
+# Not Ignore test wal
+!src/test/resources/transaction-log/Print-model-with-pending-changes.wal
+!src/test/resources/transaction-log/persister.wal

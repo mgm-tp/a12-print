@@ -1,0 +1,73 @@
+{
+  "header": {
+    "id": "custom_prevent_break_line_rule",
+    "modelType": "typesetting",
+    "modelVersion": "3.2.0",
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin"
+      }
+    ]
+  },
+  "content": {
+    "customHyphenationExclusions": [],
+    "preventLineBreakRules": [
+      {
+        "pattern": "university"
+      },
+      {
+        "pattern": "self-hosting"
+      },
+      {
+        "pattern": "éléphant"
+      },
+      {
+        "pattern": "Überraschung"
+      },
+      {
+        "pattern": "Mädchen"
+      },
+      {
+        "pattern": "hôtel"
+      },
+      {
+        "pattern": "t-shirt"
+      },
+      {
+        "pattern": "[+-]?(\\d{1,3}(?:[.,]\\d{3})+|\\d+)(?:[.,]\\d+)? kW"
+      },
+      {
+        "pattern": "[+-]?(\\d{1,3}(?:[.,]\\d{3})+|\\d+)(?:[.,]\\d+)? m³"
+      },
+      {
+        "pattern": "[+-]?(\\d{1,3}(?:[.,]\\d{3})+|\\d+)(?:[.,]\\d+)? \\$"
+      },
+      {
+        "pattern": "[+-]?(\\d{1,3}(?:[.,]\\d{3})+|\\d+)(?:[.,]\\d+)? °C"
+      },
+      {
+        "pattern": "[+-]?(\\d{1,3}(?:[.,]\\d{3})+|\\d+)(?:[.,]\\d+)? ₩"
+      },
+      {
+        "pattern": "[+-]?(\\d{1,3}(?:[.,]\\d{3})+|\\d+)(?:[.,]\\d+)? %"
+      },
+      {
+        "pattern": "[+-]?(\\d{1,3}(?:[.,]\\d{3})+|\\d+)(?:[.,]\\d+)? €"
+      },
+      {
+        "pattern": "[+-]?(\\d{1,3}(?:[.,]\\d{3})+|\\d+)(?:[.,]\\d+)? Ω"
+      },
+      {
+        "pattern": "forêt"
+      },
+      {
+        "pattern": "§\\d+ Abs\\. \\d+"
+      },
+      {
+        "pattern": "\\d+\\(\\d+\\)\\([a-zA-Z]\\)"
+      }
+    ],
+    "internal": {}
+  }
+}

@@ -1,0 +1,586 @@
+{
+  "header": {
+    "id": "ExamplePM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "description": "Description",
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "modeler"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "labels": [],
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "reference": "ExampleDM",
+        "purpose": "data binding"
+      }
+    ]
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "TZqa_psfcVBioEbc_4BSs",
+        "titleComputation": [
+          {
+            "id": "xf9JTZV_5zu5jo7zLcalO",
+            "operation": "\"NewPrintModel\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "ZzsvPlP35fy_Bvz00j1vn",
+            "operation": "\"Description\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "nrKVHt1sX5hkeHvgsHgNr",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "vLxulD8xQ2AAiqxaRmpfm",
+            "operation": "\"Print Model Editor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "MPFhmStZuJG7BfEQtp7O_",
+        "fontSize": 12
+      },
+      "structure": [
+        {
+          "id": "osCOSJ9I3-x5LW0IoIQzI"
+        },
+        {
+          "id": "-a6CKxpnqC_0meI0AyoAI"
+        }
+      ],
+      "sections": [
+        {
+          "id": "YHMxhDImJBiInnkQRUWa1"
+        },
+        {
+          "id": "Wg9VcxgYEhveRCfxdZD0X"
+        }
+      ],
+      "watermarks": [],
+      "runtimeVariables": [],
+      "textStyles": [
+        {
+          "id": "OdBHf_K1crif6Oaxv5e0L"
+        },
+        {
+          "id": "GZdIAluNv1tWSflPPPfDv"
+        }
+      ]
+    },
+    "segments": {
+      "id": "lplmX_YW82jgpauu4TNXg",
+      "definitions": [
+        {
+          "id": "osCOSJ9I3-x5LW0IoIQzI",
+          "title": "First Segment",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "qCmpjsOzEaXjLWWbZLJqJ",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "XTQ2GsZXh1d3wFnlcPK1m",
+              "refId": "UBxgWuQngifiR7WQ5yufG",
+              "position": {
+                "id": "lRhRtLoKrjGaz0_mO0h6u",
+                "x": {
+                  "id": "2ibRkhRS-08BGMLZp6lrR",
+                  "value": 16,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "hFRRTzI0UKsL2qc2dTW3T",
+                  "value": 24,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "9z4V0yDxNzlpEJXSTXYqE",
+                "minHeight": {
+                  "id": "q41hdrs4YWqrjlbjvcVxK",
+                  "value": 18,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "8ZiZ8xrH9Feci9-cz1y7n",
+                  "value": 77,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "9VXhDWyiCK_LQcSvnROZh"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "YeNzqWJLjqeidPOs95UBn",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        },
+        {
+          "id": "-a6CKxpnqC_0meI0AyoAI",
+          "title": "Repeatable Segment",
+          "type": "Repeatable",
+          "defaultSegment": {
+            "id": "pSLZMmmCzUaam56JoDRzG",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "DhgNtANkmwWbORETg1Rnv",
+              "refId": "DSPs5Op9Ewpsr-ROgmFhn",
+              "position": {
+                "id": "69uFGK-nVk0yUn_jAq_7q",
+                "x": {
+                  "id": "nJU9Wu2RQAz1-sT-IyOhJ",
+                  "value": 13,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "2T_h8VRbIYR1cefLMaMve",
+                  "value": 24,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "wfH_VDMj6sYF2BNzfkQrA",
+                "minHeight": {
+                  "id": "Qbe_epxRjjeO5chsOrYTC",
+                  "value": 20,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "UmGp4kSlLS6UNJSaDffw3",
+                  "value": 60,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "_LlLqEJfInI_iANsESBht"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "ebSfE9wd2f2BdqhirSADx",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": [
+            {
+              "id": "JOrO7PbmOLpc5Ar15A7tG",
+              "model": "ExampleDM",
+              "path": "/example/repeatable",
+              "isRepetition": true
+            }
+          ]
+        }
+      ],
+      "references": []
+    },
+    "sections": {
+      "id": "DgY3A1Z63wiua4JvcXW_6",
+      "definitions": [
+        {
+          "id": "YHMxhDImJBiInnkQRUWa1",
+          "pageOrientation": "Portrait",
+          "sectionUsage": "Remaining",
+          "title": "Remaining",
+          "footerHeight": {
+            "id": "p1ms3XCGBdoL3qBJKvxou",
+            "value": 20,
+            "unit": "Millimeter"
+          },
+          "headerHeight": {
+            "id": "RDKemFB7GHqOxZKW-xPoH",
+            "value": 20,
+            "unit": "Millimeter"
+          },
+          "elementReferences": [
+            {
+              "id": "dqEncQYP57Ee9HZvl76-u",
+              "refId": "GgSD44nHkVW7MnRl8mn_n",
+              "position": {
+                "id": "WMer_ZIU1UZD6puyAGut2",
+                "x": {
+                  "id": "xOaJ2381lO5TFgfrc4pA8",
+                  "value": 166,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "VVJC-s6cOZrYNQ0ejZZJZ",
+                  "value": 285,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "3tbmz-SiA8tlLXNrNxasx",
+                "minHeight": {
+                  "id": "fwYH9Ceeb7RzWv6KVaYCB",
+                  "value": 6,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "H1p7V63e6vrM8r7zILSCV",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "klkDkdZpyO4asxdY38qrR"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "1Ik8n8ji3l_kerSO6xlve",
+                "source": "DEFAULT",
+                "path": "/content/sections/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ]
+        },
+        {
+          "id": "Wg9VcxgYEhveRCfxdZD0X",
+          "pageOrientation": "Portrait",
+          "sectionUsage": "First",
+          "title": "First",
+          "footerHeight": {
+            "id": "vIBMd1meGl7ud2O9g9wT_",
+            "value": 20,
+            "unit": "Millimeter"
+          },
+          "headerHeight": {
+            "id": "2gXG1hiPE8XUZbJo8SizD",
+            "value": 20,
+            "unit": "Millimeter"
+          },
+          "elementReferences": [
+            {
+              "id": "wMg1KBIwGcuc3qhHepzQJ",
+              "refId": "PTyLG-GIYgUoybEMdgERZ",
+              "position": {
+                "id": "ZIZlkSERnRu51NsZzJ_2P",
+                "x": {
+                  "id": "gsp39mj92wCqEQihn8-9P",
+                  "value": 86,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "Sjmz_EGyeM7RJzH9EB5u-",
+                  "value": 7,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "W-h6GGPNERjRQGs_QN6Me",
+                "minHeight": {
+                  "id": "aTrXhLBbHIbhaRthC3KWW",
+                  "value": 6,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "MuoOBjDd7_Bj_cTuH7pwn",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "WU9IgIJgQ0hq2I4M82bhL"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "fCiGVjYfX0KjWu-UYSQj7",
+                "source": "DEFAULT",
+                "path": "/content/sections/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "elementDefinitions": [
+      {
+        "id": "UBxgWuQngifiR7WQ5yufG",
+        "type": "Text",
+        "text": {
+          "id": "TfnxJl0JY8AekMHZHzh8P",
+          "text": "<p><span style=\"\">String Value: </span><span entity-id=\"JNm6DV14MXI3dtTzR1nP-\" entity-type=\"Field\"><span style=\"\">ExampleDM/example/stringField</span></span><span style=\"\"><br>\n<br>\nNumberValue: </span><span entity-id=\"Re9xDjBfcFj4lTYyV1V0c\" entity-type=\"Calculation\"><span style=\"\">Calculation</span></span></p>\n<p><br></p>\n<p><span style=\"\">Date Value: </span><span entity-id=\"Dl4qZTBV5AeT_Sx4mJXv3\" entity-type=\"Field\"><span style=\"\">ExampleDM/example/dateField</span></span></p>\n<p><br></p>\n<p><span style=\"\">Date Label: </span><span entity-id=\"rFaoALr8YMFOQwas1IsmN\" entity-type=\"Calculation\"><span style=\"\">Label Calc</span></span></p>",
+          "entities": [
+            {
+              "id": "0qQ77P3kSg0YzkNc1oviY",
+              "refId": "JNm6DV14MXI3dtTzR1nP-"
+            },
+            {
+              "id": "g1Nl9HwiD7gulENg-Sso-",
+              "refId": "Re9xDjBfcFj4lTYyV1V0c"
+            },
+            {
+              "id": "CuFwH-r9XNmFFLlacdNdA",
+              "refId": "Dl4qZTBV5AeT_Sx4mJXv3"
+            },
+            {
+              "id": "eQoF1r8h2IvqJOlh1DsBz",
+              "refId": "rFaoALr8YMFOQwas1IsmN"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "6cWgTt0TfzZx-Mp0RpX34",
+          "textStyleId": {
+            "id": "pfHee7zKbQsDbFmB_XOGz",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "da8WBn_XOg-3w1ZL54TUQ",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "pU2xfihVzlSpmOtcY1EDo"
+        }
+      },
+      {
+        "id": "JNm6DV14MXI3dtTzR1nP-",
+        "type": "Field",
+        "field": {
+          "id": "ETX1mYvQEFApEkC6k9_mI",
+          "model": "ExampleDM",
+          "path": "/example/stringField"
+        }
+      },
+      {
+        "id": "Re9xDjBfcFj4lTYyV1V0c",
+        "type": "Calculation",
+        "calculation": {
+          "id": "6ikpEgXVxPqjQh006UepN",
+          "model": "ExampleDM",
+          "name": "Calculation",
+          "computationAlternatives": [
+            {
+              "id": "uteD_Ko4U0DxqdsxbFXXF",
+              "operation": "[ExampleDM/example/numberField]"
+            }
+          ]
+        }
+      },
+      {
+        "id": "Dl4qZTBV5AeT_Sx4mJXv3",
+        "type": "Field",
+        "field": {
+          "id": "49GgzCIMLe5GCv2cZFVqD",
+          "model": "ExampleDM",
+          "path": "/example/dateField",
+          "displayOptions": {
+            "id": "4SBXg5oqbFKfzyDWk-CvS",
+            "dateFormat": "dd.MM.yyyy hh:mm",
+            "displayType": "Date"
+          }
+        }
+      },
+      {
+        "id": "rFaoALr8YMFOQwas1IsmN",
+        "type": "Calculation",
+        "calculation": {
+          "id": "72lGpvYc6o7RtGJNlDCeH",
+          "model": "ExampleDM",
+          "name": "Label Calc",
+          "computationAlternatives": [
+            {
+              "id": "NI_Tw0Emqo7BBuF4ksDnl",
+              "operation": "[metadata/example/dateField/label]"
+            }
+          ]
+        }
+      },
+      {
+        "id": "DSPs5Op9Ewpsr-ROgmFhn",
+        "type": "Text",
+        "text": {
+          "id": "D7T2V33GI5UPL0duCPN5v",
+          "text": "<p><span style=\"\">String Value: </span><span entity-id=\"BX0hXp_gwyli3IRV1EfL9\" entity-type=\"Field\"><span style=\"\">ExampleDM/example/repeatable/stringField</span></span><span style=\"\"><br>\n<br>\nNumber Value: </span><span entity-id=\"UsT4dhJtfd06vJw4n_dPG\" entity-type=\"Calculation\"><span style=\"\">Calculation</span></span></p>",
+          "entities": [
+            {
+              "id": "X33Ocv8-3glodcvVh-_vn",
+              "refId": "BX0hXp_gwyli3IRV1EfL9"
+            },
+            {
+              "id": "RwQb2lZtQm5skRUu20MdC",
+              "refId": "UsT4dhJtfd06vJw4n_dPG"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "vtNZ6TOsD5JGXHDh8gUpA",
+          "textStyleId": {
+            "id": "CxevNMM0M9vlBa64aRpCQ",
+            "value": "GZdIAluNv1tWSflPPPfDv",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "XlzoWOZHDROB8WLbeVmv7",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "fEjQTz7XxtZcSw1YV79AV"
+        }
+      },
+      {
+        "id": "BX0hXp_gwyli3IRV1EfL9",
+        "type": "Field",
+        "field": {
+          "id": "6TNtg_yXKlrVJo5X6ShrQ",
+          "model": "ExampleDM",
+          "path": "/example/repeatable/stringField"
+        }
+      },
+      {
+        "id": "UsT4dhJtfd06vJw4n_dPG",
+        "type": "Calculation",
+        "calculation": {
+          "id": "yXNd5HxJ-GqUWcGMG2oAB",
+          "model": "ExampleDM",
+          "name": "Calculation",
+          "computationAlternatives": [
+            {
+              "id": "JLPZiIk4mzKH8F3DitFVr",
+              "operation": "[ExampleDM/example/repeatable/numberField]"
+            }
+          ]
+        }
+      },
+      {
+        "id": "GgSD44nHkVW7MnRl8mn_n",
+        "type": "Text",
+        "text": {
+          "id": "irKtD3v2LE6Z4C8j8571b",
+          "text": "<p><span entity-id=\"JjjQgpJgLixNKYBPK1GVr\" entity-type=\"PageNumber\"><span style=\"\">PageNumber</span></span><span style=\"\">/</span><span entity-id=\"QkT2I7F4hI0gT66cct8yK\" entity-type=\"PageNumberTotal\"><span style=\"\">PageNumberTotal</span></span></p>",
+          "entities": [
+            {
+              "id": "jqaSGnysb2Cz-Vtubyc-7",
+              "refId": "JjjQgpJgLixNKYBPK1GVr"
+            },
+            {
+              "id": "BL8Lm7wTXymvpDkrF8PEa",
+              "refId": "QkT2I7F4hI0gT66cct8yK"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "u2Zzrr7rdKfJiNlxYOaQz",
+          "textStyleId": {
+            "id": "cx6Mtyal4n5YBrtv0WMaZ",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "FXqYIMWcapy3MnSbimVi6",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "g49rv4q2cikIBtAG7VMGu"
+        }
+      },
+      {
+        "id": "JjjQgpJgLixNKYBPK1GVr",
+        "type": "PageNumber"
+      },
+      {
+        "id": "QkT2I7F4hI0gT66cct8yK",
+        "type": "PageNumberTotal"
+      },
+      {
+        "id": "PTyLG-GIYgUoybEMdgERZ",
+        "type": "Text",
+        "text": {
+          "id": "OYLYSO9cd6z_-CeVe3T_2",
+          "text": "<p><span style=\"\">Example Title</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "vtNZ6TOsD5JGXHDh8gUpB",
+          "textStyleId": {
+            "id": "FfQGEdYDTeUrY2OSIX7FM",
+            "value": "OdBHf_K1crif6Oaxv5e0L",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "INPUT"
+          },
+          "alignment": {
+            "id": "SJMT7tDOhsUJF8jbfmeh0",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "63iMnx9Vgq6dVCAM95cYn"
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "df4bY162i4LJo9QfJv63s",
+      "definitions": [
+        {
+          "id": "OdBHf_K1crif6Oaxv5e0L",
+          "name": "Poppins",
+          "font": "Poppins",
+          "fontSize": 16,
+          "lineHeight": 18,
+          "semantic": "P"
+        },
+        {
+          "id": "GZdIAluNv1tWSflPPPfDv",
+          "name": "Roboto",
+          "font": "Roboto",
+          "fontSize": 16,
+          "lineHeight": 20,
+          "semantic": "P"
+        }
+      ]
+    }
+  }
+}

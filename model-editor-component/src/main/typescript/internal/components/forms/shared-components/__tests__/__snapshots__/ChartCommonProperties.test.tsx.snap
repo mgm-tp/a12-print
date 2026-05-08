@@ -1,0 +1,2026 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChartCommonProperties should renders correctly 1`] = `
+.c14 {
+  box-sizing: border-box;
+  color: #7F8C9B;
+  display: inline-block;
+  direction: ltr;
+  font-family: Material Icons;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+}
+
+.c14 >span {
+  display: inline-block;
+}
+
+.c14.c14 {
+  max-width: unset;
+}
+
+.c1 {
+  color: #4d4d4d;
+  display: inline-block;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-transform: none;
+  margin: 0 0 4px 0;
+  align-self: center;
+}
+
+.c1:empty {
+  display: none;
+}
+
+.c30 {
+  align-items: center;
+  background-color: #e2e6e9;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  color: inherit;
+  display: flex;
+  flex-shrink: 0;
+  flex-grow: 1;
+  font-size: 0.75rem;
+  height: 100%;
+  justify-content: center;
+  min-width: 32px;
+  padding: 0 4px;
+}
+
+.c8 {
+  align-items: center;
+  background-color: transparent;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  min-width: 32px;
+  margin-right: -12px;
+  position: relative;
+}
+
+.c8:first-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.c8 .c29 {
+  margin: 0 12px 0 0;
+}
+
+.c28 {
+  align-items: center;
+  background-color: transparent;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  min-width: 32px;
+  margin-left: -12px;
+}
+
+.c28:last-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.c28 .c29 {
+  margin: 0 0 0 12px;
+}
+
+.c26 {
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.45;
+  outline: none;
+  padding: 0 12px;
+  text-align: inherit;
+  text-overflow: ellipsis;
+  text-transform: inherit;
+  min-width: 0;
+  width: 100%;
+}
+
+.c26::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c27 {
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.45;
+  outline: none;
+  padding: 0 12px;
+  text-align: right;
+  text-overflow: ellipsis;
+  text-transform: inherit;
+  min-width: 0;
+  width: 100%;
+}
+
+.c27::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c7 {
+  background-color: #f1f2f4;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 1px 0 0 #596673;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  outline: 1px solid transparent;
+  height: 32px;
+}
+
+.c2 {
+  display: inline-flex;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex-direction: column;
+  display: flex;
+  width: 100%;
+}
+
+.c2 .c3 {
+  display: flex;
+  width: 100%;
+}
+
+.c2 * {
+  max-width: 100%;
+}
+
+.c6 {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.c6 >.StyledTooltipWrapper-sc-bqyqat {
+  margin: 0 4px 4px 0;
+}
+
+.c6 .c0 {
+  display: block;
+  width: fit-content;
+}
+
+.c4 {
+  display: inline-flex;
+}
+
+.c4 .c5 {
+  flex-basis: 160px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.c25 {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 0;
+}
+
+.c15 {
+  display: flex;
+  gap: 2px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.c15 .c18 {
+  outline: none;
+  z-index: 0;
+}
+
+.c16 {
+  display: flex;
+}
+
+.c16:first-of-type {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.c16:first-of-type .c22 {
+  padding-left: 8px;
+}
+
+.c16:last-child {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.c16:last-child .c22 {
+  padding-right: 8px;
+}
+
+.c23 {
+  align-items: center;
+  border-radius: inherit;
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  min-height: 30px;
+  padding: 0 8px;
+  position: relative;
+}
+
+.c12 {
+  align-items: center;
+  background: #f1f2f4;
+  border: 2px solid transparent;
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  justify-content: center;
+  min-height: 32px;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+.c12 .c13 {
+  color: #0568ae;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c12:focus {
+  border-color: #d50075;
+  cursor: pointer;
+  outline: 1px dotted #333;
+}
+
+.c19 {
+  position: relative;
+  background-color: #f1f2f4;
+  border: 1px solid #16191d;
+  border-right: none;
+  color: #0568ae;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  min-height: 32px;
+  line-height: 1.45;
+  border: 1px solid transparent;
+  border-radius: inherit;
+}
+
+.c19:before {
+  inset: -1px;
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+}
+
+.c19 .c13 {
+  text-decoration: none;
+  color: inherit;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c19[disabled] {
+  border: none;
+  cursor: default;
+}
+
+.c19:not(:disabled):focus {
+  outline: none;
+  text-decoration: underline;
+}
+
+.c20 {
+  outline: 2px solid transparent;
+  z-index: 1;
+  background-color: #0568ae;
+  color: #fff;
+  box-shadow: none;
+  border-right: 1px solid #16191d;
+  border-color: #0568ae;
+}
+
+.c20+.c17 {
+  border-left: 0;
+}
+
+.c20:not(:disabled):focus {
+  background-color: #d50075;
+  color: #fff;
+  box-shadow: none;
+  border-right: 1px solid #16191d;
+  border-color: #d50075;
+}
+
+.c20:not(:disabled):focus:before {
+  outline: 1px dotted #333;
+}
+
+.c20:not(:disabled):focus+.c17 {
+  border-left: 0;
+}
+
+.c20:last-child {
+  border-color: #0568ae;
+}
+
+.c24:not(:disabled):focus {
+  color: #d50075;
+}
+
+.c24:not(:disabled):focus:before {
+  outline: 1px dotted #333;
+}
+
+.c24:not(:disabled):focus:before {
+  border: 2px solid #d50075;
+  z-index: 1;
+}
+
+.c9 {
+  display: inline-block;
+}
+
+.c11 {
+  box-sizing: border-box;
+  display: flex;
+  isolation: isolate;
+  position: relative;
+  outline: none;
+  width: fit-content;
+}
+
+.c11.c11 .c18 {
+  background: transparent;
+  border-color: transparent;
+}
+
+.c11.c11 .c18:before {
+  border-color: transparent;
+}
+
+.c10 {
+  width: 100%;
+  display: block;
+  margin-right: 5px;
+}
+
+.c21 {
+  flex-grow: 1;
+}
+
+.c21 >span {
+  margin: 0 auto;
+}
+
+@media (pointer: coarse) {
+  .c7:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c7:hover {
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c19:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    text-decoration: underline;
+  }
+}
+
+@media (pointer: fine) {
+  .c19:not(:disabled):hover {
+    text-decoration: underline;
+  }
+}
+
+@media (pointer: coarse) {
+  .c20:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #d50075;
+    color: #fff;
+    box-shadow: none;
+    border-right: 1px solid #16191d;
+    border-color: #d50075;
+  }
+
+  .c20:not(:disabled):active+.c17 {
+    border-left: 0;
+  }
+}
+
+@media (pointer: fine) {
+  .c20:not(:disabled):hover {
+    background-color: #d50075;
+    color: #fff;
+    box-shadow: none;
+    border-right: 1px solid #16191d;
+    border-color: #d50075;
+  }
+
+  .c20:not(:disabled):hover+.c17 {
+    border-left: 0;
+  }
+}
+
+@media (pointer: coarse) {
+  .c24:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    color: #d50075;
+  }
+
+  .c24:not(:disabled):active:before {
+    border: 2px solid #d50075;
+    z-index: 1;
+  }
+}
+
+@media (pointer: fine) {
+  .c24:not(:disabled):hover {
+    color: #d50075;
+  }
+
+  .c24:not(:disabled):hover:before {
+    border: 2px solid #d50075;
+    z-index: 1;
+  }
+}
+
+<div>
+  <div>
+    <div>
+      <label
+        class="c0 c1 label field__label"
+        data-role="textline-label"
+      >
+        Title
+      </label>
+      <div
+        class="c2 field-wrapper field-wrapper--block"
+        data-role="textline"
+      >
+        <div
+          class="c3 c4 field__main"
+        >
+          <div
+            class="c5 c6 field"
+            data-role="textline-control"
+          >
+            <div
+              class="c7 field__input"
+              data-readonly="false"
+              data-role="textline-input-wrapper"
+            >
+              <div
+                class="c8 field__prefix field__prefix--last"
+                data-role="textline-prefix-0"
+              >
+                <div
+                  class="c9 field toggle c10"
+                  data-role="toggle"
+                >
+                  <div
+                    class="c11 toggle__wrapper"
+                    data-role="toggle-wrapper"
+                    tabindex="-1"
+                  >
+                    <span
+                      aria-expanded="false"
+                      aria-label="Enter User Input , expand to see options"
+                      class="c12"
+                      data-role="toggle-selected-item-overlay"
+                      role="button"
+                      tabindex="0"
+                      title="Enter User Input , expand to see options"
+                    >
+                      <i
+                        class="c13 c14 plasma-icon"
+                        data-role="plasma-icon"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          edit
+                        </span>
+                      </i>
+                    </span>
+                    <ul
+                      aria-hidden="true"
+                      class="c15"
+                      data-role="toggle-option-buttons"
+                    >
+                      <li
+                        class="c16"
+                        data-role="toggle-option-button"
+                      >
+                        <button
+                          aria-pressed="true"
+                          class="c17 c18 c19 c20 toggle__item toggle__item--selected c21"
+                          data-role="toggle-item"
+                          id="INPUT"
+                          tabindex="-1"
+                          title="Enter User Input"
+                          type="button"
+                          value="INPUT"
+                        >
+                          <span
+                            class="c22 c23 toggle__content"
+                            data-role="toggle-item-content"
+                          >
+                            <i
+                              class="c13 c14 plasma-icon"
+                              data-role="plasma-icon"
+                              style="margin: 0px;"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                edit
+                              </span>
+                            </i>
+                          </span>
+                        </button>
+                      </li>
+                      <li
+                        class="c16"
+                        data-role="toggle-option-button"
+                      >
+                        <button
+                          aria-pressed="false"
+                          class="c17 c18 c19 c24 toggle__item c21"
+                          data-role="toggle-item"
+                          id="UNSET"
+                          tabindex="-1"
+                          title="Unset Value"
+                          type="button"
+                          value="UNSET"
+                        >
+                          <span
+                            class="c22 c23 toggle__content"
+                            data-role="toggle-item-content"
+                          >
+                            <i
+                              class="c13 c14 plasma-icon"
+                              data-role="plasma-icon"
+                              style="margin: 0px;"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                clear
+                              </span>
+                            </i>
+                          </span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="c25 supported-unseen-span"
+              />
+              <input
+                class="c26 field__text"
+                data-role="textline-input"
+                placeholder=""
+                type="text"
+                value="diagram-title"
+              />
+              <span
+                class="c25 supported-unseen-span"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="c2 field-wrapper field-wrapper--block"
+      data-role="textline"
+    >
+      <div
+        class="c3 c4 field__main"
+      >
+        <div
+          class="c5 c6 field"
+          data-role="textline-control"
+        >
+          <label
+            class="c0 c1 label field__label"
+            data-role="textline-label"
+          >
+            Height
+          </label>
+          <div
+            class="c7 field__input"
+            data-role="textline-input-wrapper"
+          >
+            <span
+              class="c25 supported-unseen-span"
+            />
+            <input
+              class="c27 field__text field__text--align-right"
+              data-role="textline-input"
+              min="0"
+              step="0.1"
+              type="number"
+              value=""
+            />
+            <span
+              class="c25 supported-unseen-span"
+            />
+            <div
+              class="c28 field__suffix field__suffix--first -u-background-transparent"
+              data-role="textline-suffix-0"
+            >
+              <div
+                class="c29 c30 field__affix-text"
+                data-role="textline-text-affix"
+                title="cm"
+              >
+                <span>
+                  cm
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="c2 field-wrapper field-wrapper--block"
+      data-role="textline"
+    >
+      <div
+        class="c3 c4 field__main"
+      >
+        <div
+          class="c5 c6 field"
+          data-role="textline-control"
+        >
+          <label
+            class="c0 c1 label field__label"
+            data-role="textline-label"
+          >
+            Width
+          </label>
+          <div
+            class="c7 field__input"
+            data-role="textline-input-wrapper"
+          >
+            <span
+              class="c25 supported-unseen-span"
+            />
+            <input
+              class="c27 field__text field__text--align-right"
+              data-role="textline-input"
+              min="0"
+              step="0.1"
+              type="number"
+              value=""
+            />
+            <span
+              class="c25 supported-unseen-span"
+            />
+            <div
+              class="c28 field__suffix field__suffix--first -u-background-transparent"
+              data-role="textline-suffix-0"
+            >
+              <div
+                class="c29 c30 field__affix-text"
+                data-role="textline-text-affix"
+                title="cm"
+              >
+                <span>
+                  cm
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
+.c15 {
+  box-sizing: border-box;
+  color: #7F8C9B;
+  display: inline-block;
+  direction: ltr;
+  font-family: Material Icons;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+}
+
+.c15 >span {
+  display: inline-block;
+}
+
+.c15.c15 {
+  max-width: unset;
+}
+
+.c1 {
+  color: #4d4d4d;
+  display: inline-block;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-transform: none;
+  margin: 0 0 4px 0;
+  align-self: center;
+}
+
+.c1:empty {
+  display: none;
+}
+
+.c31 {
+  align-items: center;
+  background-color: #e2e6e9;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  color: inherit;
+  display: flex;
+  flex-shrink: 0;
+  flex-grow: 1;
+  font-size: 0.75rem;
+  height: 100%;
+  justify-content: center;
+  min-width: 32px;
+  padding: 0 4px;
+}
+
+.c9 {
+  align-items: center;
+  background-color: transparent;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  min-width: 32px;
+  margin-right: -12px;
+  position: relative;
+}
+
+.c9:first-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.c9 .c30 {
+  margin: 0 12px 0 0;
+}
+
+.c29 {
+  align-items: center;
+  background-color: transparent;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  min-width: 32px;
+  margin-left: -12px;
+}
+
+.c29:last-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.c29 .c30 {
+  margin: 0 0 0 12px;
+}
+
+.c27 {
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.45;
+  outline: none;
+  padding: 0 12px;
+  text-align: inherit;
+  text-overflow: ellipsis;
+  text-transform: inherit;
+  min-width: 0;
+  width: 100%;
+}
+
+.c27::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c28 {
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.45;
+  outline: none;
+  padding: 0 12px;
+  text-align: right;
+  text-overflow: ellipsis;
+  text-transform: inherit;
+  min-width: 0;
+  width: 100%;
+}
+
+.c28::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c7 {
+  background-color: #f1f2f4;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 1px 0 0 #596673;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  outline: 1px solid transparent;
+  height: 32px;
+}
+
+.c2 {
+  display: inline-flex;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex-direction: column;
+  display: flex;
+  width: 100%;
+}
+
+.c2 .c3 {
+  display: flex;
+  width: 100%;
+}
+
+.c2 * {
+  max-width: 100%;
+}
+
+.c6 {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.c6 >.StyledTooltipWrapper-sc-bqyqat {
+  margin: 0 4px 4px 0;
+}
+
+.c6 .c0 {
+  display: block;
+  width: fit-content;
+}
+
+.c32 {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.c32[data-role="checkbox-group"] .c0,
+.c32[data-role="radio-group"] .c0,
+.c32[data-role="file-upload"] .c0 {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.c32[data-role="checkbox-group"] .c0 ~.StyledTooltipWrapper-sc-bqyqat,
+.c32[data-role="radio-group"] .c0 ~.StyledTooltipWrapper-sc-bqyqat,
+.c32[data-role="file-upload"] .c0 ~.StyledTooltipWrapper-sc-bqyqat {
+  margin: 0 0 4px 0;
+}
+
+.c4 {
+  display: inline-flex;
+}
+
+.c4 .c5 {
+  flex-basis: 160px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.c26 {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 0;
+}
+
+.c35 {
+  appearance: none;
+  background-color: inherit;
+  -moz-appearance: none;
+  border: none;
+  border-radius: 0;
+  caret-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  height: 100%;
+  padding: 0 12px;
+  padding-right: 32px;
+  text-align: inherit;
+  text-transform: inherit;
+  width: 100%;
+  cursor: pointer;
+}
+
+.c35.c35.c35 {
+  outline: 1px solid transparent;
+}
+
+.c35::selection {
+  background-color: transparent;
+}
+
+.c35::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c33 {
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  height: 32px;
+}
+
+.c33:focus {
+  outline: none;
+}
+
+.c34 {
+  background-color: #f1f2f4;
+  border-radius: inherit;
+  box-shadow: 0 1px 0 0 #596673;
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+}
+
+.c34:focus-within {
+  box-shadow: 0 2px 0 0 #d50075;
+  outline-offset: 0;
+  outline: 1px dotted #333;
+}
+
+.c34 .c8>.c14 {
+  color: inherit;
+  cursor: default;
+}
+
+.c37:after {
+  align-items: center;
+  color: #7F8C9B;
+  content: "\\e313";
+  display: flex;
+  font-family: "Material Icons";
+  font-size: 1.5rem;
+  font-style: normal;
+  justify-content: center;
+  height: 100%;
+  line-height: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  text-transform: none;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  word-wrap: normal;
+}
+
+.c36 {
+  appearance: none;
+  font-style: normal;
+  color: #4d4d4d;
+  font-size: inherit;
+}
+
+.c36:focus {
+  border: none;
+}
+
+.c16 {
+  display: flex;
+  gap: 2px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.c16 .c19 {
+  outline: none;
+  z-index: 0;
+}
+
+.c17 {
+  display: flex;
+}
+
+.c17:first-of-type {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.c17:first-of-type .c23 {
+  padding-left: 8px;
+}
+
+.c17:last-child {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.c17:last-child .c23 {
+  padding-right: 8px;
+}
+
+.c24 {
+  align-items: center;
+  border-radius: inherit;
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  min-height: 30px;
+  padding: 0 8px;
+  position: relative;
+}
+
+.c13 {
+  align-items: center;
+  background: #f1f2f4;
+  border: 2px solid transparent;
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  justify-content: center;
+  min-height: 32px;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+.c13 .c14 {
+  color: #0568ae;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c13:focus {
+  border-color: #d50075;
+  cursor: pointer;
+  outline: 1px dotted #333;
+}
+
+.c20 {
+  position: relative;
+  background-color: #f1f2f4;
+  border: 1px solid #16191d;
+  border-right: none;
+  color: #0568ae;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  min-height: 32px;
+  line-height: 1.45;
+  border: 1px solid transparent;
+  border-radius: inherit;
+}
+
+.c20:before {
+  inset: -1px;
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+}
+
+.c20 .c14 {
+  text-decoration: none;
+  color: inherit;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c20[disabled] {
+  border: none;
+  cursor: default;
+}
+
+.c20:not(:disabled):focus {
+  outline: none;
+  text-decoration: underline;
+}
+
+.c21 {
+  outline: 2px solid transparent;
+  z-index: 1;
+  background-color: #0568ae;
+  color: #fff;
+  box-shadow: none;
+  border-right: 1px solid #16191d;
+  border-color: #0568ae;
+}
+
+.c21+.c18 {
+  border-left: 0;
+}
+
+.c21:not(:disabled):focus {
+  background-color: #d50075;
+  color: #fff;
+  box-shadow: none;
+  border-right: 1px solid #16191d;
+  border-color: #d50075;
+}
+
+.c21:not(:disabled):focus:before {
+  outline: 1px dotted #333;
+}
+
+.c21:not(:disabled):focus+.c18 {
+  border-left: 0;
+}
+
+.c21:last-child {
+  border-color: #0568ae;
+}
+
+.c25:not(:disabled):focus {
+  color: #d50075;
+}
+
+.c25:not(:disabled):focus:before {
+  outline: 1px dotted #333;
+}
+
+.c25:not(:disabled):focus:before {
+  border: 2px solid #d50075;
+  z-index: 1;
+}
+
+.c10 {
+  display: inline-block;
+}
+
+.c12 {
+  box-sizing: border-box;
+  display: flex;
+  isolation: isolate;
+  position: relative;
+  outline: none;
+  width: fit-content;
+}
+
+.c12.c12 .c19 {
+  background: transparent;
+  border-color: transparent;
+}
+
+.c12.c12 .c19:before {
+  border-color: transparent;
+}
+
+.c11 {
+  width: 100%;
+  display: block;
+  margin-right: 5px;
+}
+
+.c22 {
+  flex-grow: 1;
+}
+
+.c22 >span {
+  margin: 0 auto;
+}
+
+@media (pointer: coarse) {
+  .c7:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c7:hover {
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c34:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c34:hover {
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c36:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #d50075;
+    color: #fff;
+  }
+}
+
+@media (pointer: fine) {
+  .c36:hover {
+    background-color: #d50075;
+    color: #fff;
+  }
+}
+
+@media (pointer: coarse) {
+  .c20:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    text-decoration: underline;
+  }
+}
+
+@media (pointer: fine) {
+  .c20:not(:disabled):hover {
+    text-decoration: underline;
+  }
+}
+
+@media (pointer: coarse) {
+  .c21:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #d50075;
+    color: #fff;
+    box-shadow: none;
+    border-right: 1px solid #16191d;
+    border-color: #d50075;
+  }
+
+  .c21:not(:disabled):active+.c18 {
+    border-left: 0;
+  }
+}
+
+@media (pointer: fine) {
+  .c21:not(:disabled):hover {
+    background-color: #d50075;
+    color: #fff;
+    box-shadow: none;
+    border-right: 1px solid #16191d;
+    border-color: #d50075;
+  }
+
+  .c21:not(:disabled):hover+.c18 {
+    border-left: 0;
+  }
+}
+
+@media (pointer: coarse) {
+  .c25:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    color: #d50075;
+  }
+
+  .c25:not(:disabled):active:before {
+    border: 2px solid #d50075;
+    z-index: 1;
+  }
+}
+
+@media (pointer: fine) {
+  .c25:not(:disabled):hover {
+    color: #d50075;
+  }
+
+  .c25:not(:disabled):hover:before {
+    border: 2px solid #d50075;
+    z-index: 1;
+  }
+}
+
+<div>
+  <div>
+    <div>
+      <label
+        class="c0 c1 label field__label"
+        data-role="textline-label"
+      >
+        Title
+      </label>
+      <div
+        class="c2 field-wrapper field-wrapper--block"
+        data-role="textline"
+      >
+        <div
+          class="c3 c4 field__main"
+        >
+          <div
+            class="c5 c6 field"
+            data-role="textline-control"
+          >
+            <div
+              class="c7 field__input"
+              data-isfocused="false"
+              data-readonly="false"
+              data-role="textline-input-wrapper"
+            >
+              <div
+                class="c8 c9 field__prefix field__prefix--last"
+                data-role="textline-prefix-0"
+              >
+                <div
+                  class="c10 field toggle c11"
+                  data-role="toggle"
+                >
+                  <div
+                    class="c12 toggle__wrapper"
+                    data-role="toggle-wrapper"
+                    tabindex="-1"
+                  >
+                    <span
+                      aria-expanded="false"
+                      aria-label="Enter User Input , expand to see options"
+                      class="c13"
+                      data-role="toggle-selected-item-overlay"
+                      role="button"
+                      tabindex="0"
+                      title="Enter User Input , expand to see options"
+                    >
+                      <i
+                        class="c14 c15 plasma-icon"
+                        data-role="plasma-icon"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          edit
+                        </span>
+                      </i>
+                    </span>
+                    <ul
+                      aria-hidden="true"
+                      class="c16"
+                      data-role="toggle-option-buttons"
+                    >
+                      <li
+                        class="c17"
+                        data-role="toggle-option-button"
+                      >
+                        <button
+                          aria-pressed="true"
+                          class="c18 c19 c20 c21 toggle__item toggle__item--selected c22"
+                          data-role="toggle-item"
+                          id="INPUT"
+                          tabindex="-1"
+                          title="Enter User Input"
+                          type="button"
+                          value="INPUT"
+                        >
+                          <span
+                            class="c23 c24 toggle__content"
+                            data-role="toggle-item-content"
+                          >
+                            <i
+                              class="c14 c15 plasma-icon"
+                              data-role="plasma-icon"
+                              style="margin: 0px;"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                edit
+                              </span>
+                            </i>
+                          </span>
+                        </button>
+                      </li>
+                      <li
+                        class="c17"
+                        data-role="toggle-option-button"
+                      >
+                        <button
+                          aria-pressed="false"
+                          class="c18 c19 c20 c25 toggle__item c22"
+                          data-role="toggle-item"
+                          id="UNSET"
+                          tabindex="-1"
+                          title="Unset Value"
+                          type="button"
+                          value="UNSET"
+                        >
+                          <span
+                            class="c23 c24 toggle__content"
+                            data-role="toggle-item-content"
+                          >
+                            <i
+                              class="c14 c15 plasma-icon"
+                              data-role="plasma-icon"
+                              style="margin: 0px;"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                clear
+                              </span>
+                            </i>
+                          </span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="c26 supported-unseen-span"
+              />
+              <input
+                class="c27 field__text"
+                data-role="textline-input"
+                placeholder=""
+                type="text"
+                value="diagram-title"
+              />
+              <span
+                class="c26 supported-unseen-span"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="c2 field-wrapper field-wrapper--block"
+      data-role="textline"
+    >
+      <div
+        class="c3 c4 field__main"
+      >
+        <div
+          class="c5 c6 field"
+          data-role="textline-control"
+        >
+          <label
+            class="c0 c1 label field__label"
+            data-role="textline-label"
+          >
+            Height
+          </label>
+          <div
+            class="c7 field__input"
+            data-role="textline-input-wrapper"
+          >
+            <span
+              class="c26 supported-unseen-span"
+            />
+            <input
+              class="c28 field__text field__text--align-right"
+              data-role="textline-input"
+              min="0"
+              step="0.1"
+              type="number"
+              value=""
+            />
+            <span
+              class="c26 supported-unseen-span"
+            />
+            <div
+              class="c29 field__suffix field__suffix--first -u-background-transparent"
+              data-role="textline-suffix-0"
+            >
+              <div
+                class="c30 c31 field__affix-text"
+                data-role="textline-text-affix"
+                title="cm"
+              >
+                <span>
+                  cm
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="c2 field-wrapper field-wrapper--block"
+      data-role="textline"
+    >
+      <div
+        class="c3 c4 field__main"
+      >
+        <div
+          class="c5 c6 field"
+          data-role="textline-control"
+        >
+          <label
+            class="c0 c1 label field__label"
+            data-role="textline-label"
+          >
+            Width
+          </label>
+          <div
+            class="c7 field__input"
+            data-role="textline-input-wrapper"
+          >
+            <span
+              class="c26 supported-unseen-span"
+            />
+            <input
+              class="c28 field__text field__text--align-right"
+              data-role="textline-input"
+              min="0"
+              step="0.1"
+              type="number"
+              value=""
+            />
+            <span
+              class="c26 supported-unseen-span"
+            />
+            <div
+              class="c29 field__suffix field__suffix--first -u-background-transparent"
+              data-role="textline-suffix-0"
+            >
+              <div
+                class="c30 c31 field__affix-text"
+                data-role="textline-text-affix"
+                title="cm"
+              >
+                <span>
+                  cm
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <label
+        class="c0 c1 label field__label"
+        data-role="textline-label"
+      >
+        Label X-Axis
+      </label>
+      <div
+        class="c2 field-wrapper field-wrapper--block"
+        data-role="textline"
+      >
+        <div
+          class="c3 c4 field__main"
+        >
+          <div
+            class="c5 c6 field"
+            data-role="textline-control"
+          >
+            <div
+              class="c7 field__input"
+              data-isfocused="false"
+              data-readonly="false"
+              data-role="textline-input-wrapper"
+            >
+              <div
+                class="c8 c9 field__prefix field__prefix--last"
+                data-role="textline-prefix-0"
+              >
+                <div
+                  class="c10 field toggle c11"
+                  data-role="toggle"
+                >
+                  <div
+                    class="c12 toggle__wrapper"
+                    data-role="toggle-wrapper"
+                    tabindex="-1"
+                  >
+                    <span
+                      aria-expanded="false"
+                      aria-label="Enter User Input , expand to see options"
+                      class="c13"
+                      data-role="toggle-selected-item-overlay"
+                      role="button"
+                      tabindex="0"
+                      title="Enter User Input , expand to see options"
+                    >
+                      <i
+                        class="c14 c15 plasma-icon"
+                        data-role="plasma-icon"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          edit
+                        </span>
+                      </i>
+                    </span>
+                    <ul
+                      aria-hidden="true"
+                      class="c16"
+                      data-role="toggle-option-buttons"
+                    >
+                      <li
+                        class="c17"
+                        data-role="toggle-option-button"
+                      >
+                        <button
+                          aria-pressed="true"
+                          class="c18 c19 c20 c21 toggle__item toggle__item--selected c22"
+                          data-role="toggle-item"
+                          id="INPUT"
+                          tabindex="-1"
+                          title="Enter User Input"
+                          type="button"
+                          value="INPUT"
+                        >
+                          <span
+                            class="c23 c24 toggle__content"
+                            data-role="toggle-item-content"
+                          >
+                            <i
+                              class="c14 c15 plasma-icon"
+                              data-role="plasma-icon"
+                              style="margin: 0px;"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                edit
+                              </span>
+                            </i>
+                          </span>
+                        </button>
+                      </li>
+                      <li
+                        class="c17"
+                        data-role="toggle-option-button"
+                      >
+                        <button
+                          aria-pressed="false"
+                          class="c18 c19 c20 c25 toggle__item c22"
+                          data-role="toggle-item"
+                          id="UNSET"
+                          tabindex="-1"
+                          title="Unset Value"
+                          type="button"
+                          value="UNSET"
+                        >
+                          <span
+                            class="c23 c24 toggle__content"
+                            data-role="toggle-item-content"
+                          >
+                            <i
+                              class="c14 c15 plasma-icon"
+                              data-role="plasma-icon"
+                              style="margin: 0px;"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                clear
+                              </span>
+                            </i>
+                          </span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="c26 supported-unseen-span"
+              />
+              <input
+                class="c27 field__text"
+                data-role="textline-input"
+                placeholder=""
+                type="text"
+                value="diagram-labelX"
+              />
+              <span
+                class="c26 supported-unseen-span"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <label
+        class="c0 c1 label field__label"
+        data-role="textline-label"
+      >
+        Label Y-Axis
+      </label>
+      <div
+        class="c2 field-wrapper field-wrapper--block"
+        data-role="textline"
+      >
+        <div
+          class="c3 c4 field__main"
+        >
+          <div
+            class="c5 c6 field"
+            data-role="textline-control"
+          >
+            <div
+              class="c7 field__input"
+              data-readonly="false"
+              data-role="textline-input-wrapper"
+            >
+              <div
+                class="c8 c9 field__prefix field__prefix--last"
+                data-role="textline-prefix-0"
+              >
+                <div
+                  class="c10 field toggle c11"
+                  data-role="toggle"
+                >
+                  <div
+                    class="c12 toggle__wrapper"
+                    data-role="toggle-wrapper"
+                    tabindex="-1"
+                  >
+                    <span
+                      aria-expanded="false"
+                      aria-label="Enter User Input , expand to see options"
+                      class="c13"
+                      data-role="toggle-selected-item-overlay"
+                      role="button"
+                      tabindex="0"
+                      title="Enter User Input , expand to see options"
+                    >
+                      <i
+                        class="c14 c15 plasma-icon"
+                        data-role="plasma-icon"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          edit
+                        </span>
+                      </i>
+                    </span>
+                    <ul
+                      aria-hidden="true"
+                      class="c16"
+                      data-role="toggle-option-buttons"
+                    >
+                      <li
+                        class="c17"
+                        data-role="toggle-option-button"
+                      >
+                        <button
+                          aria-pressed="true"
+                          class="c18 c19 c20 c21 toggle__item toggle__item--selected c22"
+                          data-role="toggle-item"
+                          id="INPUT"
+                          tabindex="-1"
+                          title="Enter User Input"
+                          type="button"
+                          value="INPUT"
+                        >
+                          <span
+                            class="c23 c24 toggle__content"
+                            data-role="toggle-item-content"
+                          >
+                            <i
+                              class="c14 c15 plasma-icon"
+                              data-role="plasma-icon"
+                              style="margin: 0px;"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                edit
+                              </span>
+                            </i>
+                          </span>
+                        </button>
+                      </li>
+                      <li
+                        class="c17"
+                        data-role="toggle-option-button"
+                      >
+                        <button
+                          aria-pressed="false"
+                          class="c18 c19 c20 c25 toggle__item c22"
+                          data-role="toggle-item"
+                          id="UNSET"
+                          tabindex="-1"
+                          title="Unset Value"
+                          type="button"
+                          value="UNSET"
+                        >
+                          <span
+                            class="c23 c24 toggle__content"
+                            data-role="toggle-item-content"
+                          >
+                            <i
+                              class="c14 c15 plasma-icon"
+                              data-role="plasma-icon"
+                              style="margin: 0px;"
+                            >
+                              <span
+                                aria-hidden="true"
+                              >
+                                clear
+                              </span>
+                            </i>
+                          </span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <span
+                class="c26 supported-unseen-span"
+              />
+              <input
+                class="c27 field__text"
+                data-role="textline-input"
+                placeholder=""
+                type="text"
+                value="diagram-labelY"
+              />
+              <span
+                class="c26 supported-unseen-span"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="c5 c32 field field--tooltips field--tooltips-2 field--block"
+      data-role="select"
+    >
+      <label
+        class="c0 c1 label field__label"
+        data-role="select-label"
+      >
+        Orientation
+      </label>
+      <div
+        class="c33 field__select"
+        data-role="select-control"
+      >
+        <div
+          class="c34 field__select-wrapper"
+          data-role="select-wrapper"
+        >
+          <select
+            class="c35 field__selectTitle"
+            data-role="select-input"
+          >
+            <option
+              disabled=""
+              label="Please choose..."
+              value=""
+            />
+            <option
+              class="c36 field__selectOption"
+              data-role="select-option"
+              value="Horizontal"
+            >
+              Horizontal
+            </option>
+            <option
+              class="c36 field__selectOption"
+              data-role="select-option"
+              value="Vertical"
+            >
+              Vertical
+            </option>
+          </select>
+          <span
+            aria-hidden="true"
+            class="c37 field__select-arrow"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,257 @@
+{
+  "header": {
+    "id": "ScreenReadingOrderPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "ScreenReadingOrderSortingDM",
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "ScreenReadingOrderSortingDM"
+      }
+    ],
+    "description": "Test Beschreibung"
+  },
+  "content": {
+    "id": "ID_f7b8e233-6e2a-42c3-a2ce-96ca39cad753",
+    "general": {
+      "id": "ID_601d126e-ab49-45b4-a941-73a5848910b1",
+      "metadata": {
+        "id": "ID_9fb8ea33-fac9-4add-9638-aac1e72c5e4f",
+        "titleComputation": [
+          {
+            "id": "X7rc9Hb3nb15cp8GsJON4",
+            "operation": "\"Test Titel\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "6oeSezXEaAmCjuY_Yi7dZ",
+            "operation": "\"Test Beschreibung\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "GegdI2DlbTENRtnVZplCP",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "tUZv0wn60nwthIbmyca2U",
+            "operation": "\"Test Autor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "ID_fb0b53da-b943-4756-a321-871214d1d8e2",
+        "fontSize": 12,
+        "model": "ScreenReadingOrderSortingDM"
+      },
+      "runtimeVariables": [],
+      "textStyles": [],
+      "structure": [
+        {
+          "id": "ID_ce9dcea6-d1ac-4816-84e3-34cdd0941d6f"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "ID_5c93c0a2-d35d-44ba-8a21-f17dde871b1b",
+      "definitions": [
+        {
+          "id": "ID_ce9dcea6-d1ac-4816-84e3-34cdd0941d6f",
+          "title": "Erste Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "ID_008bcaed-e1d4-46e1-b1bd-9eb2342c5105",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "ID_b35166aa-8862-4c6b-ac5d-7e1dd317e33f",
+              "refId": "secondElement",
+              "position": {
+                "id": "ID_fcea6040-a164-4ef6-8bda-b40fba579e68",
+                "x": {
+                  "id": "ID_3be93f30-36d4-45dc-8470-cb0a4394e2c0",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_5d2498c2-f24a-480a-9e48-af93f687d928",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ID_2a0e57cc-f5a3-4748-aa47-f7f7dbf9b2be",
+                "minWidth": {
+                  "id": "ID_6a24e892-0618-476e-b066-951880f5b41f",
+                  "value": 25,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_a82d6190-68cd-4b17-bcb9-c22577bbceb1",
+                  "value": 10,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "ID_89cc8dda-0b9c-4f07-860c-7b7a3da9d84b",
+                "screenReadingOrderWeight": 2
+              },
+              "pageBreakBehavior": {
+                "id": "ywjkVYXsbYk8G4AVuCxxj",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "ID_334788f7-c9a8-4d2f-b039-c81f3fb2105b",
+              "refId": "firstElement",
+              "position": {
+                "id": "ID_06c915bd-2676-475d-a298-dd46828677f0",
+                "x": {
+                  "id": "ID_f9c706cc-2a0f-4605-b7b6-37b4194db623",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_aa286a02-7d08-402f-8dae-2ebe129ea7cf",
+                  "value": 25,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ID_47649068-62b1-46ae-ac23-187ba1acede6",
+                "minWidth": {
+                  "id": "ID_e300c0a8-bd27-4909-925a-e0c1072026ec",
+                  "value": 25,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_7bb782ce-d129-464e-943f-c7793bd46f3b",
+                  "value": 10,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "ID_c08b4331-0471-4513-9f3b-0457dc98ef10",
+                "screenReadingOrderWeight": 1
+              },
+              "pageBreakBehavior": {
+                "id": "pLsvBs1IFtfLv04ZnxAjc",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "ID_7d5d1a07-922b-49c2-8a22-967db5154d38",
+              "refId": "thirdElement",
+              "position": {
+                "id": "ID_7d418b57-2753-4a87-93dd-2572dc1a0a24",
+                "x": {
+                  "id": "ID_d592f0a3-f4e3-4337-95f8-6af4ee82fcfb",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_18074021-033d-41cf-98c9-b590d5689ceb",
+                  "value": 75,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ID_797890ef-39f1-40be-ab23-7a90a96adc73",
+                "minWidth": {
+                  "id": "ID_a6fc293f-d273-4bc9-84b3-351ab6b096f3",
+                  "value": 25,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_51e8b24f-ff26-4ecb-8606-577106f07c6a",
+                  "value": 10,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "ID_414326d1-0633-4203-9394-7d156945c036",
+                "screenReadingOrderWeight": 3
+              },
+              "pageBreakBehavior": {
+                "id": "9JLiTHd3erQRkyxC35ymp",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "firstElement",
+        "type": "Line",
+        "borderProperties": {
+          "id": "ID_f3c2a4d0-2e4d-4f31-b7cd-8f03aa02c9b0",
+          "borderWidth": 3.75,
+          "borderStyle": "Solid",
+          "borderColor": "#FF0000"
+        }
+      },
+      {
+        "id": "secondElement",
+        "type": "Line",
+        "borderProperties": {
+          "id": "ID_612ad0c1-6353-4f39-a8ee-db5a40bcc736",
+          "borderWidth": 3.75,
+          "borderStyle": "Dashed",
+          "borderColor": "#00FF00"
+        }
+      },
+      {
+        "id": "thirdElement",
+        "type": "Line",
+        "borderProperties": {
+          "id": "ID_ec2d3c20-3390-4c1d-8fbd-c329dd614f71",
+          "borderWidth": 3.75,
+          "borderStyle": "Dotted",
+          "borderColor": "#0000FF"
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "ID_4a5b02bf-594a-41f3-9807-7edafd65446e",
+      "definitions": []
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "header": {
+    "id": "invalid-print-setting-model",
+    "modelType": "print-setting",
+    "modelVersion": "3.2.0"
+  },
+  "content": {
+    "settings": {
+      "fonts": [
+        {
+          "name": "TESTDATA_REMOVE",
+          "type": "path",
+          "fallback": false
+        }
+      ]
+    }
+  }
+}

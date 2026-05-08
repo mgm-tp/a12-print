@@ -1,0 +1,2480 @@
+{
+  "header": {
+    "id": "DomainPrintMetaModel",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "DomainComputationAlternative",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "DomainComputationAlternative"
+      },
+      {
+        "alias": "DomainElementReference",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "DomainElementReference"
+      },
+      {
+        "alias": "DomainDataContext",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "DomainDataContext"
+      },
+      {
+        "alias": "DomainMeasure",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "DomainMeasure"
+      },
+      {
+        "alias": "DomainElementDefinition",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "DomainElementDefinition"
+      },
+      {
+        "alias": "DomainTextStyles",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "DomainTextStyles"
+      }
+    ]
+  },
+  "content": {
+    "modelInfo": {
+      "name": "DomainPrintMetaModel",
+      "immutable": false
+    },
+    "modelConfig": {
+      "timeZone": "UTC",
+      "decimalSeparator": ".",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "typeDefinitions": [
+      {
+        "id": "typedef_458fa6ad-fdea-45a5-936b-0673dab09bf9",
+        "name": "referencePurpose",
+        "fieldType": {
+          "type": "EnumerationType",
+          "EnumerationType": {
+            "values": [
+              {
+                "value": "DINTemplate",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "DIN Template"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "DIN-Vorlage"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "typedef_7ebe3c23-7b1d-4fd8-b8e0-1a2fdf2f661c",
+        "name": "pageOrientation",
+        "fieldType": {
+          "type": "EnumerationType",
+          "EnumerationType": {
+            "values": [
+              {
+                "value": "Portrait",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "Portrait"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "Hochformat"
+                  }
+                ]
+              },
+              {
+                "value": "Landscape",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "Landscape"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "Querformat"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "typedef_d80bd547-cecc-403a-8195-a39dec75057c",
+        "name": "referenceDirection",
+        "fieldType": {
+          "type": "EnumerationType",
+          "EnumerationType": {
+            "values": [
+              {
+                "value": "IncomingReference",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "Incoming Reference"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "Eingehende Referenz"
+                  }
+                ]
+              },
+              {
+                "value": "OutgoingReference",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "Outgoing Reference"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "Ausgehende Referenz"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_58759",
+          "name": "header",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_8e878",
+                "name": "id",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Model name"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Modellname"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_503ca",
+                "name": "modelType",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": ""
+                    },
+                    {
+                      "locale": "de",
+                      "text": ""
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_596a6",
+                "name": "modelVersion",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": ""
+                    },
+                    {
+                      "locale": "de",
+                      "text": ""
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_62037",
+                "name": "description",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType",
+                    "StringType": {
+                      "lineBreaksPermitted": true
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Description"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Beschreibung"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_c95f2",
+                "name": "locales",
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_aae5e",
+                      "name": "code",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": ""
+                          },
+                          {
+                            "locale": "de",
+                            "text": ""
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_75a0c",
+                "name": "labels",
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_f6c02",
+                      "name": "locale",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": ""
+                          },
+                          {
+                            "locale": "de",
+                            "text": ""
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_fa6ac",
+                      "name": "text",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": ""
+                          },
+                          {
+                            "locale": "de",
+                            "text": ""
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_341e3",
+                "name": "annotations",
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_239cf",
+                      "name": "name",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": ""
+                          },
+                          {
+                            "locale": "de",
+                            "text": ""
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_fe62d",
+                      "name": "value",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": ""
+                          },
+                          {
+                            "locale": "de",
+                            "text": ""
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_4c81f",
+                      "name": "roleIsNotPartOfRolesModel",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_4c81f",
+                        "errorCondition": "[name] == \"roles\" And FieldFilled(value) And CustomCondition print_RolesNotInRoleModel",
+                        "severity": "WARNING",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "The chosen role is not present in the roles file present in the workspace."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Die gewählte Rolle ist nicht in der im Arbeitsbereich vorhandenen Rollen-Datei enthalten."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_677a8",
+                      "name": "shouldHaveRolesModelIfSpecifyingRoles",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_677a8",
+                        "errorCondition": "[name] == \"roles\" And FieldFilled(value) AND CustomCondition print_RolesModelNotPresent",
+                        "severity": "WARNING",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "The workspace should have a roles file if roles are specified in the model."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Der Arbeitsbereich sollte eine Rollen-Datei enthalten, wenn im Modell Rollen angegeben sind."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_316d5",
+                      "name": "shouldNotHaveEmptyRoles",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_316d5",
+                        "errorCondition": "[name] == \"roles\" And (FieldFilled(value) OR FieldNotFilled(value)) And CustomCondition print_RoleNotEmpty",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Please select a role"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Bitte wählen Sie eine Rolle"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_c4282",
+                      "name": "rolesNotUnique",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_c4282",
+                        "errorCondition": "[name] == \"roles\" And FieldFilled(value) And CustomCondition print_RolesNotUnique",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "The values of the field must be unique."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Die Werte in diesem Feld müssen eindeutig sein."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_c8da8",
+                      "name": "mustHaveValidRoleValues",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_c8da8",
+                        "errorCondition": "[name] == \"roles\" And [value] PatternViolated \"^([_a-zA-Z][,-_.a-zA-Z0-9]*)\"",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Roles must only consist of letters, digits, hyphens, underscores and periods. Roles may only start with an underscore or letter. E.g. \"admin, sysAdmin\""
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Rollen dürfen nur aus Buchstaben, Ziffern, Bindestrichen, Unterstrichen und Punkten bestehen. Rollen dürfen nur mit einem Buchstaben oder Unterstrich beginnen. Zum Beispiel: „admin“, „sysAdmin“."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_f2046",
+                "name": "modelReferences",
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_8c611",
+                      "name": "reference",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": ""
+                          },
+                          {
+                            "locale": "de",
+                            "text": ""
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_55183",
+                      "name": "modelType",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": ""
+                          },
+                          {
+                            "locale": "de",
+                            "text": ""
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_29167",
+                      "name": "alias",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": ""
+                          },
+                          {
+                            "locale": "de",
+                            "text": ""
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_84f50",
+                      "name": "purpose",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": ""
+                          },
+                          {
+                            "locale": "de",
+                            "text": ""
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_22942",
+                "name": "documentModelAliasUnique",
+                "Rule": {
+                  "errorEntityRelPath": "../modelReferences/alias",
+                  "errorCode": "Error rule_22942",
+                  "errorCondition": "FieldValuesNotUnique(modelReferences*/alias) OR \nAtLeastOneFieldValueIncludedInValueList(\n    modelReferences*/alias Having [modelReferences/alias] != [modelReferences/reference] IN modelReferences*/reference\n)",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "The DocumentModel alias must be unique and cannot be equal to the name of another referenced DocumentModel."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Das DocumentModel Alias muss einzigartig sein und darf nicht dem Namen eines anderen referenzierten DocumentModels entsprechen."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_68b98",
+                "name": "documentModelReferenceUnique",
+                "Rule": {
+                  "errorEntityRelPath": "../modelReferences/reference",
+                  "errorCode": "Error rule_68b98",
+                  "errorCondition": "FieldValuesNotUnique(modelReferences*/reference)",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "The DocumentModel references must be unique."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Das DocumentModel Referenzen müssen einzigartig sein."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_8171a",
+                "name": "mustHaveRolesIfRolesModelPresent",
+                "Rule": {
+                  "errorEntityRelPath": "../annotations/name",
+                  "errorCode": "Error rule_8171a",
+                  "errorCondition": "NumberOfFilledFields(annotations*/name Having [annotations/name] == \"roles\") == 0 AND CustomCondition print_RolesModelPresent",
+                  "severity": "WARNING",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "The workspace contains a roles file which requires all models to have roles specified."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Der Arbeitsbereich enthält eine Rollen-Datei, die vorschreibt, dass alle Modelle Rollen angegeben haben müssen."
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Group",
+          "id": "group_4449f",
+          "name": "content",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_6f3cf",
+                "name": "id",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "ID"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "ID"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_6495b",
+                "name": "general",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_87d99",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "ID"
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_9d1ab",
+                      "name": "metadata",
+                      "Group": {
+                        "repeatability": 1,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_b6d68",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "ID"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "ID"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_m3t4d",
+                            "name": "model",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Document Model"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Dokumentmodell"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "include_fc9a2",
+                            "name": "titleComputation",
+                            "Group": {
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Title"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Titel"
+                                }
+                              ],
+                              "repeatability": 999999,
+                              "modelAlias": "DomainComputationAlternative"
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "include_31826",
+                            "name": "descriptionComputation",
+                            "Group": {
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Description"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Beschreibung"
+                                }
+                              ],
+                              "repeatability": 999999,
+                              "modelAlias": "DomainComputationAlternative"
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "include_2b72b",
+                            "name": "languageComputation",
+                            "Group": {
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Language"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Sprache"
+                                }
+                              ],
+                              "repeatability": 999999,
+                              "modelAlias": "DomainComputationAlternative"
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "include_453d7",
+                            "name": "authorComputation",
+                            "Group": {
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Author"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Autor"
+                                }
+                              ],
+                              "repeatability": 999999,
+                              "modelAlias": "DomainComputationAlternative"
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_c5be3",
+                            "name": "oneTitleComputationRequired",
+                            "Rule": {
+                              "errorEntityRelPath": "../titleComputation/operation",
+                              "errorCode": "Error rule_c5be3",
+                              "errorCondition": "NumberOfFilledGroups(titleComputation*) == 0",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "Please define at least one title computation."
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Bitte definiere mindestens eine Titel Berechnung."
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_3b423",
+                            "name": "oneDescriptionComputationRequired",
+                            "Rule": {
+                              "errorEntityRelPath": "../descriptionComputation/operation",
+                              "errorCode": "Error rule_3b423",
+                              "errorCondition": "NumberOfFilledGroups(descriptionComputation*) == 0",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "Please define at least one description computation."
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Bitte definiere mindestens eine Beschreibungs Berechnung."
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_3dc1f",
+                            "name": "oneLanguageComputationRequired",
+                            "Rule": {
+                              "errorEntityRelPath": "../languageComputation/operation",
+                              "errorCode": "Error rule_3dc1f",
+                              "errorCondition": "NumberOfFilledGroups(languageComputation*) == 0",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "Please define at least one language computation."
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Bitte definiere mindestens eine Sprach Berechnung."
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_9789b",
+                            "name": "oneAuthorComputationRequired",
+                            "Rule": {
+                              "errorEntityRelPath": "../authorComputation/operation",
+                              "errorCode": "Error rule_9789b",
+                              "errorCondition": "NumberOfFilledGroups(authorComputation*) == 0",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "Please define at least one author computation."
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Bitte definiere mindestens eine Autor Berechnung."
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_8878d",
+                            "name": "titleHasDefaultValue",
+                            "Rule": {
+                              "errorEntityRelPath": "../titleComputation/operation",
+                              "errorCode": "Error rule_8878d",
+                              "errorCondition": "NumberOfFilledGroups(titleComputation*) == 1 And [titleComputation/operation] == \"\"\" + [/header/id] + \"\"\"",
+                              "severity": "INFO",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The title field is using its default value. Consider defining a more descriptive title for better PDF metadata."
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Das Feld Titel verwendet seinen Standardwert. Erwäge einen aussagekräftigeren Titel für bessere PDF-Metadaten."
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_249d7",
+                            "name": "descriptionHasDefaultValue",
+                            "Rule": {
+                              "errorEntityRelPath": "../descriptionComputation/operation",
+                              "errorCode": "Error rule_249d7",
+                              "errorCondition": "NumberOfFilledGroups(descriptionComputation*) == 1 And [descriptionComputation/operation] ==\"\"\"Description\"\"\"",
+                              "severity": "INFO",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The description field is using its default value. Consider adding a meaningful description for better PDF metadata."
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Das Feld Beschreibung verwendet seinen Standardwert. Erwäge eine aussagekräftige Beschreibung für bessere PDF-Metadaten."
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_aa64d",
+                            "name": "languageHasDefaultValue",
+                            "Rule": {
+                              "errorEntityRelPath": "../languageComputation/operation",
+                              "errorCode": "Error rule_aa64d",
+                              "errorCondition": "NumberOfFilledGroups(languageComputation*) == 1 And [languageComputation/operation] == \"\"\"DE\"\"\"",
+                              "severity": "INFO",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The language field is using its default value. Verify this matches the document's actual language."
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Das Feld Sprache verwendet seinen Standardwert. Überprüfe, ob dies der tatsächlichen Dokumentsprache entspricht."
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_dee57",
+                            "name": "authorHasDefaultValue",
+                            "Rule": {
+                              "errorEntityRelPath": "../authorComputation/operation",
+                              "errorCode": "Error rule_dee57",
+                              "errorCondition": "NumberOfFilledGroups(authorComputation*) == 1 And [authorComputation/operation] == \"\"\"Print Model Editor\"\"\"",
+                              "severity": "INFO",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The author field is using its default value. Consider specifying the actual author for better PDF metadata."
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Das Feld Autor verwendet seinen Standardwert. Erwäge den tatsächlichen Autor für bessere PDF-Metadaten anzugeben."
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_d3c98",
+                      "name": "segmentDefaults",
+                      "Group": {
+                        "repeatability": 1,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_2f898",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "ID"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "ID"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_0edf4",
+                            "name": "fontSize",
+                            "Field": {
+                              "fieldType": {
+                                "type": "NumberType",
+                                "NumberType": {
+                                  "zeroNotAllowed": true,
+                                  "minValue": 1
+                                }
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Font size"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Schriftgröße"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_ffa76",
+                            "name": "model",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Global Model"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Globales Modell"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_20000",
+                      "name": "runtimeVariables",
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_7a014",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "ID"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "ID"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_db700",
+                            "name": "name",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Name"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Name"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_9a9e4",
+                            "name": "type",
+                            "Field": {
+                              "fieldType": {
+                                "type": "EnumerationType",
+                                "EnumerationType": {
+                                  "values": [
+                                    {
+                                      "value": "Boolean",
+                                      "label": [
+                                        {
+                                          "locale": "en",
+                                          "text": "Boolean"
+                                        },
+                                        {
+                                          "locale": "de",
+                                          "text": "Boolean"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "value": "String",
+                                      "label": [
+                                        {
+                                          "locale": "en",
+                                          "text": "String"
+                                        },
+                                        {
+                                          "locale": "de",
+                                          "text": "String"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "value": "StringArray",
+                                      "label": [
+                                        {
+                                          "locale": "en",
+                                          "text": "String Array"
+                                        },
+                                        {
+                                          "locale": "de",
+                                          "text": "String Array"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Variable Type"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Variablentyp"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_0b3a4",
+                      "name": "textStyles",
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_0a35f",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Id"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Id"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_4e5d4",
+                      "name": "structure",
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_cf4fa",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Id"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Id"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_6474c",
+                      "name": "sections",
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_3ec41",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Id"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Id"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_c8220",
+                      "name": "watermarks",
+                      "Group": {
+                        "repeatability": 2,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_cdaff",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_62e28",
+                "name": "segments",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_6dda6",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "ID"
+                          }
+                        ],
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_4e966",
+                      "name": "definitions",
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_28756",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_dc447",
+                            "name": "title",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Title"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Titel"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_04e79",
+                            "name": "type",
+                            "Field": {
+                              "fieldType": {
+                                "type": "EnumerationType",
+                                "EnumerationType": {
+                                  "values": [
+                                    {
+                                      "value": "Default",
+                                      "label": [
+                                        {
+                                          "locale": "en",
+                                          "text": "Default Segment"
+                                        },
+                                        {
+                                          "locale": "de",
+                                          "text": "Standardsegment"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "value": "Repeatable",
+                                      "label": [
+                                        {
+                                          "locale": "en",
+                                          "text": "Repeatable Segment"
+                                        },
+                                        {
+                                          "locale": "de",
+                                          "text": "Wiederholbares Segment"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Structure Type"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Gliederungstyp"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "group_0f77a",
+                            "name": "defaultSegment",
+                            "Group": {
+                              "repeatability": 1,
+                              "elements": [
+                                {
+                                  "type": "Field",
+                                  "id": "field_c3b49",
+                                  "name": "id",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "ID"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "ID"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_67e16",
+                                  "name": "pageOrientation",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "TypeDefType",
+                                      "TypeDefType": {
+                                        "typeDefinitionId": "typedef_7ebe3c23-7b1d-4fd8-b8e0-1a2fdf2f661c"
+                                      }
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Page orientation"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Seitenverhältnis"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Rule",
+                                  "id": "rule_5e8da",
+                                  "name": "pageOrientationFilled",
+                                  "Rule": {
+                                    "errorEntityRelPath": "../pageOrientation",
+                                    "errorCode": "Error rule_5e8da",
+                                    "errorCondition": "[../type] == \"Default\" AND FieldNotFilled(pageOrientation)",
+                                    "severity": "ERROR",
+                                    "errorMessage": [
+                                      {
+                                        "locale": "en",
+                                        "text": "A page orientation must be selected."
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Ein Seitenverhältnis muss ausgewählt werden."
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "include_cc9f6",
+                            "name": "elementReferences",
+                            "Group": {
+                              "repeatability": 999999,
+                              "modelAlias": "DomainElementReference"
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "group_d37b6",
+                            "name": "dinTemplate",
+                            "Group": {
+                              "repeatability": 1,
+                              "elements": [
+                                {
+                                  "type": "Field",
+                                  "id": "field_3e5c1",
+                                  "name": "id",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "ID"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "ID"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_5502a",
+                                  "name": "referenceId",
+                                  "internalDescription": [
+                                    {
+                                      "locale": "en",
+                                      "text": "The Reference ID where the value is the reference element ID"
+                                    },
+                                    {
+                                      "locale": "de",
+                                      "text": "Die Referenz-ID, wobei der Wert die Referenzelement-ID ist"
+                                    }
+                                  ],
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": ""
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_d2422",
+                                  "name": "refId",
+                                  "internalDescription": [
+                                    {
+                                      "locale": "en",
+                                      "text": "The ID of the segment from the reference segment"
+                                    },
+                                    {
+                                      "locale": "de",
+                                      "text": "Die ID des Segments aus dem Referenzsegment"
+                                    }
+                                  ],
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_0decb",
+                            "name": "elementNotOutOfSegment",
+                            "Rule": {
+                              "errorEntityRelPath": "../elementReferences/position/x/value",
+                              "errorCode": "Error rule_0decb",
+                              "errorCondition": "([defaultSegment/pageOrientation] == \"Portrait\"\r\n    And [elementReferences/position/x/value] + [elementReferences/dimensions/minWidth/value]\r\n    > 210)\r\nOr ([defaultSegment/pageOrientation] == \"Landscape\"\r\n    And [elementReferences/position/x/value] + [elementReferences/dimensions/minWidth/value]\r\n    > 297)\r\nOr [elementReferences/position/y/value] - [elementReferences/margins/top/margin/value]\r\n< 0",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The element is out of the stage"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Das Element ist außerhalb der Bühne"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_b1fd7",
+                            "name": "elementNotOverlap",
+                            "Rule": {
+                              "errorEntityRelPath": "../elementReferences/position/y/value",
+                              "errorCode": "Error rule_b1fd7",
+                              "errorCondition": "FieldFilled(elementReferences/position/y/value) And CustomCondition print_ElementReferenceOverlapped",
+                              "severity": "WARNING",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The element overlaps with others"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Das Element überschneidet sich mit anderen"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "include_6a6f7",
+                            "name": "dataContexts",
+                            "Group": {
+                              "repeatability": 999999,
+                              "modelAlias": "DomainDataContext"
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_13ee6",
+                            "name": "onlyOneRepeatable",
+                            "Rule": {
+                              "errorEntityRelPath": "../dataContexts/isRepetition",
+                              "errorCode": "Error rule_13ee6",
+                              "errorCondition": "MoreThanOneFieldFilled(dataContexts*/isRepetition Having [dataContexts/isRepetition] == True)",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "Only one data context can be repeatable"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Nur ein Datenkontext kann wiederholbar sein"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_22114",
+                            "name": "RequireDataContextForRepeatableSegment",
+                            "Rule": {
+                              "errorEntityRelPath": "../type",
+                              "errorCode": "Error rule_22114",
+                              "errorCondition": "[type] == \"Repeatable\" AND  NumberOfFilledFields(dataContexts*/isRepetition Having [dataContexts/isRepetition] == True) == 0",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "A DataContext is required for Repeatable Segments"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Ein DataContext ist erforderlich für Wiederholbare Segmente"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_7feef",
+                      "name": "references",
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_c7cd4",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "ID"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "ID"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_b3e16",
+                            "name": "purpose",
+                            "Field": {
+                              "fieldType": {
+                                "type": "TypeDefType",
+                                "TypeDefType": {
+                                  "typeDefinitionId": "typedef_458fa6ad-fdea-45a5-936b-0673dab09bf9"
+                                }
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Purpose"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Zweck"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_ea764",
+                            "name": "direction",
+                            "Field": {
+                              "fieldType": {
+                                "type": "TypeDefType",
+                                "TypeDefType": {
+                                  "typeDefinitionId": "typedef_d80bd547-cecc-403a-8195-a39dec75057c"
+                                }
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Reference direction"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Bezugsrichtung"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_e7b98",
+                            "name": "referenceModel",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Reference Model"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Referenzmodell"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "group_e9ac2",
+                            "name": "refIds",
+                            "Group": {
+                              "repeatability": 100,
+                              "elements": [
+                                {
+                                  "type": "Field",
+                                  "id": "field_94c8f",
+                                  "name": "id",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "ID"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "ID"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_06d50",
+                                  "name": "refId",
+                                  "internalDescription": [
+                                    {
+                                      "locale": "en",
+                                      "text": "Id of the DIN template segment"
+                                    },
+                                    {
+                                      "locale": "de",
+                                      "text": "ID des DIN-Vorlagensegments"
+                                    }
+                                  ],
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "RefId"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "RefID"
+                                      }
+                                    ],
+                                    "requirednessConfig": {
+                                      "mode": "absoluteOrRelativeToNextRepAncestor"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_813f6",
+                            "name": "refIdValidationRule",
+                            "Rule": {
+                              "errorEntityRelPath": "../refIds/refId",
+                              "errorCode": "Error rule_813f6",
+                              "errorCondition": "[direction] != \"OutgoingReference\" and GroupFilled(refIds)",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "RefId is only filled if the direction is an outgoing reference"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "RefId wird nur gefüllt, wenn die Richtung eine ausgehende Referenz ist"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_e33fd",
+                "name": "sections",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_dd1a4",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "ID"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_8de02",
+                      "name": "definitions",
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_ef889",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_7fa69",
+                            "name": "title",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Title"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Titel"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_e88d0",
+                            "name": "sectionUsage",
+                            "Field": {
+                              "fieldType": {
+                                "type": "EnumerationType",
+                                "EnumerationType": {
+                                  "values": [
+                                    {
+                                      "value": "First",
+                                      "label": [
+                                        {
+                                          "locale": "en",
+                                          "text": "First Page"
+                                        },
+                                        {
+                                          "locale": "de",
+                                          "text": "Erste Seite"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "value": "Remaining",
+                                      "label": [
+                                        {
+                                          "locale": "en",
+                                          "text": "Remaining Pages"
+                                        },
+                                        {
+                                          "locale": "de",
+                                          "text": "Verbleibende Seiten"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": ""
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": ""
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_40174",
+                            "name": "pageOrientation",
+                            "Field": {
+                              "fieldType": {
+                                "type": "TypeDefType",
+                                "TypeDefType": {
+                                  "typeDefinitionId": "typedef_7ebe3c23-7b1d-4fd8-b8e0-1a2fdf2f661c"
+                                }
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Page orientation"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Seitenverhältnis"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "include_c8955",
+                            "name": "headerHeight",
+                            "Group": {
+                              "repeatability": 1,
+                              "modelAlias": "DomainMeasure"
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_759f8",
+                            "name": "headerHeightSet",
+                            "Rule": {
+                              "errorEntityRelPath": "../headerHeight/value",
+                              "errorCode": "Error rule_759f8",
+                              "errorCondition": "GroupFilled(RuleGroup) and FieldNotFilled(headerHeight/value)",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The header height is required"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Die Kopfzeilenhöhe muss angegeben werden"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "include_29535",
+                            "name": "footerHeight",
+                            "Group": {
+                              "repeatability": 1,
+                              "modelAlias": "DomainMeasure"
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_bcebb",
+                            "name": "footerHeightSet",
+                            "Rule": {
+                              "errorEntityRelPath": "../footerHeight/value",
+                              "errorCode": "Error rule_bcebb",
+                              "errorCondition": "GroupFilled(RuleGroup) and FieldNotFilled(footerHeight/value)",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The footer height is required"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Die Fußzeilenhöhe muss angegeben werden"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "include_5bf26",
+                            "name": "elementReferences",
+                            "Group": {
+                              "repeatability": 999999,
+                              "modelAlias": "DomainElementReference"
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_3744b",
+                            "name": "elementNotOverlap",
+                            "Rule": {
+                              "errorEntityRelPath": "../elementReferences/position/y/value",
+                              "errorCode": "Error rule_3744b",
+                              "errorCondition": "FieldFilled(elementReferences/position/y/value)\nAnd CustomCondition print_ElementReferenceOverlapped",
+                              "severity": "WARNING",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The element overlaps with others"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Das Element überschneidet sich mit anderen"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_2cc6c",
+                            "name": "elementNotOutOfSection",
+                            "Rule": {
+                              "errorEntityRelPath": "../elementReferences/position/y/value",
+                              "errorCode": "Error rule_2cc6c",
+                              "errorCondition": "([pageOrientation] == \"Portrait\"\n    And (([elementReferences/position/y/value] > [headerHeight/value]\n            And [elementReferences/position/y/value] - [elementReferences/margins/top/margin/value]\n            < 297 - [footerHeight/value])\n        Or ([elementReferences/position/y/value] + [elementReferences/dimensions/minHeight/value] +\n            [elementReferences/margins/bottom/margin/value] > [headerHeight/value]\n            And [elementReferences/position/y/value] + [elementReferences/dimensions/minHeight/value] +\n            [elementReferences/margins/bottom/margin/value] < 297 - [footerHeight/value])))\nOr ([pageOrientation] == \"Landscape\"\n    And (([elementReferences/position/y/value] > [headerHeight/value]\n            And [elementReferences/position/y/value] - [elementReferences/margins/top/margin/value]\n            < 210 - [footerHeight/value])\n        Or ([elementReferences/position/y/value] + [elementReferences/dimensions/minHeight/value] +\n            [elementReferences/margins/bottom/margin/value] > [headerHeight/value]\n            And [elementReferences/position/y/value] + [elementReferences/dimensions/minHeight/value] +\n            [elementReferences/margins/bottom/margin/value] < 210 - [footerHeight/value])))",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The element is out of section"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Das Element liegt außerhalb des Abschnitts"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_84088",
+                            "name": "elementNotOutOfStage",
+                            "Rule": {
+                              "errorEntityRelPath": "../elementReferences/position/x/value",
+                              "errorCode": "Error rule_84088",
+                              "errorCondition": "([pageOrientation] == \"Portrait\"\n    And ([elementReferences/position/x/value] + [elementReferences/dimensions/minWidth/value]\n        > 210\n        Or [elementReferences/position/y/value] + [elementReferences/dimensions/minHeight/value] +\n        [elementReferences/margins/bottom/margin/value] > 297))\nOr ([pageOrientation] == \"Landscape\"\n    And ([elementReferences/position/x/value] + [elementReferences/dimensions/minWidth/value]\n        > 297\n        Or [elementReferences/position/y/value] + [elementReferences/dimensions/minHeight/value] +\n        [elementReferences/margins/bottom/margin/value] > 210))\nOr [elementReferences/position/y/value] - [elementReferences/margins/top/margin/value]\n< 0",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The element is out of the stage"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Das Element ist außerhalb der Bühne"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "include_0fd69",
+                "name": "elementDefinitions",
+                "Group": {
+                  "repeatability": 999999,
+                  "modelAlias": "DomainElementDefinition"
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_cc85b",
+                "name": "textStyles",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_ead3e",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "ID"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "include_d86d4",
+                      "name": "definitions",
+                      "Group": {
+                        "repeatability": 999999,
+                        "modelAlias": "DomainTextStyles"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_9e831",
+                "name": "watermarks",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_98b73",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_48005",
+                      "name": "definitions",
+                      "Group": {
+                        "repeatability": 2,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_e63be",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_69ac8",
+                            "name": "title",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Title"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Titel"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_51640",
+                            "name": "pageOrientation",
+                            "Field": {
+                              "fieldType": {
+                                "type": "TypeDefType",
+                                "TypeDefType": {
+                                  "typeDefinitionId": "typedef_7ebe3c23-7b1d-4fd8-b8e0-1a2fdf2f661c"
+                                }
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Page orientation"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Seitenverhältnis"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_0b51d",
+                            "name": "opacity",
+                            "Field": {
+                              "fieldType": {
+                                "type": "NumberType",
+                                "NumberType": {
+                                  "maxFractionalDigits": 1,
+                                  "zeroNotAllowed": true,
+                                  "maxValue": 1
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "group_b1772",
+                            "name": "conditions",
+                            "Group": {
+                              "repeatability": 999999,
+                              "elements": [
+                                {
+                                  "type": "Field",
+                                  "id": "field_11dae",
+                                  "name": "id",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "requirednessConfig": {
+                                      "mode": "absoluteOrRelativeToNextRepAncestor"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_781dc",
+                                  "name": "precondition",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "requirednessConfig": {
+                                      "mode": "absoluteOrRelativeToNextRepAncestor"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "include_a02da",
+                            "name": "elementReferences",
+                            "Group": {
+                              "repeatability": 999999,
+                              "modelAlias": "DomainElementReference"
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_9209d",
+                            "name": "elementNotOutOfStage",
+                            "Rule": {
+                              "errorEntityRelPath": "../elementReferences/position/x/value",
+                              "errorCode": "Error rule_9209d",
+                              "errorCondition": "([pageOrientation] == \"Portrait\"\n    And ([elementReferences/position/x/value] + [elementReferences/dimensions/minWidth/value]\n        > 210\n        Or [elementReferences/position/y/value] + [elementReferences/dimensions/minHeight/value] +\n        [elementReferences/margins/bottom/margin/value] > 297))\nOr ([pageOrientation] == \"Landscape\"\n    And ([elementReferences/position/x/value] + [elementReferences/dimensions/minWidth/value]\n        > 297\n        Or [elementReferences/position/y/value] + [elementReferences/dimensions/minHeight/value] +\n        [elementReferences/margins/bottom/margin/value] > 210))\nOr [elementReferences/position/y/value] - [elementReferences/margins/top/margin/value]\n< 0",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The element is out of the stage"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Das Element ist außerhalb der Bühne"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_a225d",
+                            "name": "elementNotOverlap",
+                            "Rule": {
+                              "errorEntityRelPath": "../elementReferences/position/y/value",
+                              "errorCode": "Error rule_a225d",
+                              "errorCondition": "FieldFilled(elementReferences/position/y/value) And CustomCondition print_ElementReferenceOverlapped",
+                              "severity": "WARNING",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "The element overlaps with others"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Das Element überschneidet sich mit anderen"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

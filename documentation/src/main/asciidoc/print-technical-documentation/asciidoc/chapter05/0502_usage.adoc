@@ -1,0 +1,108 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+[#usage]
+= Usage
+
+== Using the PrintModelEditorLight Component
+
+The `PrintModelEditorLight` component provides a simplified API for editing PrintModels. The example below shows how to integrate the component into a React application.
+
+Please note that a Localization Context is required to provide localization for the component.
+
+[source,tsx]
+----
+import { PrintModelEditorLight } from "@com.mgmtp.a12.print/print-model-editor-component/lib/app/PrintModelEditorLight";
+import { Locale, DefaultLocalizerContextProvider } from "@com.mgmtp.a12.utils/utils-localization-react/lib/main/index.js";
+
+const App = () => {
+  const locale: Locale = { language: "en", country: "US" };
+
+  return (
+    <DefaultLocalizerContextProvider locale={locale}>
+      <PrintModelEditorLight
+        printModel={printModel}
+        documentModel={documentModel}
+        customFonts={customFonts}
+        onChange={(updatedModel, dirty) => {
+          console.log("Model updated:", updatedModel, dirty);
+        }}
+      />
+    </DefaultLocalizerContextProvider>
+  );
+};
+----
+
+=== Props
+
+The `PrintModelEditorLight` component accepts the following props:
+
+printModel (required):: The PrintModel to be edited. This must be a deserialized PrintModel instance.
+Utils for deserialisation can be found in the module `@com.mgmtp.a12.print/print-model-api-utils`.
+
+documentModel (required):: The associated DocumentModel. This must also be a deserialized DocumentModel instance.
+Utils for deserialisation can be found in the module `@com.mgmtp.a12.kernel/kernel-md-facade`.
+
+onChange (required):: A callback function triggered when the PrintModel changes. The function receives two parameters:
+* `printModel`: The updated, deserialized PrintModel instance.
+* `dirty`: A boolean indicating whether there are unsaved changes. In practice, this means `dirty` is false when the user has clicked the save button. In this case you need to handle saving these changes on your side. `dirty` is true when the user has just made a change in the model. You can use this to handle temporary changes, for example, saving them temporarily.
+
+customFonts (optional):: A map of custom fonts. The map should follow the `FontResourceMap` format. Each entry in the map consists of:
+* `Key`: The name of the font.
+* `Value`: An object with the following properties:
+	** `src`: Specifies the font source. This can either be:
+		*** A URL pointing to an accessible font file in your application.
+		*** A Data URI that encodes the font file inline.
+	** `format`: The format of the font. Currently, only `ttf` (TrueType Font) is supported.
+
+[source,tsx,title="Custom Fonts"]
+----
+const customFonts: FontResourceMap = {
+  "CustomFont1": {
+    src: "./assets/fonts/custom-font-1.ttf",
+    format: "ttf",
+  },
+  "CustomFont2": {
+    src: "https://my-cdn.com/fonts/custom-font-2.ttf",
+    format: "ttf",
+  },
+  "CustomFont3": {
+    src: "data:application/octet-stream;base64,...",
+    format: "ttf",
+  },
+};
+----
+
+To override default fonts, provide a key matching the specific default font name.
+You find the available default fonts in our modelling documentation: link:/docs/PRINT_ENGINE/print-modeling-documentation/index.html#DefaultFonts[Available Default Fonts].
+
+[source,tsx,title="Override Default Fonts"]
+----
+const customFonts: FontResourceMap = {
+  "Open Sans": {
+    src: "./assets/fonts/custom-open-sans.ttf",
+    format: "ttf",
+  },
+};
+----
+
+=== Differences Compared to the Simple Model Editor
+
+The `PrintModelEditorLight` component differs from the full Print Model Editor which is integrated in the SME in the following ways:
+
+- **Schema Tab**: The `PrintModelEditorLight` does not include a Schema tab. This is because it does not allow selecting different Document Models. Instead, a fixed Document Model is passed via the `documentModel` prop.
+- **Commit Changes Tab**: The `PrintModelEditorLight` does not support partial commits of selected changes. Users can only choose to save all changes.

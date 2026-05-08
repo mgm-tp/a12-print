@@ -1,0 +1,1273 @@
+{
+  "header": {
+    "id": "DomainTypesettingMetaModel",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [
+      {
+        "locale": "en",
+        "text": "Typesetting"
+      },
+      {
+        "locale": "de",
+        "text": "Silbentrennung"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "DomainTypesettingMetaModel",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_d3770",
+          "name": "header",
+          "internalDescription": [
+            {
+              "locale": "en",
+              "text": "Header"
+            },
+            {
+              "locale": "de",
+              "text": "Header"
+            }
+          ],
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_30596",
+                "name": "id",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Model name"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Modellname"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_9bf50",
+                "name": "modelType",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_b8115",
+                "name": "modelVersion",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_8a918",
+                "name": "locales",
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_9932c",
+                      "name": "code",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_dd64b",
+                "name": "labels",
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_53cec",
+                      "name": "locale",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_0a95a",
+                      "name": "text",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_19469",
+                "name": "annotations",
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_a6324",
+                      "name": "name",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_744d9",
+                      "name": "value",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_f07d7",
+                      "name": "roleIsNotPartOfRolesModel",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_f07d7",
+                        "errorCondition": "[name] == \"roles\" And FieldFilled(value) And CustomCondition print_RolesNotInRoleModel",
+                        "severity": "WARNING",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "The chosen role is not present in the roles file present in the workspace."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Die gewählte Rolle ist nicht in der im Arbeitsbereich vorhandenen Rollen-Datei enthalten."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_b1c67",
+                      "name": "mustHaveValidRoleValues",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_b1c67",
+                        "errorCondition": "[name] == \"roles\" And [value] PatternViolated \"^([_a-zA-Z][,-_.a-zA-Z0-9]*)\"",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Roles must only consist of letters, digits, hyphens, underscores and periods. Roles may only start with an underscore or letter. E.g. \\\"admin, sysAdmin\\\""
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Rollen dürfen nur aus Buchstaben, Ziffern, Bindestrichen, Unterstrichen und Punkten bestehen. Rollen dürfen nur mit einem Buchstaben oder Unterstrich beginnen. Zum Beispiel: „admin“, „sysAdmin“."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_8efb8",
+                      "name": "rolesNotUnique",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_8efb8",
+                        "errorCondition": "[name] == \"roles\" And FieldFilled(value) And CustomCondition print_RolesNotUnique",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "The values of the field must be unique."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Die Werte in diesem Feld müssen eindeutig sein."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_7e04b",
+                      "name": "shouldNotHaveEmptyRoles",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_7e04b",
+                        "errorCondition": "[name] == \"roles\" And (FieldFilled(value) OR FieldNotFilled(value))  And CustomCondition print_RoleNotEmpty",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Please select a role"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Bitte wählen Sie eine Rolle"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_ba0e4",
+                      "name": "shouldHaveRolesModelIfSpecifyingRoles",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_ba0e4",
+                        "errorCondition": "[name] == \"roles\" And FieldFilled(value) AND CustomCondition print_RolesModelNotPresent",
+                        "severity": "WARNING",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "The workspace should have a roles file if roles are specified in the model."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Der Arbeitsbereich sollte eine Rollen-Datei enthalten, wenn im Modell Rollen angegeben sind."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_e1c6d",
+                "name": "mustHaveRolesIfRolesModelPresent",
+                "Rule": {
+                  "errorEntityRelPath": "../annotations/name",
+                  "errorCode": "Error rule_e1c6d",
+                  "errorCondition": "NumberOfFilledFields(annotations*/name Having [annotations/name] == \"roles\") == 0 AND CustomCondition print_RolesModelPresent",
+                  "severity": "WARNING",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "The workspace contains a roles file which requires all models to have roles specified."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Der Arbeitsbereich enthält eine Rollen-Datei, die vorschreibt, dass alle Modelle Rollen angegeben haben müssen."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_720cf",
+                "name": "modelReferences",
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_41b94",
+                      "name": "reference",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_e88ad",
+                      "name": "modelType",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_8384d",
+                      "name": "alias",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_1da29",
+                      "name": "purpose",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_88436",
+                "name": "documentModelAliasUnique",
+                "Rule": {
+                  "errorEntityRelPath": "../modelReferences/alias",
+                  "errorCode": "Error rule_88436",
+                  "errorCondition": "FieldValuesNotUnique(modelReferences*/alias) OR \r\nAtLeastOneFieldValueIncludedInValueList(\r\n    modelReferences*/alias Having [modelReferences/alias] != [modelReferences/reference] IN modelReferences*/reference\r\n)",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "The DocumentModel alias must be unique and cannot be equal to the name of another referenced DocumentModel."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Das DocumentModel Alias muss einzigartig sein und darf nicht dem Namen eines anderen referenzierten DocumentModels entsprechen."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_05c71",
+                "name": "documentModelReferenceUnique",
+                "Rule": {
+                  "errorEntityRelPath": "../modelReferences/reference",
+                  "errorCode": "Error rule_05c71",
+                  "errorCondition": "FieldValuesNotUnique(modelReferences*/reference)",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "The DocumentModel references must be unique."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Das DocumentModel Referenzen müssen einzigartig sein."
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Group",
+          "id": "group_0e724",
+          "name": "content",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Group",
+                "id": "group_3dfea",
+                "name": "internal",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Group",
+                      "id": "group_7c96d",
+                      "name": "hyphenation",
+                      "Group": {
+                        "repeatability": 1,
+                        "elements": [
+                          {
+                            "type": "Group",
+                            "id": "group_0e979",
+                            "name": "general",
+                            "Group": {
+                              "repeatability": 1,
+                              "elements": [
+                                {
+                                  "type": "Field",
+                                  "id": "field_ca631",
+                                  "name": "title",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Title"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Titel"
+                                      }
+                                    ],
+                                    "requirednessConfig": {
+                                      "mode": "relativeToParent"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Group",
+                                  "id": "group_4831e",
+                                  "name": "language",
+                                  "internalDescription": [
+                                    {
+                                      "locale": "en",
+                                      "text": "Language"
+                                    },
+                                    {
+                                      "locale": "de",
+                                      "text": "Sprache"
+                                    }
+                                  ],
+                                  "Group": {
+                                    "repeatability": 1,
+                                    "elements": [
+                                      {
+                                        "type": "Field",
+                                        "id": "field_00d86",
+                                        "name": "name",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Name"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Name"
+                                            }
+                                          ],
+                                          "requirednessConfig": {
+                                            "mode": "relativeToParent"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "type": "Field",
+                                        "id": "field_a254f",
+                                        "name": "tag",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Tag"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Tag"
+                                            }
+                                          ],
+                                          "requirednessConfig": {
+                                            "mode": "relativeToParent"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Group",
+                                  "id": "group_56f37",
+                                  "name": "authors",
+                                  "Group": {
+                                    "repeatability": 999,
+                                    "elements": [
+                                      {
+                                        "type": "Field",
+                                        "id": "field_902a9",
+                                        "name": "name",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Name"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Name"
+                                            }
+                                          ],
+                                          "requirednessConfig": {
+                                            "mode": "absoluteOrRelativeToNextRepAncestor"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "type": "Field",
+                                        "id": "field_ee902",
+                                        "name": "contact",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Contact"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Kontakt"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_dee89",
+                                  "name": "notice",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Notice"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Hinweis"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_c8fe5",
+                                  "name": "version",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Version"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Version"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_d531b",
+                                  "name": "copyright",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType",
+                                      "StringType": {
+                                        "lineBreaksPermitted": true
+                                      }
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Copyright"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Urheberrecht"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Group",
+                                  "id": "group_23507",
+                                  "name": "licence",
+                                  "Group": {
+                                    "repeatability": 1,
+                                    "elements": [
+                                      {
+                                        "type": "Field",
+                                        "id": "field_6a08e",
+                                        "name": "name",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Name"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Name"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "type": "Field",
+                                        "id": "field_25195",
+                                        "name": "text",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType",
+                                            "StringType": {
+                                              "lineBreaksPermitted": true
+                                            }
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Text"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Text"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "type": "Field",
+                                        "id": "field_36a8b",
+                                        "name": "url",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "URL"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "URL"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_47ac5",
+                                  "name": "source",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Source"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Quelle"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Group",
+                                  "id": "group_1cca6",
+                                  "name": "hyphenmins",
+                                  "Group": {
+                                    "repeatability": 1,
+                                    "elements": [
+                                      {
+                                        "type": "Group",
+                                        "id": "group_86c30",
+                                        "name": "typesetting",
+                                        "Group": {
+                                          "repeatability": 1,
+                                          "elements": [
+                                            {
+                                              "type": "Field",
+                                              "id": "field_cd93c",
+                                              "name": "left",
+                                              "Field": {
+                                                "fieldType": {
+                                                  "type": "NumberType",
+                                                  "NumberType": {
+                                                    "minValue": 0
+                                                  }
+                                                },
+                                                "label": [
+                                                  {
+                                                    "locale": "en",
+                                                    "text": "Left type setting"
+                                                  },
+                                                  {
+                                                    "locale": "de",
+                                                    "text": "Linkes Type-Setting"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "type": "Field",
+                                              "id": "field_16d7b",
+                                              "name": "right",
+                                              "Field": {
+                                                "fieldType": {
+                                                  "type": "NumberType",
+                                                  "NumberType": {
+                                                    "minValue": 0
+                                                  }
+                                                },
+                                                "label": [
+                                                  {
+                                                    "locale": "en",
+                                                    "text": "Right type setting"
+                                                  },
+                                                  {
+                                                    "locale": "de",
+                                                    "text": "Rechtes Type-Setting"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "type": "Group",
+                                        "id": "group_13f44",
+                                        "name": "generation",
+                                        "Group": {
+                                          "repeatability": 1,
+                                          "elements": [
+                                            {
+                                              "type": "Field",
+                                              "id": "field_3b7c8",
+                                              "name": "left",
+                                              "Field": {
+                                                "fieldType": {
+                                                  "type": "NumberType",
+                                                  "NumberType": {
+                                                    "minValue": 0
+                                                  }
+                                                },
+                                                "label": [
+                                                  {
+                                                    "locale": "en",
+                                                    "text": "Left generation"
+                                                  },
+                                                  {
+                                                    "locale": "de",
+                                                    "text": "Linke Generierung"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "type": "Field",
+                                              "id": "field_3a325",
+                                              "name": "right",
+                                              "Field": {
+                                                "fieldType": {
+                                                  "type": "NumberType",
+                                                  "NumberType": {
+                                                    "minValue": 0
+                                                  }
+                                                },
+                                                "label": [
+                                                  {
+                                                    "locale": "en",
+                                                    "text": "Right generation"
+                                                  },
+                                                  {
+                                                    "locale": "de",
+                                                    "text": "Rechte Generierung"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Group",
+                                  "id": "group_e10b6",
+                                  "name": "texlive",
+                                  "Group": {
+                                    "repeatability": 1,
+                                    "elements": [
+                                      {
+                                        "type": "Field",
+                                        "id": "field_34db7",
+                                        "name": "encoding",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Encoding"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Kodierung"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "type": "Field",
+                                        "id": "field_31644",
+                                        "name": "babelname",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Babel name"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Babelname"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "type": "Field",
+                                        "id": "field_498b1",
+                                        "name": "legacy_patterns",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Legacy Patterns"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Legacy Patterns"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "type": "Field",
+                                        "id": "field_d5575",
+                                        "name": "message",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Message"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Nachricht"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "type": "Field",
+                                        "id": "field_23887",
+                                        "name": "package",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Package"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Package"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "type": "Field",
+                                        "id": "field_1ca58",
+                                        "name": "use_old_patterns_comment",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Comment for using the old patterns"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Kommentar zur Verwendung von alten Mustern"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_88384",
+                                  "name": "checksum",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "MD5 checksum"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "MD5-Prüfsumme"
+                                      }
+                                    ],
+                                    "requirednessConfig": {
+                                      "mode": "relativeToParent"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "group_d5d0c",
+                            "name": "patterns",
+                            "internalDescription": [
+                              {
+                                "locale": "en",
+                                "text": "Hyphenation patterns"
+                              },
+                              {
+                                "locale": "de",
+                                "text": "Trennmuster"
+                              }
+                            ],
+                            "Group": {
+                              "repeatability": 999999,
+                              "elements": [
+                                {
+                                  "type": "Field",
+                                  "id": "field_82894",
+                                  "name": "v",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Value"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Wert"
+                                      }
+                                    ],
+                                    "requirednessConfig": {
+                                      "mode": "absoluteOrRelativeToNextRepAncestor"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "group_db17f",
+                            "name": "exclusions",
+                            "internalDescription": [
+                              {
+                                "locale": "en",
+                                "text": "Hyphenation patterns"
+                              },
+                              {
+                                "locale": "de",
+                                "text": "Trennmuster"
+                              }
+                            ],
+                            "Group": {
+                              "repeatability": 999999,
+                              "elements": [
+                                {
+                                  "type": "Field",
+                                  "id": "field_aa248",
+                                  "name": "word",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    },
+                                    "requirednessConfig": {
+                                      "mode": "absoluteOrRelativeToNextRepAncestor"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Group",
+                                  "id": "group_0a0ed",
+                                  "name": "index",
+                                  "Group": {
+                                    "repeatability": 999999,
+                                    "elements": [
+                                      {
+                                        "type": "Field",
+                                        "id": "field_bb521",
+                                        "name": "v",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "NumberType"
+                                          },
+                                          "label": [
+                                            {
+                                              "locale": "en",
+                                              "text": "Value"
+                                            },
+                                            {
+                                              "locale": "de",
+                                              "text": "Wert"
+                                            }
+                                          ],
+                                          "requirednessConfig": {
+                                            "mode": "absoluteOrRelativeToNextRepAncestor"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_e90af",
+                "name": "customHyphenationExclusions",
+                "internalDescription": [
+                  {
+                    "locale": "en",
+                    "text": "Hyphenation patterns"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "Trennmuster"
+                  }
+                ],
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_b7864",
+                      "name": "word",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_cc220",
+                      "name": "index",
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_e502d",
+                            "name": "v",
+                            "Field": {
+                              "fieldType": {
+                                "type": "NumberType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Value"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Wert"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_a292f",
+                "name": "preventLineBreakRules",
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_2d289",
+                      "name": "pattern",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_cebcc",
+                "name": "orphan",
+                "Field": {
+                  "fieldType": {
+                    "type": "NumberType",
+                    "NumberType": {
+                      "minValue": 0,
+                      "maxValue": 10
+                    }
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_65e83",
+                "name": "widow",
+                "Field": {
+                  "fieldType": {
+                    "type": "NumberType",
+                    "NumberType": {
+                      "minValue": 0,
+                      "maxValue": 10
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

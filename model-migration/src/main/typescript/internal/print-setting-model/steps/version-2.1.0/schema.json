@@ -1,0 +1,151 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/PrintSettingModelDTO",
+  "definitions": {
+    "PrintSettingModelDTO": {
+      "type": "object",
+      "properties": {
+        "header": {
+          "$ref": "#/definitions/HeaderDTO"
+        },
+        "content": {
+          "$ref": "#/definitions/ContentDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "HeaderDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "modelType": {
+          "type": "string"
+        },
+        "modelVersion": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "modelType",
+        "modelVersion"
+      ],
+      "additionalProperties": false
+    },
+    "ContentDTO": {
+      "type": "object",
+      "properties": {
+        "settings": {
+          "$ref": "#/definitions/SettingsDTO"
+        },
+        "defaults": {
+          "$ref": "#/definitions/DefaultsDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SettingsDTO": {
+      "type": "object",
+      "properties": {
+        "fonts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FontsDTO"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "FontsDTO": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Enumeration_Fonts_TypeDTO"
+        },
+        "fallback": {
+          "type": "boolean"
+        },
+        "fontAttachment": {
+          "$ref": "#/definitions/FontAttachmentDTO"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "additionalProperties": false
+    },
+    "Enumeration_Fonts_TypeDTO": {
+      "type": "string",
+      "enum": [
+        "path",
+        "attachment"
+      ]
+    },
+    "FontAttachmentDTO": {
+      "type": "object",
+      "properties": {
+        "original_filename": {
+          "type": "string"
+        },
+        "internal_filename": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "attachment_id": {
+          "type": "string"
+        },
+        "size": {
+          "type": "number"
+        },
+        "mime_type": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "DefaultsDTO": {
+      "type": "object",
+      "properties": {
+        "fonts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FontsDTO_1"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "FontsDTO_1": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "fallback": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

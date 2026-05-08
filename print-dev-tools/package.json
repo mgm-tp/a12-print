@@ -1,0 +1,34 @@
+{
+  "name": "@com.mgmtp.a12.print/print-dev-tools",
+  "description": "The developer base configurations of the Print Engine",
+  "version": "3.2.3",
+  "license": "(EUPL-1.2 OR LicenseRef-commercial)",
+  "private": true,
+  "files": [
+    "eslint-config.js",
+    "eslint-config-react.js",
+    "eslint-config-redux.js",
+    "jest-config.js",
+    "package.json",
+    "prettier-config.js",
+    "tsconfig.json"
+  ],
+  "devDependencies": {
+    "@com.mgmtp.a12.devtools/tsconfig": "catalog:a12",
+    "@com.mgmtp.a12.devtools/eslint-config": "catalog:a12",
+    "@com.mgmtp.a12.devtools/prettier-config": "catalog:a12",
+    "@jambit/eslint-plugin-typed-redux-saga": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "@com.mgmtp.a12.devtools/tsconfig": "catalog:a12",
+    "@com.mgmtp.a12.devtools/eslint-config": "catalog:a12",
+    "@com.mgmtp.a12.devtools/prettier-config": "catalog:a12",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-plugin-prettier": "catalog:",
+    "eslint-plugin-unused-imports": "catalog:",
+    "prettier": "catalog:"
+  }
+}

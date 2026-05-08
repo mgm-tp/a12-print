@@ -1,0 +1,162 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+// content start
+This documentation is intended for a business analyst audience.
+
+= Introduction and Concepts
+
+The Print Model Editor is part of the Simple Model Editor and enables domain experts and analysts to create and modify Print Models. These models are designed to function as templates for generating PDF-documents from A12 Platform data.
+
+Print Models describe the layout, styling and content of the resulting PDF-documents.
+The Print Model Editor differentiates itself from a common text editor by its design around the insertion of _dynamic content_ from the A12 Platform.
+Print Models can facilitate simple data insertions as well as complex dynamic calculations based on the inserted data.
+Examples range from in-line text insertions and tables, to element repetition, rule-based element hiding and listings with completely customizable content and styles.
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Accessibility Hint*
+The Print Engine will generate PDF documents with tagged elements for accessibility software like screen readers, which are aligned with the standards PDF/UA and PDF/A-3a.
+
+However, to ensure that the resulting PDF document is fully compliant with these standards, the modeller must follow the accessibility hints provided in this documentation. These are mandatory for compliance; if they are not implemented, the PDF will not meet PDF/UA or PDF/A‑3a.
+====
+
+image::chapter01/01_print_editor_editing_view.png[Print Editor Editing View,title="The Print Model Editor"]
+
+
+== Installation
+The Print Model Editor is part of the Simple Model Editor.
+For advice on the installation of the Simple Model Editor, refer to the "Quick Start Guide" on getA12 under "Modeling".
+
+NOTE: To create or edit a Print Model, use the Simple Model Editor (SME) version `11.5.0` or higher, which is provided with the A12 version `2024.06-ext4` or higher.
+
+== Migrating Existing Models
+
+It might be necessary to migrate existing Print Models in case a new version of the Simple Model Editor and thus Print Model Editor has been installed.
+
+In most cases, the Simple Model Editor can handle updating versions itself.
+For more information, refer to the documentation of the Simple Model Editor.
+
+[NOTE]
+====
+Since Print Model version `2.1.0`, the SME handles the migration automatically.
+If a workspace in the SME contains old models that need to be migrated, an error will appear with prompting messages.
+Click the `Resolve All Issues` button to automatically update them.
+====
+
+[NOTE]
+====
+Print Model files older than version `2.1.0` must first be migrated using the Java-based print-shell tool.
+Follow the <<PrintShellMigration, print-shell migration instructions>>.
+====
+
+== Print Model [[PrintModelIntro]]
+A Print Model functions as a template for PDF-representations of inserted Documents.
+
+The resulting PDF-document structure is defined by the Segments modeled in the <<SegmentTab>>.
+
+The PDF can be further modified by modeling Sections and Watermarks in the <<SectionTab>> and the <<WatermarkTab>>.
+
+Text Styles defined in the <<TextStylesTab>> will also affect the final look and feel of the PDF-document.
+
+When modeling <<SegmentTab, Segments>>, <<SectionTab, Sections>> and <<WatermarkTab, Watermarks>>, Print Model Elements are used to define the content of the PDF-document.
+These Elements are added to the <<EditorStage>> and positioned in the millimeter grid. The individual settings of each element can be modeled as described in <<PrintModelElement>>.
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Accessibility Hint*
+
+Please be aware that it is currently not possible to manually define the reading order of elements for screen readers. However, if you need this ability in your project, please reach out to the Print Engine team, so that they can consider it for future updates.
+====
+
+Print Model elements can utilize references to data from  Document Models, allowing dynamic content to be displayed in the PDF.
+For this purpose, you can reference a Document Model in the <<SchemaTab>>.
+
+== Concepts
+=== Positioning & Layout [[PositioningLayout]]
+
+<<PrintModelElement, Print Model Elements>> are positioned on a millimeter grid.
+Each element has a user defined width and an initial height based on its pre-determined content.
+If an element contains dynamic content, its height can change, which means the content below the element might be pushed downwards.
+
+NOTE: The Print Model Editor millimeter grid might not have correct measures when measured on your display.
+The display measures are dependent on the type of your display and do not affect the resulting PDF-document.
+
+Based on their relative positions, elements define a so-called _bottom margin_.
+A value that defines the area below an element, that will be kept empty below the element when it comes to repositioning and element collisions.
+In some cases also a _top margin_ is necessary.
+
+==== Example
+
+In the <<MarginLayoutFigures, following figures>> a scenario is displayed, where both margins are necessary to keep the expected layout stable during the insertion of dynamic content.
+If the user places the elements *A*, *B*, *C* and *D* like in the left figure, the margins displayed in the right figure are created automatically by the editor.
+
+Each element has a _bottom margin_ that keeps the empty space between the elements stable.
+A top margin for element *B* is created, because element *A*'s bottom margin only extends to element *C*.
+This leaves the empty area between element *A* and element *B* partially uncovered.
+Therefore, a _top margin_ is created for element *B*, which covers this area.
+
+[cols="a,a",frame=none,grid=none]
+[[MarginLayoutFigures]]
+|===
+|
+image::chapter01/01_margin_layout_without_margins.png[Margin layout example,title="Margin layout example without displayed margins.",width=500]
+|
+image::chapter01/01_margin_layout_with_margins.png[Margin layout example with margins,title="Margin layout example with displayed margins.",width=500]
+|===
+
+=== Templates and Settings
+You can use Print Model References as <<PrintModelTemplates,Templates>> in other Print Models.
+This allows you to define regions with a set height and static layout, enabling the creation of Print Models that conform to various standards (e.g. DIN standards).
+
+The available Fonts can be centrally managed using a Print Settings Model. These fonts can then be easily selected in the Print Model when configuring <<TextStylesTab, Text Styles>>.
+
+=== Dynamic Content
+Print Model elements can utilize references to data from Document Models, allowing dynamic content to be displayed in the PDF.
+For this purpose, you can reference a Document Model in your Print Model.
+This allows you to use data from Documents based on this Document Model to add dynamic content in a variety of different ways:
+
+* Field References
+* Computations
+* Expressions
+
+The Print Model Elements such as Tables and Listings can be used to display repeatable data.
+When rendering the Preview, the repeatable data will cause rows to be automatically created based on the modeling settings that have been made.
+
+=== Preview [[PreviewIntro]]
+The <<Preview>> may be used to generate a PDF preview of your model.
+If dynamic content has been referenced in the model, you may select a Document to the Preview which will then be used as the source of the dynamic content.
+
+== Committing Changes [[CommittingChanges]]
+
+When using the PME, the editor works *directly* on the selected workspace.
+Changes to the workspace files are automatically reloaded by the PME.
+Changes in the PME are saved in temporary `.wal` files.
+These files function as the editors change history which is used by features like _Undo_ and _Redo_.
+
+Print Models with saved in a `.wal` file are marked in the Workspace Explorer of the Simple Model Editor with and Icon, "The model has uncommitted changes".
+
+To finalize made changes, a user can _commit_ them to the Print Model in the <<CommitChangesTab>>.
+This applies the changes to the Print Model, validates the resulting model and, if successful, deletes the `.wal` file and overwrites the Print Model in your workspace.
+
+[NOTE]
+====
+This procedure persists even temporary changes in case of system crashes, editor closing or validation problems.
+Every change a user makes is reflected directly in the workspace which is helpful during support requests and bug reports.
+When making such inquiries, please make sure to add your Print Model and any relevant `.wal` file.
+====
+

@@ -1,0 +1,146 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Text [[Text]]
+
+The Text element displays text in the resulting PDF.
+The content of the Text element can consist of static text and dynamic inline insertions:
+
+* <<Field, Field>>
+* <<Calculation, Calculation>>
+* <<PageNumber, Page Number>>
+
+[NOTE]
+====
+Page Number elements are only available on Text elements that are placed inside <<SectionTab, Sections>>.
+====
+
+The Text element content is defined using the rich text editor. The following settings are available in the header of the rich text editor.
+
+Bold:: Sets the formatting of the currently selected text to bold.
+Italic::  Sets the formatting of the currently selected text to italic.
+Underline:: Sets the formatting of the currently selected text to underlined.
+Color:: Sets the color of the currently selected text to the color displayed in the hexadecimal color code picker immediately to the right.
+Background Color:: Sets the color of the currently selected text to the color displayed in the hexadecimal color code picker immediately to the right.
+Field:: Adds the reference to a Field from a referenced Document Model using the <<Field>> Editor.
+Calculation:: Adds the result of a Calculation based on data from the Document using the <<Calculation>> Editor.
+Remove font size inline styles:: Removes any inline `font-size` styles from the text.
+This is useful when pasting content from external sources that override the standard styling.
+
+Additionally, the Text element is configurable using <<BorderProperties, Border Properties>> and a subset of the <<TextProperties, Text Properties>>.
+
+If all dynamic inline elements evaluate to an empty value, you have the option to hide the Text element. To enable this behavior, select the option `Hide this element if all nested entities are empty`.
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Accessibility Hint*
+
+For accessibility purposes, there are some recommendations when modeling Text elements:
+
+- use the correct semantic text style for headings and paragraphs, e.g. `Headline 2` can only be used as a subheading after `Headline 1`, etc.
+- avoid using italics or underlining
+- do not use text alignment "Justified"
+- ensure sufficient color contrast between text and background if you use custom colors
+- do not use text colors alone to convey information (e.g. red for errors), use icons or additional text instead
+- do not refer to other text segments by visual information only (for example, do not use "see below"). Instead, use links or spell out the headline of the respective paragraph (`See chapter 5.1 of this document`).
+- copying lists (as in `bullet-point list`) from other sources into the text editor does not create the correct semantic accessibility structure for lists in the output PDF. If you have this requirement in your project, please reach out to Print Engine team.
+====
+
+image::chapter03/03_text_detail_view.png[Text element detail view,title="Text element detail view"]
+
+== Field [[Field]]
+
+The Field element can insert the content of a Document Model Field instance into the resulting PDF document.
+The content of the selected Field instance will be evaluated and returned as a formatted string.
+The formatting of the string is determined by the Field Type settings below.
+
+Add a Field element by clicking on the "Field" Button in the rich text editor of a <<Text, Text>> element.
+
+Document Model:: Select a Document Model referenced in the <<SchemaTab, Schema Tab>>.
+Field:: Navigate to the desired field by expanding Groups in the selected Document Model then click on the Field
+Field Type:: The formatting can be modified based on the Field type of the instance, by selecting one of the following types:
++
+* *Text (no selection):* Displays the data of a Field instance as plain text without any formatting.
+* *HTML:* Formats a Field instance containing HTML content. HTML tags are processed and rendered in the resulting PDF.
+* *Date:* Formats a Date Field instance into a readable date format based on the locale. The formatting can be customized by defining a specific pattern for evaluation. For example, the pattern `YYYY.MM.dd` evaluates to e.g. `2025.02.17`, while the pattern `dd'th of' MMMM YYYY 'at' HH:mm 'o''clock'` evaluates to `17th of February 2025 at 13:54 o'clock`.
+* *Date range:* Formats a DateRange Field instance into a readable format based on the locale. The formatting of the start date, end date, and separator can be customized by defining an evaluation pattern.
++
+[NOTE]
+====
+You can find more thorough information about evaluation patterns for dates by clicking the Info Icon next to the pattern input field or by reading through the
+https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html[official Java documentation].
+====
++
+* *Checkbox:* Formats a Boolean Field instance based on its value. You can specify which value should be displayed for `true` and `false`.
++
+[NOTE]
+====
+To display special characters such as ☐ or ☑ as the display value for the checkbox type, ensure that the selected <<TextStylesTab, Text Style>> uses a font that supports these characters.
+The Print Model Editor provides the font <<DefaultFonts, Noto Sans Symbols>>, which is compatible with these symbols.
+====
+
+Suffix:: Model a suffix for the formatted string data.
+
+Click "Back" to return to the Text Editor.
+
+
+image::chapter03/03_field_detail_view.png[Field element detail view,title="Field detail view"]
+
+== Calculation [[Calculation]]
+
+The Calculation element can insert the result of a link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language] into the resulting PDF document.
+The Kernel Computation functions analog to computations in Document Models.
+If the <<Computations, Computation>> does not return a String, the result type of the computation must be explicitly defined by the user to allow the default formatting options to be applied.
+
+Add a Calculation by clicking on the "Calculation" Button in the rich text editor of a <<Text, Text>> element.
+
+CAUTION: The Calculation Element is not a replacement for Computations of Business data and does not provide the same Level of accuracy as Computations within a Document Model.
+
+
+Name:: The Name of the Calculation
+Document Model:: Select a Document Model referenced in the <<SchemaTab, Schema Tab>>.
+Field Type:: The result of the Calculation is, by default, assumed to be a String.
+If the result is of another type, the Field Type property needs to be set.
+The following Field Types are available using this configuration:
++
+* Boolean
+* Number
+* String
+* TypeDefinition
+[NOTE]
+====
+If TypeDefinition is selected, a TypeDefinition from the selected Document Model must be specified.
+====
+Formatting Type:: If a Field Type is specified, a Formatting Type may additionally be set.
+The options are similar to the String formatting options offered in the <<Field>>.
+Suffix:: Model a suffix for the formatted string data.
+
+Precondition and Operation:: A Computation Table is modeled as described in the  link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language] Documentation.
+
+Click "Back" to return to the Text Editor.
+
+image::chapter03/03_calculation_detail_view.png[Calculation element detail view,title="Calculation detail view"]
+
+== Page Number & Page Number Total [[PageNumber]]
+
+The Page Number element inserts the current page number into the resulting PDF document, while the Page Number Total inserts the total number of pages.
+
+Add a Page Number or Page Number Total by clicking on the respective Button in the rich text editor of a <<Text, Text>> element placed inside a <<SectionTab, Section>>.
+
+No further modeling is required.
+
+image::chapter03/03_page_and_page_total.png[Page number and Total page number,title="Page Number and Total Page Number in a Section"]

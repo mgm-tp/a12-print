@@ -1,0 +1,97 @@
+{
+  "header": {
+    "id": "DocumentModelRoot",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "annotations": [],
+    "modelReferences": [
+      {
+        "alias": "Include1",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "Include1"
+      },
+      {
+        "alias": "Include2",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "Include2"
+      }
+    ]
+  },
+  "content": {
+    "modelInfo": {
+      "name": "DocumentModelRoot",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "typeDefinitions": [
+      {
+        "id": "typedef_160fcb83-d7b9-490e-83ca-c3d7ec04411a",
+        "name": "TypeDefinition",
+        "fieldType": {
+          "type": "NumberType"
+        }
+      }
+    ],
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_19b30",
+          "name": "root",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Group",
+                "id": "include_c9483",
+                "name": "Include1",
+                "Group": {
+                  "repeatability": 1,
+                  "modelAlias": "Include1"
+                }
+              },
+              {
+                "type": "Group",
+                "id": "include_5b627",
+                "name": "Include2",
+                "Group": {
+                  "repeatability": 1,
+                  "modelAlias": "Include2"
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_4fcb0",
+                "name": "field",
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_160fcb83-d7b9-490e-83ca-c3d7ec04411a"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

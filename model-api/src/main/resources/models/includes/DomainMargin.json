@@ -1,0 +1,179 @@
+{
+  "header": {
+    "id": "DomainMargin",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "DomainMeasure",
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "DomainMeasure"
+      }
+    ]
+  },
+  "content": {
+    "modelInfo": {
+      "name": "DomainMargin",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_d702b",
+          "name": "margin",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_fe128",
+                "name": "id",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_edc1b",
+                "name": "type",
+                "Field": {
+                  "fieldType": {
+                    "type": "EnumerationType",
+                    "EnumerationType": {
+                      "values": [
+                        {
+                          "value": "Implicit",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "Implicit"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "Implizit"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "Explicit",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "Explicit"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "Explizit"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_47e0b",
+                "name": "idFilled",
+                "Rule": {
+                  "errorEntityRelPath": "../margin/id",
+                  "errorCode": "Error rule_47e0b",
+                  "errorCondition": "GroupFilled(RuleGroup)\nAnd FieldNotFilled(id)",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "The Id is required."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Die id muss angegeben werden."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_de9eb",
+                "name": "typeFilled",
+                "Rule": {
+                  "errorEntityRelPath": "../type",
+                  "errorCode": "Error rule_de9eb",
+                  "errorCondition": "GroupFilled(RuleGroup)\nAnd FieldNotFilled(type)",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "The type is required."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Die Typ muss angegeben werden."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_219a2",
+                "name": "marginFilled",
+                "Rule": {
+                  "errorEntityRelPath": "../margin/id",
+                  "errorCode": "Error rule_219a2",
+                  "errorCondition": "GroupFilled(RuleGroup)\nAnd GroupNotFilled(margin)",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "The margin value is required."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Der Rand muss angegeben werden."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "include_5fabd",
+                "name": "margin",
+                "Group": {
+                  "repeatability": 1,
+                  "modelAlias": "DomainMeasure"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

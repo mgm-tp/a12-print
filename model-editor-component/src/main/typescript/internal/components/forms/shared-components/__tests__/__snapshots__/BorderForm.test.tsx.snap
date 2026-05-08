@@ -1,0 +1,491 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BorderForm renders correctly 1`] = `
+.c6 {
+  color: #4d4d4d;
+  display: inline-block;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-transform: none;
+  margin: 0 0 4px 0;
+  align-self: center;
+}
+
+.c6:empty {
+  display: none;
+}
+
+.c12 {
+  align-items: center;
+  background-color: #e2e6e9;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  color: inherit;
+  display: flex;
+  flex-shrink: 0;
+  flex-grow: 1;
+  font-size: 0.75rem;
+  height: 100%;
+  justify-content: center;
+  min-width: 32px;
+  padding: 0 4px;
+}
+
+.c10 {
+  align-items: center;
+  background-color: transparent;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  min-width: 32px;
+  margin-left: -12px;
+}
+
+.c10:last-child {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.c10 .c11 {
+  margin: 0 0 0 12px;
+}
+
+.c9 {
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.45;
+  outline: none;
+  padding: 0 12px;
+  text-align: right;
+  text-overflow: ellipsis;
+  text-transform: inherit;
+  min-width: 0;
+  width: 100%;
+}
+
+.c9::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c19 {
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.45;
+  outline: none;
+  padding: 0 12px;
+  text-align: inherit;
+  text-overflow: ellipsis;
+  text-transform: inherit;
+  min-width: 0;
+  width: 100%;
+}
+
+.c19::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c7 {
+  background-color: #f1f2f4;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 1px 0 0 #596673;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  outline: 1px solid transparent;
+  height: 32px;
+}
+
+.c0 {
+  display: inline-flex;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex-direction: column;
+  display: flex;
+  width: 100%;
+}
+
+.c0 .c1 {
+  display: flex;
+  width: 100%;
+}
+
+.c0 * {
+  max-width: 100%;
+}
+
+.c4 {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.c4 >.StyledTooltipWrapper-sc-bqyqat {
+  margin: 0 4px 4px 0;
+}
+
+.c4 .c5 {
+  display: block;
+  width: fit-content;
+}
+
+.c13 {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.c13[data-role="checkbox-group"] .c5,
+.c13[data-role="radio-group"] .c5,
+.c13[data-role="file-upload"] .c5 {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.c13[data-role="checkbox-group"] .c5 ~.StyledTooltipWrapper-sc-bqyqat,
+.c13[data-role="radio-group"] .c5 ~.StyledTooltipWrapper-sc-bqyqat,
+.c13[data-role="file-upload"] .c5 ~.StyledTooltipWrapper-sc-bqyqat {
+  margin: 0 0 4px 0;
+}
+
+.c2 {
+  display: inline-flex;
+}
+
+.c2 .c3 {
+  flex-basis: 160px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.c8 {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 0;
+}
+
+.c16 {
+  appearance: none;
+  background-color: inherit;
+  -moz-appearance: none;
+  border: none;
+  border-radius: 0;
+  caret-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  height: 100%;
+  padding: 0 12px;
+  padding-right: 32px;
+  text-align: inherit;
+  text-transform: inherit;
+  width: 100%;
+  cursor: pointer;
+}
+
+.c16.c16.c16 {
+  outline: 1px solid transparent;
+}
+
+.c16::selection {
+  background-color: transparent;
+}
+
+.c16::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c14 {
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  height: 32px;
+}
+
+.c14:focus {
+  outline: none;
+}
+
+.c15 {
+  background-color: #f1f2f4;
+  border-radius: inherit;
+  box-shadow: 0 1px 0 0 #596673;
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+}
+
+.c15:focus-within {
+  box-shadow: 0 2px 0 0 #d50075;
+  outline-offset: 0;
+  outline: 1px dotted #333;
+}
+
+.c18:after {
+  align-items: center;
+  color: #7F8C9B;
+  content: "\\e313";
+  display: flex;
+  font-family: "Material Icons";
+  font-size: 1.5rem;
+  font-style: normal;
+  justify-content: center;
+  height: 100%;
+  line-height: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  text-transform: none;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  word-wrap: normal;
+}
+
+.c17 {
+  appearance: none;
+  font-style: normal;
+  color: #4d4d4d;
+  font-size: inherit;
+}
+
+.c17:focus {
+  border: none;
+}
+
+@media (pointer: coarse) {
+  .c7:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c7:hover {
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c15:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c15:hover {
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c17:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #d50075;
+    color: #fff;
+  }
+}
+
+@media (pointer: fine) {
+  .c17:hover {
+    background-color: #d50075;
+    color: #fff;
+  }
+}
+
+<div>
+  <div>
+    <div
+      class="c0 field-wrapper field-wrapper--block"
+      data-role="textline"
+    >
+      <div
+        class="c1 c2 field__main"
+      >
+        <div
+          class="c3 c4 field"
+          data-role="textline-control"
+        >
+          <label
+            class="c5 c6 label field__label"
+            data-role="textline-label"
+          >
+            Border Width
+          </label>
+          <div
+            class="c7 field__input"
+            data-role="textline-input-wrapper"
+          >
+            <span
+              class="c8 supported-unseen-span"
+            />
+            <input
+              class="c9 field__text field__text--align-right"
+              data-role="textline-input"
+              min="0"
+              step="0.5"
+              type="number"
+              value=""
+            />
+            <span
+              class="c8 supported-unseen-span"
+            />
+            <div
+              class="c10 field__suffix field__suffix--first -u-background-transparent"
+              data-role="textline-suffix-0"
+            >
+              <div
+                class="c11 c12 field__affix-text"
+                data-role="textline-text-affix"
+                title="pt"
+              >
+                <span>
+                  pt
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="c3 c13 field field--tooltips field--tooltips-2 field--block"
+      data-role="select"
+    >
+      <label
+        class="c5 c6 label field__label"
+        data-role="select-label"
+      >
+        Border Style
+      </label>
+      <div
+        class="c14 field__select"
+        data-role="select-control"
+      >
+        <div
+          class="c15 field__select-wrapper"
+          data-role="select-wrapper"
+        >
+          <select
+            class="c16 field__selectTitle"
+            data-role="select-input"
+          >
+            <option
+              class="c17 field__selectOption"
+              data-role="select-option"
+              value=""
+            >
+              None
+            </option>
+            <option
+              class="c17 field__selectOption"
+              data-role="select-option"
+              value="Solid"
+            >
+              Solid
+            </option>
+            <option
+              class="c17 field__selectOption"
+              data-role="select-option"
+              value="Dotted"
+            >
+              Dotted
+            </option>
+            <option
+              class="c17 field__selectOption"
+              data-role="select-option"
+              value="Dashed"
+            >
+              Dashed
+            </option>
+          </select>
+          <span
+            aria-hidden="true"
+            class="c18 field__select-arrow"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="c0 field-wrapper field-wrapper--block"
+      data-role="textline"
+    >
+      <div
+        class="c1 c2 field__main"
+      >
+        <div
+          class="c3 c4 field"
+          data-role="textline-control"
+        >
+          <label
+            class="c5 c6 label field__label"
+            data-role="textline-label"
+            for="borderColor"
+            id="borderColor-label"
+          >
+            Border Color
+          </label>
+          <div
+            class="c7 field__input"
+            data-role="textline-input-wrapper"
+          >
+            <span
+              class="c8 supported-unseen-span"
+            />
+            <input
+              class="c19 field__text"
+              data-role="textline-input"
+              id="borderColor"
+              type="color"
+              value="#ffffff"
+            />
+            <span
+              class="c8 supported-unseen-span"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

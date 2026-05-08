@@ -1,0 +1,46 @@
+{
+  "general": {
+    "repeatable": [
+      {
+        "string_field": "ROW A",
+        "integer_field": 5,
+        "boolean_field": true,
+        "nested": {
+          "nested_field": "Nested A"
+        }
+      },
+      {
+        "string_field": "ROW B",
+        "integer_field": 7,
+        "boolean_field": false,
+        "nested": {
+          "nested_field": "Nested B"
+        }
+      },
+      {
+        "string_field": "ROW C",
+        "integer_field": 9,
+        "boolean_field": true,
+        "nested": {
+          "nested_field": "Nested C"
+        }
+      },
+      {
+        "string_field": "ROW D",
+        "integer_field": 63.23,
+        "boolean_field": true,
+        "nested": {
+          "nested_field": "Nested D"
+        }
+      },
+      {
+        "string_field": "ROW Z",
+        "integer_field": 99999,
+        "boolean_field": false,
+        "nested": {
+          "nested_field": "Nested Z"
+        }
+      }
+    ]
+  }
+}

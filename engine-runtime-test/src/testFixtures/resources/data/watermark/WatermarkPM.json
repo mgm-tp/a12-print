@@ -1,0 +1,434 @@
+{
+  "header": {
+    "id": "WatermarkPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "WatermarkDM"
+      }
+    ],
+    "description": "Description"
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "ac6b8a30",
+        "titleComputation": [
+          {
+            "id": "OaP__XaJHgfyCbECC4PqU",
+            "operation": "\"PrintModel-with-watermark\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "WvCaBmPbRcvE_tC0t7F1o",
+            "operation": "\"Description\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "CHXzbNj_8pSoI1pMeiuDA",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "840bxAKYnC9TBBI3X4RiT",
+            "operation": "\"Print Model Editor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "7f24a326",
+        "fontSize": 12
+      },
+      "runtimeVariables": [],
+      "textStyles": [],
+      "structure": [
+        {
+          "id": "huV1t1kI_z3bQRBfJjlw_"
+        },
+        {
+          "id": "V8cnpcs3-yBntocVlYpH5"
+        }
+      ],
+      "sections": [],
+      "watermarks": [
+        {
+          "id": "Aq8EjCRY2PN1Mh2DnZ-yo"
+        },
+        {
+          "id": "WG02enwooJgILFgZGCUUh"
+        }
+      ]
+    },
+    "segments": {
+      "id": "71c50145",
+      "definitions": [
+        {
+          "id": "huV1t1kI_z3bQRBfJjlw_",
+          "title": "Segment 1",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "X-z4unkGogAxJRfN6PPkm",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "IqSlof1SKZqxW3W70cdLP",
+              "refId": "HsCTtHFzXAmBiNakS-Yn5",
+              "position": {
+                "id": "IqBOh-LMApVuE4CnmlKPE",
+                "x": {
+                  "id": "IBD4SOV0rtB1iaQ19Rk2H",
+                  "value": 99,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "oZSHThIfqlJZSX9vZduf9",
+                  "value": 316,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "HUYJ_2Ags3op4yUJttMBr",
+                "minWidth": {
+                  "id": "CsZSzn_nv70Jyq7pYcmY-",
+                  "value": 36,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ea_3CJ0RmBp-bDvBksCiq",
+                  "value": 6,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "El1-MMG8OPRCwiMsWeLEi",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "oAp_sYvTalEmZSiOkW-rX",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        },
+        {
+          "id": "V8cnpcs3-yBntocVlYpH5",
+          "title": "Segment 2",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "kIhGWP6r1Xf0ehj57-ZHs",
+            "pageOrientation": "Landscape"
+          },
+          "elementReferences": [
+            {
+              "id": "65xTsVFEvg8OPOc7iNGjC",
+              "refId": "mUfHHK6ldFvKqUgZCekfh",
+              "position": {
+                "id": "0aor7xtb1itw_yn4bySCy",
+                "x": {
+                  "id": "wUYLXaJzUUqCZuTpg1EoC",
+                  "value": 129,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "IRBM-8mv-8YQs9UeJneq1",
+                  "value": 227,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "vCQ6naVjWRt3SaZdh0t2-",
+                "minWidth": {
+                  "id": "0ce4nPPuKs_8wgzIvmCrD",
+                  "value": 39,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "WYBEx82tWtoMPr-l8egn7",
+                  "value": 6,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "2zeHA83lvLaRlPi7VZNHt",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "cHCCOEWkTfURnFPg3yIKQ",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "watermarks": {
+      "id": "tZktfrgEZ6md8I2UJjLse",
+      "definitions": [
+        {
+          "id": "Aq8EjCRY2PN1Mh2DnZ-yo",
+          "title": "Watermark Portrait",
+          "pageOrientation": "Portrait",
+          "conditions": [
+            {
+              "id": "8pIsZ_FhK5qjVYNXEq0T9",
+              "precondition": "[WatermarkDM/general/enabled1]"
+            },
+            {
+              "id": "wBY9FmEVRV9_ROznCbhPI",
+              "precondition": "[WatermarkDM/general/enabled2]"
+            }
+          ],
+          "elementReferences": [
+            {
+              "id": "-Alp9KzZLQRV4M9oNNRWm",
+              "refId": "ohn4-tj4E8I-gXINbODCw",
+              "position": {
+                "id": "9Jk5LrWeraBfQWaTqgDoS",
+                "x": {
+                  "id": "mjy-abdjoXATLwX9G4fhL",
+                  "value": 71,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "Hu2BjaCJ7gE_wffcVKwoK",
+                  "value": 282,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "T-eOJGJ8WRwMZoppPJsFl",
+                "minWidth": {
+                  "id": "jyTIBnsjFZ2fRKJS6qgKp",
+                  "value": 16,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "bcZXC4WZMwKRHO2z3kMNV",
+                  "value": 6,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "5MJA3M4dj4ROkiNmxG5GN",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "zrLALH3_ygNqeTdjxbUIS",
+                "source": "DEFAULT",
+                "path": "/content/watermarks/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ]
+        },
+        {
+          "id": "WG02enwooJgILFgZGCUUh",
+          "title": "Watermark Landscape",
+          "pageOrientation": "Landscape",
+          "conditions": [
+            {
+              "id": "ObjfgOuw5iTklObva2TIC",
+              "precondition": "[WatermarkDM/general/enabled1]"
+            }
+          ],
+          "elementReferences": [
+            {
+              "id": "u9TyY-d3p9OCUJ5tBB9zZ",
+              "refId": "NuWLGJRpf9V1Jv5nYFPzc",
+              "position": {
+                "id": "P6KuZqiu1AJpZk1xiGkNJ",
+                "x": {
+                  "id": "ZTjdz4cnlAh6rlhYKqw7O",
+                  "value": 110,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "duYUc7Y3IBsEtvhK3kK7l",
+                  "value": 197,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "8tzsLlbLBo2QeTqcT3OiJ",
+                "minWidth": {
+                  "id": "QzZO3ukruZJ6z8KECSTBR",
+                  "value": 17,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "vvrP5ElEGRNjJ2mTATL0x",
+                  "value": 6,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "9Un429-s2cMGIVahzQkPF",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "8HFASuMd9V74fyCbKVME-",
+                "source": "DEFAULT",
+                "path": "/content/watermarks/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "elementDefinitions": [
+      {
+        "id": "HsCTtHFzXAmBiNakS-Yn5",
+        "type": "Text",
+        "text": {
+          "id": "GTiov1CCFkHqU6p5TrDeI",
+          "text": "<p><span style=\"\">Portrait</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "68pQHSp-OlXnHGOITa-7D",
+          "textStyleId": {
+            "id": "RnVtUkXDubXQd2fBtSKBz",
+            "source": "INPUT",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "WtivWnZ9A3FPbhHDks1bw",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        }
+      },
+      {
+        "id": "mUfHHK6ldFvKqUgZCekfh",
+        "type": "Text",
+        "text": {
+          "id": "nkSInE69nNhHKrIgCI27j",
+          "text": "<p><span style=\"\">Landscape</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "lNlj-V13FdVGrcd3puj6X",
+          "textStyleId": {
+            "id": "2Q5s-20i8tlhfSJpOGdh0",
+            "source": "INPUT",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "TmKgbywqqgD-jeuSfVwPT",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        }
+      },
+      {
+        "id": "ohn4-tj4E8I-gXINbODCw",
+        "type": "Text",
+        "text": {
+          "id": "BAtoroowc4CDTtsXdxdTZ",
+          "text": "<p><span entity-id=\"uM8zICNPgu6ERHPD_VIxF\" entity-type=\"Field\"><span style=\"\">WatermarkDM/general/portraitWatermarkContent</span></span></p>",
+          "entities": [
+            {
+              "id": "5fd_WzM85W50PZOamkZCZ",
+              "refId": "uM8zICNPgu6ERHPD_VIxF"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "42o39T3MBRWMezG-i1IJo",
+          "textStyleId": {
+            "id": "s8ZDio3IscUARmfnXV-z5",
+            "source": "INPUT",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "g0zIUvyOkI8vNwat_RKv4",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        }
+      },
+      {
+        "id": "uM8zICNPgu6ERHPD_VIxF",
+        "type": "Field",
+        "field": {
+          "id": "L9wPURSxCaW9wodhmM0xv",
+          "model": "WatermarkDM",
+          "path": "/general/portraitWatermarkContent"
+        }
+      },
+      {
+        "id": "NuWLGJRpf9V1Jv5nYFPzc",
+        "type": "Text",
+        "text": {
+          "id": "qMFlpD6mgQAMP2K6VBn14",
+          "text": "<p><span entity-id=\"W-GDdqyTu21WGnmnlrZSN\" entity-type=\"Field\"><span style=\"\">WatermarkDM/general/landscapeWatermarkContent</span></span></p>",
+          "entities": [
+            {
+              "id": "Fyyv8sTcUbKkbR2q_iwlp",
+              "refId": "W-GDdqyTu21WGnmnlrZSN"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "E27qPAlH7fRr1NogWPBZK",
+          "textStyleId": {
+            "id": "8uUPPw7YDn-baq3mAFLPx",
+            "source": "INPUT",
+            "value": "no-text-style-fallback-id",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "Mcm7oQ3-kmwEfYXwEo79f",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        }
+      },
+      {
+        "id": "W-GDdqyTu21WGnmnlrZSN",
+        "type": "Field",
+        "field": {
+          "id": "bzI4bHIsFh6R_HD08vp34",
+          "model": "WatermarkDM",
+          "path": "/general/landscapeWatermarkContent"
+        }
+      }
+    ]
+  }
+}

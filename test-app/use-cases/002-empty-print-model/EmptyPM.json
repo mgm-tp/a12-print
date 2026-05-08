@@ -1,0 +1,85 @@
+{
+  "header": {
+    "id": "EmptyPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "description": "Description",
+    "annotations": [
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "labels": [],
+    "locales": [],
+    "modelReferences": []
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "fKBGowNecWwYwyjUUZP0e",
+        "titleComputation": [
+          {
+            "id": "fxv86oIQKsNbuvf3ev1Xo",
+            "operation": "\"EmptyPM\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "JHYCNj0oGFpcfjrk7rLxk",
+            "operation": "\"Description\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "h_bE5qTE5DB77sIWyYG_A",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "IMpjKtanEXkVG4ZsclNuv",
+            "operation": "\"Print Model Editor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "GuXCsLchEFNNTDEQVimgl",
+        "fontSize": 12
+      },
+      "structure": [
+        {
+          "id": "cc9JQ_0XCG7a8VSsGuA6F"
+        }
+      ],
+      "sections": [],
+      "watermarks": [],
+      "runtimeVariables": [],
+      "textStyles": []
+    },
+    "segments": {
+      "id": "zAu4sPNTA5y7YJoHfDynt",
+      "definitions": [
+        {
+          "id": "cc9JQ_0XCG7a8VSsGuA6F",
+          "title": "Segm",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "XkmlLZZmiGmjJUBRv5EVx",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": []
+  }
+}

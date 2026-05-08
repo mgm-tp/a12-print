@@ -1,0 +1,130 @@
+{
+  "header": {
+    "id": "MetadataPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "en"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "MetadataDM",
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "MetadataDM"
+      }
+    ],
+    "description": "Metadata Computation Test"
+  },
+  "content": {
+    "id": "ID_27f21fb2-69dc-43fe-ba43-62eb9f384a65",
+    "general": {
+      "id": "ID_61d92717-eaa1-42f7-bb67-490b43cb158a",
+      "metadata": {
+        "id": "ID_e6a7ad8f-0ad5-4922-a626-bdd4c80690c7",
+        "model": "MetadataDM",
+        "titleComputation": [
+          {
+            "id": "dbv6wl78DcxsKdA3Y_SR1",
+            "precondition": "FieldFilled(MetadataDM/general/title_field)",
+            "operation": "[MetadataDM/general/title_field]"
+          },
+          {
+            "id": "dbv6wl78DcxsKdA3Y_SR2",
+            "precondition": "FieldNotFilled(MetadataDM/general/title_field)",
+            "operation": "\"Fallback Title\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "m7NeC3ecRvJvBTmrVIbwp",
+            "precondition": "FieldFilled(MetadataDM/general/description_field)",
+            "operation": "[MetadataDM/general/description_field]"
+          },
+          {
+            "id": "m7NeC3ecRvJvBTmrVIbwq",
+            "precondition": "FieldNotFilled(MetadataDM/general/description_field)",
+            "operation": "\"Fallback Description\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "w4xjqFog-Lj0A9oNdqQ_T",
+            "precondition": "FieldNotFilled(MetadataDM/general/author_field)",
+            "operation": "\"Fallback Author\""
+          },
+          {
+            "id": "w4xjqFog-Lj0A9oNdqQ_U",
+            "precondition": "FieldFilled(MetadataDM/general/author_field)",
+            "operation": "[MetadataDM/general/author_field]"
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "dlJXA8dUr5Pp9e6T7S5cL",
+            "precondition": "FieldNotFilled(MetadataDM/general/language_field)",
+            "operation": "\"de-DE\""
+          },
+          {
+            "id": "dlJXA8dUr5Pp9e6T7S5cM",
+            "precondition": "FieldFilled(MetadataDM/general/language_field)",
+            "operation": "[MetadataDM/general/language_field]"
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "ID_4321cfac-3b17-46da-8cbb-c2e43ba815dc",
+        "fontSize": 12,
+        "model": "MetadataDM"
+      },
+      "runtimeVariables": [],
+      "textStyles": [],
+      "structure": [
+        {
+          "id": "ID_b8511363-5197-4985-94d2-ba38da7570d7"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "ID_a9cbd43b-1c35-454f-ad86-7b31dad07771",
+      "definitions": [
+        {
+          "id": "ID_b8511363-5197-4985-94d2-ba38da7570d7",
+          "title": "Deckblatt",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "ID_daf0cb91-4f85-4db7-8c99-1f3025ab7f02",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [],
+    "textStyles": {
+      "id": "ID_382dbe3c-9adc-42d2-9fe3-3a79e701b0ca",
+      "definitions": []
+    }
+  }
+}

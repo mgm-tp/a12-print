@@ -1,0 +1,8 @@
+{
+	"$schema": "./node_modules/@com.mgmtp.a12.migrationtool/migrationtool-utils/config.schema.json",
+	"stepsDirPath": "./src/main/typescript/internal/typesetting-model/steps",
+	"referenceModelPath": "./node_modules/@com.mgmtp.a12.print/print-typesetting/src/main/typescript/internal/api/generated/dto/TypesettingModelDTO.ts",
+	"stepModelFileName": "typesetting-model.ts",
+	"modelInterfaceName": "TypesettingModelDTO",
+	"persistentSchema": true
+}

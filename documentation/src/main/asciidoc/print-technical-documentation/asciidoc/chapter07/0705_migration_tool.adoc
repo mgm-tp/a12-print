@@ -1,0 +1,87 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Migration Tool
+
+== For Print Model Version 2.1.0 and Later [[migration-with-node, migrate model with Node]]
+To migrate Print Model files, first install the latest version of the migration tool
+
+[source, bash]
+----
+pnpm install -g @com.mgmtp.a12.print/print-model-migration
+----
+
+Then run the following command to perform the migration
+
+[source, bash]
+----
+print-model-migration <path to print model file or directory> --backup
+----
+
+_Examples_
+
+[source, bash]
+----
+# file
+print-model-migration my-print-model.json --backup
+
+# current folder
+print-model-migration . --backup
+----
+
+
+*Note*
+
+- If `<path to print model file or directory>` is a directory, the migration tool will recursively search for Print Model files to migrate.
+- If Print Model files are not under version control, use `--backup` (alias `-b`) flag to create backups for model files. This flag is optional.
+- Use `--help` (alias `-h`) flag to show all available options.
+
+== For Print Model Version Earlier Than 2.1.0
+
+=== Step 1: Migrate Model to Version 2.1.0 Using Java Based Tool
+
+To migrate Print Model, first download the Java based tool
+
+CAUTION: Since with release 2.1.0 we introduce a new typescript based migration tool to align with overall A12 standards. The print-shell migration will no longer validate and pretty print starting from version 3.0.0. To ensure the same output as prior versions, you need to run the print-shell migration and then the typescript migration in order to migrate to the latest version. In releases after 2.1.0, only the typescript migration will be relevant.
+
+Then migrate Print Model by executing the downloaded tool as follows
+
+[source, bash]
+----
+java -jar print-shell-2.1.3.jar migrate [OPTIONS]
+----
+
+_Examples_
+
+[source, bash]
+----
+# relative path
+java -jar print-shell-2.1.3.jar migrate --workspace foldername --overwrite false
+
+# absolute path
+java -jar print-shell-2.1.3.jar migrate --workspace C:\Test\check\foldername --overwrite false
+----
+
+*Note*
+
+- Use `migrate --help` (alias `-h`) flag to show all available options.
+- If Print Model files are not under version control, use `--overwrite false` (alias `-b`) flag to keep the original model files. This flag is optional.
+- You can use the print-shell in interactive mode by just running the jar file and entering commands after startup. You can find more about the features of the print-shell in the modeling documentation of Print Engine.
+
+=== Step 2: Migrate Model to Current Version Using Node Based Tool
+
+See <<migration-with-node>>.

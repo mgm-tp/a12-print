@@ -1,0 +1,55 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Switch [[Switch]]
+
+The Switch element is a container element similar to <<Area, Area>> and <<BoundingBox, BoundingBox>>. It provides the ability to group elements in a specific region.
+
+This is an advanced container that dynamically controls the visibility of enclosed <<Area, Area>> elements based on specified preconditions.
+
+To access the <<SwitchCases, Switch Cases>>, hover over the Area and click the revealed "Edit" button in the top right-hand corner of the Area.
+
+[CAUTION]
+====
+It is not allowed to set <<BorderProperties, Border Properties>> on the Switch and a DataContext on the <<Area, Area>> Case.
+====
+
+image::chapter03/03_switch_properties.png[Switch element properties,title="Switch element properties"]
+
+== Switch Cases [[SwitchCases]]
+
+Preconditions and associated <<Area, Area>> Elements are added by clicking on "Add".
+These preconditions are written as <<Computations>> in the link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language] syntax.
+
+Leave the Switch Cases View by clicking on the desired level in the Breadcrumb navigation displayed in the top left-hand corner.
+
+Precondition:: When a precondition evaluates to _True_, the corresponding Area element becomes visible as the same Switch position.
++
+If the precondition evaluates to _False_, the Area element is hidden.
++
+If all preconditions evaluate to _False_, the Switch is hidden as well.
++
+[NOTE]
+====
+It is possible that there are multiple cases visible at the same time.
+====
+
+Elements:: An <<Area, Area>> with the dimensions of the Switch is created for each Precondition.
+Refer to the <<Area, Area>> Element for more details on how to edit these.
+
+
+image::chapter03/03_switch_cases.png[Switch cases detail,title="Switch cases detail"]

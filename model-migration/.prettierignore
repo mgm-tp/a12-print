@@ -1,0 +1,5 @@
+# Don't pretty complied folder
+/lib
+
+# Don't pretty generated interfaces
+/src/main/typescript/internal/steps/**/print-model.ts

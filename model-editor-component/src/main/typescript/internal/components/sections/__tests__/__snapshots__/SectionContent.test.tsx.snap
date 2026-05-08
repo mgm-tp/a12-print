@@ -1,0 +1,1314 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SectionContent with initial sections should render correctly 1`] = `
+.c5 {
+  -webkit-clip-path: inset(100%);
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px!important;
+  min-height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+
+.c5 * {
+  width: 1px;
+  height: 1px;
+}
+
+.c14 {
+  -webkit-clip-path: inset(100%);
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px!important;
+  min-height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+  display: none;
+}
+
+.c14 * {
+  width: 1px;
+  height: 1px;
+}
+
+.c4 {
+  box-sizing: border-box;
+  color: #7F8C9B;
+  display: inline-block;
+  direction: ltr;
+  font-family: Material Icons;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+}
+
+.c4 >span {
+  display: inline-block;
+}
+
+.c4.c4 {
+  max-width: unset;
+}
+
+.c20 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  height: 2rem;
+  min-height: 0;
+  padding: 0;
+  width: 2rem;
+  background: transparent;
+  color: #0568ae;
+}
+
+.c20 .c3 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c20 .c3 {
+  color: inherit;
+}
+
+.c20 .c3 {
+  font-size: inherit;
+}
+
+.c20:not(:disabled):focus {
+  outline: 1px dotted #333;
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.h_inlineBlock.h_middleAlign .c20.c20 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c20.c20 >.c3 {
+  display: block;
+}
+
+.c21 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  height: 2rem;
+  min-height: 0;
+  padding: 0;
+  width: 2rem;
+  background: transparent;
+  color: #0568ae;
+  background: transparent;
+  color: #c91d1d;
+}
+
+.c21 .c3 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c21 .c3 {
+  color: inherit;
+}
+
+.c21 .c3 {
+  font-size: inherit;
+}
+
+.c21:not(:disabled):focus {
+  outline: 1px dotted #333;
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.c21:not(:disabled):focus {
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.h_inlineBlock.h_middleAlign .c21.c21 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c21.c21 >.c3 {
+  display: block;
+}
+
+.c6 {
+  display: flex;
+  gap: 2px;
+}
+
+.c13 {
+  color: #4d4d4d;
+  display: inline-block;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-transform: none;
+  margin: 0 0 4px 0;
+  align-self: center;
+  -webkit-clip-path: inset(100%);
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px!important;
+  min-height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+
+.c13:empty {
+  display: none;
+}
+
+.c13 * {
+  width: 1px;
+  height: 1px;
+}
+
+.c17 {
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.45;
+  outline: none;
+  padding: 0 12px;
+  text-align: inherit;
+  text-overflow: ellipsis;
+  text-transform: inherit;
+  min-width: 0;
+  width: 100%;
+}
+
+.c17::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c15 {
+  background-color: #f1f2f4;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 1px 0 0 #596673;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  outline: 1px solid transparent;
+  height: 32px;
+}
+
+.c15 .c19 {
+  border-radius: 0;
+}
+
+.c7 {
+  display: inline-flex;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex-direction: column;
+  display: flex;
+  width: 100%;
+}
+
+.c7 .c8 {
+  display: flex;
+  width: 100%;
+}
+
+.c7 * {
+  max-width: 100%;
+}
+
+.c11 {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.c11 >.StyledTooltipWrapper-sc-bqyqat {
+  margin: 0 4px 4px 0;
+}
+
+.c11 .c12 {
+  display: block;
+  width: fit-content;
+}
+
+.c9 {
+  display: inline-flex;
+}
+
+.c9 .c10 {
+  flex-basis: 160px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.c16 {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 0;
+}
+
+.c1 {
+  border: none;
+  border-bottom: 1px solid #fff;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 12px;
+  background: #fff;
+  gap: 8px;
+}
+
+.c2 {
+  min-width: 70px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.c18 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.c0 {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (pointer: coarse) {
+  .c20:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c20:not(:disabled):hover {
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c20:hover {
+    outline: 1px solid transparent;
+  }
+}
+
+@media (pointer: coarse) {
+
+}
+
+@media (pointer: fine) {
+
+}
+
+@media (pointer: coarse) {
+  .c21:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c21:not(:disabled):hover {
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c21:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c21:not(:disabled):hover {
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c21:hover {
+    outline: 1px solid transparent;
+  }
+}
+
+@media (pointer: coarse) {
+
+}
+
+@media (pointer: fine) {
+
+}
+
+@media (pointer: coarse) {
+  .c15:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c15:hover {
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+      data-testid="section-card"
+    >
+      <div
+        class="c2"
+      >
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Portrait"
+        >
+          <span
+            aria-hidden="true"
+          >
+            description
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Portrait
+          </span>
+        </i>
+        <div
+          class="c6"
+          contenteditable="false"
+        />
+      </div>
+      <div
+        class="c7 field-wrapper field-wrapper--block"
+        data-role="textline"
+      >
+        <div
+          class="c8 c9 field__main"
+        >
+          <div
+            class="c10 c11 field"
+            data-role="textline-control"
+          >
+            <label
+              class="c12 c13 label field__label -u-unseenButRead"
+              data-role="textline-label"
+            >
+              <span
+                class="c14 -u-unseenButRead"
+                data-role="hidden-text"
+              >
+                Section title
+              </span>
+            </label>
+            <div
+              class="c15 field__input"
+              data-role="textline-input-wrapper"
+            >
+              <span
+                class="c16 supported-unseen-span"
+              />
+              <input
+                class="c17 field__text"
+                data-role="textline-input"
+                placeholder="Section title"
+                type="text"
+                value="First Portrait Section"
+              />
+              <span
+                class="c16 supported-unseen-span"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c18"
+      >
+        <button
+          aria-label="Open Editor"
+          class="c19 c20 button button--icon"
+          data-role="button"
+          data-type="icon"
+          title="Open Editor"
+          type="button"
+        >
+          <i
+            class="c3 c4 plasma-icon"
+            data-role="plasma-icon"
+          >
+            <span
+              aria-hidden="true"
+            >
+              square_foot
+            </span>
+          </i>
+        </button>
+        <button
+          aria-label="Delete"
+          class="c19 c21 button button--icon button--destructive"
+          data-role="button"
+          data-type="icon"
+          title="Delete"
+          type="button"
+        >
+          <i
+            class="c3 c4 plasma-icon"
+            data-role="plasma-icon"
+          >
+            <span
+              aria-hidden="true"
+            >
+              delete
+            </span>
+          </i>
+        </button>
+      </div>
+    </div>
+    <div
+      class="c1"
+      data-testid="section-card"
+    >
+      <div
+        class="c2"
+      >
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Portrait"
+        >
+          <span
+            aria-hidden="true"
+          >
+            description
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Portrait
+          </span>
+        </i>
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Remaining"
+        >
+          <span
+            aria-hidden="true"
+          >
+            repeat
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Remaining
+          </span>
+        </i>
+        <div
+          class="c6"
+          contenteditable="false"
+        />
+      </div>
+      <div
+        class="c7 field-wrapper field-wrapper--block"
+        data-role="textline"
+      >
+        <div
+          class="c8 c9 field__main"
+        >
+          <div
+            class="c10 c11 field"
+            data-role="textline-control"
+          >
+            <label
+              class="c12 c13 label field__label -u-unseenButRead"
+              data-role="textline-label"
+            >
+              <span
+                class="c14 -u-unseenButRead"
+                data-role="hidden-text"
+              >
+                Section title
+              </span>
+            </label>
+            <div
+              class="c15 field__input"
+              data-role="textline-input-wrapper"
+            >
+              <span
+                class="c16 supported-unseen-span"
+              />
+              <input
+                class="c17 field__text"
+                data-role="textline-input"
+                placeholder="Section title"
+                type="text"
+                value="Remaining Portrait Section"
+              />
+              <span
+                class="c16 supported-unseen-span"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c18"
+      >
+        <button
+          aria-label="Open Editor"
+          class="c19 c20 button button--icon"
+          data-role="button"
+          data-type="icon"
+          title="Open Editor"
+          type="button"
+        >
+          <i
+            class="c3 c4 plasma-icon"
+            data-role="plasma-icon"
+          >
+            <span
+              aria-hidden="true"
+            >
+              square_foot
+            </span>
+          </i>
+        </button>
+        <button
+          aria-label="Delete"
+          class="c19 c21 button button--icon button--destructive"
+          data-role="button"
+          data-type="icon"
+          title="Delete"
+          type="button"
+        >
+          <i
+            class="c3 c4 plasma-icon"
+            data-role="plasma-icon"
+          >
+            <span
+              aria-hidden="true"
+            >
+              delete
+            </span>
+          </i>
+        </button>
+      </div>
+    </div>
+    <div
+      class="c1"
+      data-testid="section-card"
+    >
+      <div
+        class="c2"
+      >
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Landscape"
+        >
+          <span
+            aria-hidden="true"
+          >
+            topic
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Landscape
+          </span>
+        </i>
+        <div
+          class="c6"
+          contenteditable="false"
+        />
+      </div>
+      <div
+        class="c7 field-wrapper field-wrapper--block"
+        data-role="textline"
+      >
+        <div
+          class="c8 c9 field__main"
+        >
+          <div
+            class="c10 c11 field"
+            data-role="textline-control"
+          >
+            <label
+              class="c12 c13 label field__label -u-unseenButRead"
+              data-role="textline-label"
+            >
+              <span
+                class="c14 -u-unseenButRead"
+                data-role="hidden-text"
+              >
+                Section title
+              </span>
+            </label>
+            <div
+              class="c15 field__input"
+              data-role="textline-input-wrapper"
+            >
+              <span
+                class="c16 supported-unseen-span"
+              />
+              <input
+                class="c17 field__text"
+                data-role="textline-input"
+                placeholder="Section title"
+                type="text"
+                value="First Landscape Section"
+              />
+              <span
+                class="c16 supported-unseen-span"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c18"
+      >
+        <button
+          aria-label="Open Editor"
+          class="c19 c20 button button--icon"
+          data-role="button"
+          data-type="icon"
+          title="Open Editor"
+          type="button"
+        >
+          <i
+            class="c3 c4 plasma-icon"
+            data-role="plasma-icon"
+          >
+            <span
+              aria-hidden="true"
+            >
+              square_foot
+            </span>
+          </i>
+        </button>
+        <button
+          aria-label="Delete"
+          class="c19 c21 button button--icon button--destructive"
+          data-role="button"
+          data-type="icon"
+          title="Delete"
+          type="button"
+        >
+          <i
+            class="c3 c4 plasma-icon"
+            data-role="plasma-icon"
+          >
+            <span
+              aria-hidden="true"
+            >
+              delete
+            </span>
+          </i>
+        </button>
+      </div>
+    </div>
+    <div
+      class="c1"
+      data-testid="section-card"
+    >
+      <div
+        class="c2"
+      >
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Landscape"
+        >
+          <span
+            aria-hidden="true"
+          >
+            topic
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Landscape
+          </span>
+        </i>
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Remaining"
+        >
+          <span
+            aria-hidden="true"
+          >
+            repeat
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Remaining
+          </span>
+        </i>
+        <div
+          class="c6"
+          contenteditable="false"
+        />
+      </div>
+      <div
+        class="c7 field-wrapper field-wrapper--block"
+        data-role="textline"
+      >
+        <div
+          class="c8 c9 field__main"
+        >
+          <div
+            class="c10 c11 field"
+            data-role="textline-control"
+          >
+            <label
+              class="c12 c13 label field__label -u-unseenButRead"
+              data-role="textline-label"
+            >
+              <span
+                class="c14 -u-unseenButRead"
+                data-role="hidden-text"
+              >
+                Section title
+              </span>
+            </label>
+            <div
+              class="c15 field__input"
+              data-role="textline-input-wrapper"
+            >
+              <span
+                class="c16 supported-unseen-span"
+              />
+              <input
+                class="c17 field__text"
+                data-role="textline-input"
+                placeholder="Section title"
+                type="text"
+                value="Remaining Landscape Section"
+              />
+              <span
+                class="c16 supported-unseen-span"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c18"
+      >
+        <button
+          aria-label="Open Editor"
+          class="c19 c20 button button--icon"
+          data-role="button"
+          data-type="icon"
+          title="Open Editor"
+          type="button"
+        >
+          <i
+            class="c3 c4 plasma-icon"
+            data-role="plasma-icon"
+          >
+            <span
+              aria-hidden="true"
+            >
+              square_foot
+            </span>
+          </i>
+        </button>
+        <button
+          aria-label="Delete"
+          class="c19 c21 button button--icon button--destructive"
+          data-role="button"
+          data-type="icon"
+          title="Delete"
+          type="button"
+        >
+          <i
+            class="c3 c4 plasma-icon"
+            data-role="plasma-icon"
+          >
+            <span
+              aria-hidden="true"
+            >
+              delete
+            </span>
+          </i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SectionContent with no initial sections should render correctly 1`] = `
+.c5 {
+  -webkit-clip-path: inset(100%);
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px!important;
+  min-height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+
+.c5 * {
+  width: 1px;
+  height: 1px;
+}
+
+.c4 {
+  box-sizing: border-box;
+  color: #7F8C9B;
+  display: inline-block;
+  direction: ltr;
+  font-family: Material Icons;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+}
+
+.c4 >span {
+  display: inline-block;
+}
+
+.c4.c4 {
+  max-width: unset;
+}
+
+.c7 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border: 2px solid transparent;
+  border-radius: 0;
+  padding: 0 8px;
+  position: relative;
+  background: transparent;
+  color: #0568ae;
+}
+
+.c7 .c3 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c7 .c3 {
+  color: inherit;
+}
+
+.c7:not(:disabled):focus {
+  outline: 1px dotted #333;
+  background-color: #fff;
+  box-shadow: none;
+  color: #d50075;
+  text-decoration: none;
+  border: 2px solid #d50075;
+}
+
+.h_inlineBlock.h_middleAlign .c7.c7 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c7.c7 >.c3 {
+  display: block;
+}
+
+.c6 {
+  display: flex;
+  gap: 2px;
+}
+
+.c1 {
+  border: none;
+  border-bottom: 1px solid #fff;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 12px;
+  background: #fff;
+  gap: 8px;
+}
+
+.c2 {
+  min-width: 70px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.c0 {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (pointer: coarse) {
+  .c7:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #fff;
+    box-shadow: none;
+    color: #d50075;
+    text-decoration: none;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c7:not(:disabled):hover {
+    background-color: #fff;
+    box-shadow: none;
+    color: #d50075;
+    text-decoration: none;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c7:hover {
+    outline: 1px solid transparent;
+  }
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+      data-testid="section-card"
+    >
+      <div
+        class="c2"
+      >
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Portrait"
+        >
+          <span
+            aria-hidden="true"
+          >
+            description
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Portrait
+          </span>
+        </i>
+        <div
+          class="c6"
+          contenteditable="false"
+        />
+      </div>
+      <button
+        aria-label="Add"
+        class="c7 button button--secondary"
+        data-role="button"
+        title="Add"
+        type="button"
+      >
+        Add
+      </button>
+    </div>
+    <div
+      class="c1"
+      data-testid="section-card"
+    >
+      <div
+        class="c2"
+      >
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Portrait"
+        >
+          <span
+            aria-hidden="true"
+          >
+            description
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Portrait
+          </span>
+        </i>
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Remaining"
+        >
+          <span
+            aria-hidden="true"
+          >
+            repeat
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Remaining
+          </span>
+        </i>
+        <div
+          class="c6"
+          contenteditable="false"
+        />
+      </div>
+      <button
+        aria-label="Add"
+        class="c7 button button--secondary"
+        data-role="button"
+        title="Add"
+        type="button"
+      >
+        Add
+      </button>
+    </div>
+    <div
+      class="c1"
+      data-testid="section-card"
+    >
+      <div
+        class="c2"
+      >
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Landscape"
+        >
+          <span
+            aria-hidden="true"
+          >
+            topic
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Landscape
+          </span>
+        </i>
+        <div
+          class="c6"
+          contenteditable="false"
+        />
+      </div>
+      <button
+        aria-label="Add"
+        class="c7 button button--secondary"
+        data-role="button"
+        title="Add"
+        type="button"
+      >
+        Add
+      </button>
+    </div>
+    <div
+      class="c1"
+      data-testid="section-card"
+    >
+      <div
+        class="c2"
+      >
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Landscape"
+        >
+          <span
+            aria-hidden="true"
+          >
+            topic
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Landscape
+          </span>
+        </i>
+        <i
+          class="c3 c4 plasma-icon"
+          data-role="plasma-icon"
+          title="Remaining"
+        >
+          <span
+            aria-hidden="true"
+          >
+            repeat
+          </span>
+          <span
+            class="c5 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Remaining
+          </span>
+        </i>
+        <div
+          class="c6"
+          contenteditable="false"
+        />
+      </div>
+      <button
+        aria-label="Add"
+        class="c7 button button--secondary"
+        data-role="button"
+        title="Add"
+        type="button"
+      >
+        Add
+      </button>
+    </div>
+  </div>
+</div>
+`;

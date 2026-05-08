@@ -1,0 +1,96 @@
+/*
+ * SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+ *
+ * Copyright (c) 2012-2026 mgm technology partners GmbH
+ *
+ * Dual License
+ * ------------
+ * This source file is part of the mgm A12 Platform and available under
+ * a choice of two different licenses:
+ *
+ * 1. Open-Source License - EUPL v1.2
+ *    You may redistribute and/or modify this file under the terms of the
+ *    European Union Public License, version 1.2 - see https://eupl.eu/.
+ *
+ * 2. Commercial License
+ *    Alternatively, you may obtain a commercial license from
+ *    mgm technology partners GmbH, that permits use of this software
+ *    under different terms (including support and maintenance services).
+ *
+ *    Please contact a12-license@mgm-tp.com for more information.
+ *
+ * You must select and comply with exactly one of the above license options.
+ *
+ * Warranty Disclaimer (applies to either option)
+ * ----------------------------------------------
+ * THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND,
+ * WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
+ * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+ */
+package com.mgmtp.a12.print.model.migration.internal.utils;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.mgmtp.a12.print.model.migration.internal.consumers.ThrowingConsumer;
+import com.mgmtp.a12.print.model.migration.internal.exceptions.JSONElementNotFoundException;
+import com.mgmtp.a12.print.model.migration.internal.exceptions.UnexpectedElementException;
+
+import java.lang.module.ModuleDescriptor.Version;
+import java.util.List;
+import java.util.UUID;
+
+public class Utils {
+
+	public static <T> T getDeepElement(JsonNode root, List<String> path) {
+		JsonNode loopObject = root;
+		int index = 0;
+		for (String subPath: path) {
+			if (loopObject.has(subPath) && loopObject.get(subPath) != null) {
+				if (index == path.size() - 1) {
+					return (T) loopObject.get(subPath);
+				}
+				loopObject = loopObject.get(subPath);
+			} else {
+				return null;
+			}
+			index++;
+		}
+
+		return null;
+	}
+
+	public static <T> T getRequiredDeepElement(JsonNode root, List<String> path) throws JSONElementNotFoundException {
+		T result = getDeepElement(root, path);
+		if (result == null) {
+			throw new JSONElementNotFoundException(String.join("/", path));
+		}
+		return result;
+	}
+
+	public static String generateElementId() {
+		return "ID_" + UUID.randomUUID();
+	}
+
+	public static void executeOnJSONArray(
+		ArrayNode array,
+		String name,
+		ThrowingConsumer<ObjectNode> func
+	) throws UnexpectedElementException {
+		for (Object obj : array) {
+			if (obj instanceof ObjectNode objectNode) {
+				func.accept(objectNode);
+			} else {
+				throw new UnexpectedElementException(name, obj.getClass().getName());
+			}
+		}
+	}
+
+	public static int compareVersions(String first, String second) {
+		Version firstVersion = Version.parse(first);
+		Version secondVersion = Version.parse(second);
+		return firstVersion.compareTo(secondVersion);
+	}
+}

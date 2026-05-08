@@ -1,0 +1,221 @@
+{
+  "header": {
+    "id": "ExpressionPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "ExpressionDM",
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "ExpressionDM"
+      }
+    ],
+    "description": "Test Beschreibung"
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "ID_01329747-e3e1-4969-82c6-f6ea8e8ff7b1",
+      "metadata": {
+        "id": "ID_0a6c18c9-010a-4c36-8835-d588ece93ddd",
+        "titleComputation": [
+          {
+            "id": "D4jQi4IVy1yTA0r4AtrXl",
+            "operation": "\"Test Titel\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "DUuf8iT0BZ61Y9Xc5VYkX",
+            "operation": "\"Test Beschreibung\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "A8lR-KiUohnQDjubVpEYx",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "2IRYMdpUK6ecO_9SvLJKe",
+            "operation": "\"Test Autor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "ID_db2c48b2-903d-4e35-b150-c9457e72ff65",
+        "fontSize": 12,
+        "model": "ExpressionDM"
+      },
+      "runtimeVariables": [],
+      "textStyles": [
+        {
+          "id": "ID_e185d146-886b-4a3b-9f05-77fb083478f4"
+        }
+      ],
+      "structure": [
+        {
+          "id": "ID_a800e111-9cf9-4f64-8d0b-0f8bb670e057"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "ID_e1edfdad-3d42-4b80-aae4-1f23dc9c6bad",
+      "definitions": [
+        {
+          "id": "ID_a800e111-9cf9-4f64-8d0b-0f8bb670e057",
+          "title": "Erste Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "ID_4988752d-c6b8-4f90-822f-314dd8600474",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "ID_99058f29-743a-4c60-884a-41d5c997119a",
+              "refId": "m9eY5Yb6ccJww4yvM_hQM",
+              "position": {
+                "id": "ID_26858d1a-3999-4712-b63b-e45c32348535",
+                "x": {
+                  "id": "ID_850c37d7-2d35-4ecf-a7af-1bef5bc19ff6",
+                  "value": 50,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_24a0c932-c52b-4c98-9dde-cde6eb01bb93",
+                  "value": 50,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ID_69a9afa4-c860-4ec7-96eb-b020c70910dc",
+                "minWidth": {
+                  "id": "ID_7cf22cbd-a211-4474-b35e-079d1eaa15ce",
+                  "value": 94,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_d840de0c-6452-4e61-b9c0-efb316310bd3",
+                  "value": 74,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "ID_90cd9ced-843c-4c4b-a8d8-67e25fb946d9",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "dRNlir4wmoNQnEc399OR0",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "m9eY5Yb6ccJww4yvM_hQM",
+        "type": "Expression",
+        "textProperties": {
+          "id": "ID_2eda4b95-e281-4d07-8894-d3e75235c353",
+          "textStyleId": {
+            "id": "Cs7iL0r5kdMYjF42szQud",
+            "source": "INPUT",
+            "value": "ID_e185d146-886b-4a3b-9f05-77fb083478f4",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "0DaHuAL_4vo3YRcK5PaNo",
+            "source": "INPUT",
+            "value": "Right",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          },
+          "bold": {
+            "id": "bDPhM9WPwQzGyaIK7YJ3m",
+            "source": "INPUT",
+            "value": true,
+            "path": "/content/elementDefinitions/textProperties/bold/value/"
+          },
+          "italic": {
+            "id": "d2h4MWTKxbpNhSIspIgZW",
+            "source": "INPUT",
+            "value": true,
+            "path": "/content/elementDefinitions/textProperties/italic/value/"
+          },
+          "underlined": {
+            "id": "NCW--Geo_OeFsCXcN-x5T",
+            "source": "INPUT",
+            "value": true,
+            "path": "/content/elementDefinitions/textProperties/underlined/value/"
+          },
+          "color": {
+            "id": "4dz-gpTDt9lc06egthzin",
+            "source": "INPUT",
+            "value": "#ff0000",
+            "path": "/content/elementDefinitions/textProperties/color/value/"
+          },
+          "backgroundColor": {
+            "id": "N5pXK3IvL7ODuqU5HUc4H",
+            "source": "INPUT",
+            "value": "#fff700",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/"
+          }
+        },
+        "borderProperties": {
+          "id": "ID_b94d5f60-22b0-4d04-9aab-8470c7d05a2e",
+          "borderWidth": 0.75,
+          "borderColor": "#000"
+        },
+        "expression": {
+          "id": "ID_875672ae-2a39-423c-a995-1c0f45a0862f",
+          "model": "ExpressionDM",
+          "text": "kontext(general) {\n\"**\"[first]\"**\" \" \" \"*\"[last]\"*\" \n\ncase [first] = \"Hello World!\" { \n        \"Case Operator Success\" \n}\n\ncase [first] != \"Hello World!\" { \n        \"Case Operator Fail\" \n}  \n}",
+          "basePath": "/",
+          "hideIfEmpty": false
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "ID_c915e359-2e3f-457e-b7cc-798d92120126",
+      "definitions": [
+        {
+          "id": "ID_e185d146-886b-4a3b-9f05-77fb083478f4",
+          "name": "Noto Sans Mono@16.0 within 32.0",
+          "font": "Noto Sans Mono",
+          "fontSize": 16,
+          "lineHeight": 32,
+          "semantic": "P"
+        }
+      ]
+    }
+  }
+}

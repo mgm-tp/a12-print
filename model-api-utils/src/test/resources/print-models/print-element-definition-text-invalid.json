@@ -1,0 +1,50 @@
+{
+  "id" : "aymJotzgBFBPVVufjeG89",
+  "type" : "INVALID ELEMENT",
+  "borderProperties" : {
+    "id": "id_bP",
+    "borderColor" : "#000",
+    "borderWidth" : 0.75
+  },
+  "textProperties" : {
+    "id": "id_tP",
+    "color": {
+      "id": "9_xcgjHwpywdOd8SzwfSx",
+      "path": "/content/elementDefinitions/table/headerTextProperties/color/value/",
+      "source": "DEFAULT"
+    },
+    "backgroundColor": {
+      "id": "zvKVp4PNhPhe659Jsi_Ib",
+      "path": "/content/elementDefinitions/table/headerTextProperties/backgroundColor/value/",
+      "source": "DEFAULT"
+    },
+    "alignment": {
+      "id": "VOzen7IywvgfIeRRdUScs",
+      "value": "Left",
+      "path": "/content/elementDefinitions/table/headerTextProperties/alignment/value/",
+      "source": "INPUT"
+    },
+    "bold": {
+      "id": "sRJD9LyUrzufYjLCNR0yT",
+      "path": "/content/elementDefinitions/table/headerTextProperties/bold/value/",
+      "source": "INPUT",
+      "value": false
+    },
+    "italic": {
+      "id": "PK86AkPrsQ6bnQ-LE1skO",
+      "path": "/content/elementDefinitions/table/headerTextProperties/italic/value/",
+      "source": "INPUT",
+      "value": false
+    },
+    "underlined": {
+      "id": "ckaH2ZfoM48S-jxED9XnN",
+      "path": "/content/elementDefinitions/table/headerTextProperties/underlined/value/",
+      "source": "INPUT",
+      "value": false
+    }
+  },
+  "text": {
+    "id": "id_text",
+    "text": "<div><p>TEST</p></div>"
+  }
+}

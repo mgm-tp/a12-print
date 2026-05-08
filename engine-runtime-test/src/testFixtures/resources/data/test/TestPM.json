@@ -1,0 +1,105 @@
+{
+  "header": {
+    "id": "TestPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "TestFieldDM",
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "TestFieldDM"
+      }
+    ],
+    "description": "Field"
+  },
+  "content": {
+    "id": "ID_27f21fb2-69dc-43fe-ba43-62eb9f384a65",
+    "general": {
+      "id": "ID_61d92717-eaa1-42f7-bb67-490b43cb158a",
+      "metadata": {
+        "id": "ID_e6a7ad8f-0ad5-4922-a626-bdd4c80690c7",
+        "titleComputation": [
+          {
+            "id": "9jwk43sdF8NmVFB02rnyo",
+            "operation": "\"Field\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "mA0aSKNoKQDgP3Aw-1cEU",
+            "operation": "\"Field\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "8BPCkttMWP3F2BOznVVd1",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "6tMuGM0RRLPEQSpB3pwPc",
+            "operation": "\"Rudi Wagner\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "ID_4321cfac-3b17-46da-8cbb-c2e43ba815dc",
+        "fontSize": 12,
+        "model": "TestFieldDM"
+      },
+      "runtimeVariables": [],
+      "textStyles": [],
+      "structure": [
+        {
+          "id": "ID_b8511363-5197-4985-94d2-ba38da7570d7"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "ID_a9cbd43b-1c35-454f-ad86-7b31dad07771",
+      "definitions": [
+        {
+          "id": "ID_b8511363-5197-4985-94d2-ba38da7570d7",
+          "title": "Deckblatt",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "ID_daf0cb91-4f85-4db7-8c99-1f3025ab7f02",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [],
+    "textStyles": {
+      "id": "ID_382dbe3c-9adc-42d2-9fe3-3a79e701b0ca",
+      "definitions": []
+    }
+  }
+}

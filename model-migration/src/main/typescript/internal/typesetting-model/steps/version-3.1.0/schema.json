@@ -1,0 +1,411 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/TypesettingModelDTO",
+  "definitions": {
+    "TypesettingModelDTO": {
+      "type": "object",
+      "properties": {
+        "header": {
+          "$ref": "#/definitions/HeaderDTO"
+        },
+        "content": {
+          "$ref": "#/definitions/ContentDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "HeaderDTO": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "modelType": {
+          "type": "string"
+        },
+        "modelVersion": {
+          "type": "string"
+        },
+        "locales": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LocalesDTO"
+          }
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LabelsDTO"
+          }
+        },
+        "annotations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AnnotationsDTO"
+          }
+        },
+        "modelReferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ModelReferencesDTO"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "modelType",
+        "modelVersion"
+      ],
+      "additionalProperties": false
+    },
+    "LocalesDTO": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "additionalProperties": false
+    },
+    "LabelsDTO": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "locale",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "AnnotationsDTO": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "ModelReferencesDTO": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string"
+        },
+        "modelType": {
+          "type": "string"
+        },
+        "alias": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "reference",
+        "modelType"
+      ],
+      "additionalProperties": false
+    },
+    "ContentDTO": {
+      "type": "object",
+      "properties": {
+        "internal": {
+          "$ref": "#/definitions/InternalDTO"
+        },
+        "customHyphenationExclusions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CustomHyphenationExclusionsDTO"
+          }
+        },
+        "preventLineBreakRules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PreventLineBreakRulesDTO"
+          }
+        },
+        "orphan": {
+          "type": "number"
+        },
+        "widow": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "InternalDTO": {
+      "type": "object",
+      "properties": {
+        "hyphenation": {
+          "$ref": "#/definitions/HyphenationDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "HyphenationDTO": {
+      "type": "object",
+      "properties": {
+        "general": {
+          "$ref": "#/definitions/GeneralDTO"
+        },
+        "patterns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PatternsDTO"
+          }
+        },
+        "exclusions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ExclusionsDTO"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "GeneralDTO": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "language": {
+          "$ref": "#/definitions/LanguageDTO"
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AuthorsDTO"
+          }
+        },
+        "notice": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "copyright": {
+          "type": "string"
+        },
+        "licence": {
+          "$ref": "#/definitions/LicenceDTO"
+        },
+        "source": {
+          "type": "string"
+        },
+        "hyphenmins": {
+          "$ref": "#/definitions/HyphenminsDTO"
+        },
+        "texlive": {
+          "$ref": "#/definitions/TexliveDTO"
+        },
+        "checksum": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "checksum"
+      ],
+      "additionalProperties": false
+    },
+    "LanguageDTO": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "tag"
+      ],
+      "additionalProperties": false
+    },
+    "AuthorsDTO": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "LicenceDTO": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "HyphenminsDTO": {
+      "type": "object",
+      "properties": {
+        "typesetting": {
+          "$ref": "#/definitions/TypesettingDTO"
+        },
+        "generation": {
+          "$ref": "#/definitions/GenerationDTO"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TypesettingDTO": {
+      "type": "object",
+      "properties": {
+        "left": {
+          "type": "number"
+        },
+        "right": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "GenerationDTO": {
+      "type": "object",
+      "properties": {
+        "left": {
+          "type": "number"
+        },
+        "right": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TexliveDTO": {
+      "type": "object",
+      "properties": {
+        "encoding": {
+          "type": "string"
+        },
+        "babelname": {
+          "type": "string"
+        },
+        "legacy_patterns": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "package": {
+          "type": "string"
+        },
+        "use_old_patterns_comment": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "PatternsDTO": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "ExclusionsDTO": {
+      "type": "object",
+      "properties": {
+        "word": {
+          "type": "string"
+        },
+        "index": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/IndexDTO"
+          }
+        }
+      },
+      "required": [
+        "word"
+      ],
+      "additionalProperties": false
+    },
+    "IndexDTO": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "CustomHyphenationExclusionsDTO": {
+      "type": "object",
+      "properties": {
+        "word": {
+          "type": "string"
+        },
+        "index": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/IndexDTO"
+          }
+        }
+      },
+      "required": [
+        "word"
+      ],
+      "additionalProperties": false
+    },
+    "PreventLineBreakRulesDTO": {
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "pattern"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

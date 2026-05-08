@@ -1,0 +1,42 @@
+{
+  "header": {
+    "id": "test",
+    "modelType": "print",
+    "modelVersion": "2.2.2",
+    "locales": [
+      {
+        "code": "en"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin"
+      }
+    ]
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "title": "test",
+      "description": "Description",
+      "details": {
+        "id": "Zs2Nv98zdrYqn9kt19eq_",
+        "author": "Print Model Editor",
+        "language": "DE"
+      },
+      "structure": [],
+      "segmentDefaults": {
+        "id": "iktVA7KyJ6nITtcwVbWv3",
+        "fontSize": 12
+      }
+    },
+    "segments": {
+      "id": "n_IFm8e2mhYMLSvDz3WNq",
+      "definitions": [],
+      "references": []
+    },
+    "elementDefinitions": []
+  }
+}

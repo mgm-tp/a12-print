@@ -1,0 +1,329 @@
+{
+  "header": {
+    "id": "EnumerationPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "lastMigratedVersion",
+        "value": "3.2.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "3.2.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "EnumerationDM"
+      }
+    ],
+    "description": "Description"
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "51beed80",
+        "titleComputation": [
+          {
+            "id": "J2RrEuvTop1Uu4vJ_Yas_",
+            "operation": "\"PrintModel-with-enumeration\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "BPdlLrkFadAp8AN8CjrCr",
+            "operation": "\"Description\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "6rtr15wkHVSaFme1exyYx",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "Mjcn2hRxnJmeQ3WK6uHyR",
+            "operation": "\"Print Model Editor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "d390a0cc",
+        "fontSize": 12
+      },
+      "runtimeVariables": [],
+      "textStyles": [],
+      "structure": [
+        {
+          "id": "Q6WR7lQ8-NEUBbw9Sfan2"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "44726c37",
+      "definitions": [
+        {
+          "id": "Q6WR7lQ8-NEUBbw9Sfan2",
+          "title": "segment",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "61yQ5h8CwIp_z5Ty5zlMA",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "xR22lSmHcedvZ7jgZTrnN",
+              "refId": "PppAEom49imSpW4NXnkEQ",
+              "position": {
+                "id": "JGxyN4iGy3xLIvOH5G2e_",
+                "x": {
+                  "id": "GSibQxV7-EqOA1LACm9SO",
+                  "value": 35,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "5KaXMTLGAwhoxxdkUU8R0",
+                  "value": 32,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "bQIjrYyFK_MxtPU5GW3fl",
+                "minWidth": {
+                  "id": "YpbrouXXGm-tWOJ3yKrnu",
+                  "value": 131,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "-TTMTe6O-pEde6fbLm8QO",
+                  "value": 8,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "zssS3vJhA1MobqtENqxTY",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "PPSlgJOHtcTfzunkOZUyF",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "PppAEom49imSpW4NXnkEQ",
+        "type": "Listing",
+        "borderProperties": {
+          "id": "4gQdIcon9CdWTYCsbQg09",
+          "borderStyle": "Solid",
+          "borderColor": "#000000"
+        },
+        "listing": {
+          "id": "3sAuYMOTS5GyTvELHgBhi",
+          "model": "EnumerationDM",
+          "basePath": "/general",
+          "rowPropertyComputations": [],
+          "columns": [
+            {
+              "id": "TYctIRxApxspDDzdlidCc",
+              "label": {
+                "id": "ID_63a3c079-bb6e-47e7-85fa-249bff67b817",
+                "value": "path",
+                "path": "/content/elementDefinitions/listing/columns/label/value/",
+                "source": "INPUT"
+              },
+              "width": {
+                "id": "ID_280747a2-a247-4e5c-bfae-ffa1dee8c28e",
+                "path": "/content/elementDefinitions/listing/columns/width/value/",
+                "source": "UNSET",
+                "unit": "Percent"
+              },
+              "default": {
+                "id": "G0p8ey46xpMddZ_gucFss",
+                "propertyComputations": [],
+                "valueComputationAlternatives": [
+                  {
+                    "id": "S9olQQrVP6X4LlTEU6DfN",
+                    "operation": "[path]"
+                  }
+                ]
+              },
+              "field": []
+            },
+            {
+              "id": "OYPYN5J_q5y4tJuiczgPQ",
+              "label": {
+                "id": "ID_b38c3b37-0d2e-4f2e-9f08-40196d9d4b82",
+                "value": "Value",
+                "path": "/content/elementDefinitions/listing/columns/label/value/",
+                "source": "INPUT"
+              },
+              "width": {
+                "id": "ID_bf38262e-d1d9-4817-910f-486fe8c36101",
+                "path": "/content/elementDefinitions/listing/columns/width/value/",
+                "source": "UNSET",
+                "unit": "Percent"
+              },
+              "default": {
+                "id": "UtNQDMViiEgnSJcec1zM_",
+                "propertyComputations": [],
+                "valueComputationAlternatives": [
+                  {
+                    "id": "VZIOSADiI2Iw9qhgM3dMi",
+                    "operation": "[value]"
+                  }
+                ]
+              },
+              "field": [
+                {
+                  "id": "GEKsIGas-d9rUQSNMjejv",
+                  "propertyComputations": [
+                    {
+                      "id": "pkCZXFTITFK2b1U3zEn1P",
+                      "property": "Color",
+                      "computationAlternatives": [
+                        {
+                          "id": "7ppMfp3ffAC5ZFzGYaGG6",
+                          "operation": "\"blue\""
+                        }
+                      ]
+                    }
+                  ],
+                  "valueComputationAlternatives": [
+                    {
+                      "id": "hoinkK26CtcPMS5mvYsA2",
+                      "operation": "\"Enum1: \" + [value]"
+                    }
+                  ],
+                  "inputFieldTypeSerialized": "{\"type\":\"EnumerationType\",\"EnumerationType\":{\"values\":[{\"value\":\"1\",\"label\":[{\"locale\":\"en\",\"text\":\"YES\"},{\"locale\":\"de\",\"text\":\"JA\"}]},{\"value\":\"2\",\"label\":[{\"locale\":\"en\",\"text\":\"NO\"},{\"locale\":\"de\",\"text\":\"NEIN\"}]}]}}",
+                  "outputFieldTypeSerialized": "{\"type\":\"EnumerationType\",\"EnumerationType\":{\"values\":[{\"value\":\"1\",\"label\":[{\"locale\":\"en\",\"text\":\"YES\"},{\"locale\":\"de\",\"text\":\"JA\"}]},{\"value\":\"2\",\"label\":[{\"locale\":\"en\",\"text\":\"NO\"},{\"locale\":\"de\",\"text\":\"NEIN\"}]}]}}"
+                },
+                {
+                  "id": "4ZrfP8cfzBX4738fTJvZp",
+                  "propertyComputations": [
+                    {
+                      "id": "WGzBq5XPp022CMZxBjucq",
+                      "property": "Color",
+                      "computationAlternatives": [
+                        {
+                          "id": "DNVE7sSnUZ3QhbT240cTQ",
+                          "operation": "\"green\""
+                        }
+                      ]
+                    }
+                  ],
+                  "valueComputationAlternatives": [
+                    {
+                      "id": "jtnqsmlRfTlN4M8GK9drr",
+                      "operation": "\"Enum2: \" + [value]"
+                    }
+                  ],
+                  "inputFieldTypeSerialized": "{\"type\":\"EnumerationType\",\"EnumerationType\":{\"values\":[{\"value\":\"1\",\"label\":[{\"locale\":\"en\",\"text\":\"TRUE\"},{\"locale\":\"de\",\"text\":\"WAHR\"}]},{\"value\":\"2\",\"label\":[{\"locale\":\"en\",\"text\":\"FALSE\"},{\"locale\":\"de\",\"text\":\"FALSCH\"}]}]}}",
+                  "outputFieldTypeSerialized": "{\"type\":\"EnumerationType\",\"EnumerationType\":{\"values\":[{\"value\":\"1\",\"label\":[{\"locale\":\"en\",\"text\":\"TRUE\"},{\"locale\":\"de\",\"text\":\"WAHR\"}]},{\"value\":\"2\",\"label\":[{\"locale\":\"en\",\"text\":\"FALSE\"},{\"locale\":\"de\",\"text\":\"FALSCH\"}]}]}}"
+                }
+              ]
+            }
+          ],
+          "headerTextProperties": {
+            "id": "uP1OC3VP-_gRgafgbXOPd",
+            "textStyleId": {
+              "id": "4BEN0iHgls9fSUQr2Mlj7",
+              "source": "DEFAULT",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/textStyleId/value/"
+            },
+            "alignment": {
+              "id": "O7ZXeESlw8TGQFDnLjH9Q",
+              "source": "DEFAULT",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/alignment/value/"
+            },
+            "bold": {
+              "id": "Dkz5tCMFGJQyI6SP9rsAt",
+              "source": "DEFAULT",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/bold/value/"
+            },
+            "italic": {
+              "id": "WBaWmxDFQOr7pSOdlajmm",
+              "source": "DEFAULT",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/italic/value/"
+            },
+            "underlined": {
+              "id": "XDg3O_4Ns286BEWTbl2CR",
+              "source": "DEFAULT",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/underlined/value/"
+            },
+            "color": {
+              "id": "wqN1lb7_Fsfd-7779oCl8",
+              "source": "DEFAULT",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/color/value/"
+            },
+            "backgroundColor": {
+              "id": "b4f0M_aw6a2LAK6BGScM8",
+              "source": "DEFAULT",
+              "path": "/content/elementDefinitions/listing/headerTextProperties/backgroundColor/value/"
+            }
+          }
+        },
+        "textProperties": {
+          "id": "jE5Ptr1j-rcYh0bO7AeqG",
+          "textStyleId": {
+            "id": "dwyYkJy-OT1PntKe0mWqX",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/"
+          },
+          "alignment": {
+            "id": "unfbz3eXbU-EnvxmbIpko",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          },
+          "bold": {
+            "id": "-B8Lgx2zcWQYjbfHJ24r5",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/bold/value/"
+          },
+          "italic": {
+            "id": "EPX1xHkvY3A_iO4IwOdVy",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/italic/value/"
+          },
+          "underlined": {
+            "id": "zOotLOQ6LWh4AgKN7JQ6S",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/"
+          },
+          "color": {
+            "id": "aLBRsCJk06FFyNyK4IsxL",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/color/value/"
+          },
+          "backgroundColor": {
+            "id": "WFQcBgdnHMAb2zo0ngpw9",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/"
+          }
+        }
+      }
+    ]
+  }
+}

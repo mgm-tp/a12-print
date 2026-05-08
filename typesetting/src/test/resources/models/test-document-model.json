@@ -1,0 +1,176 @@
+{
+  "header": {
+    "id": "test-document-model",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "test-document-model"
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "typeDefinitions": [
+      {
+        "id": "typedef_4aa550e0-7668-4063-b8c4-bf0a15d3d66c",
+        "name": "type_definition",
+        "fieldType": {
+          "type": "StringType",
+          "StringType": {
+            "lineBreaksPermitted": true
+          }
+        }
+      }
+    ],
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_2176f",
+          "name": "root",
+          "annotations": [
+            {
+              "name": "test_anno",
+              "value": "test"
+            }
+          ],
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_17363",
+                "name": "enum_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "EnumerationType",
+                    "EnumerationType": {
+                      "values": [
+                        {
+                          "value": "first",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "first"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "first"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "second",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "second"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "second"
+                            }
+                          ]
+                        }
+                      ],
+                      "categories": []
+                    }
+                  }
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_6e935",
+                "name": "nested",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_98455",
+                      "name": "number_field",
+                      "Field": {
+                        "fieldType": {
+                          "type": "NumberType"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Group",
+          "id": "group_3148a",
+          "name": "root_2",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_77468",
+                "name": "string_field",
+                "annotations": [
+                  {
+                    "name": "test_anno_2",
+                    "value": "test anno 2"
+                  }
+                ],
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_4aa550e0-7668-4063-b8c4-bf0a15d3d66c"
+                    }
+                  }
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_fe31e",
+                "name": "nested_repeatable",
+                "Group": {
+                  "repeatability": 1000,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_bef57",
+                      "name": "boolean_field",
+                      "Field": {
+                        "fieldType": {
+                          "type": "BooleanType"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

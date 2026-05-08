@@ -1,0 +1,832 @@
+{
+  "header": {
+    "id": "DomainPrintSettingMetaModel",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "DomainPrintSettingMetaModel"
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_a0304",
+          "name": "header",
+          "Group": {
+            "label": [
+              {
+                "locale": "en",
+                "text": "Header"
+              },
+              {
+                "locale": "de",
+                "text": "Header"
+              }
+            ],
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_88f2a",
+                "name": "id",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "model id"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "model id"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_a2440",
+                "name": "modelType",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Model type"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Model type"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_bdcdb",
+                "name": "modelVersion",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_d288d",
+                "name": "annotations",
+                "Group": {
+                  "repeatability": 999999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_fd39c",
+                      "name": "name",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "absoluteOrRelativeToNextRepAncestor"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_39124",
+                      "name": "value",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_59453",
+                      "name": "roleIsNotPartOfRolesModel",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_59453",
+                        "errorCondition": "[name] == \"roles\" And FieldFilled(value) And CustomCondition print_RolesNotInRoleModel",
+                        "severity": "WARNING",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "The chosen role is not present in the roles file present in the workspace."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Die gewählte Rolle ist nicht in der im Arbeitsbereich vorhandenen Rollen-Datei enthalten."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_95807",
+                      "name": "mustHaveValidRoleValues",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_95807",
+                        "errorCondition": "[name] == \"roles\" And [value] PatternViolated \"^([_a-zA-Z][,-_.a-zA-Z0-9]*)\"",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Roles must only consist of letters, digits, hyphens, underscores and periods. Roles may only start with an underscore or letter. E.g. \"admin, sysAdmin\""
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Rollen dürfen nur aus Buchstaben, Ziffern, Bindestrichen, Unterstrichen und Punkten bestehen. Rollen dürfen nur mit einem Buchstaben oder Unterstrich beginnen. Zum Beispiel: „admin“, „sysAdmin“."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_e8494",
+                      "name": "rolesNotUnique",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_e8494",
+                        "errorCondition": "[name] == \"roles\" And FieldFilled(value) And CustomCondition print_RolesNotUnique",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "The values of the field must be unique."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Die Werte in diesem Feld müssen eindeutig sein."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_e4f2f",
+                      "name": "shouldNotHaveEmptyRoles",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_e4f2f",
+                        "errorCondition": "[name] == \"roles\" And (FieldFilled(value) OR FieldNotFilled(value))  And CustomCondition print_RoleNotEmpty",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Please select a role"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Bitte wählen Sie eine Rolle"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_fa76e",
+                      "name": "shouldHaveRolesModelIfSpecifyingRoles",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_fa76e",
+                        "errorCondition": "[name] == \"roles\" And FieldFilled(value) AND CustomCondition print_RolesModelNotPresent",
+                        "severity": "WARNING",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "The workspace should have a roles file if roles are specified in the model."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Der Arbeitsbereich sollte eine Rollen-Datei enthalten, wenn im Modell Rollen angegeben sind."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_e2776",
+                "name": "mustHaveRolesIfRolesModelPresent",
+                "Rule": {
+                  "errorEntityRelPath": "../annotations/name",
+                  "errorCode": "Error rule_e2776",
+                  "errorCondition": "NumberOfFilledFields(annotations*/name Having [annotations/name] == \"roles\") == 0 AND CustomCondition print_RolesModelPresent",
+                  "severity": "WARNING",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "The workspace contains a roles file which requires all models to have roles specified."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Der Arbeitsbereich enthält eine Rollen-Datei, die vorschreibt, dass alle Modelle Rollen angegeben haben müssen."
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "Group",
+          "id": "group_f7f18",
+          "name": "content",
+          "Group": {
+            "label": [
+              {
+                "locale": "en",
+                "text": "content"
+              },
+              {
+                "locale": "de",
+                "text": "content"
+              }
+            ],
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Group",
+                "id": "group_608c6",
+                "name": "settings",
+                "Group": {
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Print Setting"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Druckeinstellungen"
+                    }
+                  ],
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Group",
+                      "id": "group_4a9be",
+                      "name": "fonts",
+                      "Group": {
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "fonts"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "schriftarten"
+                          }
+                        ],
+                        "repeatability": 999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_31abf",
+                            "name": "name",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Font name"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Schriftartenname"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_f3c1e",
+                            "name": "path",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Font value"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Schriftartwert"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_8a911",
+                            "name": "type",
+                            "Field": {
+                              "fieldType": {
+                                "type": "EnumerationType",
+                                "EnumerationType": {
+                                  "values": [
+                                    {
+                                      "value": "path",
+                                      "label": [
+                                        {
+                                          "locale": "en",
+                                          "text": "Path"
+                                        },
+                                        {
+                                          "locale": "de",
+                                          "text": "Path"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "value": "attachment",
+                                      "label": [
+                                        {
+                                          "locale": "en",
+                                          "text": "Attachment"
+                                        },
+                                        {
+                                          "locale": "de",
+                                          "text": "Attachment"
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "categories": []
+                                }
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Font setting type"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Schriftart-Einstellungstyp"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_999f4",
+                            "name": "fallback",
+                            "Field": {
+                              "fieldType": {
+                                "type": "BooleanType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Fallback font"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Fallback-Schriftart"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "group_badf8",
+                            "name": "fontAttachment",
+                            "internalDescription": [
+                              {
+                                "locale": "en",
+                                "text": "Fallback font"
+                              },
+                              {
+                                "locale": "de",
+                                "text": "Fallback-Schriftart"
+                              }
+                            ],
+                            "Group": {
+                              "repeatability": 1,
+                              "usageType": "attachment",
+                              "elements": [
+                                {
+                                  "type": "Field",
+                                  "id": "field_0aadd",
+                                  "name": "original_filename",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_c9800",
+                                  "name": "internal_filename",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_5d62d",
+                                  "name": "content",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType",
+                                      "StringType": {
+                                        "lineBreaksPermitted": true,
+                                        "noValueValidation": true
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_ae41b",
+                                  "name": "attachment_id",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_e1081",
+                                  "name": "size",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "NumberType"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_f3bbd",
+                                  "name": "mime_type",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_bfa8a",
+                                  "name": "category",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Field",
+                                  "id": "field_42aef",
+                                  "name": "description",
+                                  "Field": {
+                                    "fieldType": {
+                                      "type": "StringType"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "Rule",
+                                  "id": "rule_55830",
+                                  "name": "AttachmentInternalFilenameRequired",
+                                  "Rule": {
+                                    "errorEntityRelPath": "../internal_filename",
+                                    "errorCode": "Error rule_55830",
+                                    "errorCondition": "GroupFilled(RuleGroup) and FieldNotFilled(internal_filename)",
+                                    "severity": "ERROR",
+                                    "errorMessage": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Internal Error: Field internal_filename of customType attachment is not filled."
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Internal Error: Field internal_filename of customType attachment is not filled."
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Rule",
+                                  "id": "rule_96f42",
+                                  "name": "AttachmentMimeTypeRequired",
+                                  "Rule": {
+                                    "errorEntityRelPath": "../mime_type",
+                                    "errorCode": "Error rule_96f42",
+                                    "errorCondition": "GroupFilled(RuleGroup) and FieldNotFilled(mime_type)",
+                                    "severity": "ERROR",
+                                    "errorMessage": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Internal Error: Field mime_type of customType attachment is not filled."
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Internal Error: Field mime_type of customType attachment is not filled."
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Rule",
+                                  "id": "rule_e5ecc",
+                                  "name": "AttachmentIdOrContentFilled",
+                                  "Rule": {
+                                    "errorEntityRelPath": "../content",
+                                    "errorCode": "Error rule_e5ecc",
+                                    "errorCondition": "GroupFilled(RuleGroup) and NotExactlyOneFieldFilled(attachment_id, content)",
+                                    "severity": "ERROR",
+                                    "errorMessage": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Internal Error: Either attachment_id or content must be filled in a customType attachment, but not both."
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Internal Error: Either attachment_id or content must be filled in a customType attachment, but not both."
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "type": "Rule",
+                                  "id": "rule_7e5b6",
+                                  "name": "SizeOfContentFilled",
+                                  "Rule": {
+                                    "errorEntityRelPath": "../content",
+                                    "errorCode": "Error rule_7e5b6",
+                                    "errorCondition": "FieldFilled(content) and FieldNotFilled(size)",
+                                    "severity": "ERROR",
+                                    "errorMessage": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Internal Error: If the content is filled, the size must be also filled."
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Internal Error: If the content is filled, the size must be also filled."
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_a1dd5",
+                            "name": "requiredPathIfTypeIsPath",
+                            "Rule": {
+                              "errorEntityRelPath": "../path",
+                              "errorCode": "Error rule_a1dd5",
+                              "errorCondition": "[type] == \"path\" And FieldNotFilled(path)",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "This field is required"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Dieses Feld ist ein Pflichtfeld."
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_48d31",
+                            "name": "requiredAttachmentIfTypeIsAttachment",
+                            "Rule": {
+                              "errorEntityRelPath": "../fontAttachment/content",
+                              "errorCode": "Error rule_48d31",
+                              "errorCondition": "[type] == \"attachment\" And GroupNotFilled(fontAttachment)",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "This field is required"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Dieses Feld ist ein Pflichtfeld."
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_130aa",
+                            "name": "preventDefaultName",
+                            "Rule": {
+                              "errorEntityRelPath": "../name",
+                              "errorCode": "Error rule_130aa",
+                              "errorCondition": "FieldFilled(name) And [name] == \"default\"",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "Unable to set the font name to 'default'. Please use fallback if you intend to use this font as the default."
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Der Schriftartname kann nicht auf „Standard“ gesetzt werden. Bitte verwenden Sie Fallback, wenn Sie diese Schriftart als Standard verwenden möchten."
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_275e5",
+                      "name": "uniqueFontName",
+                      "Rule": {
+                        "errorEntityRelPath": "../fonts/name",
+                        "errorCode": "Error rule_275e5",
+                        "errorCondition": "RepetitionNotUnique(fonts/name)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "The font name must be unique"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Der Schriftartname muss eindeutig sein"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_d2ec3",
+                      "name": "noMultipleFallback",
+                      "Rule": {
+                        "errorEntityRelPath": "../fonts/fallback",
+                        "errorCode": "Error rule_d2ec3",
+                        "errorCondition": "MoreThanOneFieldFilled(fonts*/fallback Having [fonts/fallback] == True)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Only one fallback font is allowed"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Es ist nur eine Fallback-Schriftart zulässig"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_a68e1",
+                "name": "defaults",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Group",
+                      "id": "group_5353f",
+                      "name": "fonts",
+                      "Group": {
+                        "repeatability": 3,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_8f5cd",
+                            "name": "name",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Font name"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Schriftartenname"
+                                }
+                              ],
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_4dc43",
+                            "name": "fallback",
+                            "Field": {
+                              "fieldType": {
+                                "type": "BooleanType"
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Fallback font"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Fallback-Schriftart"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_9db96",
+                      "name": "noMultipleFallback",
+                      "Rule": {
+                        "errorEntityRelPath": "../fonts/fallback",
+                        "errorCode": "Error rule_9db96",
+                        "errorCondition": "MoreThanOneFieldFilled(fonts*/fallback Having [fonts/fallback] == True)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Only one fallback font is allowed"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Es ist nur eine Fallback-Schriftart zulässig"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

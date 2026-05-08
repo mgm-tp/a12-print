@@ -1,0 +1,413 @@
+{
+  "header": {
+    "id": "DomainTextStyles",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "DomainTextStyles",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_aff10",
+          "name": "textStyle",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_46563",
+                "name": "id",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Id"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Id"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_939de",
+                "name": "name",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Name"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Name"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_4d084",
+                "name": "font",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Font"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Schriftart"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_8185d",
+                "name": "fontSize",
+                "Field": {
+                  "fieldType": {
+                    "type": "NumberType",
+                    "NumberType": {
+                      "maxFractionalDigits": 2,
+                      "zeroNotAllowed": true
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Font Size"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Schriftgröße"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_b8a92",
+                "name": "lineHeight",
+                "Field": {
+                  "fieldType": {
+                    "type": "NumberType",
+                    "NumberType": {
+                      "maxFractionalDigits": 2,
+                      "zeroNotAllowed": true
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Line Height"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Zeilenhöhe"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_5d8f1",
+                "name": "semantic",
+                "Field": {
+                  "fieldType": {
+                    "type": "EnumerationType",
+                    "EnumerationType": {
+                      "values": [
+                        {
+                          "value": "P",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "Paragraph"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "Absatz"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "H1",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "Headline 1"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "Überschrift 1"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "H2",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "Headline 2"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "Überschrift 2"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "H3",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "Headline 3"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "Überschrift 3"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "H4",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "Headline 4"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "Überschrift 4"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "H5",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "Headline 5"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "Überschrift 5"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "H6",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "Headline 6"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "Überschrift 6"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Semantic"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Semantisch"
+                    }
+                  ],
+                  "requirednessConfig": {
+                    "mode": "absoluteOrRelativeToNextRepAncestor"
+                  }
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_3286f",
+                "name": "typesettingModelName",
+                "internalDescription": [
+                  {
+                    "locale": "en",
+                    "text": "The name of the Typesetting Model to be used for typesetting"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "Der Name des zur Typesetting zu verwendeten TypesettingModels"
+                  }
+                ],
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Typesetting Model"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Typesetting Model"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_aa51c",
+                "name": "staticHyphenator",
+                "Field": {
+                  "fieldType": {
+                    "type": "EnumerationType",
+                    "EnumerationType": {
+                      "values": [
+                        {
+                          "value": "en_US",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "en US"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "en US"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "de_1996",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "de 1996"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "de 1996"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "fr",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "fr"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "fr"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "cs",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "cs"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "cs"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "pt",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "pt"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "pt"
+                            }
+                          ]
+                        },
+                        {
+                          "value": "vi",
+                          "label": [
+                            {
+                              "locale": "en",
+                              "text": "vi"
+                            },
+                            {
+                              "locale": "de",
+                              "text": "vi"
+                            }
+                          ]
+                        }
+                      ],
+                      "categories": []
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

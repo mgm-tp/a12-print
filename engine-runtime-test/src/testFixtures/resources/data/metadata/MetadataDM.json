@@ -1,0 +1,130 @@
+{
+  "header": {
+    "id": "MetadataDM",
+    "modelType": "document",
+    "modelVersion": "28.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "MetadataDM",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_cb782",
+          "name": "general",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_f00e9",
+                "name": "title_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Title Field"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Titel Feld"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_82b10",
+                "name": "author_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Author Field"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Autor Feld"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_28c7a",
+                "name": "description_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Description Field"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Beschreibung Feld"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_631b7",
+                "name": "language_field",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Language Field"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Sprache Feld"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

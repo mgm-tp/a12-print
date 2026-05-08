@@ -1,0 +1,3274 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`General should renders correctly 1`] = `
+.c36 {
+  -webkit-clip-path: inset(100%);
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px!important;
+  min-height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+
+.c36 * {
+  width: 1px;
+  height: 1px;
+}
+
+.c65 {
+  -webkit-clip-path: inset(100%);
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px!important;
+  min-height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+  display: none;
+}
+
+.c65 * {
+  width: 1px;
+  height: 1px;
+}
+
+.c59 {
+  box-sizing: border-box;
+  color: #7F8C9B;
+  display: inline-block;
+  direction: ltr;
+  font-family: Material Icons;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+}
+
+.c59 >span {
+  display: inline-block;
+}
+
+.c59.c59 {
+  max-width: unset;
+}
+
+.c47 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border: 2px solid transparent;
+  border-radius: 0;
+  padding: 0 8px;
+  position: relative;
+  background: transparent;
+  color: #0568ae;
+}
+
+.c47 .c58 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c47 .c58 {
+  color: inherit;
+}
+
+.c47:not(:disabled):focus {
+  outline: 1px dotted #333;
+  background-color: #fff;
+  box-shadow: none;
+  color: #d50075;
+  text-decoration: none;
+  border: 2px solid #d50075;
+}
+
+.h_inlineBlock.h_middleAlign .c47.c47 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c47.c47 >.c58 {
+  display: block;
+}
+
+.c57 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  height: 2rem;
+  min-height: 0;
+  padding: 0;
+  width: 2rem;
+  background: transparent;
+  color: #0568ae;
+}
+
+.c57 .c58 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c57 .c58 {
+  color: inherit;
+}
+
+.c57 .c58 {
+  font-size: inherit;
+}
+
+.c57:not(:disabled):focus {
+  outline: 1px dotted #333;
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.h_inlineBlock.h_middleAlign .c57.c57 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c57.c57 >.c58 {
+  display: block;
+}
+
+.c60 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  height: 2rem;
+  min-height: 0;
+  padding: 0;
+  width: 2rem;
+  background: transparent;
+  color: #0568ae;
+  background: transparent;
+  color: #c91d1d;
+}
+
+.c60 .c58 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c60 .c58 {
+  color: inherit;
+}
+
+.c60 .c58 {
+  font-size: inherit;
+}
+
+.c60:not(:disabled):focus {
+  outline: 1px dotted #333;
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.c60:not(:disabled):focus {
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.h_inlineBlock.h_middleAlign .c60.c60 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c60.c60 >.c58 {
+  display: block;
+}
+
+.c67 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border: 2px solid transparent;
+  border-radius: 0;
+  padding: 0 8px;
+  position: relative;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: #a9b3bc;
+  cursor: default;
+}
+
+.c67 .c58 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c67 .c58 {
+  color: inherit;
+}
+
+.c67.c67.c67:-moz-focusring {
+  outline: none;
+}
+
+.c67.c67 .c58 {
+  color: inherit;
+}
+
+.h_inlineBlock.h_middleAlign .c67.c67 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c67.c67 >.c58 {
+  display: block;
+}
+
+.c56 {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.c77 {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  gap: 16px 32px;
+}
+
+.c78 {
+  display: block;
+  flex-basis: 50%;
+  max-width: calc(50% - (32px - 32px / 2));
+}
+
+.c75 {
+  width: 100%;
+}
+
+.c8 {
+  color: #4d4d4d;
+  display: inline-block;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-transform: none;
+  margin: 0 0 4px 0;
+  align-self: center;
+}
+
+.c8:empty {
+  display: none;
+}
+
+.c64 {
+  color: #4d4d4d;
+  display: inline-block;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-transform: none;
+  margin: 0 0 4px 0;
+  align-self: center;
+  -webkit-clip-path: inset(100%);
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px!important;
+  min-height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+
+.c64:empty {
+  display: none;
+}
+
+.c64 * {
+  width: 1px;
+  height: 1px;
+}
+
+.c66 {
+  align-items: center;
+  align-self: flex-end;
+  display: flex;
+  flex-shrink: 0;
+  height: 32px;
+  margin: 0 0 0 4px;
+  justify-content: center;
+}
+
+.c11 {
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.45;
+  outline: none;
+  padding: 0 12px;
+  text-align: inherit;
+  text-overflow: ellipsis;
+  text-transform: inherit;
+  min-width: 0;
+  width: 100%;
+}
+
+.c11::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c9 {
+  background-color: #f1f2f4;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 1px 0 0 #596673;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  outline: 1px solid transparent;
+  height: 32px;
+  background-color: #f1f2f4;
+  box-shadow: none;
+}
+
+.c9 .c46 {
+  border-radius: 0;
+}
+
+.c12 {
+  background-color: #f1f2f4;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 1px 0 0 #596673;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  outline: 1px solid transparent;
+  height: 32px;
+}
+
+.c12 .c46 {
+  border-radius: 0;
+}
+
+.c2 {
+  display: inline-flex;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex-direction: column;
+  display: flex;
+  width: 100%;
+}
+
+.c2 .c3 {
+  display: flex;
+  width: 100%;
+}
+
+.c2 * {
+  max-width: 100%;
+}
+
+.c6 {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.c6 >.StyledTooltipWrapper-sc-bqyqat {
+  margin: 0 4px 4px 0;
+}
+
+.c6 .c7 {
+  display: block;
+  width: fit-content;
+}
+
+.c69 {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.c69[data-role="checkbox-group"] .c7,
+.c69[data-role="radio-group"] .c7,
+.c69[data-role="file-upload"] .c7 {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.c69[data-role="checkbox-group"] .c7 ~.StyledTooltipWrapper-sc-bqyqat,
+.c69[data-role="radio-group"] .c7 ~.StyledTooltipWrapper-sc-bqyqat,
+.c69[data-role="file-upload"] .c7 ~.StyledTooltipWrapper-sc-bqyqat {
+  margin: 0 0 4px 0;
+}
+
+.c4 {
+  display: inline-flex;
+}
+
+.c4 .c5 {
+  flex-basis: 160px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.c13 {
+  height: auto;
+}
+
+.c14 {
+  height: 100px;
+  padding: calc((32px - 0.75rem * 1.45)/2) 12px;
+  resize: vertical;
+  max-height: 100px;
+  min-height: 32px;
+  min-width: 0;
+}
+
+.c10 {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 0;
+}
+
+.c73 {
+  appearance: none;
+  background-color: inherit;
+  -moz-appearance: none;
+  border: none;
+  border-radius: 0;
+  caret-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  height: 100%;
+  padding: 0 12px;
+  padding-right: 32px;
+  text-align: inherit;
+  text-transform: inherit;
+  width: 100%;
+  cursor: pointer;
+}
+
+.c73.c73.c73 {
+  outline: 1px solid transparent;
+}
+
+.c73::selection {
+  background-color: transparent;
+}
+
+.c73::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c71 {
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  height: 32px;
+}
+
+.c71:focus {
+  outline: none;
+}
+
+.c72 {
+  background-color: #f1f2f4;
+  border-radius: inherit;
+  box-shadow: 0 1px 0 0 #596673;
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+}
+
+.c72:focus-within {
+  box-shadow: 0 2px 0 0 #d50075;
+  outline-offset: 0;
+  outline: 1px dotted #333;
+}
+
+.c72 .StyledFieldPrefixWrapper-sc-kAsOYS>.c58 {
+  color: inherit;
+  cursor: default;
+}
+
+.c74:after {
+  align-items: center;
+  color: #7F8C9B;
+  content: "\\e313";
+  display: flex;
+  font-family: "Material Icons";
+  font-size: 1.5rem;
+  font-style: normal;
+  justify-content: center;
+  height: 100%;
+  line-height: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  text-transform: none;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  word-wrap: normal;
+}
+
+.c45 {
+  color: #616f7c;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: 600;
+  padding: 16px 16px;
+}
+
+.c23 {
+  display: flex;
+  position: relative;
+}
+
+.c29 {
+  box-sizing: border-box;
+  display: flex;
+  flex: 10 1 auto;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  min-width: 150px;
+  padding: 8px 8px;
+  text-align: left;
+  width: 150px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.c29 p:first-child {
+  margin-top: 0;
+}
+
+.c29 p:last-child {
+  margin-bottom: 0;
+}
+
+.c25:first-child .c29.c29:first-child {
+  min-width: calc(150px * 1 + 16px);
+  width: calc(150px * 1 + 16px);
+  padding-left: calc(16px + 8px);
+}
+
+[data-role="tree"] .c25:first-child .c29.c29:first-child.c25:first-child .c29.c29:first-child {
+  padding-left: calc( 									16px + 8px 								);
+}
+
+.c34 {
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 auto;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  min-width: unset;
+  padding: 0 16px;
+  text-align: left;
+  width: unset;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  height: 100%;
+}
+
+.c34 p:first-child {
+  margin-top: 0;
+}
+
+.c34 p:last-child {
+  margin-bottom: 0;
+}
+
+.c27 {
+  display: flex;
+  position: relative;
+  flex: 1 1 0%;
+  overflow: hidden;
+}
+
+.c33 {
+  display: flex;
+  position: relative;
+}
+
+.c51 {
+  line-height: 1.45;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  background-color: #fff;
+}
+
+.c51:before,
+.c51:after {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  top: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.c51:before {
+  right: 0;
+}
+
+.c51:after {
+  display: block;
+}
+
+.c51:focus.c51:focus:before {
+  border: 2px solid #d50075;
+}
+
+.c51:focus:before {
+  box-sizing: border-box;
+  margin: 1px;
+  outline: 1px dotted #333;
+}
+
+.c51:focus:after {
+  background-color: #d50075;
+  background-clip: padding-box;
+  border-left-width: 2px;
+  box-sizing: border-box;
+  margin: 1px 0 1px 1px;
+  width: 2px;
+}
+
+.c79 {
+  line-height: 1.45;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  background-color: #fff;
+}
+
+.c79:before,
+.c79:after {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  top: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.c79:before {
+  right: 0;
+}
+
+.c79:after {
+  display: block;
+}
+
+.c79:focus {
+  background-color: #f9fafb;
+}
+
+.c79:active,
+.c79:focus-within {
+  background-color: #f9fafb;
+}
+
+.c50:focus .c52:last-child>:last-child {
+  background-clip: unset;
+}
+
+.c50:focus .c52:last-child>:last-child:before {
+  border-right: 2px solid #d50075;
+  margin-right: 1px;
+}
+
+.c53 {
+  min-height: 32px;
+  overflow: hidden;
+  isolation: isolate;
+  flex-direction: column;
+  justify-content: center;
+}
+
+[data-role="tree"] .c53.c53 {
+  padding: 8px 8px;
+}
+
+.c53.c53>* {
+  align-self: center;
+}
+
+.c53.c53 {
+  text-align: center;
+}
+
+.c53 .c70 {
+  text-align-last: center;
+}
+
+.c53 [class*="field--block"] {
+  flex-grow: 0;
+}
+
+.c54 {
+  min-height: 32px;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: center;
+}
+
+[data-role="tree"] .c54.c54 {
+  padding: 8px 8px;
+}
+
+.c54.c54>* {
+  align-self: center;
+}
+
+.c54.c54 {
+  text-align: center;
+}
+
+.c54 .c70 {
+  text-align-last: center;
+}
+
+.c54 [class*="field--block"] {
+  flex-grow: 0;
+}
+
+.c55 {
+  min-height: 32px;
+  overflow: hidden;
+  align-self: center;
+  justify-content: center;
+}
+
+.c55>* {
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+}
+
+.c55:after {
+  content: "";
+  font-size: 0;
+  min-height: inherit;
+}
+
+.c55.c55>* {
+  align-self: center;
+}
+
+.c55.c55 {
+  text-align: center;
+}
+
+.c55 .c70 {
+  text-align-last: center;
+}
+
+.c55 [class*="field--block"] {
+  flex-grow: 0;
+}
+
+.c80 {
+  min-height: 32px;
+  overflow: hidden;
+  isolation: isolate;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+[data-role="tree"] .c80.c80 {
+  padding: 8px 8px;
+}
+
+.c80.c80>* {
+  align-self: center;
+}
+
+.c80.c80 {
+  text-align: center;
+}
+
+.c80 .c70 {
+  text-align-last: center;
+}
+
+.c80 [class*="field--block"] {
+  flex-grow: 0;
+}
+
+.c81 {
+  min-height: 32px;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+[data-role="tree"] .c81.c81 {
+  padding: 8px 8px;
+}
+
+.c81.c81>* {
+  align-self: center;
+}
+
+.c81.c81 {
+  text-align: center;
+}
+
+.c81 .c70 {
+  text-align-last: center;
+}
+
+.c81 [class*="field--block"] {
+  flex-grow: 0;
+}
+
+.c38 {
+  border: 1px solid #f1f2f4;
+  border-bottom: transparent;
+  outline: none;
+}
+
+.c38:focus {
+  border: 1px dotted #333;
+}
+
+.c38:not(:empty) {
+  flex: 1 1 auto;
+  overflow-x: hidden;
+}
+
+.c42 {
+  font-weight: 600;
+  min-height: 32px;
+  overflow: hidden;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.c42:empty {
+  min-height: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.c61 {
+  font-weight: 600;
+  min-height: 32px;
+  overflow: hidden;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+.c61:empty {
+  min-height: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.c62 {
+  font-weight: 600;
+  min-height: 32px;
+  overflow: hidden;
+  justify-content: center;
+  text-align: center;
+  align-items: flex-start;
+}
+
+.c62:empty {
+  min-height: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.c40 {
+  border-left: 1px solid #f1f2f4;
+  border-right: 1px solid #f1f2f4;
+  flex: 0 0 auto;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.c40>* {
+  position: relative;
+}
+
+.c40>*:before {
+  content: "";
+  inset: 0;
+  position: absolute;
+  border-bottom: 1px solid #D3D6DC;
+}
+
+.c40>*:first-child {
+  box-shadow: inset 0 1px 0 0 #e2e6e9,inset 0px 2px 0px 0px #a9b3bc;
+}
+
+.c40>*:first-child:before {
+  border-bottom: none;
+}
+
+.c32 {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  line-height: normal;
+  min-height: 22px;
+}
+
+.c32 >.c58:not(.StyledTableHeadCellSortingIcon-sc-hmrsAS):not(.StyledVariantIconWrapper-sc-bMgxYI) {
+  color: inherit;
+}
+
+.c32 [data-role=status-icon] .c58 {
+  display: inherit;
+}
+
+.c32 .c58 {
+  align-items: center;
+  display: inline-flex;
+  font-size: 1.25rem;
+  height: 22px;
+}
+
+.c32 .c46[data-type="icon"]:not([data-role=tag] .c46) {
+  font-size: 1.5rem;
+  height: 22px;
+  min-height: 22px;
+  width: 22px;
+}
+
+.c48 {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  line-height: normal;
+  min-height: 22px;
+  justify-content: center;
+  text-align: center;
+}
+
+.c48 >.c58:not(.StyledTableHeadCellSortingIcon-sc-hmrsAS):not(.StyledVariantIconWrapper-sc-bMgxYI) {
+  color: inherit;
+}
+
+.c48 [data-role=status-icon] .c58 {
+  display: inherit;
+}
+
+.c48 .c58 {
+  align-items: center;
+  display: inline-flex;
+  font-size: 1.25rem;
+  height: 22px;
+}
+
+.c48 .c46[data-type="icon"]:not([data-role=tag] .c46) {
+  font-size: 1.5rem;
+  height: 22px;
+  min-height: 22px;
+  width: 22px;
+}
+
+.c30 {
+  align-items: center;
+  color: #4d4d4d;
+  cursor: default;
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-height: 26px;
+  position: relative;
+  padding: 2px 8px;
+}
+
+.c30:focus {
+  outline: none;
+}
+
+.c31 .c30.c30 {
+  overflow: hidden;
+}
+
+.c26:first-child .c30.c30.c30:first-child[data-role*="group-parent"] {
+  min-width: 100%;
+}
+
+.c35 {
+  align-items: center;
+  color: #4d4d4d;
+  cursor: default;
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-height: 26px;
+  position: relative;
+}
+
+.c35:focus {
+  outline: none;
+}
+
+.c24 {
+  border-bottom: 1px solid #D3D6DC;
+  overflow: hidden;
+  background-color: #f1f2f4;
+}
+
+.c22 {
+  background-color: #f1f2f4;
+  border-left: 1px solid #f1f2f4;
+  border-right: 1px solid #f1f2f4;
+  flex: 0 0 auto;
+}
+
+.c20 {
+  color: #4d4d4d;
+  display: flex;
+  height: 100%;
+  outline: none;
+  position: relative;
+}
+
+.c20 .c37:not(:empty) {
+  flex-grow: 0;
+}
+
+.c20 .c39 {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.c20 .c41:last-child {
+  flex-grow: 1;
+}
+
+.c21 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  isolation: isolate;
+}
+
+.c21[data-table-container-resizing="true"] .c28 {
+  cursor: col-resize;
+  user-select: none;
+}
+
+.c43 {
+  border-left: 1px solid #f1f2f4;
+  border-right: 1px solid #f1f2f4;
+  margin-top: -1px;
+}
+
+.c44 {
+  overflow-x: auto;
+}
+
+.c16 {
+  box-sizing: border-box;
+  background-color: transparent;
+  display: flex;
+  min-height: 32px;
+  outline: none;
+  padding: 2px 0;
+  position: relative;
+}
+
+.c15 {
+  color: #373e49;
+  font-family: "Open Sans",sans-serif;
+  font-size: 1.275rem;
+  font-weight: 400;
+  margin: 8px 0 0;
+  outline: none;
+  padding: 0 0 8px 0;
+  text-transform: unset;
+}
+
+.c17 {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  align-items: center;
+  align-self: center;
+  color: inherit;
+  display: flex;
+  flex-flow: nowrap;
+  flex: 1;
+  outline: none;
+  padding: 0 8px 0 0;
+  position: relative;
+}
+
+.c18 >* {
+  display: inline;
+}
+
+.c49 {
+  display: flex;
+  gap: 2px;
+}
+
+.c0 {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.c1 {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.c19 {
+  display: flex;
+  flex-direction: column;
+}
+
+.c63 {
+  max-width: 400px;
+}
+
+.c68 {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.c76 {
+  margin-top: 10px;
+}
+
+@media (pointer: coarse) {
+  .c47:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #fff;
+    box-shadow: none;
+    color: #d50075;
+    text-decoration: none;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c47:not(:disabled):hover {
+    background-color: #fff;
+    box-shadow: none;
+    color: #d50075;
+    text-decoration: none;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c47:hover {
+    outline: 1px solid transparent;
+  }
+}
+
+@media (pointer: coarse) {
+  .c57:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c57:not(:disabled):hover {
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c57:hover {
+    outline: 1px solid transparent;
+  }
+}
+
+@media (pointer: coarse) {
+
+}
+
+@media (pointer: fine) {
+
+}
+
+@media (pointer: coarse) {
+  .c60:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c60:not(:disabled):hover {
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c60:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c60:not(:disabled):hover {
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c60:hover {
+    outline: 1px solid transparent;
+  }
+}
+
+@media (pointer: coarse) {
+
+}
+
+@media (pointer: fine) {
+
+}
+
+@media (pointer: coarse) {
+  .c12:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c12:hover {
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c72:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c72:hover {
+    box-shadow: 0 2px 0 0 #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c51:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
+}
+
+@media (pointer: coarse) {
+  .c51:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
+
+  .c51:active.c51:active:before {
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c51:hover {
+    cursor: pointer;
+  }
+
+  .c51:hover.c51:hover:before {
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .StyledTableExpandableWrapper-sc-kTKwSe>:first-child:hover+.c51 {
+    background-color: #f9fafb;
+  }
+}
+
+@media (pointer: coarse) {
+  .StyledTableExpandableWrapper-sc-kTKwSe>:first-child:active+.c51 {
+    background-color: #f9fafb;
+  }
+}
+
+@media (pointer: fine) {
+  .StyledTableExpandableWrapper-sc-kTKwSe>:first-child+.c51:hover {
+    background-color: #f5fbff;
+  }
+}
+
+@media (pointer: coarse) {
+  .StyledTableExpandableWrapper-sc-kTKwSe>:first-child+.c51:active {
+    background-color: #f5fbff;
+  }
+}
+
+@media (pointer: coarse) and (any-hover: none) {
+  .c51:not(:focus):active:before {
+    border: none;
+    border-bottom: 1px solid #D3D6DC;
+    box-sizing: border-box;
+  }
+
+  .c51:not(:focus):active:after {
+    box-sizing: border-box;
+  }
+}
+
+@media (pointer: fine) {
+  .c79:hover {
+    background-color: #f9fafb;
+  }
+}
+
+@media (pointer: coarse) {
+  .c79:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #f9fafb;
+  }
+}
+
+@media (pointer: fine) {
+
+}
+
+@media (pointer: coarse) {
+  .c79:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    box-shadow: none;
+  }
+}
+
+@media (pointer: fine) {
+  .c79:hover {
+    box-shadow: none;
+  }
+}
+
+@media (pointer: coarse) {
+  .c79:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
+}
+
+@media (pointer: fine) {
+
+}
+
+@media (pointer: fine) {
+  .StyledTableExpandableWrapper-sc-kTKwSe>:first-child:hover+.c79 {
+    background-color: #f9fafb;
+  }
+}
+
+@media (pointer: coarse) {
+  .StyledTableExpandableWrapper-sc-kTKwSe>:first-child:active+.c79 {
+    background-color: #f9fafb;
+  }
+}
+
+@media (pointer: fine) {
+  .StyledTableExpandableWrapper-sc-kTKwSe>:first-child+.c79:hover {
+    background-color: #f5fbff;
+  }
+}
+
+@media (pointer: coarse) {
+  .StyledTableExpandableWrapper-sc-kTKwSe>:first-child+.c79:active {
+    background-color: #f5fbff;
+  }
+}
+
+@media (pointer: fine) {
+  .c50:not(:focus):hover .c52:last-child>:last-child:before {
+    border-right: 2px solid #d50075;
+  }
+}
+
+<div>
+  <div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2 field-wrapper field-wrapper--block"
+        data-role="textline"
+      >
+        <div
+          class="c3 c4 field__main"
+        >
+          <div
+            class="c5 c6 field"
+            data-role="textline-control"
+          >
+            <label
+              class="c7 c8 label field__label"
+              data-role="textline-label"
+            >
+              Model name*
+            </label>
+            <div
+              class="c9 field__input field__input--readonly"
+              data-readonly="true"
+              data-role="textline-input-wrapper"
+            >
+              <span
+                class="c10 supported-unseen-span"
+              />
+              <input
+                class="c11 field__text"
+                data-role="textline-input"
+                readonly=""
+                type="text"
+                value="model-name"
+              />
+              <span
+                class="c10 supported-unseen-span"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c2 field-wrapper field-wrapper--block"
+        data-role="textarea"
+      >
+        <div
+          class="c3 c4 field__main"
+        >
+          <div
+            class="c5 c6 field"
+            data-role="textarea-control"
+          >
+            <label
+              class="c7 c8 label field__label"
+              data-role="textarea-label"
+            >
+              Description
+            </label>
+            <div
+              class="c12 c13 field__input field__input--textarea"
+            >
+              <textarea
+                autocomplete="off"
+                class="c11 c14 field__text"
+                data-role="textarea-input"
+              >
+                Description
+              </textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c15 typography-headline typography-headline--3"
+        data-role="typography-headline"
+      >
+        <div
+          class="c16 typography-headline__wrapper"
+          data-role="typography-headline-wrapper"
+        >
+          <div
+            class="c17 typography-headline__title"
+            data-role="typography-headline-title"
+          >
+            <div
+              class="c18"
+            >
+              <div
+                class="typography-headline__label"
+                data-role="typography-headline-label"
+              >
+                Roles
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c19"
+      >
+        <div
+          aria-label="Table"
+          class="c20 table"
+          data-role="table"
+          role="table"
+          tabindex="-1"
+        >
+          <div
+            class="c21 table__containerWrapper"
+          >
+            <div
+              class="c22 table__header"
+              data-role="table-header"
+              role="rowgroup"
+            >
+              <div
+                class="c23 c24 table__headerRow"
+                data-role="table-header-row"
+                role="row"
+              >
+                <div
+                  class="c25 c26 c27 table__headerRow--scroll"
+                  data-role="table-header-row--scroll"
+                >
+                  <div
+                    aria-colindex="1"
+                    class="c28 c29 c30 table__headerCell table__headerCell--10"
+                    data-role="table-header-cell"
+                    role="columnheader"
+                  >
+                    <div
+                      class="c31 c32 table__contentHeaderCell"
+                      data-role="table-header-cell-content"
+                    >
+                      Role*
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="c25 c26 c33 table__headerRow--right"
+                  data-role="table-header-row--right"
+                >
+                  <div
+                    aria-colindex="2"
+                    class="c28 c34 c35 table__headerCell table__actionCell"
+                    data-role="table-header-cell"
+                    data-type="table-action-cell"
+                    role="columnheader"
+                  >
+                    <div
+                      class="c31 c32 table__contentHeaderCell"
+                      data-role="table-header-cell-content"
+                    />
+                    <span
+                      class="c36 -u-unseenButRead"
+                      data-role="hidden-text"
+                    >
+                      Action
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="c37 c38 table__content"
+              data-role="table-body"
+              role="rowgroup"
+              tabindex="0"
+            />
+            <div
+              class="c39 c40 table__footer"
+              data-role="table-footer"
+            >
+              <div
+                class="c41 c23 table__footerRow"
+                data-role="table-footer-row"
+              >
+                <div
+                  class="c25 c27 table__footerRow--scroll"
+                  data-role="table-footer-row--scroll"
+                >
+                  <div
+                    class="c28 c29 c42 table__footerCell table__footerCell--10"
+                    data-role="table-footer-cell"
+                  />
+                </div>
+                <div
+                  class="c25 c33 table__footerRow--right"
+                  data-role="table-footer-row--right"
+                >
+                  <div
+                    class="c28 c34 c42 table__footerCell table__actionCell"
+                    data-role="table-footer-cell"
+                    data-type="table-action-cell"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              aria-hidden="true"
+              class="c23 c43"
+              data-role="table-row-scroller"
+            >
+              <div
+                class="c25 c27 c44"
+                data-role="table-row-scroller--scroll"
+                tabindex="-1"
+              >
+                <div
+                  class="c28 c29 c42"
+                  data-role="table-row-scroller-cell"
+                />
+              </div>
+              <div
+                class="c25 c33 "
+                data-role="table-row-scroller--right"
+              >
+                <div
+                  class="c28 c34 c42"
+                  data-role="table-row-scroller-cell"
+                  data-type="table-action-cell"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="c45 -m-message -u-text-center"
+          data-role="message"
+        >
+          There are no entries yet
+        </div>
+        <div>
+          <button
+            class="c46 c47 button button--secondary -u-margin-t-base"
+            data-role="button"
+            title=""
+            type="button"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+      <div
+        aria-level="3"
+        class="c15 typography-headline typography-headline--3"
+        data-role="typography-headline"
+        role="heading"
+      >
+        <div
+          class="c16 typography-headline__wrapper"
+          data-role="typography-headline-wrapper"
+        >
+          <div
+            class="c17 typography-headline__title"
+            data-role="typography-headline-title"
+          >
+            <div
+              class="c18"
+            >
+              <div
+                class="typography-headline__label"
+                data-role="typography-headline-label"
+              >
+                Annotations
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          aria-label="You can trigger the row action with Enter on a cell."
+          class="c20 table"
+          data-role="table"
+          role="table"
+          tabindex="-1"
+        >
+          <div
+            class="c21 table__containerWrapper"
+          >
+            <div
+              class="c22 table__header"
+              data-role="table-header"
+              role="rowgroup"
+            >
+              <div
+                class="c23 c24 table__headerRow"
+                data-role="table-header-row"
+                role="row"
+              >
+                <div
+                  class="c25 c26 c27 table__headerRow--scroll"
+                  data-role="table-header-row--scroll"
+                >
+                  <div
+                    aria-colindex="1"
+                    class="c28 c29 c30 table__headerCell table__headerCell--10 table__headerCell--align-center"
+                    data-role="table-header-cell"
+                    role="columnheader"
+                  >
+                    <div
+                      class="c31 c48 table__contentHeaderCell"
+                      data-role="table-header-cell-content"
+                    >
+                      Name
+                    </div>
+                  </div>
+                  <div
+                    aria-colindex="2"
+                    class="c28 c29 c30 table__headerCell table__headerCell--10 table__headerCell--align-center"
+                    data-role="table-header-cell"
+                    role="columnheader"
+                  >
+                    <div
+                      class="c31 c48 table__contentHeaderCell"
+                      data-role="table-header-cell-content"
+                    >
+                      Value
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="c25 c26 c33 table__headerRow--right"
+                  data-role="table-header-row--right"
+                >
+                  <div
+                    aria-colindex="3"
+                    class="c28 c34 c35 table__headerCell table__headerCell--align-center table__actionCell"
+                    data-role="table-header-cell"
+                    data-type="table-action-cell"
+                    role="columnheader"
+                  >
+                    <div
+                      class="c31 c48 table__contentHeaderCell"
+                      data-role="table-header-cell-content"
+                    />
+                    <span
+                      class="c36 -u-unseenButRead"
+                      data-role="hidden-text"
+                    >
+                      Action
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="c37 c38 table__content"
+              data-role="table-body"
+              role="rowgroup"
+              tabindex="0"
+            >
+              <div
+                class="c49"
+                contenteditable="false"
+              />
+              <div
+                aria-selected="false"
+                class="c50 c23 c51 table__contentRow table__contentRow--interactive"
+                data-role="table-body-row"
+                role="row"
+                tabindex="0"
+              >
+                <div
+                  class="c25 c27 c52 table__contentRow--scroll"
+                  data-role="table-body-row--scroll"
+                >
+                  <div
+                    aria-colindex="1"
+                    class="c28 c29 c53 table__contentCell table__contentCell--10 table__contentCell--align-center table__contentCell--align-middle"
+                    data-role="table-body-cell"
+                    role="cell"
+                  >
+                    annotation-name
+                  </div>
+                  <div
+                    aria-colindex="2"
+                    class="c28 c29 c54 table__contentCell table__contentCell--10 table__contentCell--align-center table__contentCell--align-middle"
+                    data-role="table-body-cell"
+                    role="cell"
+                  >
+                    annotation-value
+                  </div>
+                </div>
+                <div
+                  class="c25 c33 c52 table__contentRow--right"
+                  data-role="table-body-row--right"
+                >
+                  <div
+                    aria-colindex="3"
+                    class="c28 c34 c55 table__contentCell table__actionCell"
+                    data-role="table-body-cell"
+                    data-type="table-action-cell"
+                    role="cell"
+                  >
+                    <div
+                      class="c56 button-group"
+                      data-role="button-group"
+                    >
+                      <button
+                        aria-label="Edit"
+                        class="c46 c57 button button--icon"
+                        data-role="button"
+                        data-type="icon"
+                        title="Edit"
+                        type="button"
+                      >
+                        <i
+                          class="c58 c59 plasma-icon"
+                          data-role="plasma-icon"
+                        >
+                          <span
+                            aria-hidden="true"
+                          >
+                            edit
+                          </span>
+                        </i>
+                      </button>
+                      <button
+                        aria-label="Delete"
+                        class="c46 c60 button button--icon button--destructive"
+                        data-role="button"
+                        data-type="icon"
+                        title="Delete"
+                        type="button"
+                      >
+                        <i
+                          class="c58 c59 plasma-icon"
+                          data-role="plasma-icon"
+                        >
+                          <span
+                            aria-hidden="true"
+                          >
+                            delete
+                          </span>
+                        </i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="c39 c40 table__footer"
+              data-role="table-footer"
+            >
+              <div
+                class="c41 c23 table__footerRow"
+                data-role="table-footer-row"
+              >
+                <div
+                  class="c25 c27 table__footerRow--scroll"
+                  data-role="table-footer-row--scroll"
+                >
+                  <div
+                    class="c28 c29 c61 table__footerCell table__footerCell--10 table__footerCell--align-center table__footerCell--align-middle"
+                    data-role="table-footer-cell"
+                  />
+                  <div
+                    class="c28 c29 c61 table__footerCell table__footerCell--10 table__footerCell--align-center table__footerCell--align-middle"
+                    data-role="table-footer-cell"
+                  />
+                </div>
+                <div
+                  class="c25 c33 table__footerRow--right"
+                  data-role="table-footer-row--right"
+                >
+                  <div
+                    class="c28 c34 c62 table__footerCell table__actionCell table__footerCell--align-center"
+                    data-role="table-footer-cell"
+                    data-type="table-action-cell"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              aria-hidden="true"
+              class="c23 c43"
+              data-role="table-row-scroller"
+            >
+              <div
+                class="c25 c27 c44"
+                data-role="table-row-scroller--scroll"
+                tabindex="-1"
+              >
+                <div
+                  class="c28 c29 c61"
+                  data-role="table-row-scroller-cell"
+                />
+                <div
+                  class="c28 c29 c61"
+                  data-role="table-row-scroller-cell"
+                />
+              </div>
+              <div
+                class="c25 c33 "
+                data-role="table-row-scroller--right"
+              >
+                <div
+                  class="c28 c34 c62"
+                  data-role="table-row-scroller-cell"
+                  data-type="table-action-cell"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c63"
+      >
+        <div
+          class="c2 field-wrapper field-wrapper--block"
+          data-role="textline"
+        >
+          <div
+            class="c3 c4 field__main"
+          >
+            <div
+              class="c5 c6 field"
+              data-role="textline-control"
+            >
+              <label
+                class="c7 c64 label field__label -u-unseenButRead"
+                data-role="textline-label"
+              >
+                <span
+                  class="c65 -u-unseenButRead"
+                  data-role="hidden-text"
+                >
+                  Name...
+                </span>
+              </label>
+              <div
+                class="c12 field__input"
+                data-role="textline-input-wrapper"
+              >
+                <span
+                  class="c10 supported-unseen-span"
+                />
+                <input
+                  class="c11 field__text"
+                  data-role="textline-input"
+                  placeholder="Name..."
+                  type="text"
+                  value=""
+                />
+                <span
+                  class="c10 supported-unseen-span"
+                />
+              </div>
+            </div>
+            <div
+              class="c66 field-addon field-addon--after"
+              data-role="textline--addon-after-0"
+            >
+              <button
+                aria-label="Add"
+                class="c46 c67 button button--secondary"
+                data-role="button"
+                disabled=""
+                title="Add"
+                type="button"
+              >
+                <i
+                  class="c58 c59 plasma-icon"
+                  data-role="plasma-icon"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    add
+                  </span>
+                </i>
+                <span
+                  data-role="button-label"
+                >
+                  Add
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c15 typography-headline typography-headline--3"
+        data-role="typography-headline"
+      >
+        <div
+          class="c16 typography-headline__wrapper"
+          data-role="typography-headline-wrapper"
+        >
+          <div
+            class="c17 typography-headline__title"
+            data-role="typography-headline-title"
+          >
+            <div
+              class="c18"
+            >
+              <div
+                class="typography-headline__label"
+                data-role="typography-headline-label"
+              >
+                PDF Metadata
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c68"
+      >
+        <div
+          class="c5 c69 field field--tooltips field--tooltips-2 field--block"
+          data-role="select"
+        >
+          <label
+            class="c7 c8 label field__label"
+            data-role="select-label"
+          >
+            Document Model
+          </label>
+          <div
+            class="c70 c71 field__select"
+            data-role="select-control"
+          >
+            <div
+              class="c72 field__select-wrapper"
+              data-role="select-wrapper"
+            >
+              <select
+                class="c73 field__selectTitle"
+                data-role="select-input"
+              >
+                <option
+                  disabled=""
+                  label="Please choose..."
+                  value=""
+                />
+              </select>
+              <span
+                aria-hidden="true"
+                class="c74 field__select-arrow"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c75 c76 layoutGrid layoutGridSize--lg"
+        data-role="layout-grid"
+      >
+        <div
+          class="c77 layoutGrid__row"
+          data-role="layout-grid-row"
+        >
+          <div
+            class="c78 layoutGrid__column layoutGrid__column--xs layoutGrid__column--lg-6"
+            data-role="layout-grid-column"
+          >
+            <label
+              class="c7 c8 label field__label"
+              data-role="label"
+            >
+              Title
+            </label>
+            <div>
+              <div
+                aria-label="Table"
+                class="c20 table"
+                data-role="table"
+                role="table"
+                tabindex="-1"
+              >
+                <div
+                  class="c21 table__containerWrapper"
+                >
+                  <div
+                    class="c22 table__header"
+                    data-role="table-header"
+                    role="rowgroup"
+                  >
+                    <div
+                      class="c23 c24 table__headerRow"
+                      data-role="table-header-row"
+                      role="row"
+                    >
+                      <div
+                        class="c25 c26 c27 table__headerRow--scroll"
+                        data-role="table-header-row--scroll"
+                      >
+                        <div
+                          aria-colindex="1"
+                          class="c28 c29 c30 table__headerCell table__headerCell--10 table__headerCell--align-center"
+                          data-role="table-header-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          >
+                            Precondition
+                          </div>
+                        </div>
+                        <div
+                          aria-colindex="2"
+                          class="c28 c29 c30 table__headerCell table__headerCell--10 table__headerCell--align-center"
+                          data-role="table-header-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          >
+                            Operation
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="c25 c26 c33 table__headerRow--right"
+                        data-role="table-header-row--right"
+                      >
+                        <div
+                          aria-colindex="3"
+                          class="c28 c34 c35 table__headerCell table__headerCell--align-center table__actionCell"
+                          data-role="table-header-cell"
+                          data-type="table-action-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          />
+                          <span
+                            class="c36 -u-unseenButRead"
+                            data-role="hidden-text"
+                          >
+                            Action
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="c37 c38 table__content"
+                    data-role="table-body"
+                    role="rowgroup"
+                    tabindex="0"
+                  >
+                    <div
+                      class="c49"
+                      contenteditable="false"
+                    />
+                    <div
+                      aria-selected="false"
+                      class="c50 c23 c79 table__contentRow"
+                      data-role="table-body-row"
+                      role="row"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="c25 c27 c52 table__contentRow--scroll"
+                        data-role="table-body-row--scroll"
+                      >
+                        <div
+                          aria-colindex="1"
+                          class="c28 c29 c80 table__contentCell table__contentCell--10 table__contentCell--align-center"
+                          data-role="table-body-cell"
+                          role="cell"
+                        />
+                        <div
+                          aria-colindex="2"
+                          class="c28 c29 c81 table__contentCell table__contentCell--10 table__contentCell--align-center"
+                          data-role="table-body-cell"
+                          role="cell"
+                        >
+                          model-name
+                        </div>
+                      </div>
+                      <div
+                        class="c25 c33 c52 table__contentRow--right"
+                        data-role="table-body-row--right"
+                      >
+                        <div
+                          aria-colindex="3"
+                          class="c28 c34 c55 table__contentCell table__actionCell"
+                          data-role="table-body-cell"
+                          data-type="table-action-cell"
+                          role="cell"
+                        >
+                          <div
+                            class="c56 button-group"
+                            data-role="button-group"
+                          >
+                            <button
+                              aria-label="Edit"
+                              class="c46 c57 button button--icon"
+                              data-role="button"
+                              data-type="icon"
+                              title="Edit"
+                              type="button"
+                            >
+                              <i
+                                class="c58 c59 plasma-icon"
+                                data-role="plasma-icon"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  edit
+                                </span>
+                              </i>
+                            </button>
+                            <button
+                              aria-label="Delete"
+                              class="c46 c60 button button--icon button--destructive"
+                              data-role="button"
+                              data-type="icon"
+                              title="Delete"
+                              type="button"
+                            >
+                              <i
+                                class="c58 c59 plasma-icon"
+                                data-role="plasma-icon"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  delete
+                                </span>
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="c39 c40 table__footer"
+                    data-role="table-footer"
+                  >
+                    <div
+                      class="c41 c23 table__footerRow"
+                      data-role="table-footer-row"
+                    >
+                      <div
+                        class="c25 c27 table__footerRow--scroll"
+                        data-role="table-footer-row--scroll"
+                      >
+                        <div
+                          class="c28 c29 c62 table__footerCell table__footerCell--10 table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                        />
+                        <div
+                          class="c28 c29 c62 table__footerCell table__footerCell--10 table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                        />
+                      </div>
+                      <div
+                        class="c25 c33 table__footerRow--right"
+                        data-role="table-footer-row--right"
+                      >
+                        <div
+                          class="c28 c34 c62 table__footerCell table__actionCell table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                          data-type="table-action-cell"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="c23 c43"
+                    data-role="table-row-scroller"
+                  >
+                    <div
+                      class="c25 c27 c44"
+                      data-role="table-row-scroller--scroll"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="c28 c29 c62"
+                        data-role="table-row-scroller-cell"
+                      />
+                      <div
+                        class="c28 c29 c62"
+                        data-role="table-row-scroller-cell"
+                      />
+                    </div>
+                    <div
+                      class="c25 c33 "
+                      data-role="table-row-scroller--right"
+                    >
+                      <div
+                        class="c28 c34 c62"
+                        data-role="table-row-scroller-cell"
+                        data-type="table-action-cell"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="c56 button-group"
+              data-role="button-group"
+            >
+              <button
+                aria-label="Add"
+                class="c46 c47 button button--secondary"
+                data-role="button"
+                title="Add"
+                type="button"
+              >
+                <span
+                  data-role="button-label"
+                >
+                  Add
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            class="c78 layoutGrid__column layoutGrid__column--xs layoutGrid__column--lg-6"
+            data-role="layout-grid-column"
+          >
+            <label
+              class="c7 c8 label field__label"
+              data-role="label"
+            >
+              Description
+            </label>
+            <div>
+              <div
+                aria-label="Table"
+                class="c20 table"
+                data-role="table"
+                role="table"
+                tabindex="-1"
+              >
+                <div
+                  class="c21 table__containerWrapper"
+                >
+                  <div
+                    class="c22 table__header"
+                    data-role="table-header"
+                    role="rowgroup"
+                  >
+                    <div
+                      class="c23 c24 table__headerRow"
+                      data-role="table-header-row"
+                      role="row"
+                    >
+                      <div
+                        class="c25 c26 c27 table__headerRow--scroll"
+                        data-role="table-header-row--scroll"
+                      >
+                        <div
+                          aria-colindex="1"
+                          class="c28 c29 c30 table__headerCell table__headerCell--10 table__headerCell--align-center"
+                          data-role="table-header-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          >
+                            Precondition
+                          </div>
+                        </div>
+                        <div
+                          aria-colindex="2"
+                          class="c28 c29 c30 table__headerCell table__headerCell--10 table__headerCell--align-center"
+                          data-role="table-header-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          >
+                            Operation
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="c25 c26 c33 table__headerRow--right"
+                        data-role="table-header-row--right"
+                      >
+                        <div
+                          aria-colindex="3"
+                          class="c28 c34 c35 table__headerCell table__headerCell--align-center table__actionCell"
+                          data-role="table-header-cell"
+                          data-type="table-action-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          />
+                          <span
+                            class="c36 -u-unseenButRead"
+                            data-role="hidden-text"
+                          >
+                            Action
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="c37 c38 table__content"
+                    data-role="table-body"
+                    role="rowgroup"
+                    tabindex="0"
+                  >
+                    <div
+                      class="c49"
+                      contenteditable="false"
+                    />
+                    <div
+                      aria-selected="false"
+                      class="c50 c23 c79 table__contentRow"
+                      data-role="table-body-row"
+                      role="row"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="c25 c27 c52 table__contentRow--scroll"
+                        data-role="table-body-row--scroll"
+                      >
+                        <div
+                          aria-colindex="1"
+                          class="c28 c29 c80 table__contentCell table__contentCell--10 table__contentCell--align-center"
+                          data-role="table-body-cell"
+                          role="cell"
+                        />
+                        <div
+                          aria-colindex="2"
+                          class="c28 c29 c81 table__contentCell table__contentCell--10 table__contentCell--align-center"
+                          data-role="table-body-cell"
+                          role="cell"
+                        >
+                          Description
+                        </div>
+                      </div>
+                      <div
+                        class="c25 c33 c52 table__contentRow--right"
+                        data-role="table-body-row--right"
+                      >
+                        <div
+                          aria-colindex="3"
+                          class="c28 c34 c55 table__contentCell table__actionCell"
+                          data-role="table-body-cell"
+                          data-type="table-action-cell"
+                          role="cell"
+                        >
+                          <div
+                            class="c56 button-group"
+                            data-role="button-group"
+                          >
+                            <button
+                              aria-label="Edit"
+                              class="c46 c57 button button--icon"
+                              data-role="button"
+                              data-type="icon"
+                              title="Edit"
+                              type="button"
+                            >
+                              <i
+                                class="c58 c59 plasma-icon"
+                                data-role="plasma-icon"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  edit
+                                </span>
+                              </i>
+                            </button>
+                            <button
+                              aria-label="Delete"
+                              class="c46 c60 button button--icon button--destructive"
+                              data-role="button"
+                              data-type="icon"
+                              title="Delete"
+                              type="button"
+                            >
+                              <i
+                                class="c58 c59 plasma-icon"
+                                data-role="plasma-icon"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  delete
+                                </span>
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="c39 c40 table__footer"
+                    data-role="table-footer"
+                  >
+                    <div
+                      class="c41 c23 table__footerRow"
+                      data-role="table-footer-row"
+                    >
+                      <div
+                        class="c25 c27 table__footerRow--scroll"
+                        data-role="table-footer-row--scroll"
+                      >
+                        <div
+                          class="c28 c29 c62 table__footerCell table__footerCell--10 table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                        />
+                        <div
+                          class="c28 c29 c62 table__footerCell table__footerCell--10 table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                        />
+                      </div>
+                      <div
+                        class="c25 c33 table__footerRow--right"
+                        data-role="table-footer-row--right"
+                      >
+                        <div
+                          class="c28 c34 c62 table__footerCell table__actionCell table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                          data-type="table-action-cell"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="c23 c43"
+                    data-role="table-row-scroller"
+                  >
+                    <div
+                      class="c25 c27 c44"
+                      data-role="table-row-scroller--scroll"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="c28 c29 c62"
+                        data-role="table-row-scroller-cell"
+                      />
+                      <div
+                        class="c28 c29 c62"
+                        data-role="table-row-scroller-cell"
+                      />
+                    </div>
+                    <div
+                      class="c25 c33 "
+                      data-role="table-row-scroller--right"
+                    >
+                      <div
+                        class="c28 c34 c62"
+                        data-role="table-row-scroller-cell"
+                        data-type="table-action-cell"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="c56 button-group"
+              data-role="button-group"
+            >
+              <button
+                aria-label="Add"
+                class="c46 c47 button button--secondary"
+                data-role="button"
+                title="Add"
+                type="button"
+              >
+                <span
+                  data-role="button-label"
+                >
+                  Add
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="c77 layoutGrid__row"
+          data-role="layout-grid-row"
+        >
+          <div
+            class="c78 layoutGrid__column layoutGrid__column--xs layoutGrid__column--lg-6"
+            data-role="layout-grid-column"
+          >
+            <label
+              class="c7 c8 label field__label"
+              data-role="label"
+            >
+              Author
+            </label>
+            <div>
+              <div
+                aria-label="Table"
+                class="c20 table"
+                data-role="table"
+                role="table"
+                tabindex="-1"
+              >
+                <div
+                  class="c21 table__containerWrapper"
+                >
+                  <div
+                    class="c22 table__header"
+                    data-role="table-header"
+                    role="rowgroup"
+                  >
+                    <div
+                      class="c23 c24 table__headerRow"
+                      data-role="table-header-row"
+                      role="row"
+                    >
+                      <div
+                        class="c25 c26 c27 table__headerRow--scroll"
+                        data-role="table-header-row--scroll"
+                      >
+                        <div
+                          aria-colindex="1"
+                          class="c28 c29 c30 table__headerCell table__headerCell--10 table__headerCell--align-center"
+                          data-role="table-header-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          >
+                            Precondition
+                          </div>
+                        </div>
+                        <div
+                          aria-colindex="2"
+                          class="c28 c29 c30 table__headerCell table__headerCell--10 table__headerCell--align-center"
+                          data-role="table-header-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          >
+                            Operation
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="c25 c26 c33 table__headerRow--right"
+                        data-role="table-header-row--right"
+                      >
+                        <div
+                          aria-colindex="3"
+                          class="c28 c34 c35 table__headerCell table__headerCell--align-center table__actionCell"
+                          data-role="table-header-cell"
+                          data-type="table-action-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          />
+                          <span
+                            class="c36 -u-unseenButRead"
+                            data-role="hidden-text"
+                          >
+                            Action
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="c37 c38 table__content"
+                    data-role="table-body"
+                    role="rowgroup"
+                    tabindex="0"
+                  >
+                    <div
+                      class="c49"
+                      contenteditable="false"
+                    />
+                    <div
+                      aria-selected="false"
+                      class="c50 c23 c79 table__contentRow"
+                      data-role="table-body-row"
+                      role="row"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="c25 c27 c52 table__contentRow--scroll"
+                        data-role="table-body-row--scroll"
+                      >
+                        <div
+                          aria-colindex="1"
+                          class="c28 c29 c80 table__contentCell table__contentCell--10 table__contentCell--align-center"
+                          data-role="table-body-cell"
+                          role="cell"
+                        />
+                        <div
+                          aria-colindex="2"
+                          class="c28 c29 c81 table__contentCell table__contentCell--10 table__contentCell--align-center"
+                          data-role="table-body-cell"
+                          role="cell"
+                        >
+                          author
+                        </div>
+                      </div>
+                      <div
+                        class="c25 c33 c52 table__contentRow--right"
+                        data-role="table-body-row--right"
+                      >
+                        <div
+                          aria-colindex="3"
+                          class="c28 c34 c55 table__contentCell table__actionCell"
+                          data-role="table-body-cell"
+                          data-type="table-action-cell"
+                          role="cell"
+                        >
+                          <div
+                            class="c56 button-group"
+                            data-role="button-group"
+                          >
+                            <button
+                              aria-label="Edit"
+                              class="c46 c57 button button--icon"
+                              data-role="button"
+                              data-type="icon"
+                              title="Edit"
+                              type="button"
+                            >
+                              <i
+                                class="c58 c59 plasma-icon"
+                                data-role="plasma-icon"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  edit
+                                </span>
+                              </i>
+                            </button>
+                            <button
+                              aria-label="Delete"
+                              class="c46 c60 button button--icon button--destructive"
+                              data-role="button"
+                              data-type="icon"
+                              title="Delete"
+                              type="button"
+                            >
+                              <i
+                                class="c58 c59 plasma-icon"
+                                data-role="plasma-icon"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  delete
+                                </span>
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="c39 c40 table__footer"
+                    data-role="table-footer"
+                  >
+                    <div
+                      class="c41 c23 table__footerRow"
+                      data-role="table-footer-row"
+                    >
+                      <div
+                        class="c25 c27 table__footerRow--scroll"
+                        data-role="table-footer-row--scroll"
+                      >
+                        <div
+                          class="c28 c29 c62 table__footerCell table__footerCell--10 table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                        />
+                        <div
+                          class="c28 c29 c62 table__footerCell table__footerCell--10 table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                        />
+                      </div>
+                      <div
+                        class="c25 c33 table__footerRow--right"
+                        data-role="table-footer-row--right"
+                      >
+                        <div
+                          class="c28 c34 c62 table__footerCell table__actionCell table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                          data-type="table-action-cell"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="c23 c43"
+                    data-role="table-row-scroller"
+                  >
+                    <div
+                      class="c25 c27 c44"
+                      data-role="table-row-scroller--scroll"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="c28 c29 c62"
+                        data-role="table-row-scroller-cell"
+                      />
+                      <div
+                        class="c28 c29 c62"
+                        data-role="table-row-scroller-cell"
+                      />
+                    </div>
+                    <div
+                      class="c25 c33 "
+                      data-role="table-row-scroller--right"
+                    >
+                      <div
+                        class="c28 c34 c62"
+                        data-role="table-row-scroller-cell"
+                        data-type="table-action-cell"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="c56 button-group"
+              data-role="button-group"
+            >
+              <button
+                aria-label="Add"
+                class="c46 c47 button button--secondary"
+                data-role="button"
+                title="Add"
+                type="button"
+              >
+                <span
+                  data-role="button-label"
+                >
+                  Add
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            class="c78 layoutGrid__column layoutGrid__column--xs layoutGrid__column--lg-6"
+            data-role="layout-grid-column"
+          >
+            <label
+              class="c7 c8 label field__label"
+              data-role="label"
+            >
+              Language
+            </label>
+            <div>
+              <div
+                aria-label="Table"
+                class="c20 table"
+                data-role="table"
+                role="table"
+                tabindex="-1"
+              >
+                <div
+                  class="c21 table__containerWrapper"
+                >
+                  <div
+                    class="c22 table__header"
+                    data-role="table-header"
+                    role="rowgroup"
+                  >
+                    <div
+                      class="c23 c24 table__headerRow"
+                      data-role="table-header-row"
+                      role="row"
+                    >
+                      <div
+                        class="c25 c26 c27 table__headerRow--scroll"
+                        data-role="table-header-row--scroll"
+                      >
+                        <div
+                          aria-colindex="1"
+                          class="c28 c29 c30 table__headerCell table__headerCell--10 table__headerCell--align-center"
+                          data-role="table-header-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          >
+                            Precondition
+                          </div>
+                        </div>
+                        <div
+                          aria-colindex="2"
+                          class="c28 c29 c30 table__headerCell table__headerCell--10 table__headerCell--align-center"
+                          data-role="table-header-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          >
+                            Operation
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="c25 c26 c33 table__headerRow--right"
+                        data-role="table-header-row--right"
+                      >
+                        <div
+                          aria-colindex="3"
+                          class="c28 c34 c35 table__headerCell table__headerCell--align-center table__actionCell"
+                          data-role="table-header-cell"
+                          data-type="table-action-cell"
+                          role="columnheader"
+                        >
+                          <div
+                            class="c31 c48 table__contentHeaderCell"
+                            data-role="table-header-cell-content"
+                          />
+                          <span
+                            class="c36 -u-unseenButRead"
+                            data-role="hidden-text"
+                          >
+                            Action
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="c37 c38 table__content"
+                    data-role="table-body"
+                    role="rowgroup"
+                    tabindex="0"
+                  >
+                    <div
+                      class="c49"
+                      contenteditable="false"
+                    />
+                    <div
+                      aria-selected="false"
+                      class="c50 c23 c79 table__contentRow"
+                      data-role="table-body-row"
+                      role="row"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="c25 c27 c52 table__contentRow--scroll"
+                        data-role="table-body-row--scroll"
+                      >
+                        <div
+                          aria-colindex="1"
+                          class="c28 c29 c80 table__contentCell table__contentCell--10 table__contentCell--align-center"
+                          data-role="table-body-cell"
+                          role="cell"
+                        />
+                        <div
+                          aria-colindex="2"
+                          class="c28 c29 c81 table__contentCell table__contentCell--10 table__contentCell--align-center"
+                          data-role="table-body-cell"
+                          role="cell"
+                        >
+                          DE
+                        </div>
+                      </div>
+                      <div
+                        class="c25 c33 c52 table__contentRow--right"
+                        data-role="table-body-row--right"
+                      >
+                        <div
+                          aria-colindex="3"
+                          class="c28 c34 c55 table__contentCell table__actionCell"
+                          data-role="table-body-cell"
+                          data-type="table-action-cell"
+                          role="cell"
+                        >
+                          <div
+                            class="c56 button-group"
+                            data-role="button-group"
+                          >
+                            <button
+                              aria-label="Edit"
+                              class="c46 c57 button button--icon"
+                              data-role="button"
+                              data-type="icon"
+                              title="Edit"
+                              type="button"
+                            >
+                              <i
+                                class="c58 c59 plasma-icon"
+                                data-role="plasma-icon"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  edit
+                                </span>
+                              </i>
+                            </button>
+                            <button
+                              aria-label="Delete"
+                              class="c46 c60 button button--icon button--destructive"
+                              data-role="button"
+                              data-type="icon"
+                              title="Delete"
+                              type="button"
+                            >
+                              <i
+                                class="c58 c59 plasma-icon"
+                                data-role="plasma-icon"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  delete
+                                </span>
+                              </i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="c39 c40 table__footer"
+                    data-role="table-footer"
+                  >
+                    <div
+                      class="c41 c23 table__footerRow"
+                      data-role="table-footer-row"
+                    >
+                      <div
+                        class="c25 c27 table__footerRow--scroll"
+                        data-role="table-footer-row--scroll"
+                      >
+                        <div
+                          class="c28 c29 c62 table__footerCell table__footerCell--10 table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                        />
+                        <div
+                          class="c28 c29 c62 table__footerCell table__footerCell--10 table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                        />
+                      </div>
+                      <div
+                        class="c25 c33 table__footerRow--right"
+                        data-role="table-footer-row--right"
+                      >
+                        <div
+                          class="c28 c34 c62 table__footerCell table__actionCell table__footerCell--align-center"
+                          data-role="table-footer-cell"
+                          data-type="table-action-cell"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="c23 c43"
+                    data-role="table-row-scroller"
+                  >
+                    <div
+                      class="c25 c27 c44"
+                      data-role="table-row-scroller--scroll"
+                      tabindex="-1"
+                    >
+                      <div
+                        class="c28 c29 c62"
+                        data-role="table-row-scroller-cell"
+                      />
+                      <div
+                        class="c28 c29 c62"
+                        data-role="table-row-scroller-cell"
+                      />
+                    </div>
+                    <div
+                      class="c25 c33 "
+                      data-role="table-row-scroller--right"
+                    >
+                      <div
+                        class="c28 c34 c62"
+                        data-role="table-row-scroller-cell"
+                        data-type="table-action-cell"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="c56 button-group"
+              data-role="button-group"
+            >
+              <button
+                aria-label="Add"
+                class="c46 c47 button button--secondary"
+                data-role="button"
+                title="Add"
+                type="button"
+              >
+                <span
+                  data-role="button-label"
+                >
+                  Add
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
