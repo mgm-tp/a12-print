@@ -51,10 +51,4 @@ export type ReferenceContainer<T extends ReferenceContainerLabels, R extends Ref
 
 export type AnyTopLevelContainerElement = Segment | Section | Watermark;
 export type AnyContainerElement =
-	| AnyTopLevelContainerElement
-	| Text
-	| Table
-	| TableLayout
-	| BoundingBox
-	| Override
-	| Switch;
+	AnyTopLevelContainerElement | Text | Table | TableLayout | BoundingBox | Override | Switch;

@@ -33,7 +33,7 @@ The Print Engine component defines a single version. All artifacts (Java and Jav
 
   - Everything that is mentioned in the documentation.
 
-| - All sources in folders named `internal` or sub-folders thereof, or for Java sources in packages named `internal` or sub-packages thereof.
+| - All sources in folders named `a12internal`/`internal` or sub-folders thereof, or for Java sources in packages named `internal` or sub-packages thereof.
 
   - Also all sources in modules whose `artifactId` contains `internal`.
 |===

@@ -35,10 +35,10 @@ import { useSelector } from "react-redux";
 
 import { EditorConst } from "../../../constant/editor.js";
 import { createPlainMmMeasure } from "../../../utils/index.js";
-import { DragItem } from "../../../types/index.js";
+import type { DragItem } from "../../../types/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 
-import { BasicDragLayerProps } from "../create-drag-layer-wrapper.js";
+import type { BasicDragLayerProps } from "../create-drag-layer-wrapper.js";
 
 import { StyledDragLayerContainer } from "./DragElementLayerWrapper.styled.js";
 import { NewElementPreview } from "./NewElementPreview.js";

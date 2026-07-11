@@ -31,22 +31,22 @@
  */
 import { nanoid } from "nanoid";
 
+import type { PrintModelElement } from "../../model/index.js";
 import {
 	isSection,
 	isSegment,
 	isTextStyle,
 	isWatermark,
-	PrintModel,
-	PrintModelElement,
-	Section,
-	Segment,
+	type PrintModel,
+	type Section,
+	type Segment,
 	SegmentReferencePurpose,
-	TextStyle,
-	Watermark,
+	type TextStyle,
+	type Watermark,
 } from "../../model/index.js";
 import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID, PRINT_MODEL_CONTENT_LOG_ID } from "../../model/constant.js";
 
-import { CloneContext } from "./type.js";
+import { type CloneContext } from "./type.js";
 import { clonePrintModelEntity, deepCloneObject } from "./base.js";
 import { cloneTextStyles } from "./text-style.js";
 import { cloneSegments } from "./segment.js";
@@ -126,7 +126,6 @@ export function clonePrintModel(printModel: PrintModel, printModelId?: string): 
 				textStyles: newTextStyles,
 				sections: newSections,
 				watermarks: newWatermarks,
-				title: printModelId || `${printModel.header.id}_copy`,
 				id: PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 			},
 			segments: {

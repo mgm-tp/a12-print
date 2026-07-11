@@ -29,14 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import FixedSizeIntList from "../collection/FixedSizeIntList.js";
+import type { FixedSizeIntList } from "../collection/FixedSizeIntList.js";
 
-import CharTrie from "./CharTrie.js";
+import type { CharTrie } from "./CharTrie.js";
 
-interface CharTrieNode {
+export interface CharTrieNode {
 	readonly trie: CharTrie;
 
 	points: FixedSizeIntList | undefined;
 }
-
-export default CharTrieNode;

@@ -29,12 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	PartialBoundingBox,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialBoundingBox } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { BaseElementProps } from "../base.js";
+import type { BaseElementProps } from "../base.js";
 
 import { BoundingBoxElements } from "./BoundingBoxElements.js";
 
@@ -46,7 +44,7 @@ export const BoundingBox = ({ element, styles, ElementContainer }: BoundingBoxPr
 	}
 
 	return (
-		<div style={styles}>
+		<div data-testid="element-bounding-box" style={styles}>
 			{element?.boundingBox?.elementReferences?.map((ref, index) => (
 				<BoundingBoxElements item={ref as PartialValidPlaceableReference} key={index}>
 					{ElementContainer && <ElementContainer reference={ref} isNestedElement={true} />}

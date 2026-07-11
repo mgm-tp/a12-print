@@ -1,7 +1,7 @@
 {
   "name": "@com.mgmtp.a12.print/print-dev-tools",
   "description": "The developer base configurations of the Print Engine",
-  "version": "3.2.3",
+  "version": "4.0.0",
   "license": "(EUPL-1.2 OR LicenseRef-commercial)",
   "private": true,
   "files": [
@@ -22,7 +22,6 @@
     "typescript": "catalog:"
   },
   "peerDependencies": {
-    "@com.mgmtp.a12.devtools/tsconfig": "catalog:a12",
     "@com.mgmtp.a12.devtools/eslint-config": "catalog:a12",
     "@com.mgmtp.a12.devtools/prettier-config": "catalog:a12",
     "eslint": "catalog:",

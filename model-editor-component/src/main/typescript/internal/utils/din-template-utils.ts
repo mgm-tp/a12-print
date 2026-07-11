@@ -32,20 +32,21 @@
 import { select } from "typed-redux-saga";
 import { nanoid } from "nanoid";
 
+import type { PlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	ElementType,
 	OverrideType,
 	PartialBoundingBox,
 	PartialOverride,
-	PlaceableReference,
 	ReferenceType,
 	SourceType,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { PrintEngineState } from "../store/root-reducer.js";
-import { PrintEngineSelectors } from "../store/selectors.js";
+import type { PrintEngineState } from "../../a12internal/api/PrintEngineState.js";
+
 import { RequestApiSelectors } from "../redux/request-api/selectors.js";
-import { DinTemplateSegmentItem } from "../components/segments/din-template-segment-item.js";
+import { PrintEngineSelectors } from "../store/selectors.js";
+import type { DinTemplateSegmentItem } from "../components/segments/din-template-segment-item.js";
 
 export function* getBoundingOverrideElements(
 	currentSegmentId: string,
@@ -88,7 +89,7 @@ export function* getBoundingOverrideElements(
 							ref =>
 								({
 									...ref,
-									id: nanoid(),
+									id: ref.id, // use stable id from template
 									refId: getOverrideElementByRefId(overrideElements, ref.refId)?.id,
 									dimensions: {
 										...ref.dimensions,

@@ -43,18 +43,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static com.mgmtp.a12.print.workspace.internal.WorkspaceTest.RUNTIME_WORKSPACE;
-import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.DOCUMENT;
-import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.LOG;
-import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.MODEL;
-import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.PDF;
-import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.PROPERTIES;
-import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.TRANSACTION_LOG;
-import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.YAML;
+import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class FileHandlerTest {
@@ -120,15 +112,6 @@ class FileHandlerTest {
         final var result = underTest.getElementType(path);
 
         assertThat(result).isEqualTo(PROPERTIES);
-    }
-
-    @Test
-    void givenYamlFile_whenGetElementType_thenCorrect() {
-        final var path = Paths.get(RUNTIME_WORKSPACE, "test/TestFieldDM.yaml");
-
-        final var result = underTest.getElementType(path);
-
-        assertThat(result).isEqualTo(YAML);
     }
 
     @Test

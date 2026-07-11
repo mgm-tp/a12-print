@@ -32,7 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.PrintModelContent;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
 import com.mgmtp.a12.print.model.api.model.general.General;
@@ -98,3 +98,4 @@ public class PrintModelContentDto extends PrintModelEntityDto implements PrintMo
 		return Optional.ofNullable(watermarks);
 	}
 }
+

@@ -31,10 +31,11 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.types;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.NullNode;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.NullNode;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ import java.util.Map;
 @Slf4j
 public class A12TypeComparison {
 
-	private static final ObjectMapper mapper = new ObjectMapper();
+	private static final ObjectMapper mapper = new JsonMapper();
 
 	private final A12TypeComparisonMapping typeComparisonMapping;
 
@@ -64,7 +65,7 @@ public class A12TypeComparison {
 			throw new A12TypeComparisonException("One of the types has no type identifier");
 		}
 
-		final var fieldType = firstType.asText();
+		final var fieldType = firstType.asString("");
 		if (!firstType.equals(secondType)) {
 			return false;
 		}

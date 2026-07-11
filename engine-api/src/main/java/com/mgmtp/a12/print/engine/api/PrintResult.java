@@ -29,18 +29,19 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::PrintResultInterface[]
 package com.mgmtp.a12.print.engine.api;
 // tag::Import[]
 
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
-
 import java.io.IOException;
 import java.io.OutputStream;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 // end::Import[]
 
 /**
  * General interface for the results of the {@link PrintEngine}.
  */
+@OnlyForUsage
 public interface PrintResult {
 
 	/**
@@ -53,5 +54,6 @@ public interface PrintResult {
 	 *
 	 * @param outputStream The target stream
 	 */
-	void copyTo(OutputStream outputStream) throws IOException, PrintException;
+	void copyTo(OutputStream outputStream) throws IOException;
 }
+// end::PrintResultInterface[]

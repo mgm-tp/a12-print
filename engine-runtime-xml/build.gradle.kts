@@ -50,14 +50,14 @@ dependencies {
 	implementation(project(":model-document"))
 	implementation(project(":model-api"))
 
+	implementation(a12Libs.baseModelUtils)
 	implementation(thirdPartyLibs.xmlBind)
 	implementation(thirdPartyLibs.pdfbox)
 
 	runtimeOnly(thirdPartyLibs.jaxb)
 
 	testImplementation(testFixtures(project(":engine-runtime-test")))
-	testImplementation(a12Libs.kernelMdDocumentApi)
-	testImplementation(a12Libs.kernelMdDocument)
+	testImplementation(a12Libs.kernelMdFacade)
 
 	testImplementation(thirdPartyLibs.commonsIO)
 	testImplementation(thirdPartyLibs.commonsLang3)
@@ -65,6 +65,7 @@ dependencies {
 	testImplementation(thirdPartyLibs.assertj)
 
 	testRuntimeOnly(thirdPartyLibs.jupiterEngine)
+	testRuntimeOnly(thirdPartyLibs.junitLauncher)
 
 	schemagen(thirdPartyLibs.jaxbJxc)
 	schemagen(thirdPartyLibs.xmlBind)

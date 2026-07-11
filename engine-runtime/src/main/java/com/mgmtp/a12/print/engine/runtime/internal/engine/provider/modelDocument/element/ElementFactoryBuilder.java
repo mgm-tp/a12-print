@@ -45,6 +45,7 @@ import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.tableLayout.TableLayoutValuesDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.text.TextValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.text.TextValueMarkup;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter.StringEscapeUtils;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.inputSource.ReferenceInputSourceResolver;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.FormattingResult;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.modelDocument.element.area.AreaElementDependency;
@@ -93,7 +94,6 @@ import com.mgmtp.a12.print.model.document.internal.element.table.TableBasedEleme
 import com.mgmtp.a12.print.model.document.internal.element.table.TableCell;
 import com.mgmtp.a12.print.model.document.internal.element.table.TableRow;
 import com.mgmtp.a12.print.model.document.internal.element.table.TableSumCell;
-import freemarker.core.XHTMLOutputFormat;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
@@ -172,11 +172,10 @@ public class ElementFactoryBuilder implements ExhaustivePrintModelVisitor {
 					new PrintModelTreeTrace<>(path, text), printDocumentContext, Collections.emptyList()
 				)
 			).filter(Objects::nonNull).toList();
-			// "pageNumberGlobalStyles" could be ignored because it is only for styling
 			final var evaluatedValue = runtime.provide(new TextValueDependency(
 				text,
 				results.stream().map(ElementFactoryBuilder::mapTextValueMarkup).toList()
-			)).get().value();
+			)).get();
 			return runtime.provide(
 				new TextBasedElementDependency(
 					new PrintModelTreeTrace<>(path, text),
@@ -215,16 +214,18 @@ public class ElementFactoryBuilder implements ExhaustivePrintModelVisitor {
 	private static TextValueMarkup mapTextValueMarkup(
 		AttachmentWrapper<IPrintElement> wrapper
 	) {
-		return wrapper.getElement() instanceof TextBasedElement textBasedElement
-			? new TextValueMarkup(
-			textBasedElement.getId(),
-			textBasedElement.isValueIsRenderedAsHtml()
-				? textBasedElement.getValue()
-				: XHTMLOutputFormat.INSTANCE.escapePlainText(textBasedElement.getValue()),
-			textBasedElement.isValueIsRenderedAsHtml(),
-			StringUtils.isEmpty(textBasedElement.getValue())
-		)
-			: new TextValueMarkup(wrapper.getElement().getId(), Constants.EMPTY_STRING, false, false);
+		if (wrapper.getElement() instanceof TextBasedElement textBasedElement) {
+			return new TextValueMarkup(
+				textBasedElement.getId(),
+				textBasedElement.isValueIsRenderedAsHtml()
+					? textBasedElement.getValue()
+					: StringEscapeUtils.escapeXHTML(textBasedElement.getValue()),
+				textBasedElement.isValueIsRenderedAsHtml(),
+				StringUtils.isEmpty(textBasedElement.getValue())
+			);
+		}
+
+		return new TextValueMarkup(wrapper.getElement().getId(), Constants.EMPTY_STRING, false, false);
 	}
 
 	@Override

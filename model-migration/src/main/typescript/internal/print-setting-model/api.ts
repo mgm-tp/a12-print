@@ -30,51 +30,14 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { createMigrationTool } from "@com.mgmtp.a12.migrationtool/migrationtool-core/web";
-import { MigrationTool, MigrationResult } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
-import { PrintSettingModelMarshaller } from "@com.mgmtp.a12.print/print-setting/lib/internal/api/marshaller/print-setting-marshaller.js";
-
-import { buildErrorFieldPaths } from "../utils/validation.js";
+import type { MigrationTool, MigrationResult, Workspace } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
 
 import { MIGRATION_PARAMETERS } from "./config.js";
 
 const BasicMigrationTool = createMigrationTool(MIGRATION_PARAMETERS);
-const printSettingModelMarshaller = new PrintSettingModelMarshaller();
 
 export const PrintSettingMigrationTool: MigrationTool = {
-	migrate: (models: object[]): MigrationResult[] => {
-		const migratedModels: MigrationResult[] = BasicMigrationTool.migrate(models);
-
-		return migratedModels.map(migrationResult => {
-			if (migrationResult.status === "success") {
-				const deserializedResult = printSettingModelMarshaller.deserialize(
-					migrationResult.model as Record<string, unknown>,
-					[]
-				);
-
-				if (!deserializedResult.result) {
-					return {
-						model: migrationResult.model,
-						status: "error",
-						errorMessage: `Cannot deserialize the Print Setting model. Details: ${buildErrorFieldPaths(deserializedResult.report.errorMap["@error"])}`,
-					};
-				}
-
-				const serializedResult = printSettingModelMarshaller.serialize(deserializedResult.result, []);
-
-				if (!serializedResult.result) {
-					return {
-						model: migrationResult.model,
-						status: "error",
-						errorMessage: `Cannot serialize the Print Setting model. Details: ${buildErrorFieldPaths(serializedResult.report.errorMap["@error"])}`,
-					};
-				}
-
-				return {
-					...migrationResult,
-					model: serializedResult.result,
-				};
-			}
-			return migrationResult;
-		});
+	migrate: (models: object[], workspace?: Workspace): MigrationResult[] => {
+		return BasicMigrationTool.migrate(models, workspace);
 	},
 };

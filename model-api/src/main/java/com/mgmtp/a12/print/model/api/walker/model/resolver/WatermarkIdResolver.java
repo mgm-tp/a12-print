@@ -36,7 +36,9 @@ import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 import com.mgmtp.a12.print.model.api.model.watermark.Watermark;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 @FunctionalInterface
 public interface WatermarkIdResolver {
 	Optional<PrintModelTreeTrace<Watermark>> resolveWatermarkId(String id);

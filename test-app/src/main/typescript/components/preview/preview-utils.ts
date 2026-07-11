@@ -31,7 +31,7 @@
  */
 import moment from "moment-timezone";
 
-import { DropDownItem } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { DropDownItem } from "@com.mgmtp.a12.widgets/widgets-core";
 
 const MINUTES_PER_HOUR = 60;
 const TIMEZONE_PREFIX = "UTC";

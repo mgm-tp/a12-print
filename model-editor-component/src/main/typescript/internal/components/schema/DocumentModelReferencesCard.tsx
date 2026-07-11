@@ -32,16 +32,14 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { ModelReference } from "@com.mgmtp.a12.base/base-model-api/lib/main/header/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/main/button.view.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/button-group/index.js";
+import type { ModelReference } from "@com.mgmtp.a12.base/base-model-api";
+import { Button, Icon, ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 
-import { CustomTextLineStateless } from "../forms/custom-base-input-components/index.js";
+import { CustomTextField } from "../forms/custom-base-input-components/index.js";
 
 import {
 	StyledCollapsibleSetting,
@@ -148,7 +146,7 @@ export const CollapsibleSchemaSetting = ({ modelReference, onCollapse }: Collaps
 	return (
 		<StyledCollapsibleSetting>
 			{localizer(RESOURCE_KEYS.sidebar.schema.aliasLabel)}
-			<CustomTextLineStateless value={alias} style={{ flex: 1 }} onChange={onChangeAlias} />
+			<CustomTextField value={alias} style={{ flex: 1 }} onChange={onChangeAlias} />
 			<ButtonGroup>
 				<Button
 					title={saveButtonLabel}

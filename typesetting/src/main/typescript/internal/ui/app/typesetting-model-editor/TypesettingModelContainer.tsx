@@ -31,25 +31,25 @@
  */
 import { useCallback, useMemo, useReducer } from "react";
 
-import { ActionContentbox, ContentBoxElements } from "@com.mgmtp.a12.widgets/widgets-core/lib/contentbox/index.js";
-import { Locale } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
-import { isModelInstance, Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model/index.js";
-import { Typography } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { Locale } from "@com.mgmtp.a12.utils/utils-localization";
+import { isModelInstance, type Model } from "@com.mgmtp.a12.base/base-model-api";
+import { Typography, ActionContentbox, ContentBoxElements } from "@com.mgmtp.a12.widgets/widgets-core";
 
+import type { TypesettingModel } from "../../../../a12internal/api/index.js";
 import { useLocalizer } from "../../localization/localizer.js";
 import { RESOURCE_KEYS } from "../../localization/keys.js";
 import { ErrorNotification } from "../../component/validation/ErrorNotification.js";
-import { TypesettingModelMarshaller } from "../../../api/marshaller/index.js";
+import { TypesettingModelMarshaller } from "../../../../a12internal/api/marshaller/index.js";
 import { RolesTable } from "../../component/roles-editor/RolesTable.js";
 import { PreventLineBreakRuleEditor } from "../../component/prevent-line-break-rule/PreventLineBreakRuleEditor.js";
 import { createInitialTypesettingState, reducer } from "../../store/reducer.js";
-import { Action, isEditAction, SET_SERIALIZED_RESULT, SetSerializedResultPayload } from "../../store/action.js";
+import type { Action, SetSerializedResultPayload } from "../../store/action.js";
+import { isEditAction, SET_SERIALIZED_RESULT } from "../../store/action.js";
 import { TypesettingEditorContext } from "../../store/context.js";
 import { PreventLineBreakRuleValidator } from "../../utils/custom-validator.js";
 import { OrphanWidowSettings } from "../../component/orphan-widow-settings/OrphanWidowSettings.js";
-import { TypesettingModel } from "../../../api/model/typesetting-model.js";
+import type { FooterSlots } from "../../../../a12internal/ui/app/typesetting-model-editor/types.js";
 
-import { FooterSlots } from "./types.js";
 import { TypesettingModelFooter } from "./TypesettingModelFooter.js";
 
 const typesettingModelMarshaller = new TypesettingModelMarshaller();

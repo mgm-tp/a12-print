@@ -31,17 +31,16 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.runtime;
 
-import com.mgmtp.a12.kernel.md.document.api.IFieldInstance;
 import com.mgmtp.a12.print.engine.api.JobDependencyProvider;
 import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.KernelDocumentJobDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.MutablePrintDocument;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocument;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.loader.DocumentDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.loader.DocumentModelDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalCorePrintEngineRuntime;
@@ -51,43 +50,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
-public class PrintDocumentDependencyValueProducer implements CoreDependencyValueProvider<PrintDocument, DocumentDependency> {
+public class PrintDocumentDependencyValueProducer implements CoreDependencyValueProvider<PrintDocumentContext, DocumentDependency> {
 
 	@NonNull
 	private final PrintModelCompilationContext printModel;
 	@NonNull
 	private final ArrayList<JobDependencyProvider> providers;
 
-	private static void tracePrintDocumentContext(PrintDocument printDocumentContext) {
-		if (log.isTraceEnabled()) {
-			log.trace(String.format("PrintDocument with id: `%s` was resolved for DocumentModel `%s`", printDocumentContext.getId(), printDocumentContext.context().getDocumentModelId()));
-			printDocumentContext.forEach(r -> {
-
-				var value = Optional.empty();
-
-				if (r instanceof IFieldInstance) {
-					value = ((IFieldInstance) r).getValue();
-				}
-
-				log.trace(
-					String.format("%1$-" + 20 + "s", value.map(e -> String.format("%s", e)).orElse("")).substring(0, 20) +
-					"\t" +
-					String.format("%1$-" + 20 + "s", Arrays.toString(r.getRepetitions())) +
-					"\t" +
-					r.getPath()
-				);
-
-			});
-		}
-	}
-
 	@Override
-	public ValueFactory<PrintDocument> produce(DocumentDependency dependency, PrintJob job, PrintEngine<?> engine, InternalCorePrintEngineRuntime runtime) {
+	public ValueFactory<PrintDocumentContext> produce(DocumentDependency dependency, PrintJob job, PrintEngine<?> engine, InternalCorePrintEngineRuntime runtime) {
 
 		final var reference = printModel
 			.getHeader()
@@ -102,10 +76,10 @@ public class PrintDocumentDependencyValueProducer implements CoreDependencyValue
 			.findFirst();
 
 		if (reference.isEmpty()) {
-			throw new PrintException(String.format(
-				"DocumentModel: '%s' is not referenced by the current PrintModel '%s' and therefore no Document can be provided.",
+			throw new PrintDomainException(
+				"DocumentModel '{}' is not referenced by PrintModel '{}' and therefore no Document can be provided.",
 				dependency.getDocumentModelId(),
-				job.getPrintModelId().getModelHeaderId())
+				job.getPrintModelId().getModelHeaderId()
 			);
 		}
 
@@ -123,11 +97,6 @@ public class PrintDocumentDependencyValueProducer implements CoreDependencyValue
 			.orElseThrow(() -> new PrintException("Missing Document for DocumentModel: " + dependency.getDocumentModelId()));
 		final var documentModel = runtime.provide(new DocumentModelDependency(dependency.getDocumentModelId())).get();
 
-		final var result = MutablePrintDocument.from(indexDocument, documentModel).setImmutable();
-
-		tracePrintDocumentContext(result);
-
-		return () -> result;
+		return () -> new PrintDocumentContext(indexDocument, documentModel, indexDocument.getDocumentModelId());
 	}
-
 }

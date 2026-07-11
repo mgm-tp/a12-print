@@ -41,6 +41,7 @@ import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.compone
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.Size;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing.HtmlAttributesUtils;
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.InputSource;
 import com.mgmtp.a12.print.model.api.model.element.properties.BorderProperties;
 
 public class LineComponentDependencyValueProducer implements PdfBoxDependencyValueProvider<Component, LineComponentDependency> {
@@ -49,9 +50,9 @@ public class LineComponentDependencyValueProducer implements PdfBoxDependencyVal
 	public ValueFactory<Component> produce(LineComponentDependency dependency, PrintJob job, PrintEngine<?> engine, InternalPdfBoxPrintEngineRuntime runtime) {
 		final var line = dependency.getLine();
 		final var dimensions = dependency.getDimensions();
-		final var borderWidth = line.getBorderProperties().flatMap(BorderProperties::getBorderWidth);
-		final var borderStyle = line.getBorderProperties().flatMap(BorderProperties::getBorderStyle);
-		final var borderColor = line.getBorderProperties().flatMap(BorderProperties::getBorderColor);
+		final var borderWidth = line.getBorderProperties().flatMap(BorderProperties::getBorderWidth).flatMap(InputSource::getValue);
+		final var borderStyle = line.getBorderProperties().flatMap(BorderProperties::getBorderStyle).flatMap(InputSource::getValue);
+		final var borderColor = line.getBorderProperties().flatMap(BorderProperties::getBorderColor).flatMap(InputSource::getValue);
 		final var color = borderColor.map(HtmlAttributesUtils::parseColor).orElse(null);
 
 		return () -> new LineComponent(

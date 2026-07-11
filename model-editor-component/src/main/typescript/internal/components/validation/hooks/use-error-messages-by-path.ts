@@ -29,12 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as React from "react";
+import type * as React from "react";
 import { useSelector } from "react-redux";
 
-import { PrintLocalizer } from "../../../localization/index.js";
+import { PrintLocalizer } from "../../../../internal/localization/index.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
-import { getErrors } from "../../../utils/index.js";
+import { getErrors } from "../../../../internal/utils/index.js";
 
 export function useErrorMessagesByPath(path = ""): {
 	errorMessage: React.ReactNode;

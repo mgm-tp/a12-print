@@ -36,22 +36,10 @@ import com.mgmtp.a12.print.model.api.model.element.base.ComputationAlternative;
 import com.mgmtp.a12.print.model.api.model.element.properties.RuntimeVariable;
 
 import java.util.List;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface General extends PrintModelEntity {
-	/**
-	 * @deprecated Use {@link Metadata#getTitleComputation()} instead.
-	 * Note: Title information is now stored in an array of {@link ComputationAlternative}.
-	 */
-	@Deprecated(since = "3.2.0", forRemoval = true)
-	String getTitle();
-
-	/**
-	 * @deprecated Use {@link #getMetadata()} to access metadata fields.
-	 * Note: Fields from {@link Details} are now stored in an array of {@link ComputationAlternative}.
-	 */
-	@Deprecated(since = "3.2.0", forRemoval = true)
-	Details getDetails();
-
 	Metadata getMetadata();
 
 	SegmentDefaults getSegmentDefaults();

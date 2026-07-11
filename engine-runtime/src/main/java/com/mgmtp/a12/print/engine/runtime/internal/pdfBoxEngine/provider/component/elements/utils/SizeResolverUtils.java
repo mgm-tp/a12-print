@@ -31,10 +31,13 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils;
 
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.InputSource;
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.PossibleInputSource;
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.StringInputSource;
 import com.mgmtp.a12.print.model.api.model.element.properties.BorderProperties;
 import com.mgmtp.a12.print.model.api.model.element.properties.TextProperties;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class SizeResolverUtils {
@@ -48,7 +51,7 @@ public class SizeResolverUtils {
 	public static Optional<Long> getOptBorderWidth(final BorderProperties borderProperties) {
 		return Optional.ofNullable(borderProperties)
 			.flatMap(props ->
-				props.getBorderStyle().isPresent() ? props.getBorderWidth().map(PDFUnitUtil::floatToLongPt) : Optional.empty()
+				Objects.equals(props.getBorderStyle().map(InputSource::getSource).orElse(null), PossibleInputSource.INPUT) ? props.getBorderWidth().flatMap(InputSource::getValue).map(PDFUnitUtil::floatToLongPt) : Optional.empty()
 			);
 	}
 

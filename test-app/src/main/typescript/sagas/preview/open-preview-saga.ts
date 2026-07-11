@@ -29,20 +29,21 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Action, AnyAction } from "typescript-fsa";
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { takeLatest } from "typed-redux-saga";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { OpenPreviewPayload, PreviewActions } from "../../store/preview";
+import type { OpenPreviewPayload } from "../../store/preview";
+import { PreviewActions } from "../../store/preview";
 import { getDefaultTimeZone } from "../../components/preview/preview-utils";
 import { TIME_ZONE_KEY } from "../../components/preview";
 import { createPreviewPath } from "../../components/router";
 
-export function* openPreviewSaga(): SagaIterator {
-	yield* takeLatest((action: AnyAction) => PreviewActions.openPreview.match(action), handleOpenPreviewSaga);
+export function* openPreviewSaga(): SagaGenerator<void> {
+	yield* takeLatest(PreviewActions.openPreview.match, handleOpenPreviewSaga);
 }
 
-function handleOpenPreviewSaga(action: Action<OpenPreviewPayload>) {
+function handleOpenPreviewSaga(action: PayloadAction<OpenPreviewPayload>) {
 	const { caseId } = action.payload;
 
 	const searchParams = new URLSearchParams();

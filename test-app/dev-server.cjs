@@ -42,7 +42,7 @@ async function runPrintShell({ printModelId, caseId, documentId, locale, timeZon
 	const workspacePath = Path.resolve(__dirname, "use-cases", caseId);
 	return new Promise((resolve, reject) => {
 		const shellCommand = "java";
-		const shellArgs = ["-jar", printShellPath, "print", "-p", printModelId, "-x", "true"];
+		const shellArgs = ["-jar", printShellPath, "print", "-p", printModelId];
 		if (documentId) {
 			shellArgs.push("-d");
 			shellArgs.push(documentId);
@@ -191,11 +191,65 @@ function setupMiddlewares(middlewares, devServer) {
 		console.log("end print shell");
 	});
 
+	devServer.app.get("/api/resources", async (req, res) => {
+		const { caseId } = req.query;
+		const dir = getUseCaseDirectory(Path.join(caseId, "resources"));
+		await fs.mkdir(dir, { recursive: true });
+		const files = await fs.readdir(dir);
+		res.json(files);
+	});
+
+	devServer.app.get("/api/resource", async (req, res) => {
+		const { caseId, resourceName } = req.query;
+		const filePath = getUseCaseDirectory(Path.join(caseId, "resources", resourceName));
+		const buf = await fs.readFile(filePath);
+		const mime = getMimeType(resourceName);
+		res.json({
+			name: resourceName,
+			internal_filename: resourceName,
+			size: buf.length,
+			mime_type: mime,
+			content: `data:${mime};base64,${buf.toString("base64")}`,
+		});
+	});
+
+	devServer.app.post("/api/resource", async (req, res) => {
+		const { caseId, resourceName, content } = req.body;
+		const dir = getUseCaseDirectory(Path.join(caseId, "resources"));
+		await fs.mkdir(dir, { recursive: true });
+		const buf = Buffer.from(content.split(",")[1], "base64");
+		const dotIdx = resourceName.lastIndexOf(".");
+		const ext = dotIdx >= 0 ? resourceName.slice(dotIdx) : "";
+		const base = dotIdx >= 0 ? resourceName.slice(0, dotIdx) : resourceName;
+		const assignedName = `${base}-${buf.length.toString(36)}${ext}`;
+		const filePath = Path.join(dir, assignedName);
+		const exists = await fs
+			.access(filePath)
+			.then(() => true)
+			.catch(() => false);
+		if (!exists) {
+			await fs.writeFile(filePath, buf);
+		}
+		res.json({ success: true, name: assignedName });
+	});
+
 	return middlewares;
 }
 
 function getUseCaseDirectory(filePath) {
 	return Path.join(context, "use-cases", filePath);
+}
+
+function getMimeType(fileName) {
+	const extensionMap = {
+		".png": "image/png",
+		".jpg": "image/jpeg",
+		".jpeg": "image/jpeg",
+		".gif": "image/gif",
+		".bmp": "image/bmp",
+	};
+	const ext = Path.extname(fileName).toLowerCase();
+	return extensionMap[ext] || "application/octet-stream";
 }
 
 async function removeFile(filePath) {

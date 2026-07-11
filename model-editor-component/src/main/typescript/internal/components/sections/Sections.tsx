@@ -32,26 +32,26 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
+import type {
 	Dimensions,
 	Measure,
 	PartialSection,
 	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
+import type { OmitId } from "../../utils/index.js";
 import {
 	changePartialMmMeasureValue,
 	createMmMeasure,
 	createPlainMmMeasure,
 	createPlainMmMeasureFromPx,
-	OmitId,
 } from "../../utils/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";
 import { RESOURCE_KEYS } from "../../localization/index.js";
 import { EditorConst } from "../../constant/editor.js";
-import { ISide } from "../../types/resize.js";
+import type { ISide } from "../../types/resize.js";
 
 import { BorderLines } from "../border-line/BorderLines.js";
 import { EditorContext } from "../editor-stage/editor-context.js";
@@ -81,13 +81,15 @@ export const Sections = ({ zoomFactor, bodyState, editorState, section }: Sectio
 	const [footerHeight, setFooterHeight] = React.useState(section?.footerHeight?.value || DEFAULT_HEIGHT);
 	const [startPosY, setStartPosY] = React.useState<OmitId<Measure>>(createPlainMmMeasure(0));
 	const [side, setSide] = React.useState<ISide | undefined>();
+	const [prevSection, setPrevSection] = React.useState(section);
 
-	React.useEffect(() => {
+	if (prevSection !== section) {
+		setPrevSection(section);
 		if (section?.headerHeight?.value && section?.footerHeight?.value) {
 			setHeaderHeight(section.headerHeight.value);
 			setFooterHeight(section.footerHeight.value);
 		}
-	}, [section]);
+	}
 
 	const startResize = React.useCallback((pos: OmitId<Measure>, side: ISide) => {
 		setStartPosY(pos);

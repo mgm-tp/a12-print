@@ -31,13 +31,14 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components;
 
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle.RegionCursor;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.BaseComponent;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.ComponentResult;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.PreflightedComponent;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.PreflightedComponentResult;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.AccessibilityData;
-import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.PrintRenderingException;
+import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.ContentStreamAdapter;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.Size;
 import lombok.EqualsAndHashCode;
@@ -46,14 +47,17 @@ import lombok.Value;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.documentinterchange.taggedpdf.PDLayoutAttributeObject;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.util.Matrix;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.ImageComponentUtils.readExifOrientation;
 import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.AccessibilityConstants.FIGURE_COSNAME;
 import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.AccessibilityUtils.getMarkedContent;
 import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.AccessibilityUtils.getStructElement;
+import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil.longPtToFloat;
 import static org.apache.pdfbox.pdmodel.documentinterchange.taggedpdf.PDLayoutAttributeObject.PLACEMENT_BLOCK;
 import static org.apache.pdfbox.pdmodel.documentinterchange.taggedpdf.StandardStructureTypes.Figure;
 
@@ -135,46 +139,82 @@ public class ImageComponent extends BaseComponent {
 		final var position = regionCursor.getPosition();
 		final var remainingRegionSpace = regionCursor.getRemainingRegionSpace();
 
-		try {
-			final PDImageXObject imageToRender;
-			synchronized (pdDocument) {
-				imageToRender = PDImageXObject.createFromByteArray(pdDocument, image, altText);
-			}
-
-			if (preflightResult.onNextPage) {
-				return new ComponentResult(Optional.of(this), remainingRegionSpace);
-			}
-
-			long width = preflightResult.width;
-			long height = preflightResult.height;
-
-			long yPosPtInverted = PDFUnitUtil.invertYPos(position.getY(), height, contentStream.getPage());
-
-			final var tagId = contentStream.beginMarkedContent(FIGURE_COSNAME);
-
-			contentStream.drawImage(imageToRender, position.getX(), yPosPtInverted, width, height);
-
-			contentStream.endMarkedContent();
-
-			final var structElement = getStructElement(Figure, contentStream.getPage());
-			structElement.setAlternateDescription(altText);
-
-			final var attribute = new PDLayoutAttributeObject();
-			attribute.setBBox(new PDRectangle(
-				position.getX(), yPosPtInverted, width, height
-			));
-			attribute.setPlacement(PLACEMENT_BLOCK);
-
-			structElement.addAttribute(attribute);
-			structElement.appendKid(getMarkedContent(tagId));
-
-			return new ComponentResult(
-				Optional.empty(),
-				height,
-				new AccessibilityData(List.of(structElement), List.of(structElement))
-			);
-		} catch (IOException e) {
-			throw new PrintRenderingException(e);
+		if (preflightResult.onNextPage) {
+			return new ComponentResult(Optional.of(this), remainingRegionSpace);
 		}
+
+		final PDImageXObject imageToRender;
+		synchronized (pdDocument) {
+			try {
+				imageToRender = PDImageXObject.createFromByteArray(pdDocument, image, altText);
+			} catch (IOException e) {
+				throw new PrintDomainException("The image with alt text '{}' could not be loaded", altText, e);
+			}
+		}
+
+		long width = preflightResult.width;
+		long height = preflightResult.height;
+
+		long yPosPtInverted = PDFUnitUtil.invertYPos(position.getY(), height, contentStream.getPage());
+
+		final var tagId = contentStream.beginMarkedContent(FIGURE_COSNAME);
+
+		drawImage(contentStream, imageToRender, position.getX(), yPosPtInverted, width, height);
+
+		contentStream.endMarkedContent();
+
+		final var structElement = getStructElement(Figure, contentStream.getPage());
+		structElement.setAlternateDescription(altText);
+
+		final var attribute = new PDLayoutAttributeObject();
+		attribute.setBBox(new PDRectangle(
+			position.getX(), yPosPtInverted, width, height
+		));
+		attribute.setPlacement(PLACEMENT_BLOCK);
+
+		structElement.addAttribute(attribute);
+		structElement.appendKid(getMarkedContent(tagId));
+
+		return new ComponentResult(
+			Optional.empty(),
+			height,
+			new AccessibilityData(List.of(structElement), List.of(structElement))
+		);
+	}
+
+	private void drawImage(
+		final ContentStreamAdapter contentStream,
+		final PDImageXObject imageToRender,
+		final long x,
+		final long y,
+		final long width,
+		final long height
+	) {
+		int orientation = readExifOrientation(image);
+
+		if (orientation == 1) {
+			contentStream.drawImage(imageToRender, x, y, width, height);
+		} else {
+			contentStream.drawImage(imageToRender, getOrientationMatrix(
+				orientation,
+				longPtToFloat(x),
+				longPtToFloat(y),
+				longPtToFloat(width),
+				longPtToFloat(height)
+			));
+		}
+	}
+
+	private static Matrix getOrientationMatrix(int orientation, float x, float y, float width, float height) {
+		return switch (orientation) {
+			case 2 -> new Matrix(-width,0, 0, height, x + width, y);
+			case 3 -> new Matrix(-width,0, 0, -height, x + width, y + height);
+			case 4 -> new Matrix(width,0, 0, -height, x, y + height);
+			case 5 -> new Matrix(0, -height,-width, 0, x + width, y + height);
+			case 6 -> new Matrix(0, -height, width,0, x, y + height);
+			case 7 -> new Matrix(0,height, width,  0, x, y);
+			case 8 -> new Matrix(0, height,-width, 0, x + width, y);
+			default -> new Matrix(width, 0,  0, height, x, y);
+		};
 	}
 }

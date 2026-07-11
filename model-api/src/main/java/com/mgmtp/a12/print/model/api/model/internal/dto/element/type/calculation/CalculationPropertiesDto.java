@@ -32,7 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.element.type.calculation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.base.ComputationAlternative;
 import com.mgmtp.a12.print.model.api.model.element.base.DisplayOptions;
 import com.mgmtp.a12.print.model.api.model.element.base.FieldTypeDefinition;

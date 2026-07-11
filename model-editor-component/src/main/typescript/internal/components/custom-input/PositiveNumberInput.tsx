@@ -29,14 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { KeyboardEvent, ReactElement } from "react";
+import type { KeyboardEvent, ReactElement } from "react";
 
-import { CustomTextLineStateful } from "../forms/custom-base-input-components/index.js";
-import { TextLineStatefulProps } from "../forms/custom-base-input-components/types.js";
+import { DynamicSourceTextField } from "../forms/custom-base-input-components/index.js";
+import type { TextLineStatefulProps } from "../forms/custom-base-input-components/types.js";
 
 export const PositiveNumberInput = (props: TextLineStatefulProps): ReactElement => {
 	return (
-		<CustomTextLineStateful
+		<DynamicSourceTextField
 			{...props}
 			textAlignment="right"
 			inputProps={{ ...(props.inputProps || {}), min: 0, type: "number" }}

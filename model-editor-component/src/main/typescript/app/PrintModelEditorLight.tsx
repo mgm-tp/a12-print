@@ -29,16 +29,18 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
-import { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts/lib/types/font.js";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
 
 import { InternalPrintModelEditorLight } from "../internal/components/app/light/InternalPrintModelEditorLight.js";
+import type { StaticImageProvider } from "../api/StaticImageProvider.js";
 
 export interface PrintEditorComponentLightProps {
 	readonly printModel: PrintModel;
 	readonly documentModel: DocumentModel;
 	readonly customFonts?: FontResourceMap;
+	readonly staticImageProvider: StaticImageProvider;
 	onChange(printModel: PrintModel, dirty?: boolean): void;
 }
 
@@ -49,6 +51,7 @@ export const PrintModelEditorLight = ({
 	printModel,
 	documentModel,
 	customFonts,
+	staticImageProvider,
 	onChange,
 }: PrintEditorComponentLightProps) => {
 	return (
@@ -56,6 +59,7 @@ export const PrintModelEditorLight = ({
 			printModel={printModel}
 			documentModel={documentModel}
 			customFonts={customFonts}
+			staticImageProvider={staticImageProvider}
 			onChange={onChange}
 		/>
 	);

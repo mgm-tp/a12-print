@@ -31,7 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing;
 
-public class HtmlTokenizerException extends RuntimeException {
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
+
+public class HtmlTokenizerException extends PrintDomainException {
 	public HtmlTokenizerException(Exception exception) {
 		super(exception);
 	}

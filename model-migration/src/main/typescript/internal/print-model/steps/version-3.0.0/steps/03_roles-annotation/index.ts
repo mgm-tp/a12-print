@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as NewModel from "../02_description-field/print-model.js";
+import type * as NewModel from "../02_description-field/print-model.js";
 
 function migrateRolesAnnotationToComma(annotations: NewModel.AnnotationsDTO[] | undefined) {
 	if (annotations) {

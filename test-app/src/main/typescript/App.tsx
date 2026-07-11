@@ -29,15 +29,13 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import "@com.mgmtp.a12.widgets/widgets-core/lib/theme/basic.css";
+import "@com.mgmtp.a12.widgets/widgets-core/styles/basic.css";
 
 import { StyleSheetManager, ThemeProvider } from "styled-components";
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 
-import { flatCompactTheme } from "@com.mgmtp.a12.widgets/widgets-core/lib/theme/flat-compact/flat-compact-theme";
-import { GlobalStyles } from "@com.mgmtp.a12.widgets/widgets-core/lib/theme/base";
-import { shouldForwardProp } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/main/should-forward-prop";
+import { flatCompactTheme, GlobalStyles, shouldForwardProp } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { NotificationFrame } from "./components/NotificationFrame";
 import { router } from "./components/router";

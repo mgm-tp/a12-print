@@ -60,7 +60,7 @@ public class ChartComponentDependencyValueProducer implements PdfBoxDependencyVa
 		final var chartValue = runtime.provide(new ChartValueDependency(chartTreeTrace, printDocumentContext));
 		final var chartSrc = chartValue.get();
 		final var srcUri =  chartSrc.orElseThrow(() ->
-			new PrintRenderingException("The provided image could not be resolved")
+			new PrintRenderingException("The provided chart image could not be resolved")
 		);
 
 		final var referenceInputSourceResolver =  ReferenceInputSourceResolver.builder()

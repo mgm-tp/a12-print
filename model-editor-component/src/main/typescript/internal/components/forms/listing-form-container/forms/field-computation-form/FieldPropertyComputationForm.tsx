@@ -33,35 +33,56 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	ColumnPropertyKeyType,
 	PartialListing,
 	ColumnPropertyComputations,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { PrintEngineSelectors } from "../../../../../store/selectors.js";
 import { useColumnPropertyItems } from "../../constants/properties.js";
-import { TransactionLogStateActions } from "../../../../../redux/index.js";
-import { ComputationRepeatRowType } from "../../../shared-components/ComputationRepeat.js";
+import {
+	isListingColumnFormState,
+	isListingFieldCompFormState,
+	type ListingPropertyCompFormState,
+	NavigationSelectors,
+	TransactionLogStateActions,
+} from "../../../../../redux/index.js";
+import type { ComputationRepeatRowType } from "../../../shared-components/ComputationRepeat.js";
 import { InteractionLogActions } from "../../../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../../../redux/validation/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../../localization/index.js";
-import { OmitId } from "../../../../../utils/index.js";
-import { BaseListingFormProps } from "../../base-listing-form.js";
+import { assertType, type OmitId } from "../../../../../utils/index.js";
+import type { BaseListingFormProps } from "../../base-listing-form.js";
 
 import { PropertyComputationForm } from "../PropertyComputationForm.js";
 
-export const FieldPropertyComputationForm = ({ element }: BaseListingFormProps) => {
+interface FieldPropertyComputationFormProps extends BaseListingFormProps {
+	formState: ListingPropertyCompFormState;
+}
+
+export const FieldPropertyComputationForm = ({ element, formState }: FieldPropertyComputationFormProps) => {
 	const dispatch = useDispatch();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
-	const additionalData = useSelector(PrintEngineSelectors.additionalData);
-	const columnIndex = additionalData?.listing?.columnIndex;
-	const fieldIndex = additionalData?.listing?.fieldCompIndex;
-	const propertyIndex = additionalData?.listing?.propertyCompIndex;
+
+	const columnFormState = useSelector((state: PrintEngineState) =>
+		NavigationSelectors.formStateByType(state, ListingRegion.LISTING_COLUMN_FORM)
+	);
+
+	const fieldFormState = useSelector((state: PrintEngineState) =>
+		NavigationSelectors.formStateByType(state, ListingRegion.FIELD_COMPUTATION_FORM)
+	);
+
+	assertType(columnFormState, isListingColumnFormState);
+	assertType(fieldFormState, isListingFieldCompFormState);
+
+	const columnIndex = columnFormState.columnIndex;
+	const fieldIndex = fieldFormState.fieldCompIndex;
+	const propertyIndex = formState.propertyCompIndex;
+
 	const listing = element.listing;
 
 	const columns = React.useMemo(() => listing?.columns?.slice() || [], [listing?.columns]);

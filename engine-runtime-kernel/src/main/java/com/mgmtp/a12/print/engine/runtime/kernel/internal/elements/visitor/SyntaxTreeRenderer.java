@@ -115,46 +115,30 @@ public class SyntaxTreeRenderer {
 	private class Visitor implements SyntaxTreeElementVisitor {
 
 		private String render(Logic.Operator operator) {
-			switch (operator) {
-				case AND:
-					return "AND";
-				case OR:
-					return "OR";
-			}
-			throw new RuntimeException();
+			return switch (operator) {
+				case AND -> "AND";
+				case OR -> "OR";
+			};
 		}
 
 		private String render(Compare.Operator operator) {
-			switch (operator) {
-
-				case EQUALITY:
-					return "==";
-				case UN_EQUALITY:
-					return "!=";
-				case GREATER_THAN:
-					return ">";
-				case GREATER_THAN_OR_EQUAL:
-					return ">=";
-				case LESS_THAN:
-					return "<";
-				case LESS_THAN_OR_EQUAL:
-					return "<=";
-			}
-			throw new RuntimeException();
+			return switch (operator) {
+				case EQUALITY -> "==";
+				case UN_EQUALITY -> "!=";
+				case GREATER_THAN -> ">";
+				case GREATER_THAN_OR_EQUAL -> ">=";
+				case LESS_THAN -> "<";
+				case LESS_THAN_OR_EQUAL -> "<=";
+			};
 		}
 
 		private String render(Arithmetic.Operator operator) {
-			switch (operator) {
-				case PLUS:
-					return "+";
-				case MINUS:
-					return "-";
-				case DIVISION:
-					return "/";
-				case MULTIPLICATION:
-					return "*";
-			}
-			throw new RuntimeException();
+			return switch (operator) {
+				case PLUS -> "+";
+				case MINUS -> "-";
+				case DIVISION -> "/";
+				case MULTIPLICATION -> "*";
+			};
 		}
 
 		private String whiteSpacePadded(String s) {

@@ -31,11 +31,11 @@
  */
 import { styled } from "styled-components";
 
-import { Dimensions, Position } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { Dimensions, Position } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../constant/editor.js";
-import { OmitId } from "../../utils/index.js";
-import { ISide } from "../../types/resize.js";
+import type { OmitId } from "../../utils/index.js";
+import type { ISide } from "../../types/resize.js";
 
 const zIndexList = EditorConst.getZIndexList();
 const { MM_TO_PX } = EditorConst;

@@ -33,34 +33,35 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import {
+import type {
 	PageOrientation,
 	Precondition,
 	Watermark,
 	PartialWatermark,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ButtonGroup, Icon, Button } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import {
 	EditorStateActions,
 	InteractionLogActions,
+	NavigationActions,
+	NavigationSelectors,
 	TransactionLogStateActions,
 	ValidationCounter,
 } from "../../redux/index.js";
-import { PrintEngineSelectors } from "../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 
 import { BadgeGroup } from "../badge/BadgeGroup.js";
-import { CustomTextLineStateless } from "../forms/custom-base-input-components/index.js";
+import { CustomTextField } from "../forms/custom-base-input-components/index.js";
 import { orientationIconMapping } from "../sections/SectionCard.js";
-import { PreconditionRepeatRowType, PreconditionsRepeat } from "../forms/index.js";
+import type { PreconditionRepeatRowType } from "../forms/index.js";
+import { PreconditionsRepeat } from "../forms/index.js";
 import { PositiveNumberInput, formatLeadingDecimal } from "../custom-input/PositiveNumberInput.js";
 
 import {
@@ -85,15 +86,21 @@ export const WatermarkCard = (props: WatermarkCardProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
-	const printModelRefs = useSelector(PrintEngineSelectors.printModelRefs);
+	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
 	const error = useSelector((state: PrintEngineState) => ValidationSelectors.watermark(state, watermark?.id));
 	const watermarkValidationCounter: ValidationCounter = useSelector((state: PrintEngineState) =>
 		watermark?.id
 			? ValidationSelectors.watermarkValidationCounter(state, watermark?.id)
-			: ValidationCounter.createEmpty()
+			: ValidationCounter.EMPTY_VALIDATION_COUNTER
 	);
 	const [title, setTitle] = React.useState(watermark?.title);
+	const [prevTitle, setPrevTitle] = React.useState(watermark?.title);
 	const [isOpenSetting, setOpenSetting] = React.useState(false);
+
+	if (prevTitle !== watermark?.title) {
+		setPrevTitle(watermark?.title);
+		setTitle(watermark?.title);
+	}
 
 	const isSelectedWatermark = React.useMemo(() => {
 		return Boolean(watermark?.id && printModelRefs?.watermarkId === watermark?.id);
@@ -116,14 +123,8 @@ export const WatermarkCard = (props: WatermarkCardProps) => {
 				],
 			})
 		);
-		dispatch(
-			EditorStateActions.updatePrintModelRefs({
-				...printModelRefs,
-				watermarkId: newWatermarkId,
-				currentRefType: SidebarItem.WATERMARK,
-			})
-		);
-	}, [dispatch, pageOrientation, printModelRefs]);
+		dispatch(NavigationActions.setActiveEntity({ tab: SidebarItem.WATERMARK, entityId: newWatermarkId }));
+	}, [dispatch, pageOrientation]);
 
 	const handleUpdateTitle = React.useCallback(() => {
 		if (!watermark || watermark.title === title) {
@@ -181,10 +182,6 @@ export const WatermarkCard = (props: WatermarkCardProps) => {
 		);
 	}, [dispatch, printModelRefs, watermarkId]);
 
-	React.useEffect(() => {
-		setTitle(watermark?.title);
-	}, [watermark?.title]);
-
 	const watermarkTitleError = error ? errorMessageLocalizer(error.title?.[ErrorSeverity.ERROR]) : undefined;
 
 	const OpenSetting = React.useMemo(() => {
@@ -202,7 +199,7 @@ export const WatermarkCard = (props: WatermarkCardProps) => {
 	}, [isOpenSetting, setOpenSetting, localizer]);
 
 	return (
-		<StyledWatermarkCardContainer isSelected={isSelectedWatermark}>
+		<StyledWatermarkCardContainer data-testid="watermark-card" isSelected={isSelectedWatermark}>
 			<StyledWatermarkCard onClick={handleOpenWatermarkEditor} isSelected={isSelectedWatermark}>
 				<StyledWatermarkIcon>
 					<Icon title={localizer(orientationIconMapping[pageOrientation].title)}>
@@ -213,7 +210,7 @@ export const WatermarkCard = (props: WatermarkCardProps) => {
 
 				{watermark ? (
 					<>
-						<CustomTextLineStateless
+						<CustomTextField
 							value={title}
 							placeholder={localizer(RESOURCE_KEYS.sidebar.watermark.titlePlaceholder)}
 							onClick={event => event.stopPropagation()}

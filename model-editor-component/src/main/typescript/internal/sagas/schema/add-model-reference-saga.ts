@@ -29,24 +29,24 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Action, AnyAction } from "typescript-fsa";
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { put, select, takeEvery } from "typed-redux-saga";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { ModelReferenceEntity } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
+import type { ModelReferenceEntity } from "@com.mgmtp.a12.print/print-model-api/model";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { InteractionLogActions, RequestApiActions, TransactionLogStateActions } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { RESOURCE_KEYS } from "../../localization/keys.js";
-import { SchemaActions } from "../../redux/schema/action.js";
+import { RESOURCE_KEYS } from "../../../internal/localization/index.js";
+import { SchemaActions } from "../../redux//schema/action.js";
 import { DocumentModelDataActions } from "../../redux/document-model-data/actions.js";
 
-export function* addModelReferenceSaga(): SagaIterator {
-	yield* takeEvery((action: AnyAction) => SchemaActions.addModelReference.match(action), handleAddModelReferenceSaga);
+export function* addModelReferenceSaga(): SagaGenerator<void> {
+	yield* takeEvery(SchemaActions.addModelReference.match, handleAddModelReferenceSaga);
 }
 
-function* handleAddModelReferenceSaga(action: Action<ModelReferenceEntity>) {
+function* handleAddModelReferenceSaga(action: PayloadAction<ModelReferenceEntity>) {
 	const printHeader = yield* select(PrintEngineSelectors.printHeader);
 
 	yield* put(

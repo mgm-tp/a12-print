@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { RESOURCE_KEYS } from "../keys.js";
+import type { RESOURCE_KEYS } from "../keys.js";
 
 export const en: typeof RESOURCE_KEYS = {
 	application: {
@@ -83,6 +83,7 @@ export const en: typeof RESOURCE_KEYS = {
 			},
 			tooltips: {
 				defaultTypesettingModel: "Default typesetting model",
+				printModelReferenceWithoutSegments: "The selected print model does not have a DINTemplate segment",
 			},
 		},
 		content: "Content",
@@ -231,7 +232,7 @@ export const en: typeof RESOURCE_KEYS = {
 		pageOnTotal: "Page $page$/$total$",
 		richTextEditor: {
 			toolbarButton: {
-				removeFontSizeInlineStyles: "Remove font size inline styles",
+				removeStyles: "Remove all styles",
 			},
 		},
 	},
@@ -344,6 +345,9 @@ export const en: typeof RESOURCE_KEYS = {
 			color: "Color",
 			backgroundColor: "Background Color",
 			alignment: "Alignment",
+			clearButton: "Clear Text Properties",
+			legacyWarning:
+				"This element has text properties from a previous editor version. These may affect PDF output. Clear them if they are not needed.",
 		},
 		borderProperties: {
 			headline: "Border Properties",
@@ -392,7 +396,11 @@ export const en: typeof RESOURCE_KEYS = {
 			},
 		},
 		image: {
-			imageSrcType: "Image source type",
+			imageSrc: "Image source",
+			imageSrcType: {
+				static: "Static",
+				dynamic: "Dynamic",
+			},
 			field: "Field",
 			attachment: "Attachment",
 			alt: "Alternative Text",
@@ -401,7 +409,13 @@ export const en: typeof RESOURCE_KEYS = {
 			action: {
 				replace: "Replace",
 				download: "Download",
-				delete: "Delete",
+				upload: "Upload",
+			},
+			resource: {
+				selector: "Resource",
+				internalFilename: "Internal Filename",
+				size: "Size",
+				mimeType: "MIME Type",
 			},
 		},
 		expression: {
@@ -626,12 +640,14 @@ export const en: typeof RESOURCE_KEYS = {
 		error: {
 			internalError: "Internal error",
 			setPrintModel: "Could not set print model",
+			uploadStaticImage: "Could not upload image",
+			loadStaticImage: "Could not load image",
 		},
 		errorTree: {
-			heading: "Validation Errors",
+			heading: "Validation Issues",
 			elements: "Elements",
 			messageBox: {
-				noValidationErrors: "No Validation Errors",
+				noValidationErrors: "No Validation Issues",
 				debugMode:
 					"You are currently in debug mode. The error tree reflects the underlying JSON structure of the print model.",
 				missingErrors: "There are some Errors missing in this view. Please select debug mode.",
@@ -646,6 +662,12 @@ export const en: typeof RESOURCE_KEYS = {
 				title: "Cannot upload this file",
 				supportedExtensions: "Only $extensions$ are supported.",
 			},
+		},
+	},
+	precompile: {
+		messages: {
+			heading: "Precompiling Issues",
+			copy: "Copy Stacktrace",
 		},
 	},
 	textStyles: {
@@ -682,7 +704,7 @@ export const en: typeof RESOURCE_KEYS = {
 		},
 		warningMessage: {
 			fontIsNotConfigured:
-				"This font is not configured. Elements applying this text style will be printed with default font.",
+				"Font does not exist in the workspace resources. Elements using this text style will be printed with the default font.",
 			typesettingModeNotFound: "This typesetting model not found in the workspace",
 		},
 		notification: {
@@ -699,8 +721,8 @@ export const en: typeof RESOURCE_KEYS = {
 				description: "The font $font$ configured in the print engine cannot be loaded",
 			},
 			useUnconfiguredFont: {
-				title: "The Text Style utilizes an unconfigured font",
-				description: `The Text Style "$textStyle$" employs font "$font$", which has not been configured correctly.`,
+				title: `Text style "$textStyle$" uses a non-existent font`,
+				description: `"$font$" does not exist in the workspace resources. Check that the resource file name matches the selected font name.`,
 			},
 			cannotLoadTypesetting: {
 				title: "Cannot load typesetting",
@@ -709,7 +731,6 @@ export const en: typeof RESOURCE_KEYS = {
 		},
 		tooltips: {
 			defaultConfigurationFont: "Default configuration font",
-			legacyRenderingMode: `This feature is not available in "Legacy Rendering Mode" (in the print preview).`,
 			fontSizeLineHeightNote:
 				"Please note that the recommended line height should be 1.5 times greater than the Font Size, e. g. if you are working with a Font Size of 12, the recommended Line Height is 18",
 		},
@@ -745,6 +766,7 @@ export const en: typeof RESOURCE_KEYS = {
 		},
 		relativeLayout: {
 			changeMargin: "Changed margins of elements on stage",
+			changePageBreakBehavior: "Changed page break behavior",
 		},
 		useCopyPaste: {
 			pasteElements: "Paste copied elements",
@@ -798,6 +820,7 @@ export const en: typeof RESOURCE_KEYS = {
 				toggleHideIfEmpty: "Toggle hide text element if all nested entities are empty of Text element",
 				changeBorderProperties: "Changed Border Properties of Text element",
 				changeTextProperties: "Changed Text Properties of Text element",
+				clearCalculationTextProperties: "Cleared text properties of Calculation in Text element",
 			},
 			imageFormContainer: {
 				generalProperties: {
@@ -918,10 +941,12 @@ export const en: typeof RESOURCE_KEYS = {
 				},
 				tableColumnExpression: {
 					changeContent: "Changed Content of expression column of Table element",
+					clearTextProperties: "Cleared text properties of Expression in Table column",
 				},
 				tableColumnFieldForm: {
 					changeField: "Changed Field column of Table element",
 					changeFieldFormatting: "Changed Field Formatting of Table element",
+					clearTextProperties: "Cleared text properties of Field in Table column",
 				},
 				tableColumnForm: {
 					default: "Updated Table Column of Table element",

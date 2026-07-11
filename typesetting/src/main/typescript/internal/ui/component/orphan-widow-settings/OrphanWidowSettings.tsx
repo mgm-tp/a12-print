@@ -31,13 +31,13 @@
  */
 import { useContext, useMemo } from "react";
 
-import { LayoutGrid } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/layout-grid/main/layout-grid.view.js";
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
-import { HintTooltip } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { HintTooltip, LayoutGrid } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { Action, SET_ORPHAN, SET_WIDOW, SetOrphanWidowPayload } from "../../store/action.js";
+import type { Action, SetOrphanWidowPayload } from "../../store/action.js";
+import { SET_ORPHAN, SET_WIDOW } from "../../store/action.js";
 import { TypesettingEditorContext } from "../../store/context.js";
-import { TypesettingModel } from "../../../api/model/typesetting-model.js";
+import type { TypesettingModel } from "../../../../a12internal/api/model/typesetting-model.js";
 import { useDefaultLocalizer, useLocalizer } from "../../localization/localizer.js";
 import { RESOURCE_KEYS } from "../../localization/keys.js";
 

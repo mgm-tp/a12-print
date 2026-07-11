@@ -29,17 +29,20 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model/index.js";
-import {
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
+import type {
 	InteractionLogPersistentEntry,
 	LogPersistentEntry,
 	PartialTransactionLogPersistentEntry,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { Locale } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
-import { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts/lib/types/font.js";
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { Locale } from "@com.mgmtp.a12.utils/utils-localization";
+import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
+import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
-import { ValidationState } from "../../../redux/index.js";
-import { EditorComponentApiActions } from "../../../api/index.js";
+import type { ValidationState } from "../../../../a12internal/api/ValidationState.js";
+import type { EditorComponentApiActions } from "../../../../a12internal/api/actions-api.js";
+import type { PrintMessage } from "../../../../a12internal/api/PrintMessageReport.js";
+import type { StaticImageProvider } from "../../../../api/StaticImageProvider.js";
 
 export interface PrintEditorSMEBaseProps {
 	customFonts: FontResourceMap;
@@ -67,13 +70,16 @@ export interface PrintEditorSMEProps extends PrintEditorSMEBaseProps {
 	) => void;
 	onValidationStateChange: (validationState: ValidationState) => void;
 	showNotification: (notification: EditorComponentApiActions.AddNotificationPayload) => void;
-	precompilePrintModel: (params: PrecompilePrintModelParams) => Promise<boolean | undefined>;
+	precompilePrintModel: (params: PrecompilePrintModelParams) => Promise<PrintMessage[] | undefined>;
+	staticImageProvider: StaticImageProvider;
 	locale?: Locale;
 	availableRoles?: string[];
+	navigationPath?: EntityInstancePath;
 }
 
 interface PrecompilePrintModelParams {
 	documentModelMap: Record<string, string>;
 	printModelMap: Record<string, string>;
 	printModel: string;
+	images?: Record<string, string>;
 }

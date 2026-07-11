@@ -33,40 +33,38 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-line/index.js";
-import {
+import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core";
+import type {
 	ColumnProperties,
-	MeasureUnit,
-	PartialTableLayout,
 	RowProperties,
 	TableLayoutCell,
 	TableLayoutProperties,
-	PartialBorderProperties,
 	TableLayout,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import {
-	InputSourceGenerator,
-	InputValueSourceResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+	PartialBorderProperties,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { MeasureUnit, PartialTableLayout } from "@com.mgmtp.a12.print/print-model-api/model";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { InputSourceGenerator, InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { TransactionLogStateActions } from "../../redux/index.js";
-import { InteractionLogActions } from "../../redux/interaction-log/index.js";
-import { OmitId, useBorderPropertiesErrorMessage } from "../../utils/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
+import { InteractionLogActions } from "../../redux//interaction-log/index.js";
+import type { OmitId } from "../../utils/index.js";
+import { useBorderPropertiesErrorMessage } from "../../utils/index.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
 import { stringifyMeasureInputValue } from "../../utils/input-source-utils.js";
-import { TABLE_LAYOUT_PROPERTY_PATH } from "../../constant/element-property-path.js";
+import { BORDER_PROPERTIES_PATH, TABLE_LAYOUT_PROPERTY_PATH } from "../../constant/element-property-path.js";
 
 import { PositiveNumberInput } from "../custom-input/PositiveNumberInput.js";
 
 import { BorderPropertiesForm, RepeatTable } from "./shared-components/index.js";
-import { ElementWithoutIdAndType } from "./type.js";
-import { RepeatColumnType } from "./shared-components/types.js";
+import type { ElementWithoutIdAndType } from "./type.js";
+import type { RepeatColumnType } from "./shared-components/types.js";
 
 const NUMBER_INPUT_PROPS = {
 	type: "number",
@@ -110,7 +108,7 @@ export const TableLayoutFormContainer = () => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
+	const element = useSelector(PrintEngineSelectors.currentFormElement);
 	const errorMap = useSelector((state: PrintEngineState) => ValidationSelectors.tableLayout(state, element?.id));
 
 	if (!element || !PartialTableLayout.isInstance(element)) {
@@ -303,12 +301,13 @@ export const TableLayoutFormContainer = () => {
 				headline={localizer(RESOURCE_KEYS.elementForm.tableLayout.columnProperties.headline)}
 				errorMap={
 					errorMap?.tableLayout?.columnProperties as
-						| DeepPartialErrorMap<DeepPartial<ColumnProperties>>[]
-						| undefined
+						DeepPartialErrorMap<DeepPartial<ColumnProperties>>[] | undefined
 				}
 				getErrorMessage={getColumnPropertiesErrorMessage}
 			/>
 			<BorderPropertiesForm
+				element={element}
+				propertiesPath={BORDER_PROPERTIES_PATH}
 				borderProperties={element.borderProperties}
 				setBorderProperties={setBorderProperties}
 				getErrorMessage={useBorderPropertiesErrorMessage(element.id)}

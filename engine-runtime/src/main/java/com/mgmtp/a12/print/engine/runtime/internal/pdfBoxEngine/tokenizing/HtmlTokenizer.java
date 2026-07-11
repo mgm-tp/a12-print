@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.model.api.validation.internal.html.HtmlValidationConfig;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -80,10 +80,6 @@ public class HtmlTokenizer {
 	 * The Parser needs to handle only the following tags: "span", "p", "u", "strong", "em", "br", "a"
 	 */
 	private static class TokenizerParserCallback extends HTMLEditorKit.ParserCallback {
-		private static final Set<HTML.Tag> IGNORED_TAGS = Set.of(
-			HTML.Tag.HTML, HTML.Tag.HEAD, HTML.Tag.BODY
-		);
-
 		private final Map<HtmlStyle, HtmlStyle> cachedStyleMap;
 		private final List<HtmlStyle> styleStack = new ArrayList<>();
 
@@ -104,7 +100,7 @@ public class HtmlTokenizer {
 
 		@Override
 		public void handleStartTag(HTML.Tag tag, MutableAttributeSet attrs, int pos) {
-			if (IGNORED_TAGS.contains(tag)) {
+			if (HtmlValidationConfig.IGNORED_TAGS.contains(tag.toString())) {
 				return;
 			}
 			if (tag.equals(HTML.Tag.P) || tag.equals(HTML.Tag.SPAN) || tag.equals(HTML.Tag.A)) {
@@ -123,7 +119,7 @@ public class HtmlTokenizer {
 
 		@Override
 		public void handleEndTag(HTML.Tag tag, int pos) {
-			if (IGNORED_TAGS.contains(tag)) {
+			if (HtmlValidationConfig.IGNORED_TAGS.contains(tag.toString())) {
 				return;
 			}
 			styleStack.removeLast();

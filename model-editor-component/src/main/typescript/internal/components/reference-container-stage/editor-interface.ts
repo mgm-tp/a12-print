@@ -29,8 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	BorderProperties,
+import type {
 	PartialAnyPrintModelElement,
 	PartialArea,
 	PartialBoundingBox,
@@ -39,9 +38,11 @@ import {
 	PartialSegment,
 	PartialWatermark,
 	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+	BorderProperties,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import { LimitZone, MarginSide } from "../../types/margin.js";
+import type { LimitZone, MarginSide } from "../../types/margin.js";
 
 export interface BaseReferencesRendererProps {
 	elementReferences: readonly PartialValidPlaceableReference[];
@@ -49,13 +50,8 @@ export interface BaseReferencesRendererProps {
 
 export interface BaseEditorProps {
 	referenceContainer?:
-		| PartialSegment
-		| PartialSection
-		| PartialBoundingBox
-		| PartialOverride
-		| PartialArea
-		| PartialWatermark;
-	borderProperties?: BorderProperties;
+		PartialSegment | PartialSection | PartialBoundingBox | PartialOverride | PartialArea | PartialWatermark;
+	borderProperties?: DeepPartialRecursive<BorderProperties>;
 	numberOfPages?: number;
 	isActive?: boolean;
 	renderEditorSlots?: (

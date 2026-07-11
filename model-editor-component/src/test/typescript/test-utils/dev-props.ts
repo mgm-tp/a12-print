@@ -31,7 +31,7 @@
  */
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
 
-import { RequestApi } from "../../../main/typescript/internal/api/request-api.js";
+import type { RequestApi } from "../../../main/typescript/internal/api/request-api.js";
 
 const log = LoggerFactory.getLogger("MockRequestApi");
 
@@ -82,6 +82,15 @@ export namespace DevProps {
 		},
 		deserializePrintModel() {
 			log.error("deserializePrintModel function not implemented in dev version");
+		},
+		listStaticImages: () => {
+			return Promise.resolve([]);
+		},
+		loadStaticImage: () => {
+			return Promise.resolve(undefined);
+		},
+		uploadStaticImage: () => {
+			return Promise.resolve(undefined);
 		},
 	};
 }

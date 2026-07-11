@@ -51,24 +51,18 @@ dependencies {
 	implementation(project(":engine-runtime-kernel"))
 	implementation(project(":typesetting"))
 
-	implementation(a12Libs.openhtmltopdfCore)
-	implementation(a12Libs.openhtmltopdfPdfbox)
 	implementation(a12Libs.baseModelApi)
-	implementation(a12Libs.kernelMdModelApi)
-	implementation(a12Libs.kernelMdModel)
-	implementation(a12Libs.kernelMdDocumentApi)
-	implementation(a12Libs.kernelMdRuntimeApi)
-	implementation(a12Libs.kernelMdSerializer)
-	implementation(a12Libs.kernelMdA12internal)
 	implementation(a12Libs.kernelMdFacade)
 
+	implementation(thirdPartyLibs.pdfbox)
+	implementation(thirdPartyLibs.xmpbox)
 	implementation(thirdPartyLibs.nashornCore)
 	implementation(thirdPartyLibs.slf4j)
 	implementation(thirdPartyLibs.commonsIO)
 	implementation(thirdPartyLibs.commonsLang3)
+	implementation(thirdPartyLibs.metadataExtractor)
 	implementation(thirdPartyLibs.guava)
 	implementation(thirdPartyLibs.collections4)
-	implementation(thirdPartyLibs.freemarker)
 	implementation(thirdPartyLibs.jacksonCore)
 	implementation(thirdPartyLibs.jacksonDatabind)
 	implementation(thirdPartyLibs.jacksonAnnotations)
@@ -89,11 +83,10 @@ dependencies {
 	testImplementation(thirdPartyLibs.assertj)
 	testImplementation(thirdPartyLibs.jupiterParams)
 	testImplementation(thirdPartyLibs.mockitoCore)
-	testImplementation(thirdPartyLibs.mockitoJunitJupiter)
-	testImplementation(thirdPartyLibs.veraPdfValidationModelJakarta)
 
 	testRuntimeOnly(thirdPartyLibs.logbackClassic)
 	testRuntimeOnly(thirdPartyLibs.jupiterEngine)
+	testRuntimeOnly(thirdPartyLibs.junitLauncher)
 }
 
 tasks.named<ProcessResources>("processResources") {

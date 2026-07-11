@@ -33,7 +33,7 @@ import * as React from "react";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 
-import { CollapsiblePanel } from "@com.mgmtp.a12.widgets/widgets-core/lib/collapsible-panel/index.js";
+import { CollapsiblePanel } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { ErrorBadge, WarningBadge } from "../../../badge/ValidationBadge.js";
 import { ValidationSelectors } from "../../../../redux/validation/selectors.js";

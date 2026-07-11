@@ -50,18 +50,17 @@ import java.util.Map;
 import java.util.Optional;
 
 
-public class TextDependencyValueProducer implements CoreDependencyValueProvider<TextValueDependency.TextValueResult, TextValueDependency> {
+public class TextDependencyValueProducer implements CoreDependencyValueProvider<Optional<String>, TextValueDependency> {
 
 	@Override
-	public ValueFactory<TextValueDependency.TextValueResult> produce(TextValueDependency dependency, PrintJob job, PrintEngine<?> engine, InternalCorePrintEngineRuntime runtime) {
+	public ValueFactory<Optional<String>> produce(TextValueDependency dependency, PrintJob job, PrintEngine<?> engine, InternalCorePrintEngineRuntime runtime) {
 
 		final TextElement textElement = dependency.getText();
 		final var textValueMarkups = dependency.getTextValueMarkups();
 		final String html = textElement.getTextElementProperties().getText();
 		final List<ElementReference> references = (List<ElementReference>) textElement.getReferences();
 
-		Optional<String> resultHtml = Optional.empty();
-		Map<String, String> pageNumberGlobalStyles = new HashMap<>();
+		String resultHtml = null;
 		if (!references.isEmpty()) {
 			boolean isVisible = true;
 			if (textElement.getTextElementProperties().hideIfEmpty().orElse(false)) {
@@ -73,16 +72,13 @@ public class TextDependencyValueProducer implements CoreDependencyValueProvider<
 			}
 
 			if (isVisible) {
-				final var replacementResult = runtime.provide(new HtmlReplacementDependency(textElement, html, textValueMarkups)).get();
-				resultHtml = Optional.ofNullable(replacementResult.html());
-				pageNumberGlobalStyles = replacementResult.pageNumberGlobalStyles();
+				resultHtml = runtime.provide(new HtmlReplacementDependency(textElement, html, textValueMarkups)).get();
 			}
 		} else {
-			resultHtml = Optional.ofNullable(html);
+			resultHtml = html;
 		}
-		resultHtml = resultHtml.map(s -> runtime.provide(new SanitizeValueDependency(s)).get());
 
-		final var result = new TextValueDependency.TextValueResult(resultHtml, pageNumberGlobalStyles);
+		final Optional<String> result = Optional.ofNullable(resultHtml).map(s -> runtime.provide(new SanitizeValueDependency(s)).get());
 		return () -> result;
 	}
 

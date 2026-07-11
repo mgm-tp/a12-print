@@ -1,0 +1,199 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+[#migration_tool]
+= Migration Tool
+
+== For Print Model Version 2.1.0 and Later [[migration-with-node, migrate model with Node]]
+To migrate Print Model files, first install the latest version of the migration tool
+
+[source, bash]
+----
+pnpm install -g @com.mgmtp.a12.print/print-model-migration
+----
+
+Then run the following command to perform the migration
+
+[source, bash]
+----
+print-model-migration <path to print model file or directory> --backup
+----
+
+_Examples_
+
+[source, bash]
+----
+# file
+print-model-migration my-print-model.json --backup
+
+# current folder
+print-model-migration . --backup
+----
+
+
+*Note*
+
+- If `<path to print model file or directory>` is a directory, the migration tool will recursively search for Print Model files to migrate.
+- If Print Model files are not under version control, use `--backup` (alias `-b`) flag to create backups for model files. This flag is optional.
+- Use `--help` (alias `-h`) flag to show all available options.
+
+
+[WARNING]
+====
+When migrating a Print Model to a new version, any uncommitted changes stored in `.wal` files may become invalid after the migration.
+Please commit all pending changes in the Simple Model Editor *before* running the migration tool.
+====
+
+[#migration-embedded-images]
+=== Migrating Embedded Images (since version 4.0.0)
+
+When migrating Print Models from a version earlier than 4.0.0, embedded image attachments on image elements are detached from the model and saved as separate resource files in the workspace.
+Because of this, the migration tool needs to know where to write the extracted image files.
+
+Use the `--resources` option when migrating models that contain embedded images:
+
+`--resources <path>`::
+Path to the resources directory used for model lookup and where extracted image files are saved.
+
+_Examples_
+
+[source, bash]
+----
+# migrate a single file, writing extracted images to a resources folder
+print-model-migration my-print-model.json --backup --resources ./my-workspace/resources
+
+# migrate a directory and write images to a resources folder
+print-model-migration . --backup --resources ./my-workspace/resources
+----
+
+NOTE: If a model contains embedded images and `--resources` is not provided, the migration will fail with an error.
+Models without embedded images do not require this option.
+
+Additionally, when upgrading to Print Engine 4.0.0, any existing Print Setting Models must also be migrated using the `print-setting-migration` tool.
+See <<print-setting-migration>> for details.
+
+[#legacy_migration]
+== For Print Model Version Earlier Than 2.1.0
+
+=== Step 1: Migrate Model to Version 2.1.0 Using Java Based Tool
+
+To migrate Print Model, first download the Java based tool
+
+CAUTION: Since with release 2.1.0 we introduce a new typescript based migration tool to align with overall A12 standards. The print-shell migration will no longer validate and pretty print starting from version 3.0.0. To ensure the same output as prior versions, you need to run the print-shell migration and then the typescript migration in order to migrate to the latest version. In releases after 2.1.0, only the typescript migration will be relevant.
+
+Then migrate Print Model by executing the downloaded tool as follows
+
+[source, bash]
+----
+java -jar print-shell-2.1.3.jar migrate [OPTIONS]
+----
+
+_Examples_
+
+[source, bash]
+----
+# relative path
+java -jar print-shell-2.1.3.jar migrate --workspace foldername --overwrite false
+
+# absolute path
+java -jar print-shell-2.1.3.jar migrate --workspace C:\Test\check\foldername --overwrite false
+----
+
+*Note*
+
+- Use `migrate --help` (alias `-h`) flag to show all available options.
+- If Print Model files are not under version control, use `--overwrite false` (alias `-b`) flag to keep the original model files. This flag is optional.
+- You can use the print-shell in interactive mode by just running the jar file and entering commands after startup. You can find more about the features of the print-shell in the modeling documentation of Print Engine.
+
+=== Step 2: Migrate Model to Current Version Using Node Based Tool
+
+See <<migration-with-node>>.
+
+[#print-setting-migration]
+== For Print Setting Model (upgrading to Print Engine 4.0.0)
+
+When upgrading to Print Engine 4.0.0, the Print Setting Model is removed.
+Fonts are no longer configured per-model — they are always loaded from the workspace resources folder instead.
+Any Print Setting Model at version 3.2.0 or earlier must be migrated.
+
+To migrate existing Print Setting Model files, first install the latest version of the migration tool
+
+[source, bash]
+----
+pnpm install -g @com.mgmtp.a12.print/print-model-migration
+----
+
+Then run the following command to perform the migration
+
+[source, bash]
+----
+print-setting-migration <path to print setting file or directory> --resources <path to resources directory>
+----
+
+The migration tool handles two font types:
+
+Path fonts (`type: "path"`)::
+The tool searches the workspace resources for a file matching the font path.
+If found, the file is renamed to the sanitized configured font name and placed in the resources folder.
+If not found, a warning is logged and the font must be added to the resources folder manually.
+
+Embedded fonts (`type: "attachment"`)::
+Base64-encoded font data is decoded and saved as a file in the workspace resources folder, named after the sanitized configured font name.
+
+In both cases, the font file is named after the font's configured name in the Print Setting Model.
+For example, a font configured as `"My Custom Font"` is saved as `MyCustomFont.ttf`.
+
+After processing the fonts, the Print Setting Model file itself is deleted, as it is no longer needed.
+
+`--resources <path>`::
+Path to the resources directory used for font lookup and where extracted font files are saved.
+
+_Examples_
+
+[source, bash]
+----
+# migrate a single file, writing extracted fonts to a resources folder
+print-setting-migration my-print-setting.json --resources ./my-workspace/resources
+
+# migrate a directory and write fonts to a resources folder
+print-setting-migration . --resources ./my-workspace/resources
+----
+
+NOTE: The `--resources` option is required for this migration, since fonts must be written to or looked up from the resources directory.
+The migration will fail if this option is not provided.
+
+=== Manual steps after migrating the Print Setting Model
+
+After the migration tool has run, the following manual steps may be required:
+
+Reselect sanitized font names::
+Font names containing whitespace or characters other than letters, numbers, `-`, `_`, and `.` are no longer valid, because the SME file system does not allow them.
+The migration tool automatically renames fonts stored in the workspace `resources` folder to comply with this restriction.
+However, the font references in the Print Model are *not* updated automatically.
+After migration, you must reselect the affected fonts in the Print Editor so the model references the sanitized file names.
+
+Relocate Fonts outside the resources folder::
+The migration tool can only process fonts stored inside the workspace `resources` folder.
+Fonts stored elsewhere cannot be accessed by the SME workspace and must be handled manually:
++
+1. Move the font files into the workspace `resources` folder.
+2. Make sure the file names contain only letters, numbers, `-`, `_`, and `.`
+3. Reselect the fonts in the Print Editor so the model references their new location.
+
+Fallback font::
+The fallback font configured in the Print Setting Model is not automatically preserved during migration.
+After migrating, the fallback font must be selected in the SME in the *Print Preview*.

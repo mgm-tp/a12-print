@@ -31,10 +31,10 @@
  */
 import { useEffect, useState } from "react";
 
-import { TextLineStatelessProps } from "@com.mgmtp.a12.widgets/widgets-core";
-import { TextField } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-field/text-field.view.js";
+import type { TextFieldProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { TextField } from "@com.mgmtp.a12.widgets/widgets-core";
 
-interface CustomTextFieldProps extends TextLineStatelessProps {
+interface CustomTextFieldProps extends TextFieldProps {
 	onValueChange?(value: string): void;
 }
 

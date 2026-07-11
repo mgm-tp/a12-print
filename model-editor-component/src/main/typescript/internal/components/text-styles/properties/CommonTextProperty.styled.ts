@@ -31,12 +31,11 @@
  */
 import { styled } from "styled-components";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Tooltip } from "@com.mgmtp.a12.widgets/widgets-core/lib/tooltip/index.js";
+import { Button, Tooltip } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { CustomTextLineStateful } from "../../forms/custom-base-input-components/index.js";
+import { DynamicSourceTextField } from "../../forms/custom-base-input-components/index.js";
 
-export const StyledTextInput = styled(CustomTextLineStateful)`
+export const StyledTextInput = styled(DynamicSourceTextField)`
 	max-width: 120px;
 `;
 

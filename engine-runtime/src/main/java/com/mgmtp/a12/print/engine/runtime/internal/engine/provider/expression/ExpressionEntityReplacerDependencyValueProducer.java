@@ -35,10 +35,10 @@ import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter.StringEscapeUtils;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalCorePrintEngineRuntime;
 import lombok.extern.slf4j.Slf4j;
-import freemarker.core.XHTMLOutputFormat;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -60,7 +60,7 @@ public class ExpressionEntityReplacerDependencyValueProducer implements CoreDepe
 			textValueMarkups.forEach(markupResult -> {
 				final var markup = markupResult.isHtml() || !(engine instanceof PdfBoxPrintEngine)
 					? markupResult.getMarkup()
-					: XHTMLOutputFormat.INSTANCE.escapePlainText(markupResult.getMarkup());
+					: StringEscapeUtils.escapeXHTML(markupResult.getMarkup());
 				entityIdReplacements.put(
 					markupResult.getId(),
 					markup

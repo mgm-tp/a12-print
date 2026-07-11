@@ -31,11 +31,11 @@
  */
 import * as React from "react";
 
-import { TextLineStatelessProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-line/index.js";
+import type { TextFieldProps } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { CustomTextLineStateless } from "../custom-base-input-components/index.js";
+import { CustomTextField } from "../custom-base-input-components/index.js";
 
-type NumberInputProps = TextLineStatelessProps;
+type NumberInputProps = TextFieldProps;
 
 export const NumberInput = (props: NumberInputProps) => {
 	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,5 +46,5 @@ export const NumberInput = (props: NumberInputProps) => {
 		props.onChange?.(e);
 	};
 
-	return <CustomTextLineStateless {...props} onChange={onChange} />;
+	return <CustomTextField {...props} onChange={onChange} />;
 };

@@ -32,48 +32,61 @@
 package com.mgmtp.a12.print.shell.internal.command.utils;
 
 import ch.qos.logback.classic.LoggerContext;
-import org.jline.terminal.Terminal;
-import org.springframework.shell.test.ShellTestClient;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
+import com.mgmtp.a12.print.shell.internal.ApplicationShell;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.slf4j.Logger.ROOT_LOGGER_NAME;
 
 public class ShellUtil {
 
 	public static void runShellCommand(
-		Terminal terminal,
-		ShellTestClient client,
-		String command,
+		String[] args,
 		String expectedResult
 	) {
-		runShellCommand(terminal, client, command, List.of(expectedResult));
+		runShellCommand(args, List.of(expectedResult), 0);
 	}
 
 	public static void runShellCommand(
-		Terminal terminal,
-		ShellTestClient client,
-		String command,
-		List<String> expectedResults
+		String[] args,
+		String expectedResult,
+		int expectedExitCode
 	) {
+		runShellCommand(args, List.of(expectedResult), expectedExitCode);
+	}
 
-		TerminalAppender terminalAppender = new TerminalAppender(terminal);
+	public static void runShellCommand(String[] args, List<String> expectedResults, int expectedExitCode) {
+		final var loggerContext = (LoggerContext) org.slf4j.LoggerFactory.getILoggerFactory();
+		final var logger = loggerContext.getLogger(ROOT_LOGGER_NAME);
+		final var listAppender = new ListAppender<ILoggingEvent>();
+		listAppender.start();
+		logger.addAppender(listAppender);
 
-		LoggerContext loggerContext = (LoggerContext) org.slf4j.LoggerFactory.getILoggerFactory();
-		loggerContext.getLogger(ROOT_LOGGER_NAME).addAppender(terminalAppender);
+		final var cmd = ApplicationShell.getCommandLine();
+		final var exitCode = cmd.execute(args);
 
-		ShellTestClient.InteractiveShellSession session = client
-			.interactive()
-			.run();
+		assertEquals(expectedExitCode, exitCode);
 
-		session.write(session.writeSequence().text(command).carriageReturn().build());
+		if (!expectedResults.isEmpty()) {
+			await().atMost(20, TimeUnit.SECONDS).untilAsserted(() -> {
+				final var output = listAppender.list.stream()
+					.map(ILoggingEvent::getFormattedMessage)
+					.reduce("", (a, b) -> a + b);
+				for (String text : expectedResults) {
+					assertTrue(output.contains(text));
+				}
+			});
+		}
 
-		await().atMost(20, TimeUnit.SECONDS).untilAsserted(() -> {
-			PrintShellAssertions.assertThat(session.screen()).containsTexts(expectedResults);
-		});
+		assertEquals(expectedExitCode, exitCode);
 
-		terminalAppender.stop();
+		logger.detachAppender(listAppender);
+		listAppender.stop();
 	}
 }

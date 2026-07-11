@@ -32,10 +32,12 @@
 package com.mgmtp.a12.print.model.api.model.textStyle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
 import java.util.Optional;
 
+@OnlyForUsage
 public interface TextStyle extends PrintModelEntity {
 	String getName();
 
@@ -49,6 +51,7 @@ public interface TextStyle extends PrintModelEntity {
 
 	Semantic getSemantic();
 
+	@OnlyForUsage
 	enum Semantic {
 		@JsonProperty("P") P,
 		@JsonProperty("H1") H1,
@@ -61,6 +64,7 @@ public interface TextStyle extends PrintModelEntity {
 
 	Optional<StaticHyphenator> getStaticHyphenator();
 
+	@OnlyForUsage
 	enum StaticHyphenator {
 		@JsonProperty("en_US") EN_US,
 		@JsonProperty("de_1996") DE_1996,

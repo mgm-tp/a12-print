@@ -32,13 +32,9 @@
 package com.mgmtp.a12.print.engine.runtime.kernel.internal;
 
 import com.mgmtp.a12.kernel.md.model.api.IElement;
-import com.mgmtp.a12.kernel.md.model.api.IIdNamed;
+import com.mgmtp.a12.kernel.md.model.api.IGroup;
 
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class KernelElementUtils {
 
@@ -47,7 +43,7 @@ public class KernelElementUtils {
 
 		while (element != null) {
 
-			path.add(0, element);
+			path.addFirst(element);
 
 			final var parent = element.getParent();
 			if (parent != element
@@ -61,13 +57,4 @@ public class KernelElementUtils {
 
 		return path;
 	}
-
-	public static String joinAbsolutePath(Stream<IElement> elements){
-		return String.format("/%s", elements.map(IIdNamed::getName).collect(Collectors.joining("/")));
-	}
-
-	public static String getLiteralPath(IElement element) {
-		return String.format("/%s", getPath(element).stream().map(IIdNamed::getName).collect(Collectors.joining("/")));
-	}
-
 }

@@ -48,10 +48,11 @@ public class ComputationExpressionDependencyValueProducer implements CoreDepende
 
 	@Override
 	public ValueFactory<ComputationExpressionEvaluation> produce(ComputationExpressionDependency dependency, PrintJob job, PrintEngine<?> engine, InternalCorePrintEngineRuntime runtime) {
+		final var parameters = dependency.getParameters() == null
+			? new ComputationExpression.Parameters()
+			: dependency.getParameters();
 		return strategies.get(dependency.getExpressionId()).produce(
-			dependency.getParameters() == null
-				? new ComputationExpression.Parameters()
-				: dependency.getParameters(),
+			parameters.preventRepeatableContextError(),
 			job,
 			engine,
 			runtime

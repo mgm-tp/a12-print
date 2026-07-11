@@ -37,8 +37,10 @@ import com.mgmtp.a12.print.model.api.model.element.base.Styleable;
 import com.mgmtp.a12.print.model.api.model.reference.TableLayoutCellReference;
 
 import java.util.List;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 
+@OnlyForUsage
 public interface TableLayout extends PrintModelElement, Styleable, TableLayoutCellReferenceContainer {
 	TableLayoutProperties getTableLayoutProperties();
 

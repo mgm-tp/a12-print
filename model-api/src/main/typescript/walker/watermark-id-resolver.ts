@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PrintModel, Watermark } from "../model/index.js";
+import { type PrintModel, type Watermark } from "../model/index.js";
 
 export interface WatermarkMap {
 	[key: string]: Watermark;

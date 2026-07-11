@@ -38,15 +38,4 @@ import lombok.Data;
 public class MatchingSections {
 	private final ModelSection firstPageSection;
 	private final ModelSection remainingPageSection;
-
-	public static MatchingSections awareOfSegmentIndex(
-		MatchingSections matchingSections,
-		Integer repeatableIndex
-	) {
-		return repeatableIndex != null && repeatableIndex != 0 && matchingSections != null && matchingSections.getFirstPageSection() != null
-			? matchingSections.getRemainingPageSection() != null
-				? new MatchingSections(null, matchingSections.getRemainingPageSection())
-				: null
-			: matchingSections;
-	}
 }

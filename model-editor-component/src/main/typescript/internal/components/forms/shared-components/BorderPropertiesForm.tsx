@@ -29,20 +29,13 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as React from "react";
-
-import { BorderProperties, PartialBorderProperties } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
-import { OmitId } from "../../../utils/index.js";
 
 import { FormContainerHeadline } from "./FormContainerHeadline.js";
+import type { BorderFormProps } from "./BorderForm.js";
 import { BorderForm } from "./BorderForm.js";
 
-interface BorderPropertiesFormProps {
-	borderProperties: PartialBorderProperties | undefined;
-	setBorderProperties: (newProps: OmitId<PartialBorderProperties>) => void;
-	getErrorMessage?: (property: keyof OmitId<BorderProperties>) => React.ReactNode;
+interface BorderPropertiesFormProps extends BorderFormProps {
 	hideLabel?: boolean;
 }
 

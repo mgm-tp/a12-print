@@ -31,22 +31,26 @@
  */
 package com.mgmtp.a12.print.workspace.internal.resolver;
 
-import com.mgmtp.a12.kernel.md.model.a12internal.DocumentModel;
-import com.mgmtp.a12.kernel.md.model.a12internal.services.DocumentModelReferenceResolver;
+import com.mgmtp.a12.kernel.md.combination.a12internal.DMLike;
+import com.mgmtp.a12.kernel.md.combination.a12internal.DMWrapper;
+import com.mgmtp.a12.kernel.md.combination.a12internal.IUnexpandedModelResolver;
+import com.mgmtp.a12.kernel.md.model.a12internal.services.DocumentModelService;
 import com.mgmtp.a12.print.workspace.internal.handler.WorkspaceHandler;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 @AllArgsConstructor
-public class CustomDocumentModelReferenceResolver implements DocumentModelReferenceResolver {
+public class CustomDocumentModelReferenceResolver implements IUnexpandedModelResolver {
 	private final WorkspaceHandler workspaceHandler;
-
-	@Override
-	public DocumentModel getDocumentModel(String reference) {
-		final var documentModelId = idFromReference(reference);
-		return workspaceHandler.getUnexpandedModel(documentModelId);
-	}
+	private static final DocumentModelService documentModelService = new DocumentModelService();
 
 	public static String idFromReference(String reference) {
 		return reference.replaceFirst(".*/", "").replaceAll("\\.json$", "");
+	}
+
+	@Override
+	public @NonNull DMLike resolve(@NonNull String dmId) {
+		final var documentModelId = idFromReference(dmId);
+		return new DMWrapper(documentModelService.convertToExternal(workspaceHandler.getUnexpandedModel(documentModelId)));
 	}
 }

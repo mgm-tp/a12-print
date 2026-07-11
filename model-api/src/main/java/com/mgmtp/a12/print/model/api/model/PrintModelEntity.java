@@ -31,9 +31,12 @@
  */
 package com.mgmtp.a12.print.model.api.model;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
 /**
  * An interface which allows almost all entities in a {@link PrintModel} to be uniquely identified.
  */
+@OnlyForUsage
 public interface PrintModelEntity {
 	String getId();
 }

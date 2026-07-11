@@ -32,6 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.element.properties;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.BooleanInputSource;
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.InputSource;
@@ -43,6 +44,7 @@ import java.util.Map;
 import java.util.Optional;
 
 
+@OnlyForUsage
 public interface TextProperties extends PrintModelEntity {
 	Optional<StringInputSource> getTextStyleId();
 
@@ -58,7 +60,7 @@ public interface TextProperties extends PrintModelEntity {
 
 	Optional<BooleanInputSource> getUnderlined();
 
-
+	@OnlyForUsage
 	enum Alignment implements InputSourceEnum {
 		@JsonProperty("Left") LEFT("Left"),
 		@JsonProperty("Right") RIGHT("Right"),

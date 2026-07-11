@@ -29,6 +29,6 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DataContextEntry } from "../types/data-context.js";
+import type { DataContextEntry } from "../types/data-context.js";
 
 export const ROOT_DATA_CONTEXT_ENTRY: DataContextEntry = { group: "" };

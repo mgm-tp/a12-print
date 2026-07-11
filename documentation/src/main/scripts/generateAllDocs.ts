@@ -29,15 +29,16 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { join, resolve } from "path";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { glob } from "glob";
 
-import { generateDocumentation } from "./generateDoc";
+import { generateDocumentation } from "./generateDoc.js";
 
 // loop through all the directories in /asciidoc/
 // execute generateDocumentation() in each of them
-const projectDir = resolve(__dirname, "../../../");
+const projectDir = resolve(dirname(fileURLToPath(import.meta.url)), "../../../");
 const asciidocDirs = glob.sync(join(projectDir, "src", "main", "asciidoc", "*").replace(/\\/g, "/"), {
 	posix: true,
 });

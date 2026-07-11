@@ -33,18 +33,14 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/button-group/index.js";
-import { CssEllipsis } from "@com.mgmtp.a12.widgets/widgets-core/lib/css-ellipsis/index.js";
-import {
-	GlobalRegion,
-	USED_TEXT_STYLE,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import { getPrefixedFontFamily } from "@com.mgmtp.a12.print/print-fonts/lib/internal/api/utils/font-utils.js";
+import { ButtonGroup, CssEllipsis } from "@com.mgmtp.a12.widgets/widgets-core";
+import { GlobalRegion, USED_TEXT_STYLE } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { getPrefixedFontFamily } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 
 import { StyledButton } from "../toolbar/Toolbar.styled.js";
 import { TypeSettingApplier } from "../typesetting/TypeSettingApplier.js";

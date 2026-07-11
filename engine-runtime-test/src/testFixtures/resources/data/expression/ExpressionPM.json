@@ -2,7 +2,7 @@
   "header": {
     "id": "ExpressionPM",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "modelReferences": [
@@ -192,8 +192,23 @@
         },
         "borderProperties": {
           "id": "ID_b94d5f60-22b0-4d04-9aab-8470c7d05a2e",
-          "borderWidth": 0.75,
-          "borderColor": "#000"
+          "borderWidth": {
+            "id": "gkD3YaLPIXp11qwqLZZMw",
+            "source": "INPUT",
+            "value": 0.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "XC1lj77IXojYYKNz7PUJ_",
+            "source": "INPUT",
+            "value": "#000",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "-BOeiT2MBhZ7ikypr2Oa_",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "expression": {
           "id": "ID_875672ae-2a39-423c-a995-1c0f45a0862f",

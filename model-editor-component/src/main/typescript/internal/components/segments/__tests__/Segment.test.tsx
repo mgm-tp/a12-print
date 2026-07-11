@@ -31,8 +31,8 @@
  */
 import { fireEvent, screen, within } from "@testing-library/react";
 
-import { SegmentsStoreEntryMapWithId } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PartialSegment } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { SegmentsStoreEntryMapWithId } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PartialSegment } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import {
 	createTransactionLogState,

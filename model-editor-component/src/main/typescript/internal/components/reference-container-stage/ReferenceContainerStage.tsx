@@ -31,13 +31,13 @@
  */
 import { useSelector } from "react-redux";
 
-import { PrintEngineSelectors } from "../../store/selectors.js";
+import { NavigationSelectors } from "../../redux/index.js";
 
 import { EditorModeMap } from "./editor-mode-map.js";
 import { EditorModeToggle } from "./editor-mode-toggle/EditorModeToggle.js";
 
 export const ReferenceContainerStage = () => {
-	const editorMode = useSelector(PrintEngineSelectors.editorMode);
+	const editorMode = useSelector(NavigationSelectors.currentMode);
 
 	const EditorModeStage = EditorModeMap[editorMode];
 	return (

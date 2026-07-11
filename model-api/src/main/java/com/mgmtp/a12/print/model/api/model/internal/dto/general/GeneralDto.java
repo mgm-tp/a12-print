@@ -33,12 +33,9 @@ package com.mgmtp.a12.print.model.api.model.internal.dto.general;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.mgmtp.a12.print.model.api.model.element.base.ComputationAlternative;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.properties.RuntimeVariable;
-import com.mgmtp.a12.print.model.api.model.general.Details;
 import com.mgmtp.a12.print.model.api.model.general.General;
-import com.mgmtp.a12.print.model.api.model.general.Metadata;
 import com.mgmtp.a12.print.model.api.model.general.SegmentDefaults;
 import com.mgmtp.a12.print.model.api.model.internal.dto.JsonModel;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelEntityDto;
@@ -110,52 +107,5 @@ public class GeneralDto extends PrintModelEntityDto implements General, JsonMode
 	@JsonIgnore
 	public List<String> getTextStyles() {
 		return textStyles.stream().map(PrintModelEntityDto::getId).collect(Collectors.toList());
-	}
-
-	private static void assertOneComputation(List<ComputationAlternative> computations, String property) {
-		if (computations == null || computations.size() != 1) {
-			throw new IllegalStateException(
-				String.format("Only one computation in general.metadata.%sComputation is allowed when accessing this deprecated '%s' field.", property, property)
-			);
-		}
-	}
-
-	private static String extractStringLiteral(String operation, String property) {
-		if (operation == null || operation.length() < 2 || !operation.startsWith("\"") || !operation.endsWith("\"")) {
-			throw new IllegalStateException(
-				String.format("The operation in general.metadata.%sComputation must be a string literal (wrapped in quotes) when accessing this deprecated '%s' field. Got: %s", property, property, operation)
-			);
-		}
-		return operation.substring(1, operation.length() - 1);
-	}
-
-	@Override
-	@JsonIgnore
-	public String getTitle() {
-		assertOneComputation(metadata.getTitleComputation(), "title");
-		return extractStringLiteral(metadata.getTitleComputation().get(0).getOperation(), "title");
-	}
-
-	@Override
-	@JsonIgnore
-	public Details getDetails() {
-		return new Details() {
-			@Override
-			public String getId() {
-				return metadata.getId();
-			}
-
-			@Override
-			public String getAuthor() {
-				assertOneComputation(metadata.getAuthorComputation(), "author");
-				return extractStringLiteral(metadata.getAuthorComputation().get(0).getOperation(), "author");
-			}
-
-			@Override
-			public String getLanguage() {
-				assertOneComputation(metadata.getLanguageComputation(), "language");
-				return extractStringLiteral(metadata.getLanguageComputation().get(0).getOperation(), "language");
-			}
-		};
 	}
 }

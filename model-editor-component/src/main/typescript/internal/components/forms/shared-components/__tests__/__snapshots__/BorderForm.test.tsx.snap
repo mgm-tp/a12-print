@@ -1,7 +1,57 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`BorderForm renders correctly 1`] = `
-.c6 {
+.c23 {
+  -webkit-clip-path: inset(100%);
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px!important;
+  min-height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+  display: none;
+}
+
+.c23 * {
+  width: 1px;
+  height: 1px;
+}
+
+.c9 {
+  box-sizing: border-box;
+  color: #7F8C9B;
+  display: inline-block;
+  direction: ltr;
+  font-family: Material Symbols Outlined;
+  font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+}
+
+.c9 >span {
+  display: inline-block;
+}
+
+.c9.c9 {
+  max-width: unset;
+}
+
+.c1 {
   color: #4d4d4d;
   display: inline-block;
   font-family: "Open Sans",sans-serif;
@@ -13,11 +63,44 @@ exports[`BorderForm renders correctly 1`] = `
   align-self: center;
 }
 
-.c6:empty {
+.c1:empty {
   display: none;
 }
 
-.c12 {
+.c22 {
+  color: #4d4d4d;
+  display: inline-block;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-transform: none;
+  margin: 0 0 4px 0;
+  align-self: center;
+  -webkit-clip-path: inset(100%);
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px!important;
+  min-height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+
+.c22:empty {
+  display: none;
+}
+
+.c22 * {
+  width: 1px;
+  height: 1px;
+}
+
+.c38 {
   align-items: center;
   background-color: #e2e6e9;
   border-bottom-right-radius: 0;
@@ -33,7 +116,27 @@ exports[`BorderForm renders correctly 1`] = `
   padding: 0 4px;
 }
 
-.c10 {
+.c33 {
+  align-items: center;
+  background-color: transparent;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  min-width: 32px;
+  margin-right: -12px;
+  position: relative;
+}
+
+.c33:first-child {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.c33 .c37 {
+  margin: 0 12px 0 0;
+}
+
+.c36 {
   align-items: center;
   background-color: transparent;
   display: flex;
@@ -43,42 +146,16 @@ exports[`BorderForm renders correctly 1`] = `
   margin-left: -12px;
 }
 
-.c10:last-child {
+.c36:last-child {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
 
-.c10 .c11 {
+.c36 .c37 {
   margin: 0 0 0 12px;
 }
 
-.c9 {
-  background-color: transparent;
-  border: none;
-  box-sizing: border-box;
-  color: inherit;
-  flex-grow: 1;
-  font-style: inherit;
-  font-weight: inherit;
-  font-family: inherit;
-  font-size: 100%;
-  line-height: 1.45;
-  outline: none;
-  padding: 0 12px;
-  text-align: right;
-  text-overflow: ellipsis;
-  text-transform: inherit;
-  min-width: 0;
-  width: 100%;
-}
-
-.c9::placeholder {
-  font-style: italic;
-  color: #596673;
-  opacity: 1;
-}
-
-.c19 {
+.c35 {
   background-color: transparent;
   border: none;
   box-sizing: border-box;
@@ -98,13 +175,13 @@ exports[`BorderForm renders correctly 1`] = `
   width: 100%;
 }
 
-.c19::placeholder {
+.c35::placeholder {
   font-style: italic;
   color: #596673;
   opacity: 1;
 }
 
-.c7 {
+.c31 {
   background-color: #f1f2f4;
   border: none;
   border-radius: 0;
@@ -118,7 +195,7 @@ exports[`BorderForm renders correctly 1`] = `
   height: 32px;
 }
 
-.c0 {
+.c28 {
   display: inline-flex;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -127,61 +204,42 @@ exports[`BorderForm renders correctly 1`] = `
   width: 100%;
 }
 
-.c0 .c1 {
+.c28 .c29 {
   display: flex;
   width: 100%;
 }
 
-.c0 * {
+.c28 * {
   max-width: 100%;
 }
 
-.c4 {
+.c21 {
   box-sizing: border-box;
   flex-grow: 1;
   width: 100%;
 }
 
-.c4 >.StyledTooltipWrapper-sc-bqyqat {
+.c21 >.StyledTooltipTriggerWrapper-sc-eBoCRM {
   margin: 0 4px 4px 0;
 }
 
-.c4 .c5 {
+.c21 .c0 {
   display: block;
   width: fit-content;
 }
 
-.c13 {
-  box-sizing: border-box;
-  flex-grow: 1;
-  width: 100%;
-}
-
-.c13[data-role="checkbox-group"] .c5,
-.c13[data-role="radio-group"] .c5,
-.c13[data-role="file-upload"] .c5 {
-  max-width: 100%;
-  vertical-align: middle;
-}
-
-.c13[data-role="checkbox-group"] .c5 ~.StyledTooltipWrapper-sc-bqyqat,
-.c13[data-role="radio-group"] .c5 ~.StyledTooltipWrapper-sc-bqyqat,
-.c13[data-role="file-upload"] .c5 ~.StyledTooltipWrapper-sc-bqyqat {
-  margin: 0 0 4px 0;
-}
-
-.c2 {
+.c30 {
   display: inline-flex;
 }
 
-.c2 .c3 {
+.c30 .c20 {
   flex-basis: 160px;
   flex-grow: 1;
   flex-shrink: 1;
   max-width: 100%;
 }
 
-.c8 {
+.c34 {
   border: 0;
   clip: rect(0 0 0 0);
   clip-path: inset(100%);
@@ -192,7 +250,7 @@ exports[`BorderForm renders correctly 1`] = `
   width: 0;
 }
 
-.c16 {
+.c26 {
   appearance: none;
   background-color: inherit;
   -moz-appearance: none;
@@ -214,21 +272,21 @@ exports[`BorderForm renders correctly 1`] = `
   cursor: pointer;
 }
 
-.c16.c16.c16 {
+.c26.c26.c26 {
   outline: 1px solid transparent;
 }
 
-.c16::selection {
+.c26::selection {
   background-color: transparent;
 }
 
-.c16::placeholder {
+.c26::placeholder {
   font-style: italic;
   color: #596673;
   opacity: 1;
 }
 
-.c14 {
+.c24 {
   background-color: transparent;
   box-shadow: none;
   border: none;
@@ -241,11 +299,11 @@ exports[`BorderForm renders correctly 1`] = `
   height: 32px;
 }
 
-.c14:focus {
+.c24:focus {
   outline: none;
 }
 
-.c15 {
+.c25 {
   background-color: #f1f2f4;
   border-radius: inherit;
   box-shadow: 0 1px 0 0 #596673;
@@ -254,18 +312,24 @@ exports[`BorderForm renders correctly 1`] = `
   position: relative;
 }
 
-.c15:focus-within {
+.c25:focus-within {
   box-shadow: 0 2px 0 0 #d50075;
   outline-offset: 0;
   outline: 1px dotted #333;
 }
 
-.c18:after {
+.c25 .c32>.c8 {
+  color: inherit;
+  cursor: default;
+}
+
+.c27:after {
   align-items: center;
   color: #7F8C9B;
   content: "\\e313";
   display: flex;
-  font-family: "Material Icons";
+  font-family: "Material Symbols Outlined";
+  font-variation-settings: "FILL" 1,"wght" 400,"GRAD" 0,"opsz" 24;
   font-size: 1.5rem;
   font-style: normal;
   justify-content: center;
@@ -281,207 +345,792 @@ exports[`BorderForm renders correctly 1`] = `
   word-wrap: normal;
 }
 
-.c17 {
-  appearance: none;
-  font-style: normal;
-  color: #4d4d4d;
-  font-size: inherit;
+.c10 {
+  display: flex;
+  gap: 2px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
-.c17:focus {
+.c10 .c13 {
+  outline: none;
+  z-index: 0;
+}
+
+.c11 {
+  display: flex;
+}
+
+.c11:first-of-type {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.c11:first-of-type .c17 {
+  padding-left: 8px;
+}
+
+.c11:last-child {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.c11:last-child .c17 {
+  padding-right: 8px;
+}
+
+.c18 {
+  align-items: center;
+  border-radius: inherit;
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  min-height: 30px;
+  padding: 0 8px;
+  position: relative;
+}
+
+.c7 {
+  align-items: center;
+  background: #f1f2f4;
+  border: 2px solid transparent;
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  justify-content: center;
+  min-height: 32px;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+.c7 .c8 {
+  color: #0568ae;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c7:focus {
+  border-color: #d50075;
+  cursor: pointer;
+  outline: 1px dotted #333;
+}
+
+.c14 {
+  position: relative;
+  background-color: #f1f2f4;
+  border: 1px solid #16191d;
+  border-right: none;
+  color: #0568ae;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  min-height: 32px;
+  line-height: 1.45;
+  border: 1px solid transparent;
+  border-radius: inherit;
+}
+
+.c14:before {
+  inset: -1px;
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+}
+
+.c14 .c8 {
+  text-decoration: none;
+  color: inherit;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c14[disabled] {
   border: none;
+  cursor: default;
+}
+
+.c14:not(:disabled):focus {
+  outline: none;
+  text-decoration: underline;
+}
+
+.c15 {
+  outline: 2px solid transparent;
+  z-index: 1;
+  background-color: #0568ae;
+  color: #fff;
+  box-shadow: none;
+  border-right: 1px solid #16191d;
+  border-color: #0568ae;
+}
+
+.c15+.c12 {
+  border-left: 0;
+}
+
+.c15:not(:disabled):focus {
+  background-color: #d50075;
+  color: #fff;
+  box-shadow: none;
+  border-right: 1px solid #16191d;
+  border-color: #d50075;
+}
+
+.c15:not(:disabled):focus:before {
+  outline: 1px dotted #333;
+}
+
+.c15:not(:disabled):focus+.c12 {
+  border-left: 0;
+}
+
+.c15:last-child {
+  border-color: #0568ae;
+}
+
+.c19:not(:disabled):focus {
+  color: #d50075;
+}
+
+.c19:not(:disabled):focus:before {
+  outline: 1px dotted #333;
+}
+
+.c19:not(:disabled):focus:before {
+  border: 2px solid #d50075;
+  z-index: 1;
+}
+
+.c3 {
+  display: inline-block;
+}
+
+.c6 {
+  box-sizing: border-box;
+  display: flex;
+  isolation: isolate;
+  position: relative;
+  outline: none;
+  width: fit-content;
+}
+
+.c6.c6 .c13 {
+  background: transparent;
+  border-color: transparent;
+}
+
+.c6.c6 .c13:before {
+  border-color: transparent;
+}
+
+.c5 {
+  width: 100%;
+  display: block;
+  margin-right: 5px;
+}
+
+.c16 {
+  flex-grow: 1;
+}
+
+.c16 >span {
+  margin: 0 auto;
+}
+
+.c2 {
+  display: flex;
+  width: 100%;
+}
+
+.c2 .c4 {
+  max-width: 100px;
+  width: unset;
 }
 
 @media (pointer: coarse) {
-  .c7:active {
+  .c31:active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     box-shadow: 0 2px 0 0 #d50075;
   }
 }
 
 @media (pointer: fine) {
-  .c7:hover {
+  .c31:hover {
     box-shadow: 0 2px 0 0 #d50075;
   }
 }
 
 @media (pointer: coarse) {
-  .c15:active {
+  .c25:active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     box-shadow: 0 2px 0 0 #d50075;
   }
 }
 
 @media (pointer: fine) {
-  .c15:hover {
+  .c25:hover {
     box-shadow: 0 2px 0 0 #d50075;
   }
 }
 
 @media (pointer: coarse) {
-  .c17:active {
+  .c14:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    text-decoration: underline;
+  }
+}
+
+@media (pointer: fine) {
+  .c14:not(:disabled):hover {
+    text-decoration: underline;
+  }
+}
+
+@media (pointer: coarse) {
+  .c15:not(:disabled):active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     background-color: #d50075;
     color: #fff;
+    box-shadow: none;
+    border-right: 1px solid #16191d;
+    border-color: #d50075;
+  }
+
+  .c15:not(:disabled):active+.c12 {
+    border-left: 0;
   }
 }
 
 @media (pointer: fine) {
-  .c17:hover {
+  .c15:not(:disabled):hover {
     background-color: #d50075;
     color: #fff;
+    box-shadow: none;
+    border-right: 1px solid #16191d;
+    border-color: #d50075;
+  }
+
+  .c15:not(:disabled):hover+.c12 {
+    border-left: 0;
+  }
+}
+
+@media (pointer: coarse) {
+  .c19:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    color: #d50075;
+  }
+
+  .c19:not(:disabled):active:before {
+    border: 2px solid #d50075;
+    z-index: 1;
+  }
+}
+
+@media (pointer: fine) {
+  .c19:not(:disabled):hover {
+    color: #d50075;
+  }
+
+  .c19:not(:disabled):hover:before {
+    border: 2px solid #d50075;
+    z-index: 1;
   }
 }
 
 <div>
   <div>
-    <div
-      class="c0 field-wrapper field-wrapper--block"
-      data-role="textline"
-    >
-      <div
-        class="c1 c2 field__main"
-      >
-        <div
-          class="c3 c4 field"
-          data-role="textline-control"
+    <div>
+      <div>
+        <label
+          class="c0 c1 label field__label"
+          data-role="textline-label"
+          for="borderStyle"
         >
-          <label
-            class="c5 c6 label field__label"
-            data-role="textline-label"
-          >
-            Border Width
-          </label>
+          Border Style
+        </label>
+        <div
+          class="c2"
+        >
           <div
-            class="c7 field__input"
-            data-role="textline-input-wrapper"
+            class="c3 field toggle c4 c5"
+            data-role="toggle"
           >
-            <span
-              class="c8 supported-unseen-span"
-            />
-            <input
-              class="c9 field__text field__text--align-right"
-              data-role="textline-input"
-              min="0"
-              step="0.5"
-              type="number"
-              value=""
-            />
-            <span
-              class="c8 supported-unseen-span"
-            />
             <div
-              class="c10 field__suffix field__suffix--first -u-background-transparent"
-              data-role="textline-suffix-0"
+              class="c6 toggle__wrapper"
+              data-role="toggle-wrapper"
+              tabindex="-1"
+            >
+              <span
+                aria-expanded="false"
+                aria-label="Enter User Input , expand to see options"
+                class="c7"
+                data-role="toggle-selected-item-overlay"
+                role="button"
+                tabindex="0"
+                title="Enter User Input , expand to see options"
+              >
+                <i
+                  class="c8 c9 plasma-icon"
+                  data-role="plasma-icon"
+                  style="margin: 0px;"
+                >
+                  <span
+                    aria-hidden="true"
+                  >
+                    edit
+                  </span>
+                </i>
+              </span>
+              <ul
+                aria-hidden="true"
+                class="c10"
+                data-role="toggle-option-buttons"
+              >
+                <li
+                  class="c11"
+                  data-role="toggle-option-button"
+                >
+                  <button
+                    aria-pressed="true"
+                    class="c12 c13 c14 c15 toggle__item toggle__item--selected c16"
+                    data-role="toggle-item"
+                    id="INPUT"
+                    tabindex="-1"
+                    title="Enter User Input"
+                    type="button"
+                    value="INPUT"
+                  >
+                    <span
+                      class="c17 c18 toggle__content"
+                      data-role="toggle-item-content"
+                    >
+                      <i
+                        class="c8 c9 plasma-icon"
+                        data-role="plasma-icon"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          edit
+                        </span>
+                      </i>
+                    </span>
+                  </button>
+                </li>
+                <li
+                  class="c11"
+                  data-role="toggle-option-button"
+                >
+                  <button
+                    aria-pressed="false"
+                    class="c12 c13 c14 c19 toggle__item c16"
+                    data-role="toggle-item"
+                    id="UNSET"
+                    tabindex="-1"
+                    title="Unset Value"
+                    type="button"
+                    value="UNSET"
+                  >
+                    <span
+                      class="c17 c18 toggle__content"
+                      data-role="toggle-item-content"
+                    >
+                      <i
+                        class="c8 c9 plasma-icon"
+                        data-role="plasma-icon"
+                        style="margin: 0px;"
+                      >
+                        <span
+                          aria-hidden="true"
+                        >
+                          clear
+                        </span>
+                      </i>
+                    </span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="c20 c21 field field--block"
+            data-role="select"
+          >
+            <label
+              class="c0 c22 label field__label -u-unseenButRead"
+              data-role="select-label"
+              for="borderStyle"
+              id="borderStyle-label"
+            >
+              <span
+                class="c23 -u-unseenButRead"
+                data-role="hidden-text"
+              >
+                 
+              </span>
+            </label>
+            <div
+              class="c24 field__select"
+              data-role="select-control"
             >
               <div
-                class="c11 c12 field__affix-text"
-                data-role="textline-text-affix"
-                title="pt"
+                class="c25 field__select-wrapper"
+                data-readonly="false"
+                data-role="select-wrapper"
               >
-                <span>
-                  pt
-                </span>
+                <input
+                  aria-autocomplete="list"
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="c26 field__selectTitle"
+                  data-role="select-input"
+                  id="borderStyle"
+                  placeholder=" "
+                  role="combobox"
+                  value=""
+                />
+                <span
+                  aria-hidden="true"
+                  class="c27 field__select-arrow"
+                />
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div
-      class="c3 c13 field field--tooltips field--tooltips-2 field--block"
-      data-role="select"
-    >
-      <label
-        class="c5 c6 label field__label"
-        data-role="select-label"
-      >
-        Border Style
-      </label>
-      <div
-        class="c14 field__select"
-        data-role="select-control"
-      >
-        <div
-          class="c15 field__select-wrapper"
-          data-role="select-wrapper"
+    <div>
+      <div>
+        <label
+          class="c0 c1 label field__label"
+          data-disabled="false"
+          data-role="textline-label"
         >
-          <select
-            class="c16 field__selectTitle"
-            data-role="select-input"
+          Border Width
+        </label>
+        <div
+          class="c28 field-wrapper field-wrapper--block"
+          data-role="text-field"
+        >
+          <div
+            class="c29 c30 field__main"
           >
-            <option
-              class="c17 field__selectOption"
-              data-role="select-option"
-              value=""
+            <div
+              class="c20 c21 field"
+              data-role="text-field-control"
             >
-              None
-            </option>
-            <option
-              class="c17 field__selectOption"
-              data-role="select-option"
-              value="Solid"
-            >
-              Solid
-            </option>
-            <option
-              class="c17 field__selectOption"
-              data-role="select-option"
-              value="Dotted"
-            >
-              Dotted
-            </option>
-            <option
-              class="c17 field__selectOption"
-              data-role="select-option"
-              value="Dashed"
-            >
-              Dashed
-            </option>
-          </select>
-          <span
-            aria-hidden="true"
-            class="c18 field__select-arrow"
-          />
+              <div
+                class="c31 field__input"
+                data-disabled="false"
+                data-readonly="false"
+                data-role="text-field-input-wrapper"
+              >
+                <div
+                  class="c32 c33 field__prefix field__prefix--last"
+                  data-role="text-field-prefix-0"
+                >
+                  <div
+                    class="c3 field toggle c4 c5"
+                    data-role="toggle"
+                  >
+                    <div
+                      class="c6 toggle__wrapper"
+                      data-role="toggle-wrapper"
+                      tabindex="-1"
+                    >
+                      <span
+                        aria-expanded="false"
+                        aria-label="Enter User Input , expand to see options"
+                        class="c7"
+                        data-role="toggle-selected-item-overlay"
+                        role="button"
+                        tabindex="0"
+                        title="Enter User Input , expand to see options"
+                      >
+                        <i
+                          class="c8 c9 plasma-icon"
+                          data-role="plasma-icon"
+                          style="margin: 0px;"
+                        >
+                          <span
+                            aria-hidden="true"
+                          >
+                            edit
+                          </span>
+                        </i>
+                      </span>
+                      <ul
+                        aria-hidden="true"
+                        class="c10"
+                        data-role="toggle-option-buttons"
+                      >
+                        <li
+                          class="c11"
+                          data-role="toggle-option-button"
+                        >
+                          <button
+                            aria-pressed="false"
+                            class="c12 c13 c14 c19 toggle__item c16"
+                            data-role="toggle-item"
+                            id="DEFAULT"
+                            tabindex="-1"
+                            title="Default Value"
+                            type="button"
+                            value="DEFAULT"
+                          >
+                            <span
+                              class="c17 c18 toggle__content"
+                              data-role="toggle-item-content"
+                            >
+                              <i
+                                class="c8 c9 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  settings_applications
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                        <li
+                          class="c11"
+                          data-role="toggle-option-button"
+                        >
+                          <button
+                            aria-pressed="true"
+                            class="c12 c13 c14 c15 toggle__item toggle__item--selected c16"
+                            data-role="toggle-item"
+                            id="INPUT"
+                            tabindex="-1"
+                            title="Enter User Input"
+                            type="button"
+                            value="INPUT"
+                          >
+                            <span
+                              class="c17 c18 toggle__content"
+                              data-role="toggle-item-content"
+                            >
+                              <i
+                                class="c8 c9 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  edit
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <span
+                  class="c34 supported-unseen-span"
+                />
+                <input
+                  class="c35 field__text"
+                  data-role="text-field-input"
+                  data-testid="border-width-input"
+                  min="0"
+                  placeholder=""
+                  step="0.5"
+                  type="number"
+                  value="undefined"
+                />
+                <span
+                  class="c34 supported-unseen-span"
+                />
+                <div
+                  class="c36 field__suffix field__suffix--first -u-background-transparent"
+                  data-role="text-field-suffix-0"
+                >
+                  <div
+                    class="c37 c38 field__affix-text"
+                    data-role="text-field-text-affix"
+                    title="pt"
+                  >
+                    <span>
+                      pt
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div
-      class="c0 field-wrapper field-wrapper--block"
-      data-role="textline"
-    >
-      <div
-        class="c1 c2 field__main"
-      >
-        <div
-          class="c3 c4 field"
-          data-role="textline-control"
+    <div>
+      <div>
+        <label
+          class="c0 c1 label field__label"
+          data-disabled="false"
+          data-role="textline-label"
+          for="color"
         >
-          <label
-            class="c5 c6 label field__label"
-            data-role="textline-label"
-            for="borderColor"
-            id="borderColor-label"
-          >
-            Border Color
-          </label>
+          Border Color
+        </label>
+        <div
+          class="c28 field-wrapper field-wrapper--block"
+          data-role="text-field"
+        >
           <div
-            class="c7 field__input"
-            data-role="textline-input-wrapper"
+            class="c29 c30 field__main"
           >
-            <span
-              class="c8 supported-unseen-span"
-            />
-            <input
-              class="c19 field__text"
-              data-role="textline-input"
-              id="borderColor"
-              type="color"
-              value="#ffffff"
-            />
-            <span
-              class="c8 supported-unseen-span"
-            />
+            <div
+              class="c20 c21 field"
+              data-role="text-field-control"
+            >
+              <div
+                class="c31 field__input"
+                data-disabled="false"
+                data-role="text-field-input-wrapper"
+              >
+                <div
+                  class="c32 c33 field__prefix field__prefix--last"
+                  data-role="text-field-prefix-0"
+                >
+                  <div
+                    class="c3 field toggle c4 c5"
+                    data-role="toggle"
+                  >
+                    <div
+                      class="c6 toggle__wrapper"
+                      data-role="toggle-wrapper"
+                      tabindex="-1"
+                    >
+                      <span
+                        aria-expanded="false"
+                        aria-label="Enter User Input , expand to see options"
+                        class="c7"
+                        data-role="toggle-selected-item-overlay"
+                        role="button"
+                        tabindex="0"
+                        title="Enter User Input , expand to see options"
+                      >
+                        <i
+                          class="c8 c9 plasma-icon"
+                          data-role="plasma-icon"
+                          style="margin: 0px;"
+                        >
+                          <span
+                            aria-hidden="true"
+                          >
+                            edit
+                          </span>
+                        </i>
+                      </span>
+                      <ul
+                        aria-hidden="true"
+                        class="c10"
+                        data-role="toggle-option-buttons"
+                      >
+                        <li
+                          class="c11"
+                          data-role="toggle-option-button"
+                        >
+                          <button
+                            aria-pressed="false"
+                            class="c12 c13 c14 c19 toggle__item c16"
+                            data-role="toggle-item"
+                            id="DEFAULT"
+                            tabindex="-1"
+                            title="Default Value"
+                            type="button"
+                            value="DEFAULT"
+                          >
+                            <span
+                              class="c17 c18 toggle__content"
+                              data-role="toggle-item-content"
+                            >
+                              <i
+                                class="c8 c9 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  settings_applications
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                        <li
+                          class="c11"
+                          data-role="toggle-option-button"
+                        >
+                          <button
+                            aria-pressed="true"
+                            class="c12 c13 c14 c15 toggle__item toggle__item--selected c16"
+                            data-role="toggle-item"
+                            id="INPUT"
+                            tabindex="-1"
+                            title="Enter User Input"
+                            type="button"
+                            value="INPUT"
+                          >
+                            <span
+                              class="c17 c18 toggle__content"
+                              data-role="toggle-item-content"
+                            >
+                              <i
+                                class="c8 c9 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  edit
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <span
+                  class="c34 supported-unseen-span"
+                />
+                <input
+                  class="c35 field__text"
+                  data-role="text-field-input"
+                  id="color"
+                  style="opacity: 0;"
+                  type="color"
+                  value=""
+                />
+                <span
+                  class="c34 supported-unseen-span"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -29,10 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import CharTrie from "./CharTrie.js";
-import CharTrieMapNode from "./CharTrieMapNode.js";
+import type { CharTrie } from "./CharTrie.js";
+import type { CharTrieMapNode } from "./CharTrieMapNode.js";
 
-class CharTrieMap implements CharTrie {
+export class CharTrieMap implements CharTrie {
 	private characters: string[] = [];
 	private nodes: CharTrieMapNode[] = [];
 	private length: number = 0;
@@ -64,5 +64,3 @@ class CharTrieMap implements CharTrie {
 		return undefined;
 	}
 }
-
-export default CharTrieMap;

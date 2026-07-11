@@ -31,13 +31,9 @@
  */
 import { useContext } from "react";
 
-import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react/lib/main/index.js";
-import {
-	LocalizableArgs,
-	localizableFromLocalizationTreeMap,
-	LocalizationTreeMap,
-	Localizer,
-} from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react";
+import type { LocalizableArgs, LocalizationTreeMap, Localizer } from "@com.mgmtp.a12.utils/utils-localization";
+import { localizableFromLocalizationTreeMap } from "@com.mgmtp.a12.utils/utils-localization";
 
 import { en } from "./resources/en.js";
 import { de } from "./resources/de.js";

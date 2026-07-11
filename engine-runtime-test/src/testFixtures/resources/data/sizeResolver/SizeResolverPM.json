@@ -2,16 +2,16 @@
   "header": {
     "id": "SizeResolverPM",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "description": "Description",
     "annotations": [
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "labels": [],
@@ -333,7 +333,7 @@
         "type": "Image",
         "image": {
           "id": "GF9IZh1psDxrIvvlaATOf",
-          "imageSrcType": "Field",
+          "imageSrcType": "Dynamic",
           "alternativeText": "img fixed size",
           "dimensions": {
             "id": "h-U8nO-9k7ydzVd83C5ck",
@@ -348,17 +348,11 @@
               "unit": "Millimeter"
             }
           },
-          "attachmentSource": {
-            "imageAttachment": {}
-          },
           "fieldSource": {
             "id": "taRVPOSKOh4Wj0aGO_pdb",
             "model": "SizeResolverDM",
             "path": "/root/Image/img/content"
           }
-        },
-        "borderProperties": {
-          "id": "BFlvLoh79eEJuMvZRTZrG"
         }
       },
       {
@@ -366,7 +360,7 @@
         "type": "Image",
         "image": {
           "id": "ZAk_ay-g_Ik1iPPF7IQoB",
-          "imageSrcType": "Attachment",
+          "imageSrcType": "Static",
           "alternativeText": "img original size",
           "dimensions": {
             "id": "LPxAxM31d21wuix3BWcZV",
@@ -376,7 +370,7 @@
               "unit": "Millimeter"
             },
             "originalHeight": {
-              "id": "NQknSoLuy4t3JA1sZDGLl",
+              "id": "HjUiQ8VZhWMaYcTiAQ4hS",
               "value": 5,
               "unit": "Millimeter"
             },
@@ -386,27 +380,15 @@
               "unit": "Millimeter"
             },
             "originalWidth": {
-              "id": "mkNtteMw6FwuXgjvEDmYa",
+              "id": "yviP0hOdrgMZvsuW71M8N",
               "value": 5,
               "unit": "Millimeter"
             }
           },
-          "attachmentSource": {
+          "resourceSource": {
             "id": "9ZWClHscISaktGfAbuxYc",
-            "imageAttachment": {
-              "internal_filename": "test.png",
-              "original_filename": "test.png",
-              "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAA+SURBVDhPY3wro/KfgQgg3HYEysIPmKA01cCogZSDUQMpB4xKG32Iyil3JQ5BWfjBaKRQDkYNpBxQ2UAGBgB0zweFxBPqwAAAAABJRU5ErkJggg==",
-              "size": 169,
-              "mime_type": "image/png"
-            }
-          },
-          "fieldSource": {
-            "id": "pAwx0TTiaY5bXwtAdew1c"
+            "resourceName": "test_b7879c59.png"
           }
-        },
-        "borderProperties": {
-          "id": "6poPfPJZ1wpVnwfXYxfJV"
         }
       },
       {
@@ -414,7 +396,7 @@
         "type": "Image",
         "image": {
           "id": "8dy1WPJ55_pPmQfq5YUz_",
-          "imageSrcType": "Attachment",
+          "imageSrcType": "Static",
           "alternativeText": "img changed size",
           "dimensions": {
             "id": "Je69iwGm7NeiYCbrHF6_U",
@@ -439,20 +421,10 @@
               "unit": "Millimeter"
             }
           },
-          "attachmentSource": {
+          "resourceSource": {
             "id": "ildfVbO6RRTC7DXxpLJYV",
-            "imageAttachment": {
-              "internal_filename": "test.png",
-              "original_filename": "test.png",
-              "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAA+SURBVDhPY3wro/KfgQgg3HYEysIPmKA01cCogZSDUQMpB4xKG32Iyil3JQ5BWfjBaKRQDkYNpBxQ2UAGBgB0zweFxBPqwAAAAABJRU5ErkJggg==",
-              "size": 169,
-              "mime_type": "image/png"
-            }
-          },
-          "fieldSource": {}
-        },
-        "borderProperties": {
-          "id": "rsrf3_sxFwGTXAD1xNbCv"
+            "resourceName": "test_b7879c59.png"
+          }
         }
       },
       {
@@ -460,7 +432,7 @@
         "type": "Image",
         "image": {
           "id": "Q_2dTUb6N-2lHJrWqsssY",
-          "imageSrcType": "Attachment",
+          "imageSrcType": "Static",
           "alternativeText": "img scaled size",
           "dimensions": {
             "id": "9kMJSDTqWy1wlLIEZvvN5",
@@ -480,20 +452,10 @@
               "unit": "Millimeter"
             }
           },
-          "attachmentSource": {
+          "resourceSource": {
             "id": "1tejbK-wAss08U77cY4ol",
-            "imageAttachment": {
-              "internal_filename": "test.png",
-              "original_filename": "test.png",
-              "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAA+SURBVDhPY3wro/KfgQgg3HYEysIPmKA01cCogZSDUQMpB4xKG32Iyil3JQ5BWfjBaKRQDkYNpBxQ2UAGBgB0zweFxBPqwAAAAABJRU5ErkJggg==",
-              "size": 169,
-              "mime_type": "image/png"
-            }
-          },
-          "fieldSource": {}
-        },
-        "borderProperties": {
-          "id": "WbnPPh_s7AErJFHZUSJzx"
+            "resourceName": "test_b7879c59.png"
+          }
         }
       },
       {
@@ -501,7 +463,7 @@
         "type": "Image",
         "image": {
           "id": "RUnf1oyqMTA18_6fKLKnt",
-          "imageSrcType": "Attachment",
+          "imageSrcType": "Static",
           "alternativeText": "img original size",
           "dimensions": {
             "id": "JL6K1YEJS9vgajXXxbDbV",
@@ -516,22 +478,10 @@
               "unit": "Millimeter"
             }
           },
-          "attachmentSource": {
+          "resourceSource": {
             "id": "YwjlCaUAd9JaocMQ4rtuG",
-            "imageAttachment": {
-              "internal_filename": "test.png",
-              "original_filename": "test.png",
-              "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAA+SURBVDhPY3wro/KfgQgg3HYEysIPmKA01cCogZSDUQMpB4xKG32Iyil3JQ5BWfjBaKRQDkYNpBxQ2UAGBgB0zweFxBPqwAAAAABJRU5ErkJggg==",
-              "size": 169,
-              "mime_type": "image/png"
-            }
-          },
-          "fieldSource": {
-            "id": "zWDfiWMInBbPmXwXaoqT5"
+            "resourceName": "test_b7879c59.png"
           }
-        },
-        "borderProperties": {
-          "id": "dwGZ_9Xoj-E-GkfJctoSR"
         }
       },
       {
@@ -539,7 +489,7 @@
         "type": "Image",
         "image": {
           "id": "14SoVTh19gFh-PW32vtvp",
-          "imageSrcType": "Field",
+          "imageSrcType": "Dynamic",
           "alternativeText": "img scaled size",
           "dimensions": {
             "id": "ccuv2cSVCVC18pYbRs2U2",
@@ -549,17 +499,11 @@
               "unit": "Millimeter"
             }
           },
-          "attachmentSource": {
-            "imageAttachment": {}
-          },
           "fieldSource": {
             "id": "Prcgv4zMpzgBMbZBDS5gc",
             "model": "SizeResolverDM",
             "path": "/root/Image/img/content"
           }
-        },
-        "borderProperties": {
-          "id": "YPimkL8kkpEB0lbs66N2M"
         }
       }
     ]

@@ -31,7 +31,7 @@
  */
 import { styled } from "styled-components";
 
-import { Checkbox } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/checkbox/index.js";
+import { Checkbox } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { StyledCustomToggle } from "./SourceInputToggles.styled.js";
 

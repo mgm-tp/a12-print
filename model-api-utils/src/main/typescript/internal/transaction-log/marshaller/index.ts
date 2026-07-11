@@ -30,7 +30,7 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 export * from "./interaction-log-marshaller.js";
-export * from "./log-handler.js";
+export * from "../../../a12internal/transaction-log/log-handler.js";
 export * from "./log-marshaller.js";
 export * from "./log-value-type.js";
 export * from "./prevent-undo-type.js";

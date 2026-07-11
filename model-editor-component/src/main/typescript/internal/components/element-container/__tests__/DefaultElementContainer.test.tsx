@@ -29,13 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
 
-import {
-	TransactionLog,
-	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
-import { PartialText, ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PartialText } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { createMmMeasure, createMmMeasureFromPx } from "../../../utils/index.js";
 import {

@@ -35,11 +35,11 @@ import com.mgmtp.a12.print.engine.api.exception.PrintException;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.AttachmentToAppend;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalPdfBoxPrintEngineRuntime;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.ComponentTreeManagerDependency;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.ComponentTreeReference;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.SectionUtils;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.ComponentTreeManagerDependency;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.ComponentTreeReference;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.Spread;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.componentTrees.SectionComponentTree;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.Spread;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.componentTrees.SectionComponentTree;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.ContentStreamAdapter;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.Position;
@@ -246,7 +246,7 @@ public class SegmentDocumentHandle implements ContainerDocumentHandle {
 			pageRelativeY < (pageNumber == 1 ? startForFirst : remainingHeaderHeight) ||
 				pageRelativeY > (pageNumber == 1 ? endForFirst : endForRemaining)
 		) {
-			log.error("Calculated Y Position is not inside the target region");
+			log.warn("Calculated Y Position is not inside the target region");
 		}
 
 		return new RegionCursor(
@@ -411,7 +411,7 @@ public class SegmentDocumentHandle implements ContainerDocumentHandle {
 				document,
 				new PDPage(getPageBounds()),
 				PDPageContentStream.AppendMode.APPEND,
-				false,
+				true,
 				true
 			);
 		}

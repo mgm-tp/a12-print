@@ -29,18 +29,18 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Action, Reducer } from "redux";
+import type { Action, Reducer } from "redux";
 
-import { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/model/typesetting-model.js";
+import type { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
 
 import { PrintEngineActions } from "../../store/actions.js";
-import { DINTemplateSegment } from "../../api/index.js";
 
 import { RequestApiActions } from "./actions.js";
-import { RequestApiState } from "./state.js";
+import type { RequestApiState } from "./state.js";
 
 const defaultState: RequestApiState = {
 	printModelData: {},
+	resources: {},
 };
 
 export const RequestApiReducer: Reducer<RequestApiState> = (
@@ -51,10 +51,10 @@ export const RequestApiReducer: Reducer<RequestApiState> = (
 		return defaultState;
 	}
 
-	if (RequestApiActions.setPrintModelHeaders.match(action)) {
+	if (RequestApiActions.setPrintModelIds.match(action)) {
 		return {
 			...state,
-			printModelHeaders: action.payload,
+			printModelIds: action.payload,
 		};
 	}
 
@@ -75,16 +75,13 @@ export const RequestApiReducer: Reducer<RequestApiState> = (
 		};
 	}
 
-	if (RequestApiActions.setDINTemplatePrintModels.match(action)) {
+	if (RequestApiActions.setDINTemplatePrintModel.match(action)) {
 		return {
 			...state,
-			dinTemplatePrintModels: action.payload.reduce(
-				(dinTemplatePrintModels: Record<string, DINTemplateSegment[]>, { printModelId, templateSegments }) => {
-					dinTemplatePrintModels[printModelId] = templateSegments;
-					return dinTemplatePrintModels;
-				},
-				{}
-			),
+			dinTemplatePrintModels: {
+				...state.dinTemplatePrintModels,
+				[action.payload.id]: action.payload.templateSegments,
+			},
 		};
 	}
 
@@ -119,6 +116,30 @@ export const RequestApiReducer: Reducer<RequestApiState> = (
 				...state.typesettingModelData,
 				[action.payload.header.id]: action.payload,
 			},
+		};
+	}
+
+	if (RequestApiActions.setResource.match(action)) {
+		return {
+			...state,
+			resources: {
+				...state.resources,
+				[action.payload.name]: action.payload,
+			},
+		};
+	}
+
+	if (RequestApiActions.setAvailableResources.match(action)) {
+		return {
+			...state,
+			availableResources: action.payload,
+		};
+	}
+
+	if (RequestApiActions.setLastUploadedResource.match(action)) {
+		return {
+			...state,
+			lastUploadedResource: action.payload,
 		};
 	}
 

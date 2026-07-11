@@ -31,7 +31,7 @@
  */
 import { styled } from "styled-components";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
+import { Button } from "@com.mgmtp.a12.widgets/widgets-core";
 
 export const ToolbarContainer = styled.div`
 	display: flex;

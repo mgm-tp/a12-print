@@ -31,16 +31,12 @@
  */
 import * as React from "react";
 
-import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-line/index.js";
+import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { TextLineStatefulProps } from "../../forms/custom-base-input-components/types.js";
+import type { TextLineStatefulProps } from "../../forms/custom-base-input-components/types.js";
 
-import {
-	StyledDimensionInputProps,
-	StyledInputContainer,
-	StyledNumberInput,
-	StyledNumberInputIcon,
-} from "./QuickNumberInput.styled.js";
+import type { StyledDimensionInputProps } from "./QuickNumberInput.styled.js";
+import { StyledInputContainer, StyledNumberInput, StyledNumberInputIcon } from "./QuickNumberInput.styled.js";
 
 interface QuickInputProps extends TextLineStatefulProps, StyledDimensionInputProps {
 	label: string;

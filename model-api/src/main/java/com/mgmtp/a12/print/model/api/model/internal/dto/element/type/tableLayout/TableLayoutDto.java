@@ -33,7 +33,8 @@ package com.mgmtp.a12.print.model.api.model.internal.dto.element.type.tableLayou
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import com.mgmtp.a12.print.model.api.model.EnableGetterByFieldNameForInheritableSource;
 import com.mgmtp.a12.print.model.api.model.element.type.tableLayout.TableLayout;
 import com.mgmtp.a12.print.model.api.model.element.type.tableLayout.TableLayoutProperties;
 import com.mgmtp.a12.print.model.api.model.reference.TableLayoutCellReference;
@@ -52,6 +53,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
+@EnableGetterByFieldNameForInheritableSource
 public class TableLayoutDto extends StyleablePrintModelElementDto implements TableLayout, JsonModel {
 	@JsonProperty(value = "tableLayout", required = true)
 	@JsonDeserialize(as = TableLayoutPropertiesDto.class)

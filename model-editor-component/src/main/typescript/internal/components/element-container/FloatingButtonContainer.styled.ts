@@ -31,7 +31,8 @@
  */
 import { styled } from "styled-components";
 
-import { PartialAnyPrintModelElement, PartialLine } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialAnyPrintModelElement } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialLine } from "@com.mgmtp.a12.print/print-model-api/model";
 
 interface StyledFloatingButtonContainerProps {
 	offset: number;

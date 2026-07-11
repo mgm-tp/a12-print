@@ -31,35 +31,34 @@
  */
 import { createSelector } from "reselect";
 
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import {
+import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type {
 	PrintModelEntity,
 	Reference,
-	isReference,
 	PlaceableReference,
 	ElementType,
 	PrintModel,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import {
-	LogPersistentEntry,
-	SidebarItem,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { isReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { LogPersistentEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { createSliceSelector, idInputSelector, PrintEngineSelectors } from "../../store/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { createErrorNodes, pushErrorTreeNode } from "../../utils/error-tree-utils.js";
-import {
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { createErrorNodes, pushErrorTreeNode } from "../../../internal/utils/error-tree-utils.js";
+import type {
 	NavigationTarget,
 	ErrorTreeNode,
 	PrintModelErrorMap,
 	ElementNavigationTarget,
 	CommitInteractionRow,
-} from "../../types/index.js";
-import { ElementTypes } from "../../constant/elements.js";
-import { SidebarItemTypes } from "../../constant/sidebar.js";
-import { ElementsUtils } from "../../utils/index.js";
-import { RESOURCE_KEYS } from "../../localization/index.js";
+} from "../../../internal/types/index.js";
+import { ElementTypes } from "../../../internal/constant/elements.js";
+import { SidebarItemTypes } from "../../../internal/constant/sidebar.js";
+import { ElementsUtils } from "../../../internal/utils/index.js";
+import { RESOURCE_KEYS } from "../../../internal/localization/index.js";
+import type { PrintMessage } from "../../../a12internal/api/PrintMessageReport.js";
 
 function getContainerErrors<T>(container: DeepPartialErrorMap<T>[] | undefined, id: string) {
 	if (!container || !container.length) {
@@ -85,14 +84,20 @@ export namespace CommitViewSelectors {
 		state => state.CommitViewState.commitInteractionRows
 	);
 
-	export const hasCommitViewValidationErrors = createSelector(
-		[commitViewErrorMapState],
-		errorMap => !!errorMap?.["@error"].length
+	export const isCommitting = createSliceSelector<boolean>(state => state.CommitViewState.isCommitting);
+
+	export const commitPrecompileMessages = createSliceSelector<PrintMessage[]>(
+		state => state.CommitViewState.precompileMessages
 	);
 
-	export const hasCommitViewValidationWarnings = createSelector(
+	export const commitViewValidationErrorsCount = createSelector(
 		[commitViewErrorMapState],
-		errorMap => !!errorMap?.["@warning"].length
+		errorMap => errorMap?.["@error"].length || 0
+	);
+
+	export const commitViewValidationWarningsCount = createSelector(
+		[commitViewErrorMapState],
+		errorMap => errorMap?.["@warning"].length || 0
 	);
 
 	export const generalCommitErrors = createSelector([commitViewErrorMapState], errorMap => {

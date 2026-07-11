@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 export interface SerializerResult<APIType, DTOType> {
 	result?: DTOType;

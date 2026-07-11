@@ -35,16 +35,18 @@ import com.mgmtp.a12.kernel.md.document.api.services.DocumentDeserializationConf
 import com.mgmtp.a12.kernel.md.document.api.services.DocumentSerializationConfig;
 import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 import com.mgmtp.a12.kernel.md.document.apiV2.services.IDocumentV2Serializer;
-import com.mgmtp.a12.kernel.md.facade.DocumentRtCustomExtensionService;
 import com.mgmtp.a12.kernel.md.facade.DocumentRtServiceFactory;
 import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelResolver;
 import com.mgmtp.a12.kernel.md.rt.api.*;
 import com.mgmtp.a12.kernel.md.serializer.MDSerializerFactory;
 import com.mgmtp.a12.model.notification.RankedNotification;
+import com.mgmtp.a12.print.model.api.validation.IPrintModelIntegrityMessage;
 import com.mgmtp.a12.print.model.api.validation.IPrintModelIntegrityReport;
-import com.mgmtp.a12.print.model.api.validation.custom.PrintCustomFieldTypeFactory;
+import com.mgmtp.a12.print.model.api.validation.PrintModelValidatorOptions;
 import com.mgmtp.a12.print.model.api.validation.custom.PrintCustomConditionFactory;
+import com.mgmtp.a12.print.model.api.validation.custom.PrintCustomFieldTypeFactory;
 import com.mgmtp.a12.print.model.api.validation.internal.PrintModelIntegrityReport;
+import com.mgmtp.a12.print.model.api.validation.internal.html.HtmlFieldCollector;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -58,19 +60,23 @@ public class PrintModelValidationUtils {
 	private static final IDocumentModelResolver documentResolver = new DocumentModelResolver();
 
 	private static final IDocumentV2Serializer documentSerializer = new MDSerializerFactory().createDocumentSerializerV2(documentResolver);
-	private static final DocumentRtCustomExtensionService customKernelExtensionService = new DocumentRtCustomExtensionService();
-
-	static {
-		customKernelExtensionService.registerCustomFieldTypesV2(new PrintCustomFieldTypeFactory());
-		customKernelExtensionService.registerCustomConditionsV2(new PrintCustomConditionFactory());
-	}
 
 	public static IPrintModelIntegrityReport validate(String rawPrintModel, Locale locale) {
+		return validate(rawPrintModel, new PrintModelValidatorOptions(locale, false));
+	}
+
+	public static IPrintModelIntegrityReport validate(String rawPrintModel, PrintModelValidatorOptions options) {
 		DocumentRtServiceFactory rtFactory = new DocumentRtServiceFactory(documentResolver);
 		IDocumentRtService docRtService = rtFactory.createDocumentRtService(getDocumentStaticServiceConfig());
-		IDocumentValidationResult result = docRtService.validateFull(deserializeDocument(rawPrintModel),
-			locale);
-		return new PrintModelIntegrityReport(result);
+		DocumentProcessingConfig documentProcessConfig = DocumentProcessingConfig.builder(options.locale())
+			.customFieldTypeFactory(new PrintCustomFieldTypeFactory())
+			.customConditionFactory(new PrintCustomConditionFactory())
+			.build();
+		IDocumentValidationResult result = docRtService.validateFull(deserializeDocument(rawPrintModel), documentProcessConfig);
+		List<IPrintModelIntegrityMessage> htmlMessages = options.html()
+			? HtmlFieldCollector.collect(rawPrintModel)
+			: List.of();
+		return new PrintModelIntegrityReport(result, htmlMessages);
 	}
 
 	private static DocumentV2 deserializeDocument(String documentString) {
@@ -82,7 +88,6 @@ public class PrintModelValidationUtils {
 			PRINT_META_MODEL,
 			DocumentDeserializationConfig.builder()
 										 .format(DocumentSerializationConfig.Format.JSON)
-										 .addTransientFields(true)
 										 .build(),
 			(RankedNotification rankedNotification) -> {
 			}
@@ -105,11 +110,6 @@ public class PrintModelValidationUtils {
 			@Override
 			public Optional<IStaticModelCodeCache> getCache() {
 				return Optional.of(cache);
-			}
-
-			@Override
-			public Optional<String> getVariant() {
-				return Optional.empty();
 			}
 
 			@Override

@@ -29,11 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
+import type { PayloadAction, Slice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-import { Variant } from "@com.mgmtp.a12.widgets/widgets-core/lib/toast";
+import type { Variant } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { RootState } from "./types";
+import type { RootState } from "./types";
 
 export interface PrintEngineNotification {
 	readonly id: string;

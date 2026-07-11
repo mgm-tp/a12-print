@@ -31,9 +31,9 @@
  */
 import { useSelector } from "react-redux";
 
-import { LogPersistentEntry } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log";
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model";
-import { PrintEngineState } from "@com.mgmtp.a12.print/print-model-editor-component/lib/internal/store/root-reducer";
+import type { LogPersistentEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
+import type { PrintEngineState } from "@com.mgmtp.a12.print/print-model-editor-component/a12internal/api";
 
 import { EditorSelector } from "../../store/editor";
 import { useConfiguredFonts } from "../../hooks/use-configured-fonts";
@@ -44,30 +44,31 @@ import { PrintModelEditorSMEWrapper } from "./print-model-editor-sme/PrintModelE
 interface PrintEditorProps {
 	printModel: Model;
 	documentModels?: Model[];
-	printSettingModel?: Model;
 	typesettingModels?: Model[];
 	templatePrintModels?: Model[];
 	logPersistentEntries: LogPersistentEntry[];
 	store?: PrintEngineState;
+	fontMap?: Record<string, string>;
 }
 
 export function PrintEditor({
 	printModel,
-	printSettingModel,
 	templatePrintModels = [],
 	documentModels = [],
 	typesettingModels = [],
 	logPersistentEntries,
 	store,
+	fontMap,
 }: Readonly<PrintEditorProps>) {
 	const caseConfig = useSelector(EditorSelector.selectCaseConfig);
 	const isBasicEditor = useSelector(EditorSelector.selectIsBasicEditor);
 	const caseId = caseConfig?.id;
-	const customFonts = useConfiguredFonts(caseId, printSettingModel);
+	const customFonts = useConfiguredFonts(caseId, fontMap);
 
 	if (isBasicEditor) {
 		return (
 			<PrintModelEditorLightWrapper
+				caseConfigId={caseId ?? ""}
 				printModel={printModel}
 				customFonts={customFonts}
 				documentModels={documentModels}

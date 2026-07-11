@@ -31,7 +31,6 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing;
 
-import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.markup.listing.ListingHtmlTemplateParameters;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.AttachmentToAppend;
 import lombok.Getter;
 import lombok.NonNull;
@@ -45,7 +44,7 @@ import java.util.Optional;
 @Getter
 public class ListingValueResult {
 	@NonNull
-	private final List<ListingHtmlTemplateParameters.MarkupListingRowValue> rows;
+	private final List<ListingValues.MarkupListingRowValue> rows;
 	@NonNull
 	private final LinkedHashMap<String, AttachmentToAppend> attachmentsToAppend;
 	@NonNull

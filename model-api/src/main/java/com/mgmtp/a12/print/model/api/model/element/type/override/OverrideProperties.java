@@ -32,14 +32,17 @@
 package com.mgmtp.a12.print.model.api.model.element.type.override;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
+@OnlyForUsage
 public interface OverrideProperties extends PrintModelEntity {
 	String getRefId();
 	OverrideType getOverrideType();
 	OverrideSource getSource();
 	OverrideBoundingBoxProperties getBoundingBoxProperties();
 
+	@OnlyForUsage
 	enum OverrideType {
 		@JsonProperty("BoundingBox") BOUNDING_BOX;
 	}

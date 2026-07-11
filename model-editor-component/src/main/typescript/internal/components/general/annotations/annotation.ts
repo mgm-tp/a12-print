@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { AnnotationEntity } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { AnnotationEntity } from "@com.mgmtp.a12.print/print-model-api/model";
 
 export type AnnotationData = DeepPartial<AnnotationEntity>;

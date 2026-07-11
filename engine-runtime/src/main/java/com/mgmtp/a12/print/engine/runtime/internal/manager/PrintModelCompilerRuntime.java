@@ -31,16 +31,17 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.mgmtp.a12.kernel.md.facade.DocumentModelServiceFactory;
+import com.mgmtp.a12.kernel.md.combination.a12internal.CombinationModelService;
+import com.mgmtp.a12.kernel.md.combination.a12internal.DMWrapper;
+import com.mgmtp.a12.kernel.md.model.a12internal.expansioninfo.ExpansionInfo;
 import com.mgmtp.a12.model.header.ModelReference;
+import com.mgmtp.a12.model.notification.Severity;
 import com.mgmtp.a12.print.engine.api.PrintJobConfig;
 import com.mgmtp.a12.print.engine.api.PrintModelId;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.PrintJobManager;
+import com.mgmtp.a12.print.engine.api.StaticImageProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.PrintModelCompilationContext;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.PrintModelCompilationUpdate;
@@ -50,66 +51,78 @@ import com.mgmtp.a12.print.engine.runtime.kernel.internal.DocumentModelIndex;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelDto;
 import com.mgmtp.a12.print.model.api.utils.serialization.ObjectMapperFactory;
+import com.mgmtp.a12.print.model.api.validation.IPrintModelIntegrityMessage;
 import com.mgmtp.a12.print.model.api.validation.IPrintModelValidator;
 import com.mgmtp.a12.print.model.api.validation.PrintModelValidator;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.exc.JacksonIOException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class PrintModelCompilerRuntime implements com.mgmtp.a12.print.engine.runtime.internal.manager.PrintModelCompiler {
 
 
 	private static final ObjectMapper objectMapper = ObjectMapperFactory.createPrintModelMapper();
-	private static final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+	private static final ObjectMapper yamlMapper = YAMLMapper.builder().build();
 	@Getter
 	private final ExecutorService executorService;
 	@Getter
 	private final PrintJobManager.PrintJobManagerApi managerApi;
 	@Getter
 	private final A12TypeComparisonMapping a12TypeComparisonMapping;
+	@Getter
+	private final StaticImageProvider staticImageProvider;
 	private final IPrintModelValidator printModelValidator = new PrintModelValidator();
 	private final ConcurrentHashMap<PrintModelId, Future<PrintModelCompilationContext>> cache = new ConcurrentHashMap<>();
-	private final boolean usePdfBoxPrintProcess;
 
 	public PrintModelCompilerRuntime(
 		@NonNull ExecutorService executorService,
 		@NonNull PrintJobManager.PrintJobManagerApi managerApi,
 		@NonNull PrintJobConfig printJobConfig
 	) {
-		this.managerApi = managerApi;
-		this.executorService = executorService;
-		this.a12TypeComparisonMapping = getA12TypeComparisonMapping(printJobConfig);
-		this.usePdfBoxPrintProcess = false;
+		this(executorService, managerApi, printJobConfig, internalFilename -> {
+			throw new PrintCompilerException(
+				"No StaticImageProvider configured; cannot resolve static image '{}'.",
+				internalFilename
+			);
+		});
 	}
 
 	public PrintModelCompilerRuntime(
 		@NonNull ExecutorService executorService,
 		@NonNull PrintJobManager.PrintJobManagerApi managerApi,
 		@NonNull PrintJobConfig printJobConfig,
-		boolean usePdfBoxPrintProcess
+		@NonNull StaticImageProvider staticImageProvider
 	) {
 		this.managerApi = managerApi;
 		this.executorService = executorService;
 		this.a12TypeComparisonMapping = getA12TypeComparisonMapping(printJobConfig);
-		this.usePdfBoxPrintProcess = usePdfBoxPrintProcess;
+		this.staticImageProvider = staticImageProvider;
 	}
 
-	private static <T> T await(Future<T> f) throws PrintCompilerException {
+	private static <T> T await(Future<T> f) throws PrintCompilerException, PrintDomainException {
 		try {
 			return f.get();
-		} catch (PrintCompilerException e) {
-			throw e;
-		} catch (Exception e) {
+		} catch (ExecutionException e) {
+			if (e.getCause() instanceof PrintDomainException pde) {
+				throw pde;
+			}
+			throw new PrintCompilerException("Unable to compile model", e.getCause());
+		} catch (InterruptedException e) {
 			throw new PrintCompilerException("Unable to compile model", e);
 		}
 	}
@@ -121,8 +134,8 @@ public class PrintModelCompilerRuntime implements com.mgmtp.a12.print.engine.run
 		);
 		try {
 			return yamlMapper.readValue(inputStream, A12TypeComparisonMapping.class);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+		} catch (JacksonException e) {
+			throw new PrintCompilerException(e);
 		}
 	}
 
@@ -145,7 +158,7 @@ public class PrintModelCompilerRuntime implements com.mgmtp.a12.print.engine.run
 			final var referencedModels = await(executorService.submit(() -> findAllReferencedPrintModels(dto)));
 
 			if(referencedModels.containsKey(dto.getHeader().getId())){
-				throw new PrintCompilerException(
+				throw new PrintDomainException(
 					"Circular Dependency of PrintModels in PrintModel {}: {}",
 					dto.getHeader().getId(),
 					String.join(" -> ", referencedModels.keySet())
@@ -207,12 +220,13 @@ public class PrintModelCompilerRuntime implements com.mgmtp.a12.print.engine.run
 												.compiler(
 													new PrintModelCompiler(this)
 												)
-												.pdfBoxPrintProcess(usePdfBoxPrintProcess)
 												.build();
 
 		for (var modelReference : dto.getHeader().getModelReferences()) {
 			if (modelReference.getModelType().equals(Constants.DOCUMENT_MODEL_TYPE)) {
-				model.provideDocumentModelReference(modelReference, loadAndExpand(modelReference));
+				DocumentModelIndex documentModelIndex = loadAndExpand(modelReference);
+				model.provideDocumentModelReference(modelReference, documentModelIndex);
+				model.publicCommonLocales(documentModelIndex);
 			}
 		}
 		model.asyncCompile();
@@ -221,11 +235,30 @@ public class PrintModelCompilerRuntime implements com.mgmtp.a12.print.engine.run
 	}
 
 	private DocumentModelIndex loadAndExpand(ModelReference modelReference) {
-		final var service = new DocumentModelServiceFactory().createDocumentModelService();
 		final var documentModel = managerApi.loadDocumentModel(modelReference.getReference());
+		final ExpansionInfo[] capturedExpansionInfo = { null };
+		final var expandedDM = CombinationModelService.expand(
+			documentModel,
+			dmId -> new DMWrapper(managerApi.loadDocumentModel(dmId)),
+			CombinationModelService.CombinationModelExpandParams.builder()
+				.notificationReceiver(rankedNotification -> {
+					if (rankedNotification.getSeverity().equals(Severity.ERROR)) {
+						throw new PrintDomainException(rankedNotification.getMessage());
+					} else if (rankedNotification.getSeverity().equals(Severity.WARNING)) {
+						log.warn(rankedNotification.getMessage());
+					} else {
+						log.info(rankedNotification.getMessage());
+					}
+				})
+				.a12Internal_expansionInfoReceiver(ei -> capturedExpansionInfo[0] = ei)
+				.build()
+		);
 
-		service.expand(documentModel, managerApi::loadDocumentModel);
-		return DocumentModelIndex.load(documentModel);
+		if (expandedDM.isEmpty()) {
+			throw new PrintDomainException("The expansion for the Document Model {} failed.", documentModel.getHeader().getId());
+		}
+
+		return DocumentModelIndex.load(expandedDM.get(), capturedExpansionInfo[0]);
 	}
 
 	private PrintModelCompilationContext update(PrintModelId id, PrintModel dto, Future<PrintModelCompilationContext> printModelCompilationContext) {
@@ -241,12 +274,12 @@ public class PrintModelCompilerRuntime implements com.mgmtp.a12.print.engine.run
 		try {
 			var validation = printModelValidator.validate(printModel, Locale.ENGLISH);
 			if (!validation.noErrorOccurred()) {
-				throw new PrintException("PrintModel is not valid.", validation);
+				throw new PrintDomainException("The Print Model Validation finished with errors: {}",
+					validation.getMessages().stream().map(IPrintModelIntegrityMessage::getText).collect(Collectors.joining("\n")));
 			}
 			return objectMapper.readValue(printModel, PrintModelDto.class);
-
-		} catch (JsonProcessingException e) {
-			throw new PrintException("Unable to load printModel", e);
+		} catch (JacksonIOException e) {
+			throw new PrintDomainException("The Print Model could not be loaded", e);
 		}
 	}
 

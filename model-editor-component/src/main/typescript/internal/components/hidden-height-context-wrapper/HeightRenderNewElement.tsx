@@ -32,12 +32,12 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
+import type {
 	PartialAnyPrintModelElement,
-	PartialBoundingBox,
 	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialBoundingBox } from "@com.mgmtp.a12.print/print-model-api/model";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";
 import { changeMmMeasureValue, ElementsUtils } from "../../utils/index.js";
@@ -83,27 +83,30 @@ export const HeightRenderNewElement = ({ newElementData, setNewElementData }: He
 		[dispatch, element, isIncomingDinTemplatePrintModel, setNewElementData]
 	);
 
-	function updateNewHeight(ref: HTMLDivElement | null) {
-		if (!ref) {
-			return;
-		}
-		createNewElement(
-			elementReferences.map(place =>
-				place.refId === element.id
-					? {
-							...place,
-							dimensions: {
-								...place.dimensions,
-								minHeight: changeMmMeasureValue(
-									EditorConst.PX_TO_MM(ref.getBoundingClientRect().height),
-									place.dimensions.minHeight
-								),
-							},
-						}
-					: place
-			)
-		);
-	}
+	const updateNewHeight = React.useCallback(
+		(ref: HTMLDivElement | null) => {
+			if (!ref) {
+				return;
+			}
+			createNewElement(
+				elementReferences.map(place =>
+					place.refId === element.id
+						? {
+								...place,
+								dimensions: {
+									...place.dimensions,
+									minHeight: changeMmMeasureValue(
+										EditorConst.PX_TO_MM(ref.getBoundingClientRect().height),
+										place.dimensions.minHeight
+									),
+								},
+							}
+						: place
+				)
+			);
+		},
+		[createNewElement, elementReferences, element.id]
+	);
 
 	React.useEffect(() => {
 		if (ElementsUtils.isWrapperElement(element) || ElementsUtils.isChartElement(element)) {

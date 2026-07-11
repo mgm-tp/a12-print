@@ -29,21 +29,22 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, put, takeLatest } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
-import { SagaIterator } from "redux-saga";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
 
-import { GeneratePreviewPayload, PreviewActions } from "../../store/preview";
+import type { GeneratePreviewPayload } from "../../store/preview";
+import { PreviewActions } from "../../store/preview";
 import { RESOURCE_KEYS } from "../../components/preview/preview-messages";
 import { FileService } from "../../services/files-service";
 
-export function* generatePreviewSaga(): SagaIterator {
-	yield* takeLatest((action: AnyAction) => PreviewActions.generatePreview.match(action), handleGeneratePreviewSaga);
+export function* generatePreviewSaga(): SagaGenerator<void> {
+	yield* takeLatest(PreviewActions.generatePreview.match, handleGeneratePreviewSaga);
 }
 
-function* handleGeneratePreviewSaga(action: Action<GeneratePreviewPayload>) {
+function* handleGeneratePreviewSaga(action: PayloadAction<GeneratePreviewPayload>) {
 	yield* put(PreviewActions.setPreviewLoading());
 
 	const { caseId, printModelId, documentModel, documentName, locale, timeZone } = action.payload;

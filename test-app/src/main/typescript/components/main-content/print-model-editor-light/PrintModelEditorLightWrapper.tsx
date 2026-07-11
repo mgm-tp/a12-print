@@ -31,11 +31,14 @@
  */
 import { useMemo } from "react";
 
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model";
-import { PrintModelEditorLight } from "@com.mgmtp.a12.print/print-model-editor-component/lib/app/PrintModelEditorLight";
-import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/lib/marshaller";
-import { DocumentModel, DocumentServiceFactory } from "@com.mgmtp.a12.kernel/kernel-md-facade";
-import { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts/lib/types/font";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
+import { PrintModelEditorLight } from "@com.mgmtp.a12.print/print-model-editor-component";
+import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
+import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import { DocumentServiceFactory } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
+
+import { createTestAppStaticImageProvider } from "../print-model-editor-sme/staticImageProviderTestApp";
 
 import { StyledPrintModelEditorLightWrapper } from "./PrintModelEditorLightWrapper.styled";
 
@@ -43,12 +46,14 @@ const printModelMarshaller = new PrintModelMarshaller();
 const documentModelMarshaller = new DocumentServiceFactory().getDocumentModelSerializer();
 
 interface PrintEditorProps {
+	caseConfigId: string;
 	printModel: Model;
 	documentModels?: Model[];
 	customFonts?: FontResourceMap;
 }
 
 export function PrintModelEditorLightWrapper({
+	caseConfigId,
 	printModel,
 	documentModels = [],
 	customFonts,
@@ -66,7 +71,10 @@ export function PrintModelEditorLightWrapper({
 		if (!documentModelInstance) {
 			return null;
 		}
-		const res = printModelMarshaller.deserialize(JSON.stringify(printModel), [documentModelInstance]);
+		const res = printModelMarshaller.deserialize(JSON.stringify(printModel), {
+			html: false,
+			references: { documentModels: [documentModelInstance] },
+		});
 		return res.result;
 	}, [printModel, documentModelInstance]);
 
@@ -82,6 +90,7 @@ export function PrintModelEditorLightWrapper({
 				onChange={(printModel, dirty) => {
 					console.log("Print model changed", printModel, dirty);
 				}}
+				staticImageProvider={createTestAppStaticImageProvider(caseConfigId)}
 				customFonts={customFonts}
 			/>
 		</StyledPrintModelEditorLightWrapper>

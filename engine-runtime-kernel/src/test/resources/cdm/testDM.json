@@ -1,0 +1,59 @@
+{
+  "header": {
+    "id": "testDM",
+    "modelType": "document",
+    "modelVersion": "29.4.0",
+    "locales": [
+      {
+        "code": "en"
+      }
+    ],
+    "annotations": [],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "purpose": "typeDefinitions",
+        "reference": "testTDM"
+      }
+    ]
+  },
+  "content": {
+    "modelInfo": {
+      "name": "testDM"
+    },
+    "modelConfig": {
+      "timeZone": "UTC",
+      "decimalSeparator": ".",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_f967b",
+          "name": "root",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_325cd",
+                "name": "date",
+                "Field": {
+                  "fieldType": {
+                    "type": "TypeDefType",
+                    "TypeDefType": {
+                      "typeDefinitionId": "typedef_3f4fd122-17cb-4e78-9dea-333681c05232"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

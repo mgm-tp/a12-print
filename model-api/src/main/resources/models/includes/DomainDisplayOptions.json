@@ -2,7 +2,7 @@
   "header": {
     "id": "DomainDisplayOptions",
     "modelType": "document",
-    "modelVersion": "28.4.0",
+    "modelVersion": "29.4.0",
     "locales": [
       {
         "code": "de"
@@ -25,8 +25,8 @@
       "immutable": false
     },
     "modelConfig": {
-      "decimalSeparator": ".",
       "timeZone": "UTC",
+      "decimalSeparator": ".",
       "conditionLanguage": {
         "code": "en_US"
       }
@@ -114,12 +114,28 @@
           "id": "group_286ac",
           "name": "displayOptions",
           "Group": {
+            "label": [
+              {
+                "locale": "de",
+                "text": "Display Options"
+              },
+              {
+                "locale": "en",
+                "text": "Anzeigeoptionen"
+              }
+            ],
             "repeatability": 1,
             "elements": [
               {
                 "type": "Field",
                 "id": "field_37f31",
                 "name": "id",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
@@ -235,7 +251,17 @@
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
-                  }
+                  },
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Delimiter für das Date Range Format"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Delimiter for the Date Range format"
+                    }
+                  ]
                 }
               },
               {

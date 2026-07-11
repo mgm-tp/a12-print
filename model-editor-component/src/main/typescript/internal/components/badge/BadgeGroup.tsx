@@ -32,11 +32,12 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { ValidationCounter } from "../../redux/index.js";
+import type { ValidationCounter } from "../../redux/index.js";
 import { ValidationSelectors } from "../../redux/validation/selectors.js";
 
 import { ErrorBadge, WarningBadge } from "./ValidationBadge.js";
-import { BadgePosition, StyledBadgeGroup } from "./BadgeGroup.styled.js";
+import type { BadgePosition } from "./BadgeGroup.styled.js";
+import { StyledBadgeGroup } from "./BadgeGroup.styled.js";
 
 interface BadgeGroupProps {
 	validationCounter: ValidationCounter;

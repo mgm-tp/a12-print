@@ -29,16 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DisplayOptions, DisplayType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { DisplayOptions, DisplayType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 export type DisplayTypeItemValue = DisplayType | "";
 
 export type FieldTypeKeys =
-	| DisplayTypeItemValue
-	| "CheckboxUnchecked"
-	| "DateRangeDelimiter"
-	| "DateRangeFormatStart"
-	| "DateRangeFormatEnd";
+	DisplayTypeItemValue | "CheckboxUnchecked" | "DateRangeDelimiter" | "DateRangeFormatStart" | "DateRangeFormatEnd";
 
 export type DisplayTypeItems = {
 	label: string;

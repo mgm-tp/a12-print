@@ -32,7 +32,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { ErrorTooltip, WarningTooltip } from "@com.mgmtp.a12.widgets/widgets-core/lib/tooltip/index.js";
+import { ErrorTooltip, WarningTooltip } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
 

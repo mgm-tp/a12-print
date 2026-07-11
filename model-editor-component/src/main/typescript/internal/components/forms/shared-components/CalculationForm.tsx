@@ -33,26 +33,27 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	PartialCalculation,
 	CalculationProperties,
 	DisplayOptions,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { TextRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { TextRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { TransactionLogStateActions } from "../../../redux/index.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
-import { OmitId } from "../../../utils/index.js";
+import type { OmitId } from "../../../utils/index.js";
 
-import { ElementWithoutIdAndType } from "../type.js";
-import { CustomTextLineStateful } from "../custom-base-input-components/index.js";
+import type { ElementWithoutIdAndType } from "../type.js";
+import { DynamicSourceTextField } from "../custom-base-input-components/index.js";
 
-import { ComputationRepeat, ComputationRepeatRowType } from "./ComputationRepeat.js";
+import type { ComputationRepeatRowType } from "./ComputationRepeat.js";
+import { ComputationRepeat } from "./ComputationRepeat.js";
 import { FieldTypeConfiguration } from "./FieldTypeConfiguration.js";
 import { DocumentModelSelect } from "./DocumentModelSelect.js";
 
@@ -118,7 +119,8 @@ export const CalculationForm = ({ element }: CalculationFormProps) => {
 
 	return (
 		<>
-			<CustomTextLineStateful
+			<DynamicSourceTextField
+				inputProps={{ "data-testid": "name-input" } as React.HTMLProps<HTMLInputElement>}
 				label={localizer(RESOURCE_KEYS.elementForm.textFlow.computation.name)}
 				value={element.calculation?.name}
 				onBlur={onNameBlur}
@@ -130,6 +132,7 @@ export const CalculationForm = ({ element }: CalculationFormProps) => {
 				errorMessage={getErrorMessage("model")}
 			/>
 			<FieldTypeConfiguration
+				data-testid="field-type-configuration"
 				documentModel={model}
 				element={element}
 				getDisplayOptionsError={useCalculationDisplayOptionsError(element.id)}

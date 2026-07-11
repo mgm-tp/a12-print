@@ -31,14 +31,16 @@
  */
 import { nanoid } from "nanoid";
 
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import {
+import type { InheritedValueResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import { InputValueSourceResolver, PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type {
 	InputSource,
 	MeasureInputSource,
-	MeasureUnit,
 	PrintModelEntity,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+	PartialBorderProperties,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { MeasureUnit } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { getUnitSymbol } from "./measure-utils.js";
 
@@ -160,3 +162,23 @@ export const parseNumberInputValue = (value: number | string | undefined) => {
 	}
 	return value;
 };
+
+export const createBorderPropertiesInheritedResolver = (
+	borderProperties: PartialBorderProperties | undefined
+): {
+	inheritedWidthResolver: InheritedValueResolver<string | number>;
+	inheritedStyleResolver: InheritedValueResolver<string>;
+	inheritedColorResolver: InheritedValueResolver<string>;
+} => ({
+	inheritedWidthResolver: (_inputSource, el, property) =>
+		InputValueSourceResolver.getSourceInputValue<string | number>(
+			borderProperties?.borderWidth,
+			el,
+			property,
+			value => value
+		),
+	inheritedStyleResolver: (_inputSource, el, property) =>
+		InputValueSourceResolver.getSourceStringValue(borderProperties?.borderStyle, el, property),
+	inheritedColorResolver: (_inputSource, el, property) =>
+		InputValueSourceResolver.getSourceStringValue(borderProperties?.borderColor, el, property),
+});

@@ -29,15 +29,15 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { AnyAction, SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, put, select, takeEvery } from "typed-redux-saga";
 
 import { EditorActions, EditorSelector } from "../../store/editor";
 import { FileService } from "../../services/files-service";
 import { CaseConfig } from "../../components/case-config/CaseConfig";
 
-export function* discardChangesSaga(): SagaIterator {
-	yield* takeEvery((action: AnyAction) => EditorActions.discardChanges.match(action), handleDiscardChanges);
+export function* discardChangesSaga(): SagaGenerator<void> {
+	yield* takeEvery(EditorActions.discardChanges.match, handleDiscardChanges);
 }
 
 function* handleDiscardChanges() {

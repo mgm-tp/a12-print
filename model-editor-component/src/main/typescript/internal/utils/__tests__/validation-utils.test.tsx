@@ -33,11 +33,12 @@ import { jest } from "@jest/globals";
 import { renderHook } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { configureStore as configureMockStore } from "redux-mock-store";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
-import { ErrorSeverity, PrintErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import type { PrintErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
-import { PrintLocalizer } from "../../localization/index.js";
+import { PrintLocalizer } from "../../../internal/localization/index.js";
 
 import {
 	getErrors,
@@ -130,8 +131,7 @@ function hookTestSetup() {
 			errorMap,
 		},
 		PrintEditorState: {},
-		DetailData: {},
-		Sidebar: {},
+		Navigation: {},
 		TransactionLogState: {},
 		RequestApi: {},
 		InteractionLogState: {},

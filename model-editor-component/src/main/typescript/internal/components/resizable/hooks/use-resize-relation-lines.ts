@@ -31,11 +31,11 @@
  */
 import React from "react";
 
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { createPlainMmMeasure } from "../../../utils/index.js";
 import { useGetSectionOffset } from "../../../hooks/use-get-section-offset.js";
-import { IRsLine, ISide } from "../../../types/resize.js";
+import type { IRsLine, ISide } from "../../../types/resize.js";
 import { EditorContext } from "../../editor-stage/editor-context.js";
 
 export function useResizeRelationLines() {

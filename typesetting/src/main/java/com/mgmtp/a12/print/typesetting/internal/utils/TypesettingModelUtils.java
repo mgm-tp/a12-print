@@ -31,11 +31,12 @@
  */
 package com.mgmtp.a12.print.typesetting.internal.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mgmtp.a12.print.typesetting.internal.applier.TypesettingApplierException;
 import com.mgmtp.a12.print.typesetting.internal.model.impl.TypesettingModelDto;
 import com.mgmtp.a12.print.typesetting.internal.serialization.ObjectMapperFactory;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 public class TypesettingModelUtils {
@@ -45,16 +46,16 @@ public class TypesettingModelUtils {
 	public static TypesettingModelDto deserializeModel(String modelContent) {
 		try {
 			return objectMapper.readValue(modelContent, TypesettingModelDto.class);
-		} catch (JsonProcessingException exception) {
-			throw new RuntimeException("The current model could not be deserialized", exception);
+		} catch (JacksonException exception) {
+			throw new TypesettingApplierException("The current model could not be deserialized", exception);
 		}
 	}
 
 	public static String serializeModel(TypesettingModelDto model) {
 		try {
 			return objectMapper.writeValueAsString(model);
-		} catch (JsonProcessingException exception) {
-			throw new RuntimeException("The current model could not be serialized", exception);
+		} catch (JacksonException exception) {
+			throw new TypesettingApplierException("The current model could not be serialized", exception);
 		}
 	}
 }

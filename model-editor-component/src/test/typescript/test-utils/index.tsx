@@ -29,36 +29,30 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
 
-import {
-	Language,
-	PageOrientation,
+import type {
 	PrintModelContentGeneral,
 	PrintModelHeader,
 	Segment,
+	PartialTextStyle,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import {
+	PageOrientation,
 	SegmentType,
 	Semantic,
-	PartialTextStyle,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import {
-	SidebarItem,
-	StoreEntryMapWithId,
-	TransactionLog,
-	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PRINT_MODEL_VERSION } from "@com.mgmtp.a12.print/print-model-api/lib/constant/model.js";
-import {
 	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 	PRINT_MODEL_HEADER_LOG_ID,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
-
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import {
-	EditorMode,
-	initialStateLogStore,
-	PrintEditorState,
-	TransactionLogStateReducer,
-} from "../../../main/typescript/internal/redux/index.js";
+	type StoreEntryMapWithId,
+	TransactionLog,
+	type TransactionLogStore,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { PRINT_MODEL_VERSION } from "@com.mgmtp.a12.print/print-model-api/constant";
+
+import type { PrintEditorState } from "../../../main/typescript/internal/redux/index.js";
+import { initialStateLogStore, TransactionLogStateReducer } from "../../../main/typescript/internal/redux/index.js";
 import {
 	DEFAULT_TEXT_STYLE_ID,
 	DEFAULT_TEXT_STYLE_NAME,
@@ -104,12 +98,6 @@ export const mockPrintModelHeader: PrintModelHeader = {
 
 export const mockPrintModelContentGeneral: PrintModelContentGeneral = {
 	id: PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
-	title: "Print Model Content General",
-	details: {
-		id: "oangje9o13",
-		author: "test",
-		language: Language.DE,
-	},
 	metadata: {
 		id: "oangje9o13",
 		titleComputation: [{ id: "titleComputation1", operation: '"Print Model Content General"' }],
@@ -136,13 +124,6 @@ export const defaultPrintEditorState: PrintEditorState = {
 			horizontal: [],
 		},
 		showBorders: true,
-		editorMode: EditorMode.Default,
-	},
-	printModelRefs: {
-		currentRefType: SidebarItem.SEGMENT,
-		segmentId: mockSegment.id,
-		watermarkId: "",
-		sectionId: "",
 	},
 	sidebar: {
 		selectedTextStyleId: DEFAULT_TEXT_STYLE_ID,

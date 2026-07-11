@@ -33,11 +33,15 @@ package com.mgmtp.a12.print.model.api.model.element.properties;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
+@OnlyForUsage
 public interface RuntimeVariable extends PrintModelEntity {
 	String getName();
 	RuntimeVariableType getType();
+
+	@OnlyForUsage
 	enum RuntimeVariableType {
 		@JsonProperty("Boolean") BOOLEAN,
 		@JsonProperty("String") STRING,

@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { RESOURCE_KEYS } from "../../../../localization/index.js";
 

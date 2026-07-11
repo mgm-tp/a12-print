@@ -33,7 +33,9 @@ package com.mgmtp.a12.print.model.api.model.reference;
 
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface ElementReference extends PrintModelPathElement, PrintModelEntity {
 	/**
 	 * @return The id of a referenced print model element.

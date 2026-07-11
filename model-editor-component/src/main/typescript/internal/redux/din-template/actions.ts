@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ActionCreatorFactory, actionCreatorFactory } from "typescript-fsa";
+import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
 
-const factory: ActionCreatorFactory = actionCreatorFactory("Print/DINTemplate");
+const factory = actionCreatorFactory("Print/DINTemplate");
 
 export namespace DINTemplateActions {
 	export const addReferenceEntry = factory<AddReferenceEntryPayload>("ADD_REFERENCE_ENTRY");

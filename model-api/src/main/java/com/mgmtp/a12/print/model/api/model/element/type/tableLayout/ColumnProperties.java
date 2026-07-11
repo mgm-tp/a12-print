@@ -32,16 +32,19 @@
 package com.mgmtp.a12.print.model.api.model.element.type.tableLayout;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.InputSourceEnum;
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.MeasureInputSource;
 import lombok.Getter;
 
 import java.util.Map;
 
+@OnlyForUsage
 public interface ColumnProperties extends IndexedProperties {
 	MeasureInputSource getWidth();
 	VerticalAlignment getVerticalAlignment();
 
+	@OnlyForUsage
 	enum VerticalAlignment implements InputSourceEnum {
 		@JsonProperty("Top") TOP("Top"),
 		@JsonProperty("Middle") MIDDLE("Middle"),

@@ -29,9 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { actionCreatorFactory } from "typescript-fsa";
+import type { TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
-import { TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import { actionCreatorFactory } from "../redux/actionCreatorFactory/actionCreatorFactory.js";
 
 const factory = actionCreatorFactory("Print");
 
@@ -39,4 +40,11 @@ export namespace PrintEngineActions {
 	export const resetState = factory("RESET_STATE");
 
 	export const removeInvalidSelections = factory<TransactionLogStore>("REMOVE_INVALID_SELECTIONS");
+
+	export const editorPropsChanged = factory<EditorPropsChangedPayload>("EDITOR_PROPS_CHANGED");
+
+	export interface EditorPropsChangedPayload {
+		printModelId: string;
+		navigationPath?: EntityInstancePath;
+	}
 }

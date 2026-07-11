@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.xml.internal.serialization;
 
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
 import com.mgmtp.a12.print.engine.runtime.xml.internal.model.PrintDocumentXml;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
@@ -73,11 +74,11 @@ public class XmlSerialization {
 			SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			schema = sf.newSchema(XmlSerialization.class.getClassLoader().getResource(SCHEMA_PATH));
 		} catch (JAXBException | SAXException e) {
-			throw new RuntimeException(e);
+			throw new PrintException(e);
 		}
 	}
 
-	public static byte[] serializeXML(PrintDocumentXml printDocumentXml) {
+	public static byte[] serializeXML(PrintDocumentXml printDocumentXml) throws PrintException {
 		try {
 			final var xmlOutputStream = new ByteArrayOutputStream();
 			marshaller.marshal(
@@ -86,20 +87,20 @@ public class XmlSerialization {
 			);
 			return xmlOutputStream.toByteArray();
 		} catch (JAXBException e) {
-			throw new RuntimeException(e);
+			throw new PrintException(e);
 		}
 	}
 
-	public static PrintDocumentXml deserializeXML(String content) {
+	public static PrintDocumentXml deserializeXML(String content) throws PrintException {
 		try {
 			final var inputStream = new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8));
 			return (PrintDocumentXml) unmarshaller.unmarshal(inputStream);
 		} catch (JAXBException e) {
-			throw new RuntimeException(e);
+			throw new PrintException(e);
 		}
 	}
 
-	public static List<ValidationMessage> validate(String content) {
+	public static List<ValidationMessage> validate(String content) throws PrintException {
 		final var validationResult = new ArrayList<ValidationMessage>();
 		try {
 			final var printDocumentXml = deserializeXML(content);
@@ -123,7 +124,7 @@ public class XmlSerialization {
 			});
 			validator.validate(source);
 		} catch (SAXException | JAXBException | IOException e) {
-			throw new RuntimeException(e);
+			throw new PrintException(e);
 		}
 
 		return validationResult;

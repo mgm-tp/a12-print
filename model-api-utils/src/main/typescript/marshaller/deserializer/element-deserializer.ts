@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
-import { UnionToType } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import type * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/model";
+import type * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import type { UnionToType } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { Deserializer } from "./deserializer.js";
 import { BorderPropertiesDeserializer, TextPropertiesDeserializer } from "./misc-deserializer.js";

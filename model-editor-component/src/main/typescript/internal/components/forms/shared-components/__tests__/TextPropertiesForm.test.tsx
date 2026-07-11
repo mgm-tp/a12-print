@@ -31,8 +31,9 @@
  */
 import { jest } from "@jest/globals";
 
-import { ElementType, PartialTable } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+import type { PartialTable } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { renderWithProviders } from "../../../../../../../test/typescript/test-utils/index.js";
 

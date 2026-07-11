@@ -31,30 +31,30 @@
  */
 import * as React from "react";
 
+import type { TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core";
 import {
 	DefaultTableComponentRenderers,
 	getDataByKey,
 	Table,
 	TableContextProvider,
-	TableRenderPropsType,
 	useTableContext,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/button-group/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+	Button,
+	ButtonGroup,
+	Icon,
+} from "@com.mgmtp.a12.widgets/widgets-core";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { BadgeGroup } from "../../badge/BadgeGroup.js";
 import { ValidationCounter } from "../../../redux/index.js";
 
-import { ElementWithoutIdAndType } from "../type.js";
-import { CustomCheckbox, CustomSelect, CustomTextLineStateless } from "../custom-base-input-components/index.js";
+import type { ElementWithoutIdAndType } from "../type.js";
+import { CustomCheckbox, CustomSelect, CustomTextField } from "../custom-base-input-components/index.js";
 
 import { FormContainerHeadline } from "./FormContainerHeadline.js";
 import { AddButtonGroup } from "./AddButtonGroup.js";
 import { ActionColumnButtonGroup } from "./ActionColumnButtonGroup.js";
-import { CustomBodyContentProps, RepeatColumnType } from "./types.js";
+import type { CustomBodyContentProps, RepeatColumnType } from "./types.js";
 import { RepeatInputSourceCell } from "./RepeatInputSourceCell.js";
 
 interface RepeatTableProps<RowType> {
@@ -176,6 +176,12 @@ function RepeatRow<RowType>(props: RepeatRowProps<RowType>) {
 	const context = useTableContext<RowType>(context => context);
 
 	const [clonedRow, setClonedRow] = React.useState<RowType>(restProps.row);
+	const [prevRow, setPrevRow] = React.useState<RowType>(restProps.row);
+
+	if (prevRow !== restProps.row) {
+		setPrevRow(restProps.row);
+		setClonedRow(restProps.row);
+	}
 
 	const bodyContentRenderer = React.useCallback(
 		(bodyContentProps: TableRenderPropsType.BodyContentProps<RowType, RepeatColumnType<RowType>>) => (
@@ -190,10 +196,6 @@ function RepeatRow<RowType>(props: RepeatRowProps<RowType>) {
 		),
 		[clonedRow, closeRepeatBodyRow, dispatchNewRowData, getErrorMessage]
 	);
-
-	React.useEffect(() => {
-		setClonedRow(restProps.row);
-	}, [restProps.row]);
 
 	return (
 		<TableContextProvider
@@ -254,7 +256,7 @@ function CustomBodyContent<RowType>(props: CustomBodyContentProps<RowType>) {
 	switch (column.inputType) {
 		case "textline":
 			return (
-				<CustomTextLineStateless
+				<CustomTextField
 					value={cellValue ? String(cellValue) : undefined}
 					onChange={e => handleChange(e.target.value)}
 					onBlur={isReadOnly ? undefined : onInputBlur}
@@ -275,7 +277,7 @@ function CustomBodyContent<RowType>(props: CustomBodyContentProps<RowType>) {
 			);
 		case "number":
 			return (
-				<CustomTextLineStateless
+				<CustomTextField
 					value={String(cellValue)}
 					onChange={e => handleChange(Number(e.target.value))}
 					onBlur={onInputBlur}

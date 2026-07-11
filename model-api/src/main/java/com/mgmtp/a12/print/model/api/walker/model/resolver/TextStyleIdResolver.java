@@ -34,7 +34,9 @@ package com.mgmtp.a12.print.model.api.walker.model.resolver;
 import com.mgmtp.a12.print.model.api.model.textStyle.TextStyle;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface TextStyleIdResolver {
 	Optional<TextStyle> resolveTextStyleId(String id);
 }

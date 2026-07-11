@@ -31,18 +31,14 @@
  */
 import { useSelector } from "react-redux";
 
-import {
-	PartialTable,
-	TableColumnReference,
-	PartialBorderProperties,
-	PartialField,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+import type { TableColumnReference, PartialBorderProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialTable, PartialField } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { TABLE_PROPERTY_PATH, TEXT_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 import { parseNumberInputValue } from "../../utils/input-source-utils.js";
 import { getTextPropertiesStyles } from "../../utils/css-utils.js";
@@ -50,7 +46,7 @@ import type { StylableText } from "../../types/styles.js";
 
 import { TypeSettingApplier } from "../typesetting/TypeSettingApplier.js";
 
-import { BaseElementProps } from "./base.js";
+import type { BaseElementProps } from "./base.js";
 import { StyledTableContainer, StyledTableHeader } from "./Table.styled.js";
 
 type TableProps = BaseElementProps;
@@ -82,7 +78,7 @@ export const Table = ({ element, styles }: TableProps) => {
 	}
 
 	return (
-		<StyledTableContainer>
+		<StyledTableContainer data-testid="element-table">
 			<thead>
 				<tr>
 					{columns.map((col, index) =>

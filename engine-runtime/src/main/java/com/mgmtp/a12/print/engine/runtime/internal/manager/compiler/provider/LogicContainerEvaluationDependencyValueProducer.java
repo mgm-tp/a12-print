@@ -61,7 +61,7 @@ public class LogicContainerEvaluationDependencyValueProducer implements CoreDepe
 		var container = dependency.getLogicContainer();
 		var strategy = strategies.get(container.getTracedElement().getId());
 		if (strategy == null) {
-			throw new PrintException("unable to locate a evaluation strategy for " + container);
+			throw new PrintException("Unable to locate a evaluation strategy for " + container);
 		}
 		final var evaluatedValue = strategy.produce(
 			dependency.getParameters() == null

@@ -31,35 +31,29 @@
  */
 import { jest } from "@jest/globals";
 import { fireEvent } from "@testing-library/react";
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
 
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import {
-	ElementType,
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type {
 	PartialTableLayout,
 	PartialText,
 	TableLayoutCellReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import {
-	SidebarItem,
-	TransactionLog,
-	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { SidebarItem, TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
-import {
-	EditorStateReducer,
-	PrintEditorState,
-	TransactionLogStateReducer,
-	initialStateLogStore,
-} from "../../../redux/index.js";
+import type { PrintEditorState } from "../../../redux/index.js";
+import { EditorStateReducer, TransactionLogStateReducer, initialStateLogStore } from "../../../redux/index.js";
 import {
 	renderWithProviders,
 	defaultPrintEditorState,
 	initialStateLogStoreMock,
 } from "../../../../../../test/typescript/test-utils/index.js";
 
-import { FilledCell, FilledCellActionsWrapper, FilledCellProps } from "../table-layout/index.js";
+import type { FilledCellProps } from "../table-layout/index.js";
+import { FilledCell, FilledCellActionsWrapper } from "../table-layout/index.js";
 
 describe("TableLayout", () => {
 	describe("FilledCellActionsWrapper", () => {

@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { GenericObject } from "./types.js";
+import type { GenericObject } from "./types.js";
 
 export class TransformTreeTrace {
 	parents: GenericObject[];

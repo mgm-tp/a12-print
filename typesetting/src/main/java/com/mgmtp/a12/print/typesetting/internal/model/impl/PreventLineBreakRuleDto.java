@@ -32,18 +32,11 @@
 package com.mgmtp.a12.print.typesetting.internal.model.impl;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.mgmtp.a12.print.typesetting.internal.model.HyphenationExclusion;
-import com.mgmtp.a12.print.typesetting.internal.model.Internal;
 import com.mgmtp.a12.print.typesetting.internal.model.PreventLineBreakRule;
-import com.mgmtp.a12.print.typesetting.internal.model.TypesettingModelContent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Value
 @Builder

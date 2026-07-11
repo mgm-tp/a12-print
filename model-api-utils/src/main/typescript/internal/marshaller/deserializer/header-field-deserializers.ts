@@ -29,18 +29,17 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
+import type {
 	AnnotationEntity,
-	EntityKey,
-	getEntityId,
 	LabelEntity,
 	LocaleEntity,
 	ModelReferenceEntity,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { EntityKey, getEntityId } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { Deserializer } from "../../../marshaller/deserializer/deserializer.js";
 
-import { AnnotationsDTO, LabelsDTO, LocalesDTO, ModelReferencesDTO } from "./base-header-dto.js";
+import type { AnnotationsDTO, LabelsDTO, LocalesDTO, ModelReferencesDTO } from "./base-header-dto.js";
 
 export class LocalizedTextDeserializer extends Deserializer<LabelsDTO, LabelEntity> {
 	prefix = "labels";

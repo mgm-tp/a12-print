@@ -17,20 +17,21 @@ THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPR
 ////
 = Migration Instructions
 
-
 :leveloffset: +1
 
-include::0701_2025.06-ext-5.adoc[]
+include::0701_2026.06.adoc[]
 
-include::0702_2025.06-ext-4.adoc[]
+include::0702_2025.06-ext-5.adoc[]
 
-include::0703_2025.06-ext-2.adoc[]
+include::0703_2025.06-ext-4.adoc[]
 
-include::0704_2025.06.adoc[]
+include::0704_2025.06-ext-2.adoc[]
 
-include::0705_migration_tool.adoc[]
+include::0705_2025.06.adoc[]
 
-include::0706_codemod.adoc[]
+include::0706_migration_tool.adoc[]
+
+include::0707_codemod.adoc[]
 
 :leveloffset: -1
 

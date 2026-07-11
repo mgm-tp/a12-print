@@ -32,15 +32,15 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import {
+import type {
 	PartialAnyPrintModelElement,
 	PartialTextProperties,
 	PartialBorderProperties,
-	PartialTableLayout,
-	isPartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialTableLayout, isPartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { useTextStyleSelector } from "../../hooks/use-text-style-selector.js";
 import { ElementsUtils } from "../../utils/index.js";
@@ -49,7 +49,7 @@ import { TEXT_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 import { TableLayout } from "../elements/table-layout/TableLayout.js";
 
 import { OpenWrapperStageButton } from "./OpenWrapperStageButton.js";
-import { ElementContainerProps } from "./base.js";
+import type { ElementContainerProps } from "./base.js";
 import {
 	StyledFloatingButtonContainer,
 	StyledHoverContainer,
@@ -80,7 +80,11 @@ export const LayoutElementContainer = ({
 
 	const offset = React.useMemo(() => {
 		const borderProperties = element?.borderProperties;
-		return (borderProperties?.borderStyle && borderProperties?.borderWidth) || 0;
+		return (
+			(borderProperties?.borderStyle?.source !== PossibleInputSource.UNSET &&
+				borderProperties?.borderWidth?.value) ||
+			0
+		);
 	}, [element]);
 
 	if (PartialTableLayout.isInstance(element)) {

@@ -2,7 +2,7 @@
   "header": {
     "id": "RepeatableSegmentWithSectionsPM",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "locales": [
       {
         "code": "de"
@@ -12,11 +12,11 @@
     "annotations": [
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "modelReferences": [
@@ -230,7 +230,22 @@
         "id": "OOx1vL0x9q_J9ZuUj2lMn",
         "type": "Text",
         "borderProperties": {
-          "id": "OzV2Hwrvsg3hJfxyvmzDr"
+          "id": "OzV2Hwrvsg3hJfxyvmzDr",
+          "borderWidth": {
+            "id": "mpyS8DY4MQVi689D28DPa",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "rriuVCcf6uY8M6SnAWem7",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "SrgyzV1TgvusyI9H6HcsU",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "text": {
           "id": "f6uMMyIdk1Dj_tsLjYe7T",
@@ -256,7 +271,22 @@
         "id": "Qj7mzSUSc72V2p86URu19",
         "type": "Text",
         "borderProperties": {
-          "id": "nUTjV7SPYOFALeGlWEUcY"
+          "id": "nUTjV7SPYOFALeGlWEUcY",
+          "borderWidth": {
+            "id": "wOmamsZUV924f_fi2nM_o",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "AXHbogqViY54jkkcV5j80",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "LP4tXU_1BzXBl3tdYlhd8",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "text": {
           "id": "IcuMsVxc3KFmP0T0Wtp5Z",

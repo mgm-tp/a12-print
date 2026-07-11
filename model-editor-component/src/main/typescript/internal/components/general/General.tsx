@@ -32,26 +32,27 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { PrintModelHeader, EntityKey, getEntityId } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { PrintModelHeader } from "@com.mgmtp.a12.print/print-model-api/model";
+import { EntityKey, getEntityId } from "@com.mgmtp.a12.print/print-model-api/model";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { Typography } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { TransactionLogStateActions } from "../../redux/transaction-log-state/actions.js";
-import { InteractionLogActions } from "../../redux/interaction-log/index.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
-import { GeneralViewSelectors } from "../../redux/general-view/selectors.js";
+import { TransactionLogStateActions } from "../../redux//transaction-log-state/actions.js";
+import { InteractionLogActions } from "../../redux//interaction-log/index.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
+import { GeneralViewSelectors } from "../../redux//general-view/selectors.js";
 
 import { RepeatTable } from "../forms/shared-components/RepeatTable.js";
-import { CustomTextLineStateless, CustomTextAreaStateful } from "../forms/custom-base-input-components/index.js";
-import { RepeatColumnType } from "../forms/shared-components/types.js";
+import { CustomTextField, CustomTextAreaStateful } from "../forms/custom-base-input-components/index.js";
+import type { RepeatColumnType } from "../forms/shared-components/types.js";
 import { useErrorMessagesByPath } from "../validation/index.js";
 
 import { StyledGeneral, StyledGeneralInput } from "./General.styled.js";
 import { AnnotationCustomAdd } from "./annotations/AnnotationCustomAdd.js";
-import { AnnotationData } from "./annotations/annotation.js";
+import type { AnnotationData } from "./annotations/annotation.js";
 import { RolesTable } from "./roles/RolesTable.js";
 import { MetadataSection } from "./metadata/MetadataSection.js";
 
@@ -159,7 +160,7 @@ export const General = () => {
 	return (
 		<StyledGeneral>
 			<StyledGeneralInput>
-				<CustomTextLineStateless
+				<CustomTextField
 					readonly
 					value={header?.id}
 					onChange={onNameChange}

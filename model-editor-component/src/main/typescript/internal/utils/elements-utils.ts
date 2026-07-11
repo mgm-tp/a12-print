@@ -31,20 +31,38 @@
  */
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	ChartDimensions,
 	InputSource,
 	PageBreakBehavior,
 	Position,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/elements/base.js";
-import {
 	Area,
 	BarChart,
 	BoundingBox,
-	ElementType,
 	Expression,
+	Line,
 	LineChart,
 	PartialAnyPrintModelElement,
+	PieChart,
+	Switch,
+	PartialPlaceableReference,
+	PartialTextStyle,
+	PartialValidPlaceableReference,
+	Text,
+	Table,
+	TableLayout,
+	Listing,
+	PartialPrintModel,
+	PartialLine,
+	PartialExpression,
+	PartialAnyTopLevelContainerElement,
+	OverflowDimensions,
+	BoundingBoxDimensions,
+	SwitchDimensions,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { BorderStyle } from "@com.mgmtp.a12.print/print-model-api/model";
+import {
+	ElementType,
 	PartialArea,
 	PartialBarChart,
 	PartialBoundingBox,
@@ -53,41 +71,23 @@ import {
 	PartialOverride,
 	PartialPieChart,
 	PartialSwitch,
-	PieChart,
-	Switch,
-	PartialPlaceableReference,
-	PartialTextStyle,
-	PartialValidPlaceableReference,
 	PartialText,
 	PartialTableLayout,
 	PartialTable,
-	Text,
-	Table,
-	Listing,
-	PartialPrintModel,
-	PartialLine,
-	PartialExpression,
 	isPartialSegment,
 	isPartialSection,
 	isWatermark,
-	PartialAnyTopLevelContainerElement,
-	OverflowDimensions,
-	BoundingBoxDimensions,
-	SwitchDimensions,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PRINT_MODEL_METADATA_MAP } from "@com.mgmtp.a12.print/print-model-api/lib/generated/print-model-metadata-map.js";
-import {
-	InputSourceGenerator,
-	PossibleInputSource,
-} from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
-import { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/lib/internal/types/font.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PRINT_MODEL_METADATA_MAP } from "@com.mgmtp.a12.print/print-model-api/generated";
+import { InputSourceGenerator, PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
+import type { Wrapper } from "../redux/navigation/types/index.js";
 import { CHART_ELEMENTS } from "../constant/elements.js";
 import { EditorConst } from "../constant/editor.js";
-import { TextPropertiesPath } from "../types/input-source.js";
-import { Wrapper } from "../redux/index.js";
+import type { TextPropertiesPath } from "../types/input-source.js";
 
-import { OmitId } from "./type-utils.js";
+import type { OmitId } from "./type-utils.js";
 import { createMmMeasure } from "./measure-utils.js";
 import { CssUtils, getTextPropertiesStyles, optionalValueToString } from "./css-utils.js";
 
@@ -238,7 +238,10 @@ export namespace ElementsUtils {
 		const textProperties = getTextPropertiesStyles(textPropertiesInput, element, propertiesPaths);
 
 		return {
-			...CssUtils.getCssInlineStyles({ textProperties, borderProperties, textStyle }, fonts || {}),
+			...CssUtils.getCssInlineStyles(
+				{ textProperties, borderProperties: borderProperties, textStyle },
+				fonts || {}
+			),
 			height: "100%",
 			fontSize,
 			lineHeight,
@@ -247,10 +250,10 @@ export namespace ElementsUtils {
 
 	function getLineElementStyles(element: PartialLine): React.CSSProperties {
 		return {
-			borderColor: element.borderProperties?.borderColor,
-			borderWidth: optionalValueToString(element.borderProperties?.borderWidth, "pt"),
+			borderColor: element.borderProperties?.borderColor?.value,
+			borderWidth: optionalValueToString(element.borderProperties?.borderWidth?.value, "pt"),
 			borderStyle: element.borderProperties?.borderStyle
-				? `${element.borderProperties?.borderStyle} none none none`
+				? `${element.borderProperties?.borderStyle?.value} none none none`
 				: undefined,
 		};
 	}
@@ -395,44 +398,16 @@ function createPrintModelElement(
 	const baseValues: PartialAnyPrintModelElement = { id, type, borderProperties: { id: nanoid() } };
 
 	if (CHART_ELEMENTS.includes(type)) {
-		if (type === ElementType.PieChart) {
-			const pieChartInputSources =
-				InputSourceGenerator.generateInputSource<Omit<PieChart, "dimensions">>("pieChart").pieChart;
-			return {
-				...baseValues,
-				pieChart: {
-					...pieChartInputSources,
-					dimensions: createDimensions(placeableReference),
-				},
-			} as PieChart;
-		}
-		if (type === ElementType.LineChart) {
-			const lineChartInputSources =
-				InputSourceGenerator.generateInputSource<Omit<LineChart, "dimensions">>("lineChart").lineChart;
-			return {
-				...baseValues,
-				lineChart: {
-					...lineChartInputSources,
-					dimensions: createDimensions(placeableReference),
-				},
-			} as LineChart;
-		}
-		if (type === ElementType.BarChart) {
-			const barChartInputSources = InputSourceGenerator.generateInputSource<BarChart>("barChart").barChart;
-			return {
-				...baseValues,
-				barChart: {
-					...barChartInputSources,
-					dimensions: createDimensions(placeableReference),
-				},
-			} as BarChart;
-		}
+		return createChartPrintModelElement(type, baseValues, placeableReference);
 	}
 	if (type === ElementType.Text) {
 		const defaultTextProperties =
 			InputSourceGenerator.generateInputSource<Required<Text>>("textProperties").textProperties;
+		const defaultBorderProperties =
+			InputSourceGenerator.generateInputSource<Text>("borderProperties").borderProperties;
 		return {
 			...baseValues,
+			borderProperties: defaultBorderProperties,
 			textProperties: {
 				id: defaultTextProperties.id,
 				textStyleId: defaultTextProperties.textStyleId,
@@ -441,12 +416,18 @@ function createPrintModelElement(
 		} as Text;
 	}
 	if (type === ElementType.Table) {
-		const tableInputSources = InputSourceGenerator.generateInputSource<Table>("table", ["columns"]).table;
+		const { columns, ...restProperties } = InputSourceGenerator.generateInputSource<Table>("table", [
+			"columns",
+		]).table;
+
 		const defaultTextProperties = InputSourceGenerator.generateInputSource<Table>("textProperties").textProperties;
+		const defaultBorderProperties =
+			InputSourceGenerator.generateInputSource<Table>("borderProperties").borderProperties;
 		return {
 			...baseValues,
+			borderProperties: defaultBorderProperties,
 			table: {
-				...tableInputSources,
+				...restProperties,
 			},
 			textProperties: defaultTextProperties,
 		} as Table;
@@ -455,8 +436,11 @@ function createPrintModelElement(
 		const listingInputSources = InputSourceGenerator.generateInputSource<Listing>("listing", ["columns"]).listing;
 		const defaultTextProperties =
 			InputSourceGenerator.generateInputSource<Listing>("textProperties").textProperties;
+		const defaultBorderProperties =
+			InputSourceGenerator.generateInputSource<Listing>("borderProperties").borderProperties;
 		return {
 			...baseValues,
+			borderProperties: defaultBorderProperties,
 			listing: {
 				...listingInputSources,
 			},
@@ -464,8 +448,11 @@ function createPrintModelElement(
 		} as Listing;
 	}
 	if (type === ElementType.BoundingBox) {
+		const defaultBorderProperties =
+			InputSourceGenerator.generateInputSource<BoundingBox>("borderProperties").borderProperties;
 		return {
 			...baseValues,
+			borderProperties: defaultBorderProperties,
 			boundingBox: {
 				id: nanoid(),
 				dimensions: createDimensions(placeableReference),
@@ -474,8 +461,11 @@ function createPrintModelElement(
 		} as BoundingBox;
 	}
 	if (type === ElementType.Area) {
+		const defaultBorderProperties =
+			InputSourceGenerator.generateInputSource<Area>("borderProperties").borderProperties;
 		return {
 			...baseValues,
+			borderProperties: defaultBorderProperties,
 			area: {
 				id: nanoid(),
 				dimensions: {
@@ -498,8 +488,11 @@ function createPrintModelElement(
 	if (type === ElementType.Expression) {
 		const defaultTextProperties =
 			InputSourceGenerator.generateInputSource<Expression>("textProperties").textProperties;
+		const defaultBorderProperties =
+			InputSourceGenerator.generateInputSource<Expression>("borderProperties").borderProperties;
 		return {
 			...baseValues,
+			borderProperties: defaultBorderProperties,
 			textProperties: defaultTextProperties,
 			expression: {
 				id: nanoid(),
@@ -507,8 +500,74 @@ function createPrintModelElement(
 			},
 		} as Expression;
 	}
+	if (type === ElementType.Line) {
+		const defaultBorderProperties =
+			InputSourceGenerator.generateInputSource<Line>("borderProperties").borderProperties;
+		return {
+			...baseValues,
+			borderProperties: {
+				...defaultBorderProperties,
+				borderStyle: {
+					...defaultBorderProperties!.borderStyle,
+					source: PossibleInputSource.INPUT,
+					value: BorderStyle.Solid,
+				},
+			},
+		} as Line;
+	}
+	if (type === ElementType.TableLayout) {
+		const defaultBorderProperties =
+			InputSourceGenerator.generateInputSource<TableLayout>("borderProperties").borderProperties;
+		return {
+			...baseValues,
+			borderProperties: defaultBorderProperties,
+		} as TableLayout;
+	}
 
 	return baseValues;
+}
+
+function createChartPrintModelElement(
+	type: ElementType,
+	baseValues: PartialAnyPrintModelElement,
+	placeableReference: PartialValidPlaceableReference
+): PartialAnyPrintModelElement {
+	switch (type) {
+		case ElementType.PieChart: {
+			const pieChartInputSources =
+				InputSourceGenerator.generateInputSource<Omit<PieChart, "dimensions">>("pieChart").pieChart;
+			return {
+				...baseValues,
+				pieChart: {
+					...pieChartInputSources,
+					dimensions: createDimensions(placeableReference),
+				},
+			} as PieChart;
+		}
+		case ElementType.LineChart: {
+			const lineChartInputSources =
+				InputSourceGenerator.generateInputSource<Omit<LineChart, "dimensions">>("lineChart").lineChart;
+			return {
+				...baseValues,
+				lineChart: {
+					...lineChartInputSources,
+					dimensions: createDimensions(placeableReference),
+				},
+			} as LineChart;
+		}
+		case ElementType.BarChart: {
+			const barChartInputSources = InputSourceGenerator.generateInputSource<BarChart>("barChart").barChart;
+			return {
+				...baseValues,
+				barChart: {
+					...barChartInputSources,
+					dimensions: createDimensions(placeableReference),
+				},
+			} as BarChart;
+		}
+		default:
+			throw new Error(`Unsupported chart type: ${type}`);
+	}
 }
 
 function getInitialWidth(type: ElementType): number {

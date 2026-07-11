@@ -32,7 +32,7 @@
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { MigrationResult } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
+import type { MigrationResult } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
 
 import { loadJsonFiles } from "../../../../test/typescript/test-utils/files.js";
 

@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DateTimeFormatErrorEnum } from "./date-time-format-error-enum.js";
+import type { DateTimeFormatErrorEnum } from "./date-time-format-error-enum.js";
 
 export interface DateTimeFormatValidationError {
 	position: number;

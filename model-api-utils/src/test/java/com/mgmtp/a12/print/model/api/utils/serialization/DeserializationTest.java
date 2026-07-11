@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.model.api.utils.serialization;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.mgmtp.a12.model.header.Annotation;
 import com.mgmtp.a12.model.header.Header;
 import com.mgmtp.a12.model.header.ModelReference;
@@ -40,6 +40,7 @@ import com.mgmtp.a12.print.model.api.model.PrintModelContent;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.element.ElementType;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.InputSource;
 import com.mgmtp.a12.print.model.api.model.element.properties.BorderProperties.BorderStyle;
 import com.mgmtp.a12.print.model.api.model.element.properties.PageOrientation;
 import com.mgmtp.a12.print.model.api.model.element.properties.TextProperties;
@@ -148,9 +149,9 @@ public class DeserializationTest {
 			assertThat(fieldElement.get() instanceof Field).isEqualTo(true);
 
 			assertThat(textElement.getBorderProperties()).isPresent();
-			assertThat(textElement.getBorderProperties().get().getBorderColor()).isPresent().hasValue("#000");
-			assertThat(textElement.getBorderProperties().get().getBorderStyle()).isPresent().hasValue(BorderStyle.DASHED);
-			assertThat(textElement.getBorderProperties().get().getBorderWidth()).isPresent().hasValue(0.75f);
+			assertThat(textElement.getBorderProperties().get().getBorderColor()).flatMap(InputSource::getValue).isPresent().hasValue("#000");
+			assertThat(textElement.getBorderProperties().get().getBorderStyle()).flatMap(InputSource::getValue).isPresent().hasValue(BorderStyle.DASHED);
+			assertThat(textElement.getBorderProperties().get().getBorderWidth()).flatMap(InputSource::getValue).isPresent().hasValue(0.75f);
 
 
 			final Optional<TextProperties> textProperties = textElement.getTextProperties();

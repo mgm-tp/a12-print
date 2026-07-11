@@ -31,29 +31,13 @@
  */
 import { jest } from "@jest/globals";
 
-import { ElementMap } from "../../types/index.js";
+import type { ElementMap } from "../../types/index.js";
 
-import { rgb2hex, getShortcutText, downloadFile, getItemsFromElementMap } from "../utils.js";
+import { getShortcutText, downloadFile, getItemsFromElementMap } from "../utils.js";
 
 import { elementMap } from "./__testdata__/elementMap.js";
 
 describe("utils", () => {
-	describe("rgb2hex", () => {
-		it("should converts rgb(...) to #...", () => {
-			expect(rgb2hex("rgb(255, 255, 255)")).toBe("#ffffff");
-			expect(rgb2hex("rgb(0, 0, 0)")).toBe("#000000");
-			expect(rgb2hex("rgb(255, 0, 0)")).toBe("#ff0000");
-			expect(rgb2hex("rgb(1, 1, 1)")).toBe("#010101");
-		});
-
-		it("should return empty string for invalid input", () => {
-			expect(rgb2hex("not a color")).toBe("");
-			expect(rgb2hex("")).toBe("");
-			expect(rgb2hex("rgb(a, b, c)")).toBe("");
-			expect(rgb2hex("rgb(1, 1)")).toBe("");
-		});
-	});
-
 	describe("getItemsFromElementMap", () => {
 		const groups = ["/general", "/general/phone", "nonExistentGroup"];
 		groups.forEach(group => {

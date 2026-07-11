@@ -29,20 +29,21 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Header } from "@com.mgmtp.a12.base/base-model-api/lib/main/header/index.js";
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { PageOrientation, PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import {
+import type { Header, Model } from "@com.mgmtp.a12.base/base-model-api";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { PageOrientation, PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type {
 	InteractionLogPersistentEntry,
 	LogPersistentEntry,
 	PartialTransactionLogPersistentEntry,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PrintValidator } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/validation/index.js";
-import { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/model/typesetting-model.js";
-import { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model/internal/model.js";
+	PrintValidator,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
+import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
-import { ValidationState } from "../redux/validation/index.js";
+import type { ValidationState } from "../../a12internal/api/ValidationState.js";
+import type { PrintMessage } from "../../a12internal/api/PrintMessageReport.js";
+import type { StaticImageData, SaveStaticImageResponse } from "../../api/StaticImageProvider.js";
 
 export interface RequestApi {
 	loadPrintModel: (printModelId: string) => Promise<LoadPrintModelResponse | undefined>;
@@ -50,7 +51,8 @@ export interface RequestApi {
 	loadDocumentModelIds: () => Promise<string[]>;
 	loadTypesettingModelHeaders: () => Promise<Header[]>;
 	loadTypesettingModel: (typesettingModelId: string) => Promise<TypesettingModel | undefined>;
-	loadDINTemplatePrintModels: () => Promise<DINTemplatePrintModels[]>;
+	loadPrintModelIds: () => Promise<string[]>;
+	loadDINTemplateSegments: (id: string) => Promise<DINTemplateSegment[]>;
 	setPrintModel: (
 		printModel: PrintModel,
 		overwriteLog: boolean,
@@ -65,6 +67,9 @@ export interface RequestApi {
 	setPrintModelReferences: (payload: SetPrintModelReferencesPayload) => Promise<UpdatedReferenceModels | undefined>;
 	serializePrintModel: (apiObject: PrintModel, relevantPaths?: EntityInstancePath[]) => void;
 	deserializePrintModel: (validatorInput: PrintValidator.Input, relevantPaths?: EntityInstancePath[]) => void;
+	listStaticImages: () => Promise<string[]>;
+	loadStaticImage: (name: string) => Promise<StaticImageData | undefined>;
+	uploadStaticImage: (data: StaticImageData) => Promise<SaveStaticImageResponse | undefined>;
 	discardAllLogs?: () => void;
 }
 
@@ -77,7 +82,7 @@ interface LoadPrintModelResponse {
 export interface SetPrintModelResponse {
 	printModel?: PrintModel;
 	errorMap?: DeepPartialErrorMap<PrintModel>;
-	hasPreCompileError?: boolean;
+	precompileMessages?: PrintMessage[];
 }
 
 export interface SetPrintModelReferencesPayload {
@@ -100,19 +105,4 @@ export interface DINTemplateSegment {
 	readonly segmentId: string;
 	readonly segmentTitle: string;
 	readonly pageOrientation: PageOrientation;
-}
-
-export interface DINTemplatePrintModels {
-	readonly printModelId: string;
-	readonly templateSegments: DINTemplateSegment[];
-}
-
-export namespace DINTemplatePrintModels {
-	export function isInstance(obj: unknown): obj is DINTemplatePrintModels {
-		return obj instanceof Object && "printModelId" in obj && "templateSegments" in obj;
-	}
-
-	export function isArrayInstance(arr: unknown): arr is DINTemplatePrintModels[] {
-		return Array.isArray(arr) && arr.every(isInstance);
-	}
 }

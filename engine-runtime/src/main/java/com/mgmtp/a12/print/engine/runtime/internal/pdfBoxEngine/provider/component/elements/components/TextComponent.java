@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components;
 
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle.RegionCursor;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle.SectionDocumentHandle;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle.SegmentDocumentHandle;
@@ -76,6 +77,7 @@ import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.
 import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.RenderUtils.setNonStrokingColor;
 import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.RenderUtils.setStrokingColor;
 import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil.getFontSizeRelatedMetrics;
+import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil.longPtToFloat;
 import static org.apache.pdfbox.pdmodel.documentinterchange.taggedpdf.StandardStructureTypes.*;
 
 @Value
@@ -483,10 +485,10 @@ public class TextComponent extends BaseComponent {
 		link.setAction(action);
 
 		final var linkRect = new PDRectangle(
-			PDFUnitUtil.longPtToFloat(position.getX()),
-			PDFUnitUtil.longPtToFloat(position.getY() - height),
-			PDFUnitUtil.longPtToFloat(getWidth(innerTextToken, renderAlignment)),
-			PDFUnitUtil.longPtToFloat(height)
+			longPtToFloat(position.getX()),
+			longPtToFloat(position.getY() - height),
+			longPtToFloat(getWidth(innerTextToken, renderAlignment)),
+			longPtToFloat(height)
 		);
 		link.setRectangle(linkRect);
 
@@ -535,7 +537,7 @@ public class TextComponent extends BaseComponent {
 				: remainingSpace - (2 * border) - textRenderStyle.getVerticalPadding();
 
 		if (remainingSpace == regionSpace && remainingSpaceWithoutBorder - lineHeight < 0) {
-			throw new PrintRenderingException("The line height is too height for the page size");
+			throw new PrintDomainException("The line height {} is too high for the page size", longPtToFloat(lineHeight));
 		}
 		var availableLines = (int) Math.floor((double) remainingSpaceWithoutBorder / lineHeight);
 
@@ -638,7 +640,7 @@ public class TextComponent extends BaseComponent {
 		try {
 			return font.getBoundingBox();
 		} catch (IOException e) {
-			throw new PrintRenderingException("text", e);
+			throw new PrintRenderingException(e);
 		}
 	}
 

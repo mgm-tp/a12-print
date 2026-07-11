@@ -29,8 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import scripts.PublishingInfoExtension
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 
 plugins {
 	`maven-publish`
@@ -42,7 +43,7 @@ val manifestVersion: String = project.version as String? ?: throw GradleExceptio
 val groupProperty: String = project.group as String? ?: throw GradleException("There is no group defined")
 
 tasks.named<Jar>("jar") {
-	val extensionArtifactId = project.extensions.findByType<Java_publish_tasks_gradle.PublishingInfoExtension>()?.artifactId?.get()
+	val extensionArtifactId = project.extensions.findByType<PublishingInfoExtension>()?.artifactId?.get()
 		?: throw GradleException("There is no artifactId defined")
 
 	archiveBaseName = extensionArtifactId
@@ -75,7 +76,7 @@ publishing {
 		create<MavenPublication>("jar") {
 			from(components["java"])
 			afterEvaluate {
-				val extensionArtifactId = project.extensions.findByType<Java_publish_tasks_gradle.PublishingInfoExtension>()?.artifactId?.get()
+				val extensionArtifactId = project.extensions.findByType<PublishingInfoExtension>()?.artifactId?.get()
 					?: throw GradleException("There is no artifactId defined")
 
 				groupId = groupProperty

@@ -2,7 +2,7 @@
   "header": {
     "id": "Print-model-without-overlap",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "description": "Complex Listing Showcase",
     "annotations": [
       {
@@ -11,11 +11,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "labels": [],
@@ -212,7 +212,22 @@
           }
         },
         "borderProperties": {
-          "id": "egESRAmMZMYAT5azWMeO5"
+          "id": "egESRAmMZMYAT5azWMeO5",
+          "borderWidth": {
+            "id": "SHZKH_svHY5U4uJ-OXJfq",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "jIgaRFz-VqjwJ51H9iG3o",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "XqQXWbHRoFWr3m0FwqDq4",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -237,7 +252,22 @@
           }
         },
         "borderProperties": {
-          "id": "NflqivJK7SnObTIt1N5EY"
+          "id": "NflqivJK7SnObTIt1N5EY",
+          "borderWidth": {
+            "id": "O6cLTxqnBVi2GN4K6wqgI",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "EHYwZxFH0xjsitY1XcjLD",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "QMHyjLzztE3D7p7Xo3SID",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       }
     ],

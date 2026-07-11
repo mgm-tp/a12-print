@@ -32,25 +32,19 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import {
-	PartialOverride,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { List } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialOverride } from "@com.mgmtp.a12.print/print-model-api/model";
+import { List, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import {
-	createPlainMmMeasure,
-	createPlainMmMeasureFromPx,
-	getShortcutText,
-	PlainMeasurePosition,
-} from "../../utils/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PlainMeasurePosition } from "../../utils/index.js";
+import { createPlainMmMeasure, createPlainMmMeasureFromPx, getShortcutText } from "../../utils/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { ValidationSelectors } from "../../redux/validation/selectors.js";
 import { DetailViewActions, ValidationCounter } from "../../redux/index.js";
-import { ContextMenuItem, ContextMenuOption } from "../../types/index.js";
+import type { ContextMenuItem } from "../../types/index.js";
+import { ContextMenuOption } from "../../types/index.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 
 import { ErrorBadge } from "../badge/ValidationBadge.js";
 import { EditorContext } from "../editor-stage/editor-context.js";

@@ -29,16 +29,17 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import type { PartialTransactionLogPersistentEntry } from "../../../a12internal/transaction-log/transaction-log.js";
 import {
 	EntryType,
-	PartialTransactionLogPersistentEntry,
 	TransactionLogEntryCommand,
 	TransactionLogEntryObjectId,
-} from "../../transaction-log/index.js";
+} from "../../../a12internal/transaction-log/transaction-log.js";
 
-import { LogIndexes, LogMarshaller } from "./log-marshaller.js";
+import type { LogIndexes } from "./log-marshaller.js";
+import { LogMarshaller } from "./log-marshaller.js";
 import { LogValueType } from "./log-value-type.js";
-import { OutputCell, OutputRow } from "./tsv-output.js";
+import type { OutputCell, OutputRow } from "./tsv-output.js";
 
 export class TransactionLogMarshaller extends LogMarshaller {
 	private static CELL_COUNT = 11;

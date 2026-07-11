@@ -32,16 +32,14 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { Breadcrumb } from "@com.mgmtp.a12.widgets/widgets-core/lib/breadcrumb/index.js";
-import { Link } from "@com.mgmtp.a12.widgets/widgets-core/lib/link/index.js";
-import { PartialArea } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
+import { Breadcrumb, Link, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { EditorConst } from "../../constant/editor.js";
 import { PrintLocalizer } from "../../localization/index.js";
 import { ElementTypes } from "../../constant/elements.js";
 import { formatNumberToString } from "../../utils/index.js";
+import { isAreaStackEntry } from "../../redux/index.js";
 
 import { EditorContext } from "../editor-stage/editor-context.js";
 
@@ -64,11 +62,10 @@ export const BreadcrumbNavigation = () => {
 			</Breadcrumb.Item>
 
 			{wrappers.map((wrapper, idx) => {
-				const wrapperWidth = formatNumberToString(MM_TO_CM(wrapper.dimensions.width.value));
-				const wrapperHeight = formatNumberToString(MM_TO_CM(wrapper.dimensions.height.value));
+				const wrapperWidth = formatNumberToString(MM_TO_CM(wrapper.dimensions?.width?.value || 0));
+				const wrapperHeight = formatNumberToString(MM_TO_CM(wrapper.dimensions?.height?.value || 0));
 				const wrapperType = localizer(ElementTypes[wrapper.type]?.name || "");
-				const isWrapperRepeatableArea =
-					PartialArea.isInstance(wrapper) && wrapper.dataContexts && wrapper.dataContexts.length > 0;
+				const isWrapperRepeatableArea = isAreaStackEntry(wrapper) && !!wrapper?.dataContexts?.length;
 				return (
 					<Breadcrumb.Item key={wrapper.id}>
 						{wrapper.id && (

@@ -31,11 +31,10 @@
  */
 import cloneDeep from "lodash/cloneDeep.js";
 
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import modelValid from "../../../../../resources/patterns/models/Domain_de-1996.json" with { type: "json" };
-
-import { TypesettingModelMarshaller } from "../model-marshaller.js";
+import { TypesettingModelMarshaller } from "../../../../a12internal/api/marshaller/model-marshaller.js";
 
 describe("TypesettingModelMarshaller Test", () => {
 	const marshaller = new TypesettingModelMarshaller();

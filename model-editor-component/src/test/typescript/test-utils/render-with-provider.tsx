@@ -29,51 +29,52 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ReactElement, ReactNode, useContext } from "react";
-import { applyMiddleware, combineReducers, createStore, Reducer } from "redux";
-import { render as rtlRender, queryHelpers } from "@testing-library/react";
+import type { ReactElement, ReactNode } from "react";
+import { useContext } from "react";
+import type { Reducer } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import { render as rtlRender, queryHelpers, queries } from "@testing-library/react";
 import { Provider, useSelector } from "react-redux";
 import { StyleSheetManager, ThemeProvider } from "styled-components";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import createSagaMiddleware from "redux-saga";
 import { all, fork } from "typed-redux-saga";
-import { queries } from "@testing-library/react";
 
-import { defaultTheme } from "@com.mgmtp.a12.widgets/widgets-core/lib/theme/default/default-theme.js";
-import { shouldForwardProp } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/main/should-forward-prop.js";
-import {
-	Locale,
-	LocalizableArgs,
-	localizableFromLocalizationTreeMap,
-} from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
-import {
-	DefaultLocalizerContextProvider,
-	LocalizerContext,
-} from "@com.mgmtp.a12.utils/utils-localization-react/lib/main/index.js";
+import { defaultTheme, shouldForwardProp } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { Locale, LocalizableArgs } from "@com.mgmtp.a12.utils/utils-localization";
+import { localizableFromLocalizationTreeMap } from "@com.mgmtp.a12.utils/utils-localization";
+import { DefaultLocalizerContextProvider, LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react";
 
-import { PrintEngineState } from "../../../main/typescript/internal/store/root-reducer.js";
 import { EditorStateReducer } from "../../../main/typescript/internal/redux/editor-state/index.js";
-import { DetailDataReducer } from "../../../main/typescript/internal/redux/detail-data/index.js";
 import {
 	ConfirmationDialogReducer,
 	GeneralViewReducer,
 	InteractionLogReducer,
+	NavigationReducer,
 	RequestApiReducer,
-	SidebarReducer,
 	TransactionLogStateReducer,
 	ValidationReducer,
-	WrapperReducer,
 } from "../../../main/typescript/internal/redux/index.js";
 import { PrintEditorComponentSagas } from "../../../main/typescript/internal/sagas/index.js";
-import { PrintEngineSelectors } from "../../../main/typescript/internal/store/selectors.js";
-import { ContextApi, EditorComponentContext, ILocalizer } from "../../../main/typescript/internal/api/index.js";
 import { DEFAULT_RESOURCES } from "../../../main/typescript/internal/localization/index.js";
+import type { PrintEngineState } from "../../../main/typescript/a12internal/api/PrintEngineState.js";
+import { PrintEngineSelectors } from "../../../main/typescript/internal/store/selectors.js";
+import type { ContextApi, ILocalizer } from "../../../main/typescript/internal/api/index.js";
+import { EditorComponentContext } from "../../../main/typescript/internal/api/index.js";
 
 import { DevProps } from "./dev-props.js";
 import { mockSagaMap } from "./mockSagaMap.js";
 
 type PrintEngineReducers = Partial<Record<keyof PrintEngineState, Reducer>>;
+
+type SagaTask = ReturnType<ReturnType<typeof createSagaMiddleware>["run"]>;
+const pendingSagaTasks: SagaTask[] = [];
+
+export function cancelPendingSagaTasks(): void {
+	pendingSagaTasks.forEach(task => task.cancel());
+	pendingSagaTasks.length = 0;
+}
 
 function* mockRootSaga(args: string[] = ["startInteractionSaga"]) {
 	const selectedMockSagas = Object.entries(mockSagaMap).filter(([key]) => args.includes(key));
@@ -106,7 +107,6 @@ export const renderWithProviders = (
 		return { country: "US", language: "en" };
 	}
 
-	// @ts-expect-error: createSagaMiddleware context typing issue
 	const sagaMiddleware = createSagaMiddleware({
 		context: { requestApi: DevProps.requestApi, getLocale },
 	});
@@ -114,13 +114,11 @@ export const renderWithProviders = (
 	const store = createStore(
 		combineReducers({
 			PrintEditorState: EditorStateReducer,
-			DetailData: DetailDataReducer,
-			Sidebar: SidebarReducer,
+			Navigation: NavigationReducer,
 			TransactionLogState: TransactionLogStateReducer,
 			RequestApi: RequestApiReducer,
 			InteractionLogState: InteractionLogReducer,
 			ValidationState: ValidationReducer,
-			Wrapper: WrapperReducer,
 			ConfirmationDialogState: ConfirmationDialogReducer,
 			GeneralViewState: GeneralViewReducer,
 			...reducers,
@@ -128,7 +126,7 @@ export const renderWithProviders = (
 		applyMiddleware(sagaMiddleware)
 	);
 
-	sagaMiddleware.run(() => mockRootSaga(sagaArgs));
+	pendingSagaTasks.push(sagaMiddleware.run(() => mockRootSaga(sagaArgs)));
 
 	const LocaleWrapper = ({ children }: { children: ReactNode }) => {
 		const { localizer } = useContext(LocalizerContext);

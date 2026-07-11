@@ -31,7 +31,8 @@
  */
 import { test as base } from "@playwright/test";
 import MCR from "monocart-coverage-reports";
-import coverageOptions from "src/test/typescript/utils/mcr.config";
+
+import coverageOptions from "../../utils/mcr.config";
 
 export const coverageTest = base.extend<{ coverageTest: void }>({
 	coverageTest: [

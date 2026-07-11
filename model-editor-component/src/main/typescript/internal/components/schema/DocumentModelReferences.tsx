@@ -32,7 +32,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { CollapsiblePanel } from "@com.mgmtp.a12.widgets/widgets-core/lib/collapsible-panel/index.js";
+import { CollapsiblePanel } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";

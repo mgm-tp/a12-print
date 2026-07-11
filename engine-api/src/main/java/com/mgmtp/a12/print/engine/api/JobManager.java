@@ -29,11 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::JobManagerInterface[]
 package com.mgmtp.a12.print.engine.api;
 
 // tag::Import[]
 
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.message.PrintMessageReport;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 // end::Import[]
 
@@ -41,22 +44,47 @@ import com.mgmtp.a12.print.model.api.model.PrintModel;
 /**
  * Interface for the creation of new {@link PrintJob}s for a given {@link PrintModelId} and the preparation of {@link PrintModel}s.
  */
+@OnlyForUsage
 public interface JobManager {
 
 	/**
-	 * Prepare needs to be called once when the printModel was added or changed during the lifetime of the manager.
-	 * However, doing so every print is not required and will result in server performance penalties
+	 * Prepare needs to be called once when the Print Model was added or changed during the lifetime of the manager.
+	 * However, doing so every print is not required and will result in server performance penalties.
+	 * Throws a {@link PrintCompilerException} for issues during compilation.
 	 *
-	 * @param printModel Print model content to be print
+	 * @param printModel Print Model content to be printed
 	 */
-	PrintModelId prepare(String printModel) throws PrintException;
+	PrintModelId prepare(String printModel) throws PrintCompilerException;
+
+	/**
+	 * Prepare needs to be called once when the Print Model was added or changed during the lifetime of the manager.
+	 * However, doing so every print is not required and will result in server performance penalties.
+	 * <p>
+	 * Issues during compilation are captured as {@link com.mgmtp.a12.print.engine.api.message.PrintMessage}s
+	 * in the returned {@link PrintMessageReport} rather than being thrown.
+	 *
+	 * @param printModel Print Model content to be printed
+	 */
+	PrintMessageReport<PrintModelId> prepareWithReport(String printModel) throws PrintCompilerException;
 
 	/**
 	 * Create a new {@link PrintJob} from the given {@link PrintModelId}.
-	 * Compiles the print model if it has not already been compiled.
+	 * Compiles the Print Model if it has not already been compiled.
+	 * Throws a {@link PrintCompilerException} for issues during {@link PrintJob} creation
 	 *
-	 * @param printModelId Print model Id
+	 * @param printModelId Print Model ID
 	 */
-	PrintJob createNewJob(PrintModelId printModelId) throws PrintException;
+	PrintJob createNewJob(PrintModelId printModelId) throws PrintCompilerException;
 
+	/**
+	 * Create a new {@link PrintJob} from the given {@link PrintModelId}.
+	 * Compiles the Print Model if it has not already been compiled.
+	 * <p>
+	 * Issues during {@link PrintJob} creation are captured as {@link com.mgmtp.a12.print.engine.api.message.PrintMessage}s
+	 * in the returned {@link PrintMessageReport} rather than being thrown.
+	 *
+	 * @param printModelId Print Model ID
+	 */
+	PrintMessageReport<PrintJob> createNewJobWithReport(PrintModelId printModelId) throws PrintCompilerException;
 }
+// end::JobManagerInterface[]

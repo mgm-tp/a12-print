@@ -29,26 +29,46 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { all, put, select, takeLatest } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { DetailDataActions } from "../../redux/index.js";
-import { DetailViewActions } from "../../redux/index.js";
+import { DetailViewActions, NavigationActions, NavigationSelectors } from "../../redux/index.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
+import { assertExists } from "../../utils/type-utils.js";
 
-export function* openDetailViewSaga(): SagaIterator {
-	yield* takeLatest((action: AnyAction) => DetailViewActions.openElementForm.match(action), handleOpenDetailView);
+export function* openDetailViewSaga(): SagaGenerator<void> {
+	yield* takeLatest(DetailViewActions.openElementForm.match, handleOpenDetailView);
 }
 
-function* handleOpenDetailView(action: Action<string>) {
-	const currentDetailDataId = yield* select(PrintEngineSelectors.currentDetailDataId);
-	const editorMode = yield* select(PrintEngineSelectors.editorMode);
+function* handleOpenDetailView(action: PayloadAction<string>) {
+	const refId = action.payload;
+	const editorMode = yield* select(NavigationSelectors.currentMode);
+	const currentElementContainerId = yield* select(PrintEngineSelectors.currentElementContainerId);
+	const activeCanvasTab = yield* select(NavigationSelectors.activeCanvasTab);
+	const element = yield* select((state: PrintEngineState) => PrintEngineSelectors.printModelElement(state, refId));
+
+	assertExists(element);
 
 	yield* all([
-		put(DetailDataActions.removeSubView({ containerId: currentDetailDataId })),
-		put(DetailDataActions.setViews({ containerId: currentDetailDataId, views: ["form"] })),
-		put(DetailDataActions.updateRefId({ containerId: currentDetailDataId, refId: action.payload })),
-		put(DetailDataActions.updateOpenForm({ containerId: currentDetailDataId, isFormOpen: { [editorMode]: true } })),
+		put(
+			NavigationActions.setSelectedElement({
+				tab: activeCanvasTab,
+				entityId: currentElementContainerId,
+				mode: editorMode,
+				elementId: refId,
+			})
+		),
+		put(
+			NavigationActions.setDetailForm({
+				tab: activeCanvasTab,
+				entityId: currentElementContainerId,
+				mode: editorMode,
+				form: {
+					formStack: [{ type: element.type, id: refId }],
+				},
+			})
+		),
 	]);
 }

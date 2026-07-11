@@ -30,11 +30,13 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { convertJSONtoLcov } from "./coverage-teardown";
+import { deleteUploadedFiles } from "./resource-teardown";
 
 async function globalTeardown() {
 	if (process.env.TEST_REPORT) {
 		await convertJSONtoLcov();
 	}
+	deleteUploadedFiles();
 }
 
 export default globalTeardown;

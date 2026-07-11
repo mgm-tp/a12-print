@@ -29,43 +29,45 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::PdfBoxPrintEngineConfigClass[]
 package com.mgmtp.a12.print.engine.api;
 
 // tag::Import[]
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Map;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 // end::Import[]
 
 /**
  * Configures the behavior of the PrintEngine.
  * Allows integrating custom fonts and setting a default font.
  */
+@OnlyForUsage
 @Data
-@EqualsAndHashCode(callSuper = true)
+@Builder(toBuilder = true)
 @NoArgsConstructor
-public class PdfBoxPrintEngineConfig extends PrintEngineConfig {
-	public PdfBoxPrintEngineConfig(Map<String, String> availableFonts) {
-		super(
-			PrintEngineConfig.HTML_TEMPLATE_FILE,
-			PrintEngineConfig.TEMPLATE_DIR,
-			availableFonts,
-			PrintEngineConfig.DEFAULT_ALLOWED_HTML_TAGS,
-			PrintEngineConfig.DEFAULT_ALLOWED_STYLES
-		);
-	}
+@AllArgsConstructor
+public class PdfBoxPrintEngineConfig {
+	public static final String DEFAULT_FONT_KEY = "default";
+	public static final String DEFAULT_TEXT_STYLE_FONT_KEY = "Open Sans";
+	private static final String DEFAULT_FONT = "classpath:fonts/OpenSans-Regular.ttf";
+
+	public static final Map<String, String> DEFAULT_FONTS = Map.of(
+		DEFAULT_FONT_KEY, DEFAULT_FONT,
+		DEFAULT_TEXT_STYLE_FONT_KEY, DEFAULT_FONT,
+		"Noto Sans Mono", "classpath:fonts/NotoSansMono-Regular.ttf",
+		"Noto Sans Symbols", "classpath:fonts/NotoSansSymbols2-Regular.ttf"
+	);
 
 	public static final PdfBoxPrintEngineConfig DEFAULT = new PdfBoxPrintEngineConfig(DEFAULT_FONTS);
 
-	public static PdfBoxPrintEngineConfigBuilder builder() {
-		return new PdfBoxPrintEngineConfigBuilder();
-	}
-
-	@Override
-	public PdfBoxPrintEngineConfigBuilder toBuilder() {
-		return new PdfBoxPrintEngineConfigBuilder().availableFonts(this.availableFonts);
-	}
+	/**
+	 * Map of available fonts. Each font is registered with a key which can be used in the print model. As value a valid
+	 * classpath ('classpath:/') resource of external resource ('file:/') has to be set (e.g.
+	 * <code>classpath:/fonts/arial.ttf</code>)
+	 */
+	protected Map<String, String> availableFonts;
 }
+// end::PdfBoxPrintEngineConfigClass[]

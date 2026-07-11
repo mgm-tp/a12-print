@@ -39,7 +39,7 @@ import { LayoutElementContainer } from "../../element-container/LayoutElementCon
 import { MarginWrapper } from "../../margin/MarginWrapper.js";
 import { MarginBreakPageContext } from "../../margin/MarginBreakPageContext.js";
 
-import { LayoutReferencesRendererProps } from "../editor-interface.js";
+import type { LayoutReferencesRendererProps } from "../editor-interface.js";
 import { useRenderSegmentPages } from "../hooks/use-render-segment-pages.js";
 import { PlaceableElement } from "../shared-components/PlaceableElement.js";
 

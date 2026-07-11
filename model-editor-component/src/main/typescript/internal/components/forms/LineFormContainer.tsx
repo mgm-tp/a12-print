@@ -33,19 +33,22 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { PartialLine, PartialBorderProperties } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialBorderProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialLine } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { TransactionLogStateActions } from "../../redux/index.js";
-import { InteractionLogActions } from "../../redux/interaction-log/index.js";
-import { OmitId, useBorderPropertiesErrorMessage } from "../../utils/index.js";
+import { InteractionLogActions } from "../../redux//interaction-log/index.js";
+import type { OmitId } from "../../utils/index.js";
+import { useBorderPropertiesErrorMessage } from "../../utils/index.js";
 import { RESOURCE_KEYS } from "../../localization/index.js";
+import { BORDER_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 
 import { BorderPropertiesForm } from "./shared-components/index.js";
 
 export const LineFormContainer = () => {
 	const dispatch = useDispatch();
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
+	const element = useSelector(PrintEngineSelectors.currentFormElement);
 
 	if (!element || !PartialLine.isInstance(element)) {
 		throw Error("Expected element of type Line");
@@ -72,6 +75,8 @@ export const LineFormContainer = () => {
 
 	return (
 		<BorderPropertiesForm
+			element={element}
+			propertiesPath={BORDER_PROPERTIES_PATH}
 			borderProperties={element.borderProperties}
 			setBorderProperties={setBorderProperties}
 			getErrorMessage={useBorderPropertiesErrorMessage(element.id)}

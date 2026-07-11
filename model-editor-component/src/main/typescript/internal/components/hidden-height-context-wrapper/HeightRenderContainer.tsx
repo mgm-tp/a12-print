@@ -31,11 +31,12 @@
  */
 import * as React from "react";
 
-import { PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { StyledHeightRenderContainer } from "./HeightRender.styled.js";
 import { HeightRenderTextStyle } from "./HeightRenderTextStyle.js";
-import { HeightRenderNewElement, NewElementData } from "./HeightRenderNewElement.js";
+import type { NewElementData } from "./HeightRenderNewElement.js";
+import { HeightRenderNewElement } from "./HeightRenderNewElement.js";
 
 interface HeightRenderContainerProps {
 	newElementData: NewElementData | undefined;

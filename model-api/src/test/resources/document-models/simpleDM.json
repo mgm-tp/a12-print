@@ -1,0 +1,62 @@
+{
+  "header": {
+    "id": "simpleDM",
+    "modelType": "document",
+    "modelVersion": "29.4.0",
+    "locales": [
+      {
+        "code": "en"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin"
+      }
+    ],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "Address"
+      }
+    ]
+  },
+  "content": {
+    "modelInfo": {
+      "name": "simpleDM",
+      "immutable": false
+    },
+    "modelConfig": {
+      "decimalSeparator": ".",
+      "timeZone": "UTC",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_28db7",
+          "name": "root",
+          "Group": {
+            "repeatability": 2,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_ce16b",
+                "name": "field",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

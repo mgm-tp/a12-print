@@ -29,24 +29,29 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { put, select, takeLatest } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { DetailDataActions } from "../../redux/index.js";
-import { DetailViewActions } from "../../redux/index.js";
+import { DetailViewActions, NavigationActions, NavigationSelectors } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 
-export function* openVisibilityConfigSaga(): SagaIterator {
-	yield* takeLatest(
-		(action: AnyAction) => DetailViewActions.openVisibilityConfig.match(action),
-		handleOpenVisibilityConfig
-	);
+export function* openVisibilityConfigSaga(): SagaGenerator<void> {
+	yield* takeLatest(DetailViewActions.openVisibilityConfig.match, handleOpenVisibilityConfig);
 }
 
-function* handleOpenVisibilityConfig(action: Action<string>) {
-	const currentDetailDataId = yield* select(PrintEngineSelectors.currentDetailDataId);
+function* handleOpenVisibilityConfig(action: PayloadAction<string>) {
+	const placeableRefId = action.payload;
+	const currentElementContainerId = yield* select(PrintEngineSelectors.currentElementContainerId);
+	const editorMode = yield* select(NavigationSelectors.currentMode);
+	const activeCanvasTab = yield* select(NavigationSelectors.activeCanvasTab);
+
 	yield* put(
-		DetailDataActions.openVisibilityConfig({ containerId: currentDetailDataId, placeableRefId: action.payload })
+		NavigationActions.setDetailForm({
+			tab: activeCanvasTab,
+			entityId: currentElementContainerId,
+			mode: editorMode,
+			form: { formStack: [{ type: "VisibilityConfig", referenceId: placeableRefId }], isFullScreen: false },
+		})
 	);
 }

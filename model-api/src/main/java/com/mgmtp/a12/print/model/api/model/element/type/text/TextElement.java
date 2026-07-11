@@ -38,7 +38,9 @@ import com.mgmtp.a12.print.model.api.model.element.base.Styleable;
 import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
 
 import java.util.Collection;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface TextElement extends PrintModelElement, Styleable, ElementReferenceContainer {
 	TextElementProperties getTextElementProperties();
 

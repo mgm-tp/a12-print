@@ -29,18 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-
-import { PrintModelErrorMap } from "../../types/index.js";
-
-export interface ValidationState {
-	interaction: {
-		error: InteractionType;
-		warning: InteractionType;
-		info: InteractionType;
-	};
-	errorMap?: PrintModelErrorMap;
-}
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 export type InteractionType = "descriptive" | "compact";
 export type ValidationSeverity = "error" | "warning";
@@ -48,11 +38,9 @@ export type ValidationSeverity = "error" | "warning";
 export type ValidationCounter = Record<ValidationSeverity, number>;
 
 export namespace ValidationCounter {
-	export const createEmpty = (): ValidationCounter => {
-		return {
-			error: 0,
-			warning: 0,
-		};
+	export const EMPTY_VALIDATION_COUNTER: ValidationCounter = {
+		error: 0,
+		warning: 0,
 	};
 
 	export const add = (counter: ValidationCounter, targetCounter: ValidationCounter): ValidationCounter => {
@@ -74,11 +62,11 @@ export namespace ValidationCounter {
 		counterGetter: (error: DeepPartialErrorMap<unknown>) => ValidationCounter = defaultCounterGetter
 	): ValidationCounter => {
 		if (!errorMap) {
-			return createEmpty();
+			return EMPTY_VALIDATION_COUNTER;
 		}
 
 		return Array.isArray(errorMap)
-			? errorMap.reduce((result, currentErrorMap) => add(result, from(currentErrorMap)), createEmpty())
+			? errorMap.reduce((result, currentErrorMap) => add(result, from(currentErrorMap)), EMPTY_VALIDATION_COUNTER)
 			: counterGetter(errorMap);
 	};
 }

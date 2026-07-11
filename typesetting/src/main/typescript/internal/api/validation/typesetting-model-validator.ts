@@ -33,12 +33,12 @@ import {
 	GeneratedCodeAccessorFactory,
 	DocumentServiceFactory,
 	DocumentRtServiceFactory,
-} from "@com.mgmtp.a12.kernel/kernel-md-facade/lib/main/js/facade.js";
-import { fullValidation } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/validation/full-validation.js";
+} from "@com.mgmtp.a12.kernel/kernel-md-facade";
 import {
+	fullValidation,
 	FAILED_INTEGRITY_REPORT,
 	PrintValidator,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/validation/index.js";
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintTypesettingModelValidationScript } from "../generated/validation/print-typesetting-model-validation-script.js";
 import documentModelJson from "../generated/model/DomainTypesettingMetaModel.json" with { type: "json" };
@@ -49,7 +49,10 @@ export class TypesettingModelValidator extends PrintValidator {
 	private documentModelMarshaller = new DocumentServiceFactory().getDocumentModelSerializer();
 	private documentModel = this.documentModelMarshaller.deserialize(JSON.stringify(documentModelJson));
 	private documentRtService = DocumentRtServiceFactory.createDocumentRtService(
-		new GeneratedCodeAccessorFactory().createScriptAccessor(PrintTypesettingModelValidationScript)
+		new GeneratedCodeAccessorFactory().createScriptAccessor(PrintTypesettingModelValidationScript),
+		{
+			customConditionFactory: this.getCustomConditionFactory(),
+		}
 	);
 
 	public validate<T>(validatorInput: PrintValidator.Input): PrintValidator.IntegrityReport<T> {

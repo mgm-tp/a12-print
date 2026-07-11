@@ -31,7 +31,6 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mgmtp.a12.kernel.md.model.a12internal.fieldtypes.FieldType;
 import com.mgmtp.a12.kernel.md.model.api.IElement;
 import com.mgmtp.a12.kernel.md.model.api.IField;
@@ -40,7 +39,8 @@ import com.mgmtp.a12.kernel.md.model.api.IIdNamed;
 import com.mgmtp.a12.kernel.md.model.internal.wrapper.FieldWrapper;
 import com.mgmtp.a12.kernel.md.model.internal.wrapper.fieldtypes.FieldTypeWrapper;
 import com.mgmtp.a12.kernel.md.serializer.model.a12internal.services.DocumentModelSerializer;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing.PreCompiledListing;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.rewrite.DataModelMetaFieldVariableRewrite;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.synthetics.SyntheticVariable;
@@ -65,8 +65,9 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -111,7 +112,7 @@ public class ListingElementPreCompiler {
 		this.listingRootGroup = (IGroup) documentModelIndex
 			.getDocumentModelSearchService()
 			.getByPath(groupPath.startsWith("/") ? groupPath : String.format("/%s", groupPath))
-			.orElseThrow(() -> new PrintCompilerException("missing path " + groupPath));
+			.orElseThrow(() -> new PrintDomainException("The listing group path {} is not present in the Document Model", groupPath));
 	}
 
 	public PreCompiledListing compile() {
@@ -137,12 +138,12 @@ public class ListingElementPreCompiler {
 	}
 
 	private Stream<LogicContainerCompilation> compileRow(ListingRow row) {
-		if (row instanceof ListingGroupRow) {
-			return compileGroupRow((ListingGroupRow) row);
-		} else if (row instanceof ListingFieldRow) {
-			return compileFieldRow((ListingFieldRow) row);
+		if (row instanceof ListingGroupRow listingGroupRow) {
+			return compileGroupRow(listingGroupRow);
+		} else if (row instanceof ListingFieldRow listingFieldRow) {
+			return compileFieldRow(listingFieldRow);
 		} else {
-			throw new PrintCompilerException("not supported");
+			throw new PrintCompilerException("Not supported row type {}", row.getClass().getName());
 		}
 	}
 
@@ -150,7 +151,7 @@ public class ListingElementPreCompiler {
 
 		final var listingMetaFieldRewrite = ListingComputationRewrite.group(groupRow, documentModelIndex).build().getRewrite().stream().reduce(
 			EggRewriteRuleFactory::andThen
-		).orElseThrow(() -> new PrintCompilerException("invalid Listing Rewrite State"));
+		).orElseThrow(() -> new PrintCompilerException("Invalid Listing Rewrite State"));
 
 		return Stream.concat(
 			Stream.concat(
@@ -247,14 +248,14 @@ public class ListingElementPreCompiler {
 
 		final var listingMetaFieldRewrite = ListingComputationRewrite.field(fieldRow, documentModelIndex).build().getRewrite().stream().reduce(
 			EggRewriteRuleFactory::andThen
-		).orElseThrow(() -> new PrintCompilerException("invalid Listing Rewrite State"));
+		).orElseThrow(() -> new PrintCompilerException("Invalid Listing Rewrite State"));
 
 		final var rowFieldType = IFieldTypeExt.getEffectiveFieldType(
 			fieldRow.getField().getFieldType()
 		);
 
 		if (!(rowFieldType instanceof FieldTypeWrapper<?>)) {
-			throw new PrintCompilerException("unable to compare fieldTypes");
+			throw new PrintCompilerException("Unable to compare fieldTypes");
 		}
 
 		final var fieldTypeSerializer = new FieldTypeSerializer();
@@ -265,9 +266,9 @@ public class ListingElementPreCompiler {
 			final var fieldTypeRaw = (FieldType) str.get(rowFieldType);
 			fieldTypeSerializer.writeFieldType(writer, fieldTypeRaw);
 		} catch (Exception e) {
-			throw new PrintCompilerException("unable to compare fieldTypes", e);
+			throw new PrintCompilerException("Unable to compare fieldTypes", e);
 		}
-		final var mapper = new ObjectMapper();
+		final var mapper = new JsonMapper();
 		try {
 
 			final var rawRowFieldTypeTree = mapper.readTree(writer.toString());
@@ -291,7 +292,7 @@ public class ListingElementPreCompiler {
 
 								final var outputFieldType = FieldWrapper.getFieldType(
 									fieldTypeSerializer.readFieldType(new StringReader(field.getOutputFieldTypeSerialized()))
-								).orElseThrow(() -> new PrintCompilerException("invalid output fieldType"));
+								).orElseThrow(() -> new PrintCompilerException("Invalid output fieldType"));
 
 								return Stream.concat(
 									Stream.of(
@@ -309,16 +310,16 @@ public class ListingElementPreCompiler {
 										)
 									)
 								);
-							} catch (IOException e) {
-								throw new PrintCompilerException("unable to compile listing column " + field.getId(), e);
+							} catch (JacksonException e) {
+								throw new PrintCompilerException("Unable to compile listing column " + field.getId(), e);
 							}
 
 						})
 					)
 				)
 			);
-		} catch (IOException e) {
-			throw new PrintCompilerException("unable to compile listing column " + fieldRow.getField().getId(), e);
+		} catch (JacksonException e) {
+			throw new PrintCompilerException("Unable to compile listing column " + fieldRow.getField().getId(), e);
 		}
 
 
@@ -483,7 +484,7 @@ public class ListingElementPreCompiler {
 		public FieldType readFieldType(Reader reader) {
 			try {
 				return getMapper().readValue(reader, FieldType.class);
-			} catch (IOException e) {
+			} catch (JacksonException e) {
 				throw new PrintCompilerException("Unable to read FieldType", e);
 			}
 		}
@@ -491,7 +492,7 @@ public class ListingElementPreCompiler {
 		public void writeFieldType(StringWriter writer, FieldType fieldTypeRaw) {
 			try {
 				getMapper().writeValue(writer, fieldTypeRaw);
-			} catch (IOException e) {
+			} catch (JacksonException e) {
 				throw new PrintCompilerException("Unable to write FieldType", e);
 			}
 		}
@@ -870,7 +871,6 @@ public class ListingElementPreCompiler {
 				.toList();
 
 			if (repeatablePrefixGroups.size() > 1 && ((IGroup) path.getLast()).getRepeatability() == 1) {
-				log.error("LISTING_CAPTURES_IMPLICIT_REPETITION_CONTEXT: {}", listing.getId());
 				log.warn(
 					"LISTING_CAPTURES_IMPLICIT_REPETITION_CONTEXT: The Listing Element {} has basePath {} which captures multiple Repeatable Groups ({}). "
 						+ " This may result in unexpected computation results, if any computation captures a subtree adjacent to the current element. ",

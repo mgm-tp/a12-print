@@ -35,7 +35,7 @@ import {
 	commitPrintModelSaga,
 	persistLogsSaga,
 	batchPersistLogsSaga,
-	setCaseConfigSage,
+	setCaseConfigSaga,
 	discardChangesSaga,
 	setPrintModelReferencesSaga,
 } from "./editor-saga";
@@ -45,7 +45,7 @@ export function* rootSaga() {
 	yield* all([
 		fork(persistLogsSaga),
 		fork(batchPersistLogsSaga),
-		fork(setCaseConfigSage),
+		fork(setCaseConfigSaga),
 		fork(commitPrintModelSaga),
 		fork(discardChangesSaga),
 		fork(setPrintModelReferencesSaga),

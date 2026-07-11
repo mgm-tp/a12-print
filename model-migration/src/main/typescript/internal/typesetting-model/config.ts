@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { MigrationParameters } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
+import type { MigrationParameters } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
 
 import { MIGRATION_STEPS } from "./steps/index.js";
 

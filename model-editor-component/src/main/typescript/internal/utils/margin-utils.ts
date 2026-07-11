@@ -31,16 +31,16 @@
  */
 import { nanoid } from "nanoid";
 
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import {
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type {
 	Margins,
-	MarginType,
 	PartialValidPlaceableReference,
 	PrintModelEntity,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { MarginType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../constant/editor.js";
-import { LimitZone, MarginSide } from "../types/margin.js";
+import type { LimitZone, MarginSide } from "../types/margin.js";
 
 import { changePartialMmMeasureValue } from "./measure-utils.js";
 import { ElementsUtils } from "./elements-utils.js";

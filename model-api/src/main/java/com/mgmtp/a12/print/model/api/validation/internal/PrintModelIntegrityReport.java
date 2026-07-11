@@ -35,6 +35,7 @@ import com.mgmtp.a12.kernel.md.rt.api.IDocumentValidationResult;
 import com.mgmtp.a12.print.model.api.validation.IPrintModelIntegrityMessage;
 import com.mgmtp.a12.print.model.api.validation.IPrintModelIntegrityReport;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,9 +45,20 @@ public class PrintModelIntegrityReport implements IPrintModelIntegrityReport {
 	private final List<IPrintModelIntegrityMessage> messages;
 
 	public PrintModelIntegrityReport(IDocumentValidationResult result) {
-		this.noErrorOccurred = result.noErrorOccurred();
-		this.messages = result.getMessages().stream().map(PrintModelMetaModelValidationMessage::new)
+		this(result, List.of());
+	}
+
+	public PrintModelIntegrityReport(IDocumentValidationResult result, List<IPrintModelIntegrityMessage> extraMessages) {
+		List<IPrintModelIntegrityMessage> kernelMessages = result.getMessages().stream()
+			.map(PrintModelMetaModelValidationMessage::new)
 			.collect(Collectors.toList());
+		List<IPrintModelIntegrityMessage> combined = new ArrayList<>(kernelMessages.size() + extraMessages.size());
+		combined.addAll(kernelMessages);
+		combined.addAll(extraMessages);
+		this.messages = List.copyOf(combined);
+		boolean hasHtmlError = extraMessages.stream()
+			.anyMatch(m -> m.getSeverityType() == IPrintModelIntegrityMessage.SeverityType.ERROR);
+		this.noErrorOccurred = result.noErrorOccurred() && !hasHtmlError;
 	}
 
 	@Override

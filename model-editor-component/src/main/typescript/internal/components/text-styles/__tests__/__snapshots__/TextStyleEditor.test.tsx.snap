@@ -1,6 +1,222 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`TextStyleEditor should render correctly 1`] = `
+.c32 {
+  -webkit-clip-path: inset(100%);
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px!important;
+  min-height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+
+.c32 * {
+  width: 1px;
+  height: 1px;
+}
+
+.c48 {
+  display: inline-block;
+  font-size: 0;
+  vertical-align: middle;
+  color: #0568ae;
+}
+
+.c30 {
+  box-sizing: border-box;
+  color: #7F8C9B;
+  display: inline-block;
+  direction: ltr;
+  font-family: Material Symbols Outlined;
+  font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+}
+
+.c30 >span {
+  display: inline-block;
+}
+
+.c30.c30 {
+  max-width: unset;
+}
+
+.c47 .c30 {
+  color: inherit;
+}
+
+.c42.c42.c42,
+.c47 .c42.c42.c42 {
+  font-size: 1.5rem;
+}
+
+.c31.c31 {
+  color: #af7902;
+}
+
+.c40 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  height: 2rem;
+  min-height: 0;
+  padding: 0;
+  width: 2rem;
+  background: transparent;
+  box-shadow: none;
+  color: #a9b3bc;
+  cursor: default;
+}
+
+.c40 .c28 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c40 .c28 {
+  color: inherit;
+}
+
+.c40 .c28 {
+  font-size: inherit;
+}
+
+.c40.c40.c40:-moz-focusring {
+  outline: none;
+}
+
+.c40.c40 .c28 {
+  color: inherit;
+}
+
+.c47 .c40 .c28 {
+  font-size: 1.25rem;
+}
+
+.c47 .c40.c40 {
+  color: #a9b3bc;
+  width: auto;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c40.c40 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c40.c40 >.c28 {
+  display: block;
+}
+
+.c49 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  height: 2rem;
+  min-height: 0;
+  padding: 0;
+  width: 2rem;
+  background: transparent;
+  color: #0568ae;
+}
+
+.c49 .c28 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c49 .c28 {
+  color: inherit;
+}
+
+.c49 .c28 {
+  font-size: inherit;
+}
+
+.c49:not(:disabled):focus {
+  outline: 1px dotted #333;
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.c47 .c49.c49 {
+  font-size: 1.25rem;
+  height: fit-content;
+  min-height: 0;
+  padding: 0;
+  width: fit-content;
+}
+
+.c47 .c49.c49:not(:active):not(:hover):not(:focus) {
+  color: inherit;
+}
+
+.c47 .c49.c49:not(:active):not(:hover):not(:focus) .c28:not(.c29) {
+  color: inherit;
+}
+
+.c47 .c49.c49:focus .c28 {
+  color: inherit;
+}
+
+.h_inlineBlock.h_middleAlign .c49.c49 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c49.c49 >.c28 {
+  display: block;
+}
+
 .c2 {
   display: flex;
   flex-wrap: wrap;
@@ -30,260 +246,6 @@ exports[`TextStyleEditor should render correctly 1`] = `
   width: 100%;
 }
 
-.c33 {
-  -webkit-clip-path: inset(100%);
-  border: 0;
-  clip: rect(0 0 0 0);
-  clip-path: inset(100%);
-  height: 1px;
-  margin: -1px!important;
-  min-height: 1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  top: 0;
-  width: 1px;
-}
-
-.c33 * {
-  width: 1px;
-  height: 1px;
-}
-
-.c28 {
-  display: inline-block;
-  font-size: 0;
-  vertical-align: middle;
-  color: #0568ae;
-}
-
-.c32 {
-  box-sizing: border-box;
-  color: #7F8C9B;
-  display: inline-block;
-  direction: ltr;
-  font-family: Material Icons;
-  font-size: 1rem;
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: normal;
-  line-height: 1;
-  text-transform: none;
-  white-space: nowrap;
-  word-wrap: normal;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "liga";
-}
-
-.c32 >span {
-  display: inline-block;
-}
-
-.c32.c32 {
-  max-width: unset;
-}
-
-.c27 .c32 {
-  color: inherit;
-}
-
-.c46.c46.c46,
-.c27 .c46.c46.c46 {
-  font-size: 1.5rem;
-}
-
-.c37.c37 {
-  color: #af7902;
-}
-
-.c5 {
-  box-sizing: border-box;
-  background-color: transparent;
-  display: flex;
-  min-height: 32px;
-  outline: none;
-  padding: 2px 0;
-  position: relative;
-}
-
-.c4 {
-  color: #373e49;
-  font-family: "Open Sans",sans-serif;
-  font-size: 1.275rem;
-  font-weight: 400;
-  margin: 8px 0 0;
-  outline: none;
-  padding: 0 0 8px 0;
-  text-transform: unset;
-}
-
-.c6 {
-  overflow-wrap: break-word;
-  word-break: break-word;
-  align-items: center;
-  align-self: center;
-  color: inherit;
-  display: flex;
-  flex-flow: nowrap;
-  flex: 1;
-  outline: none;
-  padding: 0 8px 0 0;
-  position: relative;
-}
-
-.c7 >* {
-  display: inline;
-}
-
-.c30 {
-  align-items: center;
-  border: 2px solid transparent;
-  cursor: pointer;
-  display: inline-flex;
-  justify-content: center;
-  font-family: "Open Sans",sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  gap: 4px;
-  outline: none;
-  position: relative;
-  text-transform: uppercase;
-  min-height: 32px;
-  vertical-align: middle;
-  border-radius: 50%;
-  flex-shrink: 0;
-  font-size: 1.125rem;
-  height: 2rem;
-  min-height: 0;
-  padding: 0;
-  width: 2rem;
-  background: transparent;
-  color: #0568ae;
-}
-
-.c30 .c31 {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.c30 .c31 {
-  color: inherit;
-}
-
-.c30 .c31 {
-  font-size: inherit;
-}
-
-.c30:not(:disabled):focus {
-  outline: 1px dotted #333;
-  background-color: transparent;
-  box-shadow: none;
-  color: #d50075;
-  border: 2px solid #d50075;
-}
-
-.c27 .c30.c30 {
-  font-size: 1.25rem;
-  height: fit-content;
-  min-height: 0;
-  padding: 0;
-  width: fit-content;
-}
-
-.c27 .c30.c30:not(:active):not(:hover):not(:focus) {
-  color: inherit;
-}
-
-.c27 .c30.c30:not(:active):not(:hover):not(:focus) .c31:not(.c36) {
-  color: inherit;
-}
-
-.c27 .c30.c30:focus .c31 {
-  color: inherit;
-}
-
-.h_inlineBlock.h_middleAlign .c30.c30 {
-  display: block;
-  height: auto;
-  min-height: 0;
-}
-
-.h_inlineBlock.h_middleAlign .c30.c30 >.c31 {
-  display: block;
-}
-
-.c44 {
-  align-items: center;
-  border: 2px solid transparent;
-  cursor: pointer;
-  display: inline-flex;
-  justify-content: center;
-  font-family: "Open Sans",sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  gap: 4px;
-  outline: none;
-  position: relative;
-  text-transform: uppercase;
-  min-height: 32px;
-  vertical-align: middle;
-  border-radius: 50%;
-  flex-shrink: 0;
-  font-size: 1.125rem;
-  height: 2rem;
-  min-height: 0;
-  padding: 0;
-  width: 2rem;
-  background: transparent;
-  box-shadow: none;
-  color: #a9b3bc;
-  cursor: default;
-}
-
-.c44 .c31 {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.c44 .c31 {
-  color: inherit;
-}
-
-.c44 .c31 {
-  font-size: inherit;
-}
-
-.c44.c44.c44:-moz-focusring {
-  outline: none;
-}
-
-.c44.c44 .c31 {
-  color: inherit;
-}
-
-.c27 .c44 .c31 {
-  font-size: 1.25rem;
-}
-
-.c27 .c44.c44 {
-  color: #a9b3bc;
-  width: auto;
-  height: auto;
-  min-height: 0;
-}
-
-.h_inlineBlock.h_middleAlign .c44.c44 {
-  display: block;
-  height: auto;
-  min-height: 0;
-}
-
-.h_inlineBlock.h_middleAlign .c44.c44 >.c31 {
-  display: block;
-}
-
 .c15 {
   color: #4d4d4d;
   display: inline-block;
@@ -300,7 +262,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
   display: none;
 }
 
-.c34 {
+.c26 {
   display: flex;
   font-family: "Open Sans",sans-serif;
   font-size: 0.75rem;
@@ -311,27 +273,27 @@ exports[`TextStyleEditor should render correctly 1`] = `
   color: #16191d;
 }
 
-.c35 {
+.c27 {
   display: flex;
   margin-right: 4px;
 }
 
-.c35 .c31 {
+.c27 .c28 {
   font-size: 1.25rem;
 }
 
-.c38 {
+.c33 {
   align-self: center;
   max-width: calc(100% - (1.25rem + 4px));
 }
 
-.c38 >ul,
-.c38 >.StyledBulletList-sc-gAZkTn {
+.c33 >ul,
+.c33 >.StyledBulletList-sc-hmuVQa {
   margin: 0;
   padding-left: 16px;
 }
 
-.c50 {
+.c46 {
   align-items: center;
   background-color: #e2e6e9;
   border-bottom-right-radius: 0;
@@ -347,7 +309,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
   padding: 0 4px;
 }
 
-.c43 {
+.c38 {
   align-items: center;
   align-self: flex-end;
   display: flex;
@@ -357,7 +319,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
   justify-content: center;
 }
 
-.c48 {
+.c44 {
   align-items: center;
   background-color: transparent;
   display: flex;
@@ -367,12 +329,12 @@ exports[`TextStyleEditor should render correctly 1`] = `
   margin-left: -12px;
 }
 
-.c48:last-child {
+.c44:last-child {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
 
-.c48 .c49 {
+.c44 .c45 {
   margin: 0 0 0 12px;
 }
 
@@ -402,7 +364,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
   opacity: 1;
 }
 
-.c47 {
+.c43 {
   background-color: transparent;
   border: none;
   box-sizing: border-box;
@@ -422,7 +384,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
   width: 100%;
 }
 
-.c47::placeholder {
+.c43::placeholder {
   font-style: italic;
   color: #596673;
   opacity: 1;
@@ -442,7 +404,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
   height: 32px;
 }
 
-.c16 .c29 {
+.c16 .c39 {
   border-radius: 0;
 }
 
@@ -470,7 +432,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
   width: 100%;
 }
 
-.c13 >.c27 {
+.c13 >.c47 {
   margin: 0 4px 4px 0;
 }
 
@@ -485,7 +447,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
   width: 100%;
 }
 
-.c20 .c27 {
+.c20 .c47 {
   align-self: center;
   flex-shrink: 0;
   text-align: right;
@@ -499,35 +461,9 @@ exports[`TextStyleEditor should render correctly 1`] = `
   vertical-align: middle;
 }
 
-.c20[data-role="checkbox-group"] .c14 ~.c27,
-.c20[data-role="radio-group"] .c14 ~.c27,
-.c20[data-role="file-upload"] .c14 ~.c27 {
-  margin: 0 0 4px 0;
-}
-
-.c26 {
-  box-sizing: border-box;
-  flex-grow: 1;
-  width: 100%;
-}
-
-.c26 .c27 {
-  align-self: center;
-  flex-shrink: 0;
-  text-align: right;
-  width: 28px;
-}
-
-.c26[data-role="checkbox-group"] .c14,
-.c26[data-role="radio-group"] .c14,
-.c26[data-role="file-upload"] .c14 {
-  max-width: 100%;
-  vertical-align: middle;
-}
-
-.c26[data-role="checkbox-group"] .c14 ~.c27,
-.c26[data-role="radio-group"] .c14 ~.c27,
-.c26[data-role="file-upload"] .c14 ~.c27 {
+.c20[data-role="checkbox-group"] .c14 ~.c47,
+.c20[data-role="radio-group"] .c14 ~.c47,
+.c20[data-role="file-upload"] .c14 ~.c47 {
   margin: 0 0 4px 0;
 }
 
@@ -621,12 +557,12 @@ exports[`TextStyleEditor should render correctly 1`] = `
   outline: 1px dotted #333;
 }
 
-.c22 .StyledFieldPrefixWrapper-sc-kAsOYS>.c31 {
+.c22 .StyledFieldPrefixWrapper-sc-gvObj>.c28 {
   color: inherit;
   cursor: default;
 }
 
-.c39 {
+.c34 {
   background-color: #f1f2f4;
   border-radius: inherit;
   box-shadow: 0 1px 0 0 #596673;
@@ -636,13 +572,13 @@ exports[`TextStyleEditor should render correctly 1`] = `
   box-shadow: 0 1px 0 0 #af7902;
 }
 
-.c39:focus-within {
+.c34:focus-within {
   box-shadow: 0 2px 0 0 #d50075;
   outline-offset: 0;
   outline: 1px dotted #333;
 }
 
-.c39 .StyledFieldPrefixWrapper-sc-kAsOYS>.c31 {
+.c34 .StyledFieldPrefixWrapper-sc-gvObj>.c28 {
   color: inherit;
   cursor: default;
 }
@@ -652,7 +588,8 @@ exports[`TextStyleEditor should render correctly 1`] = `
   color: #7F8C9B;
   content: "\\e313";
   display: flex;
-  font-family: "Material Icons";
+  font-family: "Material Symbols Outlined";
+  font-variation-settings: "FILL" 1,"wght" 400,"GRAD" 0,"opsz" 24;
   font-size: 1.5rem;
   font-style: normal;
   justify-content: center;
@@ -679,33 +616,92 @@ exports[`TextStyleEditor should render correctly 1`] = `
   border: none;
 }
 
+.c5 {
+  box-sizing: border-box;
+  background-color: transparent;
+  display: flex;
+  min-height: 32px;
+  outline: none;
+  padding: 2px 0;
+  position: relative;
+}
+
+.c5:hover [class*="StyledTypographyHeaderActions"],
+.c5:focus-within [class*="StyledTypographyHeaderActions"] {
+  opacity: 1;
+}
+
+.c5:hover [class*="StyledTypographyHeaderActions"] [data-type="icon"],
+.c5:focus-within [class*="StyledTypographyHeaderActions"] [data-type="icon"] {
+  border-radius: 4px;
+}
+
+.c5:hover [class*="StyledTypographyHeaderActions"] [data-type="icon"] .c28,
+.c5:focus-within [class*="StyledTypographyHeaderActions"] [data-type="icon"] .c28 {
+  color: inherit;
+}
+
+.c5:hover [class*="StyledTypographyHeaderActions"] [data-type="icon"]:hover .c28,
+.c5:focus-within [class*="StyledTypographyHeaderActions"] [data-type="icon"]:hover .c28 {
+  color: inherit;
+}
+
+.c4 {
+  color: #373e49;
+  font-family: "Open Sans",sans-serif;
+  font-size: 1.275rem;
+  font-weight: 400;
+  margin: 8px 0 0;
+  outline: none;
+  padding: 0 0 8px 0;
+  text-transform: unset;
+}
+
+.c6 {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  align-items: center;
+  align-self: center;
+  color: inherit;
+  display: flex;
+  flex-flow: nowrap;
+  flex: 1;
+  outline: none;
+  padding: 0 8px 0 0;
+  position: relative;
+}
+
+.c7 >* {
+  display: inline;
+}
+
 .c1 {
   padding: 10px;
   flex: 2 2 67%;
 }
 
-.c40 {
+.c35 {
   display: flex;
   gap: 5px;
   align-items: center;
 }
 
-.c41 {
+.c36 {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-.c42 {
+.c37 {
   max-width: 120px;
 }
 
-.c45 {
+.c41 {
   color: #4d4d4d;
 }
 
 @media (pointer: coarse) {
-  .c30:not(:disabled):active {
+  .c49:not(:disabled):active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     background-color: transparent;
     box-shadow: none;
@@ -715,7 +711,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
 }
 
 @media (pointer: fine) {
-  .c30:not(:disabled):hover {
+  .c49:not(:disabled):hover {
     background-color: transparent;
     box-shadow: none;
     color: #d50075;
@@ -724,23 +720,23 @@ exports[`TextStyleEditor should render correctly 1`] = `
 }
 
 @media (pointer: fine) {
-  .c30:hover {
+  .c49:hover {
     outline: 1px solid transparent;
   }
 }
 
 @media (pointer: coarse) {
-  .c27 .c30.c30:active {
+  .c47 .c49.c49:active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
 
-  .c27 .c30.c30:active .c31 {
+  .c47 .c49.c49:active .c28 {
     color: inherit;
   }
 }
 
 @media (pointer: fine) {
-  .c27 .c30.c30:hover .c31 {
+  .c47 .c49.c49:hover .c28 {
     color: inherit;
   }
 }
@@ -772,14 +768,14 @@ exports[`TextStyleEditor should render correctly 1`] = `
 }
 
 @media (pointer: coarse) {
-  .c39:active {
+  .c34:active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     box-shadow: 0 2px 0 0 #d50075;
   }
 }
 
 @media (pointer: fine) {
-  .c39:hover {
+  .c34:hover {
     box-shadow: 0 2px 0 0 #d50075;
   }
 }
@@ -851,33 +847,33 @@ exports[`TextStyleEditor should render correctly 1`] = `
       >
         <div
           class="c9 field-wrapper field-wrapper--block"
-          data-role="textline"
+          data-role="text-field"
         >
           <div
             class="c10 c11 field__main"
           >
             <div
               class="c12 c13 field"
-              data-role="textline-control"
+              data-role="text-field-control"
             >
               <label
                 class="c14 c15 label field__label"
                 data-disabled="false"
-                data-role="textline-label"
+                data-role="text-field-label"
               >
                 Name
               </label>
               <div
                 class="c16 field__input"
                 data-disabled="false"
-                data-role="textline-input-wrapper"
+                data-role="text-field-input-wrapper"
               >
                 <span
                   class="c17 supported-unseen-span"
                 />
                 <input
                   class="c18 field__text"
-                  data-role="textline-input"
+                  data-role="text-field-input"
                   type="text"
                   value="Test Text Style"
                 />
@@ -1023,7 +1019,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
         data-role="layout-grid-column"
       >
         <div
-          class="c12 c26 field field--tooltips field--tooltips-3 field--block"
+          class="c12 c20 field field--tooltips field--tooltips-2 field--block"
           data-role="select"
         >
           <label
@@ -1049,6 +1045,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
                 aria-haspopup="listbox"
                 class="c23 field__selectTitle"
                 data-role="select-input"
+                data-testid="typesetting-model-select"
                 role="combobox"
                 value=""
               />
@@ -1057,37 +1054,6 @@ exports[`TextStyleEditor should render correctly 1`] = `
                 class="c25 field__select-arrow"
               />
             </div>
-            <span
-              class="c27 c28 tooltip tooltip--hint"
-              data-role="tooltip-hint"
-              role="tooltip"
-              title=""
-            >
-              <button
-                class="c29 c30 button button--icon"
-                data-role="button"
-                data-type="icon"
-                title=""
-                type="button"
-              >
-                <i
-                  class="c31 c32 plasma-icon"
-                  data-role="plasma-icon"
-                >
-                  <span
-                    aria-hidden="true"
-                  >
-                    info
-                  </span>
-                  <span
-                    class="c33 -u-unseenButRead"
-                    data-role="hidden-text"
-                  >
-                    Hint: Tooltip
-                  </span>
-                </i>
-              </button>
-            </span>
           </div>
         </div>
       </div>
@@ -1096,7 +1062,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
         data-role="layout-grid-column"
       >
         <div
-          class="c12 c26 field field--tooltips field--tooltips-3 field--block"
+          class="c12 c20 field field--tooltips field--tooltips-2 field--block"
           data-role="select"
         >
           <label
@@ -1173,37 +1139,6 @@ exports[`TextStyleEditor should render correctly 1`] = `
                 class="c25 field__select-arrow"
               />
             </div>
-            <span
-              class="c27 c28 tooltip tooltip--hint"
-              data-role="tooltip-hint"
-              role="tooltip"
-              title=""
-            >
-              <button
-                class="c29 c30 button button--icon"
-                data-role="button"
-                data-type="icon"
-                title=""
-                type="button"
-              >
-                <i
-                  class="c31 c32 plasma-icon"
-                  data-role="plasma-icon"
-                >
-                  <span
-                    aria-hidden="true"
-                  >
-                    info
-                  </span>
-                  <span
-                    class="c33 -u-unseenButRead"
-                    data-role="hidden-text"
-                  >
-                    Hint: Tooltip
-                  </span>
-                </i>
-              </button>
-            </span>
           </div>
         </div>
       </div>
@@ -1228,14 +1163,14 @@ exports[`TextStyleEditor should render correctly 1`] = `
             Font
           </label>
           <div
-            class="c34 message message--warning"
+            class="c26 message message--warning"
             data-role="select-warning-message"
           >
             <div
-              class="c35 messageIcon"
+              class="c27 messageIcon"
             >
               <i
-                class="c31 c36 c32 c37 plasma-icon plasma-icon--warning"
+                class="c28 c29 c30 c31 plasma-icon plasma-icon--warning"
                 data-role="plasma-icon"
                 title="Warning"
               >
@@ -1245,7 +1180,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
                   warning
                 </span>
                 <span
-                  class="c33 -u-unseenButRead"
+                  class="c32 -u-unseenButRead"
                   data-role="hidden-text"
                 >
                   Warning
@@ -1253,10 +1188,10 @@ exports[`TextStyleEditor should render correctly 1`] = `
               </i>
             </div>
             <div
-              class="c38 messageText"
+              class="c33 messageText"
               data-role="warning-text"
             >
-              This font is not configured. Elements applying this text style will be printed with default font.
+              Font does not exist in the workspace resources. Elements using this text style will be printed with the default font.
             </div>
           </div>
           <div
@@ -1265,7 +1200,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
             data-role="select-control"
           >
             <div
-              class="c39 field__select-wrapper field__select-wrapper--warning"
+              class="c34 field__select-wrapper field__select-wrapper--warning"
               data-disabled="false"
               data-role="select-wrapper"
             >
@@ -1291,25 +1226,25 @@ exports[`TextStyleEditor should render correctly 1`] = `
         data-role="layout-grid-column"
       >
         <div
-          class="c40"
+          class="c35"
         >
           <div
-            class="c41"
+            class="c36"
           >
             <div
-              class="c9 field-wrapper field-wrapper--block c42"
-              data-role="textline"
+              class="c9 field-wrapper field-wrapper--block c37"
+              data-role="text-field"
             >
               <div
                 class="c10 c11 field__main"
               >
                 <div
-                  class="c43 field-addon field-addon--before"
-                  data-role="textline--addon-before-0"
+                  class="c38 field-addon field-addon--before"
+                  data-role="text-field--addon-before-0"
                 >
                   <button
                     aria-label="Font Size"
-                    class="c29 c44 button button--icon c45"
+                    class="c39 c40 button button--icon c41"
                     data-role="button"
                     data-type="icon"
                     disabled=""
@@ -1317,7 +1252,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
                     type="button"
                   >
                     <i
-                      class="c31 c32 c46 plasma-icon plasma-icon--big"
+                      class="c28 c30 c42 plasma-icon plasma-icon--big"
                       data-role="plasma-icon"
                     >
                       <span
@@ -1330,19 +1265,19 @@ exports[`TextStyleEditor should render correctly 1`] = `
                 </div>
                 <div
                   class="c12 c13 field"
-                  data-role="textline-control"
+                  data-role="text-field-control"
                 >
                   <div
                     class="c16 field__input"
                     data-disabled="false"
-                    data-role="textline-input-wrapper"
+                    data-role="text-field-input-wrapper"
                   >
                     <span
                       class="c17 supported-unseen-span"
                     />
                     <input
-                      class="c47 field__text field__text--align-right"
-                      data-role="textline-input"
+                      class="c43 field__text field__text--align-right"
+                      data-role="text-field-input"
                       type="text"
                       value="12"
                     />
@@ -1350,12 +1285,12 @@ exports[`TextStyleEditor should render correctly 1`] = `
                       class="c17 supported-unseen-span"
                     />
                     <div
-                      class="c48 field__suffix field__suffix--first -u-background-transparent"
-                      data-role="textline-suffix-0"
+                      class="c44 field__suffix field__suffix--first -u-background-transparent"
+                      data-role="text-field-suffix-0"
                     >
                       <div
-                        class="c49 c50 field__affix-text"
-                        data-role="textline-text-affix"
+                        class="c45 c46 field__affix-text"
+                        data-role="text-field-text-affix"
                         title="pt"
                       >
                         <span>
@@ -1368,19 +1303,19 @@ exports[`TextStyleEditor should render correctly 1`] = `
               </div>
             </div>
             <div
-              class="c9 field-wrapper field-wrapper--block c42"
-              data-role="textline"
+              class="c9 field-wrapper field-wrapper--block c37"
+              data-role="text-field"
             >
               <div
                 class="c10 c11 field__main"
               >
                 <div
-                  class="c43 field-addon field-addon--before"
-                  data-role="textline--addon-before-0"
+                  class="c38 field-addon field-addon--before"
+                  data-role="text-field--addon-before-0"
                 >
                   <button
                     aria-label="Line Height"
-                    class="c29 c44 button button--icon c45"
+                    class="c39 c40 button button--icon c41"
                     data-role="button"
                     data-type="icon"
                     disabled=""
@@ -1388,7 +1323,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
                     type="button"
                   >
                     <i
-                      class="c31 c32 c46 plasma-icon plasma-icon--big"
+                      class="c28 c30 c42 plasma-icon plasma-icon--big"
                       data-role="plasma-icon"
                     >
                       <span
@@ -1401,19 +1336,19 @@ exports[`TextStyleEditor should render correctly 1`] = `
                 </div>
                 <div
                   class="c12 c13 field"
-                  data-role="textline-control"
+                  data-role="text-field-control"
                 >
                   <div
                     class="c16 field__input"
                     data-disabled="false"
-                    data-role="textline-input-wrapper"
+                    data-role="text-field-input-wrapper"
                   >
                     <span
                       class="c17 supported-unseen-span"
                     />
                     <input
-                      class="c47 field__text field__text--align-right"
-                      data-role="textline-input"
+                      class="c43 field__text field__text--align-right"
+                      data-role="text-field-input"
                       type="text"
                       value="18"
                     />
@@ -1421,12 +1356,12 @@ exports[`TextStyleEditor should render correctly 1`] = `
                       class="c17 supported-unseen-span"
                     />
                     <div
-                      class="c48 field__suffix field__suffix--first -u-background-transparent"
-                      data-role="textline-suffix-0"
+                      class="c44 field__suffix field__suffix--first -u-background-transparent"
+                      data-role="text-field-suffix-0"
                     >
                       <div
-                        class="c49 c50 field__affix-text"
-                        data-role="textline-text-affix"
+                        class="c45 c46 field__affix-text"
+                        data-role="text-field-text-affix"
                         title="pt"
                       >
                         <span>
@@ -1440,20 +1375,20 @@ exports[`TextStyleEditor should render correctly 1`] = `
             </div>
           </div>
           <span
-            class="c27 c28 tooltip tooltip--hint"
+            class="c47 c48 tooltip tooltip--hint"
             data-role="tooltip-hint"
             role="tooltip"
             title=""
           >
             <button
-              class="c29 c30 button button--icon"
+              class="c39 c49 button button--icon"
               data-role="button"
               data-type="icon"
               title=""
               type="button"
             >
               <i
-                class="c31 c32 plasma-icon"
+                class="c28 c30 plasma-icon"
                 data-role="plasma-icon"
               >
                 <span
@@ -1462,7 +1397,7 @@ exports[`TextStyleEditor should render correctly 1`] = `
                   info
                 </span>
                 <span
-                  class="c33 -u-unseenButRead"
+                  class="c32 -u-unseenButRead"
                   data-role="hidden-text"
                 >
                   Hint: Tooltip

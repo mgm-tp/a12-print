@@ -29,13 +29,16 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::PrintModelIdInterface[]
 package com.mgmtp.a12.print.engine.api;
 
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * The interface PrintModel Identifier
  */
+@OnlyForUsage
 public interface PrintModelId {
 
 	/**
@@ -94,5 +97,5 @@ public interface PrintModelId {
 			}
 		};
 	}
-
 }
+// end::PrintModelIdInterface[]

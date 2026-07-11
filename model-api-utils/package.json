@@ -1,6 +1,6 @@
 {
   "name": "@com.mgmtp.a12.print/print-model-api-utils",
-  "version": "3.2.3",
+  "version": "4.0.0",
   "license": "(EUPL-1.2 OR LicenseRef-commercial)",
   "description": "Print Model API Utils",
   "type": "module",
@@ -31,16 +31,23 @@
     "NOTICE",
     "THIRD_PARTY_NOTICES"
   ],
-  "main": "./lib/index.js",
   "exports": {
-    ".": "./lib/index.js",
-    "./lib/*": [
-      "./lib/*",
-      "./lib/*/index.js",
-      "./lib/*.js"
-    ],
     "./garbage-collector": "./lib/garbage-collector/index.js",
-    "./marshaller": "./lib/marshaller/index.js"
+    "./marshaller": "./lib/marshaller/index.js",
+    "./a12internal": "./lib/a12internal/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "garbage-collector": [
+        "./lib/garbage-collector/index.d.ts"
+      ],
+      "marshaller": [
+        "./lib/marshaller/index.d.ts"
+      ],
+      "a12internal": [
+        "./lib/a12internal/index.d.ts"
+      ]
+    }
   },
   "devDependencies": {
     "@com.mgmtp.a12.base/base-model-api": "catalog:a12",
@@ -64,6 +71,7 @@
     "eslint-plugin-jest": "catalog:",
     "eslint-plugin-prettier": "catalog:",
     "eslint-plugin-unused-imports": "catalog:",
+    "htmlparser2": "catalog:",
     "jest": "catalog:",
     "jest-junit": "catalog:",
     "lodash": "catalog:",
@@ -71,7 +79,6 @@
     "nanoid": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
-    "ts-node": "catalog:",
     "typedoc": "catalog:",
     "typescript": "catalog:"
   },
@@ -85,6 +92,7 @@
     "@com.mgmtp.a12.utils/utils-localization": "catalog:a12Ranges",
     "@com.mgmtp.a12.utils/utils-logging": "catalog:a12Ranges",
     "antlr4": "catalog:",
+    "htmlparser2": "catalog:",
     "lodash": "catalog:",
     "nanoid": "catalog:"
   }

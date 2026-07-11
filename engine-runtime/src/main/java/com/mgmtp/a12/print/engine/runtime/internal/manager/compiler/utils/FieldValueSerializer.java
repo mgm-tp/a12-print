@@ -31,8 +31,6 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.utils;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.mgmtp.a12.kernel.md.document.api.services.DocumentSerializationException;
 import com.mgmtp.a12.kernel.md.model.api.IElement;
 import com.mgmtp.a12.kernel.md.model.api.IField;
@@ -41,16 +39,22 @@ import com.mgmtp.a12.kernel.md.model.api.fieldtypes.IDateRangeType;
 import com.mgmtp.a12.kernel.md.model.api.fieldtypes.IDateType;
 import com.mgmtp.a12.kernel.md.model.api.fieldtypes.IFieldType;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.KernelElementUtils;
+import com.mgmtp.a12.utils.conversion.InstantRange;
 import org.apache.commons.lang3.Validate;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.TimeZone;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.ObjectWriteContext;
+import tools.jackson.core.StreamWriteFeature;
+import tools.jackson.core.json.JsonFactory;
 
 
 public class FieldValueSerializer {
@@ -69,31 +73,31 @@ public class FieldValueSerializer {
 	 */
 	public static String getLiteralValue(IElement field, String path,  Optional<Object> valueOptional, TimeZone timeZone) {
 		final var stringWriter = new StringWriter();
-		try (final JsonGenerator jsonGenerator = JSON_FACTORY.createGenerator(stringWriter);) {
-			jsonGenerator.enable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+		try (final JsonGenerator jsonGenerator = JSON_FACTORY.createGenerator(ObjectWriteContext.empty(), stringWriter)) {
+			jsonGenerator.configure(StreamWriteFeature.WRITE_BIGDECIMAL_AS_PLAIN, true);
 
 			try {
 				if (valueOptional.isEmpty()) {
 					return null;
 				}
 				Object value = valueOptional.get();
-				if (value instanceof String) {
-					jsonGenerator.writeRaw((String) value);
-				} else if (value instanceof Boolean) {
-					jsonGenerator.writeBoolean((Boolean) value);
-				} else if (value instanceof BigDecimal) {
-					jsonGenerator.writeNumber((BigDecimal) value);
-				} else if (value instanceof Date) {
-					String dateStr = serializeDate(
-						(Date) value,
+				if (value instanceof String stringValue) {
+					jsonGenerator.writeRaw(stringValue);
+				} else if (value instanceof Boolean booleanValue) {
+					jsonGenerator.writeBoolean(booleanValue);
+				} else if (value instanceof BigDecimal decimal) {
+					jsonGenerator.writeNumber(decimal);
+				} else if (value instanceof Instant instant) {
+					String dateStr = serializeInstant(
+						instant,
 						getDateFormatOrThrow(field),
 						timeZone
 					);
 					jsonGenerator.writeRaw(dateStr);
-				} else if (value instanceof Date[]) {
+				} else if (value instanceof InstantRange range) {
 					String drStr =
-						serializeDateRange(
-							(Date[]) value,
+						serializeInstantRange(
+							range,
 							A12_DATE_RANGE_SEPARATOR,
 							getDateFormatOrThrow(field), timeZone
 						);
@@ -106,11 +110,11 @@ public class FieldValueSerializer {
 				jsonGenerator.flush();
 				stringWriter.flush();
 				return stringWriter.toString();
-			} catch (final IOException ioe) {
+			} catch (final JacksonException ioe) {
 				throw new DocumentSerializationException(String.format("Error while writing '%s'.", path), ioe);
 			}
 
-		} catch (final IOException ioe) {
+		} catch (final JacksonException ioe) {
 			throw new DocumentSerializationException("Error while creating/writing JsonGenerator.", ioe);
 		}
 
@@ -132,16 +136,16 @@ public class FieldValueSerializer {
 		}
 	}
 
-	public static String serializeDate(final Date date, final String dateFormatStr, TimeZone timeZone) {
-		Objects.requireNonNull(date);
+	public static String serializeInstant(final Instant instant, final String dateFormatStr, TimeZone timeZone) {
+		Objects.requireNonNull(instant);
 		Validate.notBlank(dateFormatStr);
 		final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(dateFormatStr).withZone(timeZone.toZoneId());
-		return dateFormat.format(date.toInstant());
+		return dateFormat.format(instant);
 	}
 
-	public static String serializeDateRange(final Date[] dates, final String separator, final String dateFormatStr,
-											TimeZone timeZone) {
-		return serializeDate(dates[0], dateFormatStr, timeZone) + separator + serializeDate(dates[1], dateFormatStr, timeZone);
+	public static String serializeInstantRange(final InstantRange instantRange, final String separator, final String dateFormatStr,
+											   TimeZone timeZone) {
+		return serializeInstant(instantRange.start(), dateFormatStr, timeZone) + separator + serializeInstant(instantRange.end(), dateFormatStr, timeZone);
 	}
 
 }

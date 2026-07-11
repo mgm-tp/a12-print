@@ -35,7 +35,9 @@ import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 @FunctionalInterface
 public interface PrintModelResolver {
 	Optional<PrintModelTreeTrace<PrintModel>> resolvePrintModel(String printModelId);

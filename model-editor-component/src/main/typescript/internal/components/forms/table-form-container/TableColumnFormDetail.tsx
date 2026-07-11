@@ -33,26 +33,22 @@ import { useDispatch, useSelector } from "react-redux";
 import * as React from "react";
 import { nanoid } from "nanoid";
 
-import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-line/index.js";
-import {
-	ElementType,
-	PartialExpression,
+import { TextAffix, addPrefix } from "@com.mgmtp.a12.widgets/widgets-core";
+import type {
 	PartialField,
 	PartialTable,
 	PartialTableColumnReference,
 	TableColumnReference,
-	TextProperties,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { TableRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType, PartialExpression } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { TableRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
-import { DetailDataActions, TransactionLogStateActions } from "../../../redux/index.js";
+import { NavigationActions, NavigationSelectors, TransactionLogStateActions } from "../../../redux/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
@@ -65,14 +61,15 @@ import {
 	parseNumberInputValue,
 	stringifyInputValue,
 } from "../../../utils/input-source-utils.js";
-import { TABLE_PROPERTY_PATH, TEXT_PROPERTIES_PATH } from "../../../constant/element-property-path.js";
+import { TABLE_PROPERTY_PATH } from "../../../constant/element-property-path.js";
 
 import { BackButtonGroup } from "../shared-components/index.js";
-import { CustomCheckbox, CustomSelect, CustomTextLineStateful } from "../custom-base-input-components/index.js";
+import { CustomCheckbox, CustomSelect, DynamicSourceTextField } from "../custom-base-input-components/index.js";
 
 import { TableColumnFieldForm } from "./TableColumnFieldForm.js";
 import { TableColumnExpressionForm } from "./TableColumnExpressionForm.js";
-import { TableColumnElementBaseProps } from "./table-column-element-base.js";
+import type { TableColumnElementBaseProps } from "./table-column-element-base.js";
+import { setInheritForExpressionTextProperties } from "./table-column-utils.js";
 
 type ColumnElementType = ElementType.Field | ElementType.Expression | "";
 
@@ -85,7 +82,7 @@ export const TableColumnFormDetail = ({ element, columnIndex }: TableColumnFormD
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 	const refId = element.table?.columns?.[columnIndex].refId;
 	const refElement = useSelector((state: PrintEngineState) =>
 		refId ? PrintEngineSelectors.printModelElement(state, refId) : undefined
@@ -110,14 +107,8 @@ export const TableColumnFormDetail = ({ element, columnIndex }: TableColumnFormD
 	}, [columnIndex, columns]);
 
 	const onBackButton = React.useCallback(() => {
-		dispatch(
-			DetailDataActions.removeView({
-				containerId: currentDetailDataId,
-				view: TableRegion.TABLE_COLUMN_FORM,
-			})
-		);
-		dispatch(DetailDataActions.deleteAdditionalData({ containerId: currentDetailDataId }));
-	}, [dispatch, currentDetailDataId]);
+		dispatch(NavigationActions.popFormStack({ tab, entityId, mode }));
+	}, [dispatch, tab, entityId, mode]);
 
 	const updateCurrentColumn = (newColumn: DeepPartialRecursive<TableColumnReference>, description: string) => {
 		const updatedElement: PartialTable = {
@@ -252,7 +243,7 @@ export const TableColumnFormDetail = ({ element, columnIndex }: TableColumnFormD
 				onValueChanged={onColumnTypeChange}
 				errorMessage={getPropertyErrorMessage("refId")}
 			/>
-			<CustomTextLineStateful
+			<DynamicSourceTextField
 				sourceProperties={{
 					inputSource: currentColumn?.label,
 					element,
@@ -296,20 +287,30 @@ export const TableColumnFormDetail = ({ element, columnIndex }: TableColumnFormD
 				errorMessage={getPropertyErrorMessage("width")}
 			/>
 			{TableColumnForm && (
-				<TableColumnForm refId={refElement?.id || ""} group={group} model={element.table?.model} />
-			)}
-			{showSumColumn && (
-				<CustomCheckbox
-					checked={sumColumn}
-					onChange={value =>
-						updateCurrentColumn(
-							{ sumColumn: value },
-							RESOURCE_KEYS.interaction.form.tableFormContainer.tableColumnForm.toggleSumColumn
-						)
+				<TableColumnForm
+					refId={refElement?.id || ""}
+					group={group}
+					model={element.table?.model}
+					tableId={element.id}
+					renderAppendContent={
+						showSumColumn
+							? () => (
+									<CustomCheckbox
+										checked={sumColumn}
+										onChange={value =>
+											updateCurrentColumn(
+												{ sumColumn: value },
+												RESOURCE_KEYS.interaction.form.tableFormContainer.tableColumnForm
+													.toggleSumColumn
+											)
+										}
+										label={localizer(RESOURCE_KEYS.elementForm.table.column.field.sumColumn)}
+										className={addPrefix("-u-margin-t-2xs")}
+										errorMessage={getPropertyErrorMessage("sumColumn")}
+									/>
+								)
+							: undefined
 					}
-					label={localizer(RESOURCE_KEYS.elementForm.table.column.field.sumColumn)}
-					className={addPrefix("-u-margin-t-2xs")}
-					errorMessage={getPropertyErrorMessage("sumColumn")}
 				/>
 			)}
 			<BackButtonGroup onBack={onBackButton} className={addPrefix("-u-margin-t-md")} />
@@ -346,24 +347,3 @@ const useColumnTypes = () => {
 		[localizer]
 	);
 };
-
-function setInheritForExpressionTextProperties(expression: PartialExpression, table: PartialTable): TextProperties {
-	function createInheritedGroup(path: string) {
-		return {
-			id: nanoid(),
-			source: PossibleInputSource.INHERITED,
-			path: InputValueSourceResolver.getInputSourceMetadata(expression, path).path,
-			reference: table.id,
-		};
-	}
-	return {
-		id: nanoid(),
-		textStyleId: createInheritedGroup(TEXT_PROPERTIES_PATH.textStyleId),
-		color: createInheritedGroup(TEXT_PROPERTIES_PATH.color),
-		backgroundColor: createInheritedGroup(TEXT_PROPERTIES_PATH.backgroundColor),
-		bold: createInheritedGroup(TEXT_PROPERTIES_PATH.bold),
-		italic: createInheritedGroup(TEXT_PROPERTIES_PATH.italic),
-		underlined: createInheritedGroup(TEXT_PROPERTIES_PATH.underlined),
-		alignment: createInheritedGroup(TEXT_PROPERTIES_PATH.alignment),
-	};
-}

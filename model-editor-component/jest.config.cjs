@@ -37,6 +37,8 @@ module.exports = {
 	moduleNameMapper: {
 		...base.moduleNameMapper,
 		"\\.(ttf)$": "identity-obj-proxy",
+		"\\.(css|scss)$": "<rootDir>/src/test/typescript/__mocks__/styleMock.ts",
 		"^monaco-editor$": "<rootDir>/src/test/typescript/__mocks__/monaco-editor.ts",
+		"^monaco-editor/.+$": "<rootDir>/src/test/typescript/__mocks__/monaco-editor.ts",
 	},
 };

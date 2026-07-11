@@ -1,27 +1,26 @@
 {
-	"extends": "./node_modules/@com.mgmtp.a12.print/print-dev-tools/tsconfig.json",
-	"include": ["src/main/typescript/**/*", "src/test/typescript/**/*"],
-	"compilerOptions": {
+  "extends": "./node_modules/@com.mgmtp.a12.print/print-dev-tools/tsconfig.json",
+  "include": ["src/main/typescript/**/*", "src/test/typescript/**/*"],
+  "compilerOptions": {
     "rootDir": "./src/main/typescript",
-		"outDir": "./lib",
+    "outDir": "./lib",
     "allowJs": true,
-		"rootDirs": ["./src/main/typescript", "./src/test/typescript"],
-		"allowSyntheticDefaultImports": true,
-		"types": ["jest", "node"],
+    "rootDirs": ["./src/main/typescript", "./src/test/typescript"],
+    "types": ["jest", "node"],
     "typeRoots": [
-      "src/main/typescript/internal/types/antlr4",
+      "src/main/typescript/a12internal/types/antlr4",
       "node_modules/@types"
     ],
   },
   "typedocOptions": {
-		"name": "Computation Parser API",
-		"out": "./build/docs/typedoc",
-		"theme": "default",
-		"excludeInternal": "true",
-		"excludePrivate": "false",
-		"readme": "none",
-		"entryPoints": ["src/main/typescript/"],
-		"entryPointStrategy": "expand",
-		"exclude": ["**/internal/**/*"]
-	}
+    "name": "Computation Parser API",
+    "out": "./build/docs/typedoc",
+    "theme": "default",
+    "excludeInternal": "true",
+    "excludePrivate": "false",
+    "readme": "none",
+    "entryPoints": ["src/main/typescript/"],
+    "entryPointStrategy": "expand",
+    "exclude": ["**/internal/**/*"]
+  }
 }

@@ -30,14 +30,15 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { fireEvent, screen, waitFor, within } from "@testing-library/react";
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
 
 import {
 	createTransactionLogState,
 	defaultPrintEditorState,
 	renderWithProviders,
 } from "../../../../../../test/typescript/test-utils/index.js";
-import { EditorStateReducer, PrintEditorState } from "../../../redux/index.js";
+import type { PrintEditorState } from "../../../redux/index.js";
+import { EditorStateReducer } from "../../../redux/index.js";
 
 import { TextStyles } from "../TextStyles.js";
 

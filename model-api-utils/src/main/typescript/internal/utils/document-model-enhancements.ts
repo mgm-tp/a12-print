@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Annotation } from "@com.mgmtp.a12.base/base-model-api/lib/main/header/index.js";
+import type { Annotation } from "@com.mgmtp.a12.base/base-model-api";
 
-import { ElementMapEntry } from "../types/document-model-data.js";
+import type { ElementMapEntry } from "../../a12internal/utils/document-model-data.js";
 
 export namespace DocumentModelEnhancements {
 	export function getDocumentModelEnhancements(elementMapEntry: ElementMapEntry, documentModelId: string) {

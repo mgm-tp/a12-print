@@ -32,15 +32,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useMemo, useState } from "react";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { EntityKey, getEntityId, ModelReferenceEntity } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/main/button.view.js";
+import { Icon, addPrefix, Button } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { ModelReferenceEntity } from "@com.mgmtp.a12.print/print-model-api/model";
+import { EntityKey, getEntityId } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { SchemaActions } from "../../redux/schema/action.js";
-import { RequestApiSelectors } from "../../redux/request-api/selectors.js";
+import { SchemaActions } from "../../redux//schema/action.js";
+import { RequestApiSelectors } from "../../redux//request-api/selectors.js";
 
 import { CustomSelect } from "../forms/custom-base-input-components/index.js";
 
@@ -89,7 +88,7 @@ export const TypesettingModelReferencesToolbar = () => {
 	const addButtonLabel = localizer(RESOURCE_KEYS.button.add);
 
 	return (
-		<StyledSchemaToolbar>
+		<StyledSchemaToolbar data-testid="typesetting-references-toolbar">
 			<CustomSelect
 				className={addPrefix("-u-flex-1")}
 				placeholder={localizer(RESOURCE_KEYS.input.selectPlaceholder)}

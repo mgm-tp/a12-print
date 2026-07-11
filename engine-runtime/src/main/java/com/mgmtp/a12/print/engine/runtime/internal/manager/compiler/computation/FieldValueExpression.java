@@ -32,8 +32,8 @@
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.computation;
 
 import com.mgmtp.a12.print.engine.api.PrintJob;
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.Entity;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalCorePrintEngineRuntime;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.ComputationFieldType;
 import lombok.Builder;
@@ -69,7 +69,10 @@ public class FieldValueExpression implements TypedComputationExpression {
 
 	@Override
 	public @NonNull Optional<Object> call(@NonNull Parameters parameters, @NonNull PrintJob job, @NonNull InternalCorePrintEngineRuntime runtime) {
-		final var documentContext = parameters.getPrintDocumentContext().orElseThrow(() -> new PrintException("unable to read FieldValue without a Document"));
-		return Optional.ofNullable(documentContext.findSingleFieldInstance(path).flatMap(PrintDocumentContext.Entity::getValue).orElse(defaultValue));
+		final var documentContext = parameters.getPrintDocumentContext().orElseThrow(() ->
+			new PrintDomainException("Unable to read FieldValue for {} without a Document for the model {}", path, modelName)
+		);
+		final var preventRepeatableContextError = parameters.isPreventRepeatableContextError();
+		return Optional.ofNullable(documentContext.findSingleFieldInstance(path, false, preventRepeatableContextError).flatMap(Entity::getValue).orElse(defaultValue));
 	}
 }

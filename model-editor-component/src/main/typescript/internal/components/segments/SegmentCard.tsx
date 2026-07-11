@@ -30,36 +30,25 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/main/button.view.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { PopUpMenu } from "@com.mgmtp.a12.widgets/widgets-core/lib/pop-up-menu/main/pop-up-menu.view.js";
-import {
-	GlobalRegion,
-	SidebarItem,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import {
-	DataContext,
-	PageOrientation,
-	PartialSegment,
-	SegmentType,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { TextLineStateless } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import { Button, Icon, PopUpMenu, TextField } from "@com.mgmtp.a12.widgets/widgets-core";
+import { GlobalRegion, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { DataContext, PartialSegment } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PageOrientation, SegmentType } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import { EditorStateActions, TransactionLogStateActions, ValidationCounter } from "../../redux/index.js";
-import { PrintEngineSelectors } from "../../store/selectors.js";
+import { EditorStateActions, NavigationSelectors, TransactionLogStateActions } from "../../redux/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { InteractionLogActions } from "../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
-import { RequestApiSelectors } from "../../redux/request-api/selectors.js";
+import { InteractionLogActions } from "../../redux//interaction-log/index.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
+import { RequestApiSelectors } from "../../redux//request-api/selectors.js";
 import { ROOT_DATA_CONTEXT_ENTRY } from "../../constant/data-context.js";
 
 import { BadgeGroup } from "../badge/BadgeGroup.js";
-import { CustomTextLineStateful } from "../forms/custom-base-input-components/index.js";
+import { DynamicSourceTextField } from "../forms/custom-base-input-components/index.js";
 import { RepeatableSettings } from "../custom-input/RepeatableSettings.js";
 
 import {
@@ -84,7 +73,7 @@ export const SegmentCard: React.FunctionComponent<SegmentCardProps> = React.memo
 	setOpenSetting,
 }) {
 	const dispatch = useDispatch();
-	const printModelRefs = useSelector(PrintEngineSelectors.printModelRefs);
+	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
 
 	const openEditor = React.useCallback(() => {
 		dispatch(
@@ -124,9 +113,12 @@ interface LeftSideSegmentSettingProps {
 
 export const LeftSideSegmentSetting = ({ segment }: LeftSideSegmentSettingProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
-	const segmentValidationCounter: ValidationCounter = useSelector((state: PrintEngineState) =>
-		ValidationSelectors.segmentValidationCounter(state, segment?.id)
+	const selectSegmentValidationCounter = React.useMemo(
+		() => (state: PrintEngineState) => ValidationSelectors.segmentValidationCounter(state, segment?.id),
+		[segment.id]
 	);
+
+	const segmentValidationCounter = useSelector(selectSegmentValidationCounter, shallowEqual);
 	const dinTemplateSegmentItem = useSelector((state: PrintEngineState) =>
 		RequestApiSelectors.dinTemplateSegmentItem(state, segment.id)
 	);
@@ -322,7 +314,7 @@ export const CollapsibleSegmentSetting = ({ segment }: CollapsibleSegmentSetting
 
 	return (
 		<StyledOpenCollapsibleSegment draggable onDragStart={preventDragEvent}>
-			<CustomTextLineStateful
+			<DynamicSourceTextField
 				value={segment.title}
 				placeholder={localizer(RESOURCE_KEYS.sidebar.segment.setting.namePlaceholder)}
 				onBlur={onUpdateSegmentTitle}
@@ -330,7 +322,7 @@ export const CollapsibleSegmentSetting = ({ segment }: CollapsibleSegmentSetting
 				label={localizer(RESOURCE_KEYS.sidebar.segment.setting.name)}
 			/>
 			{dinTemplateSegmentItem && (
-				<TextLineStateless
+				<TextField
 					readonly
 					value={DinTemplateSegmentItem.stringify(dinTemplateSegmentItem)}
 					label={localizer(RESOURCE_KEYS.sidebar.segment.setting.segmentTemplate)}

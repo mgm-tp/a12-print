@@ -32,7 +32,7 @@
 package com.mgmtp.a12.print.typesetting.internal.serialization;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.util.StdConverter;
+import tools.jackson.databind.util.StdConverter;
 
 import java.util.Locale;
 

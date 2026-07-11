@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { HyphenationExclusion } from "../../model/index.js";
+import type { HyphenationExclusion } from "../../../../a12internal/api/model/index.js";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface, @typescript-eslint/no-empty-object-type
 export interface HyphenationResultEntry {}
@@ -50,5 +50,3 @@ export class HyphenationResultHyphenEntry implements HyphenationResultEntry {}
 export interface Hyphenator {
 	findHyphenPositions(word: string, customHyphenationExclusions?: HyphenationExclusion[]): HyphenationResultEntry[];
 }
-
-export default Hyphenator;

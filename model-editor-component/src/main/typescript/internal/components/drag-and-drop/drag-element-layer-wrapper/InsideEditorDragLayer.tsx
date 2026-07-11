@@ -32,25 +32,25 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { PartialValidPlaceableReference, Placeable } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference, Placeable } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../../constant/editor.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
+import type { PlainMeasurePosition } from "../../../utils/index.js";
 import {
 	createMmMeasure,
 	createPlainMmMeasure,
 	createPlainMmMeasureFromPx,
 	EditorUtils,
 	formatNumberToString,
-	PlainMeasurePosition,
 } from "../../../utils/index.js";
-import { DragItem } from "../../../types/index.js";
+import type { DragItem } from "../../../types/index.js";
 import { ToolTipBottom, ToolTipLeft, ToolTipRight, ToolTipTop } from "../../tool-tips/ToolTips.styled.js";
 import { BorderLines } from "../../border-line/BorderLines.js";
 import { EditorContext } from "../../editor-stage/editor-context.js";
-import { DndRsLine } from "../../../types/dnd.js";
+import type { DndRsLine } from "../../../types/dnd.js";
 
-import { BasicDragLayerProps } from "../create-drag-layer-wrapper.js";
+import type { BasicDragLayerProps } from "../create-drag-layer-wrapper.js";
 
 import { PreviewElementContainer } from "./PreviewElementContainer.js";
 import { StyledDragLayerContainer } from "./DragElementLayerWrapper.styled.js";
@@ -86,7 +86,6 @@ export const InsideEditorDragLayer = ({
 
 	const [rsLineHor, setRsLineHor] = React.useState<DndRsLine | null>(null);
 	const [rsLineVert, setRsLineVert] = React.useState<DndRsLine | null>(null);
-	const [isOverlapping, setIsOverlapping] = React.useState(false);
 	const getRsLinesSide = useRsLineSide();
 	const getRsLinesTop = useRsLineTop();
 
@@ -230,7 +229,6 @@ export const InsideEditorDragLayer = ({
 					y: createPlainMmMeasure(PX_TO_MM((clientY - top) / zoomFactor)),
 				};
 			}
-			calculateSnapOffset(currentDifference, mainTarget);
 
 			return currentDifference;
 		}
@@ -238,48 +236,52 @@ export const InsideEditorDragLayer = ({
 			x: createPlainMmMeasure(0),
 			y: createPlainMmMeasure(0),
 		};
-	}, [
-		calculateSnapOffset,
-		clientOffset,
-		differenceOffset,
-		editorState,
-		isDragging,
-		isOver,
-		item.newType,
-		mainTarget,
-		zoomFactor,
-	]);
+	}, [clientOffset, differenceOffset, editorState, isDragging, isOver, item.newType, mainTarget, zoomFactor]);
 
-	React.useEffect(() => {
-		if (mainTarget) {
-			setIsOverlapping(
-				elementReferences.some(el => {
-					if (
-						el.refId === mainTarget.refId ||
-						(selected.includes(mainTarget.refId) && selected.includes(el.refId))
-					) {
-						return false;
-					}
-					return EditorUtils.isElementOverlapping(
-						{
-							x: createPlainMmMeasure(snapOffset.x.value + newPos.x.value),
-							y: createPlainMmMeasure(snapOffset.y.value + newPos.y.value),
-							...mainTarget.dimensions,
-						},
-						{ ...el.dimensions, ...el.position },
-						true
-					);
-				})
-			);
+	// Calculate snap offset as a side effect (not during render) to avoid
+	// updating state of another component while this component is rendering.
+	React.useLayoutEffect(() => {
+		if (!(isDragging && isOver && mainTarget)) {
+			return;
 		}
-	}, [snapOffset, newPos, mainTarget, isDragging, elementReferences, selected]);
+
+		const frameId = globalThis.requestAnimationFrame(() => {
+			calculateSnapOffset(newPos, mainTarget);
+		});
+
+		return () => {
+			globalThis.cancelAnimationFrame(frameId);
+		};
+	}, [calculateSnapOffset, isDragging, isOver, mainTarget, newPos]);
+
+	const isOverlapping = React.useMemo(() => {
+		if (mainTarget) {
+			return elementReferences.some(el => {
+				if (
+					el.refId === mainTarget.refId ||
+					(selected.includes(mainTarget.refId) && selected.includes(el.refId))
+				) {
+					return false;
+				}
+				return EditorUtils.isElementOverlapping(
+					{
+						x: createPlainMmMeasure(snapOffset.x.value + newPos.x.value),
+						y: createPlainMmMeasure(snapOffset.y.value + newPos.y.value),
+						...mainTarget.dimensions,
+					},
+					{ ...el.dimensions, ...el.position },
+					true
+				);
+			});
+		}
+		return false;
+	}, [snapOffset, newPos, mainTarget, elementReferences, selected]);
 
 	React.useEffect(() => {
 		return () => {
 			setSnapOffset({ x: createPlainMmMeasure(0), y: createPlainMmMeasure(0) });
 			setRsLineHor(null);
 			setRsLineVert(null);
-			setIsOverlapping(false);
 		};
 	}, [setSnapOffset]);
 

@@ -2,7 +2,7 @@
   "header": {
     "id": "ExamplePM",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "modelReferences": [],
@@ -648,6 +648,24 @@
           "id": "UcKs2tauyXQCqwGB5apBC",
           "text": "<p><span style=\"\"><strong>Portrait Segment</strong></span></p>",
           "entities": []
+        },
+        "borderProperties": {
+          "id": "DVHLQHWLZeJY5Ef2zWFWl",
+          "borderWidth": {
+            "id": "8hrK4aQJ9xdJYlc9T8qWY",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "kOnH5wHdGpnD9J38FaHrR",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "ZiWgUhYrJNSH_ir6i0gqv",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -671,6 +689,24 @@
           "id": "y48hn9XQQwnAS6B3yCsYy",
           "text": "<p><span style=\"\">Pellentesque habitant morbi tristique senectus et netus et malesuada &nbsp;fames ac turpis egestas. Praesent non sodales neque, ut mollis velit. &nbsp;Vestibulum placerat sodales metus. Interdum et malesuada fames ac ante &nbsp;ipsum primis in faucibus. Aliquam quis pellentesque purus, eget iaculis &nbsp;risus. Nam ac velit magna. Maecenas eu ligula quis ex congue pharetra. &nbsp;Cras eget lacinia nulla, sed rhoncus sapien. Sed rhoncus metus ut mauris &nbsp;bibendum fringilla. Suspendisse laoreet condimentum purus in ornare. &nbsp;Aliquam eu purus ornare velit cursus commodo eget id augue. Aenean &nbsp;consequat hendrerit risus sed lacinia. Donec vestibulum vehicula ex, ut &nbsp;tempus est finibus quis. Aliquam pellentesque vitae lorem ut posuere. &nbsp;Etiam dapibus auctor arcu.</span></p>",
           "entities": []
+        },
+        "borderProperties": {
+          "id": "7Cs8ldc2iqiaHdJTKjKYM",
+          "borderWidth": {
+            "id": "0M6dOouyv-FLpKaLHTCbM",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "iu_FT5eKlitiaoAQYqZ-U",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "MYlfsuA6swplwP2ElAXAY",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -678,7 +714,7 @@
         "type": "Image",
         "image": {
           "id": "oO9mGDJPNu-Y9cnHaC0qL",
-          "imageSrcType": "Attachment",
+          "imageSrcType": "Static",
           "alternativeText": "image 1",
           "dimensions": {
             "id": "8Alf2BbVbaxmJTtYNLDgT",
@@ -703,17 +739,10 @@
               "unit": "Millimeter"
             }
           },
-          "attachmentSource": {
+          "resourceSource": {
             "id": "mX9hWjHfKGHS7NOh16YjS",
-            "imageAttachment": {
-              "internal_filename": "dummy-image (1).png",
-              "mime_type": "image/png",
-              "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQMAAAC6caSPAAAABlBMVEVS//n////VlaiAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAKklEQVR4nO3BMQEAAADCoPVP7W8GoAAAAAAAAAAAAAAAAAAAAAAAAACAN0+wAAE5Fpd4AAAAAElFTkSuQmCC",
-              "size": 138,
-              "original_filename": "dummy-image (1).png"
-            }
-          },
-          "fieldSource": {}
+            "resourceName": "dummy-image (1)_69da5d98.png"
+          }
         }
       },
       {
@@ -721,7 +750,7 @@
         "type": "Image",
         "image": {
           "id": "N4HuAaQOwvPuqYE-BluR_",
-          "imageSrcType": "Attachment",
+          "imageSrcType": "Static",
           "alternativeText": "image 2",
           "dimensions": {
             "id": "hGOo61hmKNWBhf4NlXND2",
@@ -736,27 +765,20 @@
               "unit": "Millimeter"
             },
             "originalHeight": {
-              "id": "YBa4gONkvXnYVEXq2-n6B",
+              "id": "arLdjdo4wXJr3k7VUIdxF",
               "value": 30,
               "unit": "Millimeter"
             },
             "originalWidth": {
-              "id": "fmFXx9-uVe6OuZ3dQLoIE",
+              "id": "p8nFD5CIiK3O2WQ1bsLV4",
               "value": 30,
               "unit": "Millimeter"
             }
           },
-          "attachmentSource": {
+          "resourceSource": {
             "id": "ebQmc18D-63SgWGEIjq5J",
-            "imageAttachment": {
-              "internal_filename": "dummy-image.png",
-              "mime_type": "image/png",
-              "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQMAAAC6caSPAAAABlBMVEX/DU3////Q83BAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAKklEQVR4nO3BMQEAAADCoPVP7W8GoAAAAAAAAAAAAAAAAAAAAAAAAACAN0+wAAE5Fpd4AAAAAElFTkSuQmCC",
-              "size": 138,
-              "original_filename": "dummy-image.png"
-            }
-          },
-          "fieldSource": {}
+            "resourceName": "dummy-image_80c86022.png"
+          }
         }
       },
       {
@@ -764,7 +786,7 @@
         "type": "Image",
         "image": {
           "id": "xUhCstMOPFjzvazk8Aofa",
-          "imageSrcType": "Attachment",
+          "imageSrcType": "Static",
           "alternativeText": "image 3",
           "dimensions": {
             "id": "7pXPkKlpqf2v-jbvYP7uo",
@@ -789,17 +811,10 @@
               "unit": "Millimeter"
             }
           },
-          "attachmentSource": {
+          "resourceSource": {
             "id": "2xz1Onjl3Ge7lS--_-zuL",
-            "imageAttachment": {
-              "internal_filename": "dummy-image.png",
-              "mime_type": "image/png",
-              "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQMAAAC6caSPAAAABlBMVEX/DU3////Q83BAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAKklEQVR4nO3BMQEAAADCoPVP7W8GoAAAAAAAAAAAAAAAAAAAAAAAAACAN0+wAAE5Fpd4AAAAAElFTkSuQmCC",
-              "size": 138,
-              "original_filename": "dummy-image.png"
-            }
-          },
-          "fieldSource": {}
+            "resourceName": "dummy-image_80c86022.png"
+          }
         }
       },
       {
@@ -807,7 +822,7 @@
         "type": "Image",
         "image": {
           "id": "x-wgFULCyzBDzNv4JEkLF",
-          "imageSrcType": "Attachment",
+          "imageSrcType": "Static",
           "alternativeText": "image 4",
           "dimensions": {
             "id": "scYDMMguc8KiAecpRuTTo",
@@ -832,17 +847,10 @@
               "unit": "Millimeter"
             }
           },
-          "attachmentSource": {
+          "resourceSource": {
             "id": "WaIawp861NmVFpn7KHEeH",
-            "imageAttachment": {
-              "internal_filename": "dummy-image (1).png",
-              "mime_type": "image/png",
-              "content": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQMAAAC6caSPAAAABlBMVEVS//n////VlaiAAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAKklEQVR4nO3BMQEAAADCoPVP7W8GoAAAAAAAAAAAAAAAAAAAAAAAAACAN0+wAAE5Fpd4AAAAAElFTkSuQmCC",
-              "size": 138,
-              "original_filename": "dummy-image (1).png"
-            }
-          },
-          "fieldSource": {}
+            "resourceName": "dummy-image (1)_69da5d98.png"
+          }
         }
       },
       {
@@ -866,6 +874,24 @@
           "id": "FZ1vmAhDW2kdcapW90xAN",
           "text": "<p><span style=\"\">Curabitur suscipit metus sed placerat efficitur. Cras scelerisque, &nbsp;ligula ut lobortis blandit, enim augue consectetur dui, nec viverra &nbsp;mauris neque eu nulla. Quisque dapibus lorem nulla, sit amet mollis &nbsp;neque aliquam fringilla. Curabitur at fermentum lacus. Donec dictum leo &nbsp;eget quam feugiat, et lobortis leo consectetur.&nbsp;</span></p>",
           "entities": []
+        },
+        "borderProperties": {
+          "id": "OyBMbEBW1ue1eq8_yTkdC",
+          "borderWidth": {
+            "id": "XjbZEVlljoCItUV8tGI9y",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "KE1VkLnzNLo8Wjlxx62mZ",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "pHpRWU10OUefGxA9Fk5s1",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -873,9 +899,24 @@
         "type": "Line",
         "borderProperties": {
           "id": "5QCWY0hGyC1jb8lfkmkDT",
-          "borderWidth": 3,
-          "borderStyle": "Solid",
-          "borderColor": "#808080"
+          "borderWidth": {
+            "id": "8pYuVYAwT0iol2Do-JZBE",
+            "source": "INPUT",
+            "value": 3,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "zNU1yib1oHKWZCvkVDReF",
+            "source": "INPUT",
+            "value": "#808080",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "Ii4Ene_kJ8MMq_yeG3gC_",
+            "source": "INPUT",
+            "value": "Solid",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -908,6 +949,24 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
+        },
+        "borderProperties": {
+          "id": "kbFtammVjWwm5l9ub7YJi",
+          "borderWidth": {
+            "id": "PCLOrf6C9gZqDb-6CaPPz",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "J4YxKTQNVfOQSWk3jjTuU",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "bYV-08t2U_hjB861LCV56",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -938,6 +997,24 @@
             "id": "ERLnkEm0T5gCjW-KDi_-W",
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        },
+        "borderProperties": {
+          "id": "WTDUcaWl7mTTiUCtlKTPH",
+          "borderWidth": {
+            "id": "t5ArYXgI6yVR_894vrDuH",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "s9qxiaIiEXuJZH3b1UfiM",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "QotVtBlm6z4gIPoiQmEmC",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
         }
       }

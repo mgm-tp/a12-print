@@ -43,11 +43,14 @@ import com.mgmtp.a12.print.model.api.model.reference.PlaceableReference;
 import com.mgmtp.a12.print.model.map.PrintMetaModelMap;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public class InputValueSourceResolver {
 	static final String ELEMENT_DEFINITION_ROOT_PATH = "/content/elementDefinitions/";
 	static final String REFERENCE_PATH = "elementReferences/";
 	static final String INPUT_SOURCE_VALUE = "/value/";
+	static final String LISTING_COLUMNS_PATH = "listing/columns/";
 
 	public static PrintMetaModelMap.InputSourceMetadata getMetadata(String path) {
 		return PrintMetaModelMap.PRINT_MODEL_METADATA_MAP.get(path);
@@ -103,6 +106,10 @@ public class InputValueSourceResolver {
 
 	public static Optional<Integer> getInputValue(IntegerInputSource inputSource, ReferenceResolver referenceResolver) {
 		return getInputValue(inputSource, Integer::valueOf, referenceResolver);
+	}
+
+	public static Optional<Float> getInputValue(FloatInputSource inputSource, ReferenceResolver referenceResolver) {
+		return getInputValue(inputSource, Float::valueOf, referenceResolver);
 	}
 
 	public static Optional<String> getInputValue(StringInputSource inputSource, ReferenceResolver referenceResolver) {
@@ -225,7 +232,13 @@ public class InputValueSourceResolver {
 			path.startsWith(ELEMENT_DEFINITION_ROOT_PATH) &&
 			path.endsWith(INPUT_SOURCE_VALUE)
 		) {
-			return path.replace(ELEMENT_DEFINITION_ROOT_PATH, "").replace(INPUT_SOURCE_VALUE, "");
+			String stripped = path.replace(ELEMENT_DEFINITION_ROOT_PATH, "").replace(INPUT_SOURCE_VALUE, "");
+			// Listing column paths are nested under "listing/columns/" in the metadata map,
+			// but columns inherit from the listing element's own top-level fields. So the "listing/columns/" prefix must be stripped.
+			if (stripped.startsWith(LISTING_COLUMNS_PATH)) {
+				stripped = stripped.substring(LISTING_COLUMNS_PATH.length());
+			}
+			return stripped;
 		}
 		throw new InputSourceException(
 				String.format("The path is not valid value path for input source group: '%s'", path)

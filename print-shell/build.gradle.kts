@@ -30,20 +30,14 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 plugins {
-	alias(thirdPartyLibs.plugins.springDependencyManagement)
-	alias(thirdPartyLibs.plugins.lombok)
 	id("java")
-	id("bootJar-publish-tasks")
+	id("application")
+	id("fatJar-publish-tasks")
+	alias(thirdPartyLibs.plugins.lombok)
 }
 
 publishingInfoExtension {
 	artifactId = "print-shell"
-}
-
-configurations {
-	testImplementation {
-		exclude(group = "com.vaadin.external.google")
-	}
 }
 
 dependencies {
@@ -55,21 +49,16 @@ dependencies {
 	implementation(project(":engine-api"))
 	implementation(project(":typesetting"))
 
-	implementation(a12Libs.kernelMdModelApi)
-	implementation(a12Libs.kernelMdModel)
-	implementation(a12Libs.kernelMdDocumentApi)
+	implementation(a12Libs.kernelMdFacade)
 
-	implementation(thirdPartyLibs.springBootStarter);
-	implementation(thirdPartyLibs.springShellStarter)
+	implementation(thirdPartyLibs.jacksonCore)
 
-	implementation(thirdPartyLibs.jacksonCore) {
-		version {
-			strictly(thirdPartyLibs.versions.jackson.get())
-		}
-	}
-	// This is needed because of versions conflict between spring-boot-starter and kernel
-	implementation(thirdPartyLibs.commonsLang3)
+	implementation(thirdPartyLibs.jline)
+	implementation(thirdPartyLibs.picocli)
+	implementation(thirdPartyLibs.picocliJline3)
 
+	implementation(thirdPartyLibs.slf4j)
+	implementation(thirdPartyLibs.logbackClassic)
 	implementation(thirdPartyLibs.jmhCore)
 	implementation(thirdPartyLibs.jmhGenreratorBytecode)
 	implementation(thirdPartyLibs.pdfbox)
@@ -78,14 +67,20 @@ dependencies {
 
 	annotationProcessor(thirdPartyLibs.jmhGeneratorAnnprocess)
 
-	testImplementation(thirdPartyLibs.springBootStarterTest) {
-		exclude(group = "com.vaadin.external.google", module = "android-json")
-	}
-	testImplementation(thirdPartyLibs.springShellTest)
-	testImplementation(thirdPartyLibs.springShellTestAuto)
+	testImplementation(thirdPartyLibs.jupiterApi)
+	testImplementation(thirdPartyLibs.assertj)
+	testImplementation(thirdPartyLibs.jupiterParams)
+	testImplementation(thirdPartyLibs.awaitility)
+	testImplementation(thirdPartyLibs.hamcrest)
+
+	testRuntimeOnly(thirdPartyLibs.jupiterEngine)
+	testRuntimeOnly(thirdPartyLibs.junitLauncher)
 }
 
+tasks.named<JavaExec>("run") {
+	standardInput = System.`in`
+}
 
-tasks.named("clean") {
-	delete("spring-shell.log")
+application {
+	mainClass.set("com.mgmtp.a12.print.shell.internal.ApplicationShell")
 }

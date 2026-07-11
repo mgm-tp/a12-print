@@ -31,3 +31,4 @@
  */
 export * from "./model-dto-files-generator.js";
 export * from "./model-dto-generator.js";
+export * from "./index-files-generator.js";

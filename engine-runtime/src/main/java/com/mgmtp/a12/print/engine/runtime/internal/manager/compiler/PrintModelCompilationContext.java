@@ -36,12 +36,12 @@ import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelResolver;
 import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelSearchService;
 import com.mgmtp.a12.model.header.ModelReference;
 import com.mgmtp.a12.print.engine.api.PrintModelId;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.expression.PreCompiledExpressionMap;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing.PreCompiledListingMap;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.SpreadExpressionManager;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.ComponentTreeDependencySelectorProducer;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.ComponentTreeManager;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.ComponentTreeDependencySelectorProducer;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.ComponentTreeManager;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.ComputationExpressionDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.ComputeDocumentDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.LogicContainerEvaluationDependencyValueProducer;
@@ -55,6 +55,9 @@ import lombok.NonNull;
 import lombok.experimental.Delegate;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -72,7 +75,8 @@ public class PrintModelCompilationContext implements PrintModel, IDocumentModelR
 	@Delegate(types = {PrintModel.class})
 	private PrintModel model;
 
-	private final boolean pdfBoxPrintProcess;
+	@EqualsAndHashCode.Exclude
+	private final HashSet<Locale> commonDocumentLocales = new HashSet<>();
 
 	@EqualsAndHashCode.Exclude
 	private LogicContainerEvaluationDependencyValueProducer logicContainerEvaluationDependencyValueProducer;
@@ -88,11 +92,12 @@ public class PrintModelCompilationContext implements PrintModel, IDocumentModelR
 	@EqualsAndHashCode.Exclude
 	private PreCompiledExpressionMap preCompiledExpressionMap;
 	@EqualsAndHashCode.Exclude
-	private SpreadExpressionManager spreadExpressionManager;
-	@EqualsAndHashCode.Exclude
 	private ComponentTreeManager componentTreeManager;
 	@EqualsAndHashCode.Exclude
 	private ComponentTreeDependencySelectorProducer componentTreeDependencySelectorProducer;
+
+	@EqualsAndHashCode.Exclude
+	private final Map<String, byte[]> staticImageMap = new ConcurrentHashMap<>();
 
 	public ConcurrentHashMap<String, DocumentModelIndex> getDocumentModelIndexMap() {
 		return documentModelIndexMap;
@@ -104,6 +109,18 @@ public class PrintModelCompilationContext implements PrintModel, IDocumentModelR
 			documentModelIndexMap.computeIfAbsent(r.getAlias(), k -> index);
 		}
 	}
+
+	public void publicCommonLocales(DocumentModelIndex index) {
+		if (index.getHeader().getLocales() == null) {
+			return;
+		}
+		if (commonDocumentLocales.isEmpty()) {
+			commonDocumentLocales.addAll(index.getHeader().getLocales());
+		} else {
+			commonDocumentLocales.retainAll(index.getHeader().getLocales());
+		}
+	}
+
 	public void setModel(@NonNull PrintModelDto model) {
 		this.model = model;
 	}
@@ -117,8 +134,13 @@ public class PrintModelCompilationContext implements PrintModel, IDocumentModelR
 		try {
 			compiler.await();
 			return this;
-		} catch (InterruptedException | ExecutionException e) {
-			throw new PrintCompilerException("Compilation of " + getId().getModelHeaderId() + " was interrupted.", e);
+		} catch (ExecutionException e) {
+			if (e.getCause() instanceof PrintDomainException pde) {
+				throw pde;
+			}
+			throw new PrintCompilerException("Compilation of " + getId().getModelHeaderId() + " failed", e.getCause());
+		} catch (InterruptedException e) {
+			throw new PrintCompilerException("Compilation of " + getId().getModelHeaderId() + " was interrupted", e);
 		} finally {
 			log.debug("awaitCompilation completed for: {}", getId().getModelHeaderId());
 		}
@@ -131,7 +153,7 @@ public class PrintModelCompilationContext implements PrintModel, IDocumentModelR
 
 	@Override
 	public Optional<IDocumentModelSearchService> getDocumentModelSearchService(String documentModelId) {
-		throw new RuntimeException();
+		throw new PrintCompilerException("The DocumentModelSearchService should never be requested");
 	}
 
 }

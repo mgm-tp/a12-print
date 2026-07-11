@@ -29,21 +29,17 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, getContext, put, takeLatest } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
 
-import { RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 import { RequestApiActions } from "../../redux/index.js";
 
-export function* loadTypesettingModelHeaders(): SagaIterator {
-	yield* takeLatest(
-		(action: AnyAction) => RequestApiActions.loadTypesettingModelHeaders.match(action),
-		handleLoadTypesettingModelHeaders
-	);
+export function* loadTypesettingModelHeaders(): SagaGenerator<void> {
+	yield* takeLatest(RequestApiActions.loadTypesettingModelHeaders.match, handleLoadTypesettingModelHeaders);
 }
 
-function* handleLoadTypesettingModelHeaders(): SagaIterator {
+function* handleLoadTypesettingModelHeaders(): SagaGenerator<void> {
 	const requestApi: RequestApi = yield* getContext("requestApi");
 	const typesettingModelHeaders = yield* call(requestApi.loadTypesettingModelHeaders);
 

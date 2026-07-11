@@ -29,15 +29,15 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
+import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { ElementTypes } from "../../constant/elements.js";
 import { CHARTS_PROPERTY_PATH } from "../../constant/element-property-path.js";
 
-import { BaseElementProps } from "./base.js";
+import type { BaseElementProps } from "./base.js";
 import { StyledDiagramWrapper } from "./Diagram.styled.js";
 
 const DIAGRAM_ICON_MAP = {

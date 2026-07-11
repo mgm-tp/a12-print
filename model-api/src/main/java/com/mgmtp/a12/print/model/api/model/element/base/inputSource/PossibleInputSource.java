@@ -31,6 +31,9 @@
  */
 package com.mgmtp.a12.print.model.api.model.element.base.inputSource;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
+@OnlyForUsage
 public enum PossibleInputSource {
 	DEFAULT,
 	INPUT,

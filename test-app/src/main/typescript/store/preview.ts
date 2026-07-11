@@ -29,11 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { createAction, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
+import type { PayloadAction, Slice } from "@reduxjs/toolkit";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
 
-import { RootState } from "./types";
+import type { RootState } from "./types";
 
 export interface PreviewState {
 	previewData?: {

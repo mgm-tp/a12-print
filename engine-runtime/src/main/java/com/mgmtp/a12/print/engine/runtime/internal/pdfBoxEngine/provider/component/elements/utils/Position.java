@@ -39,10 +39,6 @@ public class Position {
 	long x;
 	long y;
 
-	public static Position ofMm(float xMm, float yMm) {
-		return new Position(PDFUnitUtil.mmToLongPt(xMm), PDFUnitUtil.mmToLongPt(yMm));
-	}
-
 	public static Position ofReference(PlaceableReference reference) {
 		return new Position(
 			PDFUnitUtil.mmToLongPt(reference.getPosition().getX().getValue()),
@@ -60,20 +56,6 @@ public class Position {
 		);
 	}
 
-	public static Position addYOffset(Position position, long yOffset) {
-		return new Position(
-			position.getX(),
-			position.getY() + yOffset
-		);
-	}
-
-	public static long removeOffset(long yPosition, Position positionOffset) {
-		if (positionOffset == null) {
-			return yPosition;
-		}
-		return yPosition - positionOffset.getY();
-	}
-
 	public static long addOffset(long yPosition, Position positionOffset) {
 		if (positionOffset == null) {
 			return yPosition;
@@ -81,3 +63,4 @@ public class Position {
 		return yPosition + positionOffset.getY();
 	}
 }
+

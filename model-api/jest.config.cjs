@@ -33,4 +33,10 @@ module.exports = {
 	...require("@com.mgmtp.a12.print/print-dev-tools/jest-config.cjs"),
 	testEnvironment: "node",
 	setupFilesAfterEnv: [],
+	collectCoverageFrom: [
+		"src/main/typescript/**/*.{ts,tsx}",
+		"!src/main/typescript/generated/**",
+		"!src/main/typescript/types/**",
+		"!src/**/__tests__/**",
+	],
 };

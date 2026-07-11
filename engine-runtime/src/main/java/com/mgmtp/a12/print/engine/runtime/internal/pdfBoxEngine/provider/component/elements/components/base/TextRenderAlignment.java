@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base;
 
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing.InnerTextToken;
 import com.mgmtp.a12.print.model.api.model.element.properties.TextProperties;
 import lombok.Getter;
@@ -38,6 +39,7 @@ import lombok.NonNull;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.mgmtp.a12.print.model.api.model.element.properties.TextProperties.Alignment.JUSTIFY;
 import static com.mgmtp.a12.print.model.api.model.element.properties.TextProperties.Alignment.LEFT;
@@ -92,7 +94,9 @@ public class TextRenderAlignment {
 			.toList();
 
 		if (tokenAlignments.size() > 1) {
-			throw new PrintRenderingException("More than one alignment for one line was found and could not be rendered");
+			throw new PrintDomainException("More than one alignment for one line ({}) was found and could not be rendered",
+				innerTextTokens.stream().map(InnerTextToken::toString).collect(Collectors.joining())
+			);
 		}
 
 		if (tokenAlignments.size() == 1) {

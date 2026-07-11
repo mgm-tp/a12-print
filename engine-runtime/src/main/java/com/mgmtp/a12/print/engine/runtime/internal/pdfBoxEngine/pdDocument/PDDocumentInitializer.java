@@ -168,7 +168,7 @@ public class PDDocumentInitializer {
 		try {
 			final var xmpMetadata = XMPMetadata.createXMPMetadata();
 
-			final var pdfASchema = xmpMetadata.createAndAddPFAIdentificationSchema();
+			final var pdfASchema = xmpMetadata.createAndAddPDFAIdentificationSchema();
 			pdfASchema.setConformance(CONFORMANCE);
 			pdfASchema.setPart(CONFORMANCE_PART);
 

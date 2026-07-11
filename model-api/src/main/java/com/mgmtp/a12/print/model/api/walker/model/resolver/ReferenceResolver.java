@@ -36,7 +36,9 @@ import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
 import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 @FunctionalInterface
 public interface ReferenceResolver {
 	Optional<PrintModelTreeTrace<PrintModelElement>> resolveReference(PrintModelTreeTrace<? extends ElementReference> elementReference);

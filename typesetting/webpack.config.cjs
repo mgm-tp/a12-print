@@ -39,7 +39,7 @@ const context = join(__dirname);
 const config = {
 	mode: "development",
 	context,
-	entry: join(context, "src/main/typescript/internal/ui/index.tsx"),
+	entry: join(context, "src/main/typescript/internal/ui/TypesettingApp.tsx"),
 	devtool: "source-map",
 	devServer: {
 		hot: false,

@@ -1,6 +1,6 @@
 {
   "name": "@com.mgmtp.a12.print/print-engine-runtime-kernel",
-  "version": "3.2.3",
+  "version": "4.0.0",
   "license": "(EUPL-1.2 OR LicenseRef-commercial)",
   "description": "Print Engine Runtime Kernel",
   "type": "module",
@@ -9,16 +9,16 @@
     "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --check \"./*.{js,cjs,mjs}\" \"src/**/*.{ts,tsx}\"",
     "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest",
-    "clean": "rimraf lib coverage build src/main/typescript/internal/generated",
+    "clean": "rimraf lib coverage build src/main/typescript/a12internal/generated",
     "watch": "tsc -p tsconfig.build.json -w",
     "fix": "pnpm run /^.*:fix$/",
     "typedoc": "typedoc --tsconfig tsconfig.build.json",
     "compile:lint": "pnpm run lint && pnpm run format",
     "compile:typescript": "tsc -p tsconfig.build.json",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
-    "lint:fix:antlr": "eslint ./src/main/typescript/internal/generated/antlr/PrintComputationTSParser.ts --ext .ts,.tsx --fix --no-ignore",
+    "lint:fix:antlr": "eslint ./src/main/typescript/a12internal/generated/antlr/PrintComputationTSParser.ts --ext .ts,.tsx --fix --no-ignore",
     "format:fix": "prettier --write \"./*.{js,cjs,mjs}\" \"src/**/*.{ts,tsx}\"",
-    "format:fix:antlr": "prettier --write \"src/main/typescript/internal/generated/antlr/*.{ts,tsx}\"",
+    "format:fix:antlr": "prettier --write \"src/main/typescript/a12internal/generated/antlr/*.{ts,tsx}\"",
     "fix:antlr": "pnpm run /^.*:fix:antlr$/",
     "test:watch": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest --watchAll",
     "test:report": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest --coverage"
@@ -38,14 +38,22 @@
     "NOTICE",
     "THIRD_PARTY_NOTICES"
   ],
-  "main": "lib/internal/index.js",
+  "exports": {
+    "./a12internal": "./lib/a12internal/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "a12internal": [
+        "./lib/a12internal/index.d.ts"
+      ]
+    }
+  },
   "dependencies": {
     "antlr4": "catalog:",
     "big.js": "catalog:"
   },
   "devDependencies": {
     "@com.mgmtp.a12.base/base-model-api": "catalog:a12",
-    "@com.mgmtp.a12.devtools/tsconfig": "catalog:a12",
     "@com.mgmtp.a12.devtools/eslint-config": "catalog:a12",
     "@com.mgmtp.a12.devtools/prettier-config": "catalog:a12",
     "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts": "catalog:a12",
@@ -69,7 +77,6 @@
     "lodash": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
-    "ts-node": "catalog:",
     "typedoc": "catalog:",
     "typescript": "catalog:"
   },

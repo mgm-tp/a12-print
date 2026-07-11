@@ -29,31 +29,26 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
 import { fireEvent, screen, within } from "@testing-library/react";
 import { useSelector } from "react-redux";
 
-import {
-	TransactionLog,
+import type {
 	TransactionLogStore,
 	TransactionLogStoreEntryMap,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PartialPrintModelContentGeneral, PartialSection } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
-	Language,
 	PageOrientation,
 	SectionUsage,
-	PartialPrintModelContentGeneral,
-	PartialSection,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import {
 	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 	PRINT_MODEL_HEADER_LOG_ID,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { renderWithProviders } from "../../../../../../test/typescript/test-utils/index.js";
 import { createMmMeasureFromPx } from "../../../utils/index.js";
-import { TransactionLogStateReducer, initialStateLogStore } from "../../../redux/index.js";
-import { PrintEngineSelectors } from "../../../store/selectors.js";
+import { NavigationSelectors, TransactionLogStateReducer, initialStateLogStore } from "../../../redux/index.js";
 
 import { SectionContent } from "../index.js";
 
@@ -99,7 +94,6 @@ const mockSections: PartialSection[] = [
 const mockPrintContentGeneral: PartialPrintModelContentGeneral = {
 	id: PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 	structure: [],
-	details: { id: "j1g301jg30wqheq", author: "tony", language: Language.DE },
 	metadata: {
 		id: "ifnqjignqeg",
 		authorComputation: [{ id: "authComp123", operation: "tony" }],
@@ -108,7 +102,6 @@ const mockPrintContentGeneral: PartialPrintModelContentGeneral = {
 		descriptionComputation: [{ id: "titleComp123", operation: "descr" }],
 	},
 	segmentDefaults: { id: "mgopeq2mh402h4", fontSize: 12 },
-	title: "a title",
 	sections: mockSections.map(el => el.id),
 };
 
@@ -142,7 +135,7 @@ const TransactionLogStateMock: Reducer = (state: TransactionLogStore = initialSt
 	TransactionLogStateReducer(state, action);
 
 const MockEditor = () => {
-	const printModelRefs = useSelector(PrintEngineSelectors.printModelRefs);
+	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
 
 	if (!printModelRefs?.currentRefType) {
 		return null;

@@ -32,7 +32,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { createPlainMmMeasure, EditorUtils, ElementsUtils } from "../../../utils/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
@@ -40,7 +40,7 @@ import { useGetSectionOffset } from "../../../hooks/use-get-section-offset.js";
 import { EditorContext } from "../../editor-stage/editor-context.js";
 
 import { useSetupSegmentEditor } from "../hooks/index.js";
-import { LayoutReferencesRendererProps } from "../editor-interface.js";
+import type { LayoutReferencesRendererProps } from "../editor-interface.js";
 
 import { BasicLayoutEditor } from "./BasicLayoutEditor.js";
 import { SegmentLayoutReferenceRenderer } from "./SegmentLayoutReferenceRenderer.js";

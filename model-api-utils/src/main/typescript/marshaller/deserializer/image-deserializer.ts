@@ -29,8 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
+import * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/model";
+import type * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
 
 import { Deserializer } from "./deserializer.js";
 import { MeasureDeserializer } from "./measure-deserializer.js";
@@ -46,10 +46,10 @@ export class ImageDeserializer extends Deserializer<GeneratedDTO.ImageDTO, Model
 				return this.getRequired(dto.alternativeText, property);
 			case "imageSrcType":
 				return ModelAPI.ImageSrcType[this.getRequired(dto.imageSrcType, property)];
-			case "attachmentSource":
+			case "resourceSource":
 				return this.deserializeOptional(
-					dto.attachmentSource,
-					new AttachmentSourceDeserializer(this.path),
+					dto.resourceSource,
+					new ResourceSourceDeserializer(this.path),
 					property
 				);
 			case "dimensions":
@@ -85,56 +85,27 @@ class DimensionDeserializer extends Deserializer<GeneratedDTO.DimensionsDTO_1, M
 			case "id":
 				return dto.id;
 			case "height":
-				return this.deserializeOptional(dto.height, new MeasureDeserializer(this.path), property);
+				return this.deserializeRequired(dto.height, property, new MeasureDeserializer(this.path));
 			case "width":
-				return this.deserializeOptional(dto.width, new MeasureDeserializer(this.path), property);
+				return this.deserializeRequired(dto.width, property, new MeasureDeserializer(this.path));
 			case "originalHeight":
-				return this.deserializeOptional(dto.originalHeight, new MeasureDeserializer(this.path), property);
+				return this.deserializeRequired(dto.originalHeight, property, new MeasureDeserializer(this.path));
 			case "originalWidth":
-				return this.deserializeOptional(dto.originalWidth, new MeasureDeserializer(this.path), property);
+				return this.deserializeRequired(dto.originalWidth, property, new MeasureDeserializer(this.path));
 		}
 		this.unknownProperty(property);
 	}
 }
 
-class AttachmentSourceDeserializer extends Deserializer<GeneratedDTO.AttachmentSourceDTO, ModelAPI.AttachmentSource> {
-	prefix = "attachmentSource";
+class ResourceSourceDeserializer extends Deserializer<GeneratedDTO.ResourceSourceDTO, ModelAPI.ResourceSource> {
+	prefix = "resourceSource";
 
-	map(property: keyof GeneratedDTO.AttachmentSourceDTO, dto: GeneratedDTO.AttachmentSourceDTO) {
+	map(property: keyof GeneratedDTO.ResourceSourceDTO, dto: GeneratedDTO.ResourceSourceDTO) {
 		switch (property) {
 			case "id":
 				return this.getRequired(dto.id, property);
-			case "imageAttachment":
-				return this.deserializeRequired(dto.imageAttachment, property, new AttachmentDeserializer(this.path));
-		}
-		this.unknownProperty(property);
-	}
-}
-
-class AttachmentDeserializer extends Deserializer<GeneratedDTO.ImageAttachmentDTO, ModelAPI.Attachment> {
-	prefix = "imageAttachment";
-
-	map(property: keyof GeneratedDTO.ImageAttachmentDTO, dto: GeneratedDTO.ImageAttachmentDTO) {
-		switch (property) {
-			case "content": {
-				const content = this.getRequired(dto.content, property);
-				this.addAdditionalProperty("id", ModelAPI.getEntityId(ModelAPI.EntityKey.Attachment, content));
-				return content;
-			}
-			case "internal_filename":
-				return this.getRequired(dto.internal_filename, property);
-			case "mime_type":
-				return this.getRequired(dto.mime_type, property);
-			case "size":
-				return this.getRequired(dto.size, property);
-			case "attachment_id":
-				return dto.attachment_id;
-			case "category":
-				return dto.category;
-			case "description":
-				return dto.description;
-			case "original_filename":
-				return dto.original_filename;
+			case "resourceName":
+				return this.getRequired(dto.resourceName, property);
 		}
 		this.unknownProperty(property);
 	}

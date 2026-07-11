@@ -31,10 +31,13 @@
  */
 package com.mgmtp.a12.print.model.api.walker;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
 
 /**
  * The enum Traversal command.
  */
+@OnlyForUsage
 public enum TraversalCommand {
 
 	/**

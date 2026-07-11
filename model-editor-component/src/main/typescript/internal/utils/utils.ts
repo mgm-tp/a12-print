@@ -29,20 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	ElementMap,
-	ElementMapEntry,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/types/document-model-data.js";
-
-export function rgb2hex(rgb: string) {
-	const res = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-	return res
-		? `#${res
-				.slice(1)
-				.map(n => parseInt(n, 10).toString(16).padStart(2, "0"))
-				.join("")}`
-		: "";
-}
+import type { ElementMap, ElementMapEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 export function getItemsFromElementMap(group: string | undefined, elementMap: ElementMap) {
 	const resItems: { label: string; value: string }[] = [{ label: "", value: "" }];

@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/main/icon.view.js";
+import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { StyledListItemLabel, StyledListItemWrapper } from "./ListItem.styled.js";
 
@@ -40,7 +40,7 @@ interface ListItemProps {
 
 export const ListItem = ({ name, iconName }: ListItemProps) => {
 	return (
-		<StyledListItemWrapper>
+		<StyledListItemWrapper data-testid="element-library-item">
 			{iconName && <Icon iconTheme="outlined">{iconName}</Icon>}
 			<StyledListItemLabel>{name}</StyledListItemLabel>
 		</StyledListItemWrapper>

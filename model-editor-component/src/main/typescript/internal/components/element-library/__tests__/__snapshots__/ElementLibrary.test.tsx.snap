@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`ElementLibrary with selected segment renders correctly 1`] = `
 .c3 {
@@ -6,7 +6,8 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
   color: #7F8C9B;
   display: inline-block;
   direction: ltr;
-  font-family: Material Icons;
+  font-family: Material Symbols Outlined;
+  font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -34,7 +35,8 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
   color: #7F8C9B;
   display: inline-block;
   direction: ltr;
-  font-family: Material Icons Outlined;
+  font-family: Material Symbols Outlined;
+  font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -55,6 +57,13 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
 
 .c15.c15 {
   max-width: unset;
+}
+
+.c17 {
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100vw;
 }
 
 .c18 .c2 {
@@ -199,13 +208,6 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
   display: block;
 }
 
-.c17 {
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100vw;
-}
-
 .c7 {
   background-color: #ffe180;
   box-shadow: 0px 0px 20px 0px rgba(22,25,29,0.3);
@@ -279,12 +281,12 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
   min-height: 72px;
 }
 
-.c12:not(:empty)+.StyledCalloutFooter-sc-fyqXHy {
+.c12:not(:empty)+.StyledCalloutFooter-sc-eMqAKf {
   border-top: 1px solid #e2e6e9;
   max-height: calc(100% - 72px - 48px);
 }
 
-.c12>.StyledGrid-sc-dOvSfP {
+.c12>.StyledGrid-sc-cxDTKK {
   width: inherit;
 }
 
@@ -398,34 +400,6 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
 }
 
 @media (pointer: coarse) {
-
-}
-
-@media (pointer: fine) {
-
-}
-
-@media (pointer: fine) {
-
-}
-
-@media (pointer: coarse) {
-
-}
-
-@media (pointer: fine) {
-
-}
-
-@media (pointer: coarse) {
-
-}
-
-@media (pointer: fine) {
-
-}
-
-@media (pointer: coarse) {
   .c1:not(:disabled):active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     background-color: transparent;
@@ -448,14 +422,6 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
   .c1:hover {
     outline: 1px solid transparent;
   }
-}
-
-@media (pointer: coarse) {
-
-}
-
-@media (pointer: fine) {
-
 }
 
 @media (pointer: coarse) {
@@ -500,14 +466,6 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
   .c11:hover {
     outline: 1px solid transparent;
   }
-}
-
-@media (pointer: coarse) {
-
-}
-
-@media (pointer: fine) {
-
 }
 
 <body>
@@ -628,6 +586,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -652,6 +611,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -676,6 +636,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -700,6 +661,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -724,6 +686,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -748,6 +711,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -772,6 +736,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -796,6 +761,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -820,6 +786,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -844,6 +811,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -868,6 +836,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -892,6 +861,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"
@@ -916,6 +886,7 @@ exports[`ElementLibrary with selected segment renders correctly 1`] = `
                   >
                     <div
                       class="c14"
+                      data-testid="element-library-item"
                     >
                       <i
                         class="c2 c15 plasma-icon plasma-icon--outlined"

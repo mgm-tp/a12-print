@@ -34,7 +34,7 @@ import get from "lodash/get.js";
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
 
 import {
-	InputSource,
+	type InputSource,
 	isInputSource,
 	isPartialSection,
 	isPartialSegment,
@@ -49,14 +49,14 @@ import {
 	PartialTable,
 	PartialTableLayout,
 	PrintModelElement,
-	PrintModelEntity,
+	type PrintModelEntity,
 } from "../model/index.js";
 import {
 	isMetadataInstance,
 	PRINT_MODEL_METADATA_MAP,
-	PrintEntityMetadata,
+	type PrintEntityMetadata,
 } from "../generated/print-model-metadata-map.js";
-import { DeepPartialRecursive } from "../utils/type-utils.js";
+import { type DeepPartialRecursive } from "../utils/type-utils.js";
 
 import { PossibleInputSource } from "./input-source.js";
 
@@ -79,7 +79,8 @@ export class InputValueSourceResolver {
 	public static getInputSourceMetadata(
 		element: PrintModelEntity,
 		property: string,
-		determineInheritedSource?: (element: PrintModelEntity, inheritedCondition: string) => boolean
+		determineInheritedSource?: (element: PrintModelEntity, inheritedCondition: string) => boolean,
+		determineRequiredSource?: (element: PrintModelEntity, requiredCondition: string) => boolean
 	): InputSourceMetadata {
 		const sources: PossibleInputSource[] = [];
 		const metadata = InputValueSourceResolver.getMetadata(element, property);
@@ -97,7 +98,13 @@ export class InputValueSourceResolver {
 				sources.push(inheritSource);
 			}
 
-			if (!metadata.isRequired) {
+			const isActuallyRequired = InputValueSourceResolver.resolveRequiredSource(
+				element,
+				metadata,
+				determineRequiredSource
+			);
+
+			if (!isActuallyRequired) {
 				sources.push(PossibleInputSource.UNSET);
 			}
 
@@ -214,7 +221,7 @@ export class InputValueSourceResolver {
 	private static getElementMetadata(element: PrintModelElement, property: string) {
 		let inputSourceField = undefined;
 
-		if (property.startsWith("textProperties")) {
+		if (property.startsWith("textProperties") || property.startsWith("borderProperties")) {
 			inputSourceField = get(PRINT_MODEL_METADATA_MAP.RootGroup.content.elementDefinitions, property);
 		} else if (PartialTable.isInstance(element)) {
 			inputSourceField = get(PRINT_MODEL_METADATA_MAP.RootGroup.content.elementDefinitions.table, property);
@@ -317,5 +324,39 @@ export class InputValueSourceResolver {
 		const matchInheritedCondition = determineInheritedSource(element, inheritedCondition);
 
 		return matchInheritedCondition ? PossibleInputSource.INHERITED : null;
+	}
+
+	private static defaultDetermineRequiredSource(element: PrintModelEntity, requiredCondition: string): boolean {
+		const conditions: string[][] = requiredCondition.split(", ").map((condition: string) => condition.split("="));
+
+		let matchRequiredCondition = true;
+		for (let i = 0; i < conditions.length; i++) {
+			const [conditionType, conditionValue] = conditions[i];
+			if (conditionType === "ElementType") {
+				if (PrintModelElement.isInstance(element)) {
+					matchRequiredCondition = element.type === conditionValue;
+					if (matchRequiredCondition) {
+						return true;
+					}
+				} else {
+					matchRequiredCondition = false;
+					logger.error("ElementType condition can only be applied to PrintModelElement instances");
+				}
+			}
+		}
+		return matchRequiredCondition;
+	}
+
+	private static resolveRequiredSource(
+		element: PrintModelEntity,
+		{ isRequired, requiredCondition }: PrintEntityMetadata,
+		determineRequiredSource: (element: PrintModelEntity, requiredCondition: string) => boolean = this
+			.defaultDetermineRequiredSource
+	): boolean {
+		if (!requiredCondition) {
+			return isRequired;
+		}
+
+		return determineRequiredSource(element, requiredCondition);
 	}
 }

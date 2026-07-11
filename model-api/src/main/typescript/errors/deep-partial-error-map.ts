@@ -32,13 +32,9 @@
 import unionWith from "lodash/unionWith.js";
 
 import { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
-import {
-	Localizable,
-	LocalizableArgs,
-	resolvePlaceholders,
-} from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import { type Localizable, type LocalizableArgs, resolvePlaceholders } from "@com.mgmtp.a12.utils/utils-localization";
 
-import { ExtendedEntityInstancePath } from "./extended-entity-instance-path.js";
+import type { ExtendedEntityInstancePath } from "./extended-entity-instance-path.js";
 
 export interface PrintError {
 	jsonPath: EntityInstancePath;

@@ -29,15 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { actionCreatorFactory } from "typescript-fsa";
+import type { DocumentModelData } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { DocumentModelData } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/types/document-model-data.js";
+import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
 
 const factory = actionCreatorFactory("Print/DocumentModelData");
 
 export namespace DocumentModelDataActions {
 	export const loadDocumentModelData = factory<string>("LOAD_DOCUMENT_MODEL_DATA");
-	export const batchLoadDocumentModelData = factory<string[]>("BATCH_LOAD_DOCUMENT_MODEL_DATA");
 	export const setDocumentModelData = factory<
 		{
 			id: string;

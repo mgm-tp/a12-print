@@ -29,45 +29,33 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
+import type {
 	BoundingBox,
-	isPlaceableReference,
 	Override,
 	PrintModel,
 	PrintModelElement,
 	Reference,
 	Segment,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PrintModelTrace } from "@com.mgmtp.a12.print/print-model-api/lib/walker/print-model-trace.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { isPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PrintModelTrace } from "@com.mgmtp.a12.print/print-model-api/walker";
 import {
 	PrintModelVisitor,
 	TraversalCommand,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/print-model-visitor.js";
-import { PrintModelWalker } from "@com.mgmtp.a12.print/print-model-api/lib/walker/print-model-walker.js";
-import {
+	PrintModelWalker,
 	CachedReferenceResolver,
 	ReferenceListResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/reference-resolver.js";
-import {
 	CachedSectionIdResolver,
 	DefaultSectionIdResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/section-id-resolver.js";
-import {
 	CachedSegmentIdResolver,
 	DefaultSegmentIdResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/segment-id-resolver.js";
-import {
 	CachedWatermarkIdResolver,
 	DefaultWatermarkIdResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/watermark-id-resolver.js";
-import {
 	CachedReferenceElementListResolver,
 	ReferenceElementListResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/reference-element-resolver.js";
-import {
 	CachedPrintModelListResolver,
 	PrintModelListResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/print-model-resolver.js";
+} from "@com.mgmtp.a12.print/print-model-api/walker";
 
 import { PrintModelMarshaller } from "../../../marshaller/index.js";
 import printModelWithAllElements from "../../../../../test/resources/print-models/Print-model-with-all-elements.json" with { type: "json" };
@@ -81,25 +69,14 @@ import {
 	table,
 	textWithField,
 } from "../../../../../test/typescript/test-utils/model.js";
-import { PrintValidationMode } from "../../validation/print-validator.js";
 
 const marshaller = new PrintModelMarshaller();
 
-const deserializedPrintModelWithDinTemplate = marshaller.deserialize(
-	printModelWithDinTemplate,
-	[],
-	PrintValidationMode.SKIP_REFERENCES
-).result!;
+const deserializedPrintModelWithDinTemplate = marshaller.deserialize(printModelWithDinTemplate).result!;
 const deserializedPrintModelWithDinTemplateReference = marshaller.deserialize(
-	PrintModelWithDinTemplateReference,
-	[],
-	PrintValidationMode.SKIP_REFERENCES
+	PrintModelWithDinTemplateReference
 ).result!;
-const deserializePrintModelWithAllElements = marshaller.deserialize(
-	printModelWithAllElements,
-	[],
-	PrintValidationMode.SKIP_REFERENCES
-).result!;
+const deserializePrintModelWithAllElements = marshaller.deserialize(printModelWithAllElements).result!;
 
 function createPrintModelWalker(
 	printModel: PrintModel,

@@ -1,5 +1,8 @@
 {
   "extends": "./node_modules/@com.mgmtp.a12.print/print-dev-tools/tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src/main/scripts"
+  },
   "include": [
     "src/main/**/*",
   ]

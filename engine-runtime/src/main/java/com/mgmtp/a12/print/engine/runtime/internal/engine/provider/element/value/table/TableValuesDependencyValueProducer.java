@@ -38,6 +38,7 @@ import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.Entity;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.calculation.CalculationValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.expression.ExpressionDependencyValueProducer;
@@ -66,7 +67,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -282,7 +282,7 @@ public class TableValuesDependencyValueProducer implements CoreDependencyValuePr
 
 				if (fieldType instanceof INumberType) {
 					final var value = printDocumentContext.findSingleFieldInstance(fieldPath)
-						.flatMap(PrintDocumentContext.Entity::getValue);
+						.flatMap(Entity::getValue);
 
 					return () -> new ColumnDataWrapper(
 						(value.isPresent() && value.get() instanceof BigDecimal bigDecimal)

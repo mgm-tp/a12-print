@@ -34,9 +34,9 @@ import path from "node:path";
 
 import { loadJsonFiles } from "../../../../../../../../test/typescript/test-utils/files.js";
 import { PrintMigrationTool } from "../../../../api.js";
-import * as OldModel from "../../../version-3.1.0/print-model.js";
+import type * as OldModel from "../../../version-3.1.0/print-model.js";
 
-import * as NewModel from "../print-model.js";
+import type * as NewModel from "../print-model.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

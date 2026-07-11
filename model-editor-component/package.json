@@ -1,6 +1,6 @@
 {
   "name": "@com.mgmtp.a12.print/print-model-editor-component",
-  "version": "3.2.3",
+  "version": "4.0.0",
   "license": "(EUPL-1.2 OR LicenseRef-commercial)",
   "description": "Print model editor component",
   "type": "module",
@@ -8,17 +8,17 @@
     "compile": "pnpm run /^compile:.*/",
     "lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "format": "prettier --check \"./*.{js,cjs,mjs}\" \"src/**/*.{ts,tsx}\"",
-    "test": "node --experimental-vm-modules --expose-gc --no-compilation-cache --no-warnings node_modules/jest/bin/jest -i",
+    "test": "node --experimental-vm-modules --expose-gc --no-compilation-cache --no-warnings node_modules/jest/bin/jest",
     "clean": "rimraf build coverage lib",
     "watch": "tsc -p tsconfig.build.json -w",
     "fix": "pnpm run /^.*:fix$/",
     "compile:lint": "pnpm run lint && pnpm run format",
-    "compile:typescript": "tsc -p tsconfig.build.json && webpack --config webpack.bundle-deps.cjs",
+    "compile:typescript": "tsc -p tsconfig.build.json",
     "compile:check-cd": "madge --circular src/main/typescript",
     "lint:fix": "eslint . --fix --ext .ts,.tsx",
     "format:fix": "prettier --write \"./*.{js,cjs,mjs}\" \"src/**/*.{ts,tsx}\"",
-    "test:watch": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest -i --watchAll",
-    "test:report": "node --max-old-space-size=4096 --experimental-vm-modules --no-warnings node_modules/jest/bin/jest -i --coverage"
+    "test:watch": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest --watchAll",
+    "test:report": "node --max-old-space-size=4096 --experimental-vm-modules --no-warnings node_modules/jest/bin/jest --coverage"
   },
   "files": [
     "src/main",
@@ -30,35 +30,44 @@
     "NOTICE",
     "THIRD_PARTY_NOTICES"
   ],
-  "main": "./lib/app/PrintModelEditorLight.js",
   "exports": {
     ".": "./lib/app/PrintModelEditorLight.js",
-    "./lib/*": [
-      "./lib/*",
-      "./lib/*/index.js",
-      "./lib/*.js"
-    ]
+    "./api": "./lib/api/index.js",
+    "./a12internal/components": "./lib/a12internal/components/index.js",
+    "./a12internal/api": "./lib/a12internal/api/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "./": [
+        "./lib/app/PrintModelEditorLight.d.ts"
+      ],
+      "a12internal/components": [
+        "./lib/a12internal/components/index.d.ts"
+      ],
+      "a12internal/api": [
+        "./lib/a12internal/api/index.d.ts"
+      ]
+    }
   },
   "dependencies": {
     "@com.mgmtp.a12.dml/dml": "catalog:a12",
     "@com.mgmtp.a12.kernel-next/kernel-md-facade": "catalog:a12",
-    "@com.mgmtp.a12.widgets/widgets-draft-js-editor": "catalog:a12",
+    "@lexical/html": "catalog:",
+    "@lexical/react": "catalog:",
+    "@lexical/selection": "catalog:",
     "@monaco-editor/react": "catalog:",
-    "draft-js-export-html": "catalog:",
-    "draft-js-utils": "catalog:",
     "html-react-parser": "catalog:",
+    "lexical": "catalog:",
     "monaco-editor": "catalog:",
     "nanoid": "catalog:",
     "react-dnd-html5-backend": "catalog:",
     "reselect": "catalog:",
     "sanitize-html": "catalog:",
-    "synthetic-dom": "catalog:",
-    "typescript-fsa": "catalog:"
+    "immer": "catalog:"
   },
   "devDependencies": {
     "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core": "catalog:a12",
     "@com.mgmtp.a12.base/base-model-api": "catalog:a12",
-    "@com.mgmtp.a12.devtools/tsconfig": "catalog:a12",
     "@com.mgmtp.a12.devtools/eslint-config": "catalog:a12",
     "@com.mgmtp.a12.devtools/prettier-config": "catalog:a12",
     "@com.mgmtp.a12.kernel/kernel-core-parser-web": "catalog:a12",
@@ -84,23 +93,18 @@
     "@testing-library/dom": "catalog:",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
-    "@types/draft-js": "catalog:",
     "@types/jest": "catalog:",
     "@types/jsdom": "catalog:",
     "@types/lodash": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@types/react-is": "catalog:",
     "@types/react-redux": "catalog:",
     "@types/redux-mock-store": "catalog:",
     "@types/sanitize-html": "catalog:",
     "assert": "catalog:",
     "buffer": "catalog:",
     "css-loader": "catalog:",
-    "draft-js": "catalog:",
-    "draft-js-import-element": "catalog:",
-    "draft-js-import-html": "catalog:",
     "eslint": "catalog:",
     "eslint-config-prettier": "catalog:",
     "eslint-plugin-jest": "catalog:",
@@ -118,7 +122,6 @@
     "react": "catalog:",
     "react-dnd": "catalog:",
     "react-dom": "catalog:",
-    "react-is": "catalog:",
     "react-redux": "catalog:",
     "redux": "catalog:",
     "redux-mock-store": "catalog:",
@@ -127,7 +130,6 @@
     "source-map-loader": "catalog:",
     "string_decoder": "catalog:",
     "styled-components": "catalog:",
-    "ts-node": "catalog:",
     "typed-redux-saga": "catalog:",
     "typescript": "catalog:",
     "webpack": "catalog:"
@@ -143,13 +145,12 @@
     "@com.mgmtp.a12.utils/utils-localization": "catalog:a12Ranges",
     "@com.mgmtp.a12.utils/utils-logging": "catalog:a12Ranges",
     "@com.mgmtp.a12.widgets/widgets-core": "catalog:a12Ranges",
-    "draft-js": "catalog:",
     "immutable": "catalog:",
     "lodash": "catalog:",
     "react": "catalog:",
     "react-dnd": "catalog:",
     "react-redux": "catalog:",
-    "redux": "catalog:ranges",
+    "redux": "catalog:",
     "redux-saga": "catalog:",
     "styled-components": "catalog:",
     "typed-redux-saga": "catalog:"

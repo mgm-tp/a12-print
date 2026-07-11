@@ -29,21 +29,17 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, getContext, put, takeEvery } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
 
-import { RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 import { RequestApiActions } from "../../redux/index.js";
 
-export function* loadDocumentModelIdsSaga(): SagaIterator {
-	yield* takeEvery(
-		(action: AnyAction) => RequestApiActions.loadDocumentModelIds.match(action),
-		handleLoadDocumentModelIdsSaga
-	);
+export function* loadDocumentModelIdsSaga(): SagaGenerator<void> {
+	yield* takeEvery(RequestApiActions.loadDocumentModelIds.match, handleLoadDocumentModelIdsSaga);
 }
 
-function* handleLoadDocumentModelIdsSaga(): SagaIterator {
+function* handleLoadDocumentModelIdsSaga(): SagaGenerator<void> {
 	const requestApi: RequestApi = yield* getContext("requestApi");
 	const documentModelIds = yield* call(requestApi.loadDocumentModelIds);
 

@@ -33,20 +33,16 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Toggle } from "@com.mgmtp.a12.widgets/widgets-core/lib/toggle/index.js";
-import { PageOrientation, SegmentType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
-import { DropDownItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/dropdown/index.js";
-import { Autocomplete } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/index.js";
+import type { DropDownItem } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Icon, Button, Toggle, addPrefix, Autocomplete } from "@com.mgmtp.a12.widgets/widgets-core";
+import { PageOrientation, SegmentType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { InteractionLogActions, RequestApiActions, TransactionLogStateActions } from "../../redux/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { RequestApiSelectors } from "../../redux/request-api/selectors.js";
+import { RequestApiSelectors } from "../../redux//request-api/selectors.js";
 
 import { FlexContainer } from "../sidebar/Sidebar.styled.js";
-import { CustomTextLineStateless } from "../forms/custom-base-input-components/index.js";
+import { CustomTextField } from "../forms/custom-base-input-components/index.js";
 
 import { StyledFlexGapContainer, StyledSegmentToolbar } from "./SegmentToolbar.styled.js";
 import { DinTemplateSegmentItem } from "./din-template-segment-item.js";
@@ -145,10 +141,10 @@ export const SegmentToolbar = () => {
 	const pageOrientations = usePageOrientation();
 
 	return (
-		<StyledSegmentToolbar>
+		<StyledSegmentToolbar data-testid="segment-toolbar">
 			<StyledFlexGapContainer className={addPrefix("-u-flex-col", "-u-flex-1")}>
 				<StyledFlexGapContainer>
-					<CustomTextLineStateless
+					<CustomTextField
 						className={addPrefix("-u-flex-1")}
 						value={title}
 						onChange={e => setTitle(e.target.value)}

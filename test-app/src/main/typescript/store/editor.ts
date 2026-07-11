@@ -29,14 +29,16 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { createAction, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { castDraft } from "immer";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 
-import {
+import type {
 	InteractionLogPersistentEntry,
 	LogPersistentEntry,
 	PartialTransactionLogPersistentEntry,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log";
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model";
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
 
 import type { ResolvedCaseConfigResource, CaseConfig } from "../components/case-config/CaseConfig";
 
@@ -53,33 +55,18 @@ export interface Editor {
 
 const initialState: Editor = {};
 
-export const editorSlice: Slice<
-	Editor,
-	{
-		setPrintModel: (state: Editor, action: PayloadAction<Model>) => void;
-		setCaseConfig: (state: Editor, action: PayloadAction<CaseConfig>) => void;
-		setCaseResource: (state: Editor, action: PayloadAction<ResolvedCaseConfigResource>) => Editor;
-		clearEditorState: (state: Editor) => void;
-		setLogPersistentEntries: (state: Editor, action: PayloadAction<LogPersistentEntry[]>) => void;
-		setHasExternalStore: (state: Editor, action: PayloadAction<boolean>) => void;
-		toggleIsBasicEditor: (state: Editor) => void;
-	},
-	"editorSlice"
-> = createSlice({
+export const editorSlice = createSlice({
 	name: "editorSlice",
 	initialState,
 	reducers: {
-		setPrintModel: (state, action: PayloadAction<Model>) => {
-			state.printModel = action.payload;
+		setPrintModel: (state, action: PayloadAction<Model | undefined>) => {
+			state.printModel = castDraft(action.payload);
 		},
 		setCaseConfig: (state, action: PayloadAction<CaseConfig>) => {
-			state.caseConfig = action.payload;
+			state.caseConfig = castDraft(action.payload);
 		},
-		setCaseResource: (state, action: PayloadAction<ResolvedCaseConfigResource>) => {
-			return {
-				...state,
-				caseResource: action.payload,
-			};
+		setCaseResource: (state, action: PayloadAction<ResolvedCaseConfigResource | undefined>) => {
+			state.caseResource = castDraft(action.payload);
 		},
 		clearEditorState: state => {
 			state.caseConfig = undefined;

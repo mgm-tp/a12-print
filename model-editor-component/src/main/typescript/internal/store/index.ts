@@ -29,19 +29,4 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { createStore, applyMiddleware } from "redux";
-import { composeWithDevTools } from "@redux-devtools/extension";
-
-import { PrintEditorComponentSagas } from "../sagas/index.js";
-import createSagaMiddleware from "../redux-saga/index.js";
-
-import { PrintEditorComponentReducer } from "./root-reducer.js";
-
-const sagaMiddleware = createSagaMiddleware();
-
-export const store = createStore(
-	PrintEditorComponentReducer.rootReducer,
-	composeWithDevTools(applyMiddleware(sagaMiddleware))
-);
-
-sagaMiddleware.run(PrintEditorComponentSagas.rootSaga);
+export * from "./root-reducer.js";

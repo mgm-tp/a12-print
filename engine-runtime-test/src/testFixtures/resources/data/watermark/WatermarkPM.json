@@ -2,7 +2,7 @@
   "header": {
     "id": "WatermarkPM",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "locales": [
       {
         "code": "de"
@@ -12,11 +12,11 @@
     "annotations": [
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "modelReferences": [
@@ -330,6 +330,24 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
+        },
+        "borderProperties": {
+          "id": "tovWNNxQZaYwxKmYxSRns",
+          "borderWidth": {
+            "id": "X9bes5UrFYHa9f59nNhvS",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "I0L7A86Z_tfgxpVYju4-H",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "mNNz_cS6LkEH1PXL7PXDq",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -352,6 +370,24 @@
             "id": "TmKgbywqqgD-jeuSfVwPT",
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        },
+        "borderProperties": {
+          "id": "nmmRMyaB7lEI94aTc1z7Z",
+          "borderWidth": {
+            "id": "oqoRKMSc1wymrqK0busbu",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "RhjdTvm1NrJYh6TOakbzQ",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "ZgwQ_y3QrWUagGoq1b57W",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
         }
       },
@@ -381,6 +417,24 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
+        },
+        "borderProperties": {
+          "id": "KvYSAcsE8vpwSqS1Vq9XN",
+          "borderWidth": {
+            "id": "oJiXzN_c8ynI6oMGD9lIw",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "99gNWVrL0QVvdGf_C3Zmr",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "Eou56lw6f0Vt21Yrkj6Ic",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -390,6 +444,24 @@
           "id": "L9wPURSxCaW9wodhmM0xv",
           "model": "WatermarkDM",
           "path": "/general/portraitWatermarkContent"
+        },
+        "borderProperties": {
+          "id": "OhtTc5ArV4aiUJAwjx6Gi",
+          "borderWidth": {
+            "id": "e-3_8rntnYLsrJcnrIgZ7",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "UKWwH5xkdVndrYSOl3gWr",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "JrmswSBSW5p1L32zOLIbN",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -418,6 +490,24 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
+        },
+        "borderProperties": {
+          "id": "8vHmpEQxCzMVgMrOGFjMM",
+          "borderWidth": {
+            "id": "SbiZ4QTlawH_NfRMnxbH1",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "FoGUNV6YVuDm9xSnGzeaR",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "8tL4flRW0w9S-dY4QfdOZ",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -427,6 +517,24 @@
           "id": "bzI4bHIsFh6R_HD08vp34",
           "model": "WatermarkDM",
           "path": "/general/landscapeWatermarkContent"
+        },
+        "borderProperties": {
+          "id": "aKljTHvqLS255061KGGFo",
+          "borderWidth": {
+            "id": "lWYqlid5h13HYXCZ8jCgY",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "8fN3JsOuGIsZvVuveXRj6",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "pt7GF9ZBNCWa4JatiKuXt",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       }
     ]

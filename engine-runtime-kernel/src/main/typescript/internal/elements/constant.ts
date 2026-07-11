@@ -31,16 +31,10 @@
  */
 import Big from "big.js";
 
-import {
-	ArithmeticBranch,
-	CompareBranch,
-	LogicBranch,
-	Predicate,
-	SyntaxTreeElement,
-	SyntaxTreeElementType,
-	SyntaxTreeElementVisitor,
-	VisitationState,
-} from "./index.js";
+import type { SyntaxTreeElementVisitor, VisitationState } from "../../a12internal/elements/index.js";
+
+import type { ArithmeticBranch, CompareBranch, LogicBranch, Predicate, SyntaxTreeElement } from "./index.js";
+import { SyntaxTreeElementType } from "./index.js";
 
 export class Constant implements SyntaxTreeElement, Predicate.Parameter, ArithmeticBranch, LogicBranch, CompareBranch {
 	_arithmeticBranch = true;

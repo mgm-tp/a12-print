@@ -31,10 +31,7 @@
  */
 import * as React from "react";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/button-group/index.js";
-import { generateUid, noop } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
+import { Button, Icon, ButtonGroup, generateUid, noop } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 

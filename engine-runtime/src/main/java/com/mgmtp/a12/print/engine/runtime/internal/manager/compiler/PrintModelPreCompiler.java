@@ -31,7 +31,11 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.google.common.base.Strings;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
+import com.mgmtp.a12.print.engine.api.exception.StaticImageNotFoundException;
+import com.mgmtp.a12.print.engine.api.StaticImageProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.expression.PreCompiledExpression;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing.PreCompiledListing;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.expression.interpreter.ExpressionInterpreter;
@@ -46,6 +50,9 @@ import com.mgmtp.a12.print.model.api.model.element.base.internal.LogicComponent;
 import com.mgmtp.a12.print.model.api.model.element.base.internal.LogicContainer;
 import com.mgmtp.a12.print.model.api.model.element.type.calculation.Calculation;
 import com.mgmtp.a12.print.model.api.model.element.type.expression.Expression;
+import com.mgmtp.a12.print.model.api.model.element.type.image.Image;
+import com.mgmtp.a12.print.model.api.model.element.type.image.ImageProperties;
+import com.mgmtp.a12.print.model.api.model.element.type.image.ResourceSource;
 import com.mgmtp.a12.print.model.api.model.element.type.listing.Listing;
 import com.mgmtp.a12.print.model.api.model.element.type.switchCase.Switch;
 import com.mgmtp.a12.print.model.api.model.element.type.table.Table;
@@ -63,9 +70,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -86,6 +95,10 @@ public class PrintModelPreCompiler implements PrintModelVisitor {
 	@NonNull
 	private final A12TypeComparisonMapping a12TypeComparisonMapping;
 
+	private final StaticImageProvider staticImageProvider;
+	private final HashMap<String, byte[]> staticImageMap = new HashMap<>();
+	private final HashSet<String> missingStaticImageFilenames = new HashSet<>();
+
 	@Getter
 	private final HashMap<LogicContainer, LogicContainerCompilation> containers = new HashMap<>();
 
@@ -97,8 +110,45 @@ public class PrintModelPreCompiler implements PrintModelVisitor {
 		if (log.isTraceEnabled()) {
 			containers.values().forEach(this::traceCompilation);
 		}
-		return new PreCompilationResult(preCompiledListings, preCompiledExpressions, new LinkedList<>(containers.values()));
+		return new PreCompilationResult(
+			preCompiledListings,
+			preCompiledExpressions,
+			new LinkedList<>(containers.values()),
+			staticImageMap,
+			missingStaticImageFilenames
+		);
+	}
 
+	@Override
+	public TraversalCommand visitImage(Image image, PrintModelPath path) {
+		if (staticImageProvider == null) {
+			return TraversalCommand.CONTINUE;
+		}
+		var props = image.getImageProperties();
+		if (props.getImageSrcType() != ImageProperties.ImageSrcType.STATIC) {
+			return TraversalCommand.CONTINUE;
+		}
+		var attachmentSource = props.getResourceSource();
+		if (attachmentSource.isEmpty()) {
+			return TraversalCommand.CONTINUE;
+		}
+		var filename = attachmentSource.map(ResourceSource::getResourceName)
+			.filter(rsName -> !Strings.isNullOrEmpty(rsName))
+			.orElseThrow(() -> new PrintCompilerException("Static image resource source is missing filename"));
+
+		if (staticImageMap.containsKey(filename)) {
+			return TraversalCommand.CONTINUE;
+		}
+		try {
+			staticImageMap.put(filename, staticImageProvider.loadStaticImage(filename));
+		} catch (StaticImageNotFoundException e) {
+			missingStaticImageFilenames.add(filename);
+		} catch (RuntimeException e) {
+			throw new PrintCompilerException(
+				"Failed to load static image '" + filename + "': " + e.getMessage(), e
+			);
+		}
+		return TraversalCommand.CONTINUE;
 	}
 
 	public void traceCompilation(LogicContainerCompilation containerCompilation) {
@@ -333,7 +383,7 @@ public class PrintModelPreCompiler implements PrintModelVisitor {
 		);
 
 		if (parserResult.hasError()) {
-			throw new PrintCompilerException(parserResult.getErrorMessage());
+			throw new PrintDomainException("During parsing of the expression '{}' an error occurred: {}", expression, parserResult.getErrorMessage());
 		}
 
 		final var counter = new AtomicInteger();
@@ -370,10 +420,13 @@ public class PrintModelPreCompiler implements PrintModelVisitor {
 				if (typeDef.isPresent()) {
 					var iFieldType = printModel.getDocumentModelIndexMap().values().stream().flatMap(documentModelIndex ->
 						documentModelIndex.getFieldType(typeDef.get()).stream()
-					).findFirst().orElseThrow(() -> new PrintCompilerException("unable to find TypeDefinition " + typeDef.get().getId()));
+					).findFirst().orElseThrow(() -> new PrintDomainException("Unable to find TypeDefinition " + typeDef.get().getId()));
 					return ComputationFieldTypeExt.computationFieldTypeFrom(iFieldType);
 				} else {
-					return ComputationFieldTypeExt.computationFieldTypeFrom(fieldTypeDefinition.getFieldType().orElse(null));
+					return ComputationFieldTypeExt.computationFieldTypeFrom(
+						fieldTypeDefinition.getFieldType().orElse(null),
+						calculation.getCalculationProperties().getComputationAlternatives()
+					);
 				}
 			})
 			.orElseGet(() -> ComputationFieldType.STRING);
@@ -399,6 +452,8 @@ public class PrintModelPreCompiler implements PrintModelVisitor {
 		private final Map<String, PreCompiledListing> preCompiledListings;
 		private final Map<String, PreCompiledExpression> preCompiledExpressions;
 		private final LinkedList<LogicContainerCompilation> compilations;
+		private final Map<String, byte[]> staticImageMap;
+		private final Set<String> missingStaticImageFilenames;
 	}
 
 }

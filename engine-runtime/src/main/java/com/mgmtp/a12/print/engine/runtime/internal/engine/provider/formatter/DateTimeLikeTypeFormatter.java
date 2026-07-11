@@ -31,29 +31,26 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.FormattingResult;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
 import java.time.DateTimeException;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
-import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 
 public class DateTimeLikeTypeFormatter implements ValueFormatProvider {
 
 	public static ZonedDateTime getDateInTimeZone(final Object v, @NonNull final TimeZone timeZone) {
-		if (v instanceof Date) {
-			return ((Date) v).toInstant().atZone(timeZone.toZoneId());
+		if (v instanceof Instant instant) {
+			return instant.atZone(timeZone.toZoneId());
 		} else {
-			throw new PrintException("{} is not supported date value", v.getClass().getName());
+			throw new PrintDomainException("The timezone could not be applied on {}", v.getClass().getName());
 		}
 	}
 
@@ -61,7 +58,7 @@ public class DateTimeLikeTypeFormatter implements ValueFormatProvider {
 		try {
 			return formatter.format(zonedDateTime);
 		} catch (final DateTimeException e) {
-			throw new PrintException("Date [%s] cannot be converted to string with format [%s].", zonedDateTime, formatter, e);
+			throw new PrintDomainException("Date {} cannot be converted to string with format {}.", zonedDateTime, formatter, e);
 		}
 	}
 

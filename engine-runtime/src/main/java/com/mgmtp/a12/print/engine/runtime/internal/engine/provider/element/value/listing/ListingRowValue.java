@@ -31,9 +31,8 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing;
 
-import com.mgmtp.a12.kernel.md.document.api.IEntityInstance;
 import com.mgmtp.a12.kernel.md.model.api.IElement;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.Entity;
 import com.mgmtp.a12.print.model.api.model.element.type.listing.GroupPropertyComputation;
 import com.mgmtp.a12.print.model.api.model.element.type.listing.RowPropertyComputation;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -49,9 +48,7 @@ public interface ListingRowValue {
 
 	List<ListingColumnValue> getColumnValues();
 
-	IEntityInstance getEntityInstance();
-
-	PrintDocumentContext.Entity<IEntityInstance> getRepetition();
+	Entity<?> getRepetition();
 
 	IElement[] getPath();
 }

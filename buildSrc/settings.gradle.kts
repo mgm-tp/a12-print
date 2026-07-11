@@ -33,6 +33,9 @@ rootProject.name = "base"
 
 dependencyResolutionManagement {
 	versionCatalogs {
+		create("a12Libs", Action {
+			from(files("../gradle/a12Libs.versions.toml"))
+		})
 		create("thirdPartyLibs", Action {
 			from(files("../gradle/thirdPartyLibs.versions.toml"))
 		})

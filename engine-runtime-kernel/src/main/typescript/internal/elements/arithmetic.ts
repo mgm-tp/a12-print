@@ -29,15 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	ArithmeticBranch,
-	CompareBranch,
-	Predicate,
-	SyntaxTreeElement,
-	SyntaxTreeElementType,
-	SyntaxTreeElementVisitor,
-	VisitationState,
-} from "./index.js";
+import type { SyntaxTreeElementVisitor, VisitationState } from "../../a12internal/elements/index.js";
+
+import type { ArithmeticBranch, CompareBranch, Predicate, SyntaxTreeElement } from "./index.js";
+import { SyntaxTreeElementType } from "./index.js";
 
 export class Arithmetic implements SyntaxTreeElement, ArithmeticBranch, CompareBranch, Predicate.Parameter {
 	_arithmeticBranch = true;

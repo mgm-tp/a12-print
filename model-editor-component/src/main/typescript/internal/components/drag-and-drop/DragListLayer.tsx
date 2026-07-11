@@ -32,17 +32,18 @@
 import * as React from "react";
 import type { XYCoord } from "react-dnd";
 
-import { PartialSegment, PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialSegment, PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { SEGMENT_CARD, SWITCH_CASE_CARD, TEXT_STYLE_CARD } from "../../constant/drag.js";
 
 import { SegmentCard } from "../segments/SegmentCard.js";
 import { TextStyleCard } from "../text-styles/TextStyleCard.js";
 import { SwitchCaseCard } from "../switch-stage/SwitchCaseCard.js";
-import { SwitchCaseItem } from "../switch-stage/switch-stage.js";
+import type { SwitchCaseItem } from "../switch-stage/switch-stage.js";
 
 import { StyledDragListLayer } from "./DragListLayer.styled.js";
-import { BasicDragLayerProps, createDragLayerWrapper } from "./create-drag-layer-wrapper.js";
+import type { BasicDragLayerProps } from "./create-drag-layer-wrapper.js";
+import { createDragLayerWrapper } from "./create-drag-layer-wrapper.js";
 
 type DragItem = PartialTextStyle | PartialSegment | SwitchCaseItem;
 type DragLayerProps = BasicDragLayerProps<DragItem>;

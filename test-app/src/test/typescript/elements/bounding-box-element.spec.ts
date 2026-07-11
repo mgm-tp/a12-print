@@ -30,18 +30,24 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { test } from "@playwright/test";
+
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+
 import {
 	closeDetail,
+	commitChanges,
 	dragAndDrop,
 	dragElementToEditor,
 	openEditorStage,
 	devAppTest,
 	expect,
 	selectInputSource,
+	setBorderColor,
+	setBorderStyle,
+	setBorderWidth,
+	waitForInteractionSagasSettled,
 	writeToTextElement,
-} from "src/test/typescript/utils";
-
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
+} from "../utils/index.js";
 
 devAppTest.use({ useCase: "003-automated-tests" });
 
@@ -54,20 +60,17 @@ test.describe("Bounding Box Element", () => {
 	});
 
 	devAppTest("General interactions", async ({ page }) => {
-		const boundingBox = page.locator("_react=BoundingBox");
+		const boundingBox = page.getByTestId("element-bounding-box");
 
 		await test.step("Add border properties", async () => {
 			await boundingBox.dblclick();
-			await page.locator("_react=PositiveNumberInput[label = 'Border Width']").getByRole("spinbutton").fill("2");
-			await page
-				.locator("_react=CustomSelect[label = 'Border Style']")
-				.getByRole("combobox")
-				.selectOption("Dashed");
-			await page.getByLabel("Border Color").click();
-			await page.locator("input[type=color]").fill("#a12a12", { force: true });
+			await setBorderStyle(page, "Dashed");
+			await setBorderWidth(page, "2");
+			await setBorderColor(page, "#a12a12");
 
 			await closeDetail({ page });
-			await expect(boundingBox).toHaveScreenshot();
+			await boundingBox.click();
+			await expect.soft(boundingBox).toHaveScreenshot();
 		});
 
 		await test.step("Open Wrapper Stage and Add Text Element", async () => {
@@ -77,21 +80,27 @@ test.describe("Bounding Box Element", () => {
 			await dragElementToEditor({ page, elementName: "Text", isWrapperStage: true });
 			await expect(page).toHaveEditorStageErrors(2);
 
-			const textBox = page.locator("_react=Text");
+			const textBox = page.getByTestId("element-text");
 			await textBox.dblclick();
 			await selectInputSource({ page, label: "Text Styles", source: PossibleInputSource.DEFAULT });
 			await writeToTextElement({ page, text: "Hello World" });
 
 			await page.getByRole("link", { name: "First Segment" }).click();
 			await expect(page).toHaveEditorStageErrors(1);
-			await expect(boundingBox).toHaveScreenshot();
+			await waitForInteractionSagasSettled(page);
+			await expect.soft(boundingBox).toHaveScreenshot();
 		});
 
 		await test.step("Resize Bounding Box", async () => {
 			await boundingBox.click();
-			const resizeHandle = page.locator("_react=ResizeHandle").nth(1); // get the resize handle on the right
+			const resizeHandle = page.getByTestId("resize-handle").nth(1); // get the resize handle on the right
 			await dragAndDrop(page, resizeHandle, 140, 0);
-			await expect(boundingBox).toHaveScreenshot();
+			await waitForInteractionSagasSettled(page);
+			await expect.soft(boundingBox).toHaveScreenshot();
+		});
+
+		await test.step("Commit changes", async () => {
+			await commitChanges({ page });
 		});
 	});
 });

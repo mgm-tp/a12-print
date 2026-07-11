@@ -1,0 +1,103 @@
+{
+  "header": {
+    "id": "ListingRepetitionsInNestedAreasDM",
+    "modelType": "document",
+    "modelVersion": "29.4.0",
+    "locales": [
+      {
+        "code": "en"
+      },
+      {
+        "code": "de"
+      }
+    ],
+    "annotations": [],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "ListingRepetitionsInNestedAreasDM"
+    },
+    "modelConfig": {
+      "timeZone": "UTC",
+      "decimalSeparator": ".",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_6648a",
+          "name": "root1",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Group",
+                "id": "group_61384",
+                "name": "rep1",
+                "Group": {
+                  "repeatability": 500,
+                  "elements": [
+                    {
+                      "type": "Group",
+                      "id": "group_ce141",
+                      "name": "rep2",
+                      "Group": {
+                        "repeatability": 500,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_b1779",
+                            "name": "Text",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Group",
+                            "id": "group_9305e",
+                            "name": "rep3",
+                            "Group": {
+                              "repeatability": 555,
+                              "elements": [
+                                {
+                                  "type": "Group",
+                                  "id": "group_d7f3b",
+                                  "name": "static",
+                                  "Group": {
+                                    "repeatability": 1,
+                                    "elements": [
+                                      {
+                                        "type": "Field",
+                                        "id": "field_1f273",
+                                        "name": "Text2",
+                                        "Field": {
+                                          "fieldType": {
+                                            "type": "StringType"
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

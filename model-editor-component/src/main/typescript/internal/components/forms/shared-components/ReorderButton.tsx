@@ -31,9 +31,7 @@
  */
 import * as React from "react";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/main/button.view.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/main/icon.view.js";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
+import { Button, Icon, addPrefix } from "@com.mgmtp.a12.widgets/widgets-core";
 
 export interface ReorderButtonProps {
 	onUp(): void;

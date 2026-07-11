@@ -31,8 +31,8 @@
  */
 // Script to update the model version constant with the latest version from the migration steps.
 
-import * as fs from "node:fs";
-import * as path from "node:path";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 
 interface ModelConfig {
 	stepsIndexFile: string;
@@ -45,11 +45,6 @@ const MODEL_CONFIG: Record<string, ModelConfig> = {
 		stepsIndexFile: "../print-model/steps/index.ts",
 		versionFile: "../../../../../../model-api/src/main/typescript/constant/model.ts",
 		versionConstant: "PRINT_MODEL_VERSION",
-	},
-	"print-setting-model": {
-		stepsIndexFile: "../print-setting-model/steps/index.ts",
-		versionFile: "../../../../../../print-setting/src/main/typescript/internal/api/constant/model.ts",
-		versionConstant: "PRINT_SETTING_MODEL_VERSION",
 	},
 	"typesetting-model": {
 		stepsIndexFile: "../typesetting-model/steps/index.ts",
@@ -72,11 +67,11 @@ function main(): void {
 		throw new Error(`Unknown model "${modelName}"`);
 	}
 
-	const scriptDir = path.dirname(process.argv[1]);
+	const scriptDir = dirname(process.argv[1]);
 
-	const stepsIndexPath = path.resolve(scriptDir, config.stepsIndexFile);
+	const stepsIndexPath = resolve(scriptDir, config.stepsIndexFile);
 	const latestStepsVersion = getLatestStepsVersion(stepsIndexPath);
-	const versionFilePath = path.resolve(scriptDir, config.versionFile);
+	const versionFilePath = resolve(scriptDir, config.versionFile);
 	const moduleVersion = getModuleVersion(versionFilePath, config.versionConstant);
 
 	if (moduleVersion === latestStepsVersion) {
@@ -99,11 +94,11 @@ function printUsage(): void {
 }
 
 function getLatestStepsVersion(filePath: string): string {
-	if (!fs.existsSync(filePath)) {
+	if (!existsSync(filePath)) {
 		throw new Error(`Steps index file not found: ${filePath}`);
 	}
 
-	const content = fs.readFileSync(filePath, "utf-8");
+	const content = readFileSync(filePath, "utf-8");
 
 	// Find all version strings in the MIGRATION_STEPS array
 	const versionRegex = /version:\s*"([^"]+)"/g;
@@ -121,11 +116,11 @@ function getLatestStepsVersion(filePath: string): string {
 }
 
 function getModuleVersion(filePath: string, constantName: string): string {
-	if (!fs.existsSync(filePath)) {
+	if (!existsSync(filePath)) {
 		throw new Error(`Version file not found: ${filePath}`);
 	}
 
-	const content = fs.readFileSync(filePath, "utf-8");
+	const content = readFileSync(filePath, "utf-8");
 	const regex = new RegExp(`export const ${constantName} = "(.*?)";`);
 	const match = regex.exec(content);
 
@@ -137,10 +132,10 @@ function getModuleVersion(filePath: string, constantName: string): string {
 }
 
 function updateModuleVersionFile(filePath: string, constantName: string, newVersion: string): void {
-	let content = fs.readFileSync(filePath, "utf-8");
+	let content = readFileSync(filePath, "utf-8");
 	const regex = new RegExp(`(export const ${constantName} = ").*?(";)`);
 	content = content.replace(regex, `$1${newVersion}$2`);
-	fs.writeFileSync(filePath, content, "utf-8");
+	writeFileSync(filePath, content, "utf-8");
 
 	console.log(`Updated ${constantName} to ${newVersion}`);
 }

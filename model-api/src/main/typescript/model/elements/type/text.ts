@@ -29,11 +29,13 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ReferenceContainer, ReferenceContainerLabels } from "../../reference/index.js";
-import { PartialAnyPrintModelElement } from "../../partial.js";
+import type { ReferenceContainerLabels } from "../../reference/index.js";
+import { type ReferenceContainer } from "../../reference/index.js";
+import { type PartialAnyPrintModelElement } from "../../partial.js";
 
-import { PrintModelEntity, Styleable } from "../base.js";
-import { ElementType, PrintModelElement } from "../print-model-element.js";
+import { type PrintModelEntity, type Styleable } from "../base.js";
+import type { PrintModelElement } from "../print-model-element.js";
+import { ElementType } from "../print-model-element.js";
 
 export interface Text extends PrintModelElement, Styleable {
 	readonly type: ElementType.Text;

@@ -29,12 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	StoreEntryMapWithId,
-	TransactionLog,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+import type { StoreEntryMapWithId } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { initialStateLogStore } from "../../../redux/index.js";
 import {

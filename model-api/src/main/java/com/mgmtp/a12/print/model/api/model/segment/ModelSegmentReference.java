@@ -32,7 +32,9 @@
 package com.mgmtp.a12.print.model.api.model.segment;
 
 import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface ModelSegmentReference extends ElementReference {
 	String getReferenceId();
 }

@@ -31,15 +31,12 @@
  */
 import * as React from "react";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import {
+import { Icon, Button } from "@com.mgmtp.a12.widgets/widgets-core";
+import type {
 	PartialAnyPrintModelElement,
-	PartialArea,
-	PartialBoundingBox,
-	PartialOverride,
 	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialArea, PartialBoundingBox, PartialOverride } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { ElementsUtils } from "../../utils/index.js";

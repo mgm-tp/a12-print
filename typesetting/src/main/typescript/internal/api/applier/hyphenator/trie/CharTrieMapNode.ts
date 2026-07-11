@@ -29,13 +29,13 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import FixedSizeIntList from "../collection/FixedSizeIntList.js";
+import type { FixedSizeIntList } from "../collection/FixedSizeIntList.js";
 
-import CharTrieMap from "./CharTrieMap.js";
-import CharTrieNode from "./CharTrieNode.js";
-import CharTrie from "./CharTrie.js";
+import { CharTrieMap } from "./CharTrieMap.js";
+import type { CharTrieNode } from "./CharTrieNode.js";
+import type { CharTrie } from "./CharTrie.js";
 
-class CharTrieMapNode implements CharTrieNode {
+export class CharTrieMapNode implements CharTrieNode {
 	private readonly _trie: CharTrie = new CharTrieMap();
 
 	get trie(): CharTrie {
@@ -52,5 +52,3 @@ class CharTrieMapNode implements CharTrieNode {
 		this._points = value;
 	}
 }
-
-export default CharTrieMapNode;

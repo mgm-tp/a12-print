@@ -19,16 +19,6 @@ THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPR
 
 The Table Layout element inserts a static table into the resulting PDF document, which provides a static layout to its contents.
 
-[ACCESSIBILITY_HINT]
-====
-icon:universal-access[] *Accessibility Hint*
-
-This element is currently not recommended, if the resulting PDF document should conform to accessibility standards,
-as it will be considered as table, even if it is used differently in your modelling.
-
-Instead you should arange text elements manually in the Editor Stage.
-====
-
 Number of Rows:: The number of rows in the resulting table.
 Number of Columns:: The number of columns in the resulting table.
 

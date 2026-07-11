@@ -29,17 +29,18 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
-import { BaseColumnType, TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/index.js";
-import { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select/index.js";
-import { MeasureUnit } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { BaseColumnType, TableRenderPropsType, SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { MeasureUnit } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { ElementWithoutIdAndType } from "../type.js";
-import { SourceInputProperties } from "../custom-base-input-components/types.js";
+import type { ElementWithoutIdAndType } from "../type.js";
+import type { SourceInputProperties } from "../custom-base-input-components/types.js";
 
-export interface CustomBodyContentProps<RowType>
-	extends TableRenderPropsType.BodyContentProps<RowType, RepeatColumnType<RowType>> {
+export interface CustomBodyContentProps<RowType> extends TableRenderPropsType.BodyContentProps<
+	RowType,
+	RepeatColumnType<RowType>
+> {
 	closeRepeatBodyRow(): void;
 
 	clonedRow: RowType;

@@ -31,23 +31,25 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.types;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.BooleanNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TextNode;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.BooleanNode;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.node.StringNode;
 import com.mgmtp.a12.print.engine.api.PrintJobConfig;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.PrintModelCompilerRuntime;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.dataformat.yaml.YAMLMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+
 
 class A12TypeComparisonTest {
 
-	private static final ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
-	private static final ObjectMapper objectMapper = new ObjectMapper();
+	private static final ObjectMapper yamlMapper = YAMLMapper.builder().build();
+	private static final ObjectMapper objectMapper = new JsonMapper();
 	private final A12TypeComparison a12TypeComparison;
 
 	public A12TypeComparisonTest() {
@@ -57,7 +59,7 @@ class A12TypeComparisonTest {
 		);
 		try {
 			a12TypeComparison = new A12TypeComparison(yamlMapper.readValue(inputStream, A12TypeComparisonMapping.class));
-		} catch (IOException e) {
+		} catch (JacksonException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -65,12 +67,12 @@ class A12TypeComparisonTest {
 	@Test
 	void checkStringFieldTypeDeepEqual() {
 		ObjectNode firstNode = objectMapper.createObjectNode();
-		firstNode.set("type", new TextNode("StringType"));
+		firstNode.set("type", new StringNode("StringType"));
 		ObjectNode firstStringTypeNode = objectMapper.createObjectNode();
 		firstNode.set("StringType", firstStringTypeNode);
 
 		ObjectNode secondNode = objectMapper.createObjectNode();
-		secondNode.set("type", new TextNode("StringType"));
+		secondNode.set("type", new StringNode("StringType"));
 
 		// Both types are StringTypes with no properties
 		assert a12TypeComparison.checkA12FieldTypeDeepEqual(firstNode, secondNode);
@@ -109,17 +111,17 @@ class A12TypeComparisonTest {
 
 	private ObjectNode getEnumerationTypeNode(String localText) {
 		ObjectNode node = objectMapper.createObjectNode();
-		node.set("type", new TextNode("EnumerationType"));
+		node.set("type", new StringNode("EnumerationType"));
 
 		ObjectNode enumerationTypeNode = objectMapper.createObjectNode();
 
 		ObjectNode value = objectMapper.createObjectNode();
-		value.set("value", new TextNode("value1"));
+		value.set("value", new StringNode("value1"));
 
 		ArrayNode labels = objectMapper.createArrayNode();
 		ObjectNode label = objectMapper.createObjectNode();
-		label.set("locale", new TextNode("en"));
-		label.set("text", new TextNode(localText));
+		label.set("locale", new StringNode("en"));
+		label.set("text", new StringNode(localText));
 		labels.add(label);
 		value.set("label", labels);
 

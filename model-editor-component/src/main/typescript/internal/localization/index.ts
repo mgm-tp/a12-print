@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { LocalizationTreeMap } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import type { LocalizationTreeMap } from "@com.mgmtp.a12.utils/utils-localization";
 
 import { en } from "./resources/en.js";
 import { de } from "./resources/de.js";

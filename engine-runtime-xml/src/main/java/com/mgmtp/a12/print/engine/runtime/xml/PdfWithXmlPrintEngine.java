@@ -33,18 +33,19 @@
 package com.mgmtp.a12.print.engine.runtime.xml;
 // end::package[]
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PdfPrintResult;
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PrintJob;
-import com.mgmtp.a12.print.engine.api.XmlPrintResult;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.message.PrintMessageReport;
 import com.mgmtp.a12.print.engine.runtime.PrintEngine;
-import com.mgmtp.a12.print.engine.runtime.modelDocument.ModelDocumentPrintEngine;
-import com.mgmtp.a12.print.engine.runtime.pdf.PdfPrintEngine;
-import com.mgmtp.a12.print.engine.runtime.xml.internal.mapping.ModelDocumentToXmlMapper;
-import com.mgmtp.a12.print.engine.runtime.xml.internal.serialization.XmlSerialization;
-import lombok.*;
+import com.mgmtp.a12.print.engine.runtime.internal.message.PrintMessageReportImpl;
+import com.mgmtp.a12.print.engine.runtime.pdfBox.PdfBoxPrintEngine;
+import lombok.NonNull;
+import lombok.Value;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.io.RandomAccessReadBuffer;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentNameDictionary;
 import org.apache.pdfbox.pdmodel.PDEmbeddedFilesNameTreeNode;
@@ -55,17 +56,18 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Stream;
 
 // tag::header[]
 /**
  * Provides the ability to execute {@link PrintJob}s.
  */
-public class PdfWithXmlPrintEngine extends PrintEngine<PdfPrintResult> implements com.mgmtp.a12.print.engine.api.PdfPrintEngine {
+@OnlyForUsage
+public class PdfWithXmlPrintEngine extends PrintEngine<PdfPrintResult> implements com.mgmtp.a12.print.engine.api.PdfBoxPrintEngine {
 // end::header[]
 
 	private final ResultType resultType;
@@ -79,12 +81,12 @@ public class PdfWithXmlPrintEngine extends PrintEngine<PdfPrintResult> implement
 	// tag::ctr[]
 	/**
 	 * @param service the ExecutorService that is used for the execution of concurrent processes.
-	 * @param config the relevant {@link PrintEngineConfig}
+	 * @param config the relevant {@link PdfBoxPrintEngineConfig}
 	 * @param resultType the relevant {@link ResultType}
 	 */
 	public PdfWithXmlPrintEngine(
 		@NonNull ExecutorService service,
-		@NonNull PrintEngineConfig config,
+		@NonNull PdfBoxPrintEngineConfig config,
 		@NonNull ResultType resultType
 	) {
 		super(config);
@@ -93,45 +95,52 @@ public class PdfWithXmlPrintEngine extends PrintEngine<PdfPrintResult> implement
 	}
 	// end::ctr[]
 
-	/**
-	 * @param printJob
-	 * @return
-	 * @throws PrintException if the print operation was interrupted by any exception.
-	 */
 	@Override
-	public PdfPrintResult execute(PrintJob printJob) throws PrintException {
+	public PrintMessageReport<PdfPrintResult> executeWithReport(PrintJob printJob) throws PrintException {
 		try {
 			return wrapResultWithXml(printJob);
-		} catch (PrintCompilerException | PrintException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new PrintException("PrintJob was interrupted due to:",e);
+		} catch (IOException e) {
+			throw new PrintException("The XML could not be read", e);
 		}
 	}
 
-	protected PdfPrintResult wrapResultWithXml(
+	protected PrintMessageReport<PdfPrintResult> wrapResultWithXml(
 		PrintJob printJob
 	) throws IOException {
 		final var modelDocumentEngine = new XmlPrintEngine(service, super.getConfig());
-		final var result = modelDocumentEngine.execute(printJob);
+		final var modelDocumentResultReport = modelDocumentEngine.executeWithReport(printJob);
 
+		if (!modelDocumentResultReport.noErrorOccurred()) {
+			return new PrintMessageReportImpl<>(null, modelDocumentResultReport.getMessages());
+		}
+
+		final var result = modelDocumentResultReport.getResult();
 		final var serializedXml = new ByteArrayOutputStream();
 		result.copyTo(serializedXml);
 		final var xmlContent = result.getXmlMarkup();
 
-		final var pdfPrintEngine = new PdfPrintEngine(service, super.getConfig());
-		final var pdfPrintResult = pdfPrintEngine.execute(printJob);
+		final var pdfPrintEngine = new PdfBoxPrintEngine(service, super.getConfig());
+		final var pdfPrintResultReport = pdfPrintEngine.executeWithReport(printJob);
 
+		if (!pdfPrintResultReport.noErrorOccurred()) {
+			return new PrintMessageReportImpl<>(null, pdfPrintResultReport.getMessages());
+		}
+
+		final var combinedMessages = Stream.concat(
+			pdfPrintResultReport.getMessages().stream(),
+			modelDocumentResultReport.getMessages().stream()
+		).toList();
+		final var pdfPrintResult = pdfPrintResultReport.getResult();
 		if (resultType.equals(ResultType.XML_FILE) || resultType.equals(ResultType.XML_STRING_AND_FILE)) {
 			final var updatedResult = getResultWithUpdatedPdDocument(pdfPrintResult, serializedXml.toByteArray());
 
 			if (resultType.equals(ResultType.XML_FILE)) {
-				return updatedResult;
+				return new PrintMessageReportImpl<>(updatedResult, combinedMessages);
 			} else {
-				return new ResultWithXmlString(xmlContent, updatedResult);
+				return new PrintMessageReportImpl<>(new ResultWithXmlString(xmlContent, updatedResult), combinedMessages);
 			}
 		} else {
-			return new ResultWithXmlString(xmlContent, pdfPrintResult);
+			return new PrintMessageReportImpl<>(new ResultWithXmlString(xmlContent, pdfPrintResult), combinedMessages);
 		}
 	}
 
@@ -164,7 +173,7 @@ public class PdfWithXmlPrintEngine extends PrintEngine<PdfPrintResult> implement
 		try (final var outputStream = new ByteArrayOutputStream()) {
 			pdfPrintResult.copyTo(outputStream);
 
-			PDDocument sourceDocument = PDDocument.load(outputStream.toByteArray());
+			PDDocument sourceDocument = Loader.loadPDF(new RandomAccessReadBuffer(outputStream.toByteArray()));
 
 			final var fileSpecification = new PDComplexFileSpecification();
 			fileSpecification.setFile(String.format("%s%s", XML_FILE_NAME, XML_EXTENSION));
@@ -201,6 +210,7 @@ public class PdfWithXmlPrintEngine extends PrintEngine<PdfPrintResult> implement
 		}
 	}
 
+	@OnlyForUsage
 	public enum ResultType {
 		XML_STRING,
 		XML_FILE,
@@ -208,6 +218,7 @@ public class PdfWithXmlPrintEngine extends PrintEngine<PdfPrintResult> implement
 	}
 
 	@Value
+	@OnlyForUsage
 	public static class ResultWithXmlString implements PdfPrintResult {
 		@NonNull String xmlMarkup;
 		@NonNull PdfPrintResult result;
@@ -218,3 +229,4 @@ public class PdfWithXmlPrintEngine extends PrintEngine<PdfPrintResult> implement
 		}
 	}
 }
+

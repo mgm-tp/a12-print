@@ -33,5 +33,7 @@ package com.mgmtp.a12.print.model.api.model.element.type.chart.pieChart;
 
 import com.mgmtp.a12.print.model.api.model.element.type.chart.ChartData;
 import com.mgmtp.a12.print.model.api.model.element.type.chart.KeyFieldChartData;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface PieChartData extends ChartData, KeyFieldChartData {}

@@ -30,11 +30,14 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { css } from "styled-components";
+import { nanoid } from "nanoid";
 
-import { Alignment, BorderProperties, BorderStyle } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import type { BorderProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import { Alignment, BorderStyle } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
-import { Font } from "../../types/index.js";
+import type { Font } from "../../types/index.js";
 
 import { CssUtils, getTextAlignment, optionalValueToString } from "../css-utils.js";
 
@@ -88,9 +91,25 @@ describe("css utils", () => {
 					color: "yellow",
 				},
 				borderProperties: {
-					borderStyle: BorderStyle.Solid,
-					borderColor: "black",
-					borderWidth: 12,
+					id: nanoid(),
+					borderStyle: {
+						id: "nz0ZXHR730XA_ajw5afbZ",
+						path: "",
+						source: PossibleInputSource.INPUT,
+						value: BorderStyle.Solid,
+					},
+					borderWidth: {
+						id: "nz0ZXHR730XA_ajw5afbT",
+						path: "",
+						source: PossibleInputSource.INPUT,
+						value: 12,
+					},
+					borderColor: {
+						id: "nz0ZXHR730XA_ajw5afbE",
+						path: "",
+						source: PossibleInputSource.INPUT,
+						value: "black",
+					},
 				},
 			};
 
@@ -110,8 +129,19 @@ describe("css utils", () => {
 					italic: false,
 				},
 				borderProperties: {
-					borderStyle: BorderStyle.Solid,
-					borderColor: "black",
+					id: nanoid(),
+					borderStyle: {
+						id: "nz0ZXHR730XA_ajw5afbZ",
+						path: "",
+						source: PossibleInputSource.INPUT,
+						value: BorderStyle.Solid,
+					},
+					borderColor: {
+						id: "nz0ZXHR730XA_ajw5afbE",
+						path: "",
+						source: PossibleInputSource.INPUT,
+						value: "black",
+					},
 				},
 			};
 
@@ -136,8 +166,19 @@ describe("css utils", () => {
 					italic: false,
 				},
 				borderProperties: {
-					borderStyle: BorderStyle.Solid,
-					borderColor: "black",
+					id: nanoid(),
+					borderStyle: {
+						id: "nz0ZXHR730XA_ajw5afbZ",
+						path: "",
+						source: PossibleInputSource.INPUT,
+						value: BorderStyle.Solid,
+					},
+					borderColor: {
+						id: "nz0ZXHR730XA_ajw5afbE",
+						path: "",
+						source: PossibleInputSource.INPUT,
+						value: "black",
+					},
 				},
 			};
 
@@ -157,8 +198,19 @@ describe("css utils", () => {
 					italic: false,
 				},
 				borderProperties: {
-					borderStyle: BorderStyle.Solid,
-					borderColor: "black",
+					id: nanoid(),
+					borderStyle: {
+						id: "nz0ZXHR730XA_ajw5afbZ",
+						path: "",
+						source: PossibleInputSource.INPUT,
+						value: BorderStyle.Solid,
+					},
+					borderColor: {
+						id: "nz0ZXHR730XA_ajw5afbE",
+						path: "",
+						source: PossibleInputSource.INPUT,
+						value: "black",
+					},
 				},
 			};
 
@@ -178,8 +230,19 @@ describe("css utils", () => {
 					italic: false,
 				},
 				borderProperties: {
-					borderStyle: BorderStyle.Solid,
-					borderColor: "black",
+					id: nanoid(),
+					borderStyle: {
+						id: "nz0ZXHR730XA_ajw5afbZ",
+						path: "",
+						source: PossibleInputSource.INPUT,
+						value: BorderStyle.Solid,
+					},
+					borderColor: {
+						id: "nz0ZXHR730XA_ajw5afbE",
+						path: "",
+						source: PossibleInputSource.INPUT,
+						value: "black",
+					},
 				},
 			};
 
@@ -193,9 +256,25 @@ describe("css utils", () => {
 
 		it("should correctly export BorderProperties to OutlineStyle", () => {
 			const properties: DeepPartialRecursive<BorderProperties> = {
-				borderStyle: BorderStyle.Solid,
-				borderColor: BORDER_COLOR_TEST,
-				borderWidth: BORDER_WIDTH,
+				id: nanoid(),
+				borderStyle: {
+					id: "nz0ZXHR730XA_ajw5afbZ",
+					path: "",
+					source: PossibleInputSource.INPUT,
+					value: BorderStyle.Solid,
+				},
+				borderColor: {
+					id: "nz0ZXHR730XA_ajw5afbE",
+					path: "",
+					source: PossibleInputSource.INPUT,
+					value: BORDER_COLOR_TEST,
+				},
+				borderWidth: {
+					id: "nz0ZXHR730XA_ajw5afbT",
+					path: "",
+					source: PossibleInputSource.INPUT,
+					value: BORDER_WIDTH,
+				},
 			};
 
 			expect(CssUtils.getOutlineStyles(properties)).toEqual({
@@ -208,8 +287,18 @@ describe("css utils", () => {
 
 		it("should leave width and offset undefined if no width is set", () => {
 			const properties2: DeepPartialRecursive<BorderProperties> = {
-				borderStyle: BorderStyle.Solid,
-				borderColor: BORDER_COLOR_TEST,
+				borderStyle: {
+					id: "nz0ZXHR730XA_ajw5afbZ",
+					path: "",
+					source: PossibleInputSource.INPUT,
+					value: BorderStyle.Solid,
+				},
+				borderColor: {
+					id: "nz0ZXHR730XA_ajw5afbE",
+					path: "",
+					source: PossibleInputSource.INPUT,
+					value: BORDER_COLOR_TEST,
+				},
 			};
 
 			expect(CssUtils.getOutlineStyles(properties2)).toEqual({

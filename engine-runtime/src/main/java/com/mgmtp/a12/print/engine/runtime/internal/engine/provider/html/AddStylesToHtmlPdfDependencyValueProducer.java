@@ -46,16 +46,7 @@ public class AddStylesToHtmlPdfDependencyValueProducer implements CoreDependency
 
 		String newStyles = dependency.getNewStyle().entrySet()
 			.stream()
-			.map(entry -> {
-				if (!dependency.isOverwrite() && initialStyles.contains(entry.getKey())) {
-					throw new PrintException(String.format(
-						"Attempting to overwrite existing style %s on %s. Is this intended?",
-						entry.getKey(),
-						initialStyles
-					));
-				}
-				return String.format("%s: %s", entry.getKey(), entry.getValue());
-			})
+			.map(entry -> String.format("%s: %s", entry.getKey(), entry.getValue()))
 			.collect(Collectors.joining(";"));
 
 		htmlElement.attr("style", String.format(

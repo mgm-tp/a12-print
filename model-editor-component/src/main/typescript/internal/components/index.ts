@@ -30,7 +30,6 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 export * from "./border-line/BorderLines.js";
-export * from "./color-picker/ColorPicker.js";
 export * from "./context-menu/ContextMenu.js";
 export * from "./drag-and-drop/index.js";
 export * from "./element-library/index.js";

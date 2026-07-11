@@ -29,6 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::AttachmentProviderInterface[]
 package com.mgmtp.a12.print.engine.runtime;
 
 // tag::Import[]
@@ -86,3 +87,4 @@ public interface AttachmentProvider extends JobDependencyProvider {
 		attachmentJobDependency.setAttachment(loadAttachment(attachmentJobDependency.getDescriptor()));
 	}
 }
+// end::AttachmentProviderInterface[]

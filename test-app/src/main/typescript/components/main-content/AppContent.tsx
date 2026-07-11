@@ -32,11 +32,11 @@
 import { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { ActionContentbox } from "@com.mgmtp.a12.widgets/widgets-core/lib/contentbox";
+import { ActionContentbox } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { EditorActions, EditorSelector } from "../../store/editor";
 
-import { ResolvedCaseConfigResource } from "../case-config/CaseConfig";
+import type { ResolvedCaseConfigResource } from "../case-config/CaseConfig";
 
 import { PrintEditor } from "./PrintEditor";
 
@@ -48,6 +48,8 @@ export const AppContent = memo(function AppContent() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+		dispatch(EditorActions.setCaseResource(undefined));
+		dispatch(EditorActions.setPrintModel(undefined));
 		if (caseConfig?.path) {
 			resolveResource(caseConfig.path).then(res => {
 				if (res) {

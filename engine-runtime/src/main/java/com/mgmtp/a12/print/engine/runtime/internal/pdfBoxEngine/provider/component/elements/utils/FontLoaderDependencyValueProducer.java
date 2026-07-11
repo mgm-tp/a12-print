@@ -31,8 +31,8 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils;
 
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PrintEngine;
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.PdfBoxDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
@@ -56,7 +56,7 @@ public class FontLoaderDependencyValueProducer implements PdfBoxDependencyValueP
 		final var key = dependency.getFontKey();
 		final var document = dependency.getDocument();
 
-		if (key.equals(PrintEngineConfig.DEFAULT_FONT_KEY) && !availableFonts.containsKey(key)) {
+		if (key.equals(PdfBoxPrintEngineConfig.DEFAULT_FONT_KEY) && !availableFonts.containsKey(key)) {
 			throw new FontLoadException("The default font key needs to be provided.");
 		}
 

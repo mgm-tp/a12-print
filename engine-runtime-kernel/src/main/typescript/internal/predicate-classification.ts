@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SyntaxTreeElementType } from "./elements/index.js";
+import type { SyntaxTreeElementType } from "./elements/index.js";
 
 export class PredicateClassification {
 	predicates: Map<string, PredicateClassification.PredicateSignature>;

@@ -2,7 +2,7 @@
   "header": {
     "id": "ChartPM",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "modelReferences": [
@@ -227,9 +227,24 @@
         "type": "PieChart",
         "borderProperties": {
           "id": "ID_06d4ca5f-dfa4-4672-9e4d-f43fe3205402",
-          "borderWidth": 3.75,
-          "borderStyle": "Dashed",
-          "borderColor": "#0000ff"
+          "borderWidth": {
+            "id": "m55mQvRGFSEuZFBOGtrvS",
+            "source": "INPUT",
+            "value": 3.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "Ilxug4slFNew9BVS5-uJs",
+            "source": "INPUT",
+            "value": "#0000ff",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "GhrZmz7JvMFrouS8yLhSr",
+            "source": "INPUT",
+            "value": "Dashed",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "pieChart": {
           "id": "ID_c31b008f-545c-4f12-9dab-076477cf6319",
@@ -266,9 +281,24 @@
         "type": "BarChart",
         "borderProperties": {
           "id": "ID_750481b7-31bf-462a-9bc6-6636d4f0896d",
-          "borderWidth": 3.75,
-          "borderStyle": "Dashed",
-          "borderColor": "#0000ff"
+          "borderWidth": {
+            "id": "cZoCW9LNMR8zOROjVosmC",
+            "source": "INPUT",
+            "value": 3.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "SkcvkoFRKiNWUxN0-S8_Z",
+            "source": "INPUT",
+            "value": "#0000ff",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "s9ygrlxwlsn9-gxcyes53",
+            "source": "INPUT",
+            "value": "Dashed",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "barChart": {
           "id": "ID_709c51ab-cce0-4a82-82dd-e6bc96e421d4",
@@ -328,9 +358,24 @@
         "type": "LineChart",
         "borderProperties": {
           "id": "ID_4f342196-eb91-40d6-be71-95c4ffcdb651",
-          "borderWidth": 3.75,
-          "borderStyle": "Dashed",
-          "borderColor": "#0000ff"
+          "borderWidth": {
+            "id": "_w80a5oETyB4k_0JqAqrF",
+            "source": "INPUT",
+            "value": 3.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "nmVNOuHH1uoMmUq-FnAmK",
+            "source": "INPUT",
+            "value": "#0000ff",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "fOO8oudopbDJqfUwgGpS-",
+            "source": "INPUT",
+            "value": "Dashed",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "lineChart": {
           "id": "ID_ba6ae7ba-49cf-426d-97b8-11dc382678e9",

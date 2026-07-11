@@ -29,6 +29,5 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-export * from "./actions-api.js";
 export * from "./request-api.js";
 export * from "./context-api.js";

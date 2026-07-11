@@ -32,9 +32,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
+import type { PrintEngineState } from "../../a12internal/api/PrintEngineState.js";
+
 import { RequestApiActions } from "../redux/index.js";
 import { RequestApiSelectors } from "../redux/request-api/selectors.js";
-import { PrintEngineState } from "../store/root-reducer.js";
 
 export function useTypesettingModelData(modelId?: string) {
 	const typesettingModelData = useSelector((state: PrintEngineState) =>

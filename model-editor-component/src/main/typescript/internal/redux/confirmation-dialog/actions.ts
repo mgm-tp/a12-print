@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { actionCreatorFactory } from "typescript-fsa";
+import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
 
-import { ConfirmationDialogType } from "./state.js";
+import type { ConfirmationDialogType } from "./state.js";
 
 const factory = actionCreatorFactory("Print/Dialog");
 

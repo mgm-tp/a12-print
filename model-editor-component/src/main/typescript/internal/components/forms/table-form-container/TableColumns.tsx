@@ -33,38 +33,25 @@ import { useDispatch, useSelector } from "react-redux";
 import * as React from "react";
 import { nanoid } from "nanoid";
 
-import { BaseColumnType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/column.api.js";
-import { TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/button-group/index.js";
-import { noop } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
-import {
-	DefaultTableComponentRenderers,
-	Table,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/table.view.js";
-import {
-	MeasureUnit,
+import type { BaseColumnType, TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, ButtonGroup, noop, DefaultTableComponentRenderers, Table } from "@com.mgmtp.a12.widgets/widgets-core";
+import type {
 	PartialTable,
 	PrintModelElement,
 	Table as PrintTable,
 	TableColumn,
 	TableColumnReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import {
-	GlobalRegion,
-	TableRegion,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import {
-	InputSourceGenerator,
-	InputValueSourceResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { MeasureUnit } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { GlobalRegion, TableRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { InputSourceGenerator, InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
-import { DetailDataActions } from "../../../redux/detail-data/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
-import { TransactionLogStateActions, ValidationCounter } from "../../../redux/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import { TransactionLogStateActions, ValidationCounter, NavigationActions } from "../../../redux/index.js";
+import { NavigationSelectors } from "../../../redux/navigation/selectors.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
 import { BadgeGroup } from "../../badge/BadgeGroup.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
@@ -83,7 +70,7 @@ interface TableColumnsProps {
 export const TableColumns = ({ element }: TableColumnsProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 
 	const table = element.table;
 	const columnsCopy = React.useMemo(() => element.table?.columns?.slice() || [], [element.table?.columns]);
@@ -105,8 +92,8 @@ export const TableColumns = ({ element }: TableColumnsProps) => {
 			},
 		};
 		return {
-			id: id,
 			...tableColumnInputSource.table.columns,
+			id,
 		};
 	}, []);
 
@@ -126,21 +113,19 @@ export const TableColumns = ({ element }: TableColumnsProps) => {
 			})
 		);
 		dispatch(
-			DetailDataActions.updateAdditionalData({
-				containerId: currentDetailDataId,
-				table: {
+			NavigationActions.pushFormStack({
+				tab,
+				entityId,
+				mode,
+				form: {
+					type: TableRegion.TABLE_COLUMN_FORM,
+					id: element.id,
 					columnId,
 					columnIndex: columnsCopy.length,
 				},
 			})
 		);
-		dispatch(
-			DetailDataActions.addView({
-				containerId: currentDetailDataId,
-				view: TableRegion.TABLE_COLUMN_FORM,
-			})
-		);
-	}, [element, table, columnsCopy, dispatch, currentDetailDataId, columnCreation]);
+	}, [element, table, columnsCopy, dispatch, tab, entityId, mode, columnCreation]);
 
 	const onDeleteRow = React.useCallback(
 		(rowIndex: number) => {
@@ -188,7 +173,7 @@ const useTableHandlers = (
 	onDelete: (rowIndex: number) => void
 ) => {
 	const dispatch = useDispatch();
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 	const errorMap = useSelector(
 		(state: PrintEngineState) => ValidationSelectors.table(state, element.id)?.table?.columns
 	);
@@ -197,15 +182,16 @@ const useTableHandlers = (
 		(params: { row: RowType; rowIndex: number }) => {
 			const onRowClick = (rowIndex: number) => {
 				dispatch(
-					DetailDataActions.updateAdditionalData({
-						containerId: currentDetailDataId,
-						table: { columnIndex: rowIndex, columnId: params.row.id },
-					})
-				);
-				dispatch(
-					DetailDataActions.addView({
-						containerId: currentDetailDataId,
-						view: TableRegion.TABLE_COLUMN_FORM,
+					NavigationActions.pushFormStack({
+						tab,
+						entityId,
+						mode,
+						form: {
+							type: TableRegion.TABLE_COLUMN_FORM,
+							id: element.id,
+							columnIndex: rowIndex,
+							columnId: params.row.id,
+						},
 					})
 				);
 			};
@@ -214,7 +200,7 @@ const useTableHandlers = (
 				onClick: () => onRowClick(params.rowIndex),
 			};
 		},
-		[dispatch, currentDetailDataId]
+		[dispatch, tab, entityId, mode, element.id]
 	);
 
 	const componentRenderers = React.useMemo(() => {

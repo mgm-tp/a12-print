@@ -33,30 +33,29 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	CalculationProperties,
 	DisplayOptions,
-	DisplayType,
-	FieldTypeDefinition,
 	PartialCalculation,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { TextRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { DisplayType, FieldTypeDefinition } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { TextRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { TransactionLogStateActions } from "../../../redux/index.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
-import { OmitId } from "../../../utils/index.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
+import type { OmitId } from "../../../utils/index.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
 import { DocumentModelDataSelectors } from "../../../redux/document-model-data/selectors.js";
 
-import { ElementWithoutIdAndType } from "../type.js";
-import { CustomSelect, CustomTextLineStateful } from "../custom-base-input-components/index.js";
+import type { ElementWithoutIdAndType } from "../type.js";
+import { CustomSelect, DynamicSourceTextField } from "../custom-base-input-components/index.js";
 
 import { DateFormatInput } from "./DateFormatInput.js";
-import { DisplayOptionsKeys, DisplayTypeItems, DisplayTypeItemValue } from "./shared-interfaces.js";
+import type { DisplayOptionsKeys, DisplayTypeItems, DisplayTypeItemValue } from "./shared-interfaces.js";
 
 type FieldTypeItemValue = FieldTypeDefinition | "";
 
@@ -205,7 +204,7 @@ export const FieldTypeConfiguration = ({
 					errorMessage={getDisplayOptionsError("displayType")}
 				/>
 			)}
-			<CustomTextLineStateful
+			<DynamicSourceTextField
 				label={localizer(RESOURCE_KEYS.elementForm.field.suffix)}
 				value={suffix}
 				onBlur={e => onResultFieldBlur(e.target.value, "suffix")}
@@ -227,7 +226,7 @@ export const FieldTypeConfiguration = ({
 						onBlur={e => onResultFieldBlur(e.target.value, "dateRangeFormatStart")}
 						errorMessage={getDisplayOptionsError("dateRangeFormatStart")}
 					/>
-					<CustomTextLineStateful
+					<DynamicSourceTextField
 						label={localizer(RESOURCE_KEYS.elementForm.field.dateRangeDelimiter)}
 						value={dateRangeDelimiter}
 						onBlur={e => onResultFieldBlur(e.target.value, "dateRangeDelimiter")}
@@ -243,13 +242,13 @@ export const FieldTypeConfiguration = ({
 			)}
 			{showCheckboxes && (
 				<>
-					<CustomTextLineStateful
+					<DynamicSourceTextField
 						label={localizer(RESOURCE_KEYS.elementForm.field.checkboxChecked)}
 						value={checkboxChecked}
 						onBlur={e => onResultFieldBlur(e.target.value, "checkboxChecked")}
 						errorMessage={getDisplayOptionsError("checkboxChecked")}
 					/>
-					<CustomTextLineStateful
+					<DynamicSourceTextField
 						label={localizer(RESOURCE_KEYS.elementForm.field.checkboxUnchecked)}
 						value={checkboxUnchecked}
 						onBlur={e => onResultFieldBlur(e.target.value, "checkboxUnchecked")}

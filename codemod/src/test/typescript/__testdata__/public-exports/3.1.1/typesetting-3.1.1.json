@@ -1,0 +1,826 @@
+[
+  {
+    "filePath": "src/main/typescript/internal/api/applier/hyphenator/Hyphenator.ts",
+    "symbolName": "default",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/applier/hyphenator/Hyphenator.ts",
+    "symbolName": "HyphenationResultCharEntry",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/applier/hyphenator/Hyphenator.ts",
+    "symbolName": "HyphenationResultEntry",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/applier/hyphenator/Hyphenator.ts",
+    "symbolName": "HyphenationResultHyphenEntry",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/applier/hyphenator/Hyphenator.ts",
+    "symbolName": "Hyphenator",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/applier/line-break-preventer/LineBreakIndex.ts",
+    "symbolName": "LineBreakPreventIndex",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/applier/line-break-preventer/LineBreakIndex.ts",
+    "symbolName": "LineBreakPreventPosition",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/applier/line-break-preventer/LineBreakPreventer.ts",
+    "symbolName": "LineBreakPreventer",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/applier/line-break-preventer/LineBreakPreventer.ts",
+    "symbolName": "PatternLineBreakPreventer",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/applier/TypesettingApplier.ts",
+    "symbolName": "BaseTypesettingApplier",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/applier/TypesettingApplier.ts",
+    "symbolName": "TypesettingApplier",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/constant/model.ts",
+    "symbolName": "TYPESETTING_MODEL_TYPE",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/constant/static-hyphenator.ts",
+    "symbolName": "getStaticHyphenator",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/constant/static-hyphenator.ts",
+    "symbolName": "StaticHyphenatorKey",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/marshaller/marshaller.ts",
+    "symbolName": "Marshaller",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/marshaller/marshaller.ts",
+    "symbolName": "Subtype",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/marshaller/model-marshaller.ts",
+    "symbolName": "TypesettingModelMarshaller",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "Author",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "Generation",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "Hyphenation",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "HyphenationExclusion",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "HyphenationGeneral",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "HyphenationPattern",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "HyphenMins",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "Index",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "Internal",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "Language",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "PreventLineBreakRule",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "TexLive",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "TypeSetting",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "TypesettingModel",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/model/index.ts",
+    "symbolName": "TypesettingModelContent",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/api/validation/index.ts",
+    "symbolName": "TypesettingModelValidator",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/app/typesetting-model-editor/index.ts",
+    "symbolName": "FooterSlots",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/app/typesetting-model-editor/index.ts",
+    "symbolName": "TypesettingModelEditor",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/app/typesetting-model-editor/TypesettingModelContainer.tsx",
+    "symbolName": "TypesettingModelContainer",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/app/typesetting-model-editor/TypesettingModelContainer.tsx",
+    "symbolName": "TypesettingModelContainerProps",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/app/typesetting-model-editor/TypesettingModelFooter.tsx",
+    "symbolName": "TypesettingModelFooter",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/component/input/CustomTextField.tsx",
+    "symbolName": "CustomTextField",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/component/modal/ConfirmDeletionModal.tsx",
+    "symbolName": "ConfirmDeletionModal",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/component/orphan-widow-settings/OrphanWidowSettings.tsx",
+    "symbolName": "OrphanWidowSettings",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/component/prevent-line-break-rule/CharacterSequenceRuleTable.tsx",
+    "symbolName": "CharacterSequenceRuleTable",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/component/prevent-line-break-rule/NumberUnitRuleTable.tsx",
+    "symbolName": "NumberUnitRuleTable",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/component/prevent-line-break-rule/PreventLineBreakRuleEditor.tsx",
+    "symbolName": "PreventLineBreakRuleEditor",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/component/prevent-line-break-rule/SpecialPatternRuleTable.tsx",
+    "symbolName": "SpecialPatternRuleTable",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/component/prevent-line-break-rule/types.ts",
+    "symbolName": "ExtendedPreventLineBreakRule",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/component/prevent-line-break-rule/types.ts",
+    "symbolName": "RuleType",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/component/roles-editor/RolesTable.tsx",
+    "symbolName": "RolesTable",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/component/validation/ErrorNotification.tsx",
+    "symbolName": "ErrorNotification",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/constant/orphan-widow.ts",
+    "symbolName": "DEFAULT_LINE_VALUE",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/constant/special-pattern.ts",
+    "symbolName": "SpecialPatterns",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/constant/validation.ts",
+    "symbolName": "characterRuleError",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/constant/validation.ts",
+    "symbolName": "duplicatedRuleError",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/constant/validation.ts",
+    "symbolName": "maxLengthRuleError",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/constant/validation.ts",
+    "symbolName": "noMatchError",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/constant/validation.ts",
+    "symbolName": "numberUnitRuleError",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/constant/validation.ts",
+    "symbolName": "requiredRuleError",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/constant/validation.ts",
+    "symbolName": "VALIDATOR_VALUE",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/hooks/use-prevent-line-break-rule-error-getter.ts",
+    "symbolName": "usePreventLineBreakRuleErrorGetter",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/index.tsx",
+    "symbolName": "TypesttingApp",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/localization/keys.ts",
+    "symbolName": "RESOURCE_KEYS",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/localization/localizer.ts",
+    "symbolName": "DEFAULT_RESOURCES",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/localization/localizer.ts",
+    "symbolName": "useDefaultLocalizer",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/localization/localizer.ts",
+    "symbolName": "useLocalizer",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/localization/resources/de.ts",
+    "symbolName": "de",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/localization/resources/en.ts",
+    "symbolName": "en",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "Action",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "ActionType",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "isEditAction",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "isRequiredCustomValidation",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "isRequiredValidation",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "isSetAnnotations",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "isSetOrphan",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "isSetPreventLineBreakRules",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "isSetSerializedResult",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "isSetTypesettingModel",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "isSetWidow",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "SET_ANNOTATION",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "SET_ORPHAN",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "SET_PREVENT_LINE_BREAK_RULE",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "SET_SERIALIZED_RESULT",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "SET_TYPESETTING_MODEL",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "SET_WIDOW",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "SetAnnotationsPayload",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "SetOrphanWidowPayload",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "SetPreventLineBreakRulePayload",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "SetSerializedResultPayload",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/action.ts",
+    "symbolName": "SetTypesettingModelPayload",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/context.ts",
+    "symbolName": "TypesettingEditorContext",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/reducer.ts",
+    "symbolName": "createInitialTypesettingState",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/store/reducer.ts",
+    "symbolName": "reducer",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/types/role-table.ts",
+    "symbolName": "DataKeys",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/utils/custom-validator.ts",
+    "symbolName": "NumberUnitRuleValidator",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/utils/custom-validator.ts",
+    "symbolName": "PreventLineBreakRuleValidator",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/utils/custom-validator.ts",
+    "symbolName": "SpecialPatternRuleValidator",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/utils/model.ts",
+    "symbolName": "createTypesettingModel",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/utils/rule-conversion.ts",
+    "symbolName": "CharacterSequenceRuleConversion",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/utils/rule-conversion.ts",
+    "symbolName": "NumberUnitRuleConversion",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/utils/rule-conversion.ts",
+    "symbolName": "SpecialPatternRuleConversion",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/utils/rule-regex.ts",
+    "symbolName": "createEmptyRuleIdentifier",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/utils/rule-regex.ts",
+    "symbolName": "escapeRegex",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/utils/rule-regex.ts",
+    "symbolName": "isEmptyRuleType",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  },
+  {
+    "filePath": "src/main/typescript/internal/ui/utils/rule-regex.ts",
+    "symbolName": "unescapeRegex",
+    "deprecationInfo": {
+      "isDeprecated": false,
+      "version": "3.1.1"
+    }
+  }
+]

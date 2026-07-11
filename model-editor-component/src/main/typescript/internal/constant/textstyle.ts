@@ -29,8 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Semantic, TextStyle } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { TEXT_STYLE } from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+import type { TextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
+import { Semantic, TEXT_STYLE } from "@com.mgmtp.a12.print/print-model-api/model";
 
 export const DEFAULT_FONT_NAME = "default";
 export const DEFAULT_TEXT_STYLE_FONT_NAME = "Open Sans";

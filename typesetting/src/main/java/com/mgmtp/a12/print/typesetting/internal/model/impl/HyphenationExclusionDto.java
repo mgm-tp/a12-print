@@ -33,7 +33,7 @@ package com.mgmtp.a12.print.typesetting.internal.model.impl;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.typesetting.internal.model.HyphenationExclusion;
 import com.mgmtp.a12.print.typesetting.internal.model.Index;
 import lombok.*;

@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { initializeKeys } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import { initializeKeys } from "@com.mgmtp.a12.utils/utils-localization";
 
 export const RESOURCE_KEYS = {
 	editorTitle: "",

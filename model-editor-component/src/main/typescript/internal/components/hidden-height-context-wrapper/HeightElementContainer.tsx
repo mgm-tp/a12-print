@@ -32,18 +32,18 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import {
+import type {
 	PartialAnyPrintModelElement,
 	PartialTextProperties,
 	PartialTextStyle,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { ElementsUtils } from "../../utils/index.js";
 import { TEXT_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 import { useTextStyleSelector } from "../../hooks/use-text-style-selector.js";
 
-import { ElementContainerProps } from "../element-container/base.js";
+import type { ElementContainerProps } from "../element-container/base.js";
 import { ElementComponent } from "../element-container/ElementComponent.js";
 
 interface HeightElementContainerProps extends ElementContainerProps {

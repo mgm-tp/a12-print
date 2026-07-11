@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.ComputationEvaluationAdvice;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.egg.EggNode;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.ComputationFieldType;
@@ -70,7 +70,7 @@ public class LogicComponentStatementSyntaxTreeAnalysis implements VisitationStat
 
 	@Override
 	public LogicComponentStatementSyntaxTreeAnalysis scope(SyntaxTreeElement e, Consumer<VisitationState> scope) {
-		throw new PrintCompilerException("not supported");
+		throw new PrintCompilerException("Not supported");
 	}
 
 }

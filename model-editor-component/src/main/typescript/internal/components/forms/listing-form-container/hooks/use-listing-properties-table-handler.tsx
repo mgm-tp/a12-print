@@ -32,13 +32,12 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { PropertyComputations } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
+import type { PropertyComputations } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { PrintEngineSelectors } from "../../../../store/selectors.js";
-import { DetailDataActions, PropertyComputationField } from "../../../../redux/index.js";
-import { ListingDataActions } from "../../../../redux/detail-data/listing/index.js";
+import { NavigationActions, type PropertyComputationField } from "../../../../redux/index.js";
+import { NavigationSelectors } from "../../../../redux/navigation/selectors.js";
 
 export interface PropertyItem {
 	label: string;
@@ -51,32 +50,51 @@ export interface ListingPropertiesTableHandler<RowType extends PropertyComputati
 }
 
 export function useListingPropertiesTableHandler<RowType extends PropertyComputations>(
+	elementId: string,
 	propertyComputations: DeepPartial<RowType>[],
 	propertyItems: PropertyItem[],
-	viewRegion: ListingRegion.RegionKeys,
-	fieldKey?: PropertyComputationField
+	viewRegion: typeof ListingRegion.PROPERTY_COMPUTATION_FORM | typeof ListingRegion.GROUP_PROPERTY_COMPUTATION_FORM,
+	formType: "Main" | "Column" | "Field",
+	propertyCompType?: PropertyComputationField
 ): ListingPropertiesTableHandler<RowType> {
 	const dispatch = useDispatch();
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 
 	const openPropertyComputationForm = React.useCallback(
 		(index: number, propertyCompId: string) => {
-			dispatch(
-				DetailDataActions.addSubView({
-					containerId: currentDetailDataId,
-					subView: viewRegion,
-				})
-			);
-			dispatch(
-				ListingDataActions.updateAdditionalProperty({
-					containerId: currentDetailDataId,
-					propertyCompId,
-					propertyCompIndex: index,
-					propertyCompType: fieldKey,
-				})
-			);
+			if (viewRegion === ListingRegion.GROUP_PROPERTY_COMPUTATION_FORM) {
+				dispatch(
+					NavigationActions.pushFormStack({
+						tab,
+						entityId,
+						mode,
+						form: {
+							type: ListingRegion.GROUP_PROPERTY_COMPUTATION_FORM,
+							id: elementId,
+							propertyCompId,
+							propertyCompIndex: index,
+						},
+					})
+				);
+			} else {
+				dispatch(
+					NavigationActions.pushFormStack({
+						tab,
+						entityId,
+						mode,
+						form: {
+							type: ListingRegion.PROPERTY_COMPUTATION_FORM,
+							id: elementId,
+							propertyCompId,
+							propertyCompIndex: index,
+							propertyCompType,
+							parentForm: formType,
+						},
+					})
+				);
+			}
 		},
-		[dispatch, currentDetailDataId, viewRegion, fieldKey]
+		[viewRegion, dispatch, tab, entityId, mode, elementId, propertyCompType, formType]
 	);
 
 	const labeledPropertyComputations = React.useMemo(

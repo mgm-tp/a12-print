@@ -92,7 +92,7 @@ public class FormattedValueDependencyProducer implements CoreDependencyValueProv
 							)
 						)
 					)
-					.orElseThrow(() -> new PrintException("invalid FormattedValueDependencyProducer Setup. Fallback is missing."))
+					.orElseThrow(() -> new PrintException("Invalid FormattedValueDependencyProducer Setup. Fallback is missing."))
 			)
 			.orElse(FormattingResult.builder().formattedValue(Constants.EMPTY_STRING).build());
 

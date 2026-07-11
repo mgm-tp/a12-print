@@ -32,7 +32,9 @@
 package com.mgmtp.a12.print.model.api.model.container;
 
 import com.mgmtp.a12.print.model.api.model.element.properties.PageOrientation;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface TopLevelReferenceContainer extends PlaceableReferenceContainer {
 	PageOrientation getPageOrientation();
 }

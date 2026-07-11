@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as OldModel from "../01_text-properties/print-model.js";
+import type * as OldModel from "../01_text-properties/print-model.js";
 
-import * as NewModel from "./print-model.js";
+import type * as NewModel from "./print-model.js";
 
 export function transformDescriptionField(oldModel: OldModel.PrintModelDTO): NewModel.PrintModelDTO {
 	// Should never happen

@@ -33,29 +33,24 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
-	DefaultTableComponentRenderers,
-	Table,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/table.view.js";
-import { BaseColumnType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/column.api.js";
-import { TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { ListingColumnField, PartialListing } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { BaseColumnType, TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core";
+import { DefaultTableComponentRenderers, Table } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { ListingColumnField, PartialListing } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { useFieldTypesOptions } from "../../hooks/use-fiedtypes-options.js";
 import { CollapsibleSection } from "../../shared-components/CollapsibleSection.js";
-import { ListingDataActions } from "../../../../../redux/detail-data/listing/index.js";
-import { DetailDataActions, TransactionLogStateActions, ValidationCounter } from "../../../../../redux/index.js";
+import { NavigationActions, TransactionLogStateActions, ValidationCounter } from "../../../../../redux/index.js";
+import { NavigationSelectors } from "../../../../../redux/navigation/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../../localization/index.js";
-import { PrintEngineSelectors } from "../../../../../store/selectors.js";
 import { AddButtonGroup } from "../../../shared-components/AddButtonGroup.js";
 import { ActionColumnButtonGroup } from "../../../shared-components/ActionColumnButtonGroup.js";
 import { InteractionLogActions } from "../../../../../redux/interaction-log/index.js";
 import { BadgeGroup } from "../../../../badge/BadgeGroup.js";
 import { ValidationSelectors } from "../../../../../redux/validation/selectors.js";
-import { PrintEngineState } from "../../../../../store/root-reducer.js";
-import { ListingColumnChildProps } from "../../base-listing-form.js";
+import type { PrintEngineState } from "../../../../../../a12internal/api/PrintEngineState.js";
+import type { ListingColumnChildProps } from "../../base-listing-form.js";
 
 enum FieldComputationKey {
 	inputFieldTypeSerialized = "inputFieldTypeSerialized",
@@ -68,7 +63,7 @@ type FieldComputationsRowType = DeepPartial<ListingColumnField>;
 export const TableFieldComputations = ({ columns, element, columnIndex }: ListingColumnChildProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 	const errorMap = useSelector(
 		(state: PrintEngineState) =>
 			ValidationSelectors.listing(state, element.id)?.listing?.columns?.[columnIndex]?.field
@@ -80,22 +75,17 @@ export const TableFieldComputations = ({ columns, element, columnIndex }: Listin
 	const getFieldTypeLabel = useComputationMapping(listing?.model);
 
 	const handleOnClickEdit = React.useCallback(
-		(columnIndex: number, fieldCompId: string) => {
+		(fieldCompIndex: number, fieldCompId: string) => {
 			dispatch(
-				ListingDataActions.updateAdditionalField({
-					containerId: currentDetailDataId,
-					fieldCompIndex: columnIndex,
-					fieldCompId,
-				})
-			);
-			dispatch(
-				DetailDataActions.addView({
-					containerId: currentDetailDataId,
-					view: ListingRegion.FIELD_COMPUTATION_FORM,
+				NavigationActions.pushFormStack({
+					tab,
+					entityId,
+					mode,
+					form: { type: ListingRegion.FIELD_COMPUTATION_FORM, id: element.id, fieldCompId, fieldCompIndex },
 				})
 			);
 		},
-		[dispatch, currentDetailDataId]
+		[dispatch, tab, entityId, mode, element.id]
 	);
 
 	const updateCurrentColumnField = React.useCallback(
@@ -129,19 +119,19 @@ export const TableFieldComputations = ({ columns, element, columnIndex }: Listin
 			RESOURCE_KEYS.interaction.form.listingFormContainer.form.column.tableFieldComputation.addColumn
 		);
 		dispatch(
-			ListingDataActions.updateAdditionalField({
-				containerId: currentDetailDataId,
-				fieldCompIndex: listingColumnField.length,
-				fieldCompId,
+			NavigationActions.pushFormStack({
+				tab,
+				entityId,
+				mode,
+				form: {
+					type: ListingRegion.FIELD_COMPUTATION_FORM,
+					id: element.id,
+					fieldCompId,
+					fieldCompIndex: listingColumnField.length,
+				},
 			})
 		);
-		dispatch(
-			DetailDataActions.addView({
-				containerId: currentDetailDataId,
-				view: ListingRegion.FIELD_COMPUTATION_FORM,
-			})
-		);
-	}, [updateCurrentColumnField, listingColumnField, dispatch, currentDetailDataId]);
+	}, [updateCurrentColumnField, listingColumnField, dispatch, tab, entityId, mode, element.id]);
 
 	const handleOnClickDelete = React.useCallback(
 		(indexToDelete: number) => {

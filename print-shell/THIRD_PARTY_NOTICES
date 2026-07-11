@@ -1,0 +1,550 @@
+THIRD_PARTY_NOTICES
+
+Component: A12 Print Engine Shell - CLI tool
+Generated: 2026-06-26 for mgm A12 Platform 2026.06
+
+The mgm A12 Platform is developed by mgm technology partners GmbH.
+
+https://www.mgm-tp.com.
+
+This file lists third-party software components included in this
+distribution of the mgm A12 Platform and the licenses that apply
+to them.
+
+Component Overview
+-------------------
+
+The following third-party components are included in this distribution:
+
+
+- ch.qos.logback/logback-classic 1.5.32, licensed under EPL-1.0
+	Copyright (C) 1999-2024, QOS.ch
+	Source: https://github.com/qos-ch/logback/
+- ch.qos.logback/logback-core 1.5.32, licensed under EPL-1.0
+	Copyright (C) 1999-2024, QOS.ch
+	Source: https://github.com/qos-ch/logback/
+- com.adobe.xmp/xmpcore 6.1.11, licensed under BSD-3-Clause
+	Source: https://git.corp.adobe.com/coretech/xmp-java/tree/mvncentral/core
+- com.drewnoakes/metadata-extractor 2.20.0, licensed under Apache-2.0
+	Copyright 2002-2019 Drew Noakes and contributors
+	Source: https://github.com/drewnoakes/metadata-extractor
+- com.fasterxml.jackson.core/jackson-annotations 2.21, licensed under Apache-2.0
+	Copyright 2007-, Tatu Saloranta (tatu.saloranta@iki.fi)
+	Source: https://github.com/FasterXML/jackson-annotations
+- com.github.romankh3/image-comparison 4.4.0, licensed under Apache-2.0
+	Source: https://github.com/romankh3/image-comparison
+- com.googlecode.owasp-java-html-sanitizer/java10-shim 20260102.1, licensed under Apache-2.0
+	Copyright (c) 2011, Mike Samuel
+	Source: https://github.com/OWASP/java-html-sanitizer
+- com.googlecode.owasp-java-html-sanitizer/java8-shim 20260102.1, licensed under Apache-2.0
+	Copyright (c) 2011, Mike Samuel
+	Source: https://github.com/OWASP/java-html-sanitizer
+- com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer 20260102.1, licensed under Apache-2.0
+	Copyright (c) 2011, Mike Samuel
+	Source: https://github.com/OWASP/java-html-sanitizer
+- com.google.errorprone/error_prone_annotations 2.41.0, licensed under Apache-2.0
+	Copyright 2015 The Error Prone
+	Source: https://github.com/google/error-prone
+- com.google.guava/failureaccess 1.0.3, licensed under Apache-2.0
+	Copyright (C) 2024 The Guava Authors
+	Source: https://github.com/google/guava
+- com.google.guava/guava 33.5.0-jre, licensed under Apache-2.0
+	Copyright (C) 2009 The Guava Authors
+	Source: https://github.com/google/guava
+- com.google.guava/listenablefuture 9999.0-empty-to-avoid-conflict-with-guava, licensed under Apache-2.0
+	Copyright (C) 2007 The Guava Authors
+	Source: https://github.com/google/guava
+- com.google.j2objc/j2objc-annotations 3.1, licensed under Apache-2.0
+	Copyright 2012 Google Inc.
+	Source: https://github.com/google/j2objc
+- com.ibm.icu/icu4j 72.1, licensed under Unicode-3.0
+	Copyright © 2016 and later: Unicode, Inc
+	Source: https://github.com/unicode-org/icu
+- com.madgag/animated-gif-lib 1.4, licensed under Apache-2.0
+	Source: https://github.com/rtyley/animated-gif-lib-for-java
+- com.mgmtp.a12.base/base-model-api 30.0.1, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.base/base-model-consistency 30.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.base/base-model-utils 30.0.1, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-conversion-java 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-core-customfieldtype-api 28.1.4, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-core-customfieldtype-api 29.0.2, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-core-customfieldtype-impl 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-core-runtime-30-6 30.6.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-core-runtime-31-0 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-core-runtime-api 32.3.2, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-base-utils 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-calc 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-codegen 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-codegen-base 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-codegen-condition 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-codegen-entities 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-codegen-meta-base 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-codegen-rules 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-extmpspecifics 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-facade 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-ontheflytesting 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-parser 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-parsetree-api 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-service 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-tool-api 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-core-utils 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-mapping-rt-api 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-md-model 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-md-model-migration 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-md-runtime-api 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-md-runtime-service 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-md-structuralmapping-codegen 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-md-structuralmapping-tool 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-md-typed-accessor-gen 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-internal-tool-model-migration 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-md-documentmodel 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-md-document-v2 30.6.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-md-facade 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/kernel-md-serializer 31.0.0, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmdmjsons-extmpinternal-ct_field_type_attributes-1-a12 3.0.551340, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmdmjsons-extmpinternal-mm_combinationmodel-1-codegen 2.11.551405, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmdmjsons-extmpinternal-mm_combinationmodel-1-none 2.11.551405, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmdmjsons-extmpinternal-mm_mappingmodel-2-codegen 4.13.551361, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmdmjsons-extmpinternal-mm_mappingmodel-2-none 4.13.551361, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmdmjsons-extmpinternal-mm_selectionmodel-2-codegen 1.4.550014, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmdmjsons-extmpinternal-mm_selectionmodel-2-none 1.4.550014, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmdmjsons-extmpinternal-mm_structuralmappingmodel-1-codegen 4.6.551350, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmdmjsons-extmpinternal-mm_structuralmappingmodel-1-none 4.6.551350, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmtypings-ct_model_header-1 3.6.551341, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmtypings-ct_selection-v1 2.6.550014, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmtypings-extmpinternal-ct_field_type_attributes-1-a12 3.0.551340, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmtypings-extmpinternal-mm_smm_fieldtypechecks-1-a12 3.0.551349, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmtypings-mm_combinationmodel-1 2.11.551405, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmtypings-mm_mappingmodel-2 4.13.551361, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmtypings-mm_selectionmodel-2 1.4.550014, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmtypings-mm_structuralmappingmodel-1 4.6.551350, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmvalidators-extmpinternal-mm_combinationmodel-1-codegen 2.11.551405, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmvalidators-extmpinternal-mm_common-v2-codegen 20.1.551421, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmvalidators-extmpinternal-mm_mappingmodel-2-codegen 4.13.551361, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmvalidators-extmpinternal-mm_selectionmodel-2-codegen 1.4.550014, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmvalidators-extmpinternal-mm_smm_fieldtypechecks-1-codegen 3.0.551349, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- com.mgmtp.a12.kernel/mmvalidators-extmpinternal-mm_structuralmappingmodel-1-codegen 4.6.551350, licensed under EUPL v1.2
+	Copyright (C) 2012-2026 mgm technology partners GmbH
+	Source: https://github.com/mgm-tp
+- commons-cli/commons-cli 1.11.0, licensed under Apache-2.0
+	Copyright 2002-2025 The Apache Software Foundation
+	Source: https://github.com/apache/commons-cli
+- commons-io/commons-io 2.21.0, licensed under Apache-2.0
+	Copyright 2002-2025 The Apache Software Foundation
+	Source: https://github.com/apache/commons-io
+- commons-logging/commons-logging 1.3.5, licensed under Apache-2.0
+	Copyright 2001-2026 The Apache Software Foundation
+	Source: https://github.com/apache/commons-logging
+- de.erichseifert.vectorgraphics2d/VectorGraphics2D 0.13, licensed under EPL-2.0
+	Copyright 2010-2019 Erich Seifert <dev[at]erichseifert.de>, Michael Seifert <mseifert[at]error-reports.org>
+	Source: https://github.com/eseifert/vectorgraphics2d/
+- info.picocli/picocli 4.7.7, licensed under Apache-2.0
+	Copyright 2017 Remko Popma
+	Source: https://github.com/remkop/picocli
+- info.picocli/picocli-shell-jline3 4.7.7, licensed under Apache-2.0
+	Copyright 2017 Remko Popma
+	Source: https://github.com/remkop/picocli
+- jakarta.validation/jakarta.validation-api 3.1.1, licensed under Apache-2.0
+	Copyright (c) 2019,2023 Eclipse Foundation
+	Source: https://github.com/jakartaee/validation
+- net.sf.jopt-simple/jopt-simple 5.0.4, licensed under MIT
+	Copyright (c) 2004-2015 Paul R. Holser, Jr.
+	Source: https://github.com/jopt-simple/jopt-simple
+- org.abego.treelayout/org.abego.treelayout.core 1.0.3, licensed under BSD-3-Clause
+	Copyright (c) 2011, abego Software GmbH, Germany (http://www.abego.org)
+	Source: https://github.com/abego/treelayout
+- org.antlr/antlr4 4.13.2, licensed under BSD-3-Clause
+	Copyright (c) 2012-2022 The ANTLR Project
+	Source: https://github.com/antlr/antlr4
+- org.antlr/antlr4-runtime 4.13.2, licensed under BSD-3-Clause
+	Copyright (c) 2012-2017 The ANTLR Project
+	Source: https://github.com/antlr/antlr4
+- org.antlr/antlr-runtime 3.5.3, licensed under BSD-3-Clause
+	Copyright (c) 2005-2009 Terence Parr
+	Source: https://github.com/antlr/antlr3
+- org.antlr/ST4 4.3.4, licensed under BSD-3-Clause
+	Copyright (c) 2011-2022 Terence Parr
+	Source: https://github.com/antlr/stringtemplate4
+- org.apache.commons/commons-collections4 4.5.0, licensed under Apache-2.0
+	Copyright 2001-2025 The Apache Software Foundation
+	Source: https://github.com/apache/commons-collections
+- org.apache.commons/commons-lang3 3.20.0, licensed under Apache-2.0
+	Copyright 2001-2026 The Apache Software Foundation
+	Source: https://github.com/apache/commons-lang
+- org.apache.commons/commons-math3 3.6.1, licensed under Apache-2.0
+	Copyright 2001-2025 The Apache Software Foundation
+	Source: https://github.com/apache/commons-math
+- org.apache.commons/commons-text 1.15.0, licensed under Apache-2.0
+	Copyright 2014-2025 The Apache Software Foundation
+	Source: https://github.com/apache/commons-text
+- org.apache.pdfbox/fontbox 3.0.7, licensed under Apache-2.0
+	Copyright 2014 The Apache Software Foundation
+	Source: https://github.com/apache/pdfbox
+- org.apache.pdfbox/pdfbox 3.0.7, licensed under Apache-2.0
+	Copyright 2014 The Apache Software Foundation; Copyright (c) 2002-2007, www.pdfbox.org
+	Source: https://github.com/apache/pdfbox
+- org.apache.pdfbox/pdfbox-io 3.0.7, licensed under Apache-2.0
+	Copyright 2014 The Apache Software Foundation
+	Source: https://github.com/apache/pdfbox
+- org.apache.pdfbox/xmpbox 3.0.7, licensed under Apache-2.0
+	Copyright 2014 The Apache Software Foundation
+	Source: https://github.com/apache/pdfbox
+- org.codehaus.groovy/groovy 3.0.25, licensed under Apache-2.0
+	Copyright 2003-2023 The Apache Software Foundation
+	Source: https://github.com/apache/groovy
+- org.commonmark/commonmark 0.27.1, licensed under BSD-2-Clause
+	Copyright (c) 2015, Robin Stocker
+	Source: https://github.com/commonmark/commonmark-java
+- org.jline/jline 3.29.0, licensed under BSD-3-Clause
+	Copyright (c) 2002-2023, the original author or authors
+	Source: https://github.com/jline/jline3
+- org.jline/jline 3.30.6, licensed under BSD-3-Clause
+	Copyright (c) 2002-2023, the original author or authors
+	Source: https://github.com/jline/jline3
+- org.jsoup/jsoup 1.22.1, licensed under MIT
+	Copyright (c) 2009-2023 Jonathan Hedley
+	Source: https://github.com/jhy/jsoup
+- org.jspecify/jspecify 1.0.0, licensed under Apache-2.0
+	 Copyright 2022 The JSpecify Authors
+	Source: https://github.com/jspecify/jspecify
+- org.knowm.xchart/xchart 3.8.8, licensed under Apache-2.0
+	Copyright 2015-2023 Knowm Inc. (http://knowm.org) and contributors; Copyright 2011-2015 Xeiam LLC (http://xeiam.com) and contributors.
+	Source: https://github.com/knowm/XChart
+- org.openjdk.jmh/jmh-core 1.37, licensed under GPL-2.0-only WITH Classpath-exception-2.0
+	Copyright (c) 2005, 2020, Oracle and/or its affiliates
+	Source: https://github.com/openjdk/jmh
+- org.openjdk.jmh/jmh-generator-asm 1.37, licensed under GPL-2.0-with-classpath-exception
+	Copyright (c) 2005, 2014, Oracle and/or its affiliates
+	Source: https://github.com/openjdk/jmh
+- org.openjdk.jmh/jmh-generator-bytecode 1.37, licensed under GPL-2.0-with-classpath-exception
+	Copyright (c) 2005, 2013, Oracle and/or its affiliates. All rights reserved.
+	Source: https://github.com/openjdk/jmh
+- org.openjdk.jmh/jmh-generator-reflection 1.37, licensed under GPL-2.0-with-classpath-exception
+	Copyright (c) 2005, 2014, Oracle and/or its affiliates
+	Source: https://github.com/openjdk/jmh
+- org.openjdk.nashorn/nashorn-core 15.7, licensed under GPL-2.0-with-classpath-exception
+	Copyright (c) 2010, 2013, Oracle and/or its affiliates. All rights reserved.
+	Source: https://github.com/openjdk/nashorn
+- org.ow2.asm/asm 7.3.1, licensed under BSD-3-Clause
+	Copyright (c) 2000-2011 INRIA, France Telecom
+	Source: https://gitlab.ow2.org/asm/asm/
+- org.ow2.asm/asm 9.0, licensed under BSD-3-Clause
+	Copyright (c) 2000-2011 INRIA, France Telecom
+	Source: https://gitlab.ow2.org/asm/asm/
+- org.ow2.asm/asm-analysis 7.3.1, licensed under BSD-3-Clause
+	Copyright (c) 2000-2011 INRIA, France Telecom
+	Source: https://gitlab.ow2.org/asm/asm/
+- org.ow2.asm/asm-commons 7.3.1, licensed under BSD-3-Clause
+	Copyright (c) 2000-2011 INRIA, France Telecom
+	Source: https://gitlab.ow2.org/asm/asm/
+- org.ow2.asm/asm-tree 7.3.1, licensed under BSD-3-Clause
+	Copyright (c) 2000-2011 INRIA, France Telecom
+	Source: https://gitlab.ow2.org/asm/asm/
+- org.ow2.asm/asm-util 7.3.1, licensed under BSD-3-Clause
+	Copyright (c) 2000-2011 INRIA, France Telecom
+	Source: https://gitlab.ow2.org/asm/asm/
+- org.slf4j/slf4j-api 2.0.17, licensed under MIT
+	Copyright (c) 2004-2022 QOS.ch Sarl (Switzerland)
+	Source: https://github.com/qos-ch/slf4j
+- org.snakeyaml/snakeyaml-engine 3.0.1, licensed under Apache-2.0
+	Copyright (c) 2018, SnakeYAML
+	Source: https://bitbucket.org/snakeyaml/snakeyaml-engine/src/master/
+- tools.jackson.dataformat/jackson-dataformat-yaml 3.1.3, licensed under Apache-2.0
+	Source: https://github.com/FasterXML/jackson-dataformat-yaml
+
+
+NOTICE file of commons-cli
+---------------------------
+
+Apache Commons CLI
+Copyright 2002-2026 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (https://www.apache.org/).
+
+
+NOTICE file of commons-io
+---------------------------
+
+Apache Commons IO
+Copyright 2002-2026 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (https://www.apache.org/).
+
+
+NOTICE file of commons-logging
+---------------------------
+
+Apache Commons Logging
+Copyright 2001-2026 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (https://www.apache.org/).
+
+
+NOTICE file of jakarta.validation
+---------------------------
+
+# Notices for Eclipse Jakarta Bean Validation
+
+This content is produced and maintained by the Eclipse Jakarta Bean Validation
+project.
+
+* Project home: https://projects.eclipse.org/projects/ee4j.bean-validation
+
+## Trademarks
+
+ Jakarta Bean Validation is a trademark of the Eclipse Foundation.
+
+## Copyright
+
+All content is the property of the respective authors or their employers. For
+more information regarding authorship of content, please consult the listed
+source code repository logs.
+
+## Declared Project Licenses
+
+This program and the accompanying materials are made available under the terms
+of the Apache License, Version 2.0 which is available at
+https://www.apache.org/licenses/LICENSE-2.0.
+
+SPDX-License-Identifier: Apache-2.0
+
+## Source Code
+
+The project maintains the following source code repositories:
+
+ * [The specification repository](https://github.com/eclipse-ee4j/beanvalidation-spec)
+ * [The API repository](https://github.com/eclipse-ee4j/beanvalidation-api)
+ * [The TCK repository](https://github.com/eclipse-ee4j/beanvalidation-tck)
+
+## Third-party Content
+
+This project leverages the following third party content.
+
+Test dependencies:
+
+ * [TestNG](https://github.com/cbeust/testng) - Apache License 2.0
+ * [JCommander](https://github.com/cbeust/jcommander) - Apache License 2.0
+ * [SnakeYAML](https://bitbucket.org/asomov/snakeyaml/src) - Apache License 2.0
+
+
+
+NOTICE file of org.apache.commons
+---------------------------
+
+Apache Commons Collections
+Copyright 2001-2019 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+
+NOTICE file of org.apache.pdfbox
+---------------------------
+
+ERROR fetching URL: HTTP Error 404: Not Found URL: https://github.com/apache/pdfbox/raw/refs/tags/trunk/NOTICE.txt
+
+NOTICE file of org.codehaus.groovy
+---------------------------
+
+Apache Groovy
+Copyright 2003-2023 The Apache Software Foundation
+
+This product includes software developed at
+The Apache Software Foundation (http://www.apache.org/).
+
+The Java source files in src/main/java/org/apache/groovy/util/concurrent/concurrentlinkedhashmap/
+are from https://github.com/ben-manes/concurrentlinkedhashmap and the following notice applies:
+Copyright 2010-2012 Google Inc. All Rights Reserved.
+
+This product bundles icons from the famfamfam.com silk icons set
+http://www.famfamfam.com/lab/icons/silk/
+Licensed under the Creative Commons Attribution Licence v2.5
+http://creativecommons.org/licenses/by/2.5/
+
+NOTICE file of org.knowm.xchart
+---------------------------
+
+Copyright 2015-2023 Knowm Inc. (http://knowm.org) and contributors.
+Copyright 2011-2015 Xeiam LLC (http://xeiam.com) and contributors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
+NOTICE file of tools.jackson.dataformat
+---------------------------
+
+# Jackson JSON processor
+
+Jackson is a high-performance, Free/Open Source JSON processing library.
+It was originally written by Tatu Saloranta (tatu.saloranta@iki.fi), and has
+been in development since 2007.
+It is currently developed by a community of developers, as well as supported
+commercially by FasterXML.com.
+
+## Licensing
+
+Jackson core and extension components may be licensed under different licenses.
+To find the details that apply to this artifact see the accompanying LICENSE file.
+For more information, including possible other licensing options, contact
+FasterXML.com (http://fasterxml.com).
+
+## Credits
+
+A list of contributors may be found from CREDITS file, which is included
+in some artifacts (usually source distributions); but is always available
+from the source code management (SCM) system project uses.
+
+
+License Texts
+-------------
+
+Complete license texts for all included third-party components can
+be found in the licenses/ directory, attributions in file NOTICES.
+
+
+General Notice
+--------------
+
+The mgm A12 Platform is dual-licensed under the EUPL-1.2 or a
+commercial license. Third-party components remain under their
+respective licenses. For details, see the file LICENSE.
+"mgm A12" is a registered trademark of mgm technology partners GmbH
+(EU/DE). All other trademarks are the property of their respective
+owners.
+
+End of THIRD_PARTY_NOTICES

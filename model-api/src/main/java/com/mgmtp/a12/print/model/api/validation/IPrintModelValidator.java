@@ -39,4 +39,6 @@ import java.util.Locale;
 public interface IPrintModelValidator {
 
 	IPrintModelIntegrityReport validate(String rawPrintModel, Locale locale);
+
+	IPrintModelIntegrityReport validate(String rawPrintModel, PrintModelValidatorOptions options);
 }

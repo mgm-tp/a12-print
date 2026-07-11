@@ -31,19 +31,44 @@
  */
 import { jest } from "@jest/globals";
 
-import { BorderStyle } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialBorderProperties, PartialTable } from "@com.mgmtp.a12.print/print-model-api/model";
+import { BorderStyle, ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { renderWithProviders } from "../../../../../../../test/typescript/test-utils/index.js";
+import { BORDER_PROPERTIES_PATH } from "../../../../constant/element-property-path.js";
 
 import { BorderPropertiesForm } from "../BorderPropertiesForm.js";
 
 describe("BorderPropertiesForm", () => {
 	const mockSetBorderProperties = jest.fn();
-	const mockBorderProperties = {
+
+	const mockBorderProperties: PartialBorderProperties = {
 		id: "012it03ig024hg",
-		borderWidth: 10,
-		borderColor: "color",
-		borderStyle: BorderStyle.Solid,
+		borderWidth: {
+			id: "nz0ZXHR730XA_ajw5afbT",
+			path: "/content/elementDefinitions/table/borderProperties/borderWidth/value/",
+			source: PossibleInputSource.INPUT,
+			value: 10,
+		},
+		borderColor: {
+			id: "nz0ZXHR730XA_ajw5afbE",
+			path: "/content/elementDefinitions/table/borderProperties/borderColor/value/",
+			source: PossibleInputSource.INPUT,
+			value: "color",
+		},
+		borderStyle: {
+			id: "nz0ZXHR730XA_ajw5afbZ",
+			path: "/content/elementDefinitions/table/borderProperties/borderStyle/value/",
+			source: PossibleInputSource.INPUT,
+			value: BorderStyle.Solid,
+		},
+	};
+
+	const mockElement: PartialTable = {
+		id: "tableId",
+		type: ElementType.Table,
+		borderProperties: mockBorderProperties,
 	};
 
 	it("renders without headline", () => {
@@ -52,6 +77,8 @@ describe("BorderPropertiesForm", () => {
 				hideLabel
 				borderProperties={mockBorderProperties}
 				setBorderProperties={mockSetBorderProperties}
+				element={mockElement}
+				propertiesPath={BORDER_PROPERTIES_PATH}
 			/>
 		);
 
@@ -63,6 +90,8 @@ describe("BorderPropertiesForm", () => {
 			<BorderPropertiesForm
 				borderProperties={mockBorderProperties}
 				setBorderProperties={mockSetBorderProperties}
+				element={mockElement}
+				propertiesPath={BORDER_PROPERTIES_PATH}
 			/>
 		);
 

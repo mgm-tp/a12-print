@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.EnableGetterByFieldNameForInheritableSource;
 import com.mgmtp.a12.print.model.api.model.element.base.DataContext;
 import com.mgmtp.a12.print.model.api.model.element.properties.PageOrientation;
@@ -97,11 +97,11 @@ public class ModelSegmentDto extends PrintModelEntityDto implements ModelSegment
 	@Override
 	public Optional<ModelSegmentProperties> getSegmentProperties() {
 		return Optional.ofNullable(segmentProperties);
-	};
+	}
 
 	public Optional<ModelSegmentReference> getDinTemplate() {
 		return Optional.ofNullable(dinTemplate);
-	};
+	}
 
 	@Override
 	@JsonIgnore

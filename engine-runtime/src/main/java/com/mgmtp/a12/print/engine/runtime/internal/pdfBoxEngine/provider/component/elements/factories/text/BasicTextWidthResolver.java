@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.factories.text;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing.InnerTextToken;
 import lombok.NonNull;
 import org.apache.pdfbox.pdmodel.font.PDFont;
@@ -118,8 +118,8 @@ public abstract class BasicTextWidthResolver implements TextWidthResolver {
 			} else if (canUseFallback) {
 				isFallback = true;
 			} else {
-				throw new PrintException(
-					String.format("The char %s is not printable with the selected font and fallback font.", character)
+				throw new PrintDomainException(
+					"The char '{}' is not printable with the selected font {} and fallback font {}.", character, font.getName(), fallbackFont.getName()
 				);
 			}
 

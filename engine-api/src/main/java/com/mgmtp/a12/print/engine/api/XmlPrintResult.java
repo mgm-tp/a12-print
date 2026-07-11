@@ -34,10 +34,12 @@ package com.mgmtp.a12.print.engine.api;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
 
 import java.io.OutputStream;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Interface for XML-based {@link PrintResult}.
  */
+@OnlyForUsage
 public interface XmlPrintResult extends PrintResult {
 
     static XmlPrintResult empty() {

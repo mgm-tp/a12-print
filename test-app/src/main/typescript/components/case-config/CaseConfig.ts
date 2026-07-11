@@ -29,8 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model";
-import { PrintEngineState } from "@com.mgmtp.a12.print/print-model-editor-component/lib/internal/store/root-reducer";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
+import type { PrintEngineState } from "@com.mgmtp.a12.print/print-model-editor-component/a12internal/api";
 
 export interface CaseConfig {
 	id: string;
@@ -42,21 +42,21 @@ export interface CaseConfigResource {
 	printModel: string;
 	documentModels?: string;
 	templatePrintModels?: string;
-	printSettingModel?: string;
 	typesettingModel?: string;
 	documents?: string;
 	walFile?: string; // If undefined then the same path as defined in `printModel` is used
 	store?: string;
+	fontMap?: Record<string, string>;
 }
 
 export interface ResolvedCaseConfigResource {
 	printModel: Model;
 	documentModels: Model[];
-	printSettingModel?: Model;
 	templatePrintModels?: Model[];
 	typesettingModels?: Model[];
 	documentNames: string[];
 	store?: PrintEngineState;
+	fontMap?: Record<string, string>;
 }
 
 export namespace CaseConfig {

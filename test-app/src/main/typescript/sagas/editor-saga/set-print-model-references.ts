@@ -29,21 +29,19 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { AnyAction, SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { all, call, select, takeEvery } from "typed-redux-saga";
-import { Action } from "typescript-fsa";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { EditorActions, EditorSelector, SetPrintModelReferencesPayload } from "../../store/editor";
+import type { SetPrintModelReferencesPayload } from "../../store/editor";
+import { EditorActions, EditorSelector } from "../../store/editor";
 import { FileService } from "../../services/files-service";
 
-export function* setPrintModelReferencesSaga(): SagaIterator {
-	yield* takeEvery(
-		(action: AnyAction) => EditorActions.setPrintModelReferences.match(action),
-		handleSetPrintModelReferences
-	);
+export function* setPrintModelReferencesSaga(): SagaGenerator<void> {
+	yield* takeEvery(EditorActions.setPrintModelReferences.match, handleSetPrintModelReferences);
 }
 
-function* handleSetPrintModelReferences(action: Action<SetPrintModelReferencesPayload>) {
+function* handleSetPrintModelReferences(action: PayloadAction<SetPrintModelReferencesPayload>) {
 	const { printModels, resolve } = action.payload;
 	const caseConfig = yield* select(EditorSelector.selectCaseConfig);
 	if (!caseConfig) {

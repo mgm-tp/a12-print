@@ -32,7 +32,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect } from "react";
 
-import { ConfirmationDialogActions, ConfirmationDialogType, LastActionType } from "../redux/index.js";
+import type { ConfirmationDialogType } from "../redux/index.js";
+import { ConfirmationDialogActions, LastActionType } from "../redux/index.js";
 import { ConfirmationDialogSelectors } from "../redux/confirmation-dialog/selectors.js";
 
 type Resolver = (confirmed: boolean) => void;

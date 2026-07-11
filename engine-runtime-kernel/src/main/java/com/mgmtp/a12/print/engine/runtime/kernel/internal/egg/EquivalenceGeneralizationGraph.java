@@ -31,13 +31,16 @@
  */
 package com.mgmtp.a12.print.engine.runtime.kernel.internal.egg;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.ComputationSyntaxTree;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.SyntaxTreeElement;
 import lombok.NonNull;
 
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;

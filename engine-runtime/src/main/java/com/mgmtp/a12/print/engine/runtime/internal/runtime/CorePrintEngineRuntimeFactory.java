@@ -35,6 +35,7 @@ import com.mgmtp.a12.print.engine.api.JobDependencyProvider;
 import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.AttachmentJobDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.PrintModelJobDependency;
@@ -43,6 +44,7 @@ import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.expression.ExpressionDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.field.FieldValueDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.image.ImageDependencyValueProducer;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.image.StaticImageMapDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing.ListingDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.table.TableValuesDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.tableLayout.TableLayoutValuesDependencyValueProducer;
@@ -61,13 +63,11 @@ import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markdown.Mark
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.metadata.AccessibilityMetadataDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.referenceElementResolver.PrintModelReferenceElementDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.referenceResolver.ReferenceElementDependencyValueProducer;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.renderer.HtmlDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.restriction.PdfJobRestrictionContextDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.sectionResolver.SectionByIdDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.segmentResolver.SegmentByIdDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.textStyleResolver.TextStyleByIdDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.watermarkResolver.WatermarkByIdDependencyValueProducer;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.rendering.CssUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.rendering.HTMLCleanUpUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalCorePrintEngineRuntimeApiFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.ManagedPrintJob;
@@ -90,11 +90,8 @@ public class CorePrintEngineRuntimeFactory<Job extends PrintJob, Engine extends 
 	private final ExecutorService executorService;
 
 	protected InternalCorePrintEngineRuntimeApiFactory<Job, Engine> getEngineDependentRuntimeApiFactory(PrintEngine<?> engine, InternalCorePrintEngineRuntimeApiFactory.Builder<Job, Engine> engineSpecificBuilder) {
-		var config = engine.getConfig();
-		final var htmlCleanup = new HTMLCleanUpUtil(config.getAllowedHtmlTags(), config.getAllowedStyles());
 		return engineSpecificBuilder
-			.withProviderForSanitizeValueDependency(new SanitizePdfDependencyValueProducer(htmlCleanup))
-			.withProviderForHtmlDependency(new HtmlDependencyValueProducer(config.getTemplateDirectory(), new CssUtil()))
+			.withProviderForSanitizeValueDependency(new SanitizePdfDependencyValueProducer(new HTMLCleanUpUtil()))
 			.build();
 	}
 
@@ -118,7 +115,7 @@ public class CorePrintEngineRuntimeFactory<Job extends PrintJob, Engine extends 
 
 			final var referencedPrintModel = printModelDependency.getPrintModel();
 			if (referencedPrintModel.isEmpty()) {
-				throw new PrintException("Missing PrintModel: " + dependency.getPrintModelId().getModelHeaderId());
+				throw new PrintDomainException("PrintModel '{}' could not be found.", dependency.getPrintModelId().getModelHeaderId());
 			}
 
 			return referencedPrintModel::get;
@@ -247,6 +244,7 @@ public class CorePrintEngineRuntimeFactory<Job extends PrintJob, Engine extends 
 			.withProviderForCalculationValueDependency(new CalculationDependencyValueProducer())
 			.withProviderForFieldTypeFromPathValueDependency(new FieldTypeFromPathDependencyValueProducer())
 			.withProviderForImageValueDependency(new ImageDependencyValueProducer())
+			.withProviderForStaticImageMapDependency(new StaticImageMapDependencyValueProducer().asCacheable())
 			.withProviderForChartValueDependency(new ChartDependencyValueProducer())
 			.withProviderForHtmlReplacementDependency(new HtmlReplacementDependencyValueProducer())
 			.withProviderForAddStylesToHtmlDependency(new AddStylesToHtmlPdfDependencyValueProducer())

@@ -31,7 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.pdDocument;
 
-public class PDDocumentCreationException extends RuntimeException {
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
+
+public class PDDocumentCreationException extends PrintException {
 	public PDDocumentCreationException(String message) {
 		super(message);
 	}

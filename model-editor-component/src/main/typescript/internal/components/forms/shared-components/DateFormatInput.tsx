@@ -31,12 +31,11 @@
  */
 import * as React from "react";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
+import { Icon, Button } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 
-import { CustomTextLineStateful } from "../custom-base-input-components/CustomTextLineStateful.js";
+import { DynamicSourceTextField } from "../custom-base-input-components/DynamicSourceTextField.js";
 
 const JAVA_DATE_FORMAT_URL = "https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html";
 
@@ -59,7 +58,7 @@ export const DateFormatInput = ({
 	const onHintButtonClicked = () => window.open(JAVA_DATE_FORMAT_URL, "_blank");
 
 	return (
-		<CustomTextLineStateful
+		<DynamicSourceTextField
 			label={label}
 			value={value}
 			onChange={onChange}

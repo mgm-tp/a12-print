@@ -31,8 +31,7 @@
  */
 package com.mgmtp.a12.print.model.codegen.internal;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.util.TreeMap;
 
@@ -42,7 +41,7 @@ public interface PrintModelMetadataMapFileGenerator {
 		ObjectNode metadataObject,
 		ObjectNode typeObject,
 		SaveFile saveFile
-	) throws PrintModelMetadataMapGenerationException, JsonProcessingException;
+	) throws PrintModelMetadataMapGenerationException;
 
 	@FunctionalInterface
 	interface SaveFile {

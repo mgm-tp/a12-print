@@ -53,6 +53,7 @@ dependencies {
 	implementation(project(":model-api"))
 
 	implementation(a12Libs.baseModelApi)
+	implementation(a12Libs.baseModelUtils)
 
 	implementation(thirdPartyLibs.commonsIO)
 	implementation(thirdPartyLibs.commonsLang3)
@@ -60,12 +61,12 @@ dependencies {
 	implementation(thirdPartyLibs.jacksonCore)
 	implementation(thirdPartyLibs.jacksonDatabind)
 	implementation(thirdPartyLibs.jacksonAnnotations)
-	implementation(thirdPartyLibs.jacksonDatatypeJdk8)
 
 	testImplementation(thirdPartyLibs.jupiterApi)
 	testImplementation(thirdPartyLibs.assertj)
 
 	testRuntimeOnly(thirdPartyLibs.jupiterEngine)
+	testRuntimeOnly(thirdPartyLibs.junitLauncher)
 }
 
 val pnpmTypedoc = tasks.register<PnpmTask>("pnpmTypedoc") {

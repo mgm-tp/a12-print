@@ -51,7 +51,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Slf4j
-public class HtmlReplacementDependencyValueProducer implements CoreDependencyValueProvider<HtmlReplacementDependency.HtmlReplacementResult, HtmlReplacementDependency> {
+public class HtmlReplacementDependencyValueProducer implements CoreDependencyValueProvider<String, HtmlReplacementDependency> {
 
 	private static final String ENTITY_TYPE = "entity-type";
 	private static final String ENTITY_ID = "entity-id";
@@ -64,12 +64,10 @@ public class HtmlReplacementDependencyValueProducer implements CoreDependencyVal
 		String newValue,
 		boolean isHtml,
 		LinkedHashMap<String, String> additionalAttributes,
-		Map<String, String> pageNumberGlobalStyles,
-		InternalCorePrintEngineRuntime runtime,
 		PrintEngine<?> engine
 	) {
 		if (!entity.children().isEmpty()) {
-			searchLastChildrenAndSetValue(entity.child(0), newValue, isHtml, additionalAttributes, pageNumberGlobalStyles, runtime, engine);
+			searchLastChildrenAndSetValue(entity.child(0), newValue, isHtml, additionalAttributes, engine);
 		} else {
 			var elementToCustomize = entity;
 
@@ -88,22 +86,6 @@ public class HtmlReplacementDependencyValueProducer implements CoreDependencyVal
 				elementToCustomize.attr(entry.getKey(), entry.getValue());
 			}
 
-			if (additionalAttributes.containsKey(ENTITY_TYPE) && additionalAttributes.containsKey(ENTITY_ID) &&
-				isPageNumberOrPageNumberTotalEntity(additionalAttributes.get(ENTITY_TYPE)) &&
-				elementToCustomize.hasAttr(STYLE)
-			) {
-				final var outerHtml = elementToCustomize.outerHtml();
-				final var sanitizedHtml = runtime.provide(new SanitizeValueDependency(outerHtml)).get();
-				final var sanitizedElementBody = Jsoup.parse(sanitizedHtml).body();
-
-				if (sanitizedElementBody.childrenSize() == 1 && sanitizedElementBody.child(0).hasAttr(STYLE)) {
-					pageNumberGlobalStyles.put(
-						additionalAttributes.get(ENTITY_ID),
-						sanitizedElementBody.child(0).attr(STYLE)
-					);
-				}
-			}
-
 			if (isHtml || !(engine instanceof PdfBoxPrintEngine)) {
 				elementToCustomize.html(newValue);
 			} else {
@@ -114,13 +96,12 @@ public class HtmlReplacementDependencyValueProducer implements CoreDependencyVal
 	}
 
 	@Override
-	public ValueFactory<HtmlReplacementDependency.HtmlReplacementResult> produce(
+	public ValueFactory<String> produce(
 		HtmlReplacementDependency dependency,
 		PrintJob job,
 		PrintEngine<?> engine,
 		InternalCorePrintEngineRuntime runtime
 	) {
-		final var pageNumberGlobalStyles = new HashMap<String, String>();
 		final Document htmlDocument = Jsoup.parseBodyFragment(dependency.getOriginHtml());
 		final var markupResults = dependency.getMarkupResults();
 
@@ -147,8 +128,6 @@ public class HtmlReplacementDependencyValueProducer implements CoreDependencyVal
 								 markup,
 								 markupResult.isHtml(),
 								 additionalAttributes,
-								 pageNumberGlobalStyles,
-								 runtime,
 								 engine
 							 );
 						 }, () -> {
@@ -164,12 +143,11 @@ public class HtmlReplacementDependencyValueProducer implements CoreDependencyVal
 		// set margin 0 to all p tags
 		Elements pTags = htmlDocument.select("p");
 		for (Element pTag : pTags) {
-			runtime.provide(new AddStylesToHtmlDependency(pTag, Map.of("margin", "0px"), true));
+			runtime.provide(new AddStylesToHtmlDependency(pTag, Map.of("margin", "0px")));
 		}
 		htmlDocument.outputSettings().prettyPrint(false);
 
-		final var html = htmlDocument.body().html();
-		return () -> new HtmlReplacementDependency.HtmlReplacementResult(html, pageNumberGlobalStyles);
+		return () -> htmlDocument.body().html();
 	}
 
 	private static boolean isPageNumberOrPageNumberTotalEntity(String entityType) {

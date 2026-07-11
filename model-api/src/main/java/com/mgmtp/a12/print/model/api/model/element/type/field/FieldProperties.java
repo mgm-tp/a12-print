@@ -35,8 +35,10 @@ import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 import com.mgmtp.a12.print.model.api.model.element.base.DisplayOptions;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 
+@OnlyForUsage
 public interface FieldProperties extends PrintModelEntity {
 	String getModel();
 

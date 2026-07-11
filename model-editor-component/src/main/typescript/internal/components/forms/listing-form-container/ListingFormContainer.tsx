@@ -31,26 +31,69 @@
  */
 import { useSelector } from "react-redux";
 
-import { PartialListing } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { PartialListing } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
+import {
+	isElementFormState,
+	isListingColumnFormState,
+	isListingFieldCompFormState,
+	isListingGroupPropertyCompFormState,
+	isListingPropertyCompFormState,
+	NavigationSelectors,
+} from "../../../redux/index.js";
 
-import { ListingViews } from "./constants/form.js";
+import { FieldPropertyComputationForm } from "./forms/field-computation-form/FieldPropertyComputationForm.js";
+import { FieldComputationForm } from "./forms/field-computation-form/FieldComputationForm.js";
+import { MainForm } from "./forms/main-form/MainForm.js";
+import { MainPropertyComputationForm } from "./forms/main-form/MainPropertyComputationForm.js";
+import { GroupPropertyComputationForm } from "./forms/main-form/GroupPropertyComputationForm.js";
+import { ColumnPropertyComputationForm } from "./forms/column-form/ColumnPropertyComputationForm.js";
+import { ListingColumnForm } from "./forms/column-form/ListingColumnForm.js";
 
 export const ListingFormContainer = () => {
-	const detailData = useSelector(PrintEngineSelectors.currentDetailData);
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
+	const currentForm = useSelector(NavigationSelectors.currentForm);
+	const element = useSelector(PrintEngineSelectors.rootFormElement);
 
 	if (!element || !PartialListing.isInstance(element)) {
 		throw Error("Expected element of type Listing");
 	}
 
-	const currentView = detailData?.formContainers?.slice()?.pop();
-	if (!currentView) {
+	if (!currentForm) {
 		return <Placeholder />;
 	}
-	const ComponentToRender = ListingViews.viewMapping[currentView as ListingViews.ViewKeys];
-	return <>{ComponentToRender ? <ComponentToRender element={element} /> : <Placeholder />}</>;
+
+	if (isElementFormState(currentForm)) {
+		return <MainForm element={element} />;
+	}
+
+	if (isListingColumnFormState(currentForm)) {
+		return <ListingColumnForm element={element} formState={currentForm} />;
+	}
+
+	if (isListingGroupPropertyCompFormState(currentForm)) {
+		return <GroupPropertyComputationForm element={element} formState={currentForm} />;
+	}
+
+	if (isListingPropertyCompFormState(currentForm)) {
+		if (currentForm.parentForm === "Main") {
+			return <MainPropertyComputationForm element={element} formState={currentForm} />;
+		}
+
+		if (currentForm.parentForm === "Column") {
+			return <ColumnPropertyComputationForm element={element} formState={currentForm} />;
+		}
+
+		if (currentForm.parentForm === "Field") {
+			return <FieldPropertyComputationForm element={element} formState={currentForm} />;
+		}
+	}
+
+	if (isListingFieldCompFormState(currentForm)) {
+		return <FieldComputationForm element={element} formState={currentForm} />;
+	}
+
+	return <Placeholder />;
 };
 
 const Placeholder = () => {

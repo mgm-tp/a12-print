@@ -29,13 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	BorderStyle,
-	ElementType,
-	MeasureUnit,
-	PageOrientation,
-	PartialBoundingBox,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialBoundingBox } from "@com.mgmtp.a12.print/print-model-api/model";
+import { BorderStyle, ElementType, MeasureUnit, PageOrientation } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { getBoundingOverrideElements } from "../din-template-utils.js";
 
@@ -208,7 +203,8 @@ describe("din template utils", () => {
 										},
 									},
 									hideConditions: [],
-									id: expect.any(String),
+									// use stable id from template (regression guard: must NOT be a new nanoid)
+									id: "ID_f6e15bb8-9627-488b-87f0-1c673a0adf0eBG",
 									position: {
 										id: "ID_77109cdf-45ea-41e2-a2b6-4ea560ca8c38BG",
 										x: {
@@ -241,7 +237,7 @@ describe("din template utils", () => {
 							sourceType: "Reference",
 						},
 					},
-					type: "Override",
+					type: ElementType.Override,
 				},
 				{
 					id: expect.any(String),
@@ -260,7 +256,7 @@ describe("din template utils", () => {
 							sourceType: "Reference",
 						},
 					},
-					type: "Override",
+					type: ElementType.Override,
 				},
 				{
 					id: expect.any(String),
@@ -279,7 +275,7 @@ describe("din template utils", () => {
 							sourceType: "Reference",
 						},
 					},
-					type: "Override",
+					type: ElementType.Override,
 				},
 			]);
 
@@ -333,7 +329,7 @@ describe("din template utils", () => {
 			expect(result).toEqual([
 				{
 					id: expect.any(String),
-					type: "Override",
+					type: ElementType.Override,
 					override: {
 						boundingBox: {
 							elementReferences: [],

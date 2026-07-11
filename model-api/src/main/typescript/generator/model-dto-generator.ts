@@ -29,8 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DocumentServiceFactory } from "@com.mgmtp.a12.kernel/kernel-md-facade/lib/main/js/facade.js";
-import { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import { DocumentServiceFactory } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
 const documentModelMarshaller = new DocumentServiceFactory().getDocumentModelSerializer();
 
@@ -81,7 +81,7 @@ function collectInterfacesAndEnums(
 	const members: APIMember[] = [];
 	const rootExampleValue: ExampleValueMap = {};
 	group.elements.forEach(child => {
-		if (child.type === "Group") {
+		if (child.type === "Group" && child.name !== "__meta") {
 			const childData = collectInterfacesAndEnums(interfaces, enums, child, suffix);
 			const isArray = child.repeatability > 1;
 			members.push({
@@ -92,7 +92,7 @@ function collectInterfacesAndEnums(
 			});
 
 			rootExampleValue[child.name] = isArray ? [childData.exampleValue] : childData.exampleValue;
-		} else {
+		} else if (child.type !== "Group") {
 			let type: string;
 			let exampleValue: ExampleValue;
 			if (child.fieldType.type === "EnumerationType") {

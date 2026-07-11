@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { generateAndSaveDtoFiles } from "@com.mgmtp.a12.print/print-model-api/lib/generator/model-dto-files-generator.js";
+import { generateAndSaveDtoFiles } from "@com.mgmtp.a12.print/print-model-api/generator";
 
 const inputFile = process.env.npm_package_config_typesetting_model_preprocessing_typesetting_model_file;
 const outputPath = process.env.npm_package_config_typesetting_model_preprocessing_typescript_output_dir;

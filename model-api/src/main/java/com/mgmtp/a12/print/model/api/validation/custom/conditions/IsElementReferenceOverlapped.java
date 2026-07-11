@@ -44,7 +44,9 @@ import lombok.NonNull;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public class IsElementReferenceOverlapped implements ICustomCondition {
 
 	private TreeMap<String, ValidationPathHandler> validationPathHandlerMap;
@@ -279,3 +281,4 @@ public class IsElementReferenceOverlapped implements ICustomCondition {
 		}
 	}
 }
+

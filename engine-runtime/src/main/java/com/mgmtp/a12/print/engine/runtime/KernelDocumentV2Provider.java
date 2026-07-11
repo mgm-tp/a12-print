@@ -29,13 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::KernelDocumentV2ProviderInterface[]
 package com.mgmtp.a12.print.engine.runtime;
 
 // tag::Import[]
 
 import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
-import com.mgmtp.a12.kernel.md.document.apiV2.services.IDocumentV1V2Converter;
-import com.mgmtp.a12.kernel.md.facade.DocumentServiceFactory;
 import com.mgmtp.a12.print.engine.api.JobDependency;
 import com.mgmtp.a12.print.engine.api.JobDependencyProvider;
 import com.mgmtp.a12.print.engine.api.a12.DocumentDependencyDescriptor;
@@ -48,10 +47,6 @@ import lombok.NonNull;
  * Interface for loading A12 kernel {@link DocumentV2}s.
  */
 public interface KernelDocumentV2Provider extends JobDependencyProvider {
-
-	IDocumentV1V2Converter CONVERTER = new DocumentServiceFactory(
-		dmID -> null // dm resolver is not needed here
-	).createDocumentV1V2Converter();
 
 	static KernelDocumentV2Provider fromDocument(final @NonNull DocumentV2 document) {
 
@@ -93,7 +88,7 @@ public interface KernelDocumentV2Provider extends JobDependencyProvider {
 	default void provide(JobDependency dependency) throws PrintException {
 		var kernelDocumentDataDependency = ((KernelDocumentJobDependency) dependency);
 		final var documentV2 = loadDocument(kernelDocumentDataDependency.getDescriptor());
-		kernelDocumentDataDependency.setDocument(CONVERTER.toDocumentV1(documentV2));
+		kernelDocumentDataDependency.setDocument(documentV2);
 	}
-
 }
+// end::KernelDocumentV2ProviderInterface[]

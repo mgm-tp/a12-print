@@ -33,43 +33,56 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	ComputationAlternative,
 	DisplayOptions,
 	ListingColumnField,
 	PartialListing,
 	ColumnPropertyComputations,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { PrintEngineSelectors } from "../../../../../store/selectors.js";
 import { FieldFormattingInputForm } from "../../../shared-components/FieldFormattingInputForm.js";
 import { FormContainerHeadline } from "../../../shared-components/FormContainerHeadline.js";
 import { BackButtonGroup } from "../../../shared-components/BackButtonGroup.js";
 import { ComputationRepeat } from "../../../shared-components/ComputationRepeat.js";
-import { ListingDataActions } from "../../../../../redux/detail-data/listing/index.js";
-import { DetailDataActions, TransactionLogStateActions } from "../../../../../redux/index.js";
+import {
+	isListingColumnFormState,
+	type ListingFieldCompFormState,
+	NavigationActions,
+	TransactionLogStateActions,
+} from "../../../../../redux/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../../localization/index.js";
+import { NavigationSelectors } from "../../../../../redux/navigation/selectors.js";
 import { InteractionLogActions } from "../../../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../../../redux/validation/selectors.js";
-import { ElementWithoutIdAndType } from "../../../type.js";
-import { OmitId } from "../../../../../utils/index.js";
-import { BaseListingFormProps } from "../../base-listing-form.js";
+import type { ElementWithoutIdAndType } from "../../../type.js";
+import { assertType, type OmitId } from "../../../../../utils/index.js";
+import type { BaseListingFormProps } from "../../base-listing-form.js";
 import { ColumnTablePropertyComputation } from "../../shared-components/ColumnTablePropertyComputation.js";
 
 import { ComputationInput } from "./ComputationInput.js";
 
-export const FieldComputationForm = ({ element }: BaseListingFormProps) => {
+interface FieldComputationFormProps extends BaseListingFormProps {
+	formState: ListingFieldCompFormState;
+}
+
+export const FieldComputationForm = ({ element, formState }: FieldComputationFormProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
-	const additionalData = useSelector(PrintEngineSelectors.additionalData);
-	const columnIndex = additionalData?.listing?.columnIndex;
-	const fieldIndex = additionalData?.listing?.fieldCompIndex;
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
+	const columnFormState = useSelector((state: PrintEngineState) =>
+		NavigationSelectors.formStateByType(state, ListingRegion.LISTING_COLUMN_FORM)
+	);
+
+	assertType(columnFormState, isListingColumnFormState);
+
+	const columnIndex = columnFormState?.columnIndex;
+	const fieldIndex = formState.fieldCompIndex;
 
 	const listing = element.listing;
 	const columns = React.useMemo(() => listing?.columns?.slice() || [], [listing?.columns]);
@@ -95,14 +108,8 @@ export const FieldComputationForm = ({ element }: BaseListingFormProps) => {
 
 	const model = element.listing?.model;
 	const onBackClick = React.useCallback(() => {
-		dispatch(
-			DetailDataActions.removeView({
-				containerId: currentDetailDataId,
-				view: ListingRegion.FIELD_COMPUTATION_FORM,
-			})
-		);
-		dispatch(ListingDataActions.deleteAdditionalKey({ containerId: currentDetailDataId, category: "fieldComp" }));
-	}, [dispatch, currentDetailDataId]);
+		dispatch(NavigationActions.popFormStack({ tab, entityId, mode }));
+	}, [dispatch, tab, entityId, mode]);
 
 	const updateCurrentField = React.useCallback(
 		(newData: OmitId<DeepPartial<ListingColumnField>>) => {
@@ -235,10 +242,12 @@ export const FieldComputationForm = ({ element }: BaseListingFormProps) => {
 				computationErrorMap={fieldErrorMap?.valueComputationAlternatives}
 			/>
 			<ColumnTablePropertyComputation
+				elementId={element.id}
 				propertyComputations={propertyComputations}
 				handleDeleteRow={handleDeletePropertyComputation}
 				updatePropertyComputations={updatePropertyComputations}
 				propertyComputationErrorMap={fieldErrorMap?.propertyComputations}
+				formType="Field"
 			/>
 			<FieldFormattingInputForm
 				displayOptions={currentField.displayOptions}

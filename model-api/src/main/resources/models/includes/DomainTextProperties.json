@@ -2,7 +2,7 @@
   "header": {
     "id": "DomainTextProperties",
     "modelType": "document",
-    "modelVersion": "28.4.0",
+    "modelVersion": "29.4.0",
     "locales": [
       {
         "code": "en"
@@ -35,8 +35,8 @@
       "immutable": false
     },
     "modelConfig": {
-      "decimalSeparator": ".",
       "timeZone": "UTC",
+      "decimalSeparator": ".",
       "conditionLanguage": {
         "code": "en_US"
       }
@@ -211,12 +211,28 @@
           "id": "group_78e9d",
           "name": "textProperties",
           "Group": {
+            "label": [
+              {
+                "locale": "en",
+                "text": "Text Properties"
+              },
+              {
+                "locale": "de",
+                "text": "Texteigenschaften"
+              }
+            ],
             "repeatability": 1,
             "elements": [
               {
                 "type": "Field",
                 "id": "field_eaddb",
                 "name": "id",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
@@ -244,6 +260,12 @@
                       "type": "Field",
                       "id": "field_0a67e",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -273,7 +295,17 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_aed1923b-3c22-46c2-b3d6-455490d096e6"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Color value"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Farbwert"
+                          }
+                        ]
                       }
                     },
                     {
@@ -286,27 +318,69 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_1fd822d0-5cac-40e8-a03a-815f9bb46a54"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Input Source type"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Typ der Input Source"
+                          }
+                        ]
                       }
                     },
                     {
                       "type": "Field",
                       "id": "field_0217e",
                       "name": "reference",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID of referenced text entity"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "ID der referenzierten Textentität"
+                          }
+                        ]
                       }
                     },
                     {
                       "type": "Field",
                       "id": "field_bbda5",
                       "name": "path",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
                         },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Path to Input Source Default"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Pfad zum Standardwert der Input Source"
+                          }
+                        ],
                         "requirednessConfig": {
                           "mode": "relativeToParent"
                         }
@@ -368,6 +442,12 @@
                       "type": "Field",
                       "id": "field_4f00f",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -397,7 +477,17 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_9484f030-c1b6-4d44-9b3c-4c3e174fdcb4"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Color value of the background"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Hintergrundfarbwert"
+                          }
+                        ]
                       }
                     },
                     {
@@ -410,17 +500,43 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_1fd822d0-5cac-40e8-a03a-815f9bb46a54"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Input Source type"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Typ der Input Source"
+                          }
+                        ]
                       }
                     },
                     {
                       "type": "Field",
                       "id": "field_86222",
                       "name": "path",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
                         },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Path to Input Source Default"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Pfad zum Standardwert der Input Source"
+                          }
+                        ],
                         "requirednessConfig": {
                           "mode": "relativeToParent"
                         }
@@ -430,10 +546,26 @@
                       "type": "Field",
                       "id": "field_ade8f",
                       "name": "reference",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID of referenced text entity"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "ID der referenzierten Textentität"
+                          }
+                        ]
                       }
                     },
                     {
@@ -492,6 +624,12 @@
                       "type": "Field",
                       "id": "field_ef16a",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -511,17 +649,43 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_1fd822d0-5cac-40e8-a03a-815f9bb46a54"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Input Source type"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Typ der Input Source"
+                          }
+                        ]
                       }
                     },
                     {
                       "type": "Field",
                       "id": "field_4ab38",
                       "name": "path",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
                         },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Path to Input Source Default"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Pfad zum Standardwert der Input Source"
+                          }
+                        ],
                         "requirednessConfig": {
                           "mode": "relativeToParent"
                         }
@@ -564,10 +728,26 @@
                       "type": "Field",
                       "id": "field_70f6e",
                       "name": "reference",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID of referenced text entity"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "ID der referenzierten Textentität"
+                          }
+                        ]
                       }
                     },
                     {
@@ -626,6 +806,12 @@
                       "type": "Field",
                       "id": "field_76c3a",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -655,7 +841,17 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_109acad6-eb77-4e52-8c67-c3db2d82e9d4"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Is text bold?"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Ist der Text fett geschrieben?"
+                          }
+                        ]
                       }
                     },
                     {
@@ -668,17 +864,43 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_1fd822d0-5cac-40e8-a03a-815f9bb46a54"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Input Source type"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Typ der Input Source"
+                          }
+                        ]
                       }
                     },
                     {
                       "type": "Field",
                       "id": "field_58165",
                       "name": "path",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
                         },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Path to Input Source Default"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Pfad zum Standardwert der Input Source"
+                          }
+                        ],
                         "requirednessConfig": {
                           "mode": "relativeToParent"
                         }
@@ -688,10 +910,26 @@
                       "type": "Field",
                       "id": "field_13fc8",
                       "name": "reference",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID of referenced text entity"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "ID der referenzierten Textentität"
+                          }
+                        ]
                       }
                     },
                     {
@@ -750,6 +988,12 @@
                       "type": "Field",
                       "id": "field_218e9",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -779,7 +1023,17 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_29dc4e46-cf1a-408e-9bf4-4fabe301af30"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Is the text italic?"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Ist der Text kursiv geschrieben?"
+                          }
+                        ]
                       }
                     },
                     {
@@ -792,17 +1046,43 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_1fd822d0-5cac-40e8-a03a-815f9bb46a54"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Input Source type"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Typ der Input Source"
+                          }
+                        ]
                       }
                     },
                     {
                       "type": "Field",
                       "id": "field_8d056",
                       "name": "path",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
                         },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Path to Input Source Default"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Pfad zum Standardwert der Input Source"
+                          }
+                        ],
                         "requirednessConfig": {
                           "mode": "relativeToParent"
                         }
@@ -833,10 +1113,26 @@
                       "type": "Field",
                       "id": "field_e895f",
                       "name": "reference",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID of referenced text entity"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "ID der referenzierten Textentität"
+                          }
+                        ]
                       }
                     },
                     {
@@ -874,6 +1170,12 @@
                       "type": "Field",
                       "id": "field_764d4",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -903,7 +1205,17 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_29dc4e46-cf1a-408e-9bf4-4fabe301af30"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Is the text underlined?"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Ist der Text unterstrichen?"
+                          }
+                        ]
                       }
                     },
                     {
@@ -916,17 +1228,43 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_1fd822d0-5cac-40e8-a03a-815f9bb46a54"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Input Source type"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Typ der Input Source"
+                          }
+                        ]
                       }
                     },
                     {
                       "type": "Field",
                       "id": "field_ef816",
                       "name": "path",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
                         },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Path to Input Source Default"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Pfad zum Standardwert der Input Source"
+                          }
+                        ],
                         "requirednessConfig": {
                           "mode": "relativeToParent"
                         }
@@ -936,10 +1274,22 @@
                       "type": "Field",
                       "id": "field_0a45d",
                       "name": "reference",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID of referenced text entity"
+                          }
+                        ]
                       }
                     },
                     {
@@ -998,6 +1348,12 @@
                       "type": "Field",
                       "id": "field_a5b25",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -1027,7 +1383,17 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_eeaecb5c-fab5-44cb-967c-eb0ec84605af"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID of referenced Text Style"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "ID des referenzierten Text Style"
+                          }
+                        ]
                       }
                     },
                     {
@@ -1040,17 +1406,43 @@
                           "TypeDefType": {
                             "typeDefinitionId": "typedef_1fd822d0-5cac-40e8-a03a-815f9bb46a54"
                           }
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Input Source type"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Typ der Input Source"
+                          }
+                        ]
                       }
                     },
                     {
                       "type": "Field",
                       "id": "field_304b8",
                       "name": "path",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
                         },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Path to Input Source Default"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Pfad zum Standardwert der Input Source"
+                          }
+                        ],
                         "requirednessConfig": {
                           "mode": "relativeToParent"
                         }
@@ -1060,10 +1452,26 @@
                       "type": "Field",
                       "id": "field_379bb",
                       "name": "reference",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
-                        }
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "ID of referenced text entity"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "ID der referenzierten Textentität"
+                          }
+                        ]
                       }
                     },
                     {

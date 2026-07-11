@@ -29,10 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { TransactionLogEntry } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
+import type { TransactionLogEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { CommitInteractionRow, CommitState, CommitTransactionRow } from "../types/commit-view.js";
-import { TransactionLogGroup } from "../store/selectors.js";
+import type { TransactionLogGroup } from "../store/selectors.js";
+import type { CommitInteractionRow, CommitState, CommitTransactionRow } from "../types/commit-view.js";
 
 export function initialize(interactionGroup: TransactionLogGroup[]) {
 	const latestEntryMap: Record<string, Record<string, true>> = {};

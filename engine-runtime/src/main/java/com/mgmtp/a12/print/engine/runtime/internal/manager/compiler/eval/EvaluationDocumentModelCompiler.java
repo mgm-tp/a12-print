@@ -31,18 +31,20 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.eval;
 
+import com.google.common.primitives.Booleans;
 import com.mgmtp.a12.kernel.md.facade.DocumentModelServiceFactory;
 import com.mgmtp.a12.kernel.md.facade.DocumentRtServiceFactory;
-import com.mgmtp.a12.kernel.md.facade.DocumentServiceFactory;
 import com.mgmtp.a12.kernel.md.model.a12internal.*;
 import com.mgmtp.a12.kernel.md.model.a12internal.services.DocumentModelService;
 import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
+import com.mgmtp.a12.kernel.md.model.api.IGroup;
 import com.mgmtp.a12.kernel.md.model.internal.wrapper.ElementWrapper;
+import com.mgmtp.a12.kernel.md.rt.api.DocumentValidationException;
 import com.mgmtp.a12.model.header.HeaderFactory;
 import com.mgmtp.a12.model.notification.RankedNotification;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.RepetitionPrefix;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.ComputationEvaluationAdvice;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.PrintModelCompilationContext;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.PrintModelCompilerGraph;
@@ -63,6 +65,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.StringWriter;
 import java.util.*;
@@ -94,6 +97,8 @@ public class EvaluationDocumentModelCompiler {
 	@NonNull
 	private final PrintModelCompilerGraph compilerGraph;
 	@NonNull
+	private final HashSet<Locale> documentLocales;
+	@NonNull
 	private final DocumentModelService documentModelService = new DocumentModelService();
 
 	private final ConcurrentHashMap<ComputationStatement, ComputationStatement> computationMap = new ConcurrentHashMap<>();
@@ -113,7 +118,7 @@ public class EvaluationDocumentModelCompiler {
 					log.error("{} problem: {}", requirements.getEvalDocumentModelName(), notification);
 				}
 			} catch (Exception e) {
-				throw new PrintCompilerException("unable to debug documentModel due to:", e);
+				throw new PrintCompilerException("Unable to debug documentModel due to:", e);
 			}
 		}
 		return iDocumentModel;
@@ -154,13 +159,16 @@ public class EvaluationDocumentModelCompiler {
 			}
 		}
 
-		if (locales == null) {
-			if (Arrays.stream(requirements.getModels()).anyMatch(e -> !e.isSynthetic())) {
-				log.error("DocumentModels referenced by {} do not share any locales.", printModel.getId().getModelHeaderId());
-			}
-			locales = new HashSet<>(printModel.getHeader().getLocales());
+		if (locales == null && Arrays.stream(requirements.getModels()).anyMatch(e -> !e.isSynthetic())) {
+			log.debug("DocumentModels referenced by {} do not share any locales.", printModel.getId().getModelHeaderId());
 		}
-
+		if (CollectionUtils.isEmpty(locales)) {
+			log.debug("Fall back to the intersection of all referenced document model locales");
+			if (CollectionUtils.isEmpty(documentLocales)) {
+				throw new PrintDomainException("Missing locales in all referenced models");
+			}
+			return documentLocales;
+		}
 		return locales;
 	}
 
@@ -184,12 +192,17 @@ public class EvaluationDocumentModelCompiler {
 
 				final var path = KernelElementUtils.getPath(element);
 
-				final var repPrefix = RepetitionPrefix.from(path);
+				final var repeatability = Booleans.toArray(path.stream().map(pathElement -> {
+					if (pathElement instanceof IGroup group) {
+						return group.getRepeatability() > 1;
+					} else {
+						return false;
+					}
+				}).toList());
 				int i = path.size() - 1;
 				for (; i >= 0; i--) {
-					final var currentRepetitionRange = repPrefix.getRepetitions().get(i);
 					final var referenceSegment = realPath[i];
-					if (!referenceSegment.isList() && currentRepetitionRange.isRepeatable()) {
+					if (!referenceSegment.isList() && repeatability[i]) {
 						break;
 					}
 				}
@@ -212,8 +225,7 @@ public class EvaluationDocumentModelCompiler {
 			.collect(Collectors.toSet());
 
 		if (prefixVariables.size() > 1) {
-			log.error("Multiple Repeatable Context found in a statement: {} ", statement.key());
-			throw new PrintCompilerException("Ambiguous Repeatable Context Group");
+			throw new PrintDomainException("Multiple Repeatable Context found in statement '{}'", statement.key());
 		} else if (!prefixVariables.isEmpty()) {
 			statement.setResultPrefix(prefixVariables.iterator().next());
 		}
@@ -236,7 +248,6 @@ public class EvaluationDocumentModelCompiler {
 			documentModelIndexMap,
 			new DocumentRtServiceFactory(e -> documentModelIndexMap.get(e).getDocumentModel()),
 			new DocumentDynamicServiceConfig(new ModelCodeCache()),
-			new DocumentServiceFactory(e -> documentModelIndexMap.get(e).getDocumentModel()).createDocumentFactory(),
 			documentPrefill
 		);
 
@@ -313,7 +324,14 @@ public class EvaluationDocumentModelCompiler {
 				iDocumentModel.getHeader().getId(),
 				DocumentModelIndex.buildFrom(iDocumentModel)
 			);
-			computationProviderCompute.getDocumentRtService().precompileDocumentModel(iDocumentModel);
+			try {
+				computationProviderCompute.getDocumentRtService().precompileDocumentModel(iDocumentModel);
+			} catch (DocumentValidationException e) {
+				throw new PrintDomainException(
+					"The Document Model '{}' has validation errors that prevent compilation: {}",
+					iDocumentModel.getHeader().getId(), e.getMessage(), e
+				);
+			}
 
 			log.debug("Generated: EvaluationDataModel {}", iDocumentModel.getHeader().getId());
 		}
@@ -514,7 +532,7 @@ public class EvaluationDocumentModelCompiler {
 								 ? Dereference.builder().variable((Variable) element).build()
 								 : element
 						 )
-						 .orElseThrow(() -> new PrintCompilerException("should always have a EggNode")).getId()
+						 .orElseThrow(() -> new PrintCompilerException("Should always have a EggNode")).getId()
 		);
 	}
 
@@ -586,7 +604,6 @@ public class EvaluationDocumentModelCompiler {
 					.requirednessConfig(element.getRequirednessConfig().orElse(null))
 					.isTransient(element.isTransient())
 					.isGlobal(element.isGlobal())
-					.variantFilter(element.getVariantFilter().orElse(null))
 					.fieldType(element.getFieldType())
 					.label(element.getLabel())
 					.additionalInfo(element.getAdditionalInfo().orElse(null))
@@ -728,12 +745,10 @@ public class EvaluationDocumentModelCompiler {
 										   .collect(Collectors.toSet());
 
 					if (names.contains(RESULTS)) {
-						throw new PrintCompilerException(
-							"Unable to create "
-								+ RESULTS
-								+ " Group in "
-								+ SyntaxTreeRenderer.getPath(true, k.getSegments())
-								+ " due to an already present group that uses this reserved name."
+						throw new PrintDomainException(
+							"A group with the reserved name '{}' already exists at '{}'. Please rename the group.",
+							RESULTS,
+							SyntaxTreeRenderer.getPath(true, k.getSegments())
 						);
 					} else {
 						final var resultGroup = Group.builder()
@@ -755,7 +770,7 @@ public class EvaluationDocumentModelCompiler {
 		}
 
 		private Group getPrefixGroup(Variable prefix) {
-			return prefixGroups.get(prefix).orElseThrow(() -> new PrintCompilerException("invalid State"));
+			return prefixGroups.get(prefix).orElseThrow(() -> new PrintCompilerException("Invalid State"));
 		}
 
 		public void build(Variable prefix, Field resultField, Computation rule) {

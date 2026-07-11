@@ -31,14 +31,12 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.constant;
 
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.model.api.model.textStyle.TextStyle;
 
 import java.util.Optional;
 
 public class Constants {
-
-	public static final String HEADING_PATTERN = "h[1-6]";
 
 	public static final String DOCUMENT_MODEL_TYPE = "document";
 
@@ -62,7 +60,7 @@ public class Constants {
 
 		@Override
 		public String getFont() {
-			return PrintEngineConfig.DEFAULT_TEXT_STYLE_FONT_KEY;
+			return PdfBoxPrintEngineConfig.DEFAULT_TEXT_STYLE_FONT_KEY;
 		}
 
 		@Override
@@ -104,7 +102,7 @@ public class Constants {
 
 		@Override
 		public String getFont() {
-			return PrintEngineConfig.DEFAULT_TEXT_STYLE_FONT_KEY;
+			return PdfBoxPrintEngineConfig.DEFAULT_TEXT_STYLE_FONT_KEY;
 		}
 
 		@Override

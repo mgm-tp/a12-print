@@ -1,0 +1,102 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= 2025.06-ext4
+
+== Deprecations
+
+=== Print Shell
+
+* The `--useExperimentalRendering` flag ("-x") is deprecated and will be removed within the 2026.06 release. Currently, the default behavior of the print shell will default to the Legacy Rendering Mode. With the removal of this flag, the print shell will use the current experimental rendering mode as the default rendering mode.
+
+=== Legacy Rendering Mode
+
+The Legacy Rendering Mode is deprecated and will be removed within the 2026.06 release.
+
+==== Noticeable Differences in the Legacy Rendering Mode
+
+The following behaviors are specific to the Legacy Rendering Mode and will change once migrated to the new rendering mode:
+
+1. Table Rows are spread over a page break instead of being moved completely to the next page if possible
+2. Image Elements that are larger than a page will not be scaled down to fit the page size
+3. Watermarks are also applied to attachment pages
+4. Attachments are printed, whether or not they are linked inside the main document body
+5. If a text can not be printed with the selected font or the defined fallback font, it will instead be printed with Open Sans
+6. If Fields or Calculations are marked as anything but HTML, the HTML tags inside them will be printed as plain text
+7. Expression elements background color will apply to the whole element area, not just the text area
+8. Listing Property Computations can use other color descriptions beside hex color codes (e.g. "red", "blue", etc.)
+
+=== Java
+* The `com.mgmtp.a12.print.model.api.model.element.base.DisplayOptions.DisplayType.HTML` is deprecated and will be removed within the 2026.06 release. This removal has no effect because all content is evaluated as HTML now.
+* The `com.mgmtp.a12.print.model.api.model.element.structure.General.getTitle()` method is deprecated and will be removed within the 2026.06 release. Use `com.mgmtp.a12.print.model.api.model.metadata.Metadata.getTitleComputation()` instead.
+* The `com.mgmtp.a12.print.model.api.model.element.structure.General.getDetails()` method is deprecated and will be removed within the 2026.06 release. Use `com.mgmtp.a12.print.model.api.model.element.structure.General.getMetadata()` instead.
+* The `com.mgmtp.a12.print.model.api.model.element.structure.Details` interface is deprecated and will be removed within the 2026.06 release. Use `com.mgmtp.a12.print.model.api.model.metadata.Metadata` with `getAuthorComputation()` and `getLanguageComputation()` instead.
+
+=== TypeScript
+* The `PrintModelContentGeneral.title` property deprecated and will be removed within the 2026.06 release. Use `Metadata.titleComputation` instead.
+* The `PrintModelContentGeneral.details` property deprecated and will be removed within the 2026.06 release. Use `PrintModelContentGeneral.metadata` to access metadata fields.
+* The `Details` interface deprecated and will be removed within the 2026.06 release. Use `authorComputation` and `languageComputation` from `Metadata` instead.
+* The `Details.author` property deprecated and will be removed within the 2026.06 release. Use `Metadata.authorComputation` instead.
+* The `Details.language` property deprecated and will be removed within the 2026.06 release. Use `Metadata.languageComputation` instead.
+* The `Language` enum deprecated and will be removed within the 2026.06 release. Use any string to represent a language.
+
+==== Deep Level Imports
+
+Deep-level imports for the public API in print packages will be deprecated in this release and removed within the 2026.06 release.
+Instead we will enforce top-level imports only.
+
+Top-level imports are favorable, because they obscure the package internals, which makes them less prone to breaking changes.
+Additionally they also minimize the amount of import statements needed and allows us to precisely control the public API of our packages.
+
+As an example, take the following deep-level imports:
+[source,typescript]
+----
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
+import { InputSourceGenerator } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source-generator.js";
+import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-engine-core/lib/input-source/input-source-resolver.js";
+import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
+
+import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/lib/marshaller/model-marshaller.js";
+import { ElementDefinitionMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/lib/marshaller/element-definition-marshaller.js";
+----
+
+Following the deprecation, these imports must be replaced with top-level imports:
+[source,typescript]
+----
+import {
+	PossibleInputSource,
+	InputValueSourceResolver,
+	InputSourceGenerator
+} from "@com.mgmtp.a12.print/print-model-api/input-source";
+import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+
+import {
+	PrintModelMarshaller,
+	ElementDefinitionMarshaller
+} from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
+----
+
+For this migration, we provide a codemod tool that automatically replaces deep-level imports with top-level imports.
+Please refer to the <<Codemod, Codemod>> chapter for instructions on how to use the codemod tool.
+
+=== Limitations
+
+The deprecated APIs `getTitle()`, `getDetails()` remain functional only if the metadata contains exactly one computation alternative with a string literal operation.
+Using multiple computation alternatives or non-literal operations will cause the deprecated APIs to throw an `IllegalStateException`.
+
+The new `Metadata` fields `titleComputation`, `authorComputation`, `languageComputation`, `descriptionComputation` use `ComputationAlternative` arrays instead of simple strings.
+Existing Print Models are automatically migrated by wrapping the old string values in a single computation alternative with a quoted string literal as operation.

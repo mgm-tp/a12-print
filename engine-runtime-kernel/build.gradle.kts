@@ -55,20 +55,18 @@ dependencies {
 	implementation(project(":engine-api"))
 	implementation(project(":model-api"))
 
-	implementation(a12Libs.kernelMdModelApi)
-	implementation(a12Libs.kernelMdModel)
-	implementation(a12Libs.kernelMdA12internal)
 	implementation(a12Libs.kernelMdFacade)
 
 	implementation(thirdPartyLibs.jacksonYaml)
 
-	testImplementation(a12Libs.kernelMdSerializer)
+	testImplementation(a12Libs.kernelMdFacade)
 
 	testImplementation(thirdPartyLibs.jupiterApi)
 	testImplementation(thirdPartyLibs.jupiterParams)
 	testImplementation(thirdPartyLibs.assertj)
 
 	testRuntimeOnly(thirdPartyLibs.jupiterEngine)
+	testRuntimeOnly(thirdPartyLibs.junitLauncher)
 }
 
 tasks.generateGrammarSource {
@@ -94,7 +92,7 @@ val generateTypeScriptGrammar = tasks.register<AntlrTask>("generateTypeScriptGra
 		file.writeText("// @ts-nocheck\n" + content.replace(oldString, newString))
 	}
 
-	inputs.files("src/main/antlr/PrintComputationTS.g4")
+	inputs.files("src/main/antlr/PrintComputationTS.g4", "package.json")
 	outputs.dir("${typescriptCodeDest}/antlr")
 }
 

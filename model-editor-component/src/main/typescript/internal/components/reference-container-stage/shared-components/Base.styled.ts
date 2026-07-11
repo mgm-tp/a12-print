@@ -31,10 +31,11 @@
  */
 import { styled } from "styled-components";
 
-import { BorderProperties } from "@com.mgmtp.a12.print/print-model-api/lib/model/elements/base.js";
+import type { BorderProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { EditorConst } from "../../../constant/editor.js";
-import { PlainMeasureDimensions, PlainMeasurePosition } from "../../../utils/index.js";
+import type { PlainMeasureDimensions, PlainMeasurePosition } from "../../../utils/index.js";
 import { CssUtils } from "../../../utils/css-utils.js";
 
 const { getEditorOffset, getZIndexList, MM_TO_PX } = EditorConst;
@@ -84,7 +85,7 @@ export const StyledDropContainer = styled.div`
 
 interface StyledBasicEditorProps extends StyledGeneralPageProps {
 	isSegmentLike: boolean;
-	borderProperties?: BorderProperties;
+	borderProperties?: DeepPartialRecursive<BorderProperties>;
 }
 
 export const StyledBasicEditor = styled.div.attrs<StyledBasicEditorProps>(({ borderProperties }) => ({

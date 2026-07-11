@@ -32,7 +32,7 @@
 import * as React from "react";
 
 import { useFieldTypesOptions } from "../../hooks/use-fiedtypes-options.js";
-import { CustomSelect, CustomTextLineStateless } from "../../../custom-base-input-components/index.js";
+import { CustomSelect, CustomTextField } from "../../../custom-base-input-components/index.js";
 
 interface ComputationInputProps {
 	label: string;
@@ -88,7 +88,7 @@ const renderComputationInput = (inputValue?: string) => {
 			Object.keys(item).forEach(itemKey => {
 				const value = typeof item[itemKey] === "object" ? JSON.stringify(item[itemKey]) : String(item[itemKey]);
 				elements.push(
-					<CustomTextLineStateless
+					<CustomTextField
 						readonly
 						key={`computationInput-${arrayIndex}-${itemKey}`}
 						label={itemKey}
@@ -107,7 +107,7 @@ const renderComputationInput = (inputValue?: string) => {
 		}
 		if (typeof valueObject[valueKey] !== "object") {
 			renderElements.push(
-				<CustomTextLineStateless
+				<CustomTextField
 					readonly
 					key={`computationInput-${valueIndex}`}
 					label={valueKey}

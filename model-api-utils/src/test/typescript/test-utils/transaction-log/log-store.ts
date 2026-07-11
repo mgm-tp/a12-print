@@ -29,18 +29,18 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import type { Segment } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	DisplayType,
 	ElementType,
-	Language,
 	PageOrientation,
-	Segment,
 	SegmentType,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PRINT_MODEL_VERSION } from "@com.mgmtp.a12.print/print-model-api/lib/constant/model.js";
-import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PRINT_MODEL_VERSION } from "@com.mgmtp.a12.print/print-model-api/constant";
 
-import { TransactionLog, TransactionLogStore } from "../../../../main/typescript/internal/transaction-log/index.js";
+import type { TransactionLogStore } from "../../../../main/typescript/a12internal/transaction-log/transaction-log.js";
+import { TransactionLog } from "../../../../main/typescript/a12internal/transaction-log/transaction-log.js";
 
 export const printHeaderId = "printHeaderId123";
 export const emptyTextElementId = "emptyTextElementId123";
@@ -102,8 +102,6 @@ export const generalStoreEntry = TransactionLog.createStoreEntryPrintModelConten
 	},
 	{
 		id: PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
-		title: "some title",
-		details: { id: "omg5ohm35", author: "tony", language: Language.DE },
 		metadata: {
 			id: "omg5ohm35",
 			authorComputation: [{ id: "authComp123", operation: '"tony"' }],

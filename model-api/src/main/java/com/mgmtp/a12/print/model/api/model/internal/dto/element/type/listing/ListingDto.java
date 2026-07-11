@@ -32,7 +32,9 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.element.type.listing;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
+
+import com.mgmtp.a12.print.model.api.model.EnableGetterByFieldNameForInheritableSource;
 import com.mgmtp.a12.print.model.api.model.element.type.listing.Listing;
 import com.mgmtp.a12.print.model.api.model.element.type.listing.ListingProperties;
 import com.mgmtp.a12.print.model.api.model.internal.dto.JsonModel;
@@ -48,6 +50,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
+@EnableGetterByFieldNameForInheritableSource
 public class ListingDto extends StyleablePrintModelElementDto implements Listing, JsonModel {
 	@JsonProperty(value = "listing", required = true)
 	@JsonDeserialize(as = ListingPropertiesDto.class)

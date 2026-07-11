@@ -31,31 +31,25 @@
  */
 import { useCallback, useContext } from "react";
 import { nanoid } from "nanoid";
-import { DeepPartial } from "redux";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-	AffectedItem,
-	AffectedItemType,
-	StageRegion,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import {
-	ElementType,
+import type { AffectedItem, AffectedItemType } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type {
 	InputSource,
-	isPartialSection,
-	isPartialWatermark,
 	Measure,
 	PageBreakBehavior,
 	PartialArea,
 	PartialValidPlaceableReference,
 	PrintModelEntity,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType, isPartialSection, isPartialWatermark } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { DeepPartialRecursive, PlainDeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { EditorContext } from "../../editor-stage/editor-context.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../../redux/index.js";
-import { RESOURCE_KEYS } from "../../../localization/keys.js";
+import { RESOURCE_KEYS } from "../../../localization/index.js";
 import { changeMmMeasureValue, createPlainMmMeasure } from "../../../utils/measure-utils.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { ElementsUtils } from "../../../utils/index.js";
@@ -204,7 +198,7 @@ function createContainerBox(
 		throw new Error("Cannot create container box from empty array");
 	}
 
-	const getValue = (measure: DeepPartial<Measure>): number => measure?.value || 0;
+	const getValue = (measure: PlainDeepPartial<Measure>): number => measure?.value || 0;
 
 	let minX = Infinity;
 	let minY = Infinity;

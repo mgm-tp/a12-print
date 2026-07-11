@@ -39,10 +39,12 @@ import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 
 import java.util.*;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Resolves {@link ElementReference}s in multiple {@link PrintModel}s.
  */
+@OnlyForUsage
 public class ReferenceMultiModelResolver implements ReferenceResolver {
 	private final HashMap<String, ReferenceResolver> elementListByPrintModelId = new HashMap<>();
 

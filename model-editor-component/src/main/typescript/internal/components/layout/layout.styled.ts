@@ -31,8 +31,8 @@
  */
 import { styled } from "styled-components";
 
+import type { Orientation } from "@com.mgmtp.a12.widgets/widgets-core";
 import { List } from "@com.mgmtp.a12.widgets/widgets-core";
-import { Orientation } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
 
 import { EditorConst } from "../../constant/editor.js";
 import { CssUtils } from "../../utils/css-utils.js";

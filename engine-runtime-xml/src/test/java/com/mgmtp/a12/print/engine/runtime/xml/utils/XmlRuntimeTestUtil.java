@@ -31,15 +31,15 @@
  */
 package com.mgmtp.a12.print.engine.runtime.xml.utils;
 
-import com.mgmtp.a12.kernel.md.document.api.IDocument;
 import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PrintJobConfig;
+import com.mgmtp.a12.print.engine.api.StaticImageProvider;
 import com.mgmtp.a12.print.engine.api.XmlPrintResult;
 import com.mgmtp.a12.print.engine.api.a12.DocumentDependencyDescriptor;
+import com.mgmtp.a12.print.engine.api.exception.StaticImageNotFoundException;
 import com.mgmtp.a12.print.engine.runtime.AttachmentProvider;
-import com.mgmtp.a12.print.engine.runtime.KernelDocumentProvider;
 import com.mgmtp.a12.print.engine.runtime.KernelDocumentV2Provider;
 import com.mgmtp.a12.print.engine.runtime.PrintJobManager;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
@@ -51,6 +51,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -60,13 +62,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class XmlRuntimeTestUtil {
 
+	private XmlRuntimeTestUtil() {
+	}
+
+	private static final StaticImageProvider STATIC_IMAGE_PROVIDER = internalFilename -> {
+		try (InputStream stream = XmlRuntimeTestUtil.class.getResourceAsStream("/static-images/" + internalFilename)) {
+			if (stream == null) {
+				throw new StaticImageNotFoundException(internalFilename);
+			}
+			return stream.readAllBytes();
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	};
+
 	public static XmlPrintResult print(
 		@NonNull String printModel,
 		@NonNull String documentModelId,
 		String documentModel,
 		String document
 	) {
-		return print(printModel, documentModelId, TimeZone.getTimeZone("UTC"), documentModel, document, null, false);
+		return print(printModel, documentModelId, TimeZone.getTimeZone("UTC"), documentModel, document, null);
 	}
 
 	public static XmlPrintResult print(
@@ -76,7 +92,7 @@ public class XmlRuntimeTestUtil {
 		String document,
 		AttachmentProvider attachmentProvider
 	) {
-		return print(printModel, documentModelId, TimeZone.getTimeZone("UTC"), documentModel, document, attachmentProvider,false);
+		return print(printModel, documentModelId, TimeZone.getTimeZone("UTC"), documentModel, document, attachmentProvider);
 	}
 
 	public static XmlPrintResult print(
@@ -86,7 +102,7 @@ public class XmlRuntimeTestUtil {
 		String documentModel,
 		String document
 	) {
-		return print(printModel, documentModelId, timeZone, documentModel, document, null, false);
+		return print(printModel, documentModelId, timeZone, documentModel, document, null);
 	}
 
 	public static XmlPrintResult print(
@@ -95,19 +111,7 @@ public class XmlRuntimeTestUtil {
 		@NonNull TimeZone timeZone,
 		String documentModel,
 		String document,
-		boolean useDocumentV2
-	) {
-		return print(printModel, documentModelId, timeZone, documentModel, document, null, useDocumentV2);
-	}
-
-	public static XmlPrintResult print(
-		@NonNull String printModel,
-		@NonNull String documentModelId,
-		@NonNull TimeZone timeZone,
-		String documentModel,
-		String document,
-		AttachmentProvider attachmentProvider,
-		boolean useDocumentV2
+		AttachmentProvider attachmentProvider
 	) {
 		final var pool = PrintTestUtil.getPrintPool();
 		try {
@@ -133,14 +137,16 @@ public class XmlRuntimeTestUtil {
 			};
 			// end::PrintJobManagerApi[]
 			// tag::PrintJobManager[]
-			var printJobManager = new PrintJobManager(pool, printJobManagerApi, PrintJobConfig.DEFAULT);
+			var printJobManager = new PrintJobManager(
+				pool, printJobManagerApi, PrintJobConfig.DEFAULT, STATIC_IMAGE_PROVIDER
+			);
 			// end::PrintJobManager[]
 			var printModelId = printJobManager.prepare(printModel);
 			// tag::PdfPrintEngine[]
 			var xmlPrintEngine = new XmlPrintEngine(
 				pool,
-				PrintEngineConfig.DEFAULT.toBuilder()
-					.availableFonts(PrintEngineConfig.DEFAULT_FONTS)
+				PdfBoxPrintEngineConfig.DEFAULT.toBuilder()
+					.availableFonts(PdfBoxPrintEngineConfig.DEFAULT_FONTS)
 					.build()
 			);
 			// end::PdfPrintEngine[]
@@ -153,48 +159,28 @@ public class XmlRuntimeTestUtil {
 
 
 			if (Constants.NO_SELECTED_DOCUMENT_ID.equals(documentModelId)) {
-				return (XmlPrintResult) xmlPrintEngine.execute(printJob);
+				return xmlPrintEngine.execute(printJob);
 			}
 
-			if (useDocumentV2) {
-				var documentToPrint = PrintTestUtil.getDocumentV2ToPrint(
-					documentModelId,
-					document,
-					documentModel
-				);
-				// tag::PrintJobProviderV2[]
-				printJob.withProvider(new KernelDocumentV2Provider() { // <1>
-					@Override
-					public boolean supports(DocumentDependencyDescriptor documentDependencyDescriptor) {
-						return documentDependencyDescriptor.getModelReference().getReference().equals(documentModelId);
-					}
+			var documentToPrint = PrintTestUtil.getDocumentV2ToPrint(
+				documentModelId,
+				document,
+				documentModel
+			);
+			// tag::PrintJobProviderV2[]
+			printJob.withProvider(new KernelDocumentV2Provider() { // <1>
+				@Override
+				public boolean supports(DocumentDependencyDescriptor documentDependencyDescriptor) {
+					return documentDependencyDescriptor.getModelReference().getReference().equals(documentModelId);
+				}
 
-					@Override
-					public DocumentV2 loadDocument(DocumentDependencyDescriptor descriptor) {
-						return documentToPrint; // <2>
-					}
-				});
-				// end::PrintJobProviderV2[]
-			} else {
-				var documentToPrint = PrintTestUtil.getDocumentToPrint(
-					documentModelId,
-					document,
-					documentModel
-				);
-				// tag::PrintJobProvider[]
-				printJob.withProvider(new KernelDocumentProvider() { // <1>
-					@Override
-					public boolean supports(DocumentDependencyDescriptor documentDependencyDescriptor) {
-						return documentDependencyDescriptor.getModelReference().getReference().equals(documentModelId);
-					}
+				@Override
+				public DocumentV2 loadDocument(DocumentDependencyDescriptor descriptor) {
+					return documentToPrint; // <2>
+				}
+			});
+			// end::PrintJobProviderV2[]
 
-					@Override
-					public IDocument loadDocument(DocumentDependencyDescriptor descriptor) {
-						return documentToPrint; // <2>
-					}
-				});
-				// end::PrintJobProvider[]
-			}
 			if (attachmentProvider != null) {
 				printJob.withProvider(attachmentProvider);
 			}

@@ -30,3 +30,20 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 export type OmitId<T> = Omit<T, "id">;
+
+export function assertType<T>(
+	value: unknown,
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	typeGuard: (v: any) => v is T,
+	errMsg = "Type mismatch"
+): asserts value is T {
+	if (!typeGuard(value)) {
+		throw new TypeError(errMsg);
+	}
+}
+
+export function assertExists<T>(value: T, errMsg = "Expected value to be defined"): asserts value is NonNullable<T> {
+	if (value === null || value === undefined) {
+		throw new TypeError(errMsg);
+	}
+}

@@ -34,7 +34,6 @@ package com.mgmtp.a12.print.workspace.internal.elements;
 public enum FileElementType {
 	MODEL("model"),
 	PROPERTIES("properties"),
-	YAML("yaml"),
 	PDF("pdf"),
 	LOG("log"),
 	DOCUMENT("document"),

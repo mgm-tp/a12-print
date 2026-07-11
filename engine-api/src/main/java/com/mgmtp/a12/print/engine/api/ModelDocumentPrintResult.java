@@ -35,10 +35,12 @@ import com.mgmtp.a12.print.engine.api.exception.PrintException;
 import com.mgmtp.a12.print.model.document.internal.PrintModelDocument;
 
 import java.io.OutputStream;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Interface for Document-based {@link PrintResult}.
  */
+@OnlyForUsage
 public interface ModelDocumentPrintResult extends PrintResult {
 
     static ModelDocumentPrintResult empty() {

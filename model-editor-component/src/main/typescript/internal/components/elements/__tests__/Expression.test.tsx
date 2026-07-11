@@ -29,11 +29,13 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ElementType, PartialPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { renderWithProviders, expectToThrow } from "../../../../../../test/typescript/test-utils/index.js";
 
-import { Expression, ExpressionProps } from "../Expression.js";
+import type { ExpressionProps } from "../Expression.js";
+import { Expression } from "../Expression.js";
 
 describe("Expression", () => {
 	const defaultExpressionProps = {

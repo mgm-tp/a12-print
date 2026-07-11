@@ -33,7 +33,9 @@ package com.mgmtp.a12.print.model.api.exceptions;
 
 import com.mgmtp.a12.print.model.api.model.container.BaseReferenceContainer;
 import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public class UnresolvedReferenceContainerException extends RuntimeException {
 
 	public UnresolvedReferenceContainerException(final BaseReferenceContainer<? extends ElementReference> container) {

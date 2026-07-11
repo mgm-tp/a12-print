@@ -1,0 +1,254 @@
+{
+  "header": {
+    "id": "ElementRefereceValidationTest",
+    "modelType": "print",
+    "modelVersion": "4.0.0",
+    "description": "Description",
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "tester"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "4.0.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "4.0.0-rc.3"
+      }
+    ],
+    "labels": [],
+    "locales": [],
+    "modelReferences": []
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "ByVEfacSfy523rf2p5bwt",
+        "titleComputation": [
+          {
+            "id": "5yd_VWFn9XpCh_bfwkaGW",
+            "operation": "\"ElementRefereceValidationTest\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "IIzrWRjZ6t57xnq2B4tCh",
+            "operation": "\"Description\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "5oBRtmr22L4AgQXbrtNuo",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "fdQoyRS2n5nF6JIKwKB2W",
+            "operation": "\"Print Model Editor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "Le4sQ3xtyvbGWQMhRliRm",
+        "fontSize": 12
+      },
+      "structure": [
+        {
+          "id": "an-OstCAEAZmu2LJrXq2k"
+        }
+      ],
+      "sections": [],
+      "watermarks": [],
+      "runtimeVariables": [],
+      "textStyles": []
+    },
+    "segments": {
+      "id": "EnWM4UCd-Lqzbghwoo3kj",
+      "definitions": [
+        {
+          "id": "an-OstCAEAZmu2LJrXq2k",
+          "title": "Segm",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "m8TGEIgtVl_XWUsOFypWF",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "bZqVsTwkxuMsR52N9f1mY",
+              "refId": "hmOveRuU72xFZvYeVJrWV",
+              "position": {
+                "id": "Eew8lNxuGxYwE5foaWyQJ",
+                "x": {
+                  "id": "Gb1xFZ_GuwqCu_Fuwt5pF",
+                  "value": 19,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "BeVKft7oi9wpjrvBbi_SJ",
+                  "value": 24,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "dJUEyjvbCKO3J8qtd8Y8x",
+                "minHeight": {
+                  "id": "msC4ncSHl3AKUBvIDVGjA",
+                  "value": 54,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "qpFhmXx0gk7z6-ruPGeKr",
+                  "value": 134,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "XRUmqyZifsZJRh31lfkCZ"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "-ACIOkFoD1G9v3DXWqBXu",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            },
+            {
+              "id": "Tumuilha91byRPXjlB9DT",
+              "refId": "GDzRuSCjheFaEqXetwONW",
+              "position": {
+                "id": "O_vrr9iKchKsMdTqVY5Sy",
+                "x": {
+                  "id": "D8u3P6GQRr9HdTEs--1Ob",
+                  "value": 75,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "NDyFEohIRZr5qYOoShXY1",
+                  "value": 51,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "BKjUYkh2T2sooju2SPnDc",
+                "minHeight": {
+                  "id": "m3DEZBiPnSZKczGqLq3XT",
+                  "value": 66,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "FJ9HBWVAWK6Edjki_1It5",
+                  "value": 119,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "QTo-ex-9e_GU7aqWZj8qr"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "xj2cxB7cC9MW7VI_PZ_tc",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "hmOveRuU72xFZvYeVJrWV",
+        "type": "Text",
+        "text": {
+          "id": "wd5BIEiNcvz1I_Fj35Q3e",
+          "text": "<p><span style=\"\"><strong>Lorem Ipsum</strong></span><span style=\"\"> is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "GDgNeL7h37iD_aucnd3SN",
+          "textStyleId": {
+            "id": "ivw-xTF_B2Ytxdgcoli4F",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "DEFAULT"
+          },
+          "alignment": {
+            "id": "LSwF1ufDjdBQHoE_gLp1q",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "g3IrY8C_uTvOLB9PQFZi_",
+          "borderWidth": {
+            "id": "F9zAx4LzW7k-la2ZnaUKy",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "KcI6ddGfpvCw7jzrsjG4t",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "g16cPFjtiYRVH52_scAQ_",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
+        }
+      },
+      {
+        "id": "GDzRuSCjheFaEqXetwONW",
+        "type": "Text",
+        "text": {
+          "id": "My3-B5VlPjlKMIZfAyCZd",
+          "text": "<p><span style=\"\">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "YnGNbdWkonPPuuhHE_rLb",
+          "textStyleId": {
+            "id": "aQMrVoEG4x-OfblBZg8Wr",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "DEFAULT"
+          },
+          "alignment": {
+            "id": "iz0wa8uNjYW-jJBvKqdok",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "tzDDeR3fmgzovsaRHxceZ",
+          "borderWidth": {
+            "id": "BMhc32o7bFn580yPCq9OP",
+            "source": "INPUT",
+            "value": 1,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "aQ6B9sSqTPBs6GQbD_NA1",
+            "source": "INPUT",
+            "value": "#65f207",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "x6h3Kud8k1YObRStmTPLV",
+            "source": "INPUT",
+            "value": "Solid",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -31,21 +31,17 @@
  */
 package com.mgmtp.a12.print.model.api.validation.custom;
 
-import com.mgmtp.a12.kernel.core.customfieldtype.ICustomFieldType;
 import com.mgmtp.a12.kernel.core.customfieldtype.ICustomFieldTypeFactory;
-import org.apache.commons.lang3.NotImplementedException;
+import com.mgmtp.a12.kernel.core.customfieldtype.ICustomFieldValidator;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public class PrintCustomFieldTypeFactory implements ICustomFieldTypeFactory {
 
 	@Override
-	public ICustomFieldType createCustomFieldType(String customFieldTypeName) {
-		throw new NotImplementedException("createCustomFieldType() is not implemented due to deprecation. Use createCustomFieldTypeV2() instead.");
-	}
-
-	@Override
-	public Optional<ICustomFieldType> createCustomFieldTypeV2(String customFieldTypeName) {
+	public Optional<ICustomFieldValidator> createCustomFieldValidator(String customFieldTypeName) {
 		if (customFieldTypeName.equals(PrintDateTimeFormat.TYPE_NAME)) {
 			return Optional.of(PrintDateTimeFormat.getInstance());
 		}

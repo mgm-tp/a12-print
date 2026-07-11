@@ -31,16 +31,10 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base;
 
-public class ContentStreamException extends RuntimeException {
-	public ContentStreamException(String message, Throwable cause) {
-		super(message, cause);
-	}
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
 
+public class ContentStreamException extends PrintException {
 	public ContentStreamException(Throwable cause) {
 		super(cause);
-	}
-
-	public ContentStreamException(String message) {
-		super(message);
 	}
 }

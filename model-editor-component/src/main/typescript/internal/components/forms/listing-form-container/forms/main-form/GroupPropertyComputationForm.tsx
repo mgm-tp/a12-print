@@ -33,50 +33,57 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	GroupPropertyComputations,
 	GroupPropertyKeyType,
 	PartialListing,
 	PrintModelEntity,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { CustomSelect, MessageBox } from "@com.mgmtp.a12.widgets/widgets-core";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import { DetailDataActions, TransactionLogStateActions } from "../../../../../redux/index.js";
-import { PrintEngineSelectors } from "../../../../../store/selectors.js";
-import { ComputationRepeat, ComputationRepeatRowType } from "../../../shared-components/ComputationRepeat.js";
+import {
+	type ListingGroupPropertyCompFormState,
+	NavigationActions,
+	NavigationSelectors,
+	TransactionLogStateActions,
+} from "../../../../../redux/index.js";
+import type { ComputationRepeatRowType } from "../../../shared-components/ComputationRepeat.js";
+import { ComputationRepeat } from "../../../shared-components/ComputationRepeat.js";
 import { useGroupPropertyItems } from "../../constants/properties.js";
 import { InteractionLogActions } from "../../../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../../../redux/validation/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../../localization/index.js";
-import { BaseListingFormProps } from "../../base-listing-form.js";
+import type { BaseListingFormProps } from "../../base-listing-form.js";
 import { BackButtonGroup } from "../../../shared-components/BackButtonGroup.js";
-import { ListingDataActions } from "../../../../../redux/detail-data/listing/actions.js";
 import {
 	AllowedElementType,
 	DataContextSelection,
 	MAX_REPEAT_LEVEL,
 } from "../../../shared-components/DataContextSelection.js";
 import { ElementMapUtils } from "../../../../../utils/element-map-utils.js";
-import { CustomTextLineStateless } from "../../../custom-base-input-components/CustomTextLineStateless.js";
+import { CustomTextField } from "../../../custom-base-input-components/CustomTextField.js";
 import { StyledMessageBox } from "../../../shared-components/DataContextSelection.styled.js";
 import { DocumentModelDataSelectors } from "../../../../../redux/document-model-data/selectors.js";
 
-export const GroupPropertyComputationForm = ({ element }: BaseListingFormProps) => {
+interface GroupPropertyComputationFormProps extends BaseListingFormProps {
+	formState: ListingGroupPropertyCompFormState;
+}
+
+export const GroupPropertyComputationForm = ({ element, formState }: GroupPropertyComputationFormProps) => {
 	const dispatch = useDispatch();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
 	const localizer = PrintLocalizer.useLocalizer();
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
-	const additionalData = useSelector(PrintEngineSelectors.additionalData);
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 	const elementMap = useSelector(
 		(state: PrintEngineState) =>
 			DocumentModelDataSelectors.documentModelData(state, element.listing?.model)?.elementMap
 	);
 
-	const propertyCompIndex = additionalData?.listing?.propertyCompIndex;
+	const propertyCompIndex = formState?.propertyCompIndex;
 
 	const groupPropertyComputationErrorMap = useSelector((state: PrintEngineState) => {
 		const errorMap = ValidationSelectors.listing(state, element.id);
@@ -174,11 +181,8 @@ export const GroupPropertyComputationForm = ({ element }: BaseListingFormProps) 
 	);
 
 	const onBack = React.useCallback(() => {
-		dispatch(DetailDataActions.removeSubView({ containerId: currentDetailDataId }));
-		dispatch(
-			ListingDataActions.deleteAdditionalKey({ containerId: currentDetailDataId, category: "propertyComp" })
-		);
-	}, [dispatch, currentDetailDataId]);
+		dispatch(NavigationActions.popFormStack({ tab, entityId, mode }));
+	}, [dispatch, tab, entityId, mode]);
 
 	return (
 		<>
@@ -190,7 +194,7 @@ export const GroupPropertyComputationForm = ({ element }: BaseListingFormProps) 
 				fitToParent={false}
 				errorMessage={propertyErrorMessage}
 			/>
-			<CustomTextLineStateless
+			<CustomTextField
 				label={localizer(RESOURCE_KEYS.elementForm.model.group)}
 				value={currentPropertyComputation?.groupPath}
 				readonly

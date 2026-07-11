@@ -31,21 +31,11 @@
  */
 import { nanoid } from "nanoid";
 
-import {
-	Alignment,
-	BorderStyle,
-	ElementType,
-	MarginType,
-	MeasureUnit,
+import type {
 	PartialAnyPrintModelElement,
-	PartialArea,
-	PartialBarChart,
-	PartialBoundingBox,
 	PartialImage,
 	PartialLine,
-	PartialLineChart,
 	PartialOverride,
-	PartialPieChart,
 	PartialTable,
 	PartialTableLayout,
 	PartialText,
@@ -53,11 +43,23 @@ import {
 	PartialPlaceableReference,
 	PartialTextStyle,
 	PartialValidPlaceableReference,
-	PartialExpression,
 	PartialSegment,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import {
+	Alignment,
+	BorderStyle,
+	ElementType,
+	MarginType,
+	MeasureUnit,
+	PartialArea,
+	PartialBarChart,
+	PartialBoundingBox,
+	PartialLineChart,
+	PartialPieChart,
+	PartialExpression,
 	SegmentType,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { TEXT_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 
@@ -67,7 +69,7 @@ import {
 	DEFAULT_ELEMENT_WIDTH,
 	ElementsUtils,
 } from "../elements-utils.js";
-import { OmitId } from "../type-utils.js";
+import type { OmitId } from "../type-utils.js";
 
 describe("element utils", () => {
 	describe("createNewlyDroppedElement", () => {
@@ -613,15 +615,11 @@ describe("element utils", () => {
 		});
 
 		test("should return correct styles for line element with a border style", () => {
+			const baseElement = createElementWithProperties(ElementType.Line) as PartialLine;
 			const lineElement: PartialLine = {
 				type: ElementType.Line,
 				id: nanoid(),
-				borderProperties: {
-					id: nanoid(),
-					borderStyle: BorderStyle.Solid,
-					borderWidth: 12,
-					borderColor: "#fff",
-				},
+				borderProperties: baseElement.borderProperties,
 			};
 
 			expect(
@@ -756,6 +754,7 @@ describe("element utils", () => {
 		});
 
 		test("should return correct styles for bounding box element", () => {
+			const baseElement = createElementWithProperties(ElementType.BoundingBox) as PartialBoundingBox;
 			const boundingBoxElement: PartialBoundingBox = {
 				type: ElementType.BoundingBox,
 				id: nanoid(),
@@ -775,12 +774,7 @@ describe("element utils", () => {
 						},
 					},
 				},
-				borderProperties: {
-					id: nanoid(),
-					borderStyle: BorderStyle.Solid,
-					borderWidth: 12,
-					borderColor: "#fff",
-				},
+				borderProperties: baseElement.borderProperties,
 			};
 
 			expect(
@@ -806,6 +800,7 @@ describe("element utils", () => {
 		});
 
 		test("should return correct styles for area element", () => {
+			const baseElement = createElementWithProperties(ElementType.Area) as PartialArea;
 			const areaElement: PartialArea = {
 				type: ElementType.Area,
 				id: nanoid(),
@@ -825,12 +820,7 @@ describe("element utils", () => {
 						},
 					},
 				},
-				borderProperties: {
-					id: nanoid(),
-					borderStyle: BorderStyle.Solid,
-					borderWidth: 12,
-					borderColor: "#fff",
-				},
+				borderProperties: baseElement.borderProperties,
 			};
 			expect(
 				ElementsUtils.getElementStyles(areaElement, TEXT_PROPERTIES_PATH, placeable, false, textStyle, {})
@@ -1064,9 +1054,24 @@ function createElementWithProperties(type: ElementType): PartialAnyPrintModelEle
 		id: nanoid(),
 		borderProperties: {
 			id: nanoid(),
-			borderStyle: BorderStyle.Solid,
-			borderWidth: 12,
-			borderColor: "#fff",
+			borderWidth: {
+				id: "nz0ZXHR730XA_ajw5afbN",
+				path: "/content/elementDefinitions/table/borderProperties/borderWidth/value/",
+				source: PossibleInputSource.INPUT,
+				value: 12,
+			},
+			borderColor: {
+				id: "nz0ZXHR730XA_ajw5afbE",
+				path: "/content/elementDefinitions/table/borderProperties/borderColor/value/",
+				source: PossibleInputSource.INPUT,
+				value: "#fff",
+			},
+			borderStyle: {
+				id: "nz0ZXHR730XA_ajw5afbZ",
+				path: "/content/elementDefinitions/table/borderProperties/borderStyle/value/",
+				source: PossibleInputSource.INPUT,
+				value: BorderStyle.Solid,
+			},
 		},
 		textProperties: {
 			id: nanoid(),

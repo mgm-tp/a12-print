@@ -213,14 +213,7 @@ public class LineComponent extends BaseComponent {
 	}
 
 	private long getLineHeight() {
-		final var lineColor = Optional.ofNullable(color);
-		final var lineThickness = Optional.ofNullable(thickness);
-		final var lineStyle = Optional.ofNullable(style);
-
-		long resultLineHeight = lineThickness.orElse(100L);
-		return lineStyle.isEmpty() && (lineColor.isPresent() || lineThickness.isPresent())
-			? resultLineHeight * 2
-			: resultLineHeight;
+		return Optional.ofNullable(thickness).orElse(100L);
 	}
 
 }

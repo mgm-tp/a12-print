@@ -31,10 +31,11 @@
  */
 import * as React from "react";
 
-import { Dimensions, Measure, Position } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { Dimensions, Measure, Position } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { OmitId, createPlainMmMeasureFromPx } from "../../utils/index.js";
-import { ISide } from "../../types/resize.js";
+import type { OmitId } from "../../utils/index.js";
+import { createPlainMmMeasureFromPx } from "../../utils/index.js";
+import type { ISide } from "../../types/resize.js";
 
 import { StyledResizeHandle } from "./ResizeHandle.styled.js";
 
@@ -60,5 +61,5 @@ export const ResizeHandle = (props: ResizeHandleProps) => {
 		[side, startResize]
 	);
 
-	return <StyledResizeHandle onMouseDown={onMouseDown} {...rest} />;
+	return <StyledResizeHandle data-testid="resize-handle" onMouseDown={onMouseDown} {...rest} />;
 };

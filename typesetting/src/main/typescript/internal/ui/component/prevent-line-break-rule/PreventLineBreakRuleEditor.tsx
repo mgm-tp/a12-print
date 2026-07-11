@@ -31,10 +31,9 @@
  */
 import { useCallback, useContext, useState } from "react";
 
-import { TextOutput, Typography } from "@com.mgmtp.a12.widgets/widgets-core";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
+import { TextOutput, Typography, addPrefix } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { PreventLineBreakRule } from "../../../api/model/typesetting-model.js";
+import type { PreventLineBreakRule } from "../../../../a12internal/api/model/typesetting-model.js";
 import {
 	CharacterSequenceRuleConversion,
 	NumberUnitRuleConversion,
@@ -42,14 +41,15 @@ import {
 } from "../../utils/rule-conversion.js";
 import { useLocalizer } from "../../localization/localizer.js";
 import { RESOURCE_KEYS } from "../../localization/keys.js";
-import { Action, SET_PREVENT_LINE_BREAK_RULE, SetPreventLineBreakRulePayload } from "../../store/action.js";
+import type { Action, SetPreventLineBreakRulePayload } from "../../store/action.js";
+import { SET_PREVENT_LINE_BREAK_RULE } from "../../store/action.js";
 import { TypesettingEditorContext } from "../../store/context.js";
 import { createEmptyRuleIdentifier } from "../../utils/rule-regex.js";
 
 import { ConfirmDeletionModal } from "../modal/ConfirmDeletionModal.js";
 
 import { CharacterSequenceRuleTable } from "./CharacterSequenceRuleTable.js";
-import { ExtendedPreventLineBreakRule, RuleType } from "./types.js";
+import type { ExtendedPreventLineBreakRule, RuleType } from "./types.js";
 import { NumberUnitRuleTable } from "./NumberUnitRuleTable.js";
 import { SpecialPatternRuleTable } from "./SpecialPatternRuleTable.js";
 

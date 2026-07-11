@@ -31,10 +31,7 @@
  */
 import { styled } from "styled-components";
 
-import {
-	BaseTabPanelContent,
-	BaseTabPanelTab,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/tab-panel/main/template/tab-panel.tpl.styled";
+import { BaseTabPanelContent, BaseTabPanelTab } from "@com.mgmtp.a12.widgets/widgets-core";
 
 export const StyledPrintModelEditorLightWrapper = styled.div`
 	height: 100%;

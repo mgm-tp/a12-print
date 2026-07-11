@@ -1,0 +1,191 @@
+{
+	"header": {
+		"id": "DuplicatedImageDimensionIdsPM",
+		"modelType": "print",
+		"modelVersion": "4.0.0-rc.2",
+		"description": "Test model with duplicated image dimension IDs",
+		"labels": [],
+		"annotations": [],
+		"locales": [],
+		"modelReferences": []
+	},
+	"content": {
+		"id": "PRINT_MODEL_CONTENT",
+		"general": {
+			"id": "PRINT_MODEL_CONTENT_GENERAL",
+			"metadata": {
+				"id": "metadata1",
+				"titleComputation": [
+					{
+						"id": "titleComputation1",
+						"operation": "\"Test Title\""
+					}
+				],
+				"descriptionComputation": [
+					{
+						"id": "descriptionComputation1",
+						"operation": "\"Test Description\""
+					}
+				],
+				"languageComputation": [
+					{
+						"id": "languageComputation1",
+						"operation": "\"DE\""
+					}
+				],
+				"authorComputation": [
+					{
+						"id": "authorComputation1",
+						"operation": "\"Test Author\""
+					}
+				]
+			},
+			"segmentDefaults": {
+				"id": "C5GaILmKwphHn1aPEQDrB",
+				"fontSize": 12
+			},
+			"structure": [],
+			"sections": [],
+			"watermarks": [],
+			"runtimeVariables": [],
+			"textStyles": []
+		},
+		"segments": {
+			"id": "MceOX8RAaCYDqWGx5_NgR",
+			"definitions": [],
+			"references": []
+		},
+		"elementDefinitions": [
+			{
+				"id": "imageWithDuplicatedIds",
+				"type": "Image",
+				"image": {
+					"id": "image1",
+					"imageSrcType": "Static",
+					"alternativeText": "Image with duplicated dimension IDs",
+					"dimensions": {
+						"id": "dimensions1",
+						"height": {
+							"id": "height1",
+							"value": 50,
+							"unit": "Millimeter"
+						},
+						"originalHeight": {
+							"id": "originalHeight1",
+							"value": 100,
+							"unit": "Millimeter"
+						},
+						"width": {
+							"id": "naturalWidth_DUPLICATE",
+							"value": 100,
+							"unit": "Millimeter"
+						},
+						"originalWidth": {
+							"id": "naturalWidth_DUPLICATE",
+							"value": 200,
+							"unit": "Millimeter"
+						}
+					},
+					"resourceSource": {
+						"id": "resourceSource1",
+						"resourceName": "test-image.jpg"
+					}
+				}
+			},
+			{
+				"id": "imageWithUniqueIds",
+				"type": "Image",
+				"image": {
+					"id": "image2",
+					"imageSrcType": "Static",
+					"alternativeText": "Image with unique dimension IDs",
+					"dimensions": {
+						"id": "dimensions2",
+						"height": {
+							"id": "height2",
+							"value": 50,
+							"unit": "Millimeter"
+						},
+						"originalHeight": {
+							"id": "originalHeight2",
+							"value": 100,
+							"unit": "Millimeter"
+						},
+						"width": {
+							"id": "width_unique",
+							"value": 100,
+							"unit": "Millimeter"
+						},
+						"originalWidth": {
+							"id": "originalWidth_unique",
+							"value": 200,
+							"unit": "Millimeter"
+						}
+					},
+					"resourceSource": {
+						"id": "resourceSource2",
+						"resourceName": "test-image-2.jpg"
+					}
+				}
+			},
+			{
+				"id": "imageWithDuplicatedHeightIds",
+				"type": "Image",
+				"image": {
+					"id": "image3",
+					"imageSrcType": "Static",
+					"alternativeText": "Image with duplicated height dimension IDs",
+					"dimensions": {
+						"id": "dimensions3",
+						"height": {
+							"id": "naturalHeight_DUPLICATE",
+							"value": 50,
+							"unit": "Millimeter"
+						},
+						"originalHeight": {
+							"id": "naturalHeight_DUPLICATE",
+							"value": 100,
+							"unit": "Millimeter"
+						},
+						"width": {
+							"id": "width3",
+							"value": 100,
+							"unit": "Millimeter"
+						},
+						"originalWidth": {
+							"id": "originalWidth3",
+							"value": 200,
+							"unit": "Millimeter"
+						}
+					},
+					"resourceSource": {
+						"id": "resourceSource3",
+						"resourceName": "test-image-3.jpg"
+					}
+				}
+			},
+			{
+				"id": "nonImageElement",
+				"type": "Text",
+				"text": {
+					"id": "textId1",
+					"text": "<p><span style=\"\">Hello World</span></p>",
+					"entities": []
+				},
+				"textProperties": {
+					"id": "textProperties1",
+					"textStyleId": {
+						"id": "textStyleIdInput1",
+						"path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+						"source": "DEFAULT"
+					},
+					"alignment": {
+						"id": "alignment1",
+						"path": "/content/elementDefinitions/textProperties/alignment/value/",
+						"source": "DEFAULT"
+					}
+				}
+			}
+		]
+	}
+}

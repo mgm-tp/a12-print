@@ -30,10 +30,7 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 plugins {
-	id("java-library")
-	alias(thirdPartyLibs.plugins.lombok)
 	id("frontend-tasks")
-	id("jar-publish-tasks")
 	id("npm-publish-tasks")
 }
 
@@ -44,30 +41,18 @@ configurations {
 val documentModelMigration by configurations.getting
 
 dependencies {
-	implementation(project(":model-api"))
-
-	implementation(thirdPartyLibs.commonsIO)
-	implementation(thirdPartyLibs.jacksonCore)
-	implementation(thirdPartyLibs.jacksonDatabind)
-	implementation(thirdPartyLibs.slf4j)
-
-	documentModelMigration(a12Libs.kernelToolMigration)
+	documentModelMigration(variantOf(a12Libs.kernelMdFacade) { classifier("migrator-cli") })
 	documentModelMigration(thirdPartyLibs.slf4jNop)
-
-	testImplementation(thirdPartyLibs.jupiterApi)
-
-	testRuntimeOnly(thirdPartyLibs.jupiterEngine)
 }
 
-val manifest = readManifest("$projectDir/package.json");
+val manifest = readManifest("$projectDir/package.json")
 
 val documentModelPaths = listOf(
-	"engine-runtime-kernel/src/test/resources/typeDefinitions",
+	"engine-runtime-kernel/src/test/resources",
 	"model-api/src/main/resources/models",
 	"model-api/src/test/resources/print-models",
 	"model-api-utils/src/test/resources/document-models",
 	"model-editor-component/src/test/typescript/models",
-	"print-setting/src/main/resources/models",
 	"print-shell/src/test/resources/print",
 	"print-shell/src/test/resources/printAll",
 	"typesetting/src/main/resources/models",
@@ -96,23 +81,10 @@ tasks.register("migrateDocumentModels") {
 	dependsOn(moduleMigrationTasks)
 }
 
-publishingInfoExtension {
-	artifactId = manifest.identifier
-}
-
-tasks.processResources {
-	filesMatching("**/config.properties") {
-		expand(
-			"projectVersion" to manifest.version
-		)
-	}
-}
-
 tasks.frontendBuild {
 	dependsOn(
 		":model-api:frontendBuild",
 		":model-api-utils:frontendBuild",
-		":print-setting:frontendBuild",
 		":typesetting:frontendBuild"
 	)
 

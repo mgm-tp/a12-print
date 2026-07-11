@@ -1,0 +1,52 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= 2025.06-ext2
+
+== Deprecations
+
+=== Java
+
+* `com.mgmtp.a12.print.engine.api.PdfPrintEngine` is deprecated and will be removed within the 2026.06 release. Please use `com.mgmtp.a12.print.engine.api.PdfBoxPrintEngine` instead.
+* `com.mgmtp.a12.print.engine.api.PrintEngineConfig` is deprecated and will be removed within the 2026.06 release. Please use `com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig` instead. In the new config, it is only possible to configure custom fonts.
+* `com.mgmtp.a12.print.engine.runtime.pdf.PdfPrintEngine` is deprecated and will be removed within the 2026.06 release. Please use `com.mgmtp.a12.print.engine.runtime.pdfBox.PdfBoxPrintEngine` instead. The new engine is not able to provide HTML anymore and the PDF output differs.
+* `com.mgmtp.a12.print.engine.runtime.pdf.MarkupCombiner` is deprecated and will be removed within the 2026.06 release. It is not needed anymore, because the new `com.mgmtp.a12.print.engine.runtime.pdfBox.PdfBoxPrintEngine` does not output HTML anymore.
+
+== Migration from `PdfPrintEngine` to `PdfBoxPrintEngine`
+
+[CAUTION]
+====
+We strongly recommend to migrate from `PdfPrintEngine` to `PdfBoxPrintEngine` as soon as possible, because the old engine is going to be removed within the 2026.06 release.
+The experimental flag of `PdfBoxPrintEngine` is going to be removed with the 2025.06-ext4 release. It only allows us to react to project feedback with smaller breaking changes until then.
+The feature itself is completely stable and ready for production use.
+
+Feel free to contact the A12 Print Engine team (link:https://discourse.geta12.com/c/engines-specific/print-engine[Discourse]) in case of problems or unexpected behavior changes.
+====
+
+.Usage of `PdfPrintEngine`
+[source,java]
+----
+PrintJobManager printJobManager = new PrintJobManager(pool, printJobManagerApi, PrintJobConfig.DEFAULT);
+PdfPrintEngine pdfPrintEngine = new PdfPrintEngine(pool, PrintEngineConfig.DEFAULT);
+----
+
+.Usage of `PdfBoxPrintEngine`
+[source,java]
+----
+PrintJobManager printJobManager = new PrintJobManager(pool, printJobManagerApi, PrintJobConfig.DEFAULT, true);
+PdfBoxPrintEngine pdfBoxPrintEngine = new PdfBoxPrintEngine(pool, PdfBoxPrintEngineConfig.DEFAULT);
+----

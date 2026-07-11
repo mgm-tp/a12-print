@@ -31,6 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.api.constant;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
+@OnlyForUsage
 public class ConfigConstants {
 	public static final String CLASSPATH_SUFFIX = "classpath:";
 	public static final String FILEPATH_SUFFIX = "file:";

@@ -29,21 +29,22 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { AnyAction, SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, put, select, takeEvery } from "typed-redux-saga";
-import { Action } from "typescript-fsa";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { LogHandler } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/marshaller";
+import { LogHandler } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { CommitPrintModelPayload, EditorActions, EditorSelector } from "../../store/editor";
+import type { CommitPrintModelPayload } from "../../store/editor";
+import { EditorActions, EditorSelector } from "../../store/editor";
 import { FileService } from "../../services/files-service";
 import { CaseConfig } from "../../components/case-config/CaseConfig";
 
-export function* commitPrintModelSaga(): SagaIterator {
-	yield* takeEvery((action: AnyAction) => EditorActions.commitPrintModel.match(action), handleCommitPrintModelSaga);
+export function* commitPrintModelSaga(): SagaGenerator<void> {
+	yield* takeEvery(EditorActions.commitPrintModel.match, handleCommitPrintModelSaga);
 }
 
-function* handleCommitPrintModelSaga(action: Action<CommitPrintModelPayload>) {
+function* handleCommitPrintModelSaga(action: PayloadAction<CommitPrintModelPayload>) {
 	const { printModel, persistentEntries } = action.payload;
 	const caseConfig = yield* select(EditorSelector.selectCaseConfig);
 
@@ -60,6 +61,6 @@ function* handleCommitPrintModelSaga(action: Action<CommitPrintModelPayload>) {
 		persistentEntries ? LogHandler.generateCombinedLogOutput(persistentEntries) : undefined
 	);
 
-	yield* put(EditorActions.setLogPersistentEntries(persistentEntries ? persistentEntries : []));
+	yield* put(EditorActions.setLogPersistentEntries(persistentEntries ?? []));
 	yield* put(EditorActions.setPrintModel(printModel));
 }

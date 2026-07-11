@@ -29,55 +29,50 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	DeepPartialErrorMap,
-	PrintError,
-	ErrorSeverity,
-	ErrorOrigin,
-} from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
-import { Subtype } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { ExtendedEntityInstancePath } from "@com.mgmtp.a12.print/print-model-api/lib/errors/extended-entity-instance-path.js";
-import { PartialPrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
-import { DocumentModel, EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { PrintError, ExtendedEntityInstancePath } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { DeepPartialErrorMap, ErrorSeverity, ErrorOrigin } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { Subtype } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
-import { PrintValidationMode, PrintValidator } from "../internal/validation/index.js";
+import type { PrintValidator } from "../a12internal/validation/print-validator.js";
 import { InternalLocalizableError } from "../internal/validation/internal-localizable-error.js";
 
-import { Deserializer, DeserializerResult } from "./deserializer/deserializer.js";
-import { Serializer, SerializerResult } from "./serializer/serializer.js";
+import type { Deserializer, DeserializerResult } from "./deserializer/deserializer.js";
+import type { Serializer, SerializerResult } from "./serializer/serializer.js";
 
-export abstract class Marshaller<DTOType extends object, APIType> {
+export abstract class Marshaller<
+	DTOType extends object,
+	APIType,
+	TOptions extends PrintValidator.Options = PrintValidator.Options,
+> {
 	/**
 	 * Transforms the API representation into its JSON-representation and validates it afterwards.
 	 * @param apiObject API-representation
-	 * @param documentModels Reference document models
-	 * @param mode Validation model
-	 * @param relevantPaths specific paths to validate
+	 * @param options Validation options (html, partial, references)
 	 * @returns JSON-representation and any generated Messages
 	 */
 	public serialize<T extends Subtype<APIType> = APIType>(
 		apiObject: T,
-		documentModels: readonly DocumentModel[],
-		mode: PrintValidationMode = PrintValidationMode.FULL,
-		relevantPaths: EntityInstancePath[] = []
+		options?: TOptions
 	): MarshallerResult<T, DTOType> {
 		const serializer = this.initializeSerializer();
 		const serializerResult = this.executeSerializer(serializer, apiObject as unknown as APIType);
+		const relevantPaths = options?.partial?.relevantPaths ?? [];
 
 		const errorMap = serializerResult.errorMap || DeepPartialErrorMap.getEmptyMap<T>();
 		if (serializerResult.result) {
-			const report = this.validate(serializerResult.result as Record<string, unknown>, relevantPaths);
+			const report = this.validate(serializerResult.result, options);
 			DeepPartialErrorMap.mergeErrorMaps(errorMap, report.errorMap);
 
-			const referenceErrorMap = this.executeReferenceValidation(apiObject, documentModels, mode);
-			DeepPartialErrorMap.mergeErrorMaps(errorMap, referenceErrorMap);
+			const postApiErrorMap = this.executePostApiValidation(apiObject as unknown as APIType, options);
+			DeepPartialErrorMap.mergeErrorMaps(errorMap, postApiErrorMap);
 
 			DeepPartialErrorMap.extendErrorMapWithId(errorMap as DeepPartialErrorMap<T>, apiObject);
+			const noErrorOccurred = report.noErrorOccurred && errorMap[ErrorSeverity.ERROR].length === 0;
 			return {
-				result: report.noErrorOccurred ? serializerResult.result : undefined,
+				result: noErrorOccurred ? serializerResult.result : undefined,
 				report: {
-					noErrorOccurred:
-						report.noErrorOccurred && serializerResult.errorMap[ErrorSeverity.ERROR].length === 0,
+					noErrorOccurred,
 					errorMap: errorMap as DeepPartialErrorMap<T>,
 					relevantPaths,
 				},
@@ -96,16 +91,16 @@ export abstract class Marshaller<DTOType extends object, APIType> {
 	/**
 	 * Validates the serialized JSON-representation and transforms it into its API-representation.
 	 * @param validatorInput string or object representation of the Model
+	 * @param options Validation options (html, partial, references)
 	 * @returns API-representation and any generated Messages
 	 */
 	public deserialize<T extends Subtype<APIType> = APIType>(
-		validatorInput: PrintValidator.Input,
-		documentModels: readonly DocumentModel[],
-		mode: PrintValidationMode = PrintValidationMode.FULL,
-		relevantPaths: EntityInstancePath[] = []
+		validatorInput: PrintValidator.Input<DTOType>,
+		options?: TOptions
 	): MarshallerResult<T, T> {
 		const deserializer = this.initializeDeserializer();
-		const report = this.validate(validatorInput, relevantPaths);
+		const relevantPaths = options?.partial?.relevantPaths ?? [];
+		const report = this.validate(validatorInput, options);
 		if (report.noErrorOccurred) {
 			const deserializerResult = this.executeDeserializer(deserializer, report.document as DTOType);
 
@@ -114,18 +109,16 @@ export abstract class Marshaller<DTOType extends object, APIType> {
 			DeepPartialErrorMap.mergeErrorMaps(errorMap, report.errorMap);
 
 			if (deserializerResult.result && deserializerNoErrorOccurred) {
-				const referenceErrorMap = this.executeReferenceValidation(
-					deserializerResult.result,
-					documentModels,
-					mode
-				);
-				DeepPartialErrorMap.mergeErrorMaps(errorMap, referenceErrorMap);
+				const postApiErrorMap = this.executePostApiValidation(deserializerResult.result, options);
+				DeepPartialErrorMap.mergeErrorMaps(errorMap, postApiErrorMap);
 
 				DeepPartialErrorMap.extendErrorMapWithId(errorMap, deserializerResult.result);
+				const noErrorOccurred = errorMap[ErrorSeverity.ERROR].length === 0;
 				return {
+					// Always return the deserialized model when core validation and deserialization succeeded
 					result: deserializerResult.result as unknown as T,
 					report: {
-						noErrorOccurred: true,
+						noErrorOccurred,
 						errorMap: errorMap as DeepPartialErrorMap<T>,
 						relevantPaths,
 					},
@@ -149,11 +142,11 @@ export abstract class Marshaller<DTOType extends object, APIType> {
 	}
 
 	private validate(
-		validatorInput: PrintValidator.Input,
-		relevantPaths?: EntityInstancePath[]
+		validatorInput: PrintValidator.Input<DTOType>,
+		options?: TOptions
 	): PrintValidator.IntegrityReport<APIType> {
 		try {
-			return this.executeValidation(validatorInput, relevantPaths);
+			return this.executeValidation(validatorInput, options);
 		} catch (e) {
 			return {
 				noErrorOccurred: false,
@@ -193,14 +186,14 @@ export abstract class Marshaller<DTOType extends object, APIType> {
 	protected abstract initializeSerializer(): Serializer<APIType, DTOType>;
 
 	protected abstract executeValidation(
-		validatorInput: PrintValidator.Input,
-		relevantPaths?: EntityInstancePath[]
+		validatorInput: PrintValidator.Input<DTOType>,
+		options?: TOptions
 	): PrintValidator.IntegrityReport<APIType>;
-	protected abstract executeReferenceValidation(
-		printModel: PartialPrintModel,
-		documentModels: readonly DocumentModel[],
-		mode: PrintValidationMode
-	): DeepPartialErrorMap<APIType>;
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	protected executePostApiValidation(apiObject: APIType, options?: TOptions): DeepPartialErrorMap<APIType> {
+		return DeepPartialErrorMap.getEmptyMap();
+	}
 }
 
 export interface MarshallerResult<APIType, TargetType> {
@@ -220,6 +213,6 @@ export interface PrintModelMarshallerReport<T> {
 	/** all messages */
 	readonly errorMap: DeepPartialErrorMap<T>;
 
-	/** paths are used to validate the document. */
+	/** paths used for partial validation */
 	readonly relevantPaths: EntityInstancePath[];
 }

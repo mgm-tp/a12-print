@@ -1,6 +1,6 @@
 {
   "name": "@com.mgmtp.a12.print/print-engine-codemod",
-  "version": "3.2.3",
+  "version": "4.0.0",
   "license": "(EUPL-1.2 OR LicenseRef-commercial)",
   "description": "Codemods for Print Engine",
   "type": "module",
@@ -8,7 +8,7 @@
     "compile": "pnpm run /^compile:.*/",
     "lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "format": "prettier --check \"./*.{js,cjs,mjs}\" \"src/**/*.{ts,tsx}\"",
-    "start": "node lib/cli.js",
+    "start": "node lib/main/typescript/cli.js",
     "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest",
     "clean": "rimraf lib",
     "compile:lint": "pnpm run lint && pnpm run format",
@@ -29,7 +29,8 @@
     "NOTICE",
     "THIRD_PARTY_NOTICES"
   ],
-  "bin": "lib/cli.js",
+  "bin": "lib/main/typescript/cli.js",
+  "exports": null,
   "dependencies": {
     "@com.mgmtp.a12.devtools/codemod": "catalog:a12"
   },

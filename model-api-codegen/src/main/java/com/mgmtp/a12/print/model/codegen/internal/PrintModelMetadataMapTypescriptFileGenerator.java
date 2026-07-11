@@ -31,10 +31,9 @@
  */
 package com.mgmtp.a12.print.model.codegen.internal;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.util.TreeMap;
 
@@ -48,7 +47,7 @@ public class PrintModelMetadataMapTypescriptFileGenerator implements PrintModelM
 		ObjectNode metadataObject,
 		ObjectNode typeObject,
 		SaveFile saveFile
-	) throws PrintModelMetadataMapGenerationException, JsonProcessingException {
+	) throws PrintModelMetadataMapGenerationException {
 		ObjectMapper writerMapper = new ObjectMapper();
 		ObjectWriter prettyJsonWriter = writerMapper.writerWithDefaultPrettyPrinter();
 
@@ -60,6 +59,7 @@ public class PrintModelMetadataMapTypescriptFileGenerator implements PrintModelM
                    defaultValue?: string;
                    hasInherited?: boolean;
                    inheritedCondition?: string;
+                   requiredCondition?: string;
                 }
 
                 export function isMetadataInstance(element: object): element is PrintEntityMetadata {
@@ -85,6 +85,10 @@ public class PrintModelMetadataMapTypescriptFileGenerator implements PrintModelM
 					.replaceAll(
 						String.format(STRING_FORMAT_LITERAL, PrintModelMetadataMapGenerator.INHERIT_CONDITION),
 						String.format(STRING_FORMAT_OPTIONAL_LITERAL, PrintModelMetadataMapGenerator.INHERIT_CONDITION)
+					)
+					.replaceAll(
+						String.format(STRING_FORMAT_LITERAL, PrintModelMetadataMapGenerator.REQUIRED_CONDITION),
+						String.format(STRING_FORMAT_OPTIONAL_LITERAL, PrintModelMetadataMapGenerator.REQUIRED_CONDITION)
 					)
 					.replaceAll(
 						String.format(STRING_FORMAT_LITERAL, PrintModelMetadataMapGenerator.STRING),

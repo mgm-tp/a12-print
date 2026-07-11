@@ -31,7 +31,7 @@
  */
 import { styled } from "styled-components";
 
-import { StyledTreeNodeContent } from "@com.mgmtp.a12.widgets/widgets-core/lib/tree/main/tpl/tree-elements.styled.js";
+import { StyledTreeNodeContent } from "@com.mgmtp.a12.widgets/widgets-core";
 
 export const StyledDataContextContainer = styled.div`
 	background-color: ${props => props.theme.colors.background.primaryBackground};

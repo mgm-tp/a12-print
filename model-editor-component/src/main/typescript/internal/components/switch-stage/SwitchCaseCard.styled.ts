@@ -31,7 +31,7 @@
  */
 import { styled } from "styled-components";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
+import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { SWITCH_CASE_ACTION_WIDTH, SWITCH_CASE_ELEMENT_WIDTH_PERCENTAGE } from "../../constant/switch.js";
 

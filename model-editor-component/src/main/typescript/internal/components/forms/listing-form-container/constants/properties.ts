@@ -35,7 +35,7 @@ import {
 	ColumnPropertyKeyType,
 	GroupPropertyKeyType,
 	RowPropertyKeyType,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../localization/index.js";
 

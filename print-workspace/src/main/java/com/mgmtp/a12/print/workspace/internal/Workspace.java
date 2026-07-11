@@ -37,7 +37,10 @@ import lombok.Getter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Workspace {
 
@@ -59,7 +62,6 @@ public class Workspace {
 		return Map.ofEntries(
 			new AbstractMap.SimpleEntry<>(FileElementType.MODEL, new ArrayList<>()),
 			new AbstractMap.SimpleEntry<>(FileElementType.PROPERTIES, new ArrayList<>()),
-			new AbstractMap.SimpleEntry<>(FileElementType.YAML, new ArrayList<>()),
 			new AbstractMap.SimpleEntry<>(FileElementType.PDF, new ArrayList<>()),
 			new AbstractMap.SimpleEntry<>(FileElementType.LOG, new ArrayList<>()),
 			new AbstractMap.SimpleEntry<>(FileElementType.DOCUMENT, new ArrayList<>()),

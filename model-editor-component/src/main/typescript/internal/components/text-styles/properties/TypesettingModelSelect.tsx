@@ -30,18 +30,17 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { useSelector } from "react-redux";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select/index.js";
-import { HintTooltip } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { CustomA12Select } from "../../forms/custom-base-input-components/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { useTypesettingModelData } from "../../../hooks/use-typesetting-model-data.js";
 
-import { BaseTextStylePropertyProps } from "./base-type.js";
+import type { BaseTextStylePropertyProps } from "./base-type.js";
 
 interface TypesettingModelSelectProps extends BaseTextStylePropertyProps {
 	value?: string;
@@ -83,9 +82,7 @@ export const TypesettingModelSelect = ({
 			errorMessage={errorMessage}
 			warningMessage={typesettingNotLoadedMsg}
 			disabled={isDefaultTextStyle}
-			tooltips={
-				<HintTooltip text={localizer(RESOURCE_KEYS.textStyles.tooltips.legacyRenderingMode)} key="hint" />
-			}
+			inputProps={{ "data-testid": "typesetting-model-select" } as React.HTMLProps<HTMLInputElement>}
 		/>
 	);
 };

@@ -31,7 +31,7 @@
  */
 import { DateTimeFormatErrorEnum } from "../../../../main/typescript/internal/validation/date-time-format-validation/index.js";
 
-import { DateFormatTest } from "./dateFormatTest.js";
+import type { DateFormatTest } from "./dateFormatTest.js";
 
 const invalidLetters = ["b", "C", "I", "i", "J", "j", "l", "o", "P", "R", "r", "T", "t", "U"];
 

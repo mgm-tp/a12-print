@@ -31,7 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.factories.text;
 
-public class LineWrapperException extends RuntimeException {
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
+
+public class LineWrapperException extends PrintException {
 	public LineWrapperException(String message) {
 		super(message);
 	}

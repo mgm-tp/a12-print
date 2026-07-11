@@ -31,21 +31,17 @@
  */
 package com.mgmtp.a12.print.typesetting.internal.model.deserializer;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mgmtp.a12.print.typesetting.internal.model.impl.LicenceDto;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.JsonNode;
 
-import java.io.IOException;
-
-public abstract class ScalarOrObjectDeserializer<T> extends JsonDeserializer<T> {
+public abstract class ScalarOrObjectDeserializer<T> extends ValueDeserializer<T> {
 
 	@Override
-	public T deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+	public T deserialize(JsonParser p, DeserializationContext ctx) {
 		JsonToken t = p.currentToken();
 
 		if (t == JsonToken.VALUE_NULL) {
@@ -53,19 +49,19 @@ public abstract class ScalarOrObjectDeserializer<T> extends JsonDeserializer<T> 
 		}
 
 		if (t == JsonToken.VALUE_STRING) {
-			return fromScalar(p.getText());
+			return fromScalar(p.getString());
 		}
 
 		if (t == JsonToken.START_ARRAY) {
-			JsonNode arr = p.getCodec().readTree(p);
+			JsonNode arr = p.objectReadContext().readTree(p);
 			if (arr.isEmpty()) return null;
-			return fromNode(arr.get(0), p);
+			return fromNode(arr.get(0), p, ctx);
 		}
 
-		JsonNode n = p.getCodec().readTree(p);
-		return fromNode(n, p);
+		JsonNode n = p.objectReadContext().readTree(p);
+		return fromNode(n, p, ctx);
 	}
 
 	protected abstract T fromScalar(String value);
-	protected abstract T fromNode(JsonNode node, JsonParser p) throws JsonProcessingException;
+	protected abstract T fromNode(JsonNode node, JsonParser p, DeserializationContext ctx) throws JacksonException;
 }

@@ -29,13 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { TextLineStatelessProps } from "@com.mgmtp.a12.widgets/widgets-core";
-import { InputSource, PrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { InheritedValueResolver } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source-resolver.js";
+import type { TextFieldProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { InputSource, PrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PossibleInputSource, InheritedValueResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-export interface TextLineStatefulProps extends TextLineStatelessProps {
+export interface TextLineStatefulProps extends TextFieldProps {
 	formatOnChange?: (newValue: string, oldValue?: string) => string | undefined;
 	sourceProperties?: SourceInputProperties;
 }

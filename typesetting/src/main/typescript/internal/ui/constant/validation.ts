@@ -29,7 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ErrorOrigin, PrintError } from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
+import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorOrigin } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 export const VALIDATOR_VALUE = {
 	maxLength: 20,

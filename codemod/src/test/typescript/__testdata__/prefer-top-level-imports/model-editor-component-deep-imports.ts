@@ -29,6 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+/* eslint-disable no-restricted-imports -- This file is used to test the codemod and should contain deep imports with internal */
 import { PrintEditorComponentReducer } from "@com.mgmtp.a12.print/print-model-editor-component/lib/internal/store/root-reducer";
 import { InternalPrintModelEditorSME } from "@com.mgmtp.a12.print/print-model-editor-component/lib/internal/app/sme/InternalPrintModelEditorSME";
 

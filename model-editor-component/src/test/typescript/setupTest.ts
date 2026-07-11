@@ -29,19 +29,24 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { jest } from "@jest/globals";
+import { afterEach, jest } from "@jest/globals";
 import "@testing-library/jest-dom";
 import "jest-styled-components";
 
-window.ResizeObserver = jest.fn().mockImplementation(() => ({
+import { cancelPendingSagaTasks } from "./test-utils/render-with-provider.js";
+
+afterEach(() => cancelPendingSagaTasks());
+
+globalThis.ResizeObserver = jest.fn().mockImplementation(() => ({
 	observe: jest.fn(),
 	unobserve: jest.fn(),
 	disconnect: jest.fn(),
-})) as unknown as typeof window.ResizeObserver;
+})) as typeof globalThis.ResizeObserver;
 Element.prototype.scrollIntoView = jest.fn();
-window.IntersectionObserver = class IntersectionObserver {
+globalThis.IntersectionObserver = class IntersectionObserver {
 	root = null;
 	rootMargin = "";
+	scrollMargin = "";
 	thresholds = [];
 
 	disconnect() {

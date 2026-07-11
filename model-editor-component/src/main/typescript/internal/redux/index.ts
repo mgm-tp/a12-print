@@ -30,15 +30,13 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 export * from "./commit-view/index.js";
-export * from "./detail-data/index.js";
 export * from "./detail-view/index.js";
 export * from "./editor-state/index.js";
-export * from "./sidebar/index.js";
 export * from "./transaction-log-state/index.js";
 export * from "./request-api/index.js";
-export * from "./wrapper/index.js";
 export * from "./interaction-log/index.js";
 export * from "./validation/index.js";
 export * from "./din-template/index.js";
 export * from "./confirmation-dialog/index.js";
 export * from "./general-view/index.js";
+export * from "./navigation/index.js";

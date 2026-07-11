@@ -29,24 +29,20 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { SegmentType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
-import {
-	DeepPartialErrorMap,
-	ErrorOrigin,
-	ErrorSeverity,
-	PrintError,
-} from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import type * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/model";
+import { SegmentType } from "@com.mgmtp.a12.print/print-model-api/model";
+import type * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { DeepPartialErrorMap, ErrorOrigin, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import {
 	getPlainLocalizableArgs,
 	InternalLocalizableError,
 } from "../../internal/validation/internal-localizable-error.js";
-import { removeUndefinedProperties } from "../../internal/utils/object-utils.js";
+import { removeUndefinedProperties } from "../../a12internal/utils/object-utils.js";
 
 import { ElementDefinitionSerializer } from "./element-definition-serializer.js";
-import { Serializer, SerializerResult } from "./serializer.js";
+import type { Serializer, SerializerResult } from "./serializer.js";
 import { mapMeasure } from "./measure-serializer.js";
 import { mapMargin } from "./margin-serializer.js";
 import { mapDataContext } from "./data-context-serializer.js";

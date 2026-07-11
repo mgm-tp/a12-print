@@ -29,8 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import type * as React from "react";
+
 export interface TableColumnElementBaseProps {
 	refId: string;
 	group: string;
 	model?: string;
+	tableId?: string;
+	renderAppendContent?: () => React.ReactNode;
 }

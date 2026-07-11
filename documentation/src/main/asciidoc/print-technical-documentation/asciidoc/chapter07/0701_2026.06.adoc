@@ -1,0 +1,183 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= 2026.06
+
+== General Information
+
+* All Print Java Artifacts now support Java 21 and Java 25.
+
+== Removals
+
+=== Deep-Level Imports
+
+Deep-level imports have been removed in favor of top-level imports for TypeScript projects.
+
+*Migration:* <<codemod, Codemod>> (optional)
+
+*Result:* The codemod automatically updates all imports.
+
+[source,typescript]
+----
+// before
+import { Area } from "@com.mgmtp.a12.print/print-model-api/lib/model/elements/type/area.js";
+
+// after
+import { Area } from "@com.mgmtp.a12.print/print-model-api/model";
+----
+
+=== Model API
+
+==== Java
+
+* `com.mgmtp.a12.print.model.api.model.element.structure.General.getTitle()` has been removed. Use `com.mgmtp.a12.print.model.api.model.metadata.Metadata.getTitleComputation()` instead.
+* `com.mgmtp.a12.print.model.api.model.element.structure.General.getDetails()` has been removed. Use `com.mgmtp.a12.print.model.api.model.element.structure.General.getMetadata()` instead.
+* `com.mgmtp.a12.print.model.api.model.element.structure.Details` interface has been removed. Use `com.mgmtp.a12.print.model.api.model.metadata.Metadata` with `getAuthorComputation()` and `getLanguageComputation()` instead.
+
+*Migration:* Manual
+
+==== TypeScript
+
+* `PrintModelContentGeneral.title` property has been removed. Use `Metadata.titleComputation` instead.
+* `PrintModelContentGeneral.details` property has been removed. Use `PrintModelContentGeneral.metadata` to access metadata fields.
+* `Details` interface has been removed. Use `authorComputation` and `languageComputation` from `Metadata` instead.
+* `Language` enum has been removed. Use any string to represent a language.
+
+*Migration:* Manual
+
+=== Print Shell
+
+* The migration command has been removed from the print-shell. Please use the new typescript based migration tool to migrate Print Model files. See <<migration_tool, Migration Tool>> for details.
+* The `--useExperimentalRendering` flag has been removed from the print-shell. The new rendering mode is now the default and only supported rendering mode.
+
+*Migration:* Manual
+
+=== Engine Api
+
+* The `PdfPrintEngine` and `PrintEngineConfig` is no longer available. Please use the <<pdf_box_print_engine, PdfBoxPrintEngine>> and <<pdf_box_print_engine_config, PdfBoxPrintEngineConfig>> instead.
+
+*Migration:* Manual
+
+=== Engine Runtime
+
+* The `PdfPrintEngine` is no longer available. Please use the <<pdf_box_print_engine_runtime, PdfBoxPrintEngine>> instead. The following behaviors are specific to the PdfPrintEngine and will change once migrated to the PdfBoxPrintEngine:
+
+1. Table Rows are spread over a page break instead of being moved completely to the next page if possible
+2. Image Elements that are larger than a page will not be scaled down to fit the page size
+3. Watermarks are also applied to attachment pages
+4. Attachments are printed, whether or not they are linked inside the main document body
+5. If a text can not be printed with the selected font or the defined fallback font, it will instead be printed with Open Sans
+6. If Fields or Calculations are marked as anything but HTML, the HTML tags inside them will be printed as plain text
+7. Expression elements background color will apply to the whole element area, not just the text area
+8. Listing Property Computations can use other color descriptions beside hex color codes (e.g. "red", "blue", etc.)
+
+* The `MarkupCombiner` is no longer available. There is no replacement needed.
+* The `KernelDocumentProvider` is no longer available. Please use the <<kernel_document_v2_provider, KernelDocumentV2Provider>> instead.
+
+*Migration:* Manual
+
+=== Print Model Api Utils
+
+* The `ElementDefinitionMarshaller` has been removed. Marshalling is only available at the Print Model level via `PrintModelMarshaller`.
+* The `PrintElementValidator` has been removed. Validation is only available at the Print Model level via `PrintModelValidation`.
+
+*Migration:* Manual
+
+=== Print Setting Model
+
+The Print Setting Model has been removed.
+Fonts are no longer configured manually — they are loaded automatically from the workspace `resources` folder.
+When opening a workspace, the SME migration automatically extracts the fonts and removes any existing Print Setting Model files.
+For migrating outside of the A12 SME, use the `print-setting-migration` tool.
+See <<print-setting-migration>> for details.
+
+*Migration:* SME or <<print-setting-migration, Migration Tool>> (required)
+
+*Result:* Fonts are stored in the workspace `resources` folder.
+
+=== Embedded Image Attachments
+
+Embedded image attachments (base64-encoded image data stored directly in the Print Model) are no longer supported.
+Images must be stored as files in the workspace `resources` folder and referenced by name.
+The SME automatically migrates existing Print Models with embedded images when the workspace is opened.
+For migrating outside of the SME, use the migration tool with the `--resources` option.
+See <<migration-with-node>> for details.
+
+Projects that use static images must now implement a `StaticImageProvider`:
+
+* *Java*: Implement the Java `StaticImageProvider` interface and pass it to the `PrintJobManager` constructor to resolve image bytes during PDF generation.
+See <<static_image_provider>> for details.
+* *PrintModelEditorLight*: Pass a `StaticImageProvider` implementation via the `staticImageProvider` prop to enable image selection and upload in the editor.
+See the <<print_model_editor_light_usage, PrintModelEditorLight usage documentation>> for details.
+
+*Migration:* SME or <<migration-embedded-images, Migration Tool>> (required)
+
+*Result:* Images are stored as files in the workspace `resources` folder.
+
+== Changes
+
+=== Engine Runtime
+
+PDFBox has been upgraded to version 3, which improves the memory usage of the generated PDFs.
+
+*Migration:* Not needed
+
+If a field value is requested inside a repeatable context that is not defined, the Print Engine will now throw an error instead of returning `null`.
+
+*Migration:* Manual
+
+=== Print Shell
+
+Print-shell flags are now enabled by passing only the flag without `true` or `false`.
+
+*Migration:* Manual
+
+=== Model API
+
+==== Java
+
+* New class `com.mgmtp.a12.print.model.api.validation.PrintModelValidatorOptions` — an options record for `IPrintModelValidator.validate` that carries the locale and an `html` flag for HTML validation.
+* New method `IPrintModelValidator.validate(String rawPrintModel, PrintModelValidatorOptions options)` — validates the print model with the supplied options. When `options.html()` is `true`, all `Text` element HTML fields are validated in addition to the structural model validation. HTML validation is *enabled by default*. In previous versions, HTML content in `Text` elements was not validated at all. If your existing Print Models contain HTML that does not conform to the supported subset of tags, attributes, and CSS properties, validation will now report errors or warnings. To restore the previous behavior, explicitly disable HTML validation:
++
+[source,java]
+----
+PrintModelValidatorOptions options = new PrintModelValidatorOptions(locale, false);
+IPrintModelIntegrityReport report = validator.validate(rawPrintModel, options);
+----
+
+*Migration:* Manual
+
+=== Print Model Api Utils
+
+==== TypeScript
+
+* `PrintModelMarshaller.serialize` and `PrintModelMarshaller.deserialize` now accept a unified `PrintModelValidatorOptions` object instead of separate positional parameters. The options consolidate reference validation (`references.documentModels`), HTML validation (`html`), and partial validation (`partial.relevantPaths`) in a single argument.
+* HTML validation is now available via `PrintModelValidatorOptions.html` (default: `true`). When enabled, the HTML content of `Text` elements is validated against the set of tags, attributes, and CSS properties supported by the Print Engine. Errors are reported for constructs that cause rendering failures; warnings are reported for unsupported but non-fatal constructs. In previous versions, HTML validation did not exist — marshalling may now produce validation errors that did not occur before. To restore the previous behavior, pass `html: false`:
++
+[source,typescript]
+----
+const result = marshaller.deserialize(rawJson, { html: false });
+const result = marshaller.serialize(printModel, { html: false });
+----
+* `PrintModelValidatorOptions` is exported from `@com.mgmtp.a12.print/print-model-api-utils/marshaller`.
+* See <<print_model_marshaller>> for full usage examples.
+
+*Migration:* Manual
+
+== Fixes
+
+* The `repetition` and `repetitionOfParent` parameters in the listing calculations were inconsistently evaluated, when using it inside of nested repeatable contexts. This has been fixed and now the parameters are evaluated correctly in all contexts.

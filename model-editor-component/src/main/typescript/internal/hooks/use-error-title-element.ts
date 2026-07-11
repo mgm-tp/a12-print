@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ValidationCounter, ValidationSeverity } from "../redux/index.js";
+import type { ValidationCounter, ValidationSeverity } from "../redux/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../localization/index.js";
 
 export const useErrorTitleElement = (severity: ValidationSeverity, validationCounter: ValidationCounter) => {

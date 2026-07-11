@@ -31,7 +31,6 @@
  */
 export * from "./commit-changes-saga.js";
 export * from "./validate-changes-saga.js";
-export * from "./navigate-into-view-saga.js";
 export * from "./discard-changes-saga.js";
 export * from "./initial-commit-view-saga.js";
 export * from "./set-commit-interaction-rows-saga.js";

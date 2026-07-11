@@ -31,13 +31,11 @@
  */
 package com.mgmtp.a12.print.workspace.internal.handler;
 
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
 import com.mgmtp.a12.print.workspace.internal.Workspace;
 import com.mgmtp.a12.print.workspace.internal.elements.FileElement;
 import com.mgmtp.a12.print.workspace.internal.elements.FileElementType;
 import com.mgmtp.a12.print.workspace.internal.event.EventService;
 import com.mgmtp.a12.print.workspace.internal.exceptions.PrintWorkspaceException;
-import com.mgmtp.a12.print.workspace.internal.printConfig.ConfigStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,9 +51,7 @@ import static com.mgmtp.a12.print.workspace.internal.WorkspaceTest.RUNTIME_WORKS
 import static com.mgmtp.a12.print.workspace.internal.WorkspaceTest.TEST_WORKSPACE;
 import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.DOCUMENT;
 import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.MODEL;
-import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.YAML;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class WorkspaceHandlerTest {
@@ -69,7 +65,6 @@ class WorkspaceHandlerTest {
     public void tearDown() {
         FILE_MAP.get(MODEL).clear();
         FILE_MAP.get(DOCUMENT).clear();
-        FILE_MAP.get(YAML).clear();
     }
 
     @Test
@@ -99,10 +94,9 @@ class WorkspaceHandlerTest {
         final var modelId = "DomainModelInfoTest";
         final var modelHandler = new ModelHandler(underTest, eventService);
         modelHandler.create(Paths.get(TEST_WORKSPACE, "invalid/DomainModelInfoTest.json"));
-
-        assertThatThrownBy(() -> underTest.getUnexpandedModel(modelId))
-                .isInstanceOf(PrintWorkspaceException.class)
-                .hasMessageContaining("Unrecognized field \"modelInfos\" (class com.mgmtp.a12.kernel.md.model.a12internal.DocumentModelContent)");
+        assertThatNoException()
+            .describedAs("No exception throw because with Jackson 3 the default value of DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES is false")
+            .isThrownBy(() -> underTest.getUnexpandedModel(modelId));
     }
 
     @Test

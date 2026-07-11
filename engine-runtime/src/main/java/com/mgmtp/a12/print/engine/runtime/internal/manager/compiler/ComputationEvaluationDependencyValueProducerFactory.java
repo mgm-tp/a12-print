@@ -31,15 +31,12 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler;
 
-import com.mgmtp.a12.kernel.md.document.api.IEntityInstance;
-import com.mgmtp.a12.kernel.md.document.api.IFieldInstance;
-import com.mgmtp.a12.kernel.md.document.api.IGroupInstance;
 import com.mgmtp.a12.kernel.md.model.api.*;
 import com.mgmtp.a12.kernel.md.model.api.fieldtypes.IEnumerationType;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.Entity;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter.FormattedValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.FormattingResult;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.ComputationEvaluationAdvice;
@@ -79,16 +76,8 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 	@NonNull
 	private final Queue<LogicContainerCompilation> computations;
 
-	private static Optional<Object> getInstanceValue(IEntityInstance e) {
-		if (e instanceof IFieldInstance) {
-			return ((IFieldInstance) e).getValue();
-		} else if (e instanceof PrintDocumentContext.Entity) {
-			return ((PrintDocumentContext.Entity<?>) e).getValue();
-		} else if (e instanceof IGroupInstance) {
-			return Optional.empty();
-		} else {
-			throw new PrintException("invalid entity instance");
-		}
+	private static Optional<Object> getInstanceValue(Entity<?> e) {
+		return e.getValue();
 	}
 
 	public TypedComputationExpression compileComputationEvaluationAdvice(ComputationEvaluationAdvice advice) {
@@ -126,7 +115,7 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 				throw new PrintCompilerException("ResolveProvider Advice cannot be compiled");
 			}
 			default:
-				throw new PrintCompilerException("unmapped advice category: " + advice.evaluationCategory().name(), advice);
+				throw new PrintCompilerException("Unmapped advice category: " + advice.evaluationCategory().name(), advice);
 		}
 	}
 
@@ -166,7 +155,7 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 					providerId,
 					(p, j, r) -> p.getPrintDocumentContext().flatMap(
 						documentContext -> p.getElement().map(
-							element -> new BigDecimal(documentContext.findMaxRepetition(element))
+							element -> new BigDecimal(documentContext.findMaxRepetition(element, true))
 						)
 					),
 					computationFieldType
@@ -178,7 +167,7 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 					providerId,
 					(p, j, r) -> p.getPrintDocumentContext().flatMap(
 						documentContext -> p.getElement().map(
-							element -> new BigDecimal(documentContext.findMaxRepetition(element.getParent()))
+							element -> new BigDecimal(documentContext.findMaxRepetitionOfParent(element, true))
 						)
 					),
 					computationFieldType
@@ -207,12 +196,12 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 				);
 			}
 			case CONSTANT:
-				throw new PrintCompilerException("invalid Advice mapping for " + advice.getProviderId());
+				throw new PrintCompilerException("Invalid Advice mapping for " + advice.getProviderId());
 			default:
 
 		}
 
-		throw new PrintCompilerException("unmapped Meta Field: " + syntheticField.getMetaConstant().name());
+		throw new PrintCompilerException("Unmapped Meta Field: " + syntheticField.getMetaConstant().name());
 	}
 
 	private TypedComputationExpression getMetaConstantComputationStrategy(ComputationEvaluationAdvice.MetaConstantValue advice) {
@@ -331,7 +320,7 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 			default:
 
 		}
-		throw new PrintCompilerException("unmapped Meta Constant: " + syntheticField.getMetaConstant().name());
+		throw new PrintCompilerException("Unmapped Meta Constant: " + syntheticField.getMetaConstant().name());
 	}
 
 	private TypedComputationExpression handleConstant(String providerId, ComputationFieldType computationFieldType, final Object constant) {
@@ -350,31 +339,24 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 		ComputationEvaluationAdvice.ConstantValue advice
 	) {
 
-		switch (advice.getLiteralValue().getConstantType()) {
-			case STRING: {
-				return new ConstantValueExpression(
-					advice.getLiteralValue().getValue(),
-					advice.getProviderId(),
-					advice.getComputationFieldType()
-				);
-			}
-			case BOOLEAN: {
-				return new ConstantValueExpression(
-					advice.getLiteralValue().getValue().equalsIgnoreCase(Constant.TRUE.getValue()),
-					advice.getProviderId(),
-					advice.getComputationFieldType()
-				);
-			}
-			case INTEGER, FLOAT: {
-				return new ConstantValueExpression(
-					new BigDecimal(advice.getLiteralValue().getValue()),
-					advice.getProviderId(),
-					advice.getComputationFieldType()
-				);
-			}
-		}
+		return switch (advice.getLiteralValue().getConstantType()) {
+			case STRING -> new ConstantValueExpression(
+				advice.getLiteralValue().getValue(),
+				advice.getProviderId(),
+				advice.getComputationFieldType()
+			);
+			case BOOLEAN -> new ConstantValueExpression(
+				advice.getLiteralValue().getValue().equalsIgnoreCase(Constant.TRUE.getValue()),
+				advice.getProviderId(),
+				advice.getComputationFieldType()
+			);
+			case INTEGER, FLOAT -> new ConstantValueExpression(
+				new BigDecimal(advice.getLiteralValue().getValue()),
+				advice.getProviderId(),
+				advice.getComputationFieldType()
+			);
+		};
 
-		throw new PrintCompilerException("invalid Constant");
 	}
 
 	private TypedComputationExpression getFieldValueStrategy(
@@ -399,7 +381,6 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 		ComputationEvaluationAdvice.JavaFunctionalExpression advice
 	) {
 		if (advice.getArithmeticOperator().equals(Arithmetic.Operator.PLUS)) {
-
 			final var dependencies = advice
 				.getBranchProviderIds()
 				.stream()
@@ -430,7 +411,7 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 			);
 
 		} else {
-			throw new PrintCompilerException("currently only Java String Concatenation is allowed.");
+			throw new PrintDomainException("Currently only String Concatenation is allowed.");
 		}
 
 	}
@@ -439,7 +420,7 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 		ComputationEvaluationAdvice.JavaFunctionalExpression advice
 	) {
 		if (advice.getBranchProviderIds().size() != 2) {
-			throw new PrintCompilerException("malformed none-binary compare", advice);
+			throw new PrintDomainException("Comparing not possible");
 		}
 
 		final var left = adviceCompiler.getExpressionById(advice.getBranchProviderIds().get(0));
@@ -468,7 +449,7 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 			}
 			case DATE, DATE_TIME,TIME, DATE_RANGE, DATE_FRAGMENT, CUSTOM, UNKNOWN: {
 				throw new PrintCompilerException(
-					String.format("invalid Compare Expression. Comparing %s should be handled by the kernel", left.getComputationFieldType())
+					String.format("Invalid Compare Expression. Comparing %s should be handled by the kernel", left.getComputationFieldType())
 				);
 			}
 			default:
@@ -597,7 +578,7 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 					)
 				);
 				if (prev != null) {
-					throw new PrintCompilerException("Invalid state, there are Logic Containers with none-unique id!");
+					throw new PrintCompilerException("Invalid state, there are Logic Containers with none-unique id");
 				}
 			}
 		}

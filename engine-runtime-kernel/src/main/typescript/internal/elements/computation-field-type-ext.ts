@@ -29,8 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { FieldTypeDefinition, RowPropertyKeyType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ColumnPropertyKeyType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import {
+	FieldTypeDefinition,
+	RowPropertyKeyType,
+	ColumnPropertyKeyType,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PredicateClassification } from "../predicate-classification.js";
 

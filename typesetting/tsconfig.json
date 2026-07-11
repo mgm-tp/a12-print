@@ -4,8 +4,8 @@
     "src/main/typescript/**/*",
   ],
   "compilerOptions": {
-    "baseUrl": ".",
     "outDir": "./lib",
+    "types": ["node", "jest"],
     "rootDir": "./src/main/typescript",
   }
 }

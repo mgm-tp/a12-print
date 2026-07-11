@@ -34,7 +34,7 @@ import fs from "node:fs/promises";
 
 import { jest } from "@jest/globals";
 
-import {
+import type {
 	PartialBoundingBox,
 	PartialOverride,
 	PartialPlaceableReference,
@@ -47,7 +47,8 @@ import {
 	PartialTableLayoutCellReference,
 	PartialWatermark,
 	Segment,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PartialPrintModelWalker } from "@com.mgmtp.a12.print/print-model-api/walker";
 import {
 	createPartialPrintModelWalker,
 	extendContainerReferencesBasePath,
@@ -55,26 +56,20 @@ import {
 	getPartialReferences,
 	PartialPrintModelTrace,
 	PartialPrintModelVisitor,
-	PartialPrintModelWalker,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/partial/index.js";
-import { TraversalCommand } from "@com.mgmtp.a12.print/print-model-api/lib/walker/print-model-visitor.js";
+	TraversalCommand,
+} from "@com.mgmtp.a12.print/print-model-api/walker";
 
-import { PrintModelCreator } from "../../print-model-creator/index.js";
+import { PrintModelCreator } from "../../../a12internal/utils/print-model-creator.js";
 import { PrintModelMarshaller } from "../../../marshaller/index.js";
 import testPartialPrintModel from "../../../../../test/resources/print-models/Print-model-with-pending-changes.json" with { type: "json" };
 import printModelWithDinTemplate from "../../../../../test/resources/print-models/PrintModel-with-din-template.json" with { type: "json" };
 import { PartialPrintModelPathVisitor } from "../../../../../test/typescript/test-utils/walker/partial-print-model-path-visitor.js";
-import { LogHandler } from "../../transaction-log/marshaller/log-handler.js";
-import { Log } from "../../transaction-log/log.js";
-import { PrintValidationMode } from "../../validation/print-validator.js";
+import { LogHandler } from "../../../a12internal/transaction-log/log-handler.js";
+import { Log } from "../../../a12internal/transaction-log/log.js";
 
 const printModelMarshaller = new PrintModelMarshaller();
 
-const deserializedPrintModelWithDinTemplate = printModelMarshaller.deserialize(
-	printModelWithDinTemplate,
-	[],
-	PrintValidationMode.SKIP_REFERENCES
-).result!;
+const deserializedPrintModelWithDinTemplate = printModelMarshaller.deserialize(printModelWithDinTemplate).result!;
 
 describe("PartialPrintModelWalker", () => {
 	let testPrintModel: PartialPrintModel;
@@ -86,15 +81,11 @@ describe("PartialPrintModelWalker", () => {
 
 		const logEntries = LogHandler.readLogInput(content);
 
-		const deserializeResult = printModelMarshaller.deserialize(
-			testPartialPrintModel,
-			[],
-			PrintValidationMode.SKIP_REFERENCES
-		);
+		const deserializeResult = printModelMarshaller.deserialize(testPartialPrintModel);
 		const printModel = deserializeResult.result;
 
 		if (!printModel) {
-			throw Error("Cannot read test print model");
+			throw new Error("Cannot read test print model");
 		}
 		const { transactionLogStore } = Log.createStores(logEntries, printModel);
 		testPrintModel = PrintModelCreator.createStoreModel(transactionLogStore);
@@ -139,7 +130,6 @@ describe("PartialPrintModelWalker", () => {
 			}
 			expect(visitor.visitedIdToPathMap).toMatchSnapshot();
 			const inconsistentPaths = [...visitor.visitedIdToPathMap.entries()].filter(
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 				([_, paths]) => paths.size !== 1
 			);
 
@@ -209,7 +199,7 @@ describe("PartialPrintModelWalker", () => {
 			const firstSegment = testPrintModel.content?.segments?.definitions?.[0];
 
 			if (!firstSegment) {
-				throw Error("The segment is undefined");
+				throw new Error("The segment is undefined");
 			}
 
 			walker.walkSegment(firstSegment);
@@ -221,7 +211,7 @@ describe("PartialPrintModelWalker", () => {
 			const thirdSegment = testPrintModel.content?.segments?.definitions?.[2];
 
 			if (!thirdSegment) {
-				throw Error("The segment is undefined");
+				throw new Error("The segment is undefined");
 			}
 			walker.walkSegment(thirdSegment);
 			expect(visitor.visitedElements.length).toBe(21);
@@ -234,7 +224,7 @@ describe("PartialPrintModelWalker", () => {
 			const firstSection = testPrintModel.content?.sections?.definitions?.[0];
 
 			if (!firstSection) {
-				throw Error("The section is undefined");
+				throw new Error("The section is undefined");
 			}
 
 			walker.walkSection(firstSection);
@@ -248,7 +238,7 @@ describe("PartialPrintModelWalker", () => {
 			const watermark = testPrintModel.content?.watermarks?.definitions?.[0];
 
 			if (!watermark) {
-				throw Error("The watermark is undefined");
+				throw new Error("The watermark is undefined");
 			}
 
 			walker.walkWatermark(watermark);

@@ -31,7 +31,6 @@
  */
 package com.mgmtp.a12.print.engine.runtime.kernel.internal.egg.rules;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.egg.EggRewriteRuleFactory;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.egg.EggRewriteRuleInstance;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.egg.RewriteSyntaxTree;
@@ -73,22 +72,14 @@ public class ConstantNumberCompareShortCircuitNormalisation implements EggRewrit
 
 						final var delta = left.compareTo(right);
 
-						switch (o.getOperator()) {
-							case EQUALITY:
-								return createCompareBuilderFromDelta(delta == 0);
-							case UN_EQUALITY:
-								return createCompareBuilderFromDelta(delta != 0);
-							case GREATER_THAN:
-								return createCompareBuilderFromDelta(delta > 0);
-							case GREATER_THAN_OR_EQUAL:
-								return createCompareBuilderFromDelta(delta >= 0);
-							case LESS_THAN:
-								return createCompareBuilderFromDelta(delta < 0);
-							case LESS_THAN_OR_EQUAL:
-								return createCompareBuilderFromDelta(delta <= 0);
-							default:
-								throw new PrintCompilerException("invalid Compare Operator");
-						}
+						return switch (o.getOperator()) {
+							case EQUALITY -> createCompareBuilderFromDelta(delta == 0);
+							case UN_EQUALITY -> createCompareBuilderFromDelta(delta != 0);
+							case GREATER_THAN -> createCompareBuilderFromDelta(delta > 0);
+							case GREATER_THAN_OR_EQUAL -> createCompareBuilderFromDelta(delta >= 0);
+							case LESS_THAN -> createCompareBuilderFromDelta(delta < 0);
+							case LESS_THAN_OR_EQUAL -> createCompareBuilderFromDelta(delta <= 0);
+						};
 
 					}
 				)

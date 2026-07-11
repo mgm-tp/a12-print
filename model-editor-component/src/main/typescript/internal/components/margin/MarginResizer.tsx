@@ -31,12 +31,12 @@
  */
 import * as React from "react";
 
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../constant/editor.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { calculateNewMargin } from "../../utils/margin-utils.js";
-import { MarginSide } from "../../types/margin.js";
+import type { MarginSide } from "../../types/margin.js";
 import { formatNumberToString } from "../../utils/index.js";
 
 import {
@@ -86,6 +86,7 @@ export const MarginResizer = ({
 }: MarginResizerProps) => {
 	const resizerRef = React.useRef<HTMLDivElement>(null);
 	const [storedMargin, setStoredMargin] = React.useState(margin);
+	const [prevMargin, setPrevMargin] = React.useState(margin);
 	const [isResizing, setIsResizing] = React.useState(false);
 	const localizer = PrintLocalizer.useLocalizer();
 	const { margin: contextMargin, updateMargin } = React.useContext(MarginContext);
@@ -146,9 +147,10 @@ export const MarginResizer = ({
 		onUpdateMargin(0, side);
 	}, [onUpdateMargin, side]);
 
-	React.useEffect(() => {
+	if (prevMargin !== margin) {
+		setPrevMargin(margin);
 		setStoredMargin(margin);
-	}, [margin]);
+	}
 
 	const ToolTip = ToolTipMap[side];
 

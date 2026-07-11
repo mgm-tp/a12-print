@@ -45,8 +45,10 @@ import com.mgmtp.a12.print.model.api.model.element.base.internal.LogicContainer;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Stream;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 
+@OnlyForUsage
 public interface CalculationProperties extends LogicContainer, PrintModelEntity {
 	String getName();
 

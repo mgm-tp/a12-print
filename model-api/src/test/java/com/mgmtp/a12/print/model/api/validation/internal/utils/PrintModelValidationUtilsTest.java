@@ -35,20 +35,26 @@ import com.mgmtp.a12.print.model.api.validation.IPrintModelIntegrityMessage;
 import com.mgmtp.a12.print.model.api.validation.IPrintModelIntegrityReport;
 import com.mgmtp.a12.print.model.api.validation.IPrintModelValidator;
 import com.mgmtp.a12.print.model.api.validation.PrintModelValidator;
+import com.mgmtp.a12.print.model.api.validation.PrintModelValidatorOptions;
 
 import java.util.List;
 import java.util.Locale;
 
 import org.junit.jupiter.api.Test;
 
-public class PrintModelValidationUtilsTest {
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class PrintModelValidationUtilsTest {
+
+	private static final String PRINT_MODEL_PATH = "/print-models/PrintModel-with-text.json";
 
 	@Test
-	public void testPrintModelValidation() {
+	void testPrintModelValidation() {
 		IPrintModelValidator printModelValidator = new PrintModelValidator();
 
-		String path = "/print-models/PrintModel-with-text.json";
-		String printModel = ResourceFile.loadFileFromResources(path);
+		String printModel = ResourceFile.loadFileFromResources(PRINT_MODEL_PATH);
 		IPrintModelIntegrityReport report = printModelValidator.validate(printModel, Locale.GERMAN);
 		assert report.noErrorOccurred();
 
@@ -65,5 +71,70 @@ public class PrintModelValidationUtilsTest {
 		assert errorMessages.size() == 1;
 		assert errorMessages.get(0).getText().contains("zahlHatUngueltigeZeichen");
 		assert errorMessages.get(0).getSeverityType().equals(IPrintModelIntegrityMessage.SeverityType.ERROR);
+	}
+
+	@Test
+	void validateWithOptionsHtmlFalseNoHtmlMessagesReported() {
+		IPrintModelValidator validator = new PrintModelValidator();
+		String printModel = ResourceFile.loadFileFromResources(PRINT_MODEL_PATH);
+
+		IPrintModelIntegrityReport report = validator.validate(printModel, new PrintModelValidatorOptions(Locale.GERMAN, false));
+
+		assertTrue(report.noErrorOccurred());
+		boolean hasHtmlMessage = report.getMessages().stream()
+			.anyMatch(m -> m.getText().startsWith("content.elementDefinitions"));
+		assertFalse(hasHtmlMessage, "html=false must not produce HTML messages");
+	}
+
+	@Test
+	void validateWithOptionsHtmlTrueCleanHtmlNoErrorOccurred() {
+		IPrintModelValidator validator = new PrintModelValidator();
+		// Replace the <div> (unsupported tag) with a clean allowed tag so no warnings arise
+		String printModel = ResourceFile.loadFileFromResources(PRINT_MODEL_PATH)
+			.replace("<div><p>TEST</p></div>", "<p>clean</p>");
+
+		IPrintModelIntegrityReport report = validator.validate(printModel, new PrintModelValidatorOptions(Locale.GERMAN, true));
+
+		assertTrue(report.noErrorOccurred());
+		boolean hasHtmlError = report.getMessages().stream()
+			.anyMatch(m -> m.getSeverityType() == IPrintModelIntegrityMessage.SeverityType.ERROR
+				&& m.getText().startsWith("content.elementDefinitions"));
+		assertFalse(hasHtmlError);
+	}
+
+	@Test
+	void validateWithOptionsHtmlTrueMalformedHtmlErrorOccurred() {
+		IPrintModelValidator validator = new PrintModelValidator();
+		// Inject an unclosed tag to trigger malformed-HTML ERROR
+		String printModel = ResourceFile.loadFileFromResources(PRINT_MODEL_PATH)
+			.replace("<div><p>TEST</p></div>", "<b>unclosed");
+
+		IPrintModelIntegrityReport report = validator.validate(printModel, new PrintModelValidatorOptions(Locale.GERMAN, true));
+
+		assertFalse(report.noErrorOccurred());
+		boolean hasHtmlError = report.getMessages().stream()
+			.anyMatch(m -> m.getSeverityType() == IPrintModelIntegrityMessage.SeverityType.ERROR
+				&& m.getText().startsWith("content.elementDefinitions"));
+		assertTrue(hasHtmlError, "Malformed HTML must produce an ERROR message");
+	}
+
+	@Test
+	void validateWithOptionsHtmlTrueUnusedTagWarningPresentButNoError() {
+		IPrintModelValidator validator = new PrintModelValidator();
+		// The fixture contains <div> which is not in ALLOWED_HTML_TAGS → WARNING
+		String printModel = ResourceFile.loadFileFromResources(PRINT_MODEL_PATH);
+
+		IPrintModelIntegrityReport report = validator.validate(printModel, new PrintModelValidatorOptions(Locale.GERMAN, true));
+
+		assertTrue(report.noErrorOccurred(), "Warnings must not fail validation");
+		boolean hasHtmlWarning = report.getMessages().stream()
+			.anyMatch(m -> m.getSeverityType() == IPrintModelIntegrityMessage.SeverityType.WARNING
+				&& m.getText().startsWith("content.elementDefinitions"));
+		assertTrue(hasHtmlWarning, "Unsupported <div> tag must produce a WARNING");
+	}
+
+	@Test
+	void validateWithNullLocaleThrowsNullPointerException() {
+		assertThrows(NullPointerException.class, () -> new PrintModelValidatorOptions(null));
 	}
 }

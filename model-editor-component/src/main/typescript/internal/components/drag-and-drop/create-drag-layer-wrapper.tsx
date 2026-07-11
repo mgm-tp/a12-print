@@ -30,8 +30,9 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import * as React from "react";
-import { useDragLayer, XYCoord } from "react-dnd";
-import { DragSourceMonitor } from "react-dnd";
+import type { XYCoord } from "react-dnd";
+import { useDragLayer } from "react-dnd";
+import type { DragSourceMonitor } from "react-dnd";
 
 export type DragItemType = ReturnType<DragSourceMonitor["getItemType"]>;
 

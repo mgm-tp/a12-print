@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`TableLayout FilledCell should renders correctly 1`] = `
 .c5 {
@@ -43,7 +43,8 @@ exports[`TableLayout FilledCell should renders correctly 1`] = `
           class="c0"
         >
           <div
-            style="font-family: print_font_Open Sans; font-size: 12pt; line-height: 18pt; height: 100%;"
+            data-testid="element-text"
+            style="font-size: 12pt; line-height: 18pt; height: 100%;"
           >
             foo
           </div>

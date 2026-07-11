@@ -36,7 +36,9 @@ import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
 
 import java.util.Iterator;
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface ElementReferenceUnaryContainer extends BaseReferenceContainer<ElementReference> {
 	ElementReference getReference();
 

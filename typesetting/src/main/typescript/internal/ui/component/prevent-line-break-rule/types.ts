@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PreventLineBreakRule } from "../../../api/model/typesetting-model.js";
+import type { PreventLineBreakRule } from "../../../../a12internal/api/model/typesetting-model.js";
 
 export interface ExtendedPreventLineBreakRule extends PreventLineBreakRule {
 	index: number;

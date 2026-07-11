@@ -34,7 +34,9 @@ package com.mgmtp.a12.print.model.api.model.general;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface SegmentDefaults extends PrintModelEntity {
 	Float getFontSize();
 

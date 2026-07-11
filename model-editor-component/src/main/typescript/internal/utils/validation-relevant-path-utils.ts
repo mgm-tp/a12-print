@@ -29,11 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Meta } from "typescript-fsa";
 import uniqWith from "lodash/uniqWith.js";
 
-import { AffectedItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
+import type { AffectedItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
 import { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
 export function isAffectedItemMeta(object: object): object is { affectedItems: AffectedItem[] } {
@@ -42,7 +41,7 @@ export function isAffectedItemMeta(object: object): object is { affectedItems: A
 export function createAffectedItemMeta(affectedItems: AffectedItem[]): { affectedItems: AffectedItem[] } {
 	return { affectedItems };
 }
-export function getAffectedItemMeta(meta?: Meta): AffectedItem[] {
+export function getAffectedItemMeta(meta?: { affectedItems: AffectedItem[] }): AffectedItem[] {
 	if (meta && isAffectedItemMeta(meta)) {
 		return meta.affectedItems;
 	}

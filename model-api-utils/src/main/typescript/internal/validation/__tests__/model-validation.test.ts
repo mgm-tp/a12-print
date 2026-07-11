@@ -31,15 +31,15 @@
  */
 import cloneDeep from "lodash/cloneDeep.js";
 
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
-import { deepCloneObject } from "@com.mgmtp.a12.print/print-model-api/lib/utils/print-model/base.js";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { deepCloneObject } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import validPrintModelJson from "../../../../../test/resources/print-models/print-model.json" with { type: "json" };
 import printModelWithCustomTypeJson from "../../../../../test/resources/print-models/print-model-with-custom-type.json" with { type: "json" };
-import { PrintDateTimeFormatErrorEnum } from "../../../internal/validation/print-date-time-format-type/error/error-enum.js";
+import type { PrintValidator } from "../../../a12internal/validation/print-validator.js";
 
+import { PrintDateTimeFormatErrorEnum } from "../print-date-time-format-type/error/error-enum.js";
 import { PrintModelValidator } from "../print-model-validator.js";
-import { PrintValidator } from "../print-validator.js";
 
 describe("PrintMetaModel Validation", () => {
 	it("validate test print model without error", () => {

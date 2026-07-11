@@ -32,14 +32,11 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { Typography } from "@com.mgmtp.a12.widgets/widgets-core/lib/typography/index.js";
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/button-group/index.js";
+import { Button, Icon, Typography, ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
-import { DetailDataActions, ValidationCounter, ValidationSeverity } from "../../../redux/index.js";
-import { PrintEngineSelectors } from "../../../store/selectors.js";
+import type { ValidationSeverity } from "../../../redux/index.js";
+import { NavigationActions, NavigationSelectors, ValidationCounter } from "../../../redux/index.js";
 import { BadgeGroup } from "../../badge/BadgeGroup.js";
 
 interface FormHeaderProps {
@@ -47,48 +44,40 @@ interface FormHeaderProps {
 	validationCounter?: ValidationCounter;
 }
 
-export const FormHeader = ({ headline, validationCounter = ValidationCounter.createEmpty() }: FormHeaderProps) => {
+export const FormHeader = ({
+	headline,
+	validationCounter = ValidationCounter.EMPTY_VALIDATION_COUNTER,
+}: FormHeaderProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 
-	const detailData = useSelector(PrintEngineSelectors.currentDetailData);
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
-	const editorMode = useSelector(PrintEngineSelectors.editorMode);
+	const detailForm = useSelector(NavigationSelectors.detailForm);
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 
 	const closeButton = React.useMemo(
 		() => (
 			<ButtonGroup>
 				<Button
 					title={
-						detailData?.isFullScreenForm
+						detailForm?.isFullScreen
 							? localizer(RESOURCE_KEYS.button.minimized)
 							: localizer(RESOURCE_KEYS.button.maximized)
 					}
 					onClick={() => {
-						dispatch(
-							DetailDataActions.updateFullFormScreen({
-								containerId: currentDetailDataId,
-								isFullScreenForm: Boolean(!detailData?.isFullScreenForm),
-							})
-						);
+						dispatch(NavigationActions.toggleDetailFormFullscreen({ tab, entityId, mode }));
 					}}
-					icon={<Icon>{detailData?.isFullScreenForm ? "fullscreen_exit" : "fullscreen"}</Icon>}
+					icon={<Icon>{detailForm?.isFullScreen ? "fullscreen_exit" : "fullscreen"}</Icon>}
 				/>
 				<Button
 					title={localizer(RESOURCE_KEYS.button.close)}
 					onClick={() => {
-						dispatch(
-							DetailDataActions.updateOpenForm({
-								containerId: currentDetailDataId,
-								isFormOpen: { [editorMode]: false },
-							})
-						);
+						dispatch(NavigationActions.setDetailForm({ tab, entityId, mode, form: undefined }));
 					}}
 					icon={<Icon>close</Icon>}
 				/>
 			</ButtonGroup>
 		),
-		[detailData?.isFullScreenForm, localizer, dispatch, currentDetailDataId, editorMode]
+		[detailForm?.isFullScreen, localizer, dispatch, tab, entityId, mode]
 	);
 	return (
 		<Typography.Section>

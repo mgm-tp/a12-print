@@ -29,13 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import type { PrintModelElement } from "../model/index.js";
 import {
-	AnyContainerElement,
+	type AnyContainerElement,
 	Area,
 	BarChart,
 	BoundingBox,
 	Calculation,
-	DINTemplateProperties,
+	type DINTemplateProperties,
 	Expression,
 	Field,
 	isSection,
@@ -48,28 +49,27 @@ import {
 	PageNumber,
 	PageNumberTotal,
 	PieChart,
-	PrintModel,
-	PrintModelContent,
-	PrintModelElement,
-	Reference,
-	Section,
-	Segment,
+	type PrintModel,
+	type PrintModelContent,
+	type Reference,
+	type Section,
+	type Segment,
 	Switch,
 	Table,
 	TableLayout,
 	Text,
 	Image,
-	PlaceableReference,
+	type PlaceableReference,
 } from "../model/index.js";
 
 import { PrintModelTrace } from "./print-model-trace.js";
 import { DescendCommand, PrintModelVisitor, TraversalCommand } from "./print-model-visitor.js";
-import { ReferenceListResolver, ReferenceResolver } from "./reference-resolver.js";
-import { DefaultSectionIdResolver, SectionIdResolver } from "./section-id-resolver.js";
-import { DefaultSegmentIdResolver, SegmentIdResolver } from "./segment-id-resolver.js";
-import { DefaultWatermarkIdResolver, WatermarkIdResolver } from "./watermark-id-resolver.js";
-import { ReferenceElementListResolver, ReferenceElementResolver } from "./reference-element-resolver.js";
-import { PrintModelListResolver, PrintModelResolver } from "./print-model-resolver.js";
+import { ReferenceListResolver, type ReferenceResolver } from "./reference-resolver.js";
+import { DefaultSectionIdResolver, type SectionIdResolver } from "./section-id-resolver.js";
+import { DefaultSegmentIdResolver, type SegmentIdResolver } from "./segment-id-resolver.js";
+import { DefaultWatermarkIdResolver, type WatermarkIdResolver } from "./watermark-id-resolver.js";
+import { ReferenceElementListResolver, type ReferenceElementResolver } from "./reference-element-resolver.js";
+import { PrintModelListResolver, type PrintModelResolver } from "./print-model-resolver.js";
 
 export class PrintModelWalker {
 	private visitor: PrintModelVisitor;

@@ -32,8 +32,9 @@
 package com.mgmtp.a12.print.engine.api.exception.impl;
 
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
-
+@OnlyForUsage
 public class DocumentLoadingException extends PrintException {
 
 	public DocumentLoadingException(final String message) {

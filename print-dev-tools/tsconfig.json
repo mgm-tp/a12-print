@@ -1,9 +1,8 @@
 {
-  "extends": "./node_modules/@com.mgmtp.a12.devtools/tsconfig/tsconfig.json",
+  "extends": "./node_modules/@com.mgmtp.a12.devtools/tsconfig/tsconfig",
+  "files": ["declarations.d.ts"],
   "compilerOptions": {
     "outDir": "./lib",
-    "noImplicitAny": true,
-    "strictNullChecks": true,
     "skipLibCheck": true,
   }
 }

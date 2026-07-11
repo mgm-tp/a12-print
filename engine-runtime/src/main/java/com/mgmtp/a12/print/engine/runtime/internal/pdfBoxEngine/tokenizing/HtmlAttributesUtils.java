@@ -32,7 +32,10 @@
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing;
 
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.AttachmentToAppend;
+import com.mgmtp.a12.print.model.api.validation.internal.html.CssConstants;
 import com.mgmtp.a12.print.model.api.model.element.properties.TextProperties;
+import com.mgmtp.a12.print.model.api.validation.internal.html.HtmlValidationConfig;
+import com.mgmtp.a12.print.model.api.validation.internal.html.HexColorValidator;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -54,7 +57,7 @@ public class HtmlAttributesUtils {
 			final var value = attrs.getAttribute(name);
 
 			if (value != null && !value.toString().isEmpty()) {
-				if (name.toString().equals("style")) {
+				if (name.toString().equals(HtmlValidationConfig.HTML_ATTR_STYLE)) {
 					usedStyleAttributes = parseStyle(value);
 				} else if (name.toString().equals("href")) {
 					attachmentId = AttachmentToAppend.getAttachmentIdByHref(value.toString());
@@ -105,15 +108,15 @@ public class HtmlAttributesUtils {
 				final var styleValue = styleParts[1].trim();
 
 				switch (styleKey) {
-					case "color": {
+					case CssConstants.COLOR: {
 						color = parseColor(styleValue);
 						break;
 					}
-					case "background-color": {
+					case CssConstants.BACKGROUND_COLOR: {
 						backgroundColor = parseColor(styleValue);
 						break;
 					}
-					case "text-align": {
+					case CssConstants.TEXT_ALIGN: {
 						final var alignmentString = StringUtils.capitalize(styleValue);
 						alignment = TextProperties.Alignment.fromString(alignmentString);
 
@@ -133,7 +136,7 @@ public class HtmlAttributesUtils {
 	}
 
 	public static int parseColor(@NonNull final String value) {
-		if (value.startsWith("#") && isHexString(value)) {
+		if (HexColorValidator.isValid(value)) {
 			if (value.length() == 4) {
 				int r = Character.digit(value.charAt(1), 16);
 				int g = Character.digit(value.charAt(2), 16);
@@ -144,18 +147,5 @@ public class HtmlAttributesUtils {
 		}
 
 		throw new HtmlTokenizerException("Unknown color: " + value + ". Currently only hex colors are supported.");
-	}
-
-	private static boolean isHexString(String s) {
-		for (int i = 1; i < s.length(); i++) {
-			if (!isHexChar(s.charAt(i))) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static boolean isHexChar(char c) {
-		return (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f');
 	}
 }

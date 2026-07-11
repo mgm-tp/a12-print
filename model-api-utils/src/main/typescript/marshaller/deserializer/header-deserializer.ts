@@ -29,11 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
-import { ExtendedEntityInstancePath } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import type * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/model";
+import type * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import type { ExtendedEntityInstancePath } from "@com.mgmtp.a12.print/print-model-api/errors";
 
-import { BaseHeaderDeserializer } from "../../internal/marshaller/deserializer/base-header-deserializer.js";
+import { BaseHeaderDeserializer } from "../../a12internal/utils/base-header-deserializer.js";
 
 export class HeaderDeserializer extends BaseHeaderDeserializer<GeneratedDTO.HeaderDTO, ModelAPI.PrintModelHeader> {
 	constructor(parentPath: ExtendedEntityInstancePath, index: number = 1, isRepeatable: boolean = false) {

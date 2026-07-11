@@ -31,15 +31,12 @@
  */
 import { useCallback, useRef } from "react";
 
-import {
-	InputValueSourceResolver,
-	PossibleInputSource,
-} from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+import { InputValueSourceResolver, PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../localization/index.js";
 import { stringifyInputValue } from "../../../../utils/input-source-utils.js";
 
-import { CustomTextLineStateless } from "../CustomTextLineStateless.js";
+import { CustomTextField } from "../CustomTextField.js";
 import type { TextLineStatefulProps } from "../types.js";
 
 import { SourceInputToggles } from "./SourceInputToggles.js";
@@ -120,7 +117,7 @@ export const SourceInput = (props: SourceInputProps) => {
 			tooltips={tooltips}
 		>
 			{inputSource && (
-				<CustomTextLineStateless
+				<CustomTextField
 					{...restProps}
 					id={id}
 					inputRef={ref => {
@@ -130,6 +127,7 @@ export const SourceInput = (props: SourceInputProps) => {
 						}
 					}}
 					readonly={inputSource.source !== PossibleInputSource.INPUT}
+					disabled={disabled}
 					value={
 						inputSource.source !== PossibleInputSource.INPUT
 							? (stringifyInputValue(inputSourceValue) ?? "")
@@ -148,6 +146,7 @@ export const SourceInput = (props: SourceInputProps) => {
 							source={inputSource.source}
 							onValueChanged={handleSourceChange}
 							showOnlySelectedOption
+							disabled={disabled}
 						/>
 					}
 				/>

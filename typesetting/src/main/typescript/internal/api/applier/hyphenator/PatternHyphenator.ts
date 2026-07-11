@@ -29,21 +29,18 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Hyphenation, HyphenationExclusion, TypesettingModel } from "../../model/index.js";
+import type { Hyphenation, HyphenationExclusion, TypesettingModel } from "../../../../a12internal/api/model/index.js";
 
-import Hyphenator, {
-	HyphenationResultCharEntry,
-	HyphenationResultEntry,
-	HyphenationResultHyphenEntry,
-} from "./Hyphenator.js";
-import CharTrieNode from "./trie/CharTrieNode.js";
-import TriePatternProcessor from "./processor/TriePatternProcessor.js";
-import HyphenIndex from "./HyphenIndex.js";
-import FixedSizeIntList from "./collection/FixedSizeIntList.js";
-import ZeroInitializedFixedSizeIntArrayList from "./collection/ZeroInitializedFixedSizeIntArrayList.js";
-import ImmutableCharArrayList from "./collection/ImmutableCharArrayList.js";
-import ImmutableCharList from "./collection/ImmutableCharList.js";
-import CharTrie from "./trie/CharTrie.js";
+import type { HyphenationResultEntry, Hyphenator } from "./Hyphenator.js";
+import { HyphenationResultCharEntry, HyphenationResultHyphenEntry } from "./Hyphenator.js";
+import type { CharTrieNode } from "./trie/CharTrieNode.js";
+import { TriePatternProcessor } from "./processor/TriePatternProcessor.js";
+import { HyphenIndex } from "./HyphenIndex.js";
+import type { FixedSizeIntList } from "./collection/FixedSizeIntList.js";
+import { ZeroInitializedFixedSizeIntArrayList } from "./collection/ZeroInitializedFixedSizeIntArrayList.js";
+import { ImmutableCharArrayList } from "./collection/ImmutableCharArrayList.js";
+import type { ImmutableCharList } from "./collection/ImmutableCharList.js";
+import type { CharTrie } from "./trie/CharTrie.js";
 
 export default class PatternHyphenator implements Hyphenator {
 	private readonly root: CharTrieNode;

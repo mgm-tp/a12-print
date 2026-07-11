@@ -32,7 +32,9 @@
 package com.mgmtp.a12.print.model.api.validation.custom.error;
 
 import com.mgmtp.a12.kernel.core.customfieldtype.ICustomFieldTypeCheckError;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public class PrintDateTimeFormatErrorImpl implements ICustomFieldTypeCheckError {
 
 	private final String errorMessage;

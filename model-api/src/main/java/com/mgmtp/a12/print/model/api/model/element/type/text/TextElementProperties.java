@@ -37,7 +37,9 @@ import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
 
 import java.util.Collection;
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface TextElementProperties extends PrintModelEntity {
 	String getText();
 	Optional<Boolean> hideIfEmpty();

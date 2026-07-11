@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { RouteObject } from "react-router-dom";
+import type { RouteObject } from "react-router-dom";
 import { createBrowserRouter } from "react-router-dom";
 
 import { AppLayout } from "../layout/AppLayout";

@@ -29,6 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::PageRangeRestrictionClass[]
 package com.mgmtp.a12.print.engine.api.restriction;
 
 // tag::Import[]
@@ -38,8 +39,10 @@ import com.mgmtp.a12.print.engine.api.exception.PrintJobRestrictionException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 // end::Import[]
 
+@OnlyForUsage
 @Builder
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class PageRangeRestriction implements JobRestriction {
@@ -84,3 +87,4 @@ public class PageRangeRestriction implements JobRestriction {
 		}
 	}
 }
+// end::PageRangeRestrictionClass[]

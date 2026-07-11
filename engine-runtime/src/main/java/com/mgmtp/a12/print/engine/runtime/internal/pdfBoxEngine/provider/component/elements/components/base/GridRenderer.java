@@ -31,24 +31,20 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base;
 
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.GridCellComponentResult;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.Position;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NonNull;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.documentinterchange.logicalstructure.PDStructureElement;
-import org.apache.pdfbox.pdmodel.documentinterchange.taggedpdf.PDTableAttributeObject;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.AccessibilityUtils.getStructElement;
 import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.BoxRenderer.*;
 import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.RenderUtils.*;
-import static org.apache.pdfbox.pdmodel.documentinterchange.taggedpdf.PDTableAttributeObject.SCOPE_COLUMN;
-import static org.apache.pdfbox.pdmodel.documentinterchange.taggedpdf.StandardStructureTypes.*;
 
 @AllArgsConstructor
 public abstract class GridRenderer {
@@ -58,6 +54,7 @@ public abstract class GridRenderer {
 		boolean hideHeader,
 		boolean hasDifferingCellColors,
 		boolean hasDifferingBorderStyles,
+		boolean tagAsTable,
 		long remainingSpace,
 		long regionSpace
 	) {}
@@ -96,7 +93,7 @@ public abstract class GridRenderer {
 
 		if (!config.hideHeader) {
 			if (headerHeight > regionSpace) {
-				throw new PrintRenderingException(String.format("Header height (%d) exceeds page height (%d)", headerHeight, regionSpace));
+				throw new PrintDomainException("Header height ({}) exceeds page height ({})", headerHeight, regionSpace);
 			} else if (shouldRenderOnNewPage(headerHeight, remainingSpace, regionSpace, firstRenderableRow)) {
 				breakRowIndex = 0;
 			} else {
@@ -111,7 +108,7 @@ public abstract class GridRenderer {
 
 				if (!shouldStop) {
 					List<GridCellComponentResult> cellResults = renderCellContent(
-						colCount, row, rowHeight, position.getX(), cellYOffset, null, null, null, remainingSpace, true
+						colCount, row, rowHeight, position.getX(), cellYOffset, null, remainingSpace, true
 					);
 
 					if (cellResults.stream().anyMatch(c -> c.getRemainingComponent().isPresent())) {
@@ -387,29 +384,23 @@ public abstract class GridRenderer {
 		final int colCount,
 		final int rowCount
 	) {
-		final var page = contentStream.getPage();
 		final long regionSpace = config.regionSpace();
 		long remainingSpace = config.remainingSpace();
 		long headerHeight = !config.hideHeader ? resolveHeaderHeight() : 0;
 		final var firstRenderableRow = getFirstRenderableRow(rowCount);
-		final var parentTreeElements = new ArrayList<PDStructureElement>();
+		final var tagHandler = new GridRendererTagHandling(config.tagAsTable, contentStream.getPage());
 
 		Integer breakRowIndex = null;
-		PDStructureElement tableBodyStructElement = getStructElement(T_BODY, page);
 		List<GridCellComponentResult> splitRowResults = new ArrayList<>();
 		long cellYOffset = position.getY();
 
-		PDStructureElement tableHeadStructElement = null;
 		if (!config.hideHeader) {
 			if (headerHeight > regionSpace) {
-				throw new PrintRenderingException(String.format("Header height (%d) exceeds page height (%d)", headerHeight, regionSpace));
+				throw new PrintDomainException("Header height ({}) exceeds page height ({})", headerHeight, regionSpace);
 			} else if (shouldRenderOnNewPage(headerHeight, remainingSpace, regionSpace, firstRenderableRow)) {
 				breakRowIndex = 0;
 			} else {
-				tableHeadStructElement = getStructElement(T_HEAD, page);
-				final var tableRowStructElement = getStructElement(TR, page);
-				renderHeaderContent(colCount, headerHeight, position, parentTreeElements, page, tableRowStructElement);
-				tableHeadStructElement.appendKid(tableRowStructElement);
+				tagHandler.tagHeader(renderHeaderContent(colCount, headerHeight, position));
 				cellYOffset += headerHeight;
 				remainingSpace -= headerHeight;
 			}
@@ -421,11 +412,11 @@ public abstract class GridRenderer {
 				boolean shouldStop = shouldStopRenderingRow(headerHeight, rowHeight, remainingSpace, regionSpace, row);
 
 				if (!shouldStop) {
-					final var tableRowStructElement = getStructElement(TR, page);
+					final var accessibilityData = new ArrayList<Pair<Integer, AccessibilityData>>();
 					List<GridCellComponentResult> cellResults = renderCellContent(
-						colCount, row, rowHeight, position.getX(), cellYOffset, parentTreeElements, page, tableRowStructElement, remainingSpace, false
+						colCount, row, rowHeight, position.getX(), cellYOffset, accessibilityData, remainingSpace, false
 					);
-					tableBodyStructElement.appendKid(tableRowStructElement);
+					tagHandler.tagContent(accessibilityData);
 
 					if (cellResults.stream().anyMatch(c -> c.getRemainingComponent().isPresent())) {
 						shouldStop = true;
@@ -442,27 +433,15 @@ public abstract class GridRenderer {
 			}
 		}
 
-		final var tableStructElement = getStructElement(TABLE, contentStream.getPage());
-		if (tableHeadStructElement != null) {
-			tableStructElement.appendKid(tableHeadStructElement);
-		}
-		tableStructElement.appendKid(tableBodyStructElement);
-
-		return new GridRendererResult(
-			breakRowIndex,
-			new AccessibilityData(List.of(tableStructElement), parentTreeElements),
-			splitRowResults
-		);
+		return new GridRendererResult(breakRowIndex, tagHandler.getAccessibilityResult(), splitRowResults);
 	}
 
-	private void renderHeaderContent(
+	private List<AccessibilityData> renderHeaderContent(
 		final int colCount,
 		final long headerHeight,
-		final Position position,
-		@NonNull final List<PDStructureElement> parentTreeElements,
-		@NonNull final PDPage page,
-		@NonNull final PDStructureElement tableRowStructElement
+		final Position position
 	) {
+		final var accessibilityData = new ArrayList<AccessibilityData>();
 		var changedCellXOffset = position.getX();
 		for (int col = 0; col < colCount; col++) {
 			final BoxStyleParameters boxStyle = resolveHeaderStyle(col).setInset(config.inset);
@@ -472,26 +451,16 @@ public abstract class GridRenderer {
 			final long offset = boxStyle.getContentSizeDifference();
 			final Size headerCellSize = new Size(columnWidth, headerHeight - offset);
 
-			final var accessibilityData = renderHeaderContent(
+			accessibilityData.add(renderHeaderContent(
 				new Position(changedCellXOffset, position.getY()),
 				headerCellSize,
 				col
-			);
-			parentTreeElements.addAll(accessibilityData.getParentTreeElements());
-
-			final var thStructElement = getStructElement(TH, page);
-			final var attribute = new PDTableAttributeObject();
-			attribute.setScope(SCOPE_COLUMN);
-			thStructElement.addAttribute(attribute);
-
-			for (final var headerStructElement : accessibilityData.getParentTreeElements()) {
-				thStructElement.appendKid(headerStructElement);
-			}
-
-			tableRowStructElement.appendKid(thStructElement);
+			));
 
 			changedCellXOffset += columnWidth;
 		}
+
+		return accessibilityData;
 	}
 
 	private List<GridCellComponentResult> renderCellContent(
@@ -500,9 +469,7 @@ public abstract class GridRenderer {
 		final long rowHeight,
 		final long cellXOffset,
 		final long cellYOffset,
-		final List<PDStructureElement> parentTreeElements,
-		final PDPage page,
-		final PDStructureElement tableRowStructElement,
+		final List<Pair<Integer, AccessibilityData>> accessibilityData,
 		long remainingSpace,
 		boolean isPreflighting
 	) {
@@ -525,21 +492,9 @@ public abstract class GridRenderer {
 				isPreflighting
 			);
 			cellResults.add(componentResult);
-			if (parentTreeElements != null) {
+			if (!isPreflighting) {
 				final int colspan = resolveColSpan(col, row);
-				final var accessibilityData = componentResult.getAccessibilityData();
-				parentTreeElements.addAll(accessibilityData.getParentTreeElements());
-
-				final var tdStructElement = getStructElement(TD, page);
-				for (final var bodyStructElement : accessibilityData.getParentTreeElements()) {
-					tdStructElement.appendKid(bodyStructElement);
-				}
-				if (colspan != 1) {
-					final var attribute = new PDTableAttributeObject();
-					attribute.setColSpan(colspan);
-					tdStructElement.addAttribute(attribute);
-				}
-				tableRowStructElement.appendKid(tdStructElement);
+				accessibilityData.add(Pair.of(colspan, componentResult.getAccessibilityData()));
 			}
 
 			changedCellXOffset += columnWidth;

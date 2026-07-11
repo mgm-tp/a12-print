@@ -29,14 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import type { PrintModelElement } from "../model/index.js";
 import {
-	AnyContainerElement,
+	type AnyContainerElement,
 	isSection,
 	isSegment,
 	isWatermark,
-	PrintModelElement,
-	PrintModelEntity,
-	Reference,
+	type PrintModelEntity,
+	type Reference,
 } from "../model/index.js";
 
 export class GenericPrintModelTrace<T extends PrintModelEntity> {

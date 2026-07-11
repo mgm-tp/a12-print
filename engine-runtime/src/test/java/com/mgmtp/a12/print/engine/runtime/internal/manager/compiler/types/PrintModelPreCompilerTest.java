@@ -99,7 +99,8 @@ public class PrintModelPreCompilerTest {
 		return spy(new PrintModelPreCompiler(
 			context,
 			printModelCompilerGraph.getEquivalenceGeneralizationGraph(),
-			printModelCompilerRuntime.getA12TypeComparisonMapping()
+			printModelCompilerRuntime.getA12TypeComparisonMapping(),
+			null
 		));
 	}
 

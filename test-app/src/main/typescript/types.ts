@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PrintEngineState } from "@com.mgmtp.a12.print/print-model-editor-component/lib/internal/store/root-reducer";
+import type { PrintEngineState } from "@com.mgmtp.a12.print/print-model-editor-component/a12internal/api";
 
 export enum SideBarItem {
 	PRINT_EDITOR = "PRINT_EDITOR",

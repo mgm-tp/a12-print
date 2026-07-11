@@ -31,23 +31,27 @@
  */
 package com.mgmtp.a12.print.model.api.validation.custom.conditions;
 
-import com.mgmtp.a12.kernel.md.document.api.IDocument;
-import com.mgmtp.a12.kernel.md.document.api.IEntityInstance;
-import com.mgmtp.a12.kernel.md.document.api.IFieldInstance;
+import com.mgmtp.a12.kernel.md.document.apiV2.DocumentMultiPointer;
+import com.mgmtp.a12.kernel.md.document.apiV2.DocumentPointer;
+import com.mgmtp.a12.kernel.md.document.apiV2.PartiallyKnownDocumentMultiPointer;
+import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 import com.mgmtp.a12.kernel.md.rt.api.ICustomCondition;
 
 import java.util.*;
-import java.util.stream.*;
 
+import lombok.NonNull;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
+@OnlyForUsage
 public class AlwaysTrueCustomCondition implements ICustomCondition {
 
-	@Override
+    @Override
     public boolean check(
-        IDocument document,
-        Set<IEntityInstance> relevantEntityInstances,
-        Set<IEntityInstance> formallyIncorrectEnittyInstances,
-        IEntityInstance errorEntityInstance
-    )	{
-		return true;
+        @NonNull DocumentV2 document,
+        Set<? extends DocumentMultiPointer> relevantEntities,
+        @NonNull Set<DocumentPointer> formallyIncorrectEntities,
+        @NonNull PartiallyKnownDocumentMultiPointer errorEntityInstance
+    ) {
+        return true;
     }
 }

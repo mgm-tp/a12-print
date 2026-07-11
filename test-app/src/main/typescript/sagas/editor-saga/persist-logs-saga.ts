@@ -29,22 +29,23 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
-import { select, call, put, take, fork, delay, race, actionChannel, SagaGenerator } from "typed-redux-saga";
-import { Action } from "typescript-fsa";
-import { ActionPattern } from "redux-saga/effects";
+import type { SagaGenerator } from "typed-redux-saga";
+import { select, call, put, take, fork, delay, race, actionChannel } from "typed-redux-saga";
+import type { ActionPattern } from "redux-saga/effects";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { LogHandler } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/marshaller";
+import { LogHandler } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { EditorActions, EditorSelector, PersistLogsPayload } from "../../store/editor";
+import type { PersistLogsPayload } from "../../store/editor";
+import { EditorActions, EditorSelector } from "../../store/editor";
 import { FileService } from "../../services/files-service";
 import { CaseConfig } from "../../components/case-config/CaseConfig";
 
-export function* persistLogsSaga(): SagaIterator {
+export function* persistLogsSaga(): SagaGenerator<void> {
 	yield* handlePersistLogsSaga(EditorActions.persistLogs);
 }
 
-const handlePersistLogsSaga = (pattern: ActionPattern<Action<PersistLogsPayload>>) =>
+const handlePersistLogsSaga = (pattern: ActionPattern<PayloadAction<PersistLogsPayload>>) =>
 	fork(function* () {
 		while (true) {
 			const action = yield* take(pattern);
@@ -76,7 +77,7 @@ export function* batchPersistLogsSaga(): SagaGenerator<void> {
 	}
 }
 
-function* batchPersistLogs(action: Action<PersistLogsPayload[]>): SagaGenerator<void> {
+function* batchPersistLogs(action: PayloadAction<PersistLogsPayload[]>): SagaGenerator<void> {
 	const caseConfig = yield* select(EditorSelector.selectCaseConfig);
 
 	if (!caseConfig) {
@@ -101,5 +102,10 @@ function* batchPersistLogs(action: Action<PersistLogsPayload[]>): SagaGenerator<
 
 	if (FileService.isWalResponse(response)) {
 		yield* put(EditorActions.setLogPersistentEntries(LogHandler.readLogInput(response.content)));
+	} else if (process.env.TEST && newLogs.length) {
+		// In test mode there is no .wal saved — manually append new entries to existing ones
+		const currentEntries = (yield* select(EditorSelector.selectLogPersistentEntries)) ?? [];
+		const newEntries = LogHandler.readLogInput(newLogs.join(""));
+		yield* put(EditorActions.setLogPersistentEntries([...currentEntries, ...newEntries]));
 	}
 }

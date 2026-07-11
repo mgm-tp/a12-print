@@ -39,10 +39,12 @@ import lombok.NonNull;
 
 import java.util.Optional;
 import java.util.function.Function;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Combines a given {@link PrintModelEntity} with it's {@link PrintModelPath} and gives additional related utility.
  */
+@OnlyForUsage
 @Data
 public class PrintModelTreeTrace<T> {
 	@NonNull

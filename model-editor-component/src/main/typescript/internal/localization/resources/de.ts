@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { RESOURCE_KEYS } from "../keys.js";
+import type { RESOURCE_KEYS } from "../keys.js";
 
 export const de: typeof RESOURCE_KEYS = {
 	application: {
@@ -84,6 +84,7 @@ export const de: typeof RESOURCE_KEYS = {
 			},
 			tooltips: {
 				defaultTypesettingModel: "Standard-Silbentrennungsmodell",
+				printModelReferenceWithoutSegments: "Das ausgewählte Print Model besitzt keine DINTemplate-Segmente",
 			},
 		},
 		content: "Inhalt",
@@ -234,7 +235,7 @@ export const de: typeof RESOURCE_KEYS = {
 		pageOnTotal: "Buchseite $page$/$total$",
 		richTextEditor: {
 			toolbarButton: {
-				removeFontSizeInlineStyles: "Entfernen Sie Inline-Stile für die Schriftgröße",
+				removeStyles: "Entfernen Sie Alle Stile",
 			},
 		},
 	},
@@ -348,6 +349,9 @@ export const de: typeof RESOURCE_KEYS = {
 			color: "Farbe",
 			backgroundColor: "Hintergrundfarbe",
 			alignment: "Ausrichtung",
+			clearButton: "Texteigenschaften zurücksetzen",
+			legacyWarning:
+				"Dieses Element hat Texteigenschaften aus einer früheren Editor-Version. Diese können die PDF-Ausgabe beeinflussen. Entfernen Sie sie, wenn sie nicht benötigt werden.",
 		},
 		borderProperties: {
 			headline: "Randeigenschaften",
@@ -397,7 +401,11 @@ export const de: typeof RESOURCE_KEYS = {
 			},
 		},
 		image: {
-			imageSrcType: "Bild Quelltyp",
+			imageSrc: "Bildquelle",
+			imageSrcType: {
+				static: "Statisch",
+				dynamic: "Dynamisch",
+			},
 			field: "Feld",
 			attachment: "Anhang",
 			alt: "Alternativer Text",
@@ -406,7 +414,13 @@ export const de: typeof RESOURCE_KEYS = {
 			action: {
 				replace: "Ersetzen",
 				download: "Herunterladen",
-				delete: "Löschen",
+				upload: "Hochladen",
+			},
+			resource: {
+				selector: "Ressource",
+				internalFilename: "Interner Dateiname",
+				size: "Größe",
+				mimeType: "MIME-Typ",
 			},
 		},
 		expression: {
@@ -632,6 +646,8 @@ export const de: typeof RESOURCE_KEYS = {
 		error: {
 			internalError: "Interner Fehler",
 			setPrintModel: "Das Druckmodel konnte nicht gesetzt werden",
+			uploadStaticImage: "Das Bild konnte nicht hochgeladen werden",
+			loadStaticImage: "Das Bild konnte nicht geladen werden",
 		},
 		errorTree: {
 			heading: "Validierungsfehler",
@@ -652,6 +668,12 @@ export const de: typeof RESOURCE_KEYS = {
 				title: "Diese Datei kann nicht hochgeladen werden",
 				supportedExtensions: "Es werden nur $extensions$ unterstützt.",
 			},
+		},
+	},
+	precompile: {
+		messages: {
+			heading: "Vorkompilierungsfehler",
+			copy: "Stacktrace kopieren",
 		},
 	},
 	textStyles: {
@@ -688,7 +710,7 @@ export const de: typeof RESOURCE_KEYS = {
 		},
 		warningMessage: {
 			fontIsNotConfigured:
-				"Diese Schriftart ist nicht konfiguriert. Elemente, die diesen Textstil anwenden, werden mit der Standardschriftart gedruckt.",
+				"Diese Schriftart existiert nicht in den Workspace-Ressourcen. Elemente mit diesem Textstil werden mit der Standardschriftart gedruckt.",
 			typesettingModeNotFound: "Dieses Silbentrennungsmodell wurde im Arbeitsbereich nicht gefunden",
 		},
 		notification: {
@@ -706,8 +728,8 @@ export const de: typeof RESOURCE_KEYS = {
 				description: "Die in der Print Engine konfigurierte Schriftart $font$ kann nicht geladen werden",
 			},
 			useUnconfiguredFont: {
-				title: "Der Textstil verwendet eine nicht konfigurierte Schriftart",
-				description: `Der Textstil "$textStyle$" verwendet die Schriftart "$font$", die nicht richtig konfiguriert wurde.`,
+				title: `Textstil "$textStyle$" verwendet eine nicht existierende Schriftart`,
+				description: `"$font$" existiert nicht in den Workspace-Ressourcen. Prüfen Sie, ob der Ressource-Dateiname dem Namen der ausgewählten Schrift entspricht.`,
 			},
 			cannotLoadTypesetting: {
 				title: "Satz konnte nicht geladen werden",
@@ -716,7 +738,6 @@ export const de: typeof RESOURCE_KEYS = {
 		},
 		tooltips: {
 			defaultConfigurationFont: "Standardkonfigurationsschriftart",
-			legacyRenderingMode: `Dieses Feature ist nicht im „Legacy Rendering-Modus“ (in der Druckvorschau) verfügbar.`,
 			fontSizeLineHeightNote:
 				"Bitte beachten Sie, dass der empfohlene Zeilenabstand 1,5-mal größer als die Schriftgröße sein sollte. Zum Beispiel: Wenn Sie mit einer Schriftgröße von 12 arbeiten, beträgt der empfohlene Zeilenabstand 18",
 		},
@@ -752,6 +773,7 @@ export const de: typeof RESOURCE_KEYS = {
 		},
 		relativeLayout: {
 			changeMargin: "Geänderte Ränder von Elementen auf der Bühne",
+			changePageBreakBehavior: "Seitenumbruch-Verhalten geändert",
 		},
 		useCopyPaste: {
 			pasteElements: "Kopierte Elemente einfügen",
@@ -807,6 +829,7 @@ export const de: typeof RESOURCE_KEYS = {
 					"Schalten Sie das Textelement ausblenden um, wenn alle verschachtelten Elemente kein Textelement enthalten",
 				changeBorderProperties: "Geänderte Rahmeneigenschaften des Textelements",
 				changeTextProperties: "Geänderte Texteigenschaften des Textelements",
+				clearCalculationTextProperties: "Texteigenschaften der Berechnung im Textelement gelöscht",
 			},
 			imageFormContainer: {
 				generalProperties: {
@@ -928,10 +951,12 @@ export const de: typeof RESOURCE_KEYS = {
 				},
 				tableColumnExpression: {
 					changeContent: "Geänderter Inhalt der Ausdrucksspalte des Tabellenelements",
+					clearTextProperties: "Texteigenschaften des Ausdrucks in der Tabellenspalte gelöscht",
 				},
 				tableColumnFieldForm: {
 					changeField: "Geänderte Feldspalte des Tabellenelements",
 					changeFieldFormatting: "Geänderte Feldformatierung des Tabellenelements",
+					clearTextProperties: "Texteigenschaften des Feldes in der Tabellenspalte gelöscht",
 				},
 				tableColumnForm: {
 					default: "Aktualisierte Tabellenspalte des Tabellenelements",

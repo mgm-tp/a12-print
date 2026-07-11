@@ -31,13 +31,11 @@
  */
 import { createSelector } from "reselect";
 
-import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import {
-	ElementType,
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type {
 	Expression,
 	Metadata,
-	PartialArea,
-	PartialBoundingBox,
 	PrintModelContentGeneral,
 	PrintModelElement,
 	PrintModelHeader,
@@ -46,8 +44,9 @@ import {
 	Styleable,
 	TextStyle,
 	Watermark,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType, PartialArea, PartialBoundingBox } from "@com.mgmtp.a12.print/print-model-api/model";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import {
 	createSliceSelector,
@@ -55,11 +54,16 @@ import {
 	idInputSelectorSecond,
 	PrintEngineSelectors,
 } from "../../store/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { AnnotationData } from "../../components/general/annotations/annotation.js";
-import { PrintModelErrorMap } from "../../types/index.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import type { AnnotationData } from "../../../internal/components/general/annotations/annotation.js";
+import type { PrintModelErrorMap } from "../../../internal/types/index.js";
+import type { ValidationState } from "../../../a12internal/api/ValidationState.js";
 
-import { ValidationCounter, ValidationState } from "./state.js";
+import { NavigationSelectors } from "../navigation/selectors.js";
+import { isBaseElementFormState, isBaseReferenceFormState } from "../navigation/state.js";
+
+import { ValidationCounter } from "./state.js";
+import type { Selector } from "./selector-utils.js";
 import {
 	isAreaErrorMap,
 	isBarChartErrorMap,
@@ -77,7 +81,6 @@ import {
 	isTableErrorMap,
 	isTableLayoutErrorMap,
 	isTextErrorMap,
-	Selector,
 } from "./selector-utils.js";
 
 export namespace ValidationSelectors {
@@ -204,7 +207,7 @@ export namespace ValidationSelectors {
 		(state, elements, id) => {
 			const currentElement = elements.find(element => id === element["@id"]);
 			if (!currentElement) {
-				return ValidationCounter.createEmpty();
+				return ValidationCounter.EMPTY_VALIDATION_COUNTER;
 			}
 
 			return elementValidationCounterByElement(state, currentElement);
@@ -261,9 +264,9 @@ export namespace ValidationSelectors {
 	export const containerElementValidationCounter = createSelector(
 		[
 			PrintEngineSelectors.state,
-			PrintEngineSelectors.printModelRefs,
+			NavigationSelectors.activeEntities,
 			PrintEngineSelectors.currentContainerElement,
-			PrintEngineSelectors.sidebar,
+			NavigationSelectors.sidebarState,
 			generalTabValidationCounter,
 			textStylesValidationCounter,
 		],
@@ -275,7 +278,7 @@ export namespace ValidationSelectors {
 			generalTabValidationCounter,
 			textStylesValidationCounter
 		) => {
-			const selectedSidebarItem = sidebarState.selectedItem;
+			const selectedSidebarItem = sidebarState.activeTab;
 			if (selectedSidebarItem === SidebarItem.GENERAL) {
 				return generalTabValidationCounter;
 			}
@@ -283,7 +286,7 @@ export namespace ValidationSelectors {
 				return textStylesValidationCounter;
 			}
 			if ([SidebarItem.SCHEMA, SidebarItem.COMMIT_CHANGES].includes(selectedSidebarItem)) {
-				return ValidationCounter.createEmpty();
+				return ValidationCounter.EMPTY_VALIDATION_COUNTER;
 			}
 			const elementIds = currentContainerElement?.elementReferences?.map(reference => reference?.refId) || [];
 
@@ -297,7 +300,7 @@ export namespace ValidationSelectors {
 					counter = ValidationCounter.from(watermark(state, currentContainerElement?.id));
 				}
 			} else {
-				counter = ValidationCounter.createEmpty();
+				counter = ValidationCounter.EMPTY_VALIDATION_COUNTER;
 			}
 
 			elementIds.forEach(element => {
@@ -314,7 +317,7 @@ export namespace ValidationSelectors {
 			const segments = PrintEngineSelectors.segments(state);
 			const sections = PrintEngineSelectors.sections(state);
 			const watermarks = PrintEngineSelectors.watermarks(state);
-			const emptyValidationCounter = ValidationCounter.createEmpty();
+			const emptyValidationCounter = ValidationCounter.EMPTY_VALIDATION_COUNTER;
 
 			return {
 				[SidebarItem.GENERAL]: generalTabValidationCounter,
@@ -442,7 +445,7 @@ export namespace ValidationSelectors {
 		[
 			PrintEngineSelectors.state,
 			PrintEngineSelectors.currentWrapperContainerId,
-			PrintEngineSelectors.printModelRefs,
+			NavigationSelectors.activeEntities,
 		],
 		(state, wrapperId, printModelRefs) => {
 			if (wrapperId) {
@@ -488,7 +491,7 @@ export namespace ValidationSelectors {
 		(state, elements, id) => {
 			const currentElement = elements.find(element => id === element["@id"]);
 			if (!currentElement) {
-				return ValidationCounter.createEmpty();
+				return ValidationCounter.EMPTY_VALIDATION_COUNTER;
 			}
 
 			return elementValidationCounterByElement(state, currentElement, placeableDefaultStageCounterGetter);
@@ -500,7 +503,7 @@ export namespace ValidationSelectors {
 		(state, elements, id) => {
 			const currentElement = elements.find(element => id === element["@id"]);
 			if (!currentElement) {
-				return ValidationCounter.createEmpty();
+				return ValidationCounter.EMPTY_VALIDATION_COUNTER;
 			}
 
 			return elementValidationCounterByElement(state, currentElement, placeableLayoutStageCounterGetter);
@@ -514,7 +517,7 @@ export namespace ValidationSelectors {
 	export const placeableRefDefaultCounter = createSelector(
 		[currentPlaceableReference],
 		placeableReferenceErrorMap => {
-			if (!placeableReferenceErrorMap) return ValidationCounter.createEmpty();
+			if (!placeableReferenceErrorMap) return ValidationCounter.EMPTY_VALIDATION_COUNTER;
 			const positionErrors = ValidationCounter.from(placeableReferenceErrorMap.position);
 			const hideConditionsErrors = ValidationCounter.from(placeableReferenceErrorMap.hideConditions);
 			return ValidationCounter.add(positionErrors, hideConditionsErrors);
@@ -524,7 +527,7 @@ export namespace ValidationSelectors {
 	export const allPlaceableRefLayoutCounter = createSelector(
 		[PrintEngineSelectors.state, currentElementReferences, PrintEngineSelectors.elementReferences],
 		(state, elementReferencesErrorMap, elementReferences) => {
-			let validationCounter = ValidationCounter.createEmpty();
+			let validationCounter = ValidationCounter.EMPTY_VALIDATION_COUNTER;
 
 			elementReferencesErrorMap?.forEach(el => {
 				validationCounter = ValidationCounter.add(
@@ -547,7 +550,7 @@ export namespace ValidationSelectors {
 	export const allPlaceableRefDefaultCounter = createSelector(
 		[PrintEngineSelectors.state, currentElementReferences, PrintEngineSelectors.elementReferences],
 		(state, elementReferencesErrorMap, elementReferences) => {
-			let validationCounter = ValidationCounter.createEmpty();
+			let validationCounter = ValidationCounter.EMPTY_VALIDATION_COUNTER;
 
 			elementReferencesErrorMap?.forEach(el => {
 				validationCounter = ValidationCounter.add(validationCounter, ValidationCounter.from(el.position));
@@ -566,13 +569,19 @@ export namespace ValidationSelectors {
 	);
 
 	export const formHeaderValidationCounter = createSelector(
-		[PrintEngineSelectors.state, PrintEngineSelectors.currentDetailData],
-		(state, detailData) => {
-			const { refId, placeableRefId } = detailData || {};
-			if (refId) {
-				return elementValidationCounterById(state, refId);
+		[PrintEngineSelectors.state, NavigationSelectors.currentForm],
+		(state, currentForm) => {
+			if (!currentForm) {
+				return;
 			}
-			return elementDefaultStageValidationCounterById(state, placeableRefId);
+			if (isBaseReferenceFormState(currentForm)) {
+				return elementDefaultStageValidationCounterById(state, currentForm.referenceId);
+			}
+
+			if (isBaseElementFormState(currentForm)) {
+				return elementValidationCounterById(state, currentForm.id);
+			}
+			throw new Error("Unknow form state");
 		}
 	);
 
@@ -630,7 +639,7 @@ export function createElementDefinitionFilter<T extends DeepPartialErrorMap<Prin
 	test: (element: DeepPartialErrorMap<PrintModelElement>) => element is T
 ) {
 	return (elements: DeepPartialErrorMap<PrintModelElement>[]) => {
-		return elements.filter(element => test(element));
+		return elements.filter(element => test(element)) || [];
 	};
 }
 
@@ -640,12 +649,34 @@ export function createElementErrorMap<T extends DeepPartialErrorMap<PrintModelEl
 	return createSelector(ValidationSelectors.elements, createElementDefinitionFilter(test)) as Selector<T[]>;
 }
 
+const counterGetterCache = new WeakMap<
+	DeepPartialErrorMap<PrintModelElement>,
+	Map<
+		((error: DeepPartialErrorMap<unknown>) => ValidationCounter) | undefined,
+		{
+			currentElement: DeepPartialErrorMap<PrintModelElement>;
+			counterGetter?: (error: DeepPartialErrorMap<unknown>) => ValidationCounter;
+		}
+	>
+>();
+
 function validationCounterGetter(
 	_: PrintEngineState,
 	currentElement: DeepPartialErrorMap<PrintModelElement>,
 	counterGetter?: (error: DeepPartialErrorMap<unknown>) => ValidationCounter
 ) {
-	return { currentElement, counterGetter };
+	let elementCache = counterGetterCache.get(currentElement);
+	if (!elementCache) {
+		elementCache = new Map();
+		counterGetterCache.set(currentElement, elementCache);
+	}
+
+	let cachedResult = elementCache.get(counterGetter);
+	if (!cachedResult) {
+		cachedResult = { currentElement, counterGetter };
+		elementCache.set(counterGetter, cachedResult);
+	}
+	return cachedResult;
 }
 
 function placeableDefaultStageCounterGetter(error: DeepPartialErrorMap<unknown>): ValidationCounter {
@@ -685,8 +716,5 @@ function placeableLayoutStageCounterGetter(error: DeepPartialErrorMap<unknown>):
 			warning: 0,
 		};
 	}
-	return {
-		error: 0,
-		warning: 0,
-	};
+	return ValidationCounter.EMPTY_VALIDATION_COUNTER;
 }

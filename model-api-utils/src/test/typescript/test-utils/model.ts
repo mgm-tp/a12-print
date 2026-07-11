@@ -31,36 +31,37 @@
  */
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	Area,
 	BoundingBox,
-	ElementType,
 	Field,
-	Language,
-	MeasureUnit,
 	Override,
-	OverrideType,
-	PageOrientation,
 	PieChart,
 	PrintModel,
 	PrintModelContent,
 	PrintModelContentGeneral,
 	PrintModelElement,
 	PrintModelHeader,
-	ReferenceType,
 	Section,
 	SectionsContainer,
-	SectionUsage,
 	Segment,
-	SegmentType,
-	SourceType,
 	Table,
 	TableLayout,
 	Text,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PRINT_MODEL_VERSION } from "@com.mgmtp.a12.print/print-model-api/lib/constant/model.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import {
+	ElementType,
+	MeasureUnit,
+	OverrideType,
+	PageOrientation,
+	ReferenceType,
+	SectionUsage,
+	SegmentType,
+	SourceType,
+	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PRINT_MODEL_VERSION } from "@com.mgmtp.a12.print/print-model-api/constant";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 function getMmMeasure(value: number) {
 	return {
@@ -86,12 +87,6 @@ export const general: PrintModelContentGeneral = {
 		titleComputation: [{ id: "titleComp123", operation: '"myTestPrintModel123"' }],
 		descriptionComputation: [{ id: "titleComp123", operation: '"general printmodel description"' }],
 	},
-	details: {
-		id: "mig2m4g42",
-		author: "tony",
-		language: Language.DE,
-	},
-	title: "myTestPrintModel123",
 	segmentDefaults: {
 		id: ",khgpo,hp534",
 		fontSize: 12,
@@ -109,12 +104,6 @@ export const generalWithSection: PrintModelContentGeneral = {
 		titleComputation: [{ id: "titleComp123", operation: '"myTestPrintModel123"' }],
 		descriptionComputation: [{ id: "titleComp123", operation: '"general printmodel description"' }],
 	},
-	details: {
-		id: "mig2m4g42",
-		author: "tony",
-		language: Language.DE,
-	},
-	title: "myTestPrintModel123",
 	segmentDefaults: {
 		id: ",khgpo,hp534",
 		fontSize: 12,

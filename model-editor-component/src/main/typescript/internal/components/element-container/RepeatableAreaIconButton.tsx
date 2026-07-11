@@ -31,9 +31,10 @@
  */
 import * as React from "react";
 
-import { PartialAnyPrintModelElement, PartialArea } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { Button, ButtonProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
+import type { PartialAnyPrintModelElement } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialArea } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { ButtonProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 

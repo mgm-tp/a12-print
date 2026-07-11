@@ -29,15 +29,15 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import fs from "fs";
-import fsAsync from "fs/promises";
-import { createInterface } from "readline";
-import { EventEmitter } from "events";
+import fs from "node:fs";
+import fsAsync from "node:fs/promises";
+import { createInterface } from "node:readline";
+import { EventEmitter } from "node:events";
 
-import { StaticHyphenatorKey } from "../../constant/static-hyphenator.js";
-import { TypesettingModelMarshaller } from "../../marshaller/model-marshaller.js";
-
-import { BaseTypesettingApplier, TypesettingApplier } from "../TypesettingApplier.js";
+import { StaticHyphenatorKey } from "../../../../a12internal/api/constant/static-hyphenator.js";
+import { TypesettingModelMarshaller } from "../../../../a12internal/api/marshaller/model-marshaller.js";
+import type { TypesettingApplier } from "../../../../a12internal/api/applier/TypesettingApplier.js";
+import { BaseTypesettingApplier } from "../../../../a12internal/api/applier/TypesettingApplier.js";
 
 describe("TypesettingApplier", () => {
 	let applier_de: TypesettingApplier;

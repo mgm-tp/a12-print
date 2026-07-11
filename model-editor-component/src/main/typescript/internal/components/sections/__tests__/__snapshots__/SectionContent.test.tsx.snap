@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`SectionContent with initial sections should render correctly 1`] = `
 .c5 {
@@ -47,7 +47,8 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   color: #7F8C9B;
   display: inline-block;
   direction: ltr;
-  font-family: Material Icons;
+  font-family: Material Symbols Outlined;
+  font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -193,11 +194,6 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   display: block;
 }
 
-.c6 {
-  display: flex;
-  gap: 2px;
-}
-
 .c13 {
   color: #4d4d4d;
   display: inline-block;
@@ -299,7 +295,7 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   width: 100%;
 }
 
-.c11 >.StyledTooltipWrapper-sc-bqyqat {
+.c11 >.StyledTooltipTriggerWrapper-sc-eBoCRM {
   margin: 0 4px 4px 0;
 }
 
@@ -328,6 +324,11 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   padding: 0;
   position: absolute;
   width: 0;
+}
+
+.c6 {
+  display: flex;
+  gap: 2px;
 }
 
 .c1 {
@@ -386,14 +387,6 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
 }
 
 @media (pointer: coarse) {
-
-}
-
-@media (pointer: fine) {
-
-}
-
-@media (pointer: coarse) {
   .c21:not(:disabled):active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     background-color: transparent;
@@ -435,14 +428,6 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   .c21:hover {
     outline: 1px solid transparent;
   }
-}
-
-@media (pointer: coarse) {
-
-}
-
-@media (pointer: fine) {
-
 }
 
 @media (pointer: coarse) {
@@ -493,18 +478,18 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
       </div>
       <div
         class="c7 field-wrapper field-wrapper--block"
-        data-role="textline"
+        data-role="text-field"
       >
         <div
           class="c8 c9 field__main"
         >
           <div
             class="c10 c11 field"
-            data-role="textline-control"
+            data-role="text-field-control"
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
-              data-role="textline-label"
+              data-role="text-field-label"
             >
               <span
                 class="c14 -u-unseenButRead"
@@ -515,14 +500,14 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
             </label>
             <div
               class="c15 field__input"
-              data-role="textline-input-wrapper"
+              data-role="text-field-input-wrapper"
             >
               <span
                 class="c16 supported-unseen-span"
               />
               <input
                 class="c17 field__text"
-                data-role="textline-input"
+                data-role="text-field-input"
                 placeholder="Section title"
                 type="text"
                 value="First Portrait Section"
@@ -625,18 +610,18 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
       </div>
       <div
         class="c7 field-wrapper field-wrapper--block"
-        data-role="textline"
+        data-role="text-field"
       >
         <div
           class="c8 c9 field__main"
         >
           <div
             class="c10 c11 field"
-            data-role="textline-control"
+            data-role="text-field-control"
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
-              data-role="textline-label"
+              data-role="text-field-label"
             >
               <span
                 class="c14 -u-unseenButRead"
@@ -647,14 +632,14 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
             </label>
             <div
               class="c15 field__input"
-              data-role="textline-input-wrapper"
+              data-role="text-field-input-wrapper"
             >
               <span
                 class="c16 supported-unseen-span"
               />
               <input
                 class="c17 field__text"
-                data-role="textline-input"
+                data-role="text-field-input"
                 placeholder="Section title"
                 type="text"
                 value="Remaining Portrait Section"
@@ -740,18 +725,18 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
       </div>
       <div
         class="c7 field-wrapper field-wrapper--block"
-        data-role="textline"
+        data-role="text-field"
       >
         <div
           class="c8 c9 field__main"
         >
           <div
             class="c10 c11 field"
-            data-role="textline-control"
+            data-role="text-field-control"
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
-              data-role="textline-label"
+              data-role="text-field-label"
             >
               <span
                 class="c14 -u-unseenButRead"
@@ -762,14 +747,14 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
             </label>
             <div
               class="c15 field__input"
-              data-role="textline-input-wrapper"
+              data-role="text-field-input-wrapper"
             >
               <span
                 class="c16 supported-unseen-span"
               />
               <input
                 class="c17 field__text"
-                data-role="textline-input"
+                data-role="text-field-input"
                 placeholder="Section title"
                 type="text"
                 value="First Landscape Section"
@@ -872,18 +857,18 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
       </div>
       <div
         class="c7 field-wrapper field-wrapper--block"
-        data-role="textline"
+        data-role="text-field"
       >
         <div
           class="c8 c9 field__main"
         >
           <div
             class="c10 c11 field"
-            data-role="textline-control"
+            data-role="text-field-control"
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
-              data-role="textline-label"
+              data-role="text-field-label"
             >
               <span
                 class="c14 -u-unseenButRead"
@@ -894,14 +879,14 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
             </label>
             <div
               class="c15 field__input"
-              data-role="textline-input-wrapper"
+              data-role="text-field-input-wrapper"
             >
               <span
                 class="c16 supported-unseen-span"
               />
               <input
                 class="c17 field__text"
-                data-role="textline-input"
+                data-role="text-field-input"
                 placeholder="Section title"
                 type="text"
                 value="Remaining Landscape Section"
@@ -986,7 +971,8 @@ exports[`SectionContent with no initial sections should render correctly 1`] = `
   color: #7F8C9B;
   display: inline-block;
   direction: ltr;
-  font-family: Material Icons;
+  font-family: Material Symbols Outlined;
+  font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;

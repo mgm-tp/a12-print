@@ -31,8 +31,11 @@
  */
 package com.mgmtp.a12.print.engine.api;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
 /**
  * Interface for the execution of a given {@link PrintJob}, that returns a {@link XmlPrintResult}.
  */
+@OnlyForUsage
 public interface XmlPrintEngine extends PrintEngine<XmlPrintResult> {
 }

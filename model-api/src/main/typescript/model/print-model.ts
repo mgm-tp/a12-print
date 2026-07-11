@@ -31,8 +31,8 @@
  */
 import md5 from "md5";
 
-import type { Header, ModelReference } from "@com.mgmtp.a12.base/base-model-api/lib/main/header/index.js";
-import type { LocalizedText } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import type { Header, ModelReference } from "@com.mgmtp.a12.base/base-model-api";
+import type { LocalizedText } from "@com.mgmtp.a12.utils/utils-localization";
 
 import type {
 	ComputationAlternative,
@@ -91,16 +91,6 @@ export interface PrintModelContent extends PrintModelEntity {
  */
 export interface PrintModelContentGeneral extends PrintModelEntity {
 	readonly metadata: Metadata;
-	/**
-	 * @deprecated since 3.2.0 - Use {@link Metadata.titleComputation} instead.
-	 * Note: Title information is now stored in an array of {@link ComputationAlternative}.
-	 */
-	readonly title: string;
-	/**
-	 * @deprecated since 3.2.0 - Use {@link PrintModelContentGeneral.metadata} to access metadata fields.
-	 * Note: Fields from {@link details} are now stored in arrays of {@link ComputationAlternative}.
-	 */
-	readonly details: Details;
 	readonly structure: ReadonlyArray<string>;
 	readonly segmentDefaults: SegmentDefaults;
 	readonly runtimeVariables?: ReadonlyArray<RuntimeVariable>;
@@ -109,35 +99,12 @@ export interface PrintModelContentGeneral extends PrintModelEntity {
 	readonly textStyles?: ReadonlyArray<string>;
 }
 
-/**
- * @deprecated since 3.2.0 - Use authorComputation and languageComputation from {@link PrintModelContentGeneral.metadata} instead.
- */
-export interface Details extends PrintModelEntity {
-	/**
-	 * @deprecated since 3.2.0 - Use {@link Metadata.authorComputation} to retrieve author information.
-	 * Note: Author information is now stored in an array of {@link ComputationAlternative}.
-	 */
-	readonly author: string;
-	/**
-	 * @deprecated since 3.2.0 - Use {@link Metadata.languageComputation} to retrieve language information.
-	 * Note: Language information is now stored in an array of {@link ComputationAlternative}.
-	 */
-	readonly language: Language;
-}
-
 export interface Metadata extends PrintModelEntity {
 	readonly model?: string;
 	readonly titleComputation: ReadonlyArray<ComputationAlternative>;
 	readonly descriptionComputation: ReadonlyArray<ComputationAlternative>;
 	readonly authorComputation: ReadonlyArray<ComputationAlternative>;
 	readonly languageComputation: ReadonlyArray<ComputationAlternative>;
-}
-
-/**
- * @deprecated since 3.2.0 - The `Language` enum is deprecated. Use any string to represent a language.
- */
-export enum Language {
-	DE = "DE",
 }
 
 export interface SegmentDefaults extends PrintModelEntity {
@@ -206,8 +173,7 @@ export interface WatermarksContainer extends PrintModelEntity {
 }
 
 export interface Segment
-	extends ReferenceContainer<ReferenceContainerLabels.elementReferences, PlaceableReference>,
-		PrintModelEntity {
+	extends ReferenceContainer<ReferenceContainerLabels.elementReferences, PlaceableReference>, PrintModelEntity {
 	readonly title: string;
 	readonly type: SegmentType;
 	readonly defaultSegment?: DefaultSegmentProperties;
@@ -261,8 +227,7 @@ export interface SegmentReferenceRefIdContainer extends PrintModelEntity {
 }
 
 export interface Section
-	extends ReferenceContainer<ReferenceContainerLabels.elementReferences, PlaceableReference>,
-		PrintModelEntity {
+	extends ReferenceContainer<ReferenceContainerLabels.elementReferences, PlaceableReference>, PrintModelEntity {
 	readonly title: string;
 	readonly sectionUsage: SectionUsage;
 	readonly pageOrientation: PageOrientation;
@@ -271,8 +236,7 @@ export interface Section
 }
 
 export interface Watermark
-	extends ReferenceContainer<ReferenceContainerLabels.elementReferences, PlaceableReference>,
-		PrintModelEntity {
+	extends ReferenceContainer<ReferenceContainerLabels.elementReferences, PlaceableReference>, PrintModelEntity {
 	readonly title: string;
 	readonly pageOrientation: PageOrientation;
 	readonly opacity?: number;

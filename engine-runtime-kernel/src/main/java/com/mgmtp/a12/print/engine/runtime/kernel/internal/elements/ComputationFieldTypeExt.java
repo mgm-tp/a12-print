@@ -32,16 +32,19 @@
 package com.mgmtp.a12.print.engine.runtime.kernel.internal.elements;
 
 import com.mgmtp.a12.kernel.md.model.api.fieldtypes.*;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.PredicateClassification;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.kernel.IFieldTypeExt;
+import com.mgmtp.a12.print.model.api.model.element.base.ComputationAlternative;
 import com.mgmtp.a12.print.model.api.model.element.base.FieldTypeDefinition;
 import com.mgmtp.a12.print.model.api.model.element.type.listing.GroupPropertyComputation;
 import com.mgmtp.a12.print.model.api.model.element.type.listing.RowPropertyComputation;
 import com.mgmtp.a12.print.model.api.model.element.type.listing.column.ColumnPropertyComputation;
 
+import java.util.Collection;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class ComputationFieldTypeExt {
 
@@ -59,7 +62,10 @@ public abstract class ComputationFieldTypeExt {
 		return ComputationFieldType.UNKNOWN;
 	}
 
-	public static ComputationFieldType computationFieldTypeFrom(FieldTypeDefinition.FieldType fieldType) {
+	public static ComputationFieldType computationFieldTypeFrom(
+		FieldTypeDefinition.FieldType fieldType,
+		Collection<ComputationAlternative> computationAlternatives
+	) {
 		if (fieldType != null) {
 			switch (fieldType) {
 				case BOOLEAN:
@@ -69,7 +75,12 @@ public abstract class ComputationFieldTypeExt {
 				case STRING:
 					return ComputationFieldType.STRING;
 				case TYPE_DEFINITION:
-					throw new PrintException("Unable to convert a fieldTypeReference into a ComputationFieldType");
+					throw new PrintDomainException(
+						"Unable to convert a TypeDefinition into a ComputationFieldType for the calculation \n{}",
+						computationAlternatives.stream().map(computationAlternative -> String.format(
+							"Precondition: %s, Operation: %s", computationAlternative.getPrecondition().orElse(""), computationAlternative.getOperation()
+						)).collect(Collectors.joining("\n"))
+					);
 			}
 		}
 		return ComputationFieldType.UNKNOWN;
@@ -137,61 +148,25 @@ public abstract class ComputationFieldTypeExt {
 	}
 
 	public static ComputationFieldType computationFieldTypeFrom(ColumnPropertyComputation.PropertyType property) {
-		switch (property) {
-			case BOLD:
-			case ITALIC:
-			case UNDERLINE:
-			case IS_HIDDEN:
-			case IS_CONTENT_HIDDEN:
-				return ComputationFieldType.BOOLEAN;
-			case HORIZONTAL_ALIGNMENT:
-			case VERTICAL_ALIGNMENT:
-			case FONT:
-			case COLOR:
-			case BACKGROUND_COLOR:
-			case BORDER_STYLE:
-			case BORDER_COLOR:
-				return ComputationFieldType.STRING;
-			case FONT_SIZE:
-			case LINE_HEIGHT:
-			case BORDER_WIDTH:
-			case COLUMN_SPAN:
-			case PADDING_TOP:
-			case PADDING_BOTTOM:
-			case PADDING_LEFT:
-			case PADDING_RIGHT:
-				return ComputationFieldType.NUMBER;
-			default:
+		return switch (property) {
+			case BOLD, ITALIC, UNDERLINE, IS_HIDDEN, IS_CONTENT_HIDDEN -> ComputationFieldType.BOOLEAN;
+			case HORIZONTAL_ALIGNMENT, VERTICAL_ALIGNMENT, FONT, COLOR, BACKGROUND_COLOR, BORDER_STYLE, BORDER_COLOR ->
+				ComputationFieldType.STRING;
+			case FONT_SIZE, LINE_HEIGHT, BORDER_WIDTH, COLUMN_SPAN, PADDING_TOP, PADDING_BOTTOM, PADDING_LEFT,
+			     PADDING_RIGHT -> ComputationFieldType.NUMBER;
+			default ->
 				throw new PrintCompilerException("ColumnPropertyComputation.PropertyType " + property.name() + "is not supported");
-		}
+		};
 	}
 
 	public static ComputationFieldType computationFieldTypeFrom(RowPropertyComputation.PropertyType property) {
-		switch (property) {
-			case BOLD:
-			case ITALIC:
-			case UNDERLINE:
-			case IS_HIDDEN:
-				return ComputationFieldType.BOOLEAN;
-			case HORIZONTAL_ALIGNMENT:
-			case VERTICAL_ALIGNMENT:
-			case FONT:
-			case COLOR:
-			case BACKGROUND_COLOR:
-			case BORDER_STYLE:
-			case BORDER_COLOR:
-				return ComputationFieldType.STRING;
-			case FONT_SIZE:
-			case LINE_HEIGHT:
-			case BORDER_WIDTH:
-			case PADDING_TOP:
-			case PADDING_BOTTOM:
-			case PADDING_LEFT:
-			case PADDING_RIGHT:
-				return ComputationFieldType.NUMBER;
-			default:
-				throw new PrintCompilerException("RowPropertyComputation.PropertyType " + property.name() + "is not supported");
-		}
+		return switch (property) {
+			case BOLD, ITALIC, UNDERLINE, IS_HIDDEN -> ComputationFieldType.BOOLEAN;
+			case HORIZONTAL_ALIGNMENT, VERTICAL_ALIGNMENT, FONT, COLOR, BACKGROUND_COLOR, BORDER_STYLE, BORDER_COLOR ->
+				ComputationFieldType.STRING;
+			case FONT_SIZE, LINE_HEIGHT, BORDER_WIDTH, PADDING_TOP, PADDING_BOTTOM, PADDING_LEFT, PADDING_RIGHT ->
+				ComputationFieldType.NUMBER;
+		};
 	}
 
 	public static ComputationFieldType computationFieldTypeFrom(GroupPropertyComputation.PropertyType property) {

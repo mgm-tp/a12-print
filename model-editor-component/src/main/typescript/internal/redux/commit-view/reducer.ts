@@ -29,16 +29,18 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Action, Reducer } from "redux";
+import type { Action, Reducer } from "redux";
 
 import { CommitViewActions } from "./actions.js";
-import { CommitViewState } from "./state.js";
+import type { CommitViewState } from "./state.js";
 
 const defaultCommitViewState: CommitViewState = {
 	commitViewErrorMap: undefined,
 	printModel: undefined,
 	logPersistentEntries: [],
 	commitInteractionRows: [],
+	precompileMessages: [],
+	isCommitting: false,
 };
 
 export const CommitViewReducer: Reducer<CommitViewState> = (
@@ -49,6 +51,13 @@ export const CommitViewReducer: Reducer<CommitViewState> = (
 		return {
 			...state,
 			commitViewErrorMap: action.payload,
+		};
+	}
+
+	if (CommitViewActions.setCommitViewPrecompileMessages.match(action)) {
+		return {
+			...state,
+			precompileMessages: action.payload,
 		};
 	}
 
@@ -64,6 +73,13 @@ export const CommitViewReducer: Reducer<CommitViewState> = (
 		return {
 			...state,
 			commitInteractionRows: action.payload,
+		};
+	}
+
+	if (CommitViewActions.setIsCommitting.match(action)) {
+		return {
+			...state,
+			isCommitting: action.payload,
 		};
 	}
 

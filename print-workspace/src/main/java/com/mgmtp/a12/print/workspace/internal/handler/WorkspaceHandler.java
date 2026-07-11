@@ -31,10 +31,7 @@
  */
 package com.mgmtp.a12.print.workspace.internal.handler;
 
-import com.mgmtp.a12.kernel.md.document.api.services.DocumentDeserializationConfig;
-import com.mgmtp.a12.kernel.md.document.api.services.DocumentSerializationConfig;
 import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
-import com.mgmtp.a12.kernel.md.document.apiV2.services.IDocumentV2Serializer;
 import com.mgmtp.a12.kernel.md.model.a12internal.DocumentModel;
 import com.mgmtp.a12.kernel.md.model.a12internal.services.DocumentModelService;
 import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
@@ -42,17 +39,17 @@ import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelResolver;
 import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelSerializer;
 import com.mgmtp.a12.kernel.md.serializer.MDSerializerFactory;
 import com.mgmtp.a12.model.header.Header;
-import com.mgmtp.a12.model.notification.RankedNotification;
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.workspace.internal.Workspace;
-import com.mgmtp.a12.print.workspace.internal.constants.ConfigConstants;
 import com.mgmtp.a12.print.workspace.internal.constants.ModelType;
-import com.mgmtp.a12.print.workspace.internal.elements.*;
+import com.mgmtp.a12.print.workspace.internal.elements.DocumentFileElement;
+import com.mgmtp.a12.print.workspace.internal.elements.FileElement;
+import com.mgmtp.a12.print.workspace.internal.elements.FileElementType;
+import com.mgmtp.a12.print.workspace.internal.elements.ModelFileElement;
 import com.mgmtp.a12.print.workspace.internal.exceptions.PrintWorkspaceException;
-import com.mgmtp.a12.print.workspace.internal.printConfig.ConfigStatus;
-import com.mgmtp.a12.print.workspace.internal.printConfig.ConfigUtils;
-import com.mgmtp.a12.print.workspace.internal.printConfig.CustomPrintEngineConfigWrapper;
+import com.mgmtp.a12.print.workspace.internal.fonts.FontLoader;
 import com.mgmtp.a12.print.workspace.internal.utils.DocumentModelUtils;
+import com.mgmtp.a12.print.workspace.internal.utils.DocumentV2Utils;
 import com.mgmtp.a12.print.workspace.internal.utils.FileUtils;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -64,16 +61,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
-import static com.mgmtp.a12.print.workspace.internal.elements.FileElementType.YAML;
 
 @Slf4j
 public class WorkspaceHandler implements IDocumentModelResolver {
 
 	@NonNull
-	private final IDocumentV2Serializer documentSerializer;
+	private final DocumentV2Utils documentV2Utils;
 	@NonNull
 	private final IDocumentModelSerializer documentModelSerializer;
 	@NonNull
@@ -81,17 +75,11 @@ public class WorkspaceHandler implements IDocumentModelResolver {
 	@NonNull
 	private final DocumentModelService documentModelService;
 
-	private final DocumentDeserializationConfig deserializationConfig
-		= DocumentDeserializationConfig.builder()
-									   .format(DocumentSerializationConfig.Format.JSON)
-									   .addTransientFields(true)
-									   .build();
-
 	public WorkspaceHandler() {
 		this.documentModelUtils = new DocumentModelUtils(this);
 		final var serializerFactory = new MDSerializerFactory();
 		this.documentModelSerializer = serializerFactory.createDocumentModelSerializer();
-		this.documentSerializer = serializerFactory.createDocumentSerializerV2(this);
+		this.documentV2Utils = new DocumentV2Utils(serializerFactory.createDocumentSerializerV2(this));
 		this.documentModelService = new DocumentModelService();
 	}
 
@@ -114,7 +102,7 @@ public class WorkspaceHandler implements IDocumentModelResolver {
 						documentModelService.convertFromExternal(documentModelSerializer.deserialize(new StringReader(e)))
 					);
 
-					documentModelUtils.suffixTypeDefinitionWithModelName(internDocumentModel);
+					documentModelUtils.prefixTypeDefinitionWithModelName(internDocumentModel);
 
 					return internDocumentModel;
 				} catch (IOException ex) {
@@ -164,12 +152,6 @@ public class WorkspaceHandler implements IDocumentModelResolver {
 						   .findAny();
 	}
 
-	public Optional<YamlFileElement> getYamlFileElement(Path path) {
-		return getFileMap().get(YAML).stream().filter(model -> model.getPath().equals(path))
-			.map(YamlFileElement.class::cast)
-			.findAny();
-	}
-
 	public String getFileElementContent(FileElement fileElement) {
 		return FileUtils.readFileContent(fileElement.getPath());
 	}
@@ -203,23 +185,9 @@ public class WorkspaceHandler implements IDocumentModelResolver {
 	public Optional<DocumentV2> getDocument(String id) {
 		final var documentModelId = DocumentFileElement.resolveModelName(id);
 		final var documentIdWithoutModel = DocumentFileElement.resolveIdWithoutModel(id);
-		Optional<DocumentV2> document = getDocumentContent(id).map(e -> documentSerializer.deserializeV2(
-			new StringReader(e),
-			documentModelId,
-			deserializationConfig,
-			(Consumer<RankedNotification>) rankedNotification -> {
-				switch (rankedNotification.getSeverity()) {
-					case INFO:
-						log.info(rankedNotification.getMessage());
-						break;
-					case WARNING:
-						log.warn(rankedNotification.getMessage());
-						break;
-					case ERROR:
-						log.error(rankedNotification.getMessage());
-						throw new PrintWorkspaceException("Error on parsing document: " + rankedNotification);
-				}
-			})
+
+		Optional<DocumentV2> document = getDocumentContent(id).map(e ->
+			documentV2Utils.getDocumentV2(e, documentModelId)
 		);
 
 		if (document.isPresent()) {
@@ -252,39 +220,8 @@ public class WorkspaceHandler implements IDocumentModelResolver {
 						   .findAny();
 	}
 
-	public Optional<ModelFileElement> getSettingFileElement() {
-		return getFileMap().get(FileElementType.MODEL).stream()
-			.map(ModelFileElement.class::cast)
-			.filter(model -> model.getModelHeader().getModelType().equals(ModelType.PRINT_SETTING_MODEL_TYPE)
-				&& model.getPath().getFileName().toString().equals(String.format("%s.%s", ConfigConstants.PRINT_SETTING_MODEL_ID, ModelFileElement.EXTENSION))
-				&& model.getModelHeader().getId().equals(ConfigConstants.PRINT_SETTING_MODEL_ID))
-			.findAny();
-	}
-
-	public PrintEngineConfig getPrintConfig() {
-		final var fileConfig = getSettingFileElement()
-			.map(fileElement -> FileUtils.readFileContent(fileElement.getPath()))
-			.flatMap(ConfigUtils::parseConfigContent);
-		return new CustomPrintEngineConfigWrapper(fileConfig.orElse(null));
-	}
-
-	public ConfigStatus getPrintConfigStatus() {
-		final var configFileElement = getSettingFileElement();
-
-		if (configFileElement.isEmpty()) {
-			return new ConfigStatus(ConfigStatus.Status.INVISIBLE, null);
-		}
-
-		final var config = configFileElement
-			.map(fileElement -> FileUtils.readFileContent(fileElement.getPath()))
-			.flatMap(ConfigUtils::parseConfigContent);
-		final var path = configFileElement.get().getPath().toString()
-			.replace(Workspace.getInstance().getPath().toString(), "");
-
-		return new ConfigStatus(
-			config.isEmpty() ? ConfigStatus.Status.INVALID : ConfigStatus.Status.LOADED,
-			path
-		);
+	public PdfBoxPrintEngineConfig getPrintConfig() {
+		return FontLoader.loadFontConfig();
 	}
 
 	public Map<FileElementType, List<FileElement>> getFileMap() {

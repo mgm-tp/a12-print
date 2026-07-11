@@ -31,14 +31,12 @@
  */
 package com.mgmtp.a12.print.engine.runtime.test.internal;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mgmtp.a12.kernel.md.document.api.IDocument;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 import com.mgmtp.a12.kernel.md.model.a12internal.services.DocumentModelService;
 import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
 import com.mgmtp.a12.kernel.md.serializer.MDSerializerFactory;
-import com.mgmtp.a12.print.engine.api.PdfPrintEngine;
 import com.mgmtp.a12.print.engine.api.PdfPrintResult;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelDto;
 import com.mgmtp.a12.print.model.api.utils.serialization.ObjectMapperFactory;
@@ -105,13 +103,6 @@ public class PrintTestUtil {
 	}
 
 	public static File writeResultFiles(final PdfPrintResult result, final String baseName) throws IOException {
-		try (final InputStream inputStream = PdfPrintEngine.class.getResourceAsStream("/ftl/main.css")) {
-			assert inputStream != null;
-			final byte[] cssContent = IOUtils.toByteArray(inputStream);
-			final File cssFile = PrintTestUtil.resolveFile("main.css").toPath().toFile();
-			FileUtils.writeByteArrayToFile(cssFile, cssContent);
-		}
-
 		final File pdfFile = PrintTestUtil.resolveFile(baseName + ".pdf").toPath().toFile();
 		try (var output = FileUtils.openOutputStream(pdfFile)) {
 			result.copyTo(output);
@@ -132,18 +123,6 @@ public class PrintTestUtil {
 			true
 		);
 		// end::ExecutorService[]
-	}
-
-	public static IDocument getDocumentToPrint(
-		@NonNull String documentModelId,
-		@NonNull String document,
-		@NonNull String documentModel
-	) {
-		return new DocumentDeserializer().provide(
-			documentModelId,
-			document,
-			new DocumentModelResolver(documentModel)
-		);
 	}
 
 	public static DocumentV2 getDocumentV2ToPrint(
@@ -184,7 +163,7 @@ public class PrintTestUtil {
 	public static PrintModelDto deserializePrintModel(String printModelContent) {
 		try {
 			return OBJECT_MAPPER.readValue(printModelContent, PrintModelDto.class);
-		} catch (JsonProcessingException exception) {
+		} catch (JacksonException exception) {
 			throw new RuntimeException(exception);
 		}
 	}
@@ -192,7 +171,7 @@ public class PrintTestUtil {
 	public static String serializePrintModel(PrintModelDto printModel) {
 		try {
 			return OBJECT_MAPPER.writeValueAsString(printModel);
-		} catch (JsonProcessingException exception) {
+		} catch (JacksonException exception) {
 			throw new RuntimeException(exception);
 		}
 	}

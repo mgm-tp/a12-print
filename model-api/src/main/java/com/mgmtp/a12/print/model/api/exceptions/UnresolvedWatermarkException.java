@@ -31,6 +31,9 @@
  */
 package com.mgmtp.a12.print.model.api.exceptions;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
+@OnlyForUsage
 public class UnresolvedWatermarkException extends RuntimeException {
 
 	public UnresolvedWatermarkException(final String watermarkId, int index) {

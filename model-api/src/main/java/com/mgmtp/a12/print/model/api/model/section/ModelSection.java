@@ -32,9 +32,11 @@
 package com.mgmtp.a12.print.model.api.model.section;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.container.TopLevelReferenceContainer;
 import com.mgmtp.a12.print.model.api.model.element.base.Measure;
 
+@OnlyForUsage
 public interface ModelSection extends TopLevelReferenceContainer {
 	String getTitle();
 	SectionUsage getSectionUsage();
@@ -53,6 +55,7 @@ public interface ModelSection extends TopLevelReferenceContainer {
 	 * {@link SectionUsage#FIRST} sections are only displayed on the first page of the resulting pdf.
 	 * {@link SectionUsage#REMAINING} sections are displayed on every page that is not already displaying a {@link SectionUsage#FIRST} section.
 	 */
+	@OnlyForUsage
 	enum SectionUsage {
 		@JsonProperty("First") FIRST,
 		@JsonProperty("Remaining") REMAINING,

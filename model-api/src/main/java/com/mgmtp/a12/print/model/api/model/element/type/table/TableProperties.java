@@ -39,8 +39,10 @@ import com.mgmtp.a12.print.model.api.model.reference.TableColumnReference;
 
 import java.util.Collection;
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 
+@OnlyForUsage
 public interface TableProperties extends PrintModelEntity {
 	String getModel();
 	String getBasePath();

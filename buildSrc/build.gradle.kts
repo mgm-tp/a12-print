@@ -39,9 +39,11 @@ repositories {
 }
 
 dependencies {
+	implementation(a12Libs.kernelMdFacade)
+	implementation(a12Libs.baseModelApi)
+
 	implementation(thirdPartyLibs.jackson)
 	implementation(thirdPartyLibs.nodeGradle)
-	implementation(thirdPartyLibs.springBootGradle);
-	implementation(thirdPartyLibs.springLoaderTools)
+	implementation(thirdPartyLibs.shadowJar)
 }
 

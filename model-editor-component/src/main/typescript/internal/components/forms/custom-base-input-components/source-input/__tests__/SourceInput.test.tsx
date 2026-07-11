@@ -32,7 +32,8 @@
 import { jest } from "@jest/globals";
 import { fireEvent } from "@testing-library/react";
 
-import { ElementType, PartialTable } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PartialTable } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { renderWithProviders } from "../../../../../../../../test/typescript/test-utils/index.js";
@@ -64,7 +65,7 @@ describe("SourceInput", () => {
 	describe("source toggle display", () => {
 		it("shows INPUT and DEFAULT source toggles when no inputSource is set", () => {
 			const { getByTitle, queryByTitle } = renderWithProviders(
-				<SourceInput label="Label" sourceProperties={makeSourceProps()} />
+				<SourceInput label="Label" onChange={jest.fn()} sourceProperties={makeSourceProps()} />
 			);
 
 			expect(getByTitle("Enter User Input")).toBeInTheDocument();
@@ -76,6 +77,7 @@ describe("SourceInput", () => {
 			const { getByTitle } = renderWithProviders(
 				<SourceInput
 					label="Label"
+					onChange={jest.fn()}
 					sourceProperties={makeSourceProps({ determineInheritedSource: () => true })}
 				/>
 			);
@@ -87,6 +89,7 @@ describe("SourceInput", () => {
 			const { getByTitle } = renderWithProviders(
 				<SourceInput
 					label="Label"
+					onChange={jest.fn()}
 					sourceProperties={makeSourceProps({
 						determineInheritedSource: () => true,
 						inputSource: { id: "source-id", source: PossibleInputSource.INPUT, path: property },
@@ -122,6 +125,7 @@ describe("SourceInput", () => {
 			const { getByTitle } = renderWithProviders(
 				<SourceInput
 					label="Label"
+					onChange={jest.fn()}
 					sourceProperties={makeSourceProps({
 						inputSource: { id: "source-id", source: PossibleInputSource.DEFAULT, path: property },
 					})}
@@ -137,6 +141,7 @@ describe("SourceInput", () => {
 			const { getByTitle } = renderWithProviders(
 				<SourceInput
 					label="Label"
+					onChange={jest.fn()}
 					sourceProperties={makeSourceProps({
 						determineInheritedSource: () => true,
 						inputSource: { id: "source-id", source: PossibleInputSource.INPUT, path: property },
@@ -190,6 +195,7 @@ describe("SourceInput", () => {
 				<SourceInput
 					label="Label"
 					id="source-text-input"
+					onChange={jest.fn()}
 					sourceProperties={makeSourceProps({
 						inputSource: { id: "source-id", source: PossibleInputSource.DEFAULT, path: property },
 					})}
@@ -205,6 +211,7 @@ describe("SourceInput", () => {
 				<SourceInput
 					label="Label"
 					id="source-text-input"
+					onChange={jest.fn()}
 					sourceProperties={makeSourceProps({
 						determineInheritedSource: () => true,
 						inputSource: { id: "source-id", source: PossibleInputSource.INHERITED, path: property },

@@ -32,10 +32,12 @@
 package com.mgmtp.a12.print.model.api.utils.serialization;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.util.StdConverter;
+import tools.jackson.databind.util.StdConverter;
 
 import java.util.Locale;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public class LocaleToJsonConverter extends StdConverter<Locale, Object> {
 	LocaleToJsonConverter() {
 	}

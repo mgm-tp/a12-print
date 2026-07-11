@@ -36,7 +36,9 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface EnableGetterByFieldNameForInheritableSource {

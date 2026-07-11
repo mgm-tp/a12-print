@@ -61,7 +61,13 @@ Click the `Resolve All Issues` button to automatically update them.
 [NOTE]
 ====
 Print Model files older than version `2.1.0` must first be migrated using the Java-based print-shell tool.
-Follow the <<PrintShellMigration, print-shell migration instructions>>.
+Follow the link:/docs/PRINT_ENGINE/print-technical-documentation/index.html#legacy_migration[print-shell migration instructions].
+====
+
+[WARNING]
+====
+When migrating a Print Model to a new version in the SME, any uncommitted changes stored in `.wal` files may become invalid after the migration.
+Please commit all pending changes *before* opening and migrating the model in a newer SME version to avoid data loss.
 ====
 
 == Print Model [[PrintModelIntro]]
@@ -123,7 +129,7 @@ image::chapter01/01_margin_layout_with_margins.png[Margin layout example with ma
 You can use Print Model References as <<PrintModelTemplates,Templates>> in other Print Models.
 This allows you to define regions with a set height and static layout, enabling the creation of Print Models that conform to various standards (e.g. DIN standards).
 
-The available Fonts can be centrally managed using a Print Settings Model. These fonts can then be easily selected in the Print Model when configuring <<TextStylesTab, Text Styles>>.
+The available Fonts are provided as workspace resources and can be selected in the Print Model when configuring <<TextStylesTab, Text Styles>>.
 
 === Dynamic Content
 Print Model elements can utilize references to data from Document Models, allowing dynamic content to be displayed in the PDF.
@@ -159,4 +165,3 @@ This procedure persists even temporary changes in case of system crashes, editor
 Every change a user makes is reflected directly in the workspace which is helpful during support requests and bug reports.
 When making such inquiries, please make sure to add your Print Model and any relevant `.wal` file.
 ====
-

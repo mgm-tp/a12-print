@@ -29,18 +29,33 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Page, Locator, expect } from "@playwright/test";
+import type { Page, Locator } from "@playwright/test";
+import { expect } from "@playwright/test";
 
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { closeDetail } from "./editorActions";
 
+// Selector for the Lexical rich text editor's editable area
+export const RICHTEXT_EDITOR_SELECTOR = "#print-richtext-editor [contenteditable='true']";
+
 // Will timeout if the text element is not available
 export const writeToTextElement = async ({ page, text }: { page: Page; text: string }) => {
-	const textBoxInput = page.locator("_react=DraftEditorContents");
+	const textBoxInput = page.locator(RICHTEXT_EDITOR_SELECTOR);
 	await textBoxInput.clear();
 	await textBoxInput.click();
-	await textBoxInput.fill(text);
+
+	// Split text by newlines and type each segment, pressing Enter between them
+	const segments = text.split("\n");
+	for (let i = 0; i < segments.length; i++) {
+		if (segments[i]) {
+			await textBoxInput.pressSequentially(segments[i], { delay: 0 });
+		}
+		if (i < segments.length - 1) {
+			await page.keyboard.press("Enter");
+		}
+	}
+	await textBoxInput.blur();
 };
 
 export const deleteTextByBackspace = async ({
@@ -53,7 +68,7 @@ export const deleteTextByBackspace = async ({
 	textElement: Locator;
 }) => {
 	await textElement.dblclick();
-	await page.locator("_react=DraftEditorContents").click();
+	await page.locator(RICHTEXT_EDITOR_SELECTOR).click();
 	for (let i = 0; i < stringToDelete.length; i++) {
 		await page.keyboard.down("Backspace");
 		await page.keyboard.up("Backspace");
@@ -69,12 +84,53 @@ export const selectInputSource = async ({
 	label: string;
 	source: PossibleInputSource;
 }) => {
-	await page
-		.locator(`_react=SourceSelect`)
-		.filter({ has: page.locator(`label:has-text("${label}")`) })
-		.locator(`button#${source}`)
-		.click();
+	const container = page.locator(`[data-role="textline-label"]:has-text("${label}")`).locator("..");
+	const sourceButton = container.locator(`button#${source}`).first();
+	// Expand the toggle (showOnlySelectedOption keeps non-selected buttons visually hidden until hover)
+	await container.hover();
+	await sourceButton.waitFor({ state: "visible" });
+	await sourceButton.click();
+	// Verify the source actually became selected before continuing
+	await expect(sourceButton).toHaveAttribute("aria-pressed", "true");
 };
+
+export async function setBorderWidth(page: Page, value: string) {
+	await selectInputSource({ page, label: "Border Width", source: PossibleInputSource.INPUT });
+	await page.getByTestId("border-width-input").fill(value);
+}
+
+export async function setBorderStyle(page: Page, value: string) {
+	await selectInputSource({ page, label: "Border Style", source: PossibleInputSource.INPUT });
+	await page.getByRole("combobox", { name: "Border Style" }).click();
+	await page.getByRole("option", { name: value }).click();
+}
+export async function setPageBreakBehavior(page: Page, value: string | null) {
+	await selectInputSource({ page, label: "Page Break Behavior", source: PossibleInputSource.INPUT });
+	if (value !== null) {
+		await page.getByRole("combobox", { name: "Page Break Behavior" }).click();
+		await page.getByRole("option", { name: value }).click();
+	}
+}
+
+export async function setBorderColor(page: Page, value: string) {
+	await selectInputSource({ page, label: "Border Color", source: PossibleInputSource.INPUT });
+	await page
+		.locator(`[data-role="textline-label"]:has-text("Border Color")`)
+		.locator("..")
+		.locator('input[type="color"]')
+		.fill(value, { force: true });
+}
+
+export async function setRichTextColor(page: Page, value: string) {
+	// Trigger the color input's onChange via evaluate to avoid stealing focus from the
+	// Lexical editor (fill() focuses the input, which clears the active selection).
+	await page.evaluate(colorValue => {
+		const input = document.querySelector("#print-richtext-editor input[type='color']") as HTMLInputElement;
+		const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
+		nativeSetter?.call(input, colorValue);
+		input.dispatchEvent(new Event("change", { bubbles: true }));
+	}, value);
+}
 
 // Will timeout if text element is not available, creates screenshot of textBox after alignment change
 export const selectThenAssertTextAlignment = async ({
@@ -87,8 +143,9 @@ export const selectThenAssertTextAlignment = async ({
 	alignment: "Left" | "Center" | "Right" | "Justify";
 }) => {
 	await textBox.dblclick();
-	await page.locator("_react=CustomSelect[id = 'alignment']").getByRole("combobox").click();
+	await page.getByRole("combobox", { name: "Alignment" }).click();
 	await page.getByRole("option", { name: alignment }).click();
 	await closeDetail({ page });
-	await expect(textBox).toHaveScreenshot();
+	await textBox.click();
+	await expect.soft(textBox).toHaveScreenshot();
 };

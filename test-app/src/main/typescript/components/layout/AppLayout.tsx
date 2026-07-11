@@ -32,8 +32,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { memo } from "react";
 
-import { ApplicationFrame } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/application-frame/main/application-frame.view";
-import { ApplicationHeader } from "@com.mgmtp.a12.widgets/widgets-core/lib/application-header/main/application-header.view";
+import { ApplicationFrame, ApplicationHeader } from "@com.mgmtp.a12.widgets/widgets-core";
 import { Button } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { TestAppSelector } from "../../store/app";

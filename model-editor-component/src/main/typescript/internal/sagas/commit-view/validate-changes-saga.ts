@@ -29,16 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { put, select, takeLatest } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
 import partition from "lodash/partition.js";
 
-import { PrintModelCreator } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/print-model-creator/index.js";
-import { Log } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import { PrintModelCreator, Log } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
-import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/lib/marshaller/model-marshaller.js";
-import { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
+import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { CommitViewActions } from "../../redux/commit-view/index.js";
@@ -47,11 +45,8 @@ import { DocumentModelDataSelectors } from "../../redux/document-model-data/sele
 
 const log = LoggerFactory.getLogger("ValidateChangesSaga");
 
-export function* validateChangesSaga(): SagaIterator {
-	yield* takeLatest(
-		(action: AnyAction) => CommitViewActions.validateChanges.match(action),
-		handleValidateChangesSaga
-	);
+export function* validateChangesSaga(): SagaGenerator<void> {
+	yield* takeLatest(CommitViewActions.validateChanges.match, handleValidateChangesSaga);
 }
 
 function* handleValidateChangesSaga() {
@@ -87,6 +82,9 @@ function* handleValidateChangesSaga() {
 	}
 
 	// validate new printmodel
-	const marshallerResult = new PrintModelMarshaller().serialize(newPrintModel, documentModels);
+	const marshallerResult = new PrintModelMarshaller().serialize(newPrintModel, {
+		html: false,
+		references: { documentModels },
+	});
 	yield* put(CommitViewActions.setCommitViewErrorMap(marshallerResult.report.errorMap));
 }

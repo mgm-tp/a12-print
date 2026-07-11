@@ -32,17 +32,21 @@
 package com.mgmtp.a12.print.model.api.model.element.type.override;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
+@OnlyForUsage
 public interface OverrideSource extends PrintModelEntity {
 	SourceType getSourceType();
 	ReferenceType getReferenceType();
 	String getReferenceElementId();
 
+	@OnlyForUsage
 	enum SourceType {
 		@JsonProperty("Reference") REFERENCE;
 	}
 
+	@OnlyForUsage
 	enum ReferenceType {
 		@JsonProperty("Segment") SEGMENT;
 	}

@@ -33,7 +33,6 @@ package com.mgmtp.a12.print.engine.runtime.codegen.internal;
 
 public enum RuntimeType {
 	CORE("Core"),
-	PDF("Pdf"),
 	PDF_BOX("PdfBox"),
 	MODEL_DOCUMENT("ModelDocument");
 

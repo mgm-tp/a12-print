@@ -42,10 +42,12 @@ import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Resolves {@link ModelSection} IDs from a given list of {@link ModelSection}s.
  */
+@OnlyForUsage
 public class SectionIdListResolver implements SectionIdResolver {
 	private final List<PrintModelTreeTrace<ModelSection>> sectionList;
 

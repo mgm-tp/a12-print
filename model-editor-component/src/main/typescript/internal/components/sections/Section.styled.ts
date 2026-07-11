@@ -29,10 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DefaultTheme, styled } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { styled } from "styled-components";
 
 import { EditorConst } from "../../constant/editor.js";
-import { ISide } from "../../types/resize.js";
+import type { ISide } from "../../types/resize.js";
 
 const { MM_TO_PX, getZIndexList } = EditorConst;
 

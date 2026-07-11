@@ -29,15 +29,15 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Action, AnyAction, actionCreatorFactory } from "typescript-fsa";
+import type { PayloadAction, UnknownAction } from "@reduxjs/toolkit";
 
-import {
+import type {
 	InteractionLogEntry,
 	TransactionLogStore,
 	InteractionRegion,
 	AffectedItem,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import {
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type {
 	PartialArea,
 	PartialBoundingBox,
 	PartialOverride,
@@ -59,11 +59,12 @@ import {
 	SegmentReference,
 	TextStyle,
 	Watermark,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { DinTemplateSegmentItem } from "../../components/segments/din-template-segment-item.js";
+import type { DinTemplateSegmentItem } from "../../../internal/components/segments/din-template-segment-item.js";
 
-import { InteractionLogActions } from "../interaction-log/actions.js";
+import type { InteractionLogActions } from "../interaction-log/actions.js";
+import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
 
 const factory = actionCreatorFactory("Print/TransactionLogState");
 
@@ -177,10 +178,10 @@ export namespace TransactionLogStateActions {
 	}
 }
 
-export type AnyTransactionLogAction = Action<WithInteractionData<object>>;
-export type ValidAnyTransactionLogAction = Action<Required<WithInteractionData<object>>>;
+export type AnyTransactionLogAction = PayloadAction<WithInteractionData<object>>;
+export type ValidAnyTransactionLogAction = PayloadAction<Required<WithInteractionData<object>>>;
 
-export type UpdateElementsTransactionLogAction = Action<
+export type UpdateElementsTransactionLogAction = PayloadAction<
 	WithInteractionData<TransactionLogStateActions.UpdatePrintModelElementsPayload | PartialValidPlaceableReference[]>
 >;
 
@@ -188,7 +189,7 @@ export const TransactionLogStateActionCreators = Object.entries(TransactionLogSt
 	.filter(([key]) => key !== "setLogStore") // do not include the setLogStore action
 	.map(([, value]) => value);
 
-export function isTransactionLogStateAction(action: AnyAction): action is AnyTransactionLogAction {
+export function isTransactionLogStateAction(action: UnknownAction): action is AnyTransactionLogAction {
 	return TransactionLogStateActionCreators.some(actionCreator => actionCreator.match(action));
 }
 

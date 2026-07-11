@@ -2,7 +2,7 @@
   "header": {
     "id": "DomainElementReference",
     "modelType": "document",
-    "modelVersion": "28.4.0",
+    "modelVersion": "29.4.0",
     "locales": [
       {
         "code": "de"
@@ -20,19 +20,16 @@
     ],
     "modelReferences": [
       {
-        "alias": "DomainMeasure",
         "modelType": "document",
         "purpose": "include",
         "reference": "DomainMeasure"
       },
       {
-        "alias": "DomainMargin",
         "modelType": "document",
         "purpose": "include",
         "reference": "DomainMargin"
       },
       {
-        "alias": "DomainPageBreakBehavior",
         "modelType": "document",
         "purpose": "include",
         "reference": "DomainPageBreakBehavior"
@@ -57,12 +54,28 @@
           "id": "group_1c7f6",
           "name": "elementReference",
           "Group": {
+            "label": [
+              {
+                "locale": "de",
+                "text": "Element reference"
+              },
+              {
+                "locale": "en",
+                "text": "Elementreferenz"
+              }
+            ],
             "repeatability": 1,
             "elements": [
               {
                 "type": "Field",
                 "id": "field_f7585",
                 "name": "id",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
@@ -86,6 +99,12 @@
                 "type": "Field",
                 "id": "field_d4a4f",
                 "name": "refId",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
@@ -110,12 +129,28 @@
                 "id": "group_32ebf",
                 "name": "position",
                 "Group": {
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Position"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Position"
+                    }
+                  ],
                   "repeatability": 1,
                   "elements": [
                     {
                       "type": "Field",
                       "id": "field_203f5",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -141,7 +176,9 @@
                       "name": "x",
                       "Group": {
                         "repeatability": 1,
-                        "modelAlias": "DomainMeasure"
+                        "includeConfig": {
+                          "reference": "DomainMeasure"
+                        }
                       }
                     },
                     {
@@ -171,7 +208,9 @@
                       "name": "y",
                       "Group": {
                         "repeatability": 1,
-                        "modelAlias": "DomainMeasure"
+                        "includeConfig": {
+                          "reference": "DomainMeasure"
+                        }
                       }
                     },
                     {
@@ -203,12 +242,28 @@
                 "id": "group_d0764",
                 "name": "dimensions",
                 "Group": {
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Abmessungen"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Dimensions"
+                    }
+                  ],
                   "repeatability": 1,
                   "elements": [
                     {
                       "type": "Field",
                       "id": "field_3d222",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -234,7 +289,9 @@
                       "name": "minHeight",
                       "Group": {
                         "repeatability": 1,
-                        "modelAlias": "DomainMeasure"
+                        "includeConfig": {
+                          "reference": "DomainMeasure"
+                        }
                       }
                     },
                     {
@@ -264,7 +321,9 @@
                       "name": "minWidth",
                       "Group": {
                         "repeatability": 1,
-                        "modelAlias": "DomainMeasure"
+                        "includeConfig": {
+                          "reference": "DomainMeasure"
+                        }
                       }
                     },
                     {
@@ -296,12 +355,28 @@
                 "id": "group_8d585",
                 "name": "hideConditions",
                 "Group": {
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Ausblendbedingungen"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Hide conditions"
+                    }
+                  ],
                   "repeatability": 999999,
                   "elements": [
                     {
                       "type": "Field",
                       "id": "field_ac6b3",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -352,12 +427,28 @@
                 "id": "group_b2f8a",
                 "name": "screenReadingOrder",
                 "Group": {
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Screenreader-Lesereihenfolge"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Screen reading order"
+                    }
+                  ],
                   "repeatability": 1,
                   "elements": [
                     {
                       "type": "Field",
                       "id": "field_0ca0a",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -408,12 +499,28 @@
                 "id": "group_62c8d",
                 "name": "margins",
                 "Group": {
+                  "label": [
+                    {
+                      "locale": "de",
+                      "text": "Seitenränder"
+                    },
+                    {
+                      "locale": "en",
+                      "text": "Margins"
+                    }
+                  ],
                   "repeatability": 1,
                   "elements": [
                     {
                       "type": "Field",
                       "id": "field_7013a",
                       "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
                       "Field": {
                         "fieldType": {
                           "type": "StringType"
@@ -447,7 +554,9 @@
                       "name": "top",
                       "Group": {
                         "repeatability": 1,
-                        "modelAlias": "DomainMargin"
+                        "includeConfig": {
+                          "reference": "DomainMargin"
+                        }
                       }
                     },
                     {
@@ -456,7 +565,9 @@
                       "name": "bottom",
                       "Group": {
                         "repeatability": 1,
-                        "modelAlias": "DomainMargin"
+                        "includeConfig": {
+                          "reference": "DomainMargin"
+                        }
                       }
                     }
                   ]
@@ -474,7 +585,9 @@
                 ],
                 "Group": {
                   "repeatability": 1,
-                  "modelAlias": "DomainPageBreakBehavior"
+                  "includeConfig": {
+                    "reference": "DomainPageBreakBehavior"
+                  }
                 }
               }
             ]

@@ -33,39 +33,32 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
-	ChartDimensions,
-	PartialPieChart,
-	PieChartData,
-	PieChartProperties,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import type { ChartDimensions, PieChartData, PieChartProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialPieChart } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { getItemsFromElementMap } from "../../utils/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { UpdateElementsTransactionLogAction, TransactionLogStateActions } from "../../redux/index.js";
-import { InteractionLogActions } from "../../redux/interaction-log/index.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { UpdateElementsTransactionLogAction } from "../../redux/index.js";
+import { TransactionLogStateActions } from "../../redux/index.js";
+import { InteractionLogActions } from "../../redux//interaction-log/index.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { ElementMapUtils } from "../../utils/element-map-utils.js";
 import { DocumentModelDataSelectors } from "../../redux/document-model-data/selectors.js";
 
 import { DocumentModelSelect } from "./shared-components/DocumentModelSelect.js";
-import {
-	AllowedElementType,
-	ChartCommonProperties,
-	CommonProperties,
-	DataContextSelection,
-} from "./shared-components/index.js";
-import { CustomCheckbox, CustomSelect, CustomTextLineStateless } from "./custom-base-input-components/index.js";
-import { ElementWithoutIdAndType } from "./type.js";
+import type { CommonProperties } from "./shared-components/index.js";
+import { AllowedElementType, ChartCommonProperties, DataContextSelection } from "./shared-components/index.js";
+import { CustomCheckbox, CustomSelect, CustomTextField } from "./custom-base-input-components/index.js";
+import type { ElementWithoutIdAndType } from "./type.js";
 
 export const PieChartFormContainer = () => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
+	const element = useSelector(PrintEngineSelectors.currentFormElement);
 	const elementReferences = useSelector(PrintEngineSelectors.elementReferences);
 	const errorMap = useSelector((state: PrintEngineState) => ValidationSelectors.pieChart(state, element?.id));
 	const wrapperDataContext = useSelector(PrintEngineSelectors.wrapperDataContext);
@@ -215,7 +208,7 @@ export const PieChartFormContainer = () => {
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getPropertyErrorMessage("model")}
 			/>
-			<CustomTextLineStateless
+			<CustomTextField
 				label={localizer(RESOURCE_KEYS.elementForm.model.group)}
 				value={group}
 				readonly

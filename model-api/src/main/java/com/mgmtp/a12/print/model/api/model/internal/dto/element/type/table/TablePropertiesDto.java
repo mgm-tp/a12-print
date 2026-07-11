@@ -32,8 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.element.type.table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.mgmtp.a12.print.model.api.inputSource.InputValueSourceResolver;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.IntegerInputSource;
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.StringInputSource;
 import com.mgmtp.a12.print.model.api.model.element.properties.TextProperties;

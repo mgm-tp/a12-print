@@ -40,3 +40,4 @@ import java.lang.annotation.*;
 public @interface PrintEngineRuntimeStreamDependency {
 	RuntimeType type();
 }
+

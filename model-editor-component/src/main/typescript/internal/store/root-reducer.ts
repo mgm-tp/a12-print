@@ -29,56 +29,34 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { combineReducers, Reducer } from "redux";
+import type { Reducer } from "redux";
+import { combineReducers } from "redux";
 
-import {
-	TransactionLogStore,
-	InteractionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { DocumentModelData } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/types/document-model-data.js";
+import type { PrintEngineState } from "../../a12internal/api/PrintEngineState.js";
 
-import { CommitViewReducer, CommitViewState } from "../redux/commit-view/index.js";
-import { DetailDataReducer, DetailDataState } from "../redux/detail-data/index.js";
-import { EditorStateReducer, PrintEditorState } from "../redux/editor-state/index.js";
-import { SidebarReducer, SidebarState } from "../redux/sidebar/index.js";
+import { CommitViewReducer } from "../redux/commit-view/index.js";
+import { EditorStateReducer } from "../redux/editor-state/index.js";
 import { TransactionLogStateReducer } from "../redux/transaction-log-state/index.js";
-import { WrapperReducer, WrapperState } from "../redux/wrapper/index.js";
 import { InteractionLogReducer } from "../redux/interaction-log/index.js";
-import { RequestApiReducer, RequestApiState } from "../redux/request-api/index.js";
-import { ValidationReducer, ValidationState } from "../redux/validation/index.js";
-import { ConfirmationDialogReducer, ConfirmationDialogState } from "../redux/confirmation-dialog/index.js";
-import { GeneralViewReducer, GeneralViewState } from "../redux/index.js";
+import { RequestApiReducer } from "../redux/request-api/index.js";
+import { ValidationReducer } from "../redux/validation/index.js";
+import { ConfirmationDialogReducer } from "../redux/confirmation-dialog/index.js";
+import { GeneralViewReducer } from "../redux/index.js";
 import { DocumentModelDataReducer } from "../redux/document-model-data/reducer.js";
-
-export interface PrintEngineState {
-	PrintEditorState: PrintEditorState;
-	DetailData: DetailDataState;
-	DocumentModelData: Record<string, DocumentModelData | undefined>;
-	Sidebar: SidebarState;
-	TransactionLogState: TransactionLogStore;
-	RequestApi: RequestApiState;
-	Wrapper: WrapperState;
-	InteractionLogState: InteractionLogStore;
-	ValidationState: ValidationState;
-	CommitViewState: CommitViewState;
-	ConfirmationDialogState: ConfirmationDialogState;
-	GeneralViewState: GeneralViewState;
-}
+import { NavigationReducer } from "../redux/navigation/index.js";
 
 export namespace PrintEditorComponentReducer {
 	export const reducers = {
 		PrintEditorState: EditorStateReducer,
-		DetailData: DetailDataReducer,
 		DocumentModelData: DocumentModelDataReducer,
-		Sidebar: SidebarReducer,
 		TransactionLogState: TransactionLogStateReducer,
 		RequestApi: RequestApiReducer,
-		Wrapper: WrapperReducer,
 		InteractionLogState: InteractionLogReducer,
 		ValidationState: ValidationReducer,
 		CommitViewState: CommitViewReducer,
 		ConfirmationDialogState: ConfirmationDialogReducer,
 		GeneralViewState: GeneralViewReducer,
+		Navigation: NavigationReducer,
 	};
 
 	export const rootReducer: Reducer<PrintEngineState> = combineReducers({

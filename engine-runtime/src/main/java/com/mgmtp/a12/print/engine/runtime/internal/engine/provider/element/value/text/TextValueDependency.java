@@ -46,9 +46,9 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 @PrintEngineRuntimeDependency(type = RuntimeType.CORE)
-public class TextValueDependency implements ValueDependency<TextValueDependency.TextValueResult> {
+public class TextValueDependency implements ValueDependency<Optional<String>> {
 	private final TextElement text;
 	private final List<TextValueMarkup> textValueMarkups;
 
-	public record TextValueResult(Optional<String> value, Map<String, String> pageNumberGlobalStyles) {}
+	public record TextValueResult(Optional<String> value) {}
 }

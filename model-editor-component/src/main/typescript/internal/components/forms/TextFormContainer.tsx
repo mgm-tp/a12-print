@@ -32,49 +32,63 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
+import { useMemo } from "react";
 
-import {
+import type {
 	PartialAnyPrintModelElement,
+	Text,
+	PartialTextProperties,
+	PartialBorderProperties,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import {
+	PartialTableLayout,
 	PartialCalculation,
 	PartialField,
 	PartialText,
-	PartialBorderProperties,
-	Text,
-	PartialTextProperties,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import {
-	GlobalRegion,
-	TextRegion,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { GlobalRegion, TextRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { DetailDataActions, TransactionLogStateActions } from "../../redux/index.js";
-import { InteractionLogActions } from "../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
-import { OmitId, useBorderPropertiesErrorMessage } from "../../utils/index.js";
+import { NavigationActions, TransactionLogStateActions } from "../../redux/index.js";
+import { InteractionLogActions } from "../../redux//interaction-log/index.js";
+import { NavigationSelectors } from "../../redux/navigation/selectors.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
+import { createBorderPropertiesInheritedResolver, type OmitId } from "../../utils/index.js";
+import { useBorderPropertiesErrorMessage } from "../../utils/index.js";
+import { hasAnyTextProperties, isStyleable } from "../../utils/text-properties-utils.js";
+import { BORDER_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 
-import { RichTextEditor } from "../richtext-editor/index.js";
+import { PrintRichTextEditor } from "../richtext-editor/index.js";
 
 import {
 	FieldForm,
 	TextPropertiesForm,
 	BorderPropertiesForm,
 	CalculationForm,
+	ClearTextPropertiesSection,
 	BackButtonGroup,
 	CompactErrorWrapper,
 } from "./shared-components/index.js";
 import { CustomCheckbox } from "./custom-base-input-components/index.js";
-import { ElementWithoutIdAndType } from "./type.js";
+import type { ElementWithoutIdAndType } from "./type.js";
 
 export const TextFormContainer = () => {
 	const dispatch = useDispatch();
 	const localize = PrintLocalizer.useLocalizer();
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
-	const entityElement = useSelector(PrintEngineSelectors.textEntityElement);
+	const element = useSelector(PrintEngineSelectors.rootFormElement);
+	const entityElement = useSelector(PrintEngineSelectors.currentSubFormElement);
+	const allPrintModelElements = useSelector(PrintEngineSelectors.printModelElements);
+	const parentElement = React.useMemo(
+		() =>
+			element &&
+			allPrintModelElements?.find(
+				el => PartialTableLayout.isInstance(el) && el.tableLayout?.cells?.some(c => c?.refId === element.id)
+			),
+		[allPrintModelElements, element]
+	);
 	const getErrorMessage = useTextPropertyErrorMessage(element?.id);
 	const textPropertiesErrors = useSelector(
 		(state: PrintEngineState) => ValidationSelectors.styleableElement(state, element?.id)?.textProperties
@@ -84,7 +98,25 @@ export const TextFormContainer = () => {
 		throw Error("Expected element of type Text");
 	}
 
+	const { tab, entityId: navEntityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
+
 	const text = element.text;
+
+	const { isBorderPropertiesInherited, inheritedWidthResolver, inheritedStyleResolver, inheritedColorResolver } =
+		React.useMemo(() => {
+			if (!parentElement || !PartialTableLayout.isInstance(parentElement)) {
+				return {
+					isBorderPropertiesInherited: false,
+					inheritedWidthResolver: () => undefined,
+					inheritedStyleResolver: () => undefined,
+					inheritedColorResolver: () => undefined,
+				};
+			}
+			return {
+				isBorderPropertiesInherited: true,
+				...createBorderPropertiesInheritedResolver((parentElement as PartialTableLayout).borderProperties),
+			};
+		}, [parentElement]);
 
 	const onHideIfEmptyChange = React.useCallback(
 		(checked: boolean) => {
@@ -145,90 +177,136 @@ export const TextFormContainer = () => {
 			if (!entity) {
 				return;
 			}
+			const formType = PartialCalculation.isInstance(entity)
+				? TextRegion.TEXT_FROM_CALCULATION
+				: TextRegion.TEXT_FROM_FIELD;
+
 			dispatch(
-				DetailDataActions.replaceLastView({
-					containerId: currentDetailDataId,
-					view: PartialField.isInstance(entity)
-						? TextRegion.TEXT_FROM_FIELD
-						: TextRegion.TEXT_FROM_CALCULATION,
+				NavigationActions.replaceOrAddFormByType({
+					tab,
+					entityId: navEntityId,
+					mode,
+					form: { type: formType, id: entity.id },
 				})
 			);
 		},
-		[currentDetailDataId, dispatch]
+		[dispatch, mode, tab, navEntityId]
 	);
 
 	const checked = Boolean(element.text?.hideIfEmpty);
 	const borderPropertiesErrorMessage = useBorderPropertiesErrorMessage(element.id);
+
+	const TextForm = useMemo(() => {
+		if (entityElement && (PartialCalculation.isInstance(entityElement) || PartialField.isInstance(entityElement))) {
+			return <EntityForm entityElement={entityElement} />;
+		}
+
+		return (
+			<>
+				<CustomCheckbox
+					checked={checked}
+					onChange={onHideIfEmptyChange}
+					label={localize(RESOURCE_KEYS.elementForm.textFlow.hideIfEmpty)}
+					fitToParent={false}
+				/>
+				<TextPropertiesForm
+					element={element}
+					textProperties={element.textProperties}
+					setTextProperties={setTextProperties}
+					showBackgroundColor={false}
+					showBold={false}
+					showColor={false}
+					showItalic={false}
+					showUnderline={false}
+					textPropertyErrors={textPropertiesErrors}
+				/>
+				<BorderPropertiesForm
+					element={element}
+					determineInheritedSource={() => isBorderPropertiesInherited}
+					propertiesPath={BORDER_PROPERTIES_PATH}
+					borderProperties={element.borderProperties}
+					setBorderProperties={setBorderProperties}
+					getErrorMessage={borderPropertiesErrorMessage}
+					resolveWidth={inheritedWidthResolver}
+					resolveStyle={inheritedStyleResolver}
+					resolveColor={inheritedColorResolver}
+				/>
+			</>
+		);
+	}, [
+		entityElement,
+		checked,
+		onHideIfEmptyChange,
+		localize,
+		element,
+		setTextProperties,
+		textPropertiesErrors,
+		setBorderProperties,
+		borderPropertiesErrorMessage,
+		inheritedWidthResolver,
+		inheritedStyleResolver,
+		inheritedColorResolver,
+		isBorderPropertiesInherited,
+	]);
+
 	return (
 		<>
 			<CompactErrorWrapper
 				errorMessage={getErrorMessage("text")}
-				Child={RichTextEditor}
+				Child={PrintRichTextEditor}
 				childProps={{ element, onChangeEntity }}
 				childKey={element.id}
 			/>
-			{entityElement ? (
-				<EntityForm entityElement={entityElement} containerId={currentDetailDataId} />
-			) : (
-				<>
-					<CustomCheckbox
-						checked={checked}
-						onChange={onHideIfEmptyChange}
-						label={localize(RESOURCE_KEYS.elementForm.textFlow.hideIfEmpty)}
-						fitToParent={false}
-					/>
-					<TextPropertiesForm
-						element={element}
-						textProperties={element.textProperties}
-						setTextProperties={setTextProperties}
-						showBackgroundColor={false}
-						showBold={false}
-						showColor={false}
-						showItalic={false}
-						showUnderline={false}
-						textPropertyErrors={textPropertiesErrors}
-					/>
-					<BorderPropertiesForm
-						borderProperties={element.borderProperties}
-						setBorderProperties={setBorderProperties}
-						getErrorMessage={borderPropertiesErrorMessage}
-					/>
-				</>
-			)}
+			{TextForm}
 		</>
 	);
 };
 
 interface EntityFormProps {
 	entityElement: PartialAnyPrintModelElement;
-	containerId: string;
 }
 
-const EntityForm = ({ entityElement, containerId }: EntityFormProps) => {
+const EntityForm = ({ entityElement }: EntityFormProps) => {
 	const dispatch = useDispatch();
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 
 	const onBackClick = React.useCallback(() => {
-		dispatch(DetailDataActions.deleteAdditionalData({ containerId }));
+		dispatch(NavigationActions.popFormStack({ tab, entityId, mode }));
+	}, [dispatch, tab, entityId, mode]);
+
+	const clearEntityTextProperties = React.useCallback(() => {
+		const updatedElement = { ...entityElement, textProperties: undefined };
 		dispatch(
-			DetailDataActions.removeView({
-				containerId,
-				view: PartialField.isInstance(entityElement)
-					? TextRegion.TEXT_FROM_FIELD
-					: TextRegion.TEXT_FROM_CALCULATION,
+			InteractionLogActions.start({
+				description: RESOURCE_KEYS.interaction.form.textFormContainer.clearCalculationTextProperties,
+				region: GlobalRegion.FORM,
+				transactionLogActions: [
+					TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }),
+				],
 			})
 		);
-	}, [dispatch, containerId, entityElement]);
+	}, [dispatch, entityElement]);
+
+	const entityTextProperties = isStyleable(entityElement) ? entityElement.textProperties : undefined;
+
+	const renderedEntityForm = React.useMemo(() => {
+		if (PartialCalculation.isInstance(entityElement)) {
+			return <CalculationForm element={entityElement} />;
+		}
+		if (PartialField.isInstance(entityElement)) {
+			return <FieldForm element={entityElement} />;
+		}
+		return <div>{`Element of type ${entityElement.type} is not a valid entity`}</div>;
+	}, [entityElement]);
 
 	return (
 		<>
-			{PartialCalculation.isInstance(entityElement) ? (
-				<CalculationForm element={entityElement} />
-			) : PartialField.isInstance(entityElement) ? (
-				<FieldForm element={entityElement} />
-			) : (
-				<div>{`Element of type ${entityElement.type} is not a valid entity`}</div>
-			)}
-			<BackButtonGroup onBack={onBackClick} />
+			{renderedEntityForm}
+			<ClearTextPropertiesSection
+				hasLegacyProperties={hasAnyTextProperties(entityTextProperties)}
+				onClear={clearEntityTextProperties}
+			/>
+			<BackButtonGroup onBack={onBackClick} className="-u-margin-t-md" />
 		</>
 	);
 };

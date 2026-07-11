@@ -32,25 +32,24 @@
 import { nanoid } from "nanoid";
 import set from "lodash/set.js";
 
+import type { PageBreakBehavior, PrintModelElement } from "../../model/index.js";
 import {
-	PageBreakBehavior,
-	PartialAnyPrintModelElement,
+	type PartialAnyPrintModelElement,
 	PartialArea,
 	PartialBoundingBox,
 	PartialCalculation,
 	PartialListing,
 	PartialOverride,
-	PartialPlaceableReference,
+	type PartialPlaceableReference,
 	PartialSwitch,
 	PartialTable,
 	PartialTableLayout,
 	PartialText,
-	PrintModelElement,
-	PrintModelEntity,
-	Reference,
+	type PrintModelEntity,
+	type Reference,
 } from "../../model/index.js";
 
-import { CloneContext } from "./type.js";
+import { type CloneContext } from "./type.js";
 import { cloneInputSource, cloneTextProperties } from "./base.js";
 import { CloneTreeTrace } from "./clone-tree-trace.js";
 

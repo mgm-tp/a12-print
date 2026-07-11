@@ -29,10 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as OldModel from "../version-3.1.0/print-model.js";
+import type * as OldModel from "../version-3.1.0/print-model.js";
 
 import { transformMetaDataComputation } from "./01_meta-data-computation/index.js";
-import * as NewModel from "./01_meta-data-computation/print-model.js";
+import type * as NewModel from "./01_meta-data-computation/print-model.js";
 import { transformPageBreakBehavior } from "./02_page-break-behavior/index.js";
 
 export default function transform(oldModel: OldModel.PrintModelDTO): NewModel.PrintModelDTO {

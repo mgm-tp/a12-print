@@ -35,7 +35,8 @@ import { useParams } from "react-router-dom";
 
 import { EditorSelector, EditorActions } from "../../store/editor";
 
-import { caseConfigs, ResolvedCaseConfigResource } from "./CaseConfig";
+import type { ResolvedCaseConfigResource } from "./CaseConfig";
+import { caseConfigs } from "./CaseConfig";
 
 const resolveResource = async (originalPath: string): Promise<ResolvedCaseConfigResource | undefined> => {
 	const parts = originalPath.split("/");

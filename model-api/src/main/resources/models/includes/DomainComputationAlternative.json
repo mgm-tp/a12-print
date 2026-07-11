@@ -2,7 +2,7 @@
   "header": {
     "id": "DomainComputationAlternative",
     "modelType": "document",
-    "modelVersion": "28.4.0",
+    "modelVersion": "29.4.0",
     "locales": [
       {
         "code": "de"
@@ -24,8 +24,8 @@
       "name": "DomainComputationAlternative"
     },
     "modelConfig": {
-      "decimalSeparator": ".",
       "timeZone": "UTC",
+      "decimalSeparator": ".",
       "conditionLanguage": {
         "code": "en_US"
       }
@@ -37,12 +37,28 @@
           "id": "group_43e33",
           "name": "computationAlternatives",
           "Group": {
+            "label": [
+              {
+                "locale": "de",
+                "text": "Computation alternatives"
+              },
+              {
+                "locale": "en",
+                "text": "Berechnungsalternativen"
+              }
+            ],
             "repeatability": 1,
             "elements": [
               {
                 "type": "Field",
                 "id": "field_66deb",
                 "name": "id",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"

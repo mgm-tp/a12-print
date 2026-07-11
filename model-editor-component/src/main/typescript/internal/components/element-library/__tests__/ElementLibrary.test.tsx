@@ -29,18 +29,20 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
 import { fireEvent, screen } from "@testing-library/react";
 
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import {
+	createNavigationStateWithForm,
 	createTransactionLogState,
 	defaultPrintEditorState,
 	mockElementLayoutMetrics,
+	mockSegment,
 	renderWithProviders,
 } from "../../../../../../test/typescript/test-utils/index.js";
-import { EditorStateReducer, PrintEditorState, SidebarReducer, SidebarState } from "../../../redux/index.js";
+import { EditorStateReducer, NavigationReducer, type PrintEditorState } from "../../../redux/index.js";
 
 import { ElementLibrary } from "../ElementLibrary.js";
 
@@ -48,21 +50,12 @@ describe("ElementLibrary with selected segment", () => {
 	// Mock element dimensions to prevent infinite resizing loops
 	mockElementLayoutMetrics(100, 300);
 
-	const SidebarReducerMock: Reducer = (
-		state: SidebarState = {
-			selectedItem: SidebarItem.SEGMENT,
-			isOpen: true,
-			isFullscreen: false,
-		},
-		action
-	) => SidebarReducer(state, action);
-
 	const PrintEditorStateMock: Reducer = (state: PrintEditorState = defaultPrintEditorState, action) =>
 		EditorStateReducer(state, action);
 
 	it("renders correctly", () => {
 		const { container, getByRole } = renderWithProviders(<ElementLibrary />, {
-			Sidebar: SidebarReducerMock,
+			Navigation: () => createNavigationStateWithForm(SidebarItem.SEGMENT, mockSegment.id, []),
 			TransactionLogState: createTransactionLogState(),
 			PrintEditorState: PrintEditorStateMock,
 		});
@@ -77,18 +70,9 @@ describe("ElementLibrary with selected segment", () => {
 });
 
 describe("ElementLibrary without segment selected", () => {
-	const SidebarReducerMock: Reducer = (
-		state: SidebarState = {
-			selectedItem: SidebarItem.SEGMENT,
-			isOpen: true,
-			isFullscreen: false,
-		},
-		action
-	) => SidebarReducer(state, action);
-
 	it("should not show CommentContainer when clicking elementLibraryButton", () => {
 		const { getByRole } = renderWithProviders(<ElementLibrary />, {
-			Sidebar: SidebarReducerMock,
+			Navigation: NavigationReducer,
 		});
 
 		fireEvent.click(getByRole("button"));

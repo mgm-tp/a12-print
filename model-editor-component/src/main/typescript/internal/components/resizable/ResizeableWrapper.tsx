@@ -31,16 +31,15 @@
  */
 import { useSelector } from "react-redux";
 
-import { Measure } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
+import type { Measure, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { FIXED_DIMENSIONS_ELEMENTS } from "../../constant/elements.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { ISide } from "../../types/resize.js";
+import type { ISide } from "../../types/resize.js";
 import { ElementsUtils } from "../../utils/elements-utils.js";
 import { changeMmMeasureValue } from "../../utils/measure-utils.js";
-import { OmitId } from "../../utils/type-utils.js";
+import type { OmitId } from "../../utils/type-utils.js";
 
 import { useElementOverlapSection } from "../reference-container-stage/hooks/use-element-overlap-section.js";
 

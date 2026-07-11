@@ -29,9 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import React, { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
+import React from "react";
 
-import { Orientation } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
+import type { Orientation } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { useClickOutside } from "../../hooks/index.js";
 
@@ -82,6 +83,7 @@ export const Popup: React.FunctionComponent<PropsWithChildren<PopupProps>> = ({ 
 			clientX={clientX}
 			clientY={clientY}
 			orientation={orientation}
+			data-testid="context-menu-popup"
 		>
 			{children}
 		</StyledPopupContainer>

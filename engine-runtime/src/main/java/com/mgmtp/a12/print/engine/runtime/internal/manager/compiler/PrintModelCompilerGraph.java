@@ -33,7 +33,7 @@ package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler;
 
 import com.mgmtp.a12.kernel.md.model.api.IField;
 import com.mgmtp.a12.kernel.md.model.api.IGroup;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.rewrite.*;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.synthetics.SyntheticVariable;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.synthetics.SyntheticVariableType;
@@ -159,12 +159,10 @@ public class PrintModelCompilerGraph {
 			.filter(e -> e instanceof IField)
 			.map(e -> computationFieldTypeFrom(((IField) e).getFieldType()))
 			.orElseThrow(() -> {
-				throw new PrintCompilerException(
-					String.format(
-						"Reference to field '%s' was unable to be resolved in DocumentModel %s.",
-						fieldPath,
-						documentModelName
-					)
+				throw new PrintDomainException(
+					"Reference to field '{}' was unable to be resolved in DocumentModel {}.",
+					fieldPath,
+					documentModelName
 				);
 			});
 	}

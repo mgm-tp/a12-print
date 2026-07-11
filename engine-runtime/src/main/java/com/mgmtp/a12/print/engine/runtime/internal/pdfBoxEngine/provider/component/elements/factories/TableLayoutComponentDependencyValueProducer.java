@@ -36,6 +36,7 @@ import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.PdfBoxDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.inputSource.ReferenceInputSourceResolver;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.referenceResolver.ReferenceElementDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalPdfBoxPrintEngineRuntime;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.Component;
@@ -45,15 +46,19 @@ import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.compone
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.TableComponent;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.TextComponent;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.BoxStyleParameters;
+import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.PrintRenderingException;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.Size;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.SizeResolverUtils;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.TableColumnWidthUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing.TextRenderStyle;
 import com.mgmtp.a12.print.model.api.inputSource.InputValueSourceResolver;
+import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.element.base.Measure;
 import com.mgmtp.a12.print.model.api.model.element.base.Styleable;
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.InputSource;
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.PossibleInputSource;
 import com.mgmtp.a12.print.model.api.model.element.properties.BorderProperties;
 import com.mgmtp.a12.print.model.api.model.element.type.tableLayout.ColumnProperties;
 import com.mgmtp.a12.print.model.api.model.element.type.tableLayout.RowProperties;
@@ -175,7 +180,7 @@ public class TableLayoutComponentDependencyValueProducer implements PdfBoxDepend
 		final var components = new ArrayList<ComponentCell>();
 		long maxCellHeight = 0;
 
-		final var borderProperties = tableLayoutTrace.getTracedElement().getBorderProperties().orElse(null);
+		final var borderProperties = tableLayoutTrace.getTracedElement().getBorderProperties().orElseThrow(() -> new PrintRenderingException("Table layout border properties are required"));
 		for (var i = 1; i <= colCount; i++) {
 			final int finalI = i;
 			final var cellOpt = cells.stream().filter(c ->
@@ -194,41 +199,48 @@ public class TableLayoutComponentDependencyValueProducer implements PdfBoxDepend
 			final var nestedBorderProperties = runtime.provide(new ReferenceElementDependency(referenceTrace)).get()
 				.flatMap(el -> el.tryCastTracedElement(Styleable.class))
 				.flatMap(el -> el.getTracedElement().getBorderProperties())
-				.orElse(null);
-			final long nestedBorderWidth = SizeResolverUtils.getOptBorderWidth(nestedBorderProperties)
-				.orElse(borderWidth);
+				.orElseThrow(() -> new PrintRenderingException("Nested border properties are required"));
+			final boolean isBorderUnchanged = nestedBorderProperties.getBorderStyle().map(InputSource::getSource).filter(x -> x.equals(PossibleInputSource.INHERITED)).isPresent()
+				&& nestedBorderProperties.getBorderWidth().map(InputSource::getSource).filter(x -> x.equals(PossibleInputSource.INHERITED)).isPresent();
 
 			var component = (TextComponent) runtime.provide(new ReferenceComponentDependency(
 				tableLayoutTrace.createDescendent(cell),
 				printDocumentContext,
 				document,
-				nestedBorderProperties == null ? Math.max(0, columnWidth - 2 * borderWidth) : columnWidth,
+				isBorderUnchanged ? Math.max(0, columnWidth - 2 * borderWidth) : columnWidth,
 				totalPageCount,
 				currentPageCount
 			)).get();
 
 
 			BorderProperties appliedBorderProperties = borderProperties;
-			if (component != null && nestedBorderProperties != null) {
+			if (component != null) {
 				// Take Border from nested TextElement for the Grid Renderer but remove it from the TextElement
+				component = component.toBuilder().borderProperties(null).build();
 				appliedBorderProperties = nestedBorderProperties;
-				final long sizeReduction = 2 * nestedBorderWidth;
-				final Size newSize = Size.reduceSize(component.getSize(), sizeReduction);
-				component = component.toBuilder()
-					.borderProperties(null)
-					.size(newSize)
-					.build();
+
 			}
 
 			final var verticalAlignment = verticalAlignmentMap.get(i - 1);
 			final TextRenderStyle textRenderStyle = TextRenderStyle.EMPTY_STYLE.withVerticalAlignment(verticalAlignment);
-			final BoxStyleParameters boxStyle = BoxStyleParameters.fromBorderProperties(appliedBorderProperties);
-
+			PrintModelTreeTrace<PrintModelEntity> printModelTreeTrace = tableLayoutTrace.tryCastTracedElement(PrintModelEntity.class).orElseThrow();
+			ReferenceInputSourceResolver referenceInputSourceResolver = ReferenceInputSourceResolver.builder()
+				.runtime(runtime)
+				.printModelTreeTrace(printModelTreeTrace)
+				.build();
+			final BoxStyleParameters nestedBoxStyle = BoxStyleParameters.fromPropertiesBuilder(appliedBorderProperties, null, referenceInputSourceResolver).build();
+			if (component != null && !isBorderUnchanged) {
+				final long sizeReduction = 2 * nestedBoxStyle.getBorderWidth();
+				final Size newSize = Size.reduceSize(component.getSize(), sizeReduction);
+				component = component.toBuilder()
+					.size(newSize)
+					.build();
+			}
 			components.add(
-				new ComponentCell(component, boxStyle, textRenderStyle, 1)
+				new ComponentCell(component, nestedBoxStyle, textRenderStyle, 1)
 			);
 
-			final long cellHeight = component.getSize().getHeight() + 2 * nestedBorderWidth;
+			final long cellHeight = component.getSize().getHeight() + 2 * nestedBoxStyle.getBorderWidth();
 			if (component != null && maxCellHeight < cellHeight) {
 				maxCellHeight = cellHeight;
 			}

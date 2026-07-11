@@ -29,23 +29,24 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { css, CSSObject } from "styled-components";
-import { CSSProperties } from "react";
+import type { CSSObject } from "styled-components";
+import { css } from "styled-components";
+import type { CSSProperties } from "react";
 
-import {
-	Alignment,
-	BorderProperties,
+import type {
 	PartialAnyPrintModelElement,
 	TextStyle,
 	PartialTextProperties,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { Orientation } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
-import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
-import { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/lib/internal/types/font.js";
-import { getPrefixedFontFamily } from "@com.mgmtp.a12.print/print-fonts/lib/internal/api/utils/font-utils.js";
+	BorderProperties,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { Alignment } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { Orientation } from "@com.mgmtp.a12.widgets/widgets-core";
+import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
+import { getPrefixedFontFamily } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
-import { TextPropertiesPath } from "../types/input-source.js";
+import type { TextPropertiesPath } from "../types/input-source.js";
 import type { StylableText } from "../types/styles.js";
 
 type CssPropertySuffix = "px" | "pt" | "mm" | "%";
@@ -75,9 +76,9 @@ export namespace CssUtils {
 			font-style: ${optionalBooleanToString(textProperties?.italic, "italic")};
 			text-decoration: ${optionalBooleanToString(textProperties?.underlined, "underline")};
 			text-align: ${getTextAlignment(textProperties?.alignment)};
-			border-style: ${borderProperties?.borderStyle};
-			border-color: ${borderProperties?.borderColor};
-			border-width: ${optionalValueToString(borderProperties?.borderWidth, "pt")};
+			border-style: ${borderProperties?.borderStyle?.value};
+			border-color: ${borderProperties?.borderColor?.value};
+			border-width: ${optionalValueToString(borderProperties?.borderWidth?.value, "pt")};
 			background-color: ${textProperties?.backgroundColor};
 			color: ${textProperties?.color};
 		`;
@@ -93,22 +94,22 @@ export namespace CssUtils {
 			fontStyle: optionalBooleanToString(textProperties?.italic, "italic"),
 			textDecoration: optionalBooleanToString(textProperties?.underlined, "underline"),
 			textAlign: getTextAlignment(textProperties?.alignment),
-			borderStyle: borderProperties?.borderStyle,
-			borderColor: borderProperties?.borderColor,
-			borderWidth: optionalValueToString(borderProperties?.borderWidth, "pt"),
+			borderStyle: borderProperties?.borderStyle?.value,
+			borderColor: borderProperties?.borderColor?.value,
+			borderWidth: optionalValueToString(borderProperties?.borderWidth?.value, "pt"),
 			backgroundColor: textProperties?.backgroundColor,
 			color: textProperties?.color,
 		};
 	}
 
 	export function getOutlineStyles(properties?: DeepPartialRecursive<BorderProperties>): CSSProperties {
-		const width = optionalValueToString(properties?.borderWidth, "pt");
+		const width = optionalValueToString(properties?.borderWidth?.value, "pt");
 		return {
-			outlineStyle: properties?.borderStyle,
-			outlineColor: properties?.borderColor,
+			outlineStyle: properties?.borderStyle?.value,
+			outlineColor: properties?.borderColor?.value,
 			outlineWidth: width,
 			outlineOffset: properties?.borderWidth ? `-${width}` : undefined,
-		};
+		} as CSSProperties;
 	}
 
 	export const cssBoxStyles: CSSProperties = {

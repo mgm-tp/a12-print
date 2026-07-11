@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DateTimeFormatErrorEnum } from "../../../../main/typescript/internal/validation/date-time-format-validation/index.js";
+import type { DateTimeFormatErrorEnum } from "../../internal/validation/date-time-format-validation/index.js";
 
 export type DateFormatTest = {
 	pattern: string;

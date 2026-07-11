@@ -29,6 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { TextProperties } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { TextProperties, BorderProperties } from "@com.mgmtp.a12.print/print-model-api/model";
 
 export type TextPropertiesPath = Record<keyof Omit<TextProperties, "id">, string>;
+
+export type BorderPropertiesPath = Record<keyof Omit<BorderProperties, "id">, string>;

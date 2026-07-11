@@ -31,33 +31,32 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.eval.provider;
 
-import com.mgmtp.a12.kernel.md.document.api.services.IDocumentFactory;
 import com.mgmtp.a12.kernel.md.facade.DocumentRtServiceFactory;
+import com.mgmtp.a12.kernel.md.rt.api.DocumentProcessingConfig;
 import com.mgmtp.a12.kernel.md.rt.api.IDocumentRtService;
 import com.mgmtp.a12.kernel.md.rt.api.IDocumentServiceConfig;
+import com.mgmtp.a12.kernel.md.rt.api.IMessage;
 import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.MutablePrintDocument;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocument;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.loader.DocumentDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalCorePrintEngineRuntime;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.eval.EvaluationDocumentModelCompiler;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.eval.EvaluationDocumentPrefill;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.eval.kernel.ComputedEvaluationDocument;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.eval.kernel.EvaluationDocument;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.ComputeDocumentDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.ComputeDocumentDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.DocumentModelIndex;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Data
-@Slf4j
 public class DocumentRtServiceComputeDocumentDependencyValueProducer implements ComputeDocumentDependencyValueProducer {
 
 	@NonNull
@@ -66,8 +65,6 @@ public class DocumentRtServiceComputeDocumentDependencyValueProducer implements 
 	private final IDocumentServiceConfig serviceConfig;
 	@NonNull
 	private final DocumentRtServiceFactory serviceFactory;
-	@NonNull
-	private final IDocumentFactory documentFactory;
 	@NonNull
 	private final Map<String, DocumentModelIndex> modelIndexMap;
 
@@ -78,19 +75,17 @@ public class DocumentRtServiceComputeDocumentDependencyValueProducer implements 
 		@NonNull Map<String, DocumentModelIndex> documentModelIndexMap,
 		@NonNull DocumentRtServiceFactory serviceFactory,
 		@NonNull IDocumentServiceConfig documentServiceConfig,
-		@NonNull IDocumentFactory documentFactory,
 		@NonNull EvaluationDocumentPrefill evaluationDocumentPrefill
 	) {
 		this.serviceFactory = serviceFactory;
 		this.modelIndexMap = documentModelIndexMap;
 		this.serviceConfig = documentServiceConfig;
-		this.documentFactory = documentFactory;
 		this.evaluationDocumentPrefill = evaluationDocumentPrefill;
 		this.documentRtService = serviceFactory.createDocumentRtService(documentServiceConfig);
 	}
 
 	@Override
-	public ValueFactory<PrintDocument> produce(
+	public ValueFactory<PrintDocumentContext> produce(
 		ComputeDocumentDependency dependency,
 		PrintJob job,
 		PrintEngine<?> engine,
@@ -109,25 +104,25 @@ public class DocumentRtServiceComputeDocumentDependencyValueProducer implements 
 			}
 		}
 
-		final var computedEvaluationDocument = new ComputedEvaluationDocument(evaluationDocument, evaluationDocument.getDocumentModelId());
+		final var documentToCompute = evaluationDocument.getDocumentToCompute();
 		final var documentComputationResult = this.documentRtService.compute(
-			computedEvaluationDocument,
-			model.getHeader().getLocales().stream().findAny().orElseGet(job::getLocale)
-		);
-
-		documentComputationResult.getComputedFieldInstancesWithErrors().forEach(
-			error -> log.error("Computing {} resulted in an error for the field {}. Details: {}", evaluationDocument.getDocumentModelId(), error.getPath(), error)
+			documentToCompute,
+			DocumentProcessingConfig.builder(model.getHeader().getLocales().stream().findAny().orElseGet(job::getLocale))
+				.build()
 		);
 
 		if (!documentComputationResult.noErrorOccurred()) {
-			throw new PrintException("Error during Computation.");
+			final var formalErrors = documentComputationResult.getFormalErrorsInOperands().stream().map(IMessage::getErrorText);
+			final var fieldErrorMessages = documentComputationResult.getComputedFieldInstancesWithErrors().stream().map(
+				error ->
+					error.getErrorMessage().orElseThrow(() -> new PrintException("There should be an error on this field")).getErrorText()
+			);
+			throw new PrintDomainException("The calculations inside the PrintModel could not be calculated", Stream.concat(formalErrors, fieldErrorMessages));
 		}
 
-		final var mutableComputedDocument = MutablePrintDocument.from(computedEvaluationDocument.getResult(), model);
-		documentComputationResult.applyTo(mutableComputedDocument, documentFactory);
-		final var computedDocument = mutableComputedDocument.setImmutable();
+		final var resultDocument = documentComputationResult.applyTo(documentToCompute);
 
-		return () -> computedDocument;
+		return () -> new PrintDocumentContext(resultDocument, model, evaluationDocument.getDocumentModelId());
 	}
 
 }

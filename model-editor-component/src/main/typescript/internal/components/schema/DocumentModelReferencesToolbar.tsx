@@ -33,16 +33,15 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import sortBy from "lodash/sortBy.js";
 
-import { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { ModelReferenceEntity, getEntityId, EntityKey } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
+import type { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, Icon, addPrefix } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { ModelReferenceEntity } from "@com.mgmtp.a12.print/print-model-api/model";
+import { getEntityId, EntityKey } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { RequestApiSelectors } from "../../redux/request-api/selectors.js";
-import { SchemaActions } from "../../redux/schema/action.js";
+import { RequestApiSelectors } from "../../redux//request-api/selectors.js";
+import { SchemaActions } from "../../redux//schema/action.js";
 import { RequestApiActions } from "../../redux/index.js";
 
 import { CustomSelect } from "../forms/custom-base-input-components/index.js";

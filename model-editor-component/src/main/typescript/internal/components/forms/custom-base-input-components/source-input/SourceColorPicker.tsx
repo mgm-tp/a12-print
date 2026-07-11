@@ -31,21 +31,18 @@
  */
 import { useCallback, useMemo, useState } from "react";
 
-import { TextLineStatelessProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-line/index.js";
-import {
-	PossibleInputSource,
-	InputValueSourceResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+import type { TextFieldProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { PossibleInputSource, InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { stringifyInputValue } from "../../../../utils/input-source-utils.js";
 
 import type { SourceColorPickerProperties } from "../types.js";
-import { CustomTextLineStateless } from "../CustomTextLineStateless.js";
+import { CustomTextField } from "../CustomTextField.js";
 
 import { SourceInputToggles } from "./SourceInputToggles.js";
 import { SourceInputContainer } from "./SourceInputContainer.js";
 
-interface SourceColorPickerProps extends TextLineStatelessProps {
+interface SourceColorPickerProps extends TextFieldProps {
 	onColorChange?: (value?: string) => void;
 	sourceProperties: SourceColorPickerProperties;
 }
@@ -89,13 +86,13 @@ export const SourceColorPicker = (props: SourceColorPickerProps) => {
 		determineInheritedSource
 	);
 
-	const inputSourceValue = InputValueSourceResolver.getSourceStringValue(
+	const inputSourceValue = InputValueSourceResolver.getSourceInputValue(
 		inputSource,
 		element,
 		property,
+		(value?: string) => value,
 		inheritedValueResolver
 	);
-
 	const handleSourceChange = useCallback(
 		(newValue: string) => {
 			const newSource = newValue as PossibleInputSource;
@@ -124,18 +121,21 @@ export const SourceColorPicker = (props: SourceColorPickerProps) => {
 			(inputSource.source === PossibleInputSource.INPUT && !currentValue) ||
 			inputSource.source === PossibleInputSource.UNSET;
 
-		const displayValue =
-			inputSource.source === PossibleInputSource.INPUT
-				? currentValue
-				: inputSource.source === PossibleInputSource.DEFAULT
-					? inputSourceValue
-					: undefined;
+		let displayValue;
+		if (inputSource.source === PossibleInputSource.INPUT) {
+			displayValue = currentValue;
+		} else if (
+			inputSource.source === PossibleInputSource.DEFAULT ||
+			inputSource.source === PossibleInputSource.INHERITED
+		) {
+			displayValue = inputSourceValue;
+		}
 
 		return (
-			<CustomTextLineStateless
+			<CustomTextField
 				{...restProps}
 				id={id}
-				disabled={inputSource.source !== PossibleInputSource.INPUT}
+				disabled={inputSource.source !== PossibleInputSource.INPUT || disabled}
 				value={stringifyInputValue(displayValue)}
 				inputProps={{ type: "color", style: { opacity: isHidden ? 0 : 1 } }}
 				onChange={e => setCurrentValue(e.target.value)}
@@ -153,6 +153,7 @@ export const SourceColorPicker = (props: SourceColorPickerProps) => {
 						source={inputSource.source}
 						onValueChanged={handleSourceChange}
 						showOnlySelectedOption
+						disabled={disabled}
 					/>
 				}
 			/>
@@ -160,6 +161,7 @@ export const SourceColorPicker = (props: SourceColorPickerProps) => {
 	}, [
 		id,
 		currentValue,
+		disabled,
 		handleSourceChange,
 		inputSource,
 		inputSourceValue,

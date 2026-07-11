@@ -33,22 +33,24 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	ExpressionProperties,
-	PartialExpression,
-	PartialBorderProperties,
 	PartialTextProperties,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+	PartialBorderProperties,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialExpression } from "@com.mgmtp.a12.print/print-model-api/model";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { TransactionLogStateActions } from "../../redux/index.js";
-import { InteractionLogActions } from "../../redux/interaction-log/index.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { OmitId, useBorderPropertiesErrorMessage } from "../../utils/index.js";
+import { InteractionLogActions } from "../../redux//interaction-log/index.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import type { OmitId } from "../../utils/index.js";
+import { useBorderPropertiesErrorMessage } from "../../utils/index.js";
+import { BORDER_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 
 import { TextPropertiesForm, BorderPropertiesForm, FormContainerHeadline } from "./shared-components/index.js";
 import { DocumentModelSelect } from "./shared-components/DocumentModelSelect.js";
@@ -57,7 +59,7 @@ import { CustomCheckbox, CustomTextAreaStateful } from "./custom-base-input-comp
 export const ExpressionFormContainer = () => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
+	const element = useSelector(PrintEngineSelectors.currentFormElement);
 	const getExpressionErrorMessage = useExpressionPropertiesErrorMessage(element?.id);
 	const textPropertiesErrors = useSelector(
 		(state: PrintEngineState) => ValidationSelectors.styleableElement(state, element?.id)?.textProperties
@@ -154,6 +156,8 @@ export const ExpressionFormContainer = () => {
 				textPropertyErrors={textPropertiesErrors}
 			/>
 			<BorderPropertiesForm
+				element={element}
+				propertiesPath={BORDER_PROPERTIES_PATH}
 				borderProperties={element.borderProperties}
 				setBorderProperties={setBorderProperties}
 				getErrorMessage={useBorderPropertiesErrorMessage(element.id)}

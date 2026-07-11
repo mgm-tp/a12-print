@@ -29,23 +29,23 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import path, { resolve } from "path";
+import { join, resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import fs from "fs-extra";
 import asciidoctor from "@asciidoctor/core";
 
-const aDocInstance = asciidoctor();
-const memoryLogger = aDocInstance.MemoryLogger.create();
-aDocInstance.LoggerManager.setLogger(memoryLogger);
-
-const projectDir = resolve(__dirname, "../../../");
+const projectDir = resolve(dirname(fileURLToPath(import.meta.url)), "../../../");
 
 export function generateDocumentation(asciidocDir: string) {
-	const asciidocDirPath = path.join(projectDir, "src", "main", "asciidoc", asciidocDir);
-	const outputDir = path.join(projectDir, "build", "docs", asciidocDir);
-	const imagesPath = path.resolve(asciidocDirPath, "assets");
+	const aDocInstance = asciidoctor();
+	const memoryLogger = aDocInstance.MemoryLogger.create();
+	aDocInstance.LoggerManager.setLogger(memoryLogger);
+	const asciidocDirPath = join(projectDir, "src", "main", "asciidoc", asciidocDir);
+	const outputDir = join(projectDir, "build", "docs", asciidocDir);
+	const imagesPath = resolve(asciidocDirPath, "assets");
 
-	aDocInstance.convertFile(path.resolve(asciidocDirPath, "index.adoc"), {
+	aDocInstance.convertFile(resolve(asciidocDirPath, "index.adoc"), {
 		to_dir: outputDir,
 		mkdirs: true,
 		safe: 0,
@@ -77,12 +77,15 @@ export function generateDocumentation(asciidocDir: string) {
 		console.log(message.getText());
 	});
 
-	if (memoryLogger.getMessages().some(message => message.getSeverity() === "ERROR")) {
+	const failedMessages = memoryLogger
+		.getMessages()
+		.filter(message => message.getSeverity() === "ERROR" || message.getSeverity() === "WARN");
+	if (failedMessages.length > 0) {
 		process.exit(1);
 	}
 
 	// copy images into the outputDir if there are any
 	if (fs.existsSync(imagesPath)) {
-		fs.copySync(imagesPath, path.resolve(outputDir, "assets"));
+		fs.copySync(imagesPath, resolve(outputDir, "assets"));
 	}
 }

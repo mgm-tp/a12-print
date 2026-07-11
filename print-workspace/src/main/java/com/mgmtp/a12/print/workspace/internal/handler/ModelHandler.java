@@ -140,3 +140,4 @@ public class ModelHandler implements BaseFileHandler {
 		eventService.sendEvent(new ModelChangeEvent(operation, modelName, modelType));
 	}
 }
+

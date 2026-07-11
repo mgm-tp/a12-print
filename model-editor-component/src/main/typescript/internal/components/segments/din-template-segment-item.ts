@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PageOrientation } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PageOrientation } from "@com.mgmtp.a12.print/print-model-api/model";
 
 export interface DinTemplateSegmentItem {
 	readonly segmentId: string;

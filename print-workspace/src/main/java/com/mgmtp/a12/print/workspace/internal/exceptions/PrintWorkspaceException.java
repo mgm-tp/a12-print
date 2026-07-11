@@ -31,7 +31,9 @@
  */
 package com.mgmtp.a12.print.workspace.internal.exceptions;
 
-public class PrintWorkspaceException extends RuntimeException {
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
+
+public class PrintWorkspaceException extends PrintException {
 	public PrintWorkspaceException(String message) {
 		super(message);
 	}

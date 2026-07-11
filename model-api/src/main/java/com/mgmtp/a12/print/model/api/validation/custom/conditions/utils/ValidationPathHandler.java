@@ -31,6 +31,9 @@
  */
 package com.mgmtp.a12.print.model.api.validation.custom.conditions.utils;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
+@OnlyForUsage
 public class ValidationPathHandler {
 	public String pathPrefix;
 	public int containerIndex;

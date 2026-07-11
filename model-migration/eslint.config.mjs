@@ -34,6 +34,6 @@ import printDevtoolsConfig from "@com.mgmtp.a12.print/print-dev-tools/eslint.con
 export default [
 	...printDevtoolsConfig,
 	{
-		ignores: ["**/print-setting-model.ts", "**/print-model.ts", "**/bin"],
+		ignores: ["**/print-setting-model.ts", "**/PrintSettingModelDTO.ts", "**/print-model.ts", "**/bin"],
 	},
 ];

@@ -31,8 +31,9 @@
  */
 import { fireEvent, waitFor } from "@testing-library/react";
 
-import { ModelReferenceEntity, getEntityId, EntityKey } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { defaultTheme } from "@com.mgmtp.a12.widgets/widgets-core/lib/theme/default/default-theme.js";
+import type { ModelReferenceEntity } from "@com.mgmtp.a12.print/print-model-api/model";
+import { getEntityId, EntityKey } from "@com.mgmtp.a12.print/print-model-api/model";
+import { defaultTheme } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { renderWithProviders } from "../../../../../../test/typescript/test-utils/index.js";
 

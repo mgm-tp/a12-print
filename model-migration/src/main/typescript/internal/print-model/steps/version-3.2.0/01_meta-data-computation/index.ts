@@ -31,9 +31,9 @@
  */
 import { nanoid } from "nanoid";
 
-import * as OldModel from "../../version-3.1.0/print-model.js";
+import type * as OldModel from "../../version-3.1.0/print-model.js";
 
-import * as NewModel from "./print-model.js";
+import type * as NewModel from "./print-model.js";
 
 export function createComputations(
 	operation: string | undefined,

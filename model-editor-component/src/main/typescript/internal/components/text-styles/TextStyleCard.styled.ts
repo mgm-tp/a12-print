@@ -31,9 +31,7 @@
  */
 import { styled } from "styled-components";
 
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/button-group/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { CssEllipsis } from "@com.mgmtp.a12.widgets/widgets-core/lib/css-ellipsis/index.js";
+import { ButtonGroup, Icon, CssEllipsis } from "@com.mgmtp.a12.widgets/widgets-core";
 
 interface SelectableProps {
 	isSelected?: boolean;

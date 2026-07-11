@@ -30,5 +30,4 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 export * from "./base-header-dto.js";
-export * from "./base-header-deserializer.js";
 export * from "./header-field-deserializers.js";

@@ -34,13 +34,11 @@ import { all, fork } from "typed-redux-saga";
 import {
 	commitChangesSaga,
 	discardChangesSaga,
-	navigateIntoViewSaga,
 	validateChangesSaga,
 	initialCommitViewSaga,
 	setCommitInteractionRowsSaga,
 } from "./commit-view/index.js";
 import {
-	loadDinTemplatePrintModelsSaga,
 	loadPrintModelSaga,
 	loadReferencedPrintModelSaga,
 	loadReferencedPrintModelsSaga,
@@ -50,6 +48,11 @@ import {
 	setPrintModelSaga,
 	initializePrintModelSaga,
 	loadDocumentModelIdsSaga,
+	listStaticImagesSaga,
+	loadStaticImageSaga,
+	selectResourceSaga,
+	uploadStaticImageSaga,
+	loadPrintModelIdsSaga,
 } from "./request-api/index.js";
 import { openDetailViewSaga, openVisibilityConfigSaga, updateVisibilityConfigSaga } from "./detail-view/index.js";
 import {
@@ -58,7 +61,6 @@ import {
 	setSerializePrintModelResultSaga,
 	watchSetLogStoreSaga,
 } from "./transaction-log/index.js";
-import { setCurrentViewSaga } from "./sidebar/index.js";
 import {
 	redoInteractionSaga,
 	startInteractionSaga,
@@ -70,16 +72,15 @@ import { addReferenceEntrySaga } from "./din-template/index.js";
 import { validateTextStylesSaga } from "./text-style/index.js";
 import { openEditorView } from "./editor/index.js";
 import { addModelReferenceSaga } from "./schema/index.js";
-import {
-	batchLoadDocumentModelDataSaga,
-	loadDocumentModelDataSaga,
-} from "./document-model-data/load-document-model-data-saga.js";
+import { loadDocumentModelDataSaga } from "./document-model-data/load-document-model-data-saga.js";
+import { navigateFromPathSaga } from "./navigation/index.js";
+import { onEditorPropsChangedSaga } from "./print-engine/index.js";
+import { loadDinTemplatePrintModelSaga } from "./request-api/load-din-template-print-model-saga.js";
 
 export namespace PrintEditorComponentSagas {
 	export const sagas = {
 		openDetailViewSaga,
 		loadDocumentModelDataSaga,
-		batchLoadDocumentModelDataSaga,
 		loadDocumentModelIdsSaga,
 		loadPrintModelSaga,
 		setPrintModelSaga,
@@ -91,27 +92,32 @@ export namespace PrintEditorComponentSagas {
 		commitChangesSaga,
 		discardChangesSaga,
 		validateChangesSaga,
-		navigateIntoViewSaga,
 		initialCommitViewSaga,
 		setCommitInteractionRowsSaga,
 		processAllLogActionsSaga,
 		watchSetLogStoreSaga,
 		setSerializePrintModelResultSaga,
 		setDeserializePrintModelResultSaga,
-		setCurrentViewSaga,
 		startInteractionSaga,
 		undoInteractionSaga,
 		redoInteractionSaga,
 		updateElementHeightTextStyleSaga,
 		updateElementHeightDomNodeSaga,
 		addReferenceEntrySaga,
-		loadDinTemplatePrintModelsSaga,
+		loadDinTemplatePrintModelSaga,
+		loadPrintModelIdsSaga,
 		openVisibilityConfigSaga,
 		updateVisibilityConfigSaga,
 		validateTextStylesSaga,
 		openEditorView,
+		onEditorPropsChangedSaga,
 		addModelReferenceSaga,
 		initializePrintModelSaga,
+		listStaticImagesSaga,
+		loadStaticImageSaga,
+		selectResourceSaga,
+		uploadStaticImageSaga,
+		navigateFromPathSaga,
 	};
 
 	export function* rootSaga() {

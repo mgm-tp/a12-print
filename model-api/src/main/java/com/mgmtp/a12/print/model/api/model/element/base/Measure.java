@@ -32,13 +32,16 @@
 package com.mgmtp.a12.print.model.api.model.element.base;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
+@OnlyForUsage
 public interface Measure extends PrintModelEntity {
 	int getValue();
 
 	MeasureUnit getUnit();
 
+	@OnlyForUsage
 	enum MeasureUnit {
 		@JsonProperty("Millimeter") MILLIMETER,
 		@JsonProperty("Percent") PERCENT,

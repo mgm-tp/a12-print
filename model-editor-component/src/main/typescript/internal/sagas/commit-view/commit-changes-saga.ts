@@ -29,35 +29,40 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, getContext, put, select, takeEvery } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
 import partition from "lodash/partition.js";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { PrintModelCreator } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/print-model-creator/index.js";
-import {
+import type {
 	InteractionLogEntryType,
-	Log,
 	LogPersistentEntry,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { PrintModelCreator, Log } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
 
-import { EditorComponentApiActions, RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 import { InteractionLogActions, TransactionLogStateActions, CommitViewActions } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { interactionGraph } from "../../constant/interaction-graph.js";
-import { RESOURCE_KEYS } from "../../localization/index.js";
-import { CommitInteractionRow } from "../../types/commit-view.js";
+import { RESOURCE_KEYS } from "../../../internal/localization/index.js";
+import type { CommitInteractionRow } from "../../types/commit-view.js";
+import { EditorComponentApiActions } from "../../../a12internal/api/actions-api.js";
+import { PrintEngineActions } from "../../store/actions.js";
 
 import { createCommitInteractionRows } from "./utils.js";
 
 const log = LoggerFactory.getLogger("CommitChangesSaga");
 
-export function* commitChangesSaga(): SagaIterator {
-	yield* takeEvery((action: AnyAction) => CommitViewActions.commitChanges.match(action), handleCommitChangesSaga);
+export function* commitChangesSaga(): SagaGenerator<void> {
+	yield* takeEvery(CommitViewActions.commitChanges.match, function* (action: PayloadAction<CommitInteractionRow[]>) {
+		yield* put(CommitViewActions.setIsCommitting(true));
+		yield* call(handleCommitChangesSaga, action);
+		yield* put(CommitViewActions.setIsCommitting(false));
+	});
 }
 
-function* handleCommitChangesSaga(action: Action<CommitInteractionRow[]>) {
+function* handleCommitChangesSaga(action: PayloadAction<CommitInteractionRow[]>) {
 	const commits = action.payload.filter(el => el.state !== "pending");
 
 	const requestApi = yield* getContext<RequestApi>("requestApi");
@@ -80,16 +85,31 @@ function* handleCommitChangesSaga(action: Action<CommitInteractionRow[]>) {
 	const { transactionLogStore } = Log.createStores(entriesToCommit, initialPrintModel);
 	const newPrintModel = PrintModelCreator.createCleanModel(transactionLogStore);
 	const savedPrintModelResponse = yield* call(requestApi.setPrintModel, newPrintModel, true, filteredEntriesToRemain);
-	if (!savedPrintModelResponse?.printModel || savedPrintModelResponse.errorMap) {
-		log.error(`The changes could not be commited`);
-		yield* put(
-			EditorComponentApiActions.addNotification({
-				title: { key: RESOURCE_KEYS.validation.error.internalError },
-				message: { key: RESOURCE_KEYS.sidebar.commitChanges.error.commitChangesFailed },
-				severity: "error",
-			})
-		);
+
+	if (!savedPrintModelResponse?.printModel) {
+		if (
+			!savedPrintModelResponse ||
+			(savedPrintModelResponse &&
+				(savedPrintModelResponse.errorMap || !savedPrintModelResponse.precompileMessages))
+		) {
+			if (savedPrintModelResponse?.errorMap) {
+				log.error(`The changes could not be commited: `, savedPrintModelResponse.errorMap);
+			}
+			yield* put(
+				EditorComponentApiActions.addNotification({
+					title: { key: RESOURCE_KEYS.validation.error.internalError },
+					message: { key: RESOURCE_KEYS.sidebar.commitChanges.error.commitChangesFailed },
+					severity: "error",
+				})
+			);
+		}
+		if (savedPrintModelResponse?.precompileMessages && savedPrintModelResponse.precompileMessages.length > 0) {
+			yield* put(CommitViewActions.setCommitViewPrecompileMessages(savedPrintModelResponse.precompileMessages));
+		}
+
 		return;
+	} else if (savedPrintModelResponse?.precompileMessages && savedPrintModelResponse.precompileMessages.length > 0) {
+		yield* put(CommitViewActions.setCommitViewPrecompileMessages(savedPrintModelResponse.precompileMessages));
 	}
 	const { transactionLogStore: newTransactionLogStore, interactionLogStore } = Log.createStores(
 		filteredEntriesToRemain,
@@ -97,6 +117,7 @@ function* handleCommitChangesSaga(action: Action<CommitInteractionRow[]>) {
 		interactionGraph
 	);
 
+	yield* put(PrintEngineActions.removeInvalidSelections(newTransactionLogStore));
 	yield* put(InteractionLogActions.setLogStore(interactionLogStore));
 	yield* put(TransactionLogStateActions.setLogStore(newTransactionLogStore));
 	yield* put(

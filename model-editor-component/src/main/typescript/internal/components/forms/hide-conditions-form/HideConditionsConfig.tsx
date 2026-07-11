@@ -32,35 +32,47 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { Precondition } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { Precondition } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
-import { InteractionLogActions, TransactionLogStateActions } from "../../../redux/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import {
+	InteractionLogActions,
+	isVisibilityConfigFormState,
+	NavigationSelectors,
+	TransactionLogStateActions,
+} from "../../../redux/index.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
+import { assertType } from "../../../utils/type-utils.js";
 
-import { PreconditionRepeatRowType, PreconditionsRepeat } from "../shared-components/index.js";
+import type { PreconditionRepeatRowType } from "../shared-components/index.js";
+import { PreconditionsRepeat } from "../shared-components/index.js";
 
 export const HideConditionsConfig = () => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const dispatch = useDispatch();
-	const { placeabeRefId } = useSelector(PrintEngineSelectors.hideConditionsFormData);
+	const currentReferenceForm = useSelector(NavigationSelectors.currentReferenceForm);
 	const elementReferences = useSelector(PrintEngineSelectors.elementReferences);
+
+	assertType(currentReferenceForm, isVisibilityConfigFormState);
+
+	const placeabeRefId = currentReferenceForm.referenceId;
 
 	const setTableData = React.useCallback(
 		(newTableData: PreconditionRepeatRowType[]) => {
+			const updatedRefs = elementReferences.map(ref =>
+				ref.id === placeabeRefId ? { ...ref, hideConditions: newTableData } : ref
+			);
 			dispatch(
 				InteractionLogActions.start({
 					description: RESOURCE_KEYS.interaction.form.hideConditions.changeHideConditions,
 					region: GlobalRegion.FORM,
 					transactionLogActions: [
 						TransactionLogStateActions.updateReferenceElements({
-							data: elementReferences.map(ref =>
-								ref.id === placeabeRefId ? { ...ref, hideConditions: newTableData } : ref
-							),
+							data: updatedRefs,
 						}),
 					],
 				})

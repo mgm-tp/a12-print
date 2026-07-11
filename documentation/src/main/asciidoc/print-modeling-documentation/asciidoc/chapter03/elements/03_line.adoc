@@ -19,3 +19,6 @@ THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPR
 
 The Line element inserts a horizontal line into the resulting PDF document, which functions analog to the HTML `<hr>` element.
 The properties of the Line element are determined by its <<BorderProperties, Border Properties>>.
+
+NOTE: The *Border Style* of a Line element is always required — the *Unset* source is not available.
+New Line elements are created with *Border Style* set to *Solid* by default.

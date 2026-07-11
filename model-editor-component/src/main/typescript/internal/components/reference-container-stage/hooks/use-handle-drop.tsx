@@ -30,33 +30,26 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import * as React from "react";
-import { DropTargetMonitor, XYCoord } from "react-dnd";
+import type { DropTargetMonitor, XYCoord } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-	isSegment,
+import type {
 	PageOrientation,
 	PartialAnyPrintModelElement,
 	PartialArea,
 	PartialBoundingBox,
 	PartialOverride,
 	SectionUsage,
-	isPartialSection,
 	PartialSection,
 	PartialSegment,
 	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { isSegment, isPartialSection } from "@com.mgmtp.a12.print/print-model-api/model";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { DragItem } from "../../../types/index.js";
-import {
-	changeMmMeasureValue,
-	createMmMeasure,
-	EditorUtils,
-	ElementsUtils,
-	OmitId,
-	PlainMeasurePosition,
-} from "../../../utils/index.js";
+import type { DragItem } from "../../../types/index.js";
+import type { OmitId, PlainMeasurePosition } from "../../../utils/index.js";
+import { changeMmMeasureValue, createMmMeasure, EditorUtils, ElementsUtils } from "../../../utils/index.js";
 import { HiddenHeightComponentContext } from "../../hidden-height-context-wrapper/index.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../../redux/index.js";
 import { RESOURCE_KEYS } from "../../../localization/index.js";

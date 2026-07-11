@@ -34,14 +34,14 @@ package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider;
 import com.mgmtp.a12.print.engine.runtime.internal.PrintEngineRuntimeDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.RuntimeType;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.ValueDependency;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocument;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.computation.ComputationExpression;
 import lombok.Data;
 import lombok.NonNull;
 
 @Data
 @PrintEngineRuntimeDependency(type = RuntimeType.CORE)
-public class ComputeDocumentDependency implements ValueDependency<PrintDocument> {
+public class ComputeDocumentDependency implements ValueDependency<PrintDocumentContext> {
 
 	@NonNull
 	private final String documentModelId;

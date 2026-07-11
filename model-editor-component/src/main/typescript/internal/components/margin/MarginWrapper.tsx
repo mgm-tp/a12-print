@@ -31,10 +31,10 @@
  */
 import * as React from "react";
 
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../constant/editor.js";
-import { LimitZone, MarginSide } from "../../types/margin.js";
+import type { LimitZone, MarginSide } from "../../types/margin.js";
 import { getLimitBottomValue, getLimitElement, getLimitTopValue } from "../../utils/margin-utils.js";
 
 import { EditorContext } from "../editor-stage/editor-context.js";

@@ -41,7 +41,9 @@ import com.mgmtp.a12.print.model.api.domain.typings.views._domainprintmetamodel.
 import lombok.NonNull;
 
 import java.util.*;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public class OnlyOneIsSortingColumn implements ICustomCondition {
 
 	@Override

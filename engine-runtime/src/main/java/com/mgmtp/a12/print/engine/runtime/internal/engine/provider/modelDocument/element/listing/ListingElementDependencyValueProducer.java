@@ -33,16 +33,15 @@ package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.modelDocumen
 
 import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.ModelDocumentDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.attachments.AttachmentUtils;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.markup.listing.ListingHtmlTemplateParameters;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing.ListingValues;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.AttachmentToAppend;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.ImageAttachmentToAppend;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.PdfAttachmentToAppend;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.modelDocument.element.AttachmentWrapper;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.rendering.CssUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalModelDocumentPrintEngineRuntime;
 import com.mgmtp.a12.print.model.document.internal.attachments.AttachmentType;
 import com.mgmtp.a12.print.model.document.internal.attachments.PrintAttachment;
@@ -50,7 +49,6 @@ import com.mgmtp.a12.print.model.document.internal.base.IPrintElement;
 import com.mgmtp.a12.print.model.document.internal.element.listing.ListingCell;
 import com.mgmtp.a12.print.model.document.internal.element.listing.ListingElement;
 import com.mgmtp.a12.print.model.document.internal.element.listing.ListingRow;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 
@@ -58,11 +56,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.factories.ListingComponentDependencyValueProducer.getListingCellHidden;
+import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.factories.ListingComponentDependencyValueProducer.getListingRowHidden;
+
 @RequiredArgsConstructor
 public class ListingElementDependencyValueProducer implements ModelDocumentDependencyValueProvider<AttachmentWrapper<IPrintElement>, ListingElementDependency> {
-
-	@NonNull
-	private final CssUtil cssUtil;
 
 	@Override
 	public ValueFactory<AttachmentWrapper<IPrintElement>> produce(ListingElementDependency dependency, PrintJob job, PrintEngine<?> engine, InternalModelDocumentPrintEngineRuntime runtime) {
@@ -92,22 +90,22 @@ public class ListingElementDependencyValueProducer implements ModelDocumentDepen
 				} else if (attachment instanceof ImageAttachmentToAppend) {
 					return new PrintAttachment(attachmentId,  AttachmentType.IMAGE, AttachmentUtils.attachmentToBase64(attachment), attachment.getAltText());
 				} else {
-					throw new PrintException("The current attachment type is not supported");
+					throw new PrintDomainException("The attachment type {} is not supported", attachment.getClass().getName());
 				}
 			}
 		).toList();
 	}
 
 	private List<ListingRow> getRows(
-		List<ListingHtmlTemplateParameters.MarkupListingRowValue> rowValues
+		List<ListingValues.MarkupListingRowValue> rowValues
 	) {
 		final List<ListingRow> listingValues = new ArrayList<>();
 		rowValues.forEach(row -> {
-			if(!cssUtil.getListingRowHidden(row)) {
+			if(!getListingRowHidden(row)) {
 				listingValues.add(
 					new ListingRow(
 						row.getColumnValues().stream().map(cell -> {
-							if (cssUtil.getListingCellHidden(cell)) {
+							if (getListingCellHidden(cell)) {
 								return new ListingCell(null, null, false);
 							} else {
 								final var innerHtml = cell.isHTML()
@@ -119,7 +117,7 @@ public class ListingElementDependencyValueProducer implements ModelDocumentDepen
 									cell.isHTML()
 								);
 							}
-						}).map(ListingCell.class::cast).toList()
+						}).toList()
 					)
 				);
 			}
@@ -127,5 +125,4 @@ public class ListingElementDependencyValueProducer implements ModelDocumentDepen
 
 		return listingValues;
 	}
-
 }

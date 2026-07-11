@@ -29,11 +29,15 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::PdfPrintResultInterface[]
 package com.mgmtp.a12.print.engine.api;
+
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Interface for PDF-based {@link PrintResult}.
  */
+@OnlyForUsage
 public interface PdfPrintResult extends PrintResult {
 
     static PdfPrintResult empty() {
@@ -45,3 +49,4 @@ public interface PdfPrintResult extends PrintResult {
 		return "application/pdf";
 	}
 }
+// end::PdfPrintResultInterface[]

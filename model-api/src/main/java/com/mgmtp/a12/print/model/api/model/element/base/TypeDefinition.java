@@ -32,6 +32,8 @@
 package com.mgmtp.a12.print.model.api.model.element.base;
 
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface TypeDefinition extends PrintModelEntity {
 }

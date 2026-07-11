@@ -1,15 +1,9 @@
 {
   "name": "print-engine-root",
-  "version": "3.2.3",
+  "version": "4.0.0",
   "license": "(EUPL-1.2 OR LicenseRef-commercial)",
   "private": true,
   "scripts": {
     "prepare": "git config core.hooksPath .githooks"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "@draft-js-plugins/editor@4.1.4": "patches/@draft-js-plugins__editor@4.1.4.patch",
-      "draft-js-import-element": "patches/draft-js-import-element.patch"
-    }
   }
 }

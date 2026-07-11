@@ -32,10 +32,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import {
-	PartialSection,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialSection, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { Sections } from "../../sections/index.js";

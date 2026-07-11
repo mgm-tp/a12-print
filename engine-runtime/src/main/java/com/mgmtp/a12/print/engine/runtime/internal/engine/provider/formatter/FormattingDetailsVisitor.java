@@ -99,12 +99,12 @@ public interface FormattingDetailsVisitor {
 	default @NonNull ValueFormatProvider.FormattingDetails visitNotSupported(
 		ValueFormatProvider.FormattingDetails formattingDetails
 	) {
-		throw new PrintException("not supported formatting Details");
+		throw new PrintException("Not supported formatting Details");
 	}
 
 	default @NonNull ValueFormatProvider.FormattingDetails visitNotImplemented(
 		ValueFormatProvider.FormattingDetails formattingDetails
 	) {
-		throw new PrintException("not implemented formatting Details");
+		throw new PrintException("Not implemented formatting Details");
 	}
 }

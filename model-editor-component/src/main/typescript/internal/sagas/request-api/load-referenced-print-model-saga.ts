@@ -29,31 +29,33 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, getContext, put, select, takeEvery } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
 import { nanoid } from "nanoid";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
+import type {
+	PartialPlaceableReference,
+	PartialSegment,
+	PartialSegmentReference,
+	PrintModel,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	ElementType,
 	OverrideType,
 	PartialBoundingBox,
 	PartialOverride,
-	PartialPlaceableReference,
-	PartialSegment,
-	PartialSegmentReference,
-	PrintModel,
 	ReferenceType,
 	SourceType,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { clonePrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/lib/utils/print-model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { clonePrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import { RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 import { InteractionLogActions, RequestApiActions, TransactionLogStateActions } from "../../redux/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { RESOURCE_KEYS } from "../../localization/keys.js";
+import { RESOURCE_KEYS } from "../../../internal/localization/index.js";
 
 const log = LoggerFactory.getLogger("loadReferencedPrintModelSaga");
 
@@ -78,16 +80,13 @@ interface ElementReferencesUpdateResult<T> {
 
 // Main Saga
 
-export function* loadReferencedPrintModelSaga(): SagaIterator {
-	yield* takeEvery(
-		(action: AnyAction) => RequestApiActions.loadReferencedPrintModel.match(action),
-		handleLoadReferencedPrintModelSaga
-	);
+export function* loadReferencedPrintModelSaga(): SagaGenerator<void> {
+	yield* takeEvery(RequestApiActions.loadReferencedPrintModel.match, handleLoadReferencedPrintModelSaga);
 }
 
-function* handleLoadReferencedPrintModelSaga(action: Action<string>): SagaIterator {
+function* handleLoadReferencedPrintModelSaga(action: PayloadAction<string>): SagaGenerator<void> {
 	const id = action.payload;
-	const printModel: PrintModel = yield* call(getPrintModel, id);
+	const printModel: PrintModel | undefined = yield* call(getPrintModel, id);
 	if (printModel) {
 		yield* put(RequestApiActions.setPrintModelData({ id, printModel }));
 		yield* call(loadPlaceableReferences, printModel);
@@ -96,7 +95,7 @@ function* handleLoadReferencedPrintModelSaga(action: Action<string>): SagaIterat
 	}
 }
 
-function* getPrintModel(id: string): SagaIterator {
+function* getPrintModel(id: string): SagaGenerator<PrintModel | undefined> {
 	const requestApi: RequestApi = yield* getContext("requestApi");
 	const printModel = yield* call(requestApi.loadPrintModel, id);
 	return printModel?.printModel;
@@ -349,6 +348,7 @@ function syncReferenceSegment(
 		if (!overrideElementRef) {
 			overrideElementRef = {
 				...clonePrintModelEntity(templateElementRef.placeable),
+				id: templateElementRef.placeable.id, // use stable id from template
 				refId: nestedOverride.id,
 			};
 			newElementReferences.push(overrideElementRef);
@@ -435,6 +435,7 @@ function syncOverride(
 		if (!overrideElementRef) {
 			overrideElementRef = {
 				...clonePrintModelEntity(templateElementRef.placeable),
+				id: templateElementRef.placeable.id, // use stable id from template
 				refId: nestedOverride.id,
 			};
 			newElementReferences.push(overrideElementRef);
@@ -583,6 +584,7 @@ function handleNewBoundingBox(
 	const newOverride = createOverride(boundingBox, segment);
 	const newPlaceableReference: PartialPlaceableReference = {
 		...clonePrintModelEntity(reference),
+		id: reference.id, // use stable id from template
 		refId: newOverride.id,
 	};
 	return { newOverride, newPlaceableReference };

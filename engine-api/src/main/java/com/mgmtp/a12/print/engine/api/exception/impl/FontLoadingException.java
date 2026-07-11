@@ -31,7 +31,10 @@
  */
 package com.mgmtp.a12.print.engine.api.exception.impl;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+
+@OnlyForUsage
 public class FontLoadingException extends PDDocumentCreationException {
 
 	public FontLoadingException(final String message) {

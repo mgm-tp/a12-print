@@ -31,7 +31,10 @@
  */
 package com.mgmtp.a12.print.engine.api.exception.impl;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+
+@OnlyForUsage
 public class FontNotFoundException extends PDDocumentCreationException {
 
 	public FontNotFoundException(final String message) {

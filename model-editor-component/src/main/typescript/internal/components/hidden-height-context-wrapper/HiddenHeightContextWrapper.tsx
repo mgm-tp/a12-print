@@ -31,10 +31,10 @@
  */
 import * as React from "react";
 
-import { PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { HeightRenderContainer } from "./HeightRenderContainer.js";
-import { NewElementData } from "./HeightRenderNewElement.js";
+import type { NewElementData } from "./HeightRenderNewElement.js";
 
 interface HiddenHeightContext {
 	calculateNewHeightsTextStyle: (newTextStyle: PartialTextStyle) => void;

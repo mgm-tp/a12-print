@@ -2,7 +2,7 @@
   "header": {
     "id": "EscapeXmlCommentPM",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "modelReferences": [
@@ -166,8 +166,23 @@
         },
         "borderProperties": {
           "id": "ID_4542d340-42db-40df-821c-66b3e9bc61c9",
-          "borderWidth": 0.75,
-          "borderColor": "#000"
+          "borderWidth": {
+            "id": "VuTNjAWLw1ESIr9qPvKA2",
+            "source": "INPUT",
+            "value": 0.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "Q3vvttFIvHCc-895qOwhu",
+            "source": "INPUT",
+            "value": "#000",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "xMHQC04QqSLFd-4nAu_dh",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "text": {
           "id": "ID_5831a195-ae7f-451c-ab5a-4d6777912fe0",
@@ -187,6 +202,24 @@
           "id": "ID_2c38bfdd-0d7e-4a51-904d-8ac2921d65b7",
           "model": "EscapeXmlCommentDM",
           "path": "/general/StringField"
+        },
+        "borderProperties": {
+          "id": "PRQ0aWc1WQ3bCNSqR_xoa",
+          "borderWidth": {
+            "id": "QcXdr-W-yL5D3b-R6easE",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "nCdE4kr_RtqdSvXKEo9mg",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "0dT4ayuTsPFyKkF_GolJF",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       }
     ],

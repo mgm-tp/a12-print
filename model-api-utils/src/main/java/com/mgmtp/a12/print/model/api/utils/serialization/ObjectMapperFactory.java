@@ -33,51 +33,47 @@ package com.mgmtp.a12.print.model.api.utils.serialization;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.mgmtp.a12.model.header.*;
 import com.mgmtp.a12.model.serialization.A12DefaultJsonPrettyPrinter;
-import org.apache.commons.lang3.Validate;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.cfg.EnumFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.Locale;
 
 
+@OnlyForUsage
 public class ObjectMapperFactory {
 	public static ObjectMapper createPrintModelMapper() {
-		final Jdk8Module module = new Jdk8Module();
-
-		final ObjectMapper objectMapper = new ObjectMapper();
-
-		objectMapper.registerModule(module);
-		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-		objectMapper.setSerializationInclusion(Include.NON_ABSENT);
-		objectMapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
-		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		objectMapper.setDefaultPrettyPrinter(new A12DefaultJsonPrettyPrinter());
-
-		configureMixins(objectMapper);
-
-		return objectMapper;
-	}
-
-	public static void configureMixins(ObjectMapper objectMapper) {
-		Validate.notNull(objectMapper);
-		objectMapper.addMixIn(Annotation.class, AnnotationMixin.class).addMixIn(Label.class, LabelMixin.class).addMixIn(ModelReference.class, ModelReferenceMixin.class).addMixIn(Locale.class, LocaleMixin.class);
+		return JsonMapper.builder()
+			.enable(SerializationFeature.INDENT_OUTPUT)
+			.changeDefaultPropertyInclusion(include -> include.withOverrides(JsonInclude.Value.ALL_NON_ABSENT))
+			.enable(EnumFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
+			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+			.defaultPrettyPrinter(new A12DefaultJsonPrettyPrinter())
+			.addMixIn(Annotation.class, AnnotationMixin.class)
+			.addMixIn(Label.class, LabelMixin.class)
+			.addMixIn(ModelReference.class, ModelReferenceMixin.class)
+			.addMixIn(Locale.class, LocaleMixin.class)
+			.build();
 	}
 
 	@JsonDeserialize(
 		as = ModelReferenceImpl.class
 	)
+	@OnlyForUsage
 	interface ModelReferenceMixin {
 	}
 
 	@JsonDeserialize(
 		as = LabelImpl.class
 	)
+	@OnlyForUsage
 	interface LabelMixin {
 		@JsonSerialize(
 			converter = LocaleToStringConverter.class
@@ -91,12 +87,14 @@ public class ObjectMapperFactory {
 	@JsonSerialize(
 		converter = LocaleToJsonConverter.class
 	)
+	@OnlyForUsage
 	interface LocaleMixin {
 	}
 
 	@JsonDeserialize(
 		as = AnnotationImpl.class
 	)
+	@OnlyForUsage
 	interface AnnotationMixin {
 		@JsonInclude(Include.NON_NULL)
 		String getValue();

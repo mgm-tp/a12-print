@@ -29,21 +29,19 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
 
-import {
-	TransactionLog,
-	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PrintModelHeader } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PrintModelHeader } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 	PRINT_MODEL_HEADER_LOG_ID,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
+import type { RequestApiState } from "../../../main/typescript/internal/redux/index.js";
 import {
 	RequestApiReducer,
-	RequestApiState,
 	TransactionLogStateReducer,
 	initialStateLogStore,
 } from "../../../main/typescript/internal/redux/index.js";
@@ -88,9 +86,9 @@ export function setupTestWithSchema(ui: React.ReactElement, printModelHeader: Pa
 		TransactionLogStateReducer(state, action);
 
 	const initialRequestApiState: RequestApiState = {
-		documentModelDataMap: {},
 		documentModelIds: ["DomainAddress", "DomainPerson", "DomainText"],
-		documentModelHeaders: documentModelHeadersMock,
+		resources: {},
+		availableResources: [],
 	};
 
 	const RequestApiStateMock: Reducer = (state: RequestApiState = initialRequestApiState, action) =>

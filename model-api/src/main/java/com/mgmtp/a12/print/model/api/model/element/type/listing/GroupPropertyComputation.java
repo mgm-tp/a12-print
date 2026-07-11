@@ -32,6 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.element.type.listing;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 import com.mgmtp.a12.print.model.api.model.element.base.RequiredComputationAlternative;
 import com.mgmtp.a12.print.model.api.model.element.base.internal.LogicComponent;
@@ -40,6 +41,7 @@ import com.mgmtp.a12.print.model.api.model.element.base.internal.LogicContainer;
 import java.util.List;
 import java.util.stream.Stream;
 
+@OnlyForUsage
 public interface GroupPropertyComputation extends PrintModelEntity, LogicContainer {
 	PropertyType getProperty();
 
@@ -52,6 +54,7 @@ public interface GroupPropertyComputation extends PrintModelEntity, LogicContain
 		return getComputationAlternatives().stream().map(e -> e);
 	}
 
+	@OnlyForUsage
 	enum PropertyType {
 		@JsonProperty("IsHidden") IS_HIDDEN,
 	}

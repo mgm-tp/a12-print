@@ -31,8 +31,10 @@
  */
 import { within } from "@testing-library/react";
 
-import { ValidationCounter, ValidationReducer, ValidationState } from "../../../redux/index.js";
+import type { ValidationCounter } from "../../../redux/index.js";
+import { ValidationReducer } from "../../../redux/index.js";
 import { renderWithProviders } from "../../../../../../test/typescript/test-utils/index.js";
+import type { ValidationState } from "../../../../a12internal/api/ValidationState.js";
 
 import { BadgeGroup } from "../BadgeGroup.js";
 
@@ -51,6 +53,7 @@ describe("BadgeGroup", () => {
 						interaction: {
 							error: "descriptive",
 							warning: "descriptive",
+							info: "descriptive",
 						},
 					},
 					action
@@ -87,6 +90,7 @@ describe("BadgeGroup", () => {
 						interaction: {
 							error: "compact",
 							warning: "compact",
+							info: "compact",
 						},
 					},
 					action

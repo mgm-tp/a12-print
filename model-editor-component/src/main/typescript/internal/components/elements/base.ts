@@ -29,14 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as React from "react";
+import type * as React from "react";
 
-import {
+import type {
 	PartialAnyPrintModelElement,
 	PartialPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { ElementContainerProps } from "../element-container/base.js";
+import type { ElementContainerProps } from "../element-container/base.js";
 
 export interface BaseElementProps {
 	reference: PartialPlaceableReference;

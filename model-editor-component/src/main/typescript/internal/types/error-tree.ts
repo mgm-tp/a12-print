@@ -29,13 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	CollapsibleTreeNodeModel,
-	SelectableTreeNodeModel,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/tree/index.js";
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PrintError } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { CollapsibleTreeNodeModel, SelectableTreeNodeModel } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 export interface ErrorTreeNode extends CollapsibleTreeNodeModel, SelectableTreeNodeModel {
 	icon?: React.ReactNode;

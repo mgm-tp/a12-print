@@ -31,6 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.runtime;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
+@OnlyForUsage
 public interface PrintEngineRuntime {
 
 }

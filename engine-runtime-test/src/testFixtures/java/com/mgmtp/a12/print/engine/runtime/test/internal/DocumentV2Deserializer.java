@@ -35,12 +35,10 @@ import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 import com.mgmtp.a12.kernel.md.document.apiV2.services.IDocumentV2Serializer;
 import com.mgmtp.a12.kernel.md.facade.DocumentServiceFactory;
 import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelResolver;
-import com.mgmtp.a12.model.notification.RankedNotification;
 import com.mgmtp.a12.model.notification.Severity;
 import com.mgmtp.a12.print.engine.api.exception.impl.DocumentLoadingException;
 
 import java.io.StringReader;
-import java.util.function.Consumer;
 
 import static com.mgmtp.a12.print.engine.runtime.test.internal.DocumentModelResolver.DESERIALIZATION_CONFIG;
 
@@ -64,12 +62,9 @@ public class DocumentV2Deserializer {
 	) {
 		DocumentV2 document;
 		try (final StringReader reader = new StringReader(jsonDocument)) {
-			document = documentV2Serializer.deserializeV2(reader, documentModelId, DESERIALIZATION_CONFIG, new Consumer<RankedNotification>() {
-				@Override
-				public void accept(RankedNotification rankedNotification) {
-					if (rankedNotification.getSeverity().equals(Severity.ERROR)) {
-						throw new DocumentLoadingException("Error on parsing document: {}", rankedNotification);
-					}
+			document = documentV2Serializer.deserializeV2(reader, documentModelId, DESERIALIZATION_CONFIG, rankedNotification -> {
+				if (rankedNotification.getSeverity().equals(Severity.ERROR)) {
+					throw new DocumentLoadingException("Error on parsing document: {}", rankedNotification);
 				}
 			});
 		} catch (final Exception exception) {

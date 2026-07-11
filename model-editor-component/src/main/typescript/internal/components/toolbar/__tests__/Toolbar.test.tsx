@@ -30,30 +30,31 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { jest } from "@jest/globals";
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
 
 import {
+	SidebarItem,
 	TransactionLog,
-	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/elements/print-model-element.js";
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+	type TransactionLogStore,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import {
 	EditorStateReducer,
 	initialStateLogStore,
-	PrintEditorState,
-	SidebarReducer,
-	SidebarState,
 	TransactionLogStateReducer,
+	type PrintEditorState,
 } from "../../../redux/index.js";
-import { EDITOR_CONTEXT_DEFAULT_VALUE, EditorContext, IEditorContext } from "../../editor-stage/editor-context.js";
+import type { IEditorContext } from "../../editor-stage/editor-context.js";
+import { EDITOR_CONTEXT_DEFAULT_VALUE, EditorContext } from "../../editor-stage/editor-context.js";
 import { createMmMeasureFromPx } from "../../../utils/measure-utils.js";
 import { DefaultQuickEditBar } from "../../quick-edit-bar/DefaultQuickEditBar.js";
 import { ToolbarItem } from "../../../types/toolbar-item.js";
 import {
+	createNavigationStateWithForm,
 	defaultPrintEditorState,
 	initialStateLogStoreMock,
+	mockSegment,
 	renderWithProviders,
 } from "../../../../../../test/typescript/test-utils/index.js";
 
@@ -62,15 +63,6 @@ import { Toolbar } from "../index.js";
 describe("Toolbar", () => {
 	const EditorStateReducerMock: Reducer = (state: PrintEditorState = defaultPrintEditorState, action) =>
 		EditorStateReducer(state, action);
-
-	const SidebarReducerMock: Reducer = (
-		state: SidebarState = {
-			selectedItem: SidebarItem.SEGMENT,
-			isFullscreen: false,
-			isOpen: true,
-		},
-		action
-	) => SidebarReducer(state, action);
 
 	const elementMock = {
 		id: "element-id",
@@ -109,6 +101,7 @@ describe("Toolbar", () => {
 					leftItems={[ToolbarItem.ElementLibrary, ToolbarItem.ZoomFactor, ToolbarItem.HideFrames]}
 					rightItems={[
 						<DefaultQuickEditBar
+							groupSelectedEls={jest.fn()}
 							key="quick-edit-bar"
 							selected={[elementMock.id]}
 							deleteSelectedEls={deleteSelectedElsMock}
@@ -117,7 +110,7 @@ describe("Toolbar", () => {
 				/>
 			</EditorContext.Provider>,
 			{
-				Sidebar: SidebarReducerMock,
+				Navigation: () => createNavigationStateWithForm(SidebarItem.SEGMENT, mockSegment.id, []),
 				PrintEditorState: EditorStateReducerMock,
 				TransactionLogState: TransactionLogStateMock,
 			}

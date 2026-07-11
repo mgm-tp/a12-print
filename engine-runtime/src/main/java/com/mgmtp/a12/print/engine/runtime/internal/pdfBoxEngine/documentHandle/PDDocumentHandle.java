@@ -32,6 +32,7 @@
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle;
 
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.AttachmentToAppend;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.ImageAttachmentToAppend;
@@ -49,6 +50,7 @@ import com.mgmtp.a12.print.model.api.model.element.properties.PageOrientation;
 import com.mgmtp.a12.print.model.api.model.watermark.Watermark;
 import lombok.NonNull;
 import lombok.Value;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.cos.COSArray;
 import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSInteger;
@@ -61,6 +63,7 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.documentinterchange.logicalstructure.PDStructureElement;
 import org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo;
 import org.apache.pdfbox.pdmodel.interactive.action.PDActionURI;
+import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageFitDestination;
 
@@ -94,13 +97,14 @@ public class PDDocumentHandle {
 		final var inclusivePageRangeStart = Math.max(jobRestrictionContext.getInclusivePageRangeStart(), 0);
 		final var exclusivePageRangeEnd = jobRestrictionContext.getExclusivePageRangeEnd();
 
-		if (inclusivePageRangeStart >= contentStreamAdapters.size()) {
-			throw new PrintException("The range start is higher than the page count");
+		final var pageCount = contentStreamAdapters.size();
+		if (inclusivePageRangeStart >= pageCount) {
+			throw new PrintDomainException("The page range start {} is higher than the page count {}", inclusivePageRangeStart, pageCount);
 		}
 
 		final List<ContentStreamAdapter> restrictedAdapterList = contentStreamAdapters.subList(
 			inclusivePageRangeStart,
-			Math.min(exclusivePageRangeEnd.orElse(contentStreamAdapters.size()), contentStreamAdapters.size())
+			Math.min(exclusivePageRangeEnd.orElse(pageCount), pageCount)
 		);
 
 		List<WatermarkDocumentHandle> watermarkDocumentHandles = null;
@@ -189,32 +193,34 @@ public class PDDocumentHandle {
 		int initialStructParent
 	) {
 		var structParent = initialStructParent;
+		List<PDAnnotation> pageAnnotations;
 		try {
-			final var pageAnnotations = page.getAnnotations();
-			if (pageAnnotations != null && !pageAnnotations.isEmpty()) {
-				final var linkStructElements = adapter.getLinkStructElements();
-				var index = 0;
-				for (final var annotation : pageAnnotations) {
-					if (annotation instanceof PDAnnotationLink annotationLink) {
-						// These two list should be in line because the content stream of a segment is changed serial
-						final var linkStructElement = index > linkStructElements.size() - 1
-							? null
-							: linkStructElements.get(index);
-						if (linkStructElement == null) {
-							throw new PrintException("There is no struct element for the selected Annotation");
-						}
-						index++;
-						structParent++;
+			pageAnnotations = page.getAnnotations();
+		} catch (IOException e) {
+			throw new PrintException("The annotations for the links could not be added", e);
+		}
 
-						annotationLink.setStructParent(structParent);
-						annotations.add(annotationLink);
-						numTree.add(COSInteger.get(structParent));
-						numTree.add(linkStructElement);
+		if (pageAnnotations != null && !pageAnnotations.isEmpty()) {
+			final var linkStructElements = adapter.getLinkStructElements();
+			var index = 0;
+			for (final var annotation : pageAnnotations) {
+				if (annotation instanceof PDAnnotationLink annotationLink) {
+					// These two list should be in line because the content stream of a segment is changed serial
+					final var linkStructElement = index > linkStructElements.size() - 1
+						? null
+						: linkStructElements.get(index);
+					if (linkStructElement == null) {
+						throw new PrintException("There is no struct element for the selected Annotation");
 					}
+					index++;
+					structParent++;
+
+					annotationLink.setStructParent(structParent);
+					annotations.add(annotationLink);
+					numTree.add(COSInteger.get(structParent));
+					numTree.add(linkStructElement);
 				}
 			}
-		} catch (IOException e) {
-			throw new PrintException(e);
 		}
 		return structParent;
 	}
@@ -339,12 +345,12 @@ public class PDDocumentHandle {
 				pdfMergerUtility.appendDocument(document, doc);
 				doc.close();
 			} catch (IOException e) {
-				throw new PrintException(e);
+				throw new PrintDomainException("The PDF attachment could not be added.", e);
 			}
 		} else if (value instanceof ImageAttachmentToAppend imageAttachmentToAppend) {
 			renderImageAttachment(attachmentToAppend.getKey(), imageAttachmentToAppend);
 		} else {
-			throw new PrintException("The current attachment type is not supported");
+			throw new PrintDomainException("The current attachment type {} is not supported", value.getClass().getName());
 		}
 	}
 
@@ -396,9 +402,9 @@ public class PDDocumentHandle {
 	) {
 		final PDDocument pdDocument;
 		try {
-			pdDocument = PDDocument.load(e.getValue().getAttachmentContent());
+			pdDocument = Loader.loadPDF(e.getValue().getAttachmentContent().readAllBytes());
 		} catch (final IOException ex) {
-			throw new PrintException(ex);
+			throw new PrintDomainException("The attachment PDF could not be loaded", ex);
 		}
 		return pdDocument;
 	}

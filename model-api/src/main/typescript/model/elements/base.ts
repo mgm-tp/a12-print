@@ -122,9 +122,9 @@ export enum Alignment {
 }
 
 export interface BorderProperties extends PrintModelEntity {
-	readonly borderWidth?: number;
-	readonly borderColor?: string;
-	readonly borderStyle?: BorderStyle;
+	readonly borderWidth?: InputSource<number>;
+	readonly borderColor?: InputSource<string>;
+	readonly borderStyle?: InputSource<BorderStyle>;
 }
 
 export enum BorderStyle {
@@ -149,17 +149,6 @@ export enum DisplayType {
 	Date = "Date",
 	DateRange = "DateRange",
 	Checkbox = "Checkbox",
-}
-
-export interface Attachment extends PrintModelEntity {
-	readonly original_filename?: string;
-	readonly internal_filename: string;
-	readonly content: string;
-	readonly attachment_id?: string;
-	readonly size: number;
-	readonly mime_type: string;
-	readonly category?: string;
-	readonly description?: string;
 }
 
 export interface ComputationAlternative extends PrintModelEntity {

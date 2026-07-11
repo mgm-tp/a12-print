@@ -33,21 +33,22 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
 
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	PageBreakBehavior,
 	PartialArea,
 	PartialBoundingBox,
 	PartialOverride,
 	PartialSwitch,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import { Typography } from "@com.mgmtp.a12.widgets/widgets-core";
-import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { useInheritedPageBreakResolver } from "../../../hooks/use-inherited-page-break-resolver.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
+import { NavigationSelectors } from "../../../redux/index.js";
 
 import { PageBreakBehaviorInput } from "./PageBreakBehaviorInput.js";
 
@@ -55,16 +56,15 @@ export const LayoutConfigForm = () => {
 	const localizer = PrintLocalizer.useLocalizer();
 
 	const placeableReferences = useSelector(PrintEngineSelectors.elementReferences);
-	const currentDetailData = useSelector(PrintEngineSelectors.currentDetailData);
-	const currentDetailDatePlaceableRefId = currentDetailData?.placeableRefId;
+	const currentDetailDataId = useSelector(NavigationSelectors.currentReferenceForm)?.referenceId;
 
 	const currentReference: PartialValidPlaceableReference | undefined = React.useMemo(() => {
-		if (!currentDetailDatePlaceableRefId) {
+		if (!currentDetailDataId) {
 			return undefined;
 		}
 
-		return placeableReferences?.find(ref => ref.id === currentDetailDatePlaceableRefId);
-	}, [currentDetailDatePlaceableRefId, placeableReferences]);
+		return placeableReferences?.find(ref => ref.id === currentDetailDataId);
+	}, [currentDetailDataId, placeableReferences]);
 
 	const currentElement = useSelector((state: PrintEngineState) =>
 		currentReference?.refId ? PrintEngineSelectors.printModelElement(state, currentReference?.refId) : undefined

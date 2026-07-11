@@ -31,10 +31,13 @@
  */
 package com.mgmtp.a12.print.model.api.walker;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
 
 /**
  * The enum Descend command.
  */
+@OnlyForUsage
 public enum DescendCommand {
 	/**
 	 * Skips the elements of the current container.

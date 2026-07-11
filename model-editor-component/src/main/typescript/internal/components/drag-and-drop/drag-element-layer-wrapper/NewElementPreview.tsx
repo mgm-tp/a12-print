@@ -32,16 +32,16 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { createMmMeasure, ElementsUtils } from "../../../utils/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
-import { BasePreviewProps } from "../../../types/index.js";
+import type { BasePreviewProps } from "../../../types/index.js";
 import { EditorConst } from "../../../constant/editor.js";
 import { ElementComponent } from "../../element-container/ElementComponent.js";
 import { DEFAULT_TEXT_STYLE_ID } from "../../../constant/textstyle.js";
 import { TEXT_PROPERTIES_PATH } from "../../../constant/element-property-path.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 
 import { StyleDragPreviewElement } from "./DragElementLayerWrapper.styled.js";
 

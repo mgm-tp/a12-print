@@ -32,8 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.element.type.chart.lineChart;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.mgmtp.a12.print.model.api.inputSource.InputValueSourceResolver;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.StringInputSource;
 import com.mgmtp.a12.print.model.api.model.element.type.chart.ChartOrientation;
 import com.mgmtp.a12.print.model.api.model.element.type.chart.SeriesData;
@@ -46,7 +45,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Value
 @SuperBuilder

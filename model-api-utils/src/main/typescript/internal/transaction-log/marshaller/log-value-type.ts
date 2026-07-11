@@ -29,7 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { TransactionLogEntryObjectId, TransactionLogEntryValue } from "../../transaction-log/index.js";
+import type {
+	TransactionLogEntryObjectId,
+	TransactionLogEntryValue,
+} from "../../../a12internal/transaction-log/transaction-log.js";
 
 import { StringEscapeUtils } from "./string-escape-utils.js";
 

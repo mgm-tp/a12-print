@@ -148,8 +148,7 @@ public class Variable implements SyntaxTreeElement, Predicate.Parameter, Arithme
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof Variable)) return false;
-		Variable variable = (Variable) o;
+		if (!(o instanceof Variable variable)) return false;
 		if (isAbsolute != variable.isAbsolute) return false;
 		return Arrays.deepEquals(segments, variable.segments);
 	}

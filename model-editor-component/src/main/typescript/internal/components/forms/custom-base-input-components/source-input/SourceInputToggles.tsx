@@ -32,7 +32,7 @@
 import { useMemo } from "react";
 
 import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+import type { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { PrintLocalizer } from "../../../../localization/index.js";
 
@@ -46,10 +46,11 @@ export interface SourceInputTogglesProps {
 	source?: string;
 	onValueChanged: (newValue: string, oldValue?: string) => void;
 	showOnlySelectedOption?: boolean;
+	disabled?: boolean;
 }
 
 export const SourceInputToggles = (props: SourceInputTogglesProps) => {
-	const { possibleInputSources, source, onValueChanged, showOnlySelectedOption } = props;
+	const { possibleInputSources, source, onValueChanged, showOnlySelectedOption, disabled } = props;
 	const localizer = useLocalizer();
 
 	const inputSources = useMemo(() => {
@@ -88,6 +89,7 @@ export const SourceInputToggles = (props: SourceInputTogglesProps) => {
 			showOnlySelectedOption={showOnlySelectedOption}
 			value={source}
 			onValueChanged={onValueChanged}
+			disabled={disabled}
 		>
 			{inputSources}
 		</StyledCustomToggle>

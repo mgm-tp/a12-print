@@ -29,29 +29,25 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, put } from "typed-redux-saga";
 
-import {
+import type {
 	PartialTransactionLogPersistentEntry,
-	TransactionLog,
 	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
+	AffectedItem,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { AnnotationEntity, PrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 	PRINT_MODEL_HEADER_LOG_ID,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
-import { AffectedItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { AnnotationEntity, PrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { openConfirmationDialogSaga } from "../../confirmation-dialog/open-confirmation-dialog-saga.js";
-import {
-	AnyTransactionLogAction,
-	ConfirmationDialogType,
-	TransactionLogStateActions,
-	ValidAnyTransactionLogAction,
-} from "../../../redux/index.js";
+import type { AnyTransactionLogAction, ValidAnyTransactionLogAction } from "../../../redux/index.js";
+import { ConfirmationDialogType, TransactionLogStateActions } from "../../../redux/index.js";
 
 const GENERAL_ACTIONS = [
 	TransactionLogStateActions.updatePrintHeader,
@@ -74,7 +70,7 @@ function* handleGeneralActions({
 	state: TransactionLogStore;
 	action: ValidAnyTransactionLogAction;
 	persistentEntries: PartialTransactionLogPersistentEntry[];
-}): SagaIterator<AffectedItem[]> {
+}): SagaGenerator<AffectedItem[]> {
 	const { interactionId } = action.payload;
 
 	const newAffectedItems: AffectedItem[] = [];

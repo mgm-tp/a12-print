@@ -33,7 +33,7 @@ package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.expression.i
 
 import com.mgmtp.a12.kernel.md.model.api.IElement;
 import com.mgmtp.a12.kernel.md.model.api.IField;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.hashing.IDService;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.expression.parser.ExpressionNode;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.PrintModelCompilationContext;
@@ -165,7 +165,7 @@ public class ExpressionInterpreter {
 			case "=", "==" -> true;
 			case "!=" -> false;
 			default ->
-				throw new PrintCompilerException(String.format("Unsupported operator '%s' in filter expression", node.getOperation()));
+				throw new PrintDomainException("Unsupported operator '{}' in filter expression '{}'", node.getOperation(), node.getContent());
 		};
 	}
 
@@ -183,10 +183,8 @@ public class ExpressionInterpreter {
 			: Optional.empty();
 
 		if (element.isEmpty() || !(element.get() instanceof IField)) {
-			throw new PrintCompilerException(
-				String.format(
-					"The field \"%s\" specified in the filter expression cannot be found in the document model", pathToField
-				)
+			throw new PrintDomainException(
+				"The field '{}' specified in the filter expression cannot be found in the Document Model", pathToField
 			);
 		}
 
@@ -319,7 +317,7 @@ public class ExpressionInterpreter {
 			case "multilingualtext":
 			case "filter":
 			default: {
-				throw new PrintCompilerException(String.format("Expression element '%s' is currently not supported", node.getName()));
+				throw new PrintDomainException("Expression element '{}' is currently not supported", node.getName());
 			}
 		}
 	}

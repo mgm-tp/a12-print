@@ -29,20 +29,18 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	DeepPartialErrorMap,
-	ErrorSeverity,
-	PrintError,
-} from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { Serializer, SerializerResult } from "@com.mgmtp.a12.print/print-model-api-utils";
-import { removeUndefinedProperties } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/utils/object-utils.js";
+import { removeUndefinedProperties } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { Serializer, SerializerResult } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
 
-import * as ModelAPI from "../../model/index.js";
-import * as GeneratedDTO from "../../generated/dto/TypesettingModelDTO.js";
+import type * as ModelAPI from "../../../../a12internal/api/model/index.js";
+import type * as GeneratedDTO from "../../generated/dto/TypesettingModelDTO.js";
 
-export class TypesettingModelSerializer
-	implements Serializer<ModelAPI.TypesettingModel, GeneratedDTO.TypesettingModelDTO>
-{
+export class TypesettingModelSerializer implements Serializer<
+	ModelAPI.TypesettingModel,
+	GeneratedDTO.TypesettingModelDTO
+> {
 	errorMap = DeepPartialErrorMap.getEmptyMap<ModelAPI.TypesettingModel>();
 
 	serialize(

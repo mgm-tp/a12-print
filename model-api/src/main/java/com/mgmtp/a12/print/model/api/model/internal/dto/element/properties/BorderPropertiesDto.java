@@ -32,9 +32,19 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.element.properties;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import com.mgmtp.a12.print.model.api.model.EnableGetterByFieldNameForInheritableSource;
+import com.mgmtp.a12.print.model.api.model.RegisterGetterByFieldName;
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.FloatInputSource;
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.InputSource;
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.StringInputSource;
 import com.mgmtp.a12.print.model.api.model.element.properties.BorderProperties;
 import com.mgmtp.a12.print.model.api.model.internal.dto.JsonModel;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelEntityDto;
+import com.mgmtp.a12.print.model.api.model.internal.dto.element.base.inputSource.BorderStyleInputSourceDto;
+import com.mgmtp.a12.print.model.api.model.internal.dto.element.base.inputSource.FloatInputSourceDto;
+import com.mgmtp.a12.print.model.api.model.internal.dto.element.base.inputSource.StringInputSourceDto;
+
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -47,28 +57,35 @@ import java.util.Optional;
 @SuperBuilder
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
+@EnableGetterByFieldNameForInheritableSource
 public class BorderPropertiesDto extends PrintModelEntityDto implements BorderProperties, JsonModel {
-	@JsonProperty("borderWidth")
-	Float borderWidth;
+	@JsonProperty(value = "borderWidth")
+	@JsonDeserialize(as =  FloatInputSourceDto.class)
+	@RegisterGetterByFieldName
+	FloatInputSource borderWidth;
 
-	@JsonProperty("borderStyle")
-	BorderStyle borderStyle;
+	@JsonProperty(value = "borderStyle")
+	@JsonDeserialize(as = BorderStyleInputSourceDto.class)
+	@RegisterGetterByFieldName
+	InputSource<BorderStyle> borderStyle;
 
-	@JsonProperty("borderColor")
-	String borderColor;
+	@JsonProperty(value = "borderColor")
+	@JsonDeserialize(as = StringInputSourceDto.class)
+	@RegisterGetterByFieldName
+	StringInputSource borderColor;
 
 	@Override
-	public Optional<Float> getBorderWidth() {
+	public Optional<FloatInputSource> getBorderWidth() {
 		return Optional.ofNullable(borderWidth);
 	}
 
 	@Override
-	public Optional<BorderStyle> getBorderStyle() {
+	public Optional<InputSource<BorderStyle>> getBorderStyle() {
 		return Optional.ofNullable(borderStyle);
 	}
 
 	@Override
-	public Optional<String> getBorderColor() {
+	public Optional<StringInputSource> getBorderColor() {
 		return Optional.ofNullable(borderColor);
 	}
 }

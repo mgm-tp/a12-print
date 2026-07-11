@@ -33,22 +33,23 @@ import { nanoid } from "nanoid";
 import { useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 
-import { DataContext } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import type { DataContext } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
 import { ElementMapUtils } from "../../utils/element-map-utils.js";
-import { DataContextEntry } from "../../types/data-context.js";
+import type { DataContextEntry } from "../../types/data-context.js";
 import { useConfirmationDialog } from "../../hooks/use-confirmation-dialog.js";
 import { ConfirmationDialogType } from "../../redux/index.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { DocumentModelDataSelectors } from "../../redux/document-model-data/selectors.js";
 
 import { AllowedElementType, DataContextSelection } from "../forms/shared-components/DataContextSelection.js";
 import { FormContainerHeadline } from "../forms/shared-components/FormContainerHeadline.js";
 import { DocumentModelSelect } from "../forms/shared-components/DocumentModelSelect.js";
-import { CustomTextLineStateless } from "../forms/custom-base-input-components/index.js";
+import { CustomTextField } from "../forms/custom-base-input-components/index.js";
 
 import { StyledDataContextContainer } from "./RepeatableSettings.styled.js";
 
@@ -149,7 +150,7 @@ export const RepeatableSettings = ({
 				onValueChanged={onChangeDocumentModel}
 				onDelete={onDeleteDocumentModel}
 			/>
-			<CustomTextLineStateless
+			<CustomTextField
 				readonly
 				label={localizer(RESOURCE_KEYS.elementForm.model.group)}
 				value={repeatableDataContext?.path}

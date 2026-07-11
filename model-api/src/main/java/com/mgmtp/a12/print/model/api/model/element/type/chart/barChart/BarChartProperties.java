@@ -32,5 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.element.type.chart.barChart;
 
 import com.mgmtp.a12.print.model.api.model.element.type.chart.MultipleSeriesProperties;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface BarChartProperties extends MultipleSeriesProperties {}

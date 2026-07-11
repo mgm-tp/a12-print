@@ -31,39 +31,32 @@
  */
 import { useMemo } from "react";
 
-import { getConfiguredPrintSettingFonts } from "@com.mgmtp.a12.print/print-setting/lib/internal/ui/utils/font-configuration.js";
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model";
-import { FontResource, FontResourceMap } from "@com.mgmtp.a12.print/print-fonts/lib/types/font.js";
-import { getFontFormat } from "@com.mgmtp.a12.print/print-fonts/lib/internal/api/utils/font-format.js";
-import { FontsDTO } from "@com.mgmtp.a12.print/print-setting/lib/internal/api/generated/dto/PrintSettingModelDTO";
+import type { FontResource, FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
+import { getFontFormat, DEFAULT_FONTS } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
-export const useConfiguredFonts = (caseId?: string, printSettingModel?: Model): FontResourceMap => {
+export const useConfiguredFonts = (caseId?: string, fontMap?: Record<string, string>): FontResourceMap => {
 	return useMemo(() => {
-		if (!caseId || !printSettingModel) {
+		if (!caseId) {
 			return {};
 		}
-		const configuredFonts = getConfiguredPrintSettingFonts(
-			printSettingModel as unknown as Record<string, unknown>,
-			font => createFontResource(font, caseId)
-		);
-		return configuredFonts;
-	}, [caseId, printSettingModel]);
+		if (!fontMap) {
+			return DEFAULT_FONTS;
+		}
+		const newResourceMap = {
+			...DEFAULT_FONTS,
+		};
+		for (const fontMapEntry of Object.entries(fontMap)) {
+			newResourceMap[resolveFontName(fontMapEntry[0])] = createFontResource(fontMapEntry[1], caseId);
+		}
+		return newResourceMap;
+	}, [caseId, fontMap]);
 };
 
-function createFontResource(font: FontsDTO, caseId: string): FontResource {
-	if (font.type === "attachment" && font.fontAttachment?.content) {
-		return {
-			src: font.fontAttachment.content,
-			format: getFontFormat(font.fontAttachment?.original_filename),
-		};
-	} else if (font.type === "path") {
-		return {
-			src: getCustomFontPathInAssets(caseId, font.path),
-			format: getFontFormat(font.path),
-		};
-	} else {
-		throw new Error(`Unsupported font configuration ${font.type}`);
-	}
+function createFontResource(fontPath: string, caseId: string): FontResource {
+	return {
+		src: getCustomFontPathInAssets(caseId, fontPath),
+		format: getFontFormat(fontPath),
+	};
 }
 
 const BASE_PATH = "build/assets/static";
@@ -77,4 +70,18 @@ function getCustomFontPathInAssets(caseId: string, subPath?: string) {
 	// subpath points to test-app/${BASE_PATH}, so the print-shell can access it,
 	// but webpack is already serving from /build, so we need to adjust the path
 	return subPath?.replace("/build", "/..");
+}
+
+/**
+ * If the fontname matches a default font name,
+ * the original default font name is returned so it correctly overrides the default.
+ */
+function resolveFontName(normalizedFileName: string): string {
+	for (const defaultFontName of Object.keys(DEFAULT_FONTS)) {
+		if (defaultFontName.replace(/\s+/g, "") === normalizedFileName) {
+			return defaultFontName;
+		}
+	}
+
+	return normalizedFileName;
 }

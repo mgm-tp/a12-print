@@ -29,17 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 
 export const uploadImage = async ({ page, imageFilePath }: { page: Page; imageFilePath: string }) => {
-	await page
-		.locator("_react=ImageSourceType")
-		.getByRole("radiogroup")
-		.getByRole("radio", { name: "Attachment" })
-		.click();
+	await page.getByTestId("image-src-type-static").click();
 
-	const fileChooserPromise = page.waitForEvent("filechooser");
-	await page.locator("_react=FileUpload").nth(1).click();
-	const fileChooser = await fileChooserPromise;
-	await fileChooser.setFiles(imageFilePath);
+	await page.locator('input[type="file"]').first().setInputFiles(imageFilePath);
 };

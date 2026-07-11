@@ -36,7 +36,7 @@ import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.PdfBoxDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalPdfBoxPrintEngineRuntime;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.ComponentTreeManagerDependency;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.ComponentTreeManagerDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle.SegmentDocumentHandle;
 
 public class SegmentHandleDependencyValueProducer implements PdfBoxDependencyValueProvider<SegmentDocumentHandle, SegmentHandleDependency> {

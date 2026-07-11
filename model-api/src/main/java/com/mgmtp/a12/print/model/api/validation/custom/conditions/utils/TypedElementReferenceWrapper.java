@@ -35,7 +35,9 @@ import com.mgmtp.a12.print.model.api.domain.typings.views._domainprintmetamodel.
 
 import java.math.BigDecimal;
 import java.util.function.Supplier;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public record TypedElementReferenceWrapper(Object delegate) implements TypedElementReference {
 
 	@Override

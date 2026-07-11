@@ -29,11 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { actionCreatorFactory } from "typescript-fsa";
+import type { AffectedItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { AffectedItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
+import type { PrintModelErrorMap } from "../../../internal/types/index.js";
 
-import { PrintModelErrorMap } from "../../types/index.js";
+import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
 
 const factory = actionCreatorFactory("Print/Validation");
 

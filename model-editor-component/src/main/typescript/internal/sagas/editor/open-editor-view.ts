@@ -29,24 +29,34 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
-import { takeEvery } from "typed-redux-saga";
-import { put, select } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
+import type { SagaGenerator } from "typed-redux-saga";
+import { takeEvery, put, select } from "typed-redux-saga";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { EditorStateActions } from "../../redux/editor-state/index.js";
-import { PrintEngineSelectors } from "../../store/selectors.js";
-import { SidebarActions } from "../../redux/index.js";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-export function* openEditorView(): SagaIterator {
-	yield* takeEvery((action: AnyAction) => EditorStateActions.openEditorView.match(action), handleOpenEditorView);
+import type { PrintModelRefs } from "../../redux/editor-state/state.js";
+import { EditorStateActions } from "../../redux//editor-state/index.js";
+import { NavigationActions, NavigationSelectors } from "../../redux/navigation/index.js";
+
+export function* openEditorView(): SagaGenerator<void> {
+	yield* takeEvery(EditorStateActions.openEditorView.match, handleOpenEditorView);
 }
 
-function* handleOpenEditorView(action: Action<EditorStateActions.UpdatePrintModelRefPayload>) {
-	yield* put(EditorStateActions.updatePrintModelRefs(action.payload));
-
-	const { isFullscreen } = yield* select(PrintEngineSelectors.sidebar);
+function* handleOpenEditorView(action: PayloadAction<PrintModelRefs>) {
+	const { isFullscreen } = yield* select(NavigationSelectors.sidebarState);
 	if (isFullscreen) {
-		yield* put(SidebarActions.setExpandedState({ isFullscreen: false }));
+		yield* put(NavigationActions.setExpandedState({ isFullscreen: false }));
+	}
+
+	const { currentRefType, segmentId, sectionId, watermarkId } = action.payload;
+	const entityId =
+		currentRefType === SidebarItem.SEGMENT
+			? segmentId
+			: currentRefType === SidebarItem.SECTION
+				? sectionId
+				: watermarkId;
+	if (entityId) {
+		yield* put(NavigationActions.setActiveEntity({ tab: currentRefType, entityId }));
 	}
 }

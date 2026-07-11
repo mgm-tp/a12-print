@@ -29,16 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	BiConsumer,
-	BiFunction,
-	SyntaxTreeElement,
-	SyntaxTreeElementVisitor,
-	Variable,
-	VisitationState,
-	Supplier,
-	Util,
-} from "../index.js";
+import type { Variable } from "../../../a12internal/elements/index.js";
+import { SyntaxTreeElementVisitor, VisitationState } from "../../../a12internal/elements/index.js";
+
+import type { BiConsumer, BiFunction, SyntaxTreeElement, Supplier, Util } from "../index.js";
 
 export class VariableSearch<R> extends SyntaxTreeElementVisitor {
 	static readonly findUniqueVariables: Util.Function<SyntaxTreeElement, Set<Variable>> = VariableSearch.create(

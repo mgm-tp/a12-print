@@ -41,10 +41,12 @@ import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Resolves {@link ModelSegment} IDs from a given list of {@link ModelSegment}s.
  */
+@OnlyForUsage
 public class SegmentIdListResolver implements SegmentIdResolver {
 		private final List<PrintModelTreeTrace<ModelSegment>> segmentList;
 

@@ -32,10 +32,10 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { LimitZone, MarginResizeContextValue, MarginSide } from "../../types/margin.js";
+import type { LimitZone, MarginResizeContextValue, MarginSide } from "../../types/margin.js";
 import { changePartialMarginValue } from "../../utils/margin-utils.js";
 import { EditorConst } from "../../constant/editor.js";
 import { useGetSectionOffset } from "../../hooks/use-get-section-offset.js";

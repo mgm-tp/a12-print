@@ -31,7 +31,7 @@
  */
 import { styled } from "styled-components";
 
-import { LayoutGrid } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/layout-grid/index.js";
+import { LayoutGrid } from "@com.mgmtp.a12.widgets/widgets-core";
 
 export const StyledTextStyleEditorGrid = styled(LayoutGrid.Grid)`
 	padding: 10px;

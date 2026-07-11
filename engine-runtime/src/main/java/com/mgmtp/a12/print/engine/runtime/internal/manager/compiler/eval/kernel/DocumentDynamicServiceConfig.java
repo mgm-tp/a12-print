@@ -49,11 +49,6 @@ public class DocumentDynamicServiceConfig implements IDocumentDynamicServiceConf
 	}
 
 	@Override
-	public Optional<String> getVariant() {
-		return Optional.empty();
-	}
-
-	@Override
 	public Optional<ILabelProvider> getLabelProvider() {
 		return Optional.empty();
 	}

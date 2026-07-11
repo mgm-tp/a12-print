@@ -29,6 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+/* eslint-disable no-restricted-imports -- This file is used to test the codemod and should contain deep imports with internal */
 import { PrintMigrationTool } from "@com.mgmtp.a12.print/print-model-migration/lib/internal/print-model/api";
 import { PrintSettingMigrationTool } from "@com.mgmtp.a12.print/print-model-migration/lib/internal/print-setting-model/api";
 import { PrintTypesettingMigrationTool } from "@com.mgmtp.a12.print/print-model-migration/lib/internal/typesetting-model/api";

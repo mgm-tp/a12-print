@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`SchemaContent should render correctly 1`] = `
 .c5 {
@@ -6,7 +6,8 @@ exports[`SchemaContent should render correctly 1`] = `
   color: #7F8C9B;
   display: inline-block;
   direction: ltr;
-  font-family: Material Icons;
+  font-family: Material Symbols Outlined;
+  font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -241,12 +242,20 @@ exports[`SchemaContent should render correctly 1`] = `
 `;
 
 exports[`SchemaContent should render correctly 2`] = `
+.c33 {
+  display: inline-block;
+  font-size: 0;
+  vertical-align: middle;
+  color: #0568ae;
+}
+
 .c5 {
   box-sizing: border-box;
   color: #7F8C9B;
   display: inline-block;
   direction: ltr;
-  font-family: Material Icons;
+  font-family: Material Symbols Outlined;
+  font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -267,6 +276,151 @@ exports[`SchemaContent should render correctly 2`] = `
 
 .c5.c5 {
   max-width: unset;
+}
+
+.c32 .c5 {
+  color: inherit;
+}
+
+.c17 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border: 2px solid transparent;
+  border-radius: 0;
+  padding: 0 8px;
+  position: relative;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: #a9b3bc;
+  cursor: default;
+}
+
+.c17 .c4 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c17 .c4 {
+  color: inherit;
+}
+
+.c17.c17.c17:-moz-focusring {
+  outline: none;
+}
+
+.c17.c17 .c4 {
+  color: inherit;
+}
+
+.c32 .c17 .c4 {
+  font-size: 1.25rem;
+}
+
+.c32 .c17.c17 {
+  color: #a9b3bc;
+  width: auto;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c17.c17 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c17.c17 >.c4 {
+  display: block;
+}
+
+.c29 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  height: 2rem;
+  min-height: 0;
+  padding: 0;
+  width: 2rem;
+  background: transparent;
+  color: #0568ae;
+}
+
+.c29 .c4 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c29 .c4 {
+  color: inherit;
+}
+
+.c29 .c4 {
+  font-size: inherit;
+}
+
+.c29:not(:disabled):focus {
+  outline: 1px dotted #333;
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.c32 .c29.c29 {
+  font-size: 1.25rem;
+  height: fit-content;
+  min-height: 0;
+  padding: 0;
+  width: fit-content;
+}
+
+.c32 .c29.c29:not(:active):not(:hover):not(:focus) {
+  color: inherit;
+}
+
+.c32 .c29.c29:not(:active):not(:hover):not(:focus) .c4:not(.StyledVariantIconWrapper-sc-aKNbV) {
+  color: inherit;
+}
+
+.c32 .c29.c29:focus .c4 {
+  color: inherit;
+}
+
+.h_inlineBlock.h_middleAlign .c29.c29 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c29.c29 >.c4 {
+  display: block;
 }
 
 .c7 {
@@ -346,116 +500,6 @@ exports[`SchemaContent should render correctly 2`] = `
   min-height: 36px;
 }
 
-.c17 {
-  align-items: center;
-  border: 2px solid transparent;
-  cursor: pointer;
-  display: inline-flex;
-  justify-content: center;
-  font-family: "Open Sans",sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  gap: 4px;
-  outline: none;
-  position: relative;
-  text-transform: uppercase;
-  min-height: 32px;
-  vertical-align: middle;
-  border: 2px solid transparent;
-  border-radius: 0;
-  padding: 0 8px;
-  position: relative;
-  background: transparent;
-  border-color: transparent;
-  box-shadow: none;
-  color: #a9b3bc;
-  cursor: default;
-}
-
-.c17 .c4 {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.c17 .c4 {
-  color: inherit;
-}
-
-.c17.c17.c17:-moz-focusring {
-  outline: none;
-}
-
-.c17.c17 .c4 {
-  color: inherit;
-}
-
-.h_inlineBlock.h_middleAlign .c17.c17 {
-  display: block;
-  height: auto;
-  min-height: 0;
-}
-
-.h_inlineBlock.h_middleAlign .c17.c17 >.c4 {
-  display: block;
-}
-
-.c29 {
-  align-items: center;
-  border: 2px solid transparent;
-  cursor: pointer;
-  display: inline-flex;
-  justify-content: center;
-  font-family: "Open Sans",sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  gap: 4px;
-  outline: none;
-  position: relative;
-  text-transform: uppercase;
-  min-height: 32px;
-  vertical-align: middle;
-  border-radius: 50%;
-  flex-shrink: 0;
-  font-size: 1.125rem;
-  height: 2rem;
-  min-height: 0;
-  padding: 0;
-  width: 2rem;
-  background: transparent;
-  color: #0568ae;
-}
-
-.c29 .c4 {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.c29 .c4 {
-  color: inherit;
-}
-
-.c29 .c4 {
-  font-size: inherit;
-}
-
-.c29:not(:disabled):focus {
-  outline: 1px dotted #333;
-  background-color: transparent;
-  box-shadow: none;
-  color: #d50075;
-  border: 2px solid #d50075;
-}
-
-.h_inlineBlock.h_middleAlign .c29.c29 {
-  display: block;
-  height: auto;
-  min-height: 0;
-}
-
-.h_inlineBlock.h_middleAlign .c29.c29 >.c4 {
-  display: block;
-}
-
 .c27 {
   background-color: transparent;
   border: none;
@@ -525,13 +569,20 @@ exports[`SchemaContent should render correctly 2`] = `
   display: inline-block;
 }
 
+.c10 .c32 {
+  align-self: center;
+  flex-shrink: 0;
+  text-align: right;
+  width: 28px;
+}
+
 .c24 {
   box-sizing: border-box;
   flex-grow: 1;
   width: 100%;
 }
 
-.c24 >.StyledTooltipWrapper-sc-bqyqat {
+.c24 >.c32 {
   margin: 0 4px 4px 0;
 }
 
@@ -540,7 +591,7 @@ exports[`SchemaContent should render correctly 2`] = `
   display: inline-block;
 }
 
-.c31 >.StyledTooltipWrapper-sc-bqyqat {
+.c31 >.c32 {
   margin: 0 4px 4px 0;
 }
 
@@ -634,7 +685,7 @@ exports[`SchemaContent should render correctly 2`] = `
   outline: 1px dotted #333;
 }
 
-.c12 .StyledFieldPrefixWrapper-sc-kAsOYS>.c4 {
+.c12 .StyledFieldPrefixWrapper-sc-gvObj>.c4 {
   color: inherit;
   cursor: default;
 }
@@ -644,7 +695,8 @@ exports[`SchemaContent should render correctly 2`] = `
   color: #7F8C9B;
   content: "\\e313";
   display: flex;
-  font-family: "Material Icons";
+  font-family: "Material Symbols Outlined";
+  font-variation-settings: "FILL" 1,"wght" 400,"GRAD" 0,"opsz" 24;
   font-size: 1.5rem;
   font-style: normal;
   justify-content: center;
@@ -710,23 +762,6 @@ exports[`SchemaContent should render correctly 2`] = `
 }
 
 @media (pointer: coarse) {
-  .c1:active {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    background-color: #d50075;
-    box-shadow: none;
-    cursor: pointer;
-  }
-}
-
-@media (pointer: fine) {
-  .c1:hover {
-    background-color: #d50075;
-    box-shadow: none;
-    cursor: pointer;
-  }
-}
-
-@media (pointer: coarse) {
   .c29:not(:disabled):active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     background-color: transparent;
@@ -752,11 +787,36 @@ exports[`SchemaContent should render correctly 2`] = `
 }
 
 @media (pointer: coarse) {
+  .c32 .c29.c29:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
 
+  .c32 .c29.c29:active .c4 {
+    color: inherit;
+  }
 }
 
 @media (pointer: fine) {
+  .c32 .c29.c29:hover .c4 {
+    color: inherit;
+  }
+}
 
+@media (pointer: coarse) {
+  .c1:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #d50075;
+    box-shadow: none;
+    cursor: pointer;
+  }
+}
+
+@media (pointer: fine) {
+  .c1:hover {
+    background-color: #d50075;
+    box-shadow: none;
+    cursor: pointer;
+  }
 }
 
 @media (pointer: coarse) {
@@ -904,26 +964,26 @@ exports[`SchemaContent should render correctly 2`] = `
         >
           <div
             class="c20 field-wrapper field-wrapper--block c21"
-            data-role="textline"
+            data-role="text-field"
           >
             <div
               class="c22 c23 field__main"
             >
               <div
                 class="c9 c24 field"
-                data-role="textline-control"
+                data-role="text-field-control"
               >
                 <div
                   class="c25 field__input field__input--readonly"
                   data-readonly="true"
-                  data-role="textline-input-wrapper"
+                  data-role="text-field-input-wrapper"
                 >
                   <span
                     class="c26 supported-unseen-span"
                   />
                   <input
                     class="c27 field__text"
-                    data-role="textline-input"
+                    data-role="text-field-input"
                     readonly=""
                     type="text"
                     value="DomainPerson"
@@ -970,26 +1030,26 @@ exports[`SchemaContent should render correctly 2`] = `
         >
           <div
             class="c20 field-wrapper field-wrapper--block c21"
-            data-role="textline"
+            data-role="text-field"
           >
             <div
               class="c22 c23 field__main"
             >
               <div
                 class="c9 c24 field"
-                data-role="textline-control"
+                data-role="text-field-control"
               >
                 <div
                   class="c25 field__input field__input--readonly"
                   data-readonly="true"
-                  data-role="textline-input-wrapper"
+                  data-role="text-field-input-wrapper"
                 >
                   <span
                     class="c26 supported-unseen-span"
                   />
                   <input
                     class="c27 field__text"
-                    data-role="textline-input"
+                    data-role="text-field-input"
                     readonly=""
                     type="text"
                     value="DomainText"
@@ -1104,30 +1164,37 @@ exports[`SchemaContent should render correctly 2`] = `
             </div>
           </div>
         </div>
-        <button
-          aria-label="Add"
-          class="c16 c17 button button--secondary"
-          data-role="button"
-          disabled=""
-          title="Add"
-          type="button"
+        <span
+          class="c32 c33 tooltip tooltip--hint"
+          data-role="tooltip-trigger-wrapper"
+          role="tooltip"
+          title=""
         >
-          <i
-            class="c4 c5 plasma-icon"
-            data-role="plasma-icon"
+          <button
+            aria-label="Add"
+            class="c16 c17 button button--secondary"
+            data-role="button"
+            disabled=""
+            title="Add"
+            type="button"
           >
-            <span
-              aria-hidden="true"
+            <i
+              class="c4 c5 plasma-icon"
+              data-role="plasma-icon"
             >
-              add
+              <span
+                aria-hidden="true"
+              >
+                add
+              </span>
+            </i>
+            <span
+              data-role="button-label"
+            >
+              Add
             </span>
-          </i>
-          <span
-            data-role="button-label"
-          >
-            Add
-          </span>
-        </button>
+          </button>
+        </span>
       </div>
     </div>
   </div>

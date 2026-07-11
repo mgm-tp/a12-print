@@ -31,7 +31,7 @@
  */
 import { useSelector } from "react-redux";
 
-import { PartialImage } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { PartialImage } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 
@@ -39,10 +39,10 @@ import { ImageSourceType } from "./ImageSourceType.js";
 import { ImageGeneralProperties } from "./ImageGeneralProperties.js";
 
 export const ImageFormContainer = () => {
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
+	const element = useSelector(PrintEngineSelectors.currentFormElement);
 
 	if (!element || !PartialImage.isInstance(element)) {
-		throw Error("Expected element of type Image");
+		throw new Error("Expected element of type Image");
 	}
 
 	return (

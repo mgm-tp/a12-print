@@ -33,9 +33,13 @@ import { useDispatch } from "react-redux";
 import { useCallback } from "react";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	Measure,
 	PartialAnyPrintModelElement,
+	PartialValidPlaceableReference,
+	PrintModelEntity,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import {
 	PartialArea,
 	PartialBarChart,
 	PartialBoundingBox,
@@ -43,13 +47,12 @@ import {
 	PartialLineChart,
 	PartialPieChart,
 	PartialSwitch,
-	PartialValidPlaceableReference,
-	PrintModelEntity,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import { AnyTransactionLogAction, InteractionLogActions, TransactionLogStateActions } from "../redux/index.js";
+import type { AnyTransactionLogAction } from "../redux/index.js";
+import { InteractionLogActions, TransactionLogStateActions } from "../redux/index.js";
 import { ElementsUtils } from "../utils/elements-utils.js";
 import { changePartialMmMeasureValue } from "../utils/index.js";
 

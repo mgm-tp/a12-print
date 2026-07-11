@@ -31,9 +31,9 @@
  */
 import React from "react";
 
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { ISide } from "../../../types/resize.js";
+import type { ISide } from "../../../types/resize.js";
 
 export interface ResizeInfo {
 	side: ISide;

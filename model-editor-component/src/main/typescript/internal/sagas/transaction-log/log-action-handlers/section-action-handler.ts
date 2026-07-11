@@ -29,27 +29,22 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
+import { call, put } from "typed-redux-saga";
 import { nanoid } from "nanoid";
-import { call, put, select } from "typed-redux-saga";
 
-import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
-	PartialTransactionLogPersistentEntry,
-	TransactionLog,
-	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
-import { AffectedItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
+	type PartialTransactionLogPersistentEntry,
+	type TransactionLogStore,
+	type AffectedItem,
+	SidebarItem,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import {
-	AnyTransactionLogAction,
-	ConfirmationDialogType,
-	EditorStateActions,
-	TransactionLogStateActions,
-	ValidAnyTransactionLogAction,
-} from "../../../redux/index.js";
+import type { AnyTransactionLogAction, ValidAnyTransactionLogAction } from "../../../redux/index.js";
+import { ConfirmationDialogType, NavigationActions, TransactionLogStateActions } from "../../../redux/index.js";
 import { openConfirmationDialogSaga } from "../../confirmation-dialog/open-confirmation-dialog-saga.js";
-import { PrintEngineSelectors } from "../../../store/selectors.js";
 
 const SECTION_ACTIONS = [
 	TransactionLogStateActions.addSection,
@@ -72,7 +67,7 @@ function* handleSectionActions({
 	state: TransactionLogStore;
 	action: ValidAnyTransactionLogAction;
 	persistentEntries: PartialTransactionLogPersistentEntry[];
-}): SagaIterator<AffectedItem[]> {
+}): SagaGenerator<AffectedItem[]> {
 	const { interactionId } = action.payload;
 
 	const newAffectedItems: AffectedItem[] = [];
@@ -146,8 +141,6 @@ function* handleSectionActions({
 			return newAffectedItems;
 		}
 
-		const printModelRefs = yield* select(PrintEngineSelectors.printModelRefs);
-
 		const contentGeneral = TransactionLog.selectPrintModelContentGeneral(state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]);
 		const updatedContentGeneral = TransactionLog.createStoreEntryPrintModelContentGeneral(
 			state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID],
@@ -159,14 +152,7 @@ function* handleSectionActions({
 		);
 		persistentEntries.push(...updatedContentGeneral.persistentEntries);
 		newAffectedItems.push({ type: "printModelContentGeneral", id: updatedContentGeneral.storeEntry.id });
-		if (printModelRefs?.sectionId === action.payload.data.id) {
-			yield* put(
-				EditorStateActions.updatePrintModelRefs({
-					...printModelRefs,
-					sectionId: "",
-				})
-			);
-		}
+		yield* put(NavigationActions.clearActiveEntity({ tab: SidebarItem.SECTION }));
 		yield* put(
 			TransactionLogStateActions.setLogStore({
 				...state,

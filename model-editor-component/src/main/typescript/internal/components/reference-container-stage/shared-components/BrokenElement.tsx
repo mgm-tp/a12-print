@@ -34,7 +34,8 @@ import { useSelector } from "react-redux";
 import { createPortal } from "react-dom";
 import { Fragment } from "react";
 
-import { PartialValidPlaceableReference, SectionUsage } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { SectionUsage } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { EditorContext } from "../../editor-stage/editor-context.js";

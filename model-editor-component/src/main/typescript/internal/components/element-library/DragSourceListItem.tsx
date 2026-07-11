@@ -32,9 +32,10 @@
 import * as React from "react";
 import { useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 
-import { DragItem } from "../../types/index.js";
+import type { DragItem } from "../../types/index.js";
 
 function getDragSourceContainerStyle(isDragging: boolean, theme: DefaultTheme): React.CSSProperties {
 	return {

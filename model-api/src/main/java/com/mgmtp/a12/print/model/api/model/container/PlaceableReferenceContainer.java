@@ -35,7 +35,9 @@ import com.mgmtp.a12.print.model.api.model.reference.PlaceableReference;
 
 import java.util.Collection;
 import java.util.Iterator;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface PlaceableReferenceContainer extends BaseReferenceContainer<PlaceableReference> {
 	@Override
 	default Iterator<PlaceableReference> iterator() {

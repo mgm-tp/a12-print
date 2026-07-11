@@ -35,32 +35,30 @@ import { useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import debounce from "lodash/debounce.js";
 
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import {
-	isPartialSection,
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type {
 	Measure,
-	PageOrientation,
 	PartialSection,
-	PartialTableLayout,
 	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { isPartialSection, PageOrientation, PartialTableLayout } from "@com.mgmtp.a12.print/print-model-api/model";
 
+import type { PlainMeasureDimensions, PlainMeasurePosition } from "../../../utils/index.js";
 import {
 	changeMmMeasureValue,
 	createPlainMmMeasure,
 	createPlainMmMeasureFromPx,
 	EditorUtils,
-	PlainMeasureDimensions,
-	PlainMeasurePosition,
 } from "../../../utils/index.js";
 import {
-	DetailDataActions,
 	DetailViewActions,
 	InteractionLogActions,
+	NavigationActions,
+	NavigationSelectors,
 	TransactionLogStateActions,
 } from "../../../redux/index.js";
 import { RESOURCE_KEYS } from "../../../localization/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { ToolbarItem } from "../../../types/toolbar-item.js";
 import { EditorConst } from "../../../constant/editor.js";
 import { ContextMenu } from "../../context-menu/ContextMenu.js";
@@ -71,11 +69,12 @@ import { Toolbar } from "../../toolbar/index.js";
 import { DefaultQuickEditBar } from "../../quick-edit-bar/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { ElementTypes } from "../../../constant/elements.js";
-import { ContextMenuItem, ContextMenuOption, DragItem } from "../../../types/index.js";
+import type { ContextMenuItem, DragItem } from "../../../types/index.js";
+import { ContextMenuOption } from "../../../types/index.js";
 import { EDITOR_DIMENSIONS, EditorContext } from "../../editor-stage/editor-context.js";
 import { DefaultElementContainer } from "../../element-container/DefaultElementContainer.js";
 
-import { DefaultEditorProps } from "../editor-interface.js";
+import type { DefaultEditorProps } from "../editor-interface.js";
 import { StyledBasicEditor, StyledDropContainer, StyledEditorWrapper } from "../shared-components/Base.styled.js";
 import { useCopyPaste, useHandleDrop, useHoverLines, useSelectRect } from "../hooks/index.js";
 import { EditorContainer } from "../shared-components/EditorContainer.js";
@@ -113,8 +112,9 @@ export const BasicDefaultEditor = ({
 	const { editorOptions } = useSelector(PrintEngineSelectors.printEditorState);
 	const { zoomFactor } = editorOptions;
 
-	const detailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
-	const detailData = useSelector(PrintEngineSelectors.currentDetailData);
+	const detailData = useSelector(NavigationSelectors.currentElementForm);
+	const selectedElementIdForDetailData = useSelector(NavigationSelectors.selectedElementId);
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.canvasNavigationContext);
 
 	const debouncedFn = React.useMemo(
 		() =>
@@ -136,7 +136,6 @@ export const BasicDefaultEditor = ({
 		y: createPlainMmMeasure(0),
 	});
 	const [isDraggingGL, setIsDraggingGL] = React.useState(false);
-	const [collisionsList, setCollisionsList] = React.useState<string[]>([]);
 	const [isResizing, setIsResizing] = React.useState(false);
 
 	const selectedElementIds = useSelector((state: PrintEngineState) =>
@@ -255,14 +254,16 @@ export const BasicDefaultEditor = ({
 			);
 
 			if (
-				(detailData?.refId && allRelatedElementIds.includes(detailData.refId)) ||
-				(detailData?.placeableRefId && placeableIds.includes(detailData.placeableRefId))
+				entityId &&
+				((detailData?.id && allRelatedElementIds.includes(detailData.id)) ||
+					(detailData?.id && placeableIds.includes(detailData.id)))
 			) {
-				dispatch(DetailDataActions.remove({ containerId: detailDataId }));
+				dispatch(NavigationActions.setDetailForm({ tab, entityId, mode, form: undefined }));
+				dispatch(NavigationActions.setSelectedElement({ tab, entityId, mode, elementId: undefined }));
 			}
 			setSelected([]);
 		}
-	}, [referenceContainer, dispatch, elementReferences, selectedElements, detailData, selected, detailDataId]);
+	}, [referenceContainer, dispatch, elementReferences, selectedElements, detailData, selected, tab, entityId, mode]);
 
 	const groupSelectedEls = React.useCallback(() => {
 		groupElements(selected);
@@ -433,15 +434,22 @@ export const BasicDefaultEditor = ({
 		[dispatch]
 	);
 
+	const [prevSelectedElementId, setPrevSelectedElementId] = React.useState(selectedElementIdForDetailData);
+
+	if (prevSelectedElementId !== selectedElementIdForDetailData) {
+		setPrevSelectedElementId(selectedElementIdForDetailData);
+		setSelected(selectedElementIdForDetailData ? [selectedElementIdForDetailData] : []);
+	}
+
+	const collisionsList = React.useMemo(
+		() => EditorUtils.checkCollisionsAll(elementReferences).map(element => element.refId),
+		[elementReferences]
+	);
+
 	//
 	// useEffects
 	//
-	React.useEffect(() => {
-		setSelected(detailData?.refId ? [detailData.refId] : []);
-	}, [detailData?.refId]);
-
-	React.useEffect(() => {
-		setCollisionsList(EditorUtils.checkCollisionsAll(elementReferences).map(element => element.refId));
+	React.useLayoutEffect(() => {
 		if (editorState) {
 			const editorPosition = editorState.getBoundingClientRect();
 			const boxRect = {
@@ -450,12 +458,13 @@ export const BasicDefaultEditor = ({
 				minWidth: createPlainMmMeasureFromPx(editorPosition.width / zoomFactor),
 				minHeight: createPlainMmMeasureFromPx(editorPosition.height / zoomFactor),
 			};
+			// eslint-disable-next-line react-hooks/set-state-in-effect
 			setOutOfBoxList(EditorUtils.checkAllElementsInBox(elementReferences, boxRect).map(el => el.refId));
 		}
 	}, [elementReferences, editorState, zoomFactor, numberOfPages]);
 
 	return (
-		<StyledEditorWrapper>
+		<StyledEditorWrapper data-testid="editor-stage">
 			<Toolbar
 				leftItems={[
 					ToolbarItem.ElementLibrary,
@@ -498,6 +507,7 @@ export const BasicDefaultEditor = ({
 						elementReferences={elementReferences}
 					>
 						<StyledDropContainer
+							data-testid="editor-drop-target"
 							ref={ref => {
 								drop(ref);
 							}}

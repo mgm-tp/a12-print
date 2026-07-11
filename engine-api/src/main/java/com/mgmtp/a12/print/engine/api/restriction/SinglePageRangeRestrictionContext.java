@@ -33,7 +33,9 @@ package com.mgmtp.a12.print.engine.api.restriction;
 
 import com.mgmtp.a12.print.engine.api.JobRestrictionContext;
 import com.mgmtp.a12.print.engine.api.exception.PrintJobRestrictionException;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface SinglePageRangeRestrictionContext extends JobRestrictionContext {
 	// set the PageRange including the start and excluding end
 	// throws if the PageRange was already set to a more narrow range or the effective Range is empty

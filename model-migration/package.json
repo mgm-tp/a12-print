@@ -1,6 +1,6 @@
 {
   "name": "@com.mgmtp.a12.print/print-model-migration",
-  "version": "3.2.3",
+  "version": "4.0.0",
   "license": "(EUPL-1.2 OR LicenseRef-commercial)",
   "description": "Print Model Migration",
   "type": "module",
@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "format": "prettier --check \"./*.{js,cjs,mjs}\" \"src/**/*.{ts,tsx}\"",
     "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest",
-    "clean": "rimraf build lib",
+    "clean": "rimraf coverage build lib",
     "generate-step": "pnpm run generate-step:print-model && pnpm run generate-step:print-setting-model && pnpm run generate-step:typesetting-model",
     "generate-schema": "pnpm run generate-schema:print-model && pnpm run generate-schema:print-setting-model && pnpm run generate-schema:typesetting-model",
     "fix": "pnpm run /^.*:fix$/",
@@ -28,10 +28,7 @@
     "cli:pm": "tsx ./src/main/typescript/internal/print-model/cli.ts",
     "cli:psm": "tsx ./src/main/typescript/internal/print-setting-model/cli.ts",
     "cli:ptsm": "tsx ./src/main/typescript/internal/typesetting-model/cli.ts",
-    "migrate-all": "pnpm run migrate-all:pm && pnpm run migrate-all:psm && pnpm run migrate-all:ptsm",
-    "migrate-all:pm": "pnpm run cli:pm ../model-api/src ../model-api-utils/src ../model-editor-component/src ../engine-runtime-test/src ../print-shell/src/test/resources/print ../print-shell/src/test/resources/printAll ../test-app",
-    "migrate-all:psm": "pnpm run cli:psm ../test-app ../print-setting/src",
-    "migrate-all:ptsm": "pnpm run cli:ptsm ../engine-runtime-test/src ../print-shell/src/test/resources/print ../print-shell/src/test/resources/printAll ../test-app ../typesetting/src"
+    "migrate-all": "tsx ./src/main/typescript/internal/scripts/migrate-all.ts"
   },
   "bin": {
     "print-model-migration": "src/main/bin/print-model-migration.cjs",
@@ -49,20 +46,20 @@
     "NOTICE",
     "THIRD_PARTY_NOTICES"
   ],
-  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js"
+  },
   "types": "lib/index.d.ts",
   "dependencies": {
     "@com.mgmtp.a12.migrationtool/migrationtool-core": "catalog:a12"
   },
   "devDependencies": {
-    "@com.mgmtp.a12.devtools/tsconfig": "catalog:a12",
     "@com.mgmtp.a12.devtools/eslint-config": "catalog:a12",
     "@com.mgmtp.a12.devtools/prettier-config": "catalog:a12",
     "@com.mgmtp.a12.migrationtool/migrationtool-utils": "catalog:a12",
     "@com.mgmtp.a12.print/print-dev-tools": "workspace:*",
     "@com.mgmtp.a12.print/print-model-api": "workspace:*",
     "@com.mgmtp.a12.print/print-model-api-utils": "workspace:*",
-    "@com.mgmtp.a12.print/print-setting": "workspace:*",
     "@com.mgmtp.a12.print/print-typesetting": "workspace:*",
     "@com.mgmtp.a12.utils/utils-localization": "catalog:a12",
     "@swc/core": "catalog:",
@@ -80,14 +77,12 @@
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "tsx": "catalog:",
-    "ts-node": "catalog:",
     "typescript": "catalog:"
   },
   "peerDependencies": {
     "@com.mgmtp.a12.base/base-model-api": "catalog:a12",
     "@com.mgmtp.a12.print/print-model-api": "workspace:^",
     "@com.mgmtp.a12.print/print-model-api-utils": "workspace:^",
-    "@com.mgmtp.a12.print/print-setting": "workspace:^",
     "@com.mgmtp.a12.print/print-typesetting": "workspace:^",
     "@com.mgmtp.a12.utils/utils-localization": "catalog:a12Ranges",
     "nanoid": "catalog:"

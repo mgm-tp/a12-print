@@ -29,18 +29,15 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	DocumentModel,
-	DocumentModelSearchService,
-	DocumentServiceFactory,
-} from "@com.mgmtp.a12.kernel/kernel-md-facade";
-import { PartialPrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
-import { RuntimeVariableType } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import { ModelPath } from "@com.mgmtp.a12.base/base-model-api/lib/main/model/index.js";
+import type { DocumentModel, DocumentModelSearchService } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import { DocumentServiceFactory } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { PartialPrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import { RuntimeVariableType } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ModelPath } from "@com.mgmtp.a12.base/base-model-api";
 
-import { DocumentModelData } from "../../types/document-model-data.js";
-import { CollectedPath } from "../../types/reference-path.js";
-import { DocumentModelUtils } from "../../utils/document-model-utils.js";
+import type { DocumentModelData } from "../../../a12internal/utils/document-model-data.js";
+import type { CollectedPath } from "../../types/reference-path.js";
+import { DocumentModelUtils } from "../../../a12internal/utils/document-model-utils.js";
 
 const documentService = new DocumentServiceFactory();
 
@@ -120,7 +117,7 @@ export namespace ReferencePathValidationService {
 			const referenceInPrintModel = printModel.header?.modelReferences?.find(
 				e => e.reference === documentModel.header.id
 			);
-			if (!referenceInPrintModel || !referenceInPrintModel.reference) {
+			if (!referenceInPrintModel?.reference) {
 				return;
 			}
 

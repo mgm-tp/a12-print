@@ -29,7 +29,6 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-export * from "./element-definition-marshaller.js";
 export * from "./deserializer/index.js";
 export * from "./serializer/index.js";
 export * from "./marshaller.js";

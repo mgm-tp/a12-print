@@ -34,6 +34,7 @@ package com.mgmtp.a12.print.engine.runtime.kernel.internal;
 
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.SyntaxTreeElementType;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -119,7 +120,7 @@ public class PredicateClassification {
 		@JsonAnySetter
 		public void add(String key, Parameter parameter) {
 			if (name != null || this.parameter != null) {
-				throw new RuntimeException();
+				throw new PrintCompilerException("The name or parameter is already set");
 			}
 			name = key;
 			this.parameter = parameter;

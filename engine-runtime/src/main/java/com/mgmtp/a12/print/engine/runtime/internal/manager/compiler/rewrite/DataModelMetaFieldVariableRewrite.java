@@ -33,7 +33,7 @@ package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.rewrite;
 
 import com.mgmtp.a12.kernel.md.model.api.*;
 import com.mgmtp.a12.kernel.md.model.api.fieldtypes.IEnumerationType;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.hashing.IDService;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.synthetics.SyntheticVariable;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.DocumentModelIndex;
@@ -175,7 +175,7 @@ public class DataModelMetaFieldVariableRewrite implements EggRewriteRuleFactory 
 				final var elementEntity = findElement(c, documentModel);
 
 				if (elementEntity.isEmpty()) {
-					throw new PrintCompilerException("invalid element");
+					throw new PrintCompilerException("Invalid element");
 				}
 
 				final var element = elementEntity.get();

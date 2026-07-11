@@ -31,15 +31,14 @@
  */
 import fs from "node:fs";
 
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import {
 	createInteractionLogPersistentEntry,
 	createTransactionLogPersistentEntry,
 } from "../../../../../../test/typescript/test-utils/transaction-log/log-persist-entry.js";
-import { LogPersistentEntry } from "../../log.js";
-
-import { LogHandler } from "../log-handler.js";
+import type { LogPersistentEntry } from "../../../../a12internal/transaction-log/log.js";
+import { LogHandler } from "../../../../a12internal/transaction-log/log-handler.js";
 
 const LOG_PATH = "src/test/resources/transaction-log/";
 

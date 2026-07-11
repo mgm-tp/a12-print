@@ -31,7 +31,6 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.tokenizing;
 
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.rendering.HTMLCleanUpUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing.HtmlStyle;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing.HtmlTokenizer;
@@ -45,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HtmlTokenizerTest {
 
-	private final HTMLCleanUpUtil cleanUpUtil = new HTMLCleanUpUtil(PrintEngineConfig.DEFAULT_ALLOWED_HTML_TAGS, PrintEngineConfig.DEFAULT_ALLOWED_STYLES);
+	private final HTMLCleanUpUtil cleanUpUtil = new HTMLCleanUpUtil();
 	private final HtmlTokenizer tokenizer = new HtmlTokenizer();
 
 	private String cleanupHtml(String input) {

@@ -88,7 +88,7 @@ val copyPrintShell = tasks.register<Copy>("copyPrintShell") {
 	group = "documentation"
 	description = "Copies print shell source code files to the documentation module."
 
-    from("../print-shell/src/main/java/com/mgmtp/a12/print/shell/internal/configuration/.")
+    from("../print-shell/src/.")
     into("${sourceCodeDir}/print-shell/")
 }
 val copyEngineRuntimeXmlPdf = tasks.register<Copy>("copyEngineRuntimeXmlPdf") {
@@ -105,6 +105,13 @@ val copyEngineRuntimeXmlXml = tasks.register<Copy>("copyEngineRuntimeXmlXml") {
     from("../engine-runtime-xml/src/main/java/com/mgmtp/a12/print/engine/runtime/xml/XmlPrintEngine.java")
     into("${sourceCodeDir}/engine-runtime-xml/src/main/java/com/mgmtp/a12/print/engine/runtime/xml/")
 }
+val copyModelEditorComponent = tasks.register<Copy>("copyModelEditorComponent") {
+	group = "documentation"
+	description = "Copies model editor component TypeScript API source files to the documentation module."
+
+    from("../model-editor-component/src/main/typescript/api/StaticImageProvider.ts")
+    into("${sourceCodeDir}/model-editor-component/")
+}
 
 tasks.register("copySourceCode") {
 	group = "documentation"
@@ -117,7 +124,8 @@ tasks.register("copySourceCode") {
         copyEngineRuntimeTest,
         copyPrintShell,
         copyEngineRuntimeXmlPdf,
-        copyEngineRuntimeXmlXml
+        copyEngineRuntimeXmlXml,
+        copyModelEditorComponent
     )
 }
 

@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Reference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { Reference } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { GenericObject } from "./types.js";
+import type { GenericObject } from "./types.js";
 import { TransformTreeTrace } from "./tree-trace.js";
 import { PrintModelTransformError } from "./error.js";
 

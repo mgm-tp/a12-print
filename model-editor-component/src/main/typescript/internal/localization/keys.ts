@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { initializeKeys } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import { initializeKeys } from "@com.mgmtp.a12.utils/utils-localization";
 
 export const RESOURCE_KEYS = {
 	application: {
@@ -82,6 +82,7 @@ export const RESOURCE_KEYS = {
 			},
 			tooltips: {
 				defaultTypesettingModel: "",
+				printModelReferenceWithoutSegments: "",
 			},
 		},
 		content: "",
@@ -228,7 +229,7 @@ export const RESOURCE_KEYS = {
 		pageOnTotal: "",
 		richTextEditor: {
 			toolbarButton: {
-				removeFontSizeInlineStyles: "",
+				removeStyles: "",
 			},
 		},
 	},
@@ -332,6 +333,8 @@ export const RESOURCE_KEYS = {
 			color: "",
 			backgroundColor: "",
 			alignment: "",
+			clearButton: "",
+			legacyWarning: "",
 		},
 		borderProperties: {
 			headline: "",
@@ -380,7 +383,11 @@ export const RESOURCE_KEYS = {
 			},
 		},
 		image: {
-			imageSrcType: "",
+			imageSrc: "",
+			imageSrcType: {
+				static: "",
+				dynamic: "",
+			},
 			field: "",
 			attachment: "",
 			alt: "",
@@ -389,7 +396,13 @@ export const RESOURCE_KEYS = {
 			action: {
 				replace: "",
 				download: "",
-				delete: "",
+				upload: "",
+			},
+			resource: {
+				selector: "",
+				internalFilename: "",
+				size: "",
+				mimeType: "",
 			},
 		},
 		expression: {
@@ -617,6 +630,8 @@ export const RESOURCE_KEYS = {
 		error: {
 			internalError: "",
 			setPrintModel: "",
+			uploadStaticImage: "",
+			loadStaticImage: "",
 		},
 		errorTree: {
 			heading: "",
@@ -636,6 +651,12 @@ export const RESOURCE_KEYS = {
 				title: "",
 				supportedExtensions: "",
 			},
+		},
+	},
+	precompile: {
+		messages: {
+			heading: "",
+			copy: "",
 		},
 	},
 	textStyles: {
@@ -698,7 +719,6 @@ export const RESOURCE_KEYS = {
 		},
 		tooltips: {
 			defaultConfigurationFont: "",
-			legacyRenderingMode: "",
 			fontSizeLineHeightNote: "",
 		},
 		annotation: {
@@ -729,6 +749,7 @@ export const RESOURCE_KEYS = {
 		},
 		relativeLayout: {
 			changeMargin: "",
+			changePageBreakBehavior: "",
 		},
 		useCopyPaste: {
 			pasteElements: "",
@@ -782,6 +803,7 @@ export const RESOURCE_KEYS = {
 				toggleHideIfEmpty: "",
 				changeBorderProperties: "",
 				changeTextProperties: "",
+				clearCalculationTextProperties: "",
 			},
 			imageFormContainer: {
 				generalProperties: {
@@ -900,10 +922,12 @@ export const RESOURCE_KEYS = {
 				},
 				tableColumnExpression: {
 					changeContent: "",
+					clearTextProperties: "",
 				},
 				tableColumnFieldForm: {
 					changeField: "",
 					changeFieldFormatting: "",
+					clearTextProperties: "",
 				},
 				tableColumnForm: {
 					default: "",

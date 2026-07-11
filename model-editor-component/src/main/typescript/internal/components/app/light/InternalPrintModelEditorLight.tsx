@@ -34,16 +34,17 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useContext, useMemo } from "react";
 
-import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react/lib/main/index.js";
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
-import { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts/lib/types/font.js";
+import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
 
 import { EditorComponentContext } from "../../../api/index.js";
 import { HiddenHeightContextWrapper } from "../../hidden-height-context-wrapper/HiddenHeightContextWrapper.js";
 import { GlobalOverride } from "../../../global-override.styled.js";
 import { ConfirmationDialog } from "../../confirmation-dialog/ConfirmationDialog.js";
 import { DragListLayer } from "../../drag-and-drop/DragListLayer.js";
+import type { StaticImageProvider } from "../../../../api/StaticImageProvider.js";
 
 import { createGlobalFontFaces } from "../sme/font-face.js";
 import { useContextApi } from "../hooks/use-context-api.js";
@@ -55,18 +56,19 @@ interface InternalPrintModelEditorLightProps {
 	readonly printModel: PrintModel;
 	readonly documentModel: DocumentModel;
 	readonly customFonts?: FontResourceMap;
+	readonly staticImageProvider: StaticImageProvider;
 	onChange(printModel: PrintModel, dirty?: boolean): void;
 }
 
 export const InternalPrintModelEditorLight: React.ComponentType<InternalPrintModelEditorLightProps> =
-	function InternalPrintModelEditorLight({ printModel, documentModel, customFonts, onChange }) {
+	function InternalPrintModelEditorLight({ printModel, documentModel, customFonts, staticImageProvider, onChange }) {
 		const { localizer, locale } = useContext(LocalizerContext);
 
 		const contextApi = useContextApi({ customFonts, localizer });
 		const fontMap = contextApi.getFonts();
 
 		const store = useMemo(
-			() => setupStoreLight(printModel, [documentModel], fontMap, locale, onChange),
+			() => setupStoreLight(printModel, [documentModel], fontMap, locale, staticImageProvider, onChange),
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 			[documentModel, fontMap, printModel.header.id]
 		);

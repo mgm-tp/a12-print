@@ -29,11 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
 
 export namespace FileService {
 	export async function writeWalFile(walFilePath: string, content: string) {
-		if (process.env.test) {
+		if (process.env.TEST) {
 			return undefined;
 		}
 		try {
@@ -56,7 +56,7 @@ export namespace FileService {
 	}
 
 	export async function fetchWalFile(walFilePath: string) {
-		if (process.env.test) {
+		if (process.env.TEST) {
 			return undefined;
 		}
 		try {
@@ -76,6 +76,9 @@ export namespace FileService {
 		walFilePath: string,
 		logs?: string
 	) {
+		if (process.env.TEST) {
+			return undefined;
+		}
 		try {
 			const res = await fetch("/api/commit", {
 				method: "POST",

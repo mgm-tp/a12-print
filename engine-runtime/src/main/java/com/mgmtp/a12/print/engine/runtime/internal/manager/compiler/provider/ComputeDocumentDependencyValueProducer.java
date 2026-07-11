@@ -32,9 +32,9 @@
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider;
 
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocument;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 
-public interface ComputeDocumentDependencyValueProducer extends CoreDependencyValueProvider<PrintDocument, ComputeDocumentDependency> {
+public interface ComputeDocumentDependencyValueProducer extends CoreDependencyValueProvider<PrintDocumentContext, ComputeDocumentDependency> {
 
 
 }

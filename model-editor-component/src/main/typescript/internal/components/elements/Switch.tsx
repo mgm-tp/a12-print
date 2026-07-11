@@ -29,12 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PartialSwitch } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
+import { PartialSwitch } from "@com.mgmtp.a12.print/print-model-api/model";
+import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 
-import { BaseElementProps } from "./base.js";
+import type { BaseElementProps } from "./base.js";
 
 type SwitchProps = BaseElementProps;
 
@@ -44,7 +44,7 @@ export const Switch = ({ styles, element }: SwitchProps) => {
 		throw Error(`Expected element of type Switch but got ${element.type}`);
 	}
 	return (
-		<div style={styles}>
+		<div data-testid="element-switch" style={styles}>
 			<Icon>account_tree</Icon>
 			<span>{element.switch?.name || localizer(RESOURCE_KEYS.editor.element.Switch)}</span>
 		</div>

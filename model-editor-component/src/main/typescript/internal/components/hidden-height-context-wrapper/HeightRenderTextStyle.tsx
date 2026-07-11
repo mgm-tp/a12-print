@@ -32,17 +32,18 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { PartialAnyPrintModelElement, PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialAnyPrintModelElement, PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { InteractionLogActions } from "../../redux/interaction-log/actions.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { PlaceableWithElement, PrintEngineSelectors } from "../../store/selectors.js";
+import { InteractionLogActions } from "../../redux//interaction-log/actions.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import type { PlaceableWithElement } from "../../store/selectors.js";
+import { PrintEngineSelectors } from "../../store/selectors.js";
 import { ElementsUtils } from "../../utils/index.js";
 import { EditorConst } from "../../constant/editor.js";
 
 import { HeightElementContainer } from "./HeightElementContainer.js";
 import { StyledHeightElement } from "./HeightRender.styled.js";
-import { NewElementHeight } from "./types.js";
+import type { NewElementHeight } from "./types.js";
 
 const { PX_TO_MM } = EditorConst;
 

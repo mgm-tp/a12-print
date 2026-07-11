@@ -34,7 +34,9 @@ package com.mgmtp.a12.print.model.api.model;
 
 import com.mgmtp.a12.model.header.Header;
 import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface PrintModel extends PrintModelPathElement  {
 
 	Header getHeader();

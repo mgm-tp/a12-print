@@ -32,9 +32,8 @@
 package com.mgmtp.a12.print.typesetting.internal.model.impl;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.typesetting.internal.model.Hyphenation;
-import com.mgmtp.a12.print.typesetting.internal.model.HyphenationGeneral;
 import com.mgmtp.a12.print.typesetting.internal.model.Internal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

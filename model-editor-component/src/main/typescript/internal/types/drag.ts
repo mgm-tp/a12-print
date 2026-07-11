@@ -29,14 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	ElementType,
-	Margins,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import type { ElementType, Margins, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import { PlainMeasurePosition } from "../utils/index.js";
+import type { PlainMeasurePosition } from "../utils/index.js";
 
 export interface DragItem extends PartialValidPlaceableReference {
 	newType: ElementType;

@@ -31,9 +31,9 @@
  */
 package com.mgmtp.a12.print.workspace.internal.handler;
 
+import com.mgmtp.a12.print.workspace.internal.elements.*;
 import com.mgmtp.a12.print.workspace.internal.event.EventService;
 import com.mgmtp.a12.print.workspace.internal.exceptions.PrintWorkspaceException;
-import com.mgmtp.a12.print.workspace.internal.elements.*;
 import com.mgmtp.a12.print.workspace.internal.utils.FileUtils;
 
 import java.nio.file.Path;
@@ -51,7 +51,6 @@ public class FileHandler implements BaseFileHandler {
 		this.handlerMap = Map.of(
 			FileElementType.PROPERTIES, new PropertyHandler(workspaceHandler),
 			FileElementType.PDF, new PdfHandler(workspaceHandler),
-			FileElementType.YAML, new YamlHandler(workspaceHandler, eventService),
 			FileElementType.LOG, new LogHandler(workspaceHandler),
 			FileElementType.MODEL, new ModelHandler(workspaceHandler, eventService),
 			FileElementType.DOCUMENT, new DocumentHandler(workspaceHandler, eventService),
@@ -101,10 +100,6 @@ public class FileHandler implements BaseFileHandler {
 
 		if (PropertiesFileElement.EXTENSION.equals(fileExtension)) {
 			return FileElementType.PROPERTIES;
-		}
-
-		if (YamlFileElement.YAML_EXTENSION.equals(fileExtension) || YamlFileElement.YML_EXTENSION.equals(fileExtension)) {
-			return FileElementType.YAML;
 		}
 
 		if (PdfFileElement.EXTENSION.equals(fileExtension)) {

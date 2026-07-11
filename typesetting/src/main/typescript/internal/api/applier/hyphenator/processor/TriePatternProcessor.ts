@@ -29,17 +29,17 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { HyphenationPattern } from "../../../model/index.js";
+import type { HyphenationPattern } from "../../../../../a12internal/api/model/index.js";
 
-import CharTrieMapNode from "../trie/CharTrieMapNode.js";
-import CharTrieNode from "../trie/CharTrieNode.js";
-import FixedSizeIntArrayList from "../collection/FixedSizeIntArrayList.js";
-import FixedSizeIntList from "../collection/FixedSizeIntList.js";
-import CharTrie from "../trie/CharTrie.js";
+import { CharTrieMapNode } from "../trie/CharTrieMapNode.js";
+import type { CharTrieNode } from "../trie/CharTrieNode.js";
+import { FixedSizeIntArrayList } from "../collection/FixedSizeIntArrayList.js";
+import type { FixedSizeIntList } from "../collection/FixedSizeIntList.js";
+import type { CharTrie } from "../trie/CharTrie.js";
 
-import PatternProcessor from "./PatternProcessor.js";
+import type { PatternProcessor } from "./PatternProcessor.js";
 
-export default class TriePatternProcessor implements PatternProcessor<CharTrieNode> {
+export class TriePatternProcessor implements PatternProcessor<CharTrieNode> {
 	private digitRegex = /\d/;
 
 	processPatterns(patterns: HyphenationPattern[]): CharTrieNode {

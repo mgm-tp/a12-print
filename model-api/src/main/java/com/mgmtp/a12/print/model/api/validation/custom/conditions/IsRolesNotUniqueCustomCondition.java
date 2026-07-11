@@ -31,41 +31,45 @@
  */
 package com.mgmtp.a12.print.model.api.validation.custom.conditions;
 
-import com.mgmtp.a12.kernel.md.document.api.IDocument;
-import com.mgmtp.a12.kernel.md.document.api.IEntityInstance;
-import com.mgmtp.a12.kernel.md.document.api.IFieldInstance;
+import com.mgmtp.a12.kernel.md.document.apiV2.DocumentMultiPointer;
+import com.mgmtp.a12.kernel.md.document.apiV2.DocumentPointer;
+import com.mgmtp.a12.kernel.md.document.apiV2.PartiallyKnownDocumentMultiPointer;
+import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 import com.mgmtp.a12.kernel.md.rt.api.ICustomCondition;
+
+import static java.util.Arrays.stream;
 
 import java.util.*;
 import java.util.stream.*;
 
+import lombok.NonNull;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
+@OnlyForUsage
 public class IsRolesNotUniqueCustomCondition implements ICustomCondition {
 
 	@Override
-    public boolean check(
-        IDocument document,
-        Set<IEntityInstance> relevantEntityInstances,
-        Set<IEntityInstance> formallyIncorrectEntityInstances,
-        IEntityInstance errorEntityInstance
-    )	{
-		if (relevantEntityInstances != null && !relevantEntityInstances.isEmpty()) {
+	public boolean check(@NonNull DocumentV2 document,
+			Set<? extends DocumentMultiPointer> relevantEntities,
+		@NonNull Set<DocumentPointer> formallyIncorrectEntities,
+		@NonNull PartiallyKnownDocumentMultiPointer errorEntityInstance) {
+
+		if (relevantEntities != null && !relevantEntities.isEmpty()) {
+			return false;
+		}
+		if (!formallyIncorrectEntities.isEmpty()) {
+			return false;
+		}
+		DocumentPointer documentPointer = errorEntityInstance.toDocumentPointer().orElse(null);
+		if (documentPointer == null) {
 			return false;
 		}
 
-		if (formallyIncorrectEntityInstances != null && !formallyIncorrectEntityInstances.isEmpty()) {
-			return false;
-		}
+		List<String> roles = stream(Objects.toString(document.fieldValue(documentPointer), "")
+			.split(","))
+			.collect(Collectors.toList());
 
-        List<String> roles = document.getEntityInstances().stream()
-			.filter(e -> e.getPath().equals(errorEntityInstance.getPath()))
-			.filter(e -> e instanceof IFieldInstance)
-            .map(e -> (IFieldInstance) e)
-			.map(IFieldInstance::getValue)
-			.map(f -> f.map(Object::toString).orElse(""))
-			.flatMap(s -> Arrays.stream(s.split(",")))
-            .collect(Collectors.toList());
-
-		Set<String> roleSet = roles.stream().collect(Collectors.toSet());
+		Set<String> roleSet = new HashSet<>(roles);
 		return roles.size() != roleSet.size();
-    }
+	}
 }

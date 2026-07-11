@@ -43,10 +43,8 @@ import java.util.Map;
 
 @Data
 @PrintEngineRuntimeDependency(type = RuntimeType.CORE)
-public class HtmlReplacementDependency implements ValueDependency<HtmlReplacementDependency.HtmlReplacementResult> {
+public class HtmlReplacementDependency implements ValueDependency<String> {
 	private final TextElement textElement;
 	private final String originHtml;
 	private final List<TextValueMarkup> markupResults;
-
-	public record HtmlReplacementResult(String html, Map<String, String> pageNumberGlobalStyles) {}
 }

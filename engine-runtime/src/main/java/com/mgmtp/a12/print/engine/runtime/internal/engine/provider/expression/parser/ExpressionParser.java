@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.expression.parser;
 
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import org.apache.commons.io.IOUtils;
 import org.openjdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
@@ -57,11 +58,11 @@ public class ExpressionParser {
 				final String expressionsLib = IOUtils.toString(is, StandardCharsets.UTF_8);
 				ENGINE.eval("var exports = { };" + expressionsLib);
 			} catch (final IOException | ScriptException e) {
-				throw new RuntimeException("Error when evaluating JavaScript Expressions Library: " + e);
+				throw new PrintCompilerException("Error when evaluating JavaScript Expressions Library: " + e);
 			}
 			is.close();
 		} catch (IOException e) {
-			throw new RuntimeException("Error while loading expression parser: " + e);
+			throw new PrintCompilerException("Error while loading expression parser: " + e);
 		}
 	}
 

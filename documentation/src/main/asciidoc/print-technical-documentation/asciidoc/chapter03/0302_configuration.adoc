@@ -33,9 +33,8 @@ These threads will not carry a `SecurityContext`.
 
 [source,java]
 ----
-include::../../sourceCode/engine-runtime/test/java/com/mgmtp/a12/print/engine/runtime/utils/PrintEngineTestExecutor.java[tag=PrintJobManagerApi,indent=0]
+include::../../sourceCode/print-shell/main/java/com/mgmtp/a12/print/shell/internal/ApplicationShell.java[tag=PrintJobManagerApi,indent=0]
 ----
-
 <1> This should be changed by your local service accordingly.
 <2> This should be changed by your local service accordingly.
 
@@ -55,23 +54,18 @@ Alternatively, you can declare your own ExecutorService:
 include::../../sourceCode/engine-runtime-test/com/mgmtp/a12/print/engine/runtime/test/internal/PrintTestUtil.java[tag=ExecutorService,indent=0]
 ----
 
-[#print_job_manager]
+[#print_job_manager_usage]
 === Creating PrintJobManager and PrintEngine
 
-Then we can create PrintJobManager and <<pdf_box_print_engine_runtime, PdfBoxPrintEngine>> or <<pdf_print_engine_runtime, PdfPrintEngine (Deprecated)>>.
-
-[CAUTION]
-====
-Please be aware of using the `usePdfBoxPrintProcess` flag during the creation of the `PrintJobManager`.
-It is set to false by default, which means that Legacy Rendering Mode (see link:/docs/PRINT_ENGINE/print-modeling-documentation/index.html#legacy_rendering_mode[Legacy Rendering Mode]) will be used. For the default rendering mode, set it to be true. With the deprecation of the Legacy Rendering Mode in the 2026.06 release, this flag will be removed.
-====
+Then we can create PrintJobManager with <<static_image_provider, StaticImageProvider>> and <<pdf_box_print_engine_runtime, PdfBoxPrintEngine>>.
 
 [source,java]
 ----
-include::../../sourceCode/engine-runtime/test/java/com/mgmtp/a12/print/engine/runtime/utils/PrintEngineTestExecutor.java[tags="PrintJobManager,PdfPrintEngine",indent=0]
+include::../../sourceCode/print-shell/main/java/com/mgmtp/a12/print/shell/internal/service/PrintService.java[tag=PrintJobManager,indent=0]
+include::../../sourceCode/print-shell/main/java/com/mgmtp/a12/print/shell/internal/commands/PrintCommand.java[tag=PdfPrintEngine,indent=0]
 ----
 
-The possibilities of the configs are described in <<pdf_box_print_engine_config, PdfBoxPrintEngineConfig>> or <<print_engine_config, PrintEngineConfig (Deprecated)>>.
+The possibilities of the configs are described in <<pdf_box_print_engine_config, PdfBoxPrintEngineConfig>>.
 
 == Using the `@Bean` Annotation
 
@@ -79,11 +73,44 @@ Example::
 
 [source,java,title="Configuration class"]
 ----
-include::../../sourceCode/print-shell/PrintShellConfiguration.java[tag=!*]
+public class PrintConfiguration {
+	public static final String PRINT_THREAD_POOL = "printThreadPool";
+
+	@Bean
+	@Qualifier(PRINT_THREAD_POOL)
+	public ExecutorService printThreadPool() {
+		return ExecutorServiceFactory.getInstance();
+	}
+
+	@Bean
+	public PrintJobManager.PrintJobManagerApi printJobManagerApi() {
+		return new PrintJobManager.PrintJobManagerApi() {
+			@Override
+			public String loadPrintModel(String id) {
+				// load print model content with the provided id <1>
+			}
+
+			@Override
+			public IDocumentModel loadDocumentModel(String id) {
+				// load document model with the provided id <2>
+			}
+		};
+	}
+
+	@Bean
+	public PdfBoxPrintEngine pdfPrintEngine(@lombok.NonNull @Qualifier(PRINT_THREAD_POOL) ExecutorService printThreadPool) {
+		return new com.mgmtp.a12.print.engine.runtime.pdfBox.PdfBoxPrintEngine(
+			printThreadPool,
+			PdfBoxPrintEngineConfig.DEFAULT.toBuilder()
+				.availableFonts(PrintEngineConfig.DEFAULT_FONTS) // <3>
+				.build()
+		);
+	}
+}
 ----
 
 <1> Load Print Model content.
 The implementation should be changed by your local service accordingly.
 <2> Load IDocumentModel.
 The implementation should be changed by your local service accordingly.
-<3> Customization fonts could be set for the PrintEngineConfig.
+<3> Customization fonts could be set for the PdfBoxPrintEngineConfig.

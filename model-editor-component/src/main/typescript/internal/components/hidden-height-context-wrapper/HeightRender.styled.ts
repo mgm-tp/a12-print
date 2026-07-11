@@ -31,7 +31,7 @@
  */
 import { css, styled } from "styled-components";
 
-import { Dimensions } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { Dimensions } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../constant/editor.js";
 

@@ -1,0 +1,181 @@
+{
+  "header": {
+    "id": "testPM",
+    "modelType": "print",
+    "modelVersion": "3.2.0",
+    "description": "Description",
+    "annotations": [],
+    "labels": [],
+    "locales": [
+      {
+        "code": "en"
+      }
+    ],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "reference": "testCDM",
+        "purpose": "data binding"
+      }
+    ]
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "zyL_Pqb4tUR7_ZW4BI5xB",
+        "titleComputation": [
+          {
+            "id": "w5Lut0h_xgehvOiFwc6Wp",
+            "operation": "\"testPM\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "hT0Omw4aTl0PzoGtDOJA6",
+            "operation": "\"Description\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "W10vvdaX2sbC58uJzWXdG",
+            "operation": "\"Print Model Editor\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "nfZvc0OoCJCxhJQ1iDUTp",
+            "operation": "\"DE\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "Uyj6ez4AmwNUTxMKBm-D-",
+        "fontSize": 12
+      },
+      "structure": [
+        {
+          "id": "rcu5qsB5DbMC0WHaLGb9L"
+        }
+      ],
+      "sections": [],
+      "watermarks": [],
+      "runtimeVariables": [],
+      "textStyles": []
+    },
+    "segments": {
+      "id": "NKffDc5uTAXOXWPKs-fpi",
+      "definitions": [
+        {
+          "id": "rcu5qsB5DbMC0WHaLGb9L",
+          "title": "test",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "EAvd0NFH8RJe_hveJ13vU",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "9J3HGwB2PokIou7Eooh3K",
+              "refId": "T9xEgUuwmyHPE1vFsiRwN",
+              "position": {
+                "id": "Dg34FQbQnCCfA0MmFxJkt",
+                "x": {
+                  "id": "jEjXVyr9WkjbB7Fded1K9",
+                  "value": 70,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "kE1XK23SoVo2fnOwBBLp8",
+                  "value": 19,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ZnU247UHf_Mhf9_sHcgMh",
+                "minHeight": {
+                  "id": "q6U70AxVrkH7KR1t3OaYn",
+                  "value": 6,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "3640NRW54Mp7C3Sk1jjDW",
+                  "value": 40,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "ZAjMPfGe0UMZVtVLhYuct"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "4t8JWCFUlY7jLpgmoYMpF",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/",
+                "source": "DEFAULT"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "T9xEgUuwmyHPE1vFsiRwN",
+        "type": "Text",
+        "text": {
+          "id": "11lkPy61AFVZBDbdwjY4C",
+          "text": "<p><span entity-id=\"6Vntq3Xhd9Q9NTJoEZfIO\" entity-type=\"Calculation\"><span style=\"\">test</span></span></p>",
+          "entities": [
+            {
+              "id": "krOFogM_z3vds5yNQpZDJ",
+              "refId": "6Vntq3Xhd9Q9NTJoEZfIO"
+            }
+          ]
+        },
+        "textProperties": {
+          "id": "mZPI-RFFP9mmksnJ42gCE",
+          "textStyleId": {
+            "id": "uDZBhBzxdA8nGeZHhXih7",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "DEFAULT"
+          },
+          "alignment": {
+            "id": "jvbBLPfOta_f0PhuCeErV",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "vUj1PhR_oayN4YXickF1u"
+        }
+      },
+      {
+        "id": "6Vntq3Xhd9Q9NTJoEZfIO",
+        "type": "Calculation",
+        "calculation": {
+          "id": "UP57OSv2Nu5R9i62pZfhx",
+          "model": "testCDM",
+          "name": "test",
+          "computationAlternatives": [
+            {
+              "id": "lUfecsjAbR3CTC-1V8v_H",
+              "operation": "[testCDM/root/date]",
+              "precondition": "True"
+            }
+          ],
+          "fieldType": {
+            "id": "2lhwi0ySO0gRQD1yF_VwT",
+            "fieldType": "TypeDefinition",
+            "typeDefinition": {
+              "id": "testCDM_CustomDate"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -38,7 +38,9 @@ import com.mgmtp.a12.print.model.api.model.reference.PlaceableReference;
 
 import java.util.List;
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface Area extends PrintModelElement, PlaceableReferenceContainer {
 	AreaProperties getAreaProperties();
 	Optional<BorderProperties> getBorderProperties();

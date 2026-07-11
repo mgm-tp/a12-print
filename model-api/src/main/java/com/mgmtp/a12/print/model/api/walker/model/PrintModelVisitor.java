@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.model.api.walker.model;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.exceptions.*;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.container.BaseReferenceContainer;
@@ -68,6 +69,7 @@ import com.mgmtp.a12.print.model.api.walker.TraversalCommand;
  * Provides an interface to execute a given function on every print model entity.
  * Uses {@link DescendCommand} and {@link TraversalCommand} return values to control the navigation of the corresponding {@link PrintModelWalker}.
  */
+@OnlyForUsage
 public interface PrintModelVisitor {
 
 	default void beforeVisitElement(final PrintModelElement element, final PrintModelPath path) {

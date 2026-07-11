@@ -31,7 +31,8 @@
  */
 import { fireEvent, screen, within } from "@testing-library/react";
 
-import { ModelReferenceEntity, getEntityId, EntityKey } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { ModelReferenceEntity } from "@com.mgmtp.a12.print/print-model-api/model";
+import { getEntityId, EntityKey } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import {
 	setupTestWithSchema,

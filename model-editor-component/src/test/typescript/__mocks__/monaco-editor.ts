@@ -31,3 +31,32 @@
  */
 export const editor = {};
 export const Uri = {};
+export const languages = {};
+export const Emitter = class {};
+export const MarkerTag = {};
+export const MarkerSeverity = {};
+export const CancellationTokenSource = class {};
+export const KeyCode = {};
+export const KeyMod = {};
+export const Position = class {};
+export const Range = class {};
+export const Selection = class {};
+export const SelectionDirection = {};
+export const Token = class {};
+
+export default {
+	editor,
+	Uri,
+	languages,
+	Emitter,
+	MarkerTag,
+	MarkerSeverity,
+	CancellationTokenSource,
+	KeyCode,
+	KeyMod,
+	Position,
+	Range,
+	Selection,
+	SelectionDirection,
+	Token,
+};

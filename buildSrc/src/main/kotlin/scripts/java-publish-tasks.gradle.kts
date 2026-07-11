@@ -29,13 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import scripts.PublishingInfoExtension
+
 plugins {
 	`maven-publish`
 }
 
-interface PublishingInfoExtension {
-	val artifactId: Property<String>
-}
 project.extensions.create<PublishingInfoExtension>("publishingInfoExtension").also {
 }
 

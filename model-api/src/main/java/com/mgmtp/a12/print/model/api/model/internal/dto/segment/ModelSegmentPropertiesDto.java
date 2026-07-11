@@ -48,3 +48,4 @@ public class ModelSegmentPropertiesDto extends PrintModelEntityDto implements Mo
 	@Builder.Default
 	PageOrientation pageOrientation = PageOrientation.PORTRAIT;
 }
+

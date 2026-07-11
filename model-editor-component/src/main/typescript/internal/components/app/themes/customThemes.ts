@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DefaultTheme } from "styled-components/dist/types.js";
+import type { DefaultTheme } from "styled-components/dist/types.js";
 
-import { createTheme } from "@com.mgmtp.a12.widgets/widgets-core/lib/theme/create-theme.js";
+import { createTheme } from "@com.mgmtp.a12.widgets/widgets-core";
 
 export const createPrintModelEditorTheme = (parentTheme: DefaultTheme) =>
 	createTheme({

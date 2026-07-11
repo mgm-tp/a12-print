@@ -31,10 +31,8 @@
  */
 import { useSelector } from "react-redux";
 
-import {
-	isPartialSegment,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { isPartialSegment } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { useGetSectionOffset } from "../../../hooks/use-get-section-offset.js";

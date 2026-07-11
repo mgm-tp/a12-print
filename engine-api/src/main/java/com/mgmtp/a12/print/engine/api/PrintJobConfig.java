@@ -34,10 +34,12 @@ package com.mgmtp.a12.print.engine.api;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Allows configuration of the A12 type comparison mapping.
  */
+@OnlyForUsage
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor

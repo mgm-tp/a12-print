@@ -29,7 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { useMemo, useState, useCallback, useEffect, RefCallback } from "react";
+import type { RefCallback } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 
 export const useResizeObserver = () => {
 	const [entry, setEntry] = useState<ResizeObserverEntry | null>(null);

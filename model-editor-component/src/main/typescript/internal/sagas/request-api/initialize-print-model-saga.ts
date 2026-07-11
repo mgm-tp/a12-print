@@ -29,15 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
-import { call, getContext, put, takeEvery } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
+import type { SagaGenerator } from "typed-redux-saga";
+import { all, call, getContext, put, takeLatest } from "typed-redux-saga";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
-import { Log } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PrintModelCreator } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/print-model-creator/print-model-creator.js";
+import { Log, PrintModelCreator } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 import {
 	InteractionLogActions,
 	RequestApiActions,
@@ -45,18 +44,16 @@ import {
 	ValidationActions,
 } from "../../redux/index.js";
 import { interactionGraph } from "../../constant/interaction-graph.js";
-import { DocumentModelDataActions } from "../../redux/document-model-data/actions.js";
+
+import { ensureDocumentModelsLoaded } from "../document-model-data/load-document-model-data-saga.js";
 
 const log = LoggerFactory.getLogger("InitialLoadPrintModelSaga");
 
-export function* initializePrintModelSaga(): SagaIterator {
-	yield* takeEvery(
-		(action: AnyAction) => RequestApiActions.initializePrintModel.match(action),
-		handleInitializePrintModelSaga
-	);
+export function* initializePrintModelSaga(): SagaGenerator<void> {
+	yield* takeLatest(RequestApiActions.initializePrintModel.match, handleInitializePrintModelSaga);
 }
 
-function* handleInitializePrintModelSaga(action: Action<string>): SagaIterator {
+function* handleInitializePrintModelSaga(action: PayloadAction<string>): SagaGenerator<void> {
 	const requestApi: RequestApi = yield* getContext("requestApi");
 	const loadPrintModelResponse = yield* call(requestApi.loadPrintModel, action.payload);
 
@@ -67,18 +64,22 @@ function* handleInitializePrintModelSaga(action: Action<string>): SagaIterator {
 			interactionGraph
 		);
 
+		const partialPrintModel = PrintModelCreator.createStoreModel(stores.transactionLogStore);
+		const references = partialPrintModel.header?.modelReferences;
+
+		const referencedDocumentModelIds =
+			references?.flatMap(ref => (ref.reference && ref.modelType === "document" ? [ref.reference] : [])) ?? [];
+		// Must complete before setLogStore so all document models are in the store when validation runs.
+		yield* ensureDocumentModelsLoaded(referencedDocumentModelIds);
+
 		yield* put(TransactionLogStateActions.setLogStore(stores.transactionLogStore));
 		yield* put(InteractionLogActions.setLogStore(stores.interactionLogStore));
 		yield* put(ValidationActions.validateTextStyles());
 		yield* put(RequestApiActions.loadTypesettingModels());
 
-		const partialPrintModel = PrintModelCreator.createStoreModel(stores.transactionLogStore);
-
-		const referencedDocumentModels =
-			partialPrintModel.header?.modelReferences?.flatMap(ref =>
-				ref.reference && ref.modelType === "document" ? [ref.reference] : []
-			) || [];
-		yield* put(DocumentModelDataActions.batchLoadDocumentModelData(referencedDocumentModels));
+		const referencedPrintModels =
+			references?.flatMap(ref => (ref.reference && ref.modelType === "print" ? [ref.reference] : [])) || [];
+		yield* all(referencedPrintModels.map(ref => put(RequestApiActions.loadDINTemplatePrintModel(ref))));
 	} else {
 		if (loadPrintModelResponse?.errorMap) {
 			yield* put(ValidationActions.setErrorMap(loadPrintModelResponse.errorMap));

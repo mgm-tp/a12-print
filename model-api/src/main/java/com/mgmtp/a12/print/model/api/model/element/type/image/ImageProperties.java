@@ -32,11 +32,13 @@
 package com.mgmtp.a12.print.model.api.model.element.type.image;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
 import java.util.Optional;
 
 
+@OnlyForUsage
 public interface ImageProperties extends PrintModelEntity {
 	ImageSrcType getImageSrcType();
 
@@ -44,11 +46,12 @@ public interface ImageProperties extends PrintModelEntity {
 
 	ImageDimensions getDimensions();
 
-	Optional<AttachmentSource> getAttachmentSource();
+	Optional<ResourceSource> getResourceSource();
 	Optional<FieldSource> getFieldSource();
 
+	@OnlyForUsage
 	enum ImageSrcType {
-		@JsonProperty("Attachment") ATTACHMENT,
-		@JsonProperty("Field") FIELD,
+		@JsonProperty("Static") STATIC,
+		@JsonProperty("Dynamic") DYNAMIC,
 	}
 }

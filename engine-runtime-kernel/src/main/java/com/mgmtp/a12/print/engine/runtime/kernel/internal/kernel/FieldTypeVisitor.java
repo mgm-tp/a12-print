@@ -32,6 +32,7 @@
 package com.mgmtp.a12.print.engine.runtime.kernel.internal.kernel;
 
 import com.mgmtp.a12.kernel.md.model.api.fieldtypes.*;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 
 public interface FieldTypeVisitor<T> {
 
@@ -110,10 +111,10 @@ public interface FieldTypeVisitor<T> {
 	}
 
 	default T visitNotImplemented(IFieldType fieldType) {
-		throw new RuntimeException(String.format("Not implemented FieldType: %s", fieldType.getClass().getName()));
+		throw new PrintCompilerException("The field type " + fieldType.getClass().getName() + " is currently not implemented");
 	}
 
 	default T visitNotSupported(IFieldType fieldType) {
-		throw new RuntimeException(String.format("Not supported FieldType: %s", fieldType.getClass().getName()));
+		throw new PrintCompilerException("The field type " + fieldType.getClass().getName() + " is currently not supported");
 	}
 }

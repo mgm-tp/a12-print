@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { RESOURCE_KEYS } from "../localization/keys.js";
 

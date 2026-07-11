@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { OutputRow } from "./tsv-output.js";
+import type { OutputRow } from "./tsv-output.js";
 
 export type LogIndexes<T> = {
 	[k in keyof T]-?: {

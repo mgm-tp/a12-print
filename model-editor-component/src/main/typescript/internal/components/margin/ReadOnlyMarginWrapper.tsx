@@ -31,8 +31,8 @@
  */
 import * as React from "react";
 
-import { Margins } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import type { Margins } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { EditorConst } from "../../constant/editor.js";
 

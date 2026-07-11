@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-interface FixedSizeIntList {
+export interface FixedSizeIntList {
 	readonly length: number;
 
 	get(i: number): number;
@@ -38,5 +38,3 @@ interface FixedSizeIntList {
 
 	set(index: number, value: number): void;
 }
-
-export default FixedSizeIntList;

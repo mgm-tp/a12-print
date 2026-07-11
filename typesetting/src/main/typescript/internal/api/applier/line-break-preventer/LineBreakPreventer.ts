@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PreventLineBreakRule, TypesettingModel } from "../../model/index.js";
+import type { PreventLineBreakRule, TypesettingModel } from "../../../../a12internal/api/model/index.js";
 
-import { LineBreakPreventIndex, LineBreakPreventPosition } from "./LineBreakIndex.js";
+import type { LineBreakPreventIndex, LineBreakPreventPosition } from "./LineBreakIndex.js";
 
 export interface LineBreakPreventer {
 	findLineBreakPreventPositions(text: string): LineBreakPreventIndex;

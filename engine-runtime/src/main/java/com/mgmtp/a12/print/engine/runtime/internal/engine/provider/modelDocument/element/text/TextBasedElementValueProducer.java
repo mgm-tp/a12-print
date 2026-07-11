@@ -36,15 +36,10 @@ import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.ModelDocumentDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.markup.text.NestingType;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.text.TextDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalModelDocumentPrintEngineRuntime;
-import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
-import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
 import com.mgmtp.a12.print.model.api.model.reference.PlaceableReference;
-import com.mgmtp.a12.print.model.api.model.reference.TableColumnReference;
-import com.mgmtp.a12.print.model.api.model.reference.TableLayoutCellReference;
 import com.mgmtp.a12.print.model.document.internal.base.IPrintElement;
 import com.mgmtp.a12.print.model.document.internal.element.TextBasedElement;
 import org.jsoup.Jsoup;
@@ -64,7 +59,6 @@ public class TextBasedElementValueProducer implements ModelDocumentDependencyVal
 
 		final var childElements = dependency.getChildElements();
 		final var printModelElement = printModelElementTrace.getTracedElement();
-		final var nestingType = elementReference.map(NestingType::fromReference).orElse(NestingType.NONE);
 		final var isHidden = TextDependencyValueProducer.isHidden(printModelElementTrace, evaluatedValueOptional.isEmpty());
 
 		if (isHidden) {
@@ -80,7 +74,9 @@ public class TextBasedElementValueProducer implements ModelDocumentDependencyVal
 			printModelElement.getType(),
 			evaluatedValue,
 			textContent,
-			nestingType.isNested(),
+			elementReference
+				.map(ref -> !(ref instanceof PlaceableReference))
+				.orElse(false),
 			isHtml,
 			childElements == null ? Collections.emptyList() : childElements
 		);

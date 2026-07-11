@@ -33,15 +33,15 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { PartialSwitch, SwitchCase } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { Message } from "@com.mgmtp.a12.widgets/widgets-core";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { PartialSwitch, SwitchCase } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { Message, addPrefix } from "@com.mgmtp.a12.widgets/widgets-core";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { EditorConst } from "../../constant/editor.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
 import { SWITCH_CASE_ELEMENT_WIDTH_PERCENTAGE, SWITCH_CASE_MAX_ELEMENT_HEIGHT } from "../../constant/switch.js";
 import { SWITCH_CASE_CARD } from "../../constant/drag.js";
 import { useResizeObserver } from "../../hooks/use-resize-observer.js";
@@ -50,7 +50,7 @@ import { InteractionLogActions, TransactionLogStateActions } from "../../redux/i
 
 import { DragListItemWrapper } from "../drag-and-drop/index.js";
 
-import { PartialSwitchCase } from "./switch-stage.js";
+import type { PartialSwitchCase } from "./switch-stage.js";
 import { SwitchCaseCard } from "./SwitchCaseCard.js";
 
 interface SwitchCaseProps {

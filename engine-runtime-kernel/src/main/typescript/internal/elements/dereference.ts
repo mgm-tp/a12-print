@@ -29,17 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	ArithmeticBranch,
-	CompareBranch,
-	LogicBranch,
-	Predicate,
-	SyntaxTreeElement,
-	SyntaxTreeElementType,
-	SyntaxTreeElementVisitor,
-	Variable,
-	VisitationState,
-} from "./index.js";
+import type { SyntaxTreeElementVisitor, Variable, VisitationState } from "../../a12internal/elements/index.js";
+
+import type { ArithmeticBranch, CompareBranch, LogicBranch, Predicate, SyntaxTreeElement } from "./index.js";
+import { SyntaxTreeElementType } from "./index.js";
 
 export class Dereference
 	implements SyntaxTreeElement, Predicate.Parameter, ArithmeticBranch, LogicBranch, CompareBranch

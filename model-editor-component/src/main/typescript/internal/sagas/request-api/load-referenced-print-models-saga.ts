@@ -29,23 +29,19 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { put, select, takeEvery, all } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
 
 import { RequestApiActions } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 
-export function* loadReferencedPrintModelsSaga(): SagaIterator {
-	yield* takeEvery(
-		(action: AnyAction) => RequestApiActions.loadReferencedPrintModels.match(action),
-		handleLoadReferencedPrintModelsSaga
-	);
+export function* loadReferencedPrintModelsSaga(): SagaGenerator<void> {
+	yield* takeEvery(RequestApiActions.loadReferencedPrintModels.match, handleLoadReferencedPrintModelsSaga);
 }
 
 function* handleLoadReferencedPrintModelsSaga() {
 	const dinTemplateModelReferences = yield* select(PrintEngineSelectors.dinTemplateModelReferences);
-	const actions: SagaIterator[] = dinTemplateModelReferences.map(({ reference }) =>
+	const actions = dinTemplateModelReferences.map(({ reference }) =>
 		put(RequestApiActions.loadReferencedPrintModel(reference))
 	);
 	if (actions.length > 0) {

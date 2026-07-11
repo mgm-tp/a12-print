@@ -29,23 +29,22 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ICustomFieldType } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts/lib/main/js/custom/ICustomFieldType.js";
-import { ICustomFieldTypeValidationParam } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts/lib/main/js/custom/ICustomFieldTypeValidationParam.js";
-import { ICustomFieldTypeCheckError } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts/lib/main/js/custom/ICustomFieldTypeCheckError.js";
-import { ICustomFieldTypeConversionResult } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts/lib/main/js/custom/ICustomFieldTypeConversionResult.js";
-import { LocalizableArgs } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import type {
+	ICustomFieldTypeConversionResult,
+	ICustomFieldTypeValidationParam,
+	ICustomFieldTypeCheckError,
+	ICustomFieldValidator,
+} from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts";
+import type { LocalizableArgs } from "@com.mgmtp.a12.utils/utils-localization";
 
-import {
-	DateTimeFormatErrorEnum,
-	DateTimeFormatValidationError,
-	DateTimeFormatValidator,
-} from "../date-time-format-validation/index.js";
+import type { DateTimeFormatValidationError } from "../date-time-format-validation/index.js";
+import { DateTimeFormatErrorEnum, DateTimeFormatValidator } from "../date-time-format-validation/index.js";
 
 import { PrintDateTimeFormatErrorEnum } from "./error/error-enum.js";
 import { PrintDateTimeFormatErrorUtil } from "./error/error-util.js";
 import { PrintDateTimeFormatConversionResultImpl } from "./convention-result-impl.js";
 
-export class PrintDateTimeFormatFt implements ICustomFieldType {
+export class PrintDateTimeFormatFt implements ICustomFieldValidator {
 	static readonly NAME = "PrintDateTimeFormat";
 	private static readonly instance: PrintDateTimeFormatFt = new PrintDateTimeFormatFt();
 	private readonly validator: DateTimeFormatValidator = new DateTimeFormatValidator();

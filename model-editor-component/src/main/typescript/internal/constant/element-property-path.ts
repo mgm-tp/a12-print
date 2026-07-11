@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import type { TextPropertiesPath } from "../types/input-source.js";
+import type { BorderPropertiesPath, TextPropertiesPath } from "../types/input-source.js";
 
 export const TEXT_PROPERTIES_PATH: TextPropertiesPath = {
 	textStyleId: "textProperties.textStyleId",
@@ -39,6 +39,12 @@ export const TEXT_PROPERTIES_PATH: TextPropertiesPath = {
 	bold: "textProperties.bold",
 	italic: "textProperties.italic",
 	underlined: "textProperties.underlined",
+};
+
+export const BORDER_PROPERTIES_PATH: BorderPropertiesPath = {
+	borderWidth: "borderProperties.borderWidth",
+	borderStyle: "borderProperties.borderStyle",
+	borderColor: "borderProperties.borderColor",
 };
 
 export const TABLE_PROPERTY_PATH = {
@@ -57,6 +63,22 @@ export const TABLE_PROPERTY_PATH = {
 	},
 };
 
+const LISTING_COLUMN_TEXT_PROPERTIES_PATH: TextPropertiesPath = {
+	textStyleId: "columns.textProperties.textStyleId",
+	color: "columns.textProperties.color",
+	backgroundColor: "columns.textProperties.backgroundColor",
+	alignment: "columns.textProperties.alignment",
+	bold: "columns.textProperties.bold",
+	italic: "columns.textProperties.italic",
+	underlined: "columns.textProperties.underlined",
+};
+
+const LISTING_COLUMN_BORDER_PROPERTIES_PATH: BorderPropertiesPath = {
+	borderWidth: "columns.borderProperties.borderWidth",
+	borderStyle: "columns.borderProperties.borderStyle",
+	borderColor: "columns.borderProperties.borderColor",
+};
+
 export const LISTING_PROPERTY_PATH = {
 	headerTextProperties: {
 		textStyleId: "headerTextProperties.textStyleId",
@@ -70,7 +92,8 @@ export const LISTING_PROPERTY_PATH = {
 	columns: {
 		label: "columns.label",
 		width: "columns.width",
-		textProperties: TEXT_PROPERTIES_PATH,
+		textProperties: LISTING_COLUMN_TEXT_PROPERTIES_PATH,
+		borderProperties: LISTING_COLUMN_BORDER_PROPERTIES_PATH,
 	},
 };
 

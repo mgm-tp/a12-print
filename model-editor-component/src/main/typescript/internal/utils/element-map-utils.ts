@@ -29,10 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ElementMapEntry } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/types/document-model-data.js";
-import { DocumentModelUtils } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/utils/document-model-utils.js";
+import type { ElementMapEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { DocumentModelUtils } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { DataContextEntry } from "../types/data-context.js";
+import type { DataContextEntry } from "../types/data-context.js";
 
 export namespace ElementMapUtils {
 	export function createEntriesFromDataContext(

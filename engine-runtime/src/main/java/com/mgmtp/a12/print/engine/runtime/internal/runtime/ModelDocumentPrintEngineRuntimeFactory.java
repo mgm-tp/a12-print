@@ -37,7 +37,6 @@ import com.mgmtp.a12.print.engine.api.exception.PrintJobRestrictionException;
 import com.mgmtp.a12.print.engine.runtime.internal.CacheableGenericDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.ValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.modelDocument.element.listing.ListingElementDependencyValueProducer;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.rendering.CssUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalCorePrintEngineRuntime;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalModelDocumentPrintEngineRuntime;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalModelDocumentPrintEngineRuntimeApiFactory;
@@ -89,7 +88,7 @@ public class ModelDocumentPrintEngineRuntimeFactory extends InternalModelDocumen
 		InternalModelDocumentPrintEngineRuntimeApiFactory.Builder<PrintJob, ModelDocumentPrintEngine> engineSpecificBuilder
 	) {
 		return engineSpecificBuilder
-			.withProviderForListingElementDependency(new ListingElementDependencyValueProducer(new CssUtil()))
+			.withProviderForListingElementDependency(new ListingElementDependencyValueProducer())
 			.build();
 	}
 

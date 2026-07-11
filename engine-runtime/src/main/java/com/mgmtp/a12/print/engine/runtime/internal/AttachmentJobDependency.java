@@ -31,13 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal;
 
-import com.mgmtp.a12.kernel.md.document.api.IDocument;
 import com.mgmtp.a12.print.engine.api.JobDependency;
 import com.mgmtp.a12.print.engine.api.a12.AttachmentDependencyDescriptor;
-import com.mgmtp.a12.print.engine.api.a12.PrintModelDependencyDescriptor;
-import com.mgmtp.a12.print.model.api.model.PrintModel;
 import lombok.Data;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.io.ByteArrayInputStream;

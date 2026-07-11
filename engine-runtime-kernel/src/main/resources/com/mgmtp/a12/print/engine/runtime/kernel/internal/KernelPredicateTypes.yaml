@@ -720,7 +720,7 @@ predicates:
                         - PREDICATE
     MonthFromDate:
         type:
-            - DATE
+            - NUMBER
         parameters:
             -   DateTime:
                     type:
@@ -1182,7 +1182,7 @@ predicates:
                             - CONSTANT
     YearFromDate:
         type:
-            - DATE
+            - NUMBER
         parameters:
             -   DateTime:
                     type:

@@ -31,16 +31,14 @@
  */
 package com.mgmtp.a12.print.typesetting.internal.model.deserializer;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.ValueDeserializer;
 
-import java.io.IOException;
-
-public class CleanupStringDeserializer extends JsonDeserializer<String> {
+public class CleanupStringDeserializer extends ValueDeserializer<String> {
 
 	@Override
-	public String deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
+	public String deserialize(JsonParser p, DeserializationContext ctx) {
 		String v = p.getValueAsString();
 		if (v == null) return null;
 		return v.replaceAll("\\s+", " ").trim();

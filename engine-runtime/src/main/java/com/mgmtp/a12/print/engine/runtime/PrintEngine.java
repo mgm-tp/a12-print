@@ -31,20 +31,37 @@
  */
 package com.mgmtp.a12.print.engine.runtime;
 
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
+import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.api.PrintResult;
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public abstract class PrintEngine<Result extends PrintResult> implements com.mgmtp.a12.print.engine.api.PrintEngine<Result> {
 	@NonNull
-	private final PrintEngineConfig config;
+	private final PdfBoxPrintEngineConfig config;
 
-	public PrintEngine(@NonNull PrintEngineConfig config) {
+	public PrintEngine(@NonNull PdfBoxPrintEngineConfig config) {
 		this.config = config;
 	}
 
 	@Override
-	public @NonNull PrintEngineConfig getConfig() {
+	public @NonNull PdfBoxPrintEngineConfig getConfig() {
 		return config;
+	}
+
+	@Override
+	public Result execute(PrintJob printJob) throws PrintException {
+		final var report = executeWithReport(printJob);
+		if (report.noErrorOccurred()) {
+			return report.getResult();
+		}
+		throw new PrintException(
+			"The Print process failed with the following messages: {}",
+			StringUtils.join(report.getMessages(), "\n")
+		);
 	}
 }

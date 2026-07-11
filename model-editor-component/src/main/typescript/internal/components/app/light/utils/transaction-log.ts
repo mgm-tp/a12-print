@@ -29,11 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
+import type {
 	InteractionLogPersistentEntry,
 	LogPersistentEntry,
 	PartialTransactionLogPersistentEntry,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 export class LogStorage {
 	protected interactions: InteractionLogPersistentEntry[] = [];

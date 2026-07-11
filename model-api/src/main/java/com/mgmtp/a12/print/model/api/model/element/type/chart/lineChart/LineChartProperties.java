@@ -32,5 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.element.type.chart.lineChart;
 
 import com.mgmtp.a12.print.model.api.model.element.type.chart.MultipleSeriesProperties;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface LineChartProperties extends MultipleSeriesProperties {}

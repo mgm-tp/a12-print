@@ -32,12 +32,9 @@
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
 
-import {
-	InputValueSourceResolver,
-	PossibleInputSource,
-} from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { InputSource, PrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { InputValueSourceResolver, PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { InputSource, PrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../store/selectors.js";
 

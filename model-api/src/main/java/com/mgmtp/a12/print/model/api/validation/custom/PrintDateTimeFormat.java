@@ -31,25 +31,26 @@
  */
 package com.mgmtp.a12.print.model.api.validation.custom;
 
-import com.mgmtp.a12.kernel.core.customfieldtype.ICustomFieldType;
 import com.mgmtp.a12.kernel.core.customfieldtype.ICustomFieldTypeCheckError;
-import com.mgmtp.a12.kernel.core.customfieldtype.ICustomFieldTypeConversionResult;
 import com.mgmtp.a12.kernel.core.customfieldtype.ICustomFieldTypeValidationParam;
+import com.mgmtp.a12.kernel.core.customfieldtype.ICustomFieldValidator;
 import com.mgmtp.a12.print.model.api.validation.custom.error.PrintDateTimeFormatErrorEnum;
 import com.mgmtp.a12.print.model.api.validation.custom.error.PrintDateTimeFormatErrorImpl;
 import com.mgmtp.a12.print.model.api.validation.custom.error.PrintDateTimeFormatErrorUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
-public class PrintDateTimeFormat implements ICustomFieldType {
+@OnlyForUsage
+public class PrintDateTimeFormat implements ICustomFieldValidator {
 
 	private static final Logger logger = LoggerFactory.getLogger(PrintDateTimeFormat.class);
 	private static final PrintDateTimeFormat instance = new PrintDateTimeFormat();
@@ -60,7 +61,7 @@ public class PrintDateTimeFormat implements ICustomFieldType {
 	}
 
 	@Override
-	public Optional<ICustomFieldTypeCheckError> validate(String value, ICustomFieldTypeValidationParam valParam, boolean isDisplayValue, Map<String, Object> map) {
+	public @NonNull Optional<ICustomFieldTypeCheckError> validate(@NonNull String value, @NonNull ICustomFieldTypeValidationParam valParam, boolean isDisplayValue) {
 		try {
 			DateTimeFormatter.ofPattern(value).withZone(ZoneId.systemDefault());
 			return Optional.empty();
@@ -105,31 +106,5 @@ public class PrintDateTimeFormat implements ICustomFieldType {
 			return "";
 		}
 
-	}
-
-	@Override
-	public ICustomFieldTypeConversionResult convertDisplay2Internal(String displayValue, Map<String, Object> map) {
-		return new ICustomFieldTypeConversionResult() {
-			public Optional<String> getErrorMessage() {
-				return Optional.empty();
-			}
-
-			public String getConvertedValue() {
-				return displayValue;
-			}
-		};
-	}
-
-	@Override
-	public ICustomFieldTypeConversionResult convertInternal2Display(String internalValue, Map<String, Object> map) {
-		return new ICustomFieldTypeConversionResult() {
-			public Optional<String> getErrorMessage() {
-				return Optional.empty();
-			}
-
-			public String getConvertedValue() {
-				return internalValue;
-			}
-		};
 	}
 }

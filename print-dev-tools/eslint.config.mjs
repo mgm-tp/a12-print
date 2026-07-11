@@ -49,11 +49,6 @@ const RESTRICTED_IMPORT_PATTERNS = [
 		message: "Importing A12 Code from the /test directory is not allowed.",
 	},
 	{
-		regex: "@com\\.mgmtp\\.a12\\.(?:widgets/widgets-core|dataservices/dataservices-access|kernel/(?:kernel-md-facade|kernel-core-runtime-api-ts))$",
-		message:
-			"Top-level a12 imports may pull in unwanted dependencies and increase bundle size & compile time. Use the specific subpackage instead.",
-	},
-	{
 		regex: "@com\\.mgmtp\\.a12\\.widgets/widgets-core/.*/index\\.js$",
 		message:
 			"Widgets barrel imports may pull in unwanted dependencies and increase bundle size & compile time. Use the specific subpackage instead.",
@@ -89,7 +84,7 @@ export default [
 			"no-extra-boolean-cast": "warn",
 			"unused-imports/no-unused-imports": "error",
 			"no-restricted-imports": [
-				"off",
+				"error",
 				{
 					patterns: RESTRICTED_IMPORT_PATTERNS,
 				},
@@ -105,7 +100,7 @@ export default [
 			],
 			"@typescript-eslint/no-unused-vars": [
 				"warn",
-				{ ignoreRestSiblings: true, varsIgnorePattern: "^_$" },
+				{ ignoreRestSiblings: true, varsIgnorePattern: "^_", argsIgnorePattern: "^_" },
 			],
 			"@typescript-eslint/no-inferrable-types": [
 				"error",
@@ -113,6 +108,10 @@ export default [
 			],
 			semi: ["error", "always"],
 			eqeqeq: "warn",
+			"@typescript-eslint/consistent-type-imports": [
+				"error",
+				{ prefer: "type-imports", fixStyle: "separate-type-imports" },
+			],
 			"@typescript-eslint/no-unused-expressions": [
 				"error",
 				{ allowShortCircuit: true, allowTernary: true },
@@ -126,7 +125,7 @@ export default [
 		},
 	},
 	{
-		files: ["**/*.test.ts", "**/*.test.tsx"],
+		files: ["**/__tests__/**/*.{ts,tsx}", "**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
 		rules: {
 			"no-restricted-imports": "off",
 		},

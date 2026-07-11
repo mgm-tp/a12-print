@@ -2,7 +2,7 @@
   "header": {
     "id": "EscapeDocumentModelName-print",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "annotations": [
       {
         "name": "roles",
@@ -10,11 +10,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "labels": [],
@@ -155,7 +155,22 @@
           ]
         },
         "borderProperties": {
-          "id": "lC6ulTEMoktFoJFAFIWUB"
+          "id": "lC6ulTEMoktFoJFAFIWUB",
+          "borderWidth": {
+            "id": "DR4RViwYG2LB16_eDuRye",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "3KDj_XdXh2RxMasIjaJCO",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "pkqk4leOzeq573PJtfydx",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "textProperties": {
           "id": "LmGCFjeMu7CJwZGQSNfZI",

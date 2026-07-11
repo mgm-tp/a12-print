@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { RESOURCE_KEYS } from "../keys.js";
+import type { RESOURCE_KEYS } from "../keys.js";
 
 export const en: typeof RESOURCE_KEYS = {
 	editorTitle: "Typesetting Editor",

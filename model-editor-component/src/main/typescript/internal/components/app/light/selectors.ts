@@ -29,16 +29,15 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { createSelector, Selector } from "reselect";
+import type { Selector } from "reselect";
+import { createSelector } from "reselect";
 
-import { InteractionLogEntry } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import {
-	TransactionLog,
-	TransactionLogEntry,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
+import type { InteractionLogEntry, TransactionLogEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { PrintEngineState } from "../../../store/root-reducer.js";
-import { PrintEngineSelectors, TransactionLogGroup } from "../../../store/selectors.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
+import type { TransactionLogGroup } from "../../../store/selectors.js";
+import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { interactionGraph } from "../../../constant/interaction-graph.js";
 
 /**

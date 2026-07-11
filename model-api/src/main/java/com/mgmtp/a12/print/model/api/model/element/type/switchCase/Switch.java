@@ -38,7 +38,9 @@ import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface Switch extends PrintModelElement, ElementReferenceContainer, PrintModelPathElement {
     SwitchProperties getSwitchProperties();
     @Override

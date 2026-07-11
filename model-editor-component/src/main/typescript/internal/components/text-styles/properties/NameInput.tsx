@@ -30,9 +30,9 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
-import { CustomTextLineStateful } from "../../forms/custom-base-input-components/CustomTextLineStateful.js";
+import { DynamicSourceTextField } from "../../forms/custom-base-input-components/DynamicSourceTextField.js";
 
-import { BaseTextStylePropertyProps } from "./base-type.js";
+import type { BaseTextStylePropertyProps } from "./base-type.js";
 
 export interface NameInputProps extends BaseTextStylePropertyProps {
 	name?: string;
@@ -44,7 +44,7 @@ export const NameInput = (props: NameInputProps) => {
 	const { errorMessage, onBlur, isDefaultTextStyle, name } = props;
 
 	return (
-		<CustomTextLineStateful
+		<DynamicSourceTextField
 			label={localizer(RESOURCE_KEYS.textStyles.properties.name)}
 			value={name}
 			onBlur={event => onBlur(event.target.value)}

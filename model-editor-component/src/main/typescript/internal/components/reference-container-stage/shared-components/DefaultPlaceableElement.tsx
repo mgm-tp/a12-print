@@ -36,7 +36,7 @@ import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { DefaultElementBadgeWrapper } from "../../element-container/DefaultElementBadgeWrapper.js";
 import { ReadOnlyMarginWrapper } from "../../margin/ReadOnlyMarginWrapper.js";
 
-import { DefaultPlaceableElementProps } from "../editor-interface.js";
+import type { DefaultPlaceableElementProps } from "../editor-interface.js";
 
 import { HeightCalculationContainer } from "./HeightCalculationContainer.js";
 import { StyledDefaultPlaceableElement } from "./DefaultPlacableElement.styled.js";

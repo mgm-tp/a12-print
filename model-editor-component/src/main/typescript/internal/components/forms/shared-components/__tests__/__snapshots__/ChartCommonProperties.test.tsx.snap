@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`ChartCommonProperties should renders correctly 1`] = `
 .c14 {
@@ -6,7 +6,8 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
   color: #7F8C9B;
   display: inline-block;
   direction: ltr;
-  font-family: Material Icons;
+  font-family: Material Symbols Outlined;
+  font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -190,7 +191,7 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
   width: 100%;
 }
 
-.c6 >.StyledTooltipWrapper-sc-bqyqat {
+.c6 >.StyledTooltipTriggerWrapper-sc-eBoCRM {
   margin: 0 4px 4px 0;
 }
 
@@ -506,148 +507,150 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
 <div>
   <div>
     <div>
-      <label
-        class="c0 c1 label field__label"
-        data-role="textline-label"
-      >
-        Title
-      </label>
-      <div
-        class="c2 field-wrapper field-wrapper--block"
-        data-role="textline"
-      >
+      <div>
+        <label
+          class="c0 c1 label field__label"
+          data-role="textline-label"
+        >
+          Title
+        </label>
         <div
-          class="c3 c4 field__main"
+          class="c2 field-wrapper field-wrapper--block"
+          data-role="text-field"
         >
           <div
-            class="c5 c6 field"
-            data-role="textline-control"
+            class="c3 c4 field__main"
           >
             <div
-              class="c7 field__input"
-              data-readonly="false"
-              data-role="textline-input-wrapper"
+              class="c5 c6 field"
+              data-role="text-field-control"
             >
               <div
-                class="c8 field__prefix field__prefix--last"
-                data-role="textline-prefix-0"
+                class="c7 field__input"
+                data-readonly="false"
+                data-role="text-field-input-wrapper"
               >
                 <div
-                  class="c9 field toggle c10"
-                  data-role="toggle"
+                  class="c8 field__prefix field__prefix--last"
+                  data-role="text-field-prefix-0"
                 >
                   <div
-                    class="c11 toggle__wrapper"
-                    data-role="toggle-wrapper"
-                    tabindex="-1"
+                    class="c9 field toggle c10"
+                    data-role="toggle"
                   >
-                    <span
-                      aria-expanded="false"
-                      aria-label="Enter User Input , expand to see options"
-                      class="c12"
-                      data-role="toggle-selected-item-overlay"
-                      role="button"
-                      tabindex="0"
-                      title="Enter User Input , expand to see options"
+                    <div
+                      class="c11 toggle__wrapper"
+                      data-role="toggle-wrapper"
+                      tabindex="-1"
                     >
-                      <i
-                        class="c13 c14 plasma-icon"
-                        data-role="plasma-icon"
-                        style="margin: 0px;"
+                      <span
+                        aria-expanded="false"
+                        aria-label="Enter User Input , expand to see options"
+                        class="c12"
+                        data-role="toggle-selected-item-overlay"
+                        role="button"
+                        tabindex="0"
+                        title="Enter User Input , expand to see options"
                       >
-                        <span
-                          aria-hidden="true"
-                        >
-                          edit
-                        </span>
-                      </i>
-                    </span>
-                    <ul
-                      aria-hidden="true"
-                      class="c15"
-                      data-role="toggle-option-buttons"
-                    >
-                      <li
-                        class="c16"
-                        data-role="toggle-option-button"
-                      >
-                        <button
-                          aria-pressed="true"
-                          class="c17 c18 c19 c20 toggle__item toggle__item--selected c21"
-                          data-role="toggle-item"
-                          id="INPUT"
-                          tabindex="-1"
-                          title="Enter User Input"
-                          type="button"
-                          value="INPUT"
+                        <i
+                          class="c13 c14 plasma-icon"
+                          data-role="plasma-icon"
+                          style="margin: 0px;"
                         >
                           <span
-                            class="c22 c23 toggle__content"
-                            data-role="toggle-item-content"
+                            aria-hidden="true"
                           >
-                            <i
-                              class="c13 c14 plasma-icon"
-                              data-role="plasma-icon"
-                              style="margin: 0px;"
-                            >
-                              <span
-                                aria-hidden="true"
-                              >
-                                edit
-                              </span>
-                            </i>
+                            edit
                           </span>
-                        </button>
-                      </li>
-                      <li
-                        class="c16"
-                        data-role="toggle-option-button"
+                        </i>
+                      </span>
+                      <ul
+                        aria-hidden="true"
+                        class="c15"
+                        data-role="toggle-option-buttons"
                       >
-                        <button
-                          aria-pressed="false"
-                          class="c17 c18 c19 c24 toggle__item c21"
-                          data-role="toggle-item"
-                          id="UNSET"
-                          tabindex="-1"
-                          title="Unset Value"
-                          type="button"
-                          value="UNSET"
+                        <li
+                          class="c16"
+                          data-role="toggle-option-button"
                         >
-                          <span
-                            class="c22 c23 toggle__content"
-                            data-role="toggle-item-content"
+                          <button
+                            aria-pressed="true"
+                            class="c17 c18 c19 c20 toggle__item toggle__item--selected c21"
+                            data-role="toggle-item"
+                            id="INPUT"
+                            tabindex="-1"
+                            title="Enter User Input"
+                            type="button"
+                            value="INPUT"
                           >
-                            <i
-                              class="c13 c14 plasma-icon"
-                              data-role="plasma-icon"
-                              style="margin: 0px;"
+                            <span
+                              class="c22 c23 toggle__content"
+                              data-role="toggle-item-content"
                             >
-                              <span
-                                aria-hidden="true"
+                              <i
+                                class="c13 c14 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
                               >
-                                clear
-                              </span>
-                            </i>
-                          </span>
-                        </button>
-                      </li>
-                    </ul>
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  edit
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                        <li
+                          class="c16"
+                          data-role="toggle-option-button"
+                        >
+                          <button
+                            aria-pressed="false"
+                            class="c17 c18 c19 c24 toggle__item c21"
+                            data-role="toggle-item"
+                            id="UNSET"
+                            tabindex="-1"
+                            title="Unset Value"
+                            type="button"
+                            value="UNSET"
+                          >
+                            <span
+                              class="c22 c23 toggle__content"
+                              data-role="toggle-item-content"
+                            >
+                              <i
+                                class="c13 c14 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  clear
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
+                <span
+                  class="c25 supported-unseen-span"
+                />
+                <input
+                  class="c26 field__text"
+                  data-role="text-field-input"
+                  placeholder=""
+                  type="text"
+                  value="diagram-title"
+                />
+                <span
+                  class="c25 supported-unseen-span"
+                />
               </div>
-              <span
-                class="c25 supported-unseen-span"
-              />
-              <input
-                class="c26 field__text"
-                data-role="textline-input"
-                placeholder=""
-                type="text"
-                value="diagram-title"
-              />
-              <span
-                class="c25 supported-unseen-span"
-              />
             </div>
           </div>
         </div>
@@ -655,31 +658,31 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
     </div>
     <div
       class="c2 field-wrapper field-wrapper--block"
-      data-role="textline"
+      data-role="text-field"
     >
       <div
         class="c3 c4 field__main"
       >
         <div
           class="c5 c6 field"
-          data-role="textline-control"
+          data-role="text-field-control"
         >
           <label
             class="c0 c1 label field__label"
-            data-role="textline-label"
+            data-role="text-field-label"
           >
             Height
           </label>
           <div
             class="c7 field__input"
-            data-role="textline-input-wrapper"
+            data-role="text-field-input-wrapper"
           >
             <span
               class="c25 supported-unseen-span"
             />
             <input
               class="c27 field__text field__text--align-right"
-              data-role="textline-input"
+              data-role="text-field-input"
               min="0"
               step="0.1"
               type="number"
@@ -690,11 +693,11 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
             />
             <div
               class="c28 field__suffix field__suffix--first -u-background-transparent"
-              data-role="textline-suffix-0"
+              data-role="text-field-suffix-0"
             >
               <div
                 class="c29 c30 field__affix-text"
-                data-role="textline-text-affix"
+                data-role="text-field-text-affix"
                 title="cm"
               >
                 <span>
@@ -708,31 +711,31 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
     </div>
     <div
       class="c2 field-wrapper field-wrapper--block"
-      data-role="textline"
+      data-role="text-field"
     >
       <div
         class="c3 c4 field__main"
       >
         <div
           class="c5 c6 field"
-          data-role="textline-control"
+          data-role="text-field-control"
         >
           <label
             class="c0 c1 label field__label"
-            data-role="textline-label"
+            data-role="text-field-label"
           >
             Width
           </label>
           <div
             class="c7 field__input"
-            data-role="textline-input-wrapper"
+            data-role="text-field-input-wrapper"
           >
             <span
               class="c25 supported-unseen-span"
             />
             <input
               class="c27 field__text field__text--align-right"
-              data-role="textline-input"
+              data-role="text-field-input"
               min="0"
               step="0.1"
               type="number"
@@ -743,11 +746,11 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
             />
             <div
               class="c28 field__suffix field__suffix--first -u-background-transparent"
-              data-role="textline-suffix-0"
+              data-role="text-field-suffix-0"
             >
               <div
                 class="c29 c30 field__affix-text"
-                data-role="textline-text-affix"
+                data-role="text-field-text-affix"
                 title="cm"
               >
                 <span>
@@ -769,7 +772,8 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
   color: #7F8C9B;
   display: inline-block;
   direction: ltr;
-  font-family: Material Icons;
+  font-family: Material Symbols Outlined;
+  font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -953,7 +957,7 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
   width: 100%;
 }
 
-.c6 >.StyledTooltipWrapper-sc-bqyqat {
+.c6 >.StyledTooltipTriggerWrapper-sc-eBoCRM {
   margin: 0 4px 4px 0;
 }
 
@@ -975,9 +979,9 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
   vertical-align: middle;
 }
 
-.c32[data-role="checkbox-group"] .c0 ~.StyledTooltipWrapper-sc-bqyqat,
-.c32[data-role="radio-group"] .c0 ~.StyledTooltipWrapper-sc-bqyqat,
-.c32[data-role="file-upload"] .c0 ~.StyledTooltipWrapper-sc-bqyqat {
+.c32[data-role="checkbox-group"] .c0 ~.StyledTooltipTriggerWrapper-sc-eBoCRM,
+.c32[data-role="radio-group"] .c0 ~.StyledTooltipTriggerWrapper-sc-eBoCRM,
+.c32[data-role="file-upload"] .c0 ~.StyledTooltipTriggerWrapper-sc-eBoCRM {
   margin: 0 0 4px 0;
 }
 
@@ -1081,7 +1085,8 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
   color: #7F8C9B;
   content: "\\e313";
   display: flex;
-  font-family: "Material Icons";
+  font-family: "Material Symbols Outlined";
+  font-variation-settings: "FILL" 1,"wght" 400,"GRAD" 0,"opsz" 24;
   font-size: 1.5rem;
   font-style: normal;
   justify-content: center;
@@ -1421,149 +1426,151 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
 <div>
   <div>
     <div>
-      <label
-        class="c0 c1 label field__label"
-        data-role="textline-label"
-      >
-        Title
-      </label>
-      <div
-        class="c2 field-wrapper field-wrapper--block"
-        data-role="textline"
-      >
+      <div>
+        <label
+          class="c0 c1 label field__label"
+          data-role="textline-label"
+        >
+          Title
+        </label>
         <div
-          class="c3 c4 field__main"
+          class="c2 field-wrapper field-wrapper--block"
+          data-role="text-field"
         >
           <div
-            class="c5 c6 field"
-            data-role="textline-control"
+            class="c3 c4 field__main"
           >
             <div
-              class="c7 field__input"
-              data-isfocused="false"
-              data-readonly="false"
-              data-role="textline-input-wrapper"
+              class="c5 c6 field"
+              data-role="text-field-control"
             >
               <div
-                class="c8 c9 field__prefix field__prefix--last"
-                data-role="textline-prefix-0"
+                class="c7 field__input"
+                data-isfocused="false"
+                data-readonly="false"
+                data-role="text-field-input-wrapper"
               >
                 <div
-                  class="c10 field toggle c11"
-                  data-role="toggle"
+                  class="c8 c9 field__prefix field__prefix--last"
+                  data-role="text-field-prefix-0"
                 >
                   <div
-                    class="c12 toggle__wrapper"
-                    data-role="toggle-wrapper"
-                    tabindex="-1"
+                    class="c10 field toggle c11"
+                    data-role="toggle"
                   >
-                    <span
-                      aria-expanded="false"
-                      aria-label="Enter User Input , expand to see options"
-                      class="c13"
-                      data-role="toggle-selected-item-overlay"
-                      role="button"
-                      tabindex="0"
-                      title="Enter User Input , expand to see options"
+                    <div
+                      class="c12 toggle__wrapper"
+                      data-role="toggle-wrapper"
+                      tabindex="-1"
                     >
-                      <i
-                        class="c14 c15 plasma-icon"
-                        data-role="plasma-icon"
-                        style="margin: 0px;"
+                      <span
+                        aria-expanded="false"
+                        aria-label="Enter User Input , expand to see options"
+                        class="c13"
+                        data-role="toggle-selected-item-overlay"
+                        role="button"
+                        tabindex="0"
+                        title="Enter User Input , expand to see options"
                       >
-                        <span
-                          aria-hidden="true"
-                        >
-                          edit
-                        </span>
-                      </i>
-                    </span>
-                    <ul
-                      aria-hidden="true"
-                      class="c16"
-                      data-role="toggle-option-buttons"
-                    >
-                      <li
-                        class="c17"
-                        data-role="toggle-option-button"
-                      >
-                        <button
-                          aria-pressed="true"
-                          class="c18 c19 c20 c21 toggle__item toggle__item--selected c22"
-                          data-role="toggle-item"
-                          id="INPUT"
-                          tabindex="-1"
-                          title="Enter User Input"
-                          type="button"
-                          value="INPUT"
+                        <i
+                          class="c14 c15 plasma-icon"
+                          data-role="plasma-icon"
+                          style="margin: 0px;"
                         >
                           <span
-                            class="c23 c24 toggle__content"
-                            data-role="toggle-item-content"
+                            aria-hidden="true"
                           >
-                            <i
-                              class="c14 c15 plasma-icon"
-                              data-role="plasma-icon"
-                              style="margin: 0px;"
-                            >
-                              <span
-                                aria-hidden="true"
-                              >
-                                edit
-                              </span>
-                            </i>
+                            edit
                           </span>
-                        </button>
-                      </li>
-                      <li
-                        class="c17"
-                        data-role="toggle-option-button"
+                        </i>
+                      </span>
+                      <ul
+                        aria-hidden="true"
+                        class="c16"
+                        data-role="toggle-option-buttons"
                       >
-                        <button
-                          aria-pressed="false"
-                          class="c18 c19 c20 c25 toggle__item c22"
-                          data-role="toggle-item"
-                          id="UNSET"
-                          tabindex="-1"
-                          title="Unset Value"
-                          type="button"
-                          value="UNSET"
+                        <li
+                          class="c17"
+                          data-role="toggle-option-button"
                         >
-                          <span
-                            class="c23 c24 toggle__content"
-                            data-role="toggle-item-content"
+                          <button
+                            aria-pressed="true"
+                            class="c18 c19 c20 c21 toggle__item toggle__item--selected c22"
+                            data-role="toggle-item"
+                            id="INPUT"
+                            tabindex="-1"
+                            title="Enter User Input"
+                            type="button"
+                            value="INPUT"
                           >
-                            <i
-                              class="c14 c15 plasma-icon"
-                              data-role="plasma-icon"
-                              style="margin: 0px;"
+                            <span
+                              class="c23 c24 toggle__content"
+                              data-role="toggle-item-content"
                             >
-                              <span
-                                aria-hidden="true"
+                              <i
+                                class="c14 c15 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
                               >
-                                clear
-                              </span>
-                            </i>
-                          </span>
-                        </button>
-                      </li>
-                    </ul>
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  edit
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                        <li
+                          class="c17"
+                          data-role="toggle-option-button"
+                        >
+                          <button
+                            aria-pressed="false"
+                            class="c18 c19 c20 c25 toggle__item c22"
+                            data-role="toggle-item"
+                            id="UNSET"
+                            tabindex="-1"
+                            title="Unset Value"
+                            type="button"
+                            value="UNSET"
+                          >
+                            <span
+                              class="c23 c24 toggle__content"
+                              data-role="toggle-item-content"
+                            >
+                              <i
+                                class="c14 c15 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  clear
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
+                <span
+                  class="c26 supported-unseen-span"
+                />
+                <input
+                  class="c27 field__text"
+                  data-role="text-field-input"
+                  placeholder=""
+                  type="text"
+                  value="diagram-title"
+                />
+                <span
+                  class="c26 supported-unseen-span"
+                />
               </div>
-              <span
-                class="c26 supported-unseen-span"
-              />
-              <input
-                class="c27 field__text"
-                data-role="textline-input"
-                placeholder=""
-                type="text"
-                value="diagram-title"
-              />
-              <span
-                class="c26 supported-unseen-span"
-              />
             </div>
           </div>
         </div>
@@ -1571,31 +1578,31 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
     </div>
     <div
       class="c2 field-wrapper field-wrapper--block"
-      data-role="textline"
+      data-role="text-field"
     >
       <div
         class="c3 c4 field__main"
       >
         <div
           class="c5 c6 field"
-          data-role="textline-control"
+          data-role="text-field-control"
         >
           <label
             class="c0 c1 label field__label"
-            data-role="textline-label"
+            data-role="text-field-label"
           >
             Height
           </label>
           <div
             class="c7 field__input"
-            data-role="textline-input-wrapper"
+            data-role="text-field-input-wrapper"
           >
             <span
               class="c26 supported-unseen-span"
             />
             <input
               class="c28 field__text field__text--align-right"
-              data-role="textline-input"
+              data-role="text-field-input"
               min="0"
               step="0.1"
               type="number"
@@ -1606,11 +1613,11 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
             />
             <div
               class="c29 field__suffix field__suffix--first -u-background-transparent"
-              data-role="textline-suffix-0"
+              data-role="text-field-suffix-0"
             >
               <div
                 class="c30 c31 field__affix-text"
-                data-role="textline-text-affix"
+                data-role="text-field-text-affix"
                 title="cm"
               >
                 <span>
@@ -1624,31 +1631,31 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
     </div>
     <div
       class="c2 field-wrapper field-wrapper--block"
-      data-role="textline"
+      data-role="text-field"
     >
       <div
         class="c3 c4 field__main"
       >
         <div
           class="c5 c6 field"
-          data-role="textline-control"
+          data-role="text-field-control"
         >
           <label
             class="c0 c1 label field__label"
-            data-role="textline-label"
+            data-role="text-field-label"
           >
             Width
           </label>
           <div
             class="c7 field__input"
-            data-role="textline-input-wrapper"
+            data-role="text-field-input-wrapper"
           >
             <span
               class="c26 supported-unseen-span"
             />
             <input
               class="c28 field__text field__text--align-right"
-              data-role="textline-input"
+              data-role="text-field-input"
               min="0"
               step="0.1"
               type="number"
@@ -1659,11 +1666,11 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
             />
             <div
               class="c29 field__suffix field__suffix--first -u-background-transparent"
-              data-role="textline-suffix-0"
+              data-role="text-field-suffix-0"
             >
               <div
                 class="c30 c31 field__affix-text"
-                data-role="textline-text-affix"
+                data-role="text-field-text-affix"
                 title="cm"
               >
                 <span>
@@ -1676,297 +1683,301 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
       </div>
     </div>
     <div>
-      <label
-        class="c0 c1 label field__label"
-        data-role="textline-label"
-      >
-        Label X-Axis
-      </label>
-      <div
-        class="c2 field-wrapper field-wrapper--block"
-        data-role="textline"
-      >
+      <div>
+        <label
+          class="c0 c1 label field__label"
+          data-role="textline-label"
+        >
+          Label X-Axis
+        </label>
         <div
-          class="c3 c4 field__main"
+          class="c2 field-wrapper field-wrapper--block"
+          data-role="text-field"
         >
           <div
-            class="c5 c6 field"
-            data-role="textline-control"
+            class="c3 c4 field__main"
           >
             <div
-              class="c7 field__input"
-              data-isfocused="false"
-              data-readonly="false"
-              data-role="textline-input-wrapper"
+              class="c5 c6 field"
+              data-role="text-field-control"
             >
               <div
-                class="c8 c9 field__prefix field__prefix--last"
-                data-role="textline-prefix-0"
+                class="c7 field__input"
+                data-isfocused="false"
+                data-readonly="false"
+                data-role="text-field-input-wrapper"
               >
                 <div
-                  class="c10 field toggle c11"
-                  data-role="toggle"
+                  class="c8 c9 field__prefix field__prefix--last"
+                  data-role="text-field-prefix-0"
                 >
                   <div
-                    class="c12 toggle__wrapper"
-                    data-role="toggle-wrapper"
-                    tabindex="-1"
+                    class="c10 field toggle c11"
+                    data-role="toggle"
                   >
-                    <span
-                      aria-expanded="false"
-                      aria-label="Enter User Input , expand to see options"
-                      class="c13"
-                      data-role="toggle-selected-item-overlay"
-                      role="button"
-                      tabindex="0"
-                      title="Enter User Input , expand to see options"
+                    <div
+                      class="c12 toggle__wrapper"
+                      data-role="toggle-wrapper"
+                      tabindex="-1"
                     >
-                      <i
-                        class="c14 c15 plasma-icon"
-                        data-role="plasma-icon"
-                        style="margin: 0px;"
+                      <span
+                        aria-expanded="false"
+                        aria-label="Enter User Input , expand to see options"
+                        class="c13"
+                        data-role="toggle-selected-item-overlay"
+                        role="button"
+                        tabindex="0"
+                        title="Enter User Input , expand to see options"
                       >
-                        <span
-                          aria-hidden="true"
-                        >
-                          edit
-                        </span>
-                      </i>
-                    </span>
-                    <ul
-                      aria-hidden="true"
-                      class="c16"
-                      data-role="toggle-option-buttons"
-                    >
-                      <li
-                        class="c17"
-                        data-role="toggle-option-button"
-                      >
-                        <button
-                          aria-pressed="true"
-                          class="c18 c19 c20 c21 toggle__item toggle__item--selected c22"
-                          data-role="toggle-item"
-                          id="INPUT"
-                          tabindex="-1"
-                          title="Enter User Input"
-                          type="button"
-                          value="INPUT"
+                        <i
+                          class="c14 c15 plasma-icon"
+                          data-role="plasma-icon"
+                          style="margin: 0px;"
                         >
                           <span
-                            class="c23 c24 toggle__content"
-                            data-role="toggle-item-content"
+                            aria-hidden="true"
                           >
-                            <i
-                              class="c14 c15 plasma-icon"
-                              data-role="plasma-icon"
-                              style="margin: 0px;"
-                            >
-                              <span
-                                aria-hidden="true"
-                              >
-                                edit
-                              </span>
-                            </i>
+                            edit
                           </span>
-                        </button>
-                      </li>
-                      <li
-                        class="c17"
-                        data-role="toggle-option-button"
+                        </i>
+                      </span>
+                      <ul
+                        aria-hidden="true"
+                        class="c16"
+                        data-role="toggle-option-buttons"
                       >
-                        <button
-                          aria-pressed="false"
-                          class="c18 c19 c20 c25 toggle__item c22"
-                          data-role="toggle-item"
-                          id="UNSET"
-                          tabindex="-1"
-                          title="Unset Value"
-                          type="button"
-                          value="UNSET"
+                        <li
+                          class="c17"
+                          data-role="toggle-option-button"
                         >
-                          <span
-                            class="c23 c24 toggle__content"
-                            data-role="toggle-item-content"
+                          <button
+                            aria-pressed="true"
+                            class="c18 c19 c20 c21 toggle__item toggle__item--selected c22"
+                            data-role="toggle-item"
+                            id="INPUT"
+                            tabindex="-1"
+                            title="Enter User Input"
+                            type="button"
+                            value="INPUT"
                           >
-                            <i
-                              class="c14 c15 plasma-icon"
-                              data-role="plasma-icon"
-                              style="margin: 0px;"
+                            <span
+                              class="c23 c24 toggle__content"
+                              data-role="toggle-item-content"
                             >
-                              <span
-                                aria-hidden="true"
+                              <i
+                                class="c14 c15 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
                               >
-                                clear
-                              </span>
-                            </i>
-                          </span>
-                        </button>
-                      </li>
-                    </ul>
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  edit
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                        <li
+                          class="c17"
+                          data-role="toggle-option-button"
+                        >
+                          <button
+                            aria-pressed="false"
+                            class="c18 c19 c20 c25 toggle__item c22"
+                            data-role="toggle-item"
+                            id="UNSET"
+                            tabindex="-1"
+                            title="Unset Value"
+                            type="button"
+                            value="UNSET"
+                          >
+                            <span
+                              class="c23 c24 toggle__content"
+                              data-role="toggle-item-content"
+                            >
+                              <i
+                                class="c14 c15 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  clear
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
+                <span
+                  class="c26 supported-unseen-span"
+                />
+                <input
+                  class="c27 field__text"
+                  data-role="text-field-input"
+                  placeholder=""
+                  type="text"
+                  value="diagram-labelX"
+                />
+                <span
+                  class="c26 supported-unseen-span"
+                />
               </div>
-              <span
-                class="c26 supported-unseen-span"
-              />
-              <input
-                class="c27 field__text"
-                data-role="textline-input"
-                placeholder=""
-                type="text"
-                value="diagram-labelX"
-              />
-              <span
-                class="c26 supported-unseen-span"
-              />
             </div>
           </div>
         </div>
       </div>
     </div>
     <div>
-      <label
-        class="c0 c1 label field__label"
-        data-role="textline-label"
-      >
-        Label Y-Axis
-      </label>
-      <div
-        class="c2 field-wrapper field-wrapper--block"
-        data-role="textline"
-      >
+      <div>
+        <label
+          class="c0 c1 label field__label"
+          data-role="textline-label"
+        >
+          Label Y-Axis
+        </label>
         <div
-          class="c3 c4 field__main"
+          class="c2 field-wrapper field-wrapper--block"
+          data-role="text-field"
         >
           <div
-            class="c5 c6 field"
-            data-role="textline-control"
+            class="c3 c4 field__main"
           >
             <div
-              class="c7 field__input"
-              data-readonly="false"
-              data-role="textline-input-wrapper"
+              class="c5 c6 field"
+              data-role="text-field-control"
             >
               <div
-                class="c8 c9 field__prefix field__prefix--last"
-                data-role="textline-prefix-0"
+                class="c7 field__input"
+                data-readonly="false"
+                data-role="text-field-input-wrapper"
               >
                 <div
-                  class="c10 field toggle c11"
-                  data-role="toggle"
+                  class="c8 c9 field__prefix field__prefix--last"
+                  data-role="text-field-prefix-0"
                 >
                   <div
-                    class="c12 toggle__wrapper"
-                    data-role="toggle-wrapper"
-                    tabindex="-1"
+                    class="c10 field toggle c11"
+                    data-role="toggle"
                   >
-                    <span
-                      aria-expanded="false"
-                      aria-label="Enter User Input , expand to see options"
-                      class="c13"
-                      data-role="toggle-selected-item-overlay"
-                      role="button"
-                      tabindex="0"
-                      title="Enter User Input , expand to see options"
+                    <div
+                      class="c12 toggle__wrapper"
+                      data-role="toggle-wrapper"
+                      tabindex="-1"
                     >
-                      <i
-                        class="c14 c15 plasma-icon"
-                        data-role="plasma-icon"
-                        style="margin: 0px;"
+                      <span
+                        aria-expanded="false"
+                        aria-label="Enter User Input , expand to see options"
+                        class="c13"
+                        data-role="toggle-selected-item-overlay"
+                        role="button"
+                        tabindex="0"
+                        title="Enter User Input , expand to see options"
                       >
-                        <span
-                          aria-hidden="true"
-                        >
-                          edit
-                        </span>
-                      </i>
-                    </span>
-                    <ul
-                      aria-hidden="true"
-                      class="c16"
-                      data-role="toggle-option-buttons"
-                    >
-                      <li
-                        class="c17"
-                        data-role="toggle-option-button"
-                      >
-                        <button
-                          aria-pressed="true"
-                          class="c18 c19 c20 c21 toggle__item toggle__item--selected c22"
-                          data-role="toggle-item"
-                          id="INPUT"
-                          tabindex="-1"
-                          title="Enter User Input"
-                          type="button"
-                          value="INPUT"
+                        <i
+                          class="c14 c15 plasma-icon"
+                          data-role="plasma-icon"
+                          style="margin: 0px;"
                         >
                           <span
-                            class="c23 c24 toggle__content"
-                            data-role="toggle-item-content"
+                            aria-hidden="true"
                           >
-                            <i
-                              class="c14 c15 plasma-icon"
-                              data-role="plasma-icon"
-                              style="margin: 0px;"
-                            >
-                              <span
-                                aria-hidden="true"
-                              >
-                                edit
-                              </span>
-                            </i>
+                            edit
                           </span>
-                        </button>
-                      </li>
-                      <li
-                        class="c17"
-                        data-role="toggle-option-button"
+                        </i>
+                      </span>
+                      <ul
+                        aria-hidden="true"
+                        class="c16"
+                        data-role="toggle-option-buttons"
                       >
-                        <button
-                          aria-pressed="false"
-                          class="c18 c19 c20 c25 toggle__item c22"
-                          data-role="toggle-item"
-                          id="UNSET"
-                          tabindex="-1"
-                          title="Unset Value"
-                          type="button"
-                          value="UNSET"
+                        <li
+                          class="c17"
+                          data-role="toggle-option-button"
                         >
-                          <span
-                            class="c23 c24 toggle__content"
-                            data-role="toggle-item-content"
+                          <button
+                            aria-pressed="true"
+                            class="c18 c19 c20 c21 toggle__item toggle__item--selected c22"
+                            data-role="toggle-item"
+                            id="INPUT"
+                            tabindex="-1"
+                            title="Enter User Input"
+                            type="button"
+                            value="INPUT"
                           >
-                            <i
-                              class="c14 c15 plasma-icon"
-                              data-role="plasma-icon"
-                              style="margin: 0px;"
+                            <span
+                              class="c23 c24 toggle__content"
+                              data-role="toggle-item-content"
                             >
-                              <span
-                                aria-hidden="true"
+                              <i
+                                class="c14 c15 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
                               >
-                                clear
-                              </span>
-                            </i>
-                          </span>
-                        </button>
-                      </li>
-                    </ul>
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  edit
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                        <li
+                          class="c17"
+                          data-role="toggle-option-button"
+                        >
+                          <button
+                            aria-pressed="false"
+                            class="c18 c19 c20 c25 toggle__item c22"
+                            data-role="toggle-item"
+                            id="UNSET"
+                            tabindex="-1"
+                            title="Unset Value"
+                            type="button"
+                            value="UNSET"
+                          >
+                            <span
+                              class="c23 c24 toggle__content"
+                              data-role="toggle-item-content"
+                            >
+                              <i
+                                class="c14 c15 plasma-icon"
+                                data-role="plasma-icon"
+                                style="margin: 0px;"
+                              >
+                                <span
+                                  aria-hidden="true"
+                                >
+                                  clear
+                                </span>
+                              </i>
+                            </span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
+                <span
+                  class="c26 supported-unseen-span"
+                />
+                <input
+                  class="c27 field__text"
+                  data-role="text-field-input"
+                  placeholder=""
+                  type="text"
+                  value="diagram-labelY"
+                />
+                <span
+                  class="c26 supported-unseen-span"
+                />
               </div>
-              <span
-                class="c26 supported-unseen-span"
-              />
-              <input
-                class="c27 field__text"
-                data-role="textline-input"
-                placeholder=""
-                type="text"
-                value="diagram-labelY"
-              />
-              <span
-                class="c26 supported-unseen-span"
-              />
             </div>
           </div>
         </div>

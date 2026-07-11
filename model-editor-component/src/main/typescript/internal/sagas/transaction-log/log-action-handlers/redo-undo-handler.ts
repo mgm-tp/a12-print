@@ -29,30 +29,20 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, put, select } from "typed-redux-saga";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	EntryType,
 	PartialTransactionLogPersistentEntry,
-	TransactionLog,
 	TransactionLogStore,
 	TransactionLogStoreEntry,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
-import {
 	AffectedItemType,
-	SidebarItem,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import {
-	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
-	PRINT_MODEL_HEADER_LOG_ID,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
-import {
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type {
 	PartialAnyPrintModelElement,
-	PartialArea,
-	PartialBoundingBox,
-	PartialOverride,
 	PartialPlaceableReference,
 	PartialPrintModelContentGeneral,
 	PartialPrintModelHeader,
@@ -61,15 +51,23 @@ import {
 	PartialSegmentReference,
 	PartialTextStyle,
 	PartialWatermark,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import {
+	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
+	PRINT_MODEL_HEADER_LOG_ID,
+	PartialArea,
+	PartialBoundingBox,
+	PartialOverride,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
 import {
-	AnyTransactionLogAction,
-	DetailDataActions,
-	EditorStateActions,
-	PrintModelRefs,
+	type AnyTransactionLogAction,
+	isBaseElementFormState,
+	NavigationActions,
+	NavigationSelectors,
+	type PrintModelRefs,
 	TransactionLogStateActions,
-	ValidAnyTransactionLogAction,
+	type ValidAnyTransactionLogAction,
 } from "../../../redux/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 
@@ -90,11 +88,11 @@ function* handleRedoUndoActions({
 	state: TransactionLogStore;
 	action: ValidAnyTransactionLogAction;
 	persistentEntries: PartialTransactionLogPersistentEntry[];
-}): SagaIterator {
+}): SagaGenerator<void> {
 	const { interactionId } = action.payload;
 
 	if (TransactionLogStateActions.undo.match(action)) {
-		const printModelRefs = yield* select(PrintEngineSelectors.printModelRefs);
+		const printModelRefs = yield* select(NavigationSelectors.activeEntities);
 
 		const interactionToUndo = action.payload.data.interactionToUndo;
 		let copyTransactionLogState: TransactionLogStore = state;
@@ -178,7 +176,7 @@ function getStoreEntryAndType(
 	}
 	if (affectedType === "watermark") {
 		if (!transactionStore.watermarks) {
-			throw new Error(`No watermarks exist. Cannot undo section with id ${id}`);
+			throw new Error(`No watermarks exist. Cannot undo watermark with id ${id}`);
 		}
 		return { storeEntry: transactionStore.watermarks.map[id], entryType: "watermark" };
 	}
@@ -288,19 +286,19 @@ function applyUpdateToTransactionLogState(
 function* resolveRemovedPrintModelRefs(
 	general: PartialPrintModelContentGeneral,
 	printModelRefs: PrintModelRefs
-): SagaIterator<boolean> {
+): SagaGenerator<boolean> {
 	const { currentRefType, sectionId, segmentId, watermarkId } = printModelRefs;
 
 	if (currentRefType === SidebarItem.SEGMENT && segmentId && !general.structure?.includes(segmentId)) {
-		yield* put(EditorStateActions.updatePrintModelRefs({ ...printModelRefs, segmentId: "" }));
+		yield* put(NavigationActions.clearActiveEntity({ tab: SidebarItem.SEGMENT }));
 		return true;
 	}
 	if (currentRefType === SidebarItem.SECTION && sectionId && !general.sections?.includes(sectionId)) {
-		yield* put(EditorStateActions.updatePrintModelRefs({ ...printModelRefs, sectionId: "" }));
+		yield* put(NavigationActions.clearActiveEntity({ tab: SidebarItem.SECTION }));
 		return true;
 	}
 	if (currentRefType === SidebarItem.WATERMARK && watermarkId && !general.watermarks?.includes(watermarkId)) {
-		yield* put(EditorStateActions.updatePrintModelRefs({ ...printModelRefs, watermarkId: "" }));
+		yield* put(NavigationActions.clearActiveEntity({ tab: SidebarItem.WATERMARK }));
 		return true;
 	}
 	return false;
@@ -353,7 +351,10 @@ function* resolveUiAfterUndo(newState: TransactionLogStore, printModelRefs: Prin
 	}
 
 	const wrappers = yield* select(PrintEngineSelectors.wrappers);
-	const currentDetailData = yield* select(PrintEngineSelectors.currentDetailData);
+	const currentDetailData = yield* select(NavigationSelectors.detailForm);
+	const entityId = yield* select(PrintEngineSelectors.currentElementContainerId);
+	const firstForm = yield* select(NavigationSelectors.firstForm);
+	const editorMode = yield* select(NavigationSelectors.currentMode);
 	const wrapperId = wrappers.length > 0 ? wrappers.at(-1)?.id : undefined;
 
 	const { id, containerMap } = getContainerMapAndId(currentRefType, segmentId, sectionId, watermarkId, newState);
@@ -367,11 +368,23 @@ function* resolveUiAfterUndo(newState: TransactionLogStore, printModelRefs: Prin
 	const elementReferences = getElementReferences(container, wrapper);
 
 	if (
-		currentDetailData?.isFormOpen &&
-		elementReferences?.every(
-			el => el.refId !== currentDetailData.refId && el.id !== currentDetailData.placeableRefId
-		)
+		currentDetailData &&
+		firstForm &&
+		isBaseElementFormState(firstForm) &&
+		elementReferences?.every(el => el.refId !== firstForm?.id)
 	) {
-		yield* put(DetailDataActions.remove({ containerId: wrapperId || container.id }));
+		if (entityId) {
+			yield* put(
+				NavigationActions.setDetailForm({ tab: currentRefType, entityId, mode: editorMode, form: undefined })
+			);
+			yield* put(
+				NavigationActions.setSelectedElement({
+					tab: currentRefType,
+					entityId,
+					mode: editorMode,
+					elementId: undefined,
+				})
+			);
+		}
 	}
 }

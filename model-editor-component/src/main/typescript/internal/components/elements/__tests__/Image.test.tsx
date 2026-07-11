@@ -29,16 +29,19 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	ElementType,
+import { jest } from "@jest/globals";
+
+import type {
 	PartialAnyPrintModelElement,
 	PartialPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ImageSrcType } from "@com.mgmtp.a12.print/print-model-api/lib/model/elements/type/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType, ImageSrcType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { renderWithProviders, expectToThrow } from "../../../../../../test/typescript/test-utils/index.js";
+import { RequestApiSelectors } from "../../../redux/request-api/selectors.js";
 
-import { Image, ImageProps } from "../Image.js";
+import type { ImageProps } from "../Image.js";
+import { Image } from "../Image.js";
 
 describe("Image", () => {
 	const defaultImageProps = {
@@ -62,28 +65,53 @@ describe("Image", () => {
 		);
 	});
 
-	it("should render ImageAttachment if its source type is attachment", () => {
-		const { queryByAltText, getByAltText } = setupTest({
+	it("should render ImageAttachment if its source type is static", () => {
+		jest.spyOn(RequestApiSelectors, "resourceByName").mockReturnValue({
+			name: "test.png",
+			internal_filename: "test.png",
+			mime_type: "image/png",
+			content: "data:image/png;base64,abc",
+			size: 0,
+		});
+
+		const { queryByAltText } = setupTest({
 			element: {
 				...defaultImageProps.element,
 				image: {
-					imageSrcType: ImageSrcType.Attachment,
-					attachmentSource: { imageAttachment: { content: "image-content" } },
+					imageSrcType: ImageSrcType.Static,
+					resourceSource: { id: "res-id", resourceName: "test.png" },
 					alternativeText: "image-alt-text",
 				},
 			} as PartialAnyPrintModelElement,
 		});
 
 		expect(queryByAltText("image-alt-text")).toBeInTheDocument();
-		expect(getByAltText("image-alt-text")).toHaveAttribute("src", "image-content");
 	});
 
-	it("should render ImageField if its source type is field", () => {
+	it("should render placeholder if its source type is static but resource is not yet loaded", () => {
+		jest.spyOn(RequestApiSelectors, "resourceByName").mockReturnValue(undefined as never);
+
+		const { queryByAltText, queryByTestId } = setupTest({
+			element: {
+				...defaultImageProps.element,
+				image: {
+					imageSrcType: ImageSrcType.Static,
+					resourceSource: { id: "res-id", resourceName: "test.png" },
+					alternativeText: "image-alt-text",
+				},
+			} as PartialAnyPrintModelElement,
+		});
+
+		expect(queryByAltText("image-alt-text")).not.toBeInTheDocument();
+		expect(queryByTestId("element-image")).toBeInTheDocument();
+	});
+
+	it("should render ImageField if its source type is dynamic", () => {
 		const { queryByText } = setupTest({
 			element: {
 				...defaultImageProps.element,
 				image: {
-					imageSrcType: ImageSrcType.Field,
+					imageSrcType: ImageSrcType.Dynamic,
 					fieldSource: {
 						path: "/field/source",
 					},

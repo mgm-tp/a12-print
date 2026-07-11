@@ -29,23 +29,20 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { put, select, takeEvery } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 
-export function* updateElementHeightTextStyleSaga(): SagaIterator {
-	yield* takeEvery(
-		(action: AnyAction) => InteractionLogActions.updateElementHeightTextStyle.match(action),
-		handleUpdateElementHeightTextStyleSaga
-	);
+export function* updateElementHeightTextStyleSaga(): SagaGenerator<void> {
+	yield* takeEvery(InteractionLogActions.updateElementHeightTextStyle.match, handleUpdateElementHeightTextStyleSaga);
 }
 
 function* handleUpdateElementHeightTextStyleSaga(
-	action: Action<InteractionLogActions.UpdateElementHeightTextStylePayload>
-): SagaIterator {
+	action: PayloadAction<InteractionLogActions.UpdateElementHeightTextStylePayload>
+): SagaGenerator<void> {
 	const fullLogEntryList = yield* select(PrintEngineSelectors.currentViewInteractionList);
 	const lastEntry = fullLogEntryList[fullLogEntryList.length - 1];
 	if (!lastEntry) {

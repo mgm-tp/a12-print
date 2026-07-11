@@ -29,20 +29,17 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
-import { call, delay, fork, getContext, put, race, SagaGenerator, take } from "typed-redux-saga";
-import { Action } from "typescript-fsa";
+import type { SagaGenerator } from "typed-redux-saga";
+import { call, delay, fork, getContext, put, race, take } from "typed-redux-saga";
 import uniqWith from "lodash/uniqWith.js";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import {
-	AffectedItem,
-	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PrintModelCreator } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/print-model-creator/index.js";
-import { PartialAnyPrintModelElement } from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
+import type { AffectedItem, TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { PrintModelCreator } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PartialAnyPrintModelElement } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { TransactionLogStateActions, ValidationActions } from "../../redux/index.js";
-import { RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 import {
 	createRelevantPathsFromAffectedItems,
 	getAffectedItemMeta,
@@ -52,7 +49,9 @@ import { ElementsUtils } from "../../utils/elements-utils.js";
 export function* watchSetLogStoreSaga(): SagaGenerator<void> {
 	yield* fork(function* () {
 		while (true) {
-			const action = yield* take<Action<TransactionLogStore>>(TransactionLogStateActions.setLogStore);
+			const action = yield* take<PayloadAction<TransactionLogStore, string, { affectedItems: AffectedItem[] }>>(
+				TransactionLogStateActions.setLogStore.type
+			);
 			let latestActionPayload: TransactionLogStore = action.payload;
 
 			const affectedItems = getAffectedItemMeta(action.meta);
@@ -60,7 +59,9 @@ export function* watchSetLogStoreSaga(): SagaGenerator<void> {
 			while (true) {
 				const { debounced, latestAction } = yield* race({
 					debounced: delay(200),
-					latestAction: take<Action<TransactionLogStore>>(TransactionLogStateActions.setLogStore),
+					latestAction: take<PayloadAction<TransactionLogStore, string, { affectedItems: AffectedItem[] }>>(
+						TransactionLogStateActions.setLogStore.type
+					),
 				});
 
 				if (debounced) {
@@ -77,7 +78,7 @@ export function* watchSetLogStoreSaga(): SagaGenerator<void> {
 	});
 }
 
-function* processWatchSetLogStore(payload: TransactionLogStore, affectedItems: AffectedItem[]): SagaIterator {
+function* processWatchSetLogStore(payload: TransactionLogStore, affectedItems: AffectedItem[]): SagaGenerator<void> {
 	const requestApi = yield* getContext<RequestApi>("requestApi");
 	const printModel = PrintModelCreator.createCleanModel(payload);
 

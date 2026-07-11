@@ -31,7 +31,7 @@
  */
 // Disabling unused vars rule due to the need to maintain method signatures in abstract classes and their derivatives.
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
+import type {
 	BoundingBox,
 	PartialOverride,
 	PartialPlaceableReference,
@@ -43,13 +43,10 @@ import {
 	PartialTableColumnReference,
 	PartialTableLayoutCellReference,
 	PartialWatermark,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ExtendedEntityInstancePathBuilder } from "@com.mgmtp.a12.print/print-model-api/lib/errors/extended-entity-instance-path.js";
-import { TraversalCommand } from "@com.mgmtp.a12.print/print-model-api/lib/walker/print-model-visitor.js";
-import {
-	PartialPrintModelTrace,
-	PartialPrintModelVisitor,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/partial/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { ExtendedEntityInstancePathBuilder } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { PartialPrintModelTrace } from "@com.mgmtp.a12.print/print-model-api/walker";
+import { TraversalCommand, PartialPrintModelVisitor } from "@com.mgmtp.a12.print/print-model-api/walker";
 
 export class PartialPrintModelPathVisitor extends PartialPrintModelVisitor {
 	visitedPaths: Map<string, string[]> = new Map();

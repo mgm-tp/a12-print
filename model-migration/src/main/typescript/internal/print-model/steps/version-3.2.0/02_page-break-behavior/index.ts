@@ -34,11 +34,11 @@ import { nanoid } from "nanoid";
 import { Transformer } from "../../../utils.ts/transformer.js";
 import { ReferenceTransformer } from "../../../utils.ts/reference-transformer.js";
 import { TransformTreeTrace } from "../../../utils.ts/tree-trace.js";
-import { GenericObject } from "../../../utils.ts/types.js";
+import type { GenericObject } from "../../../utils.ts/types.js";
 
-import * as OldModel from "../01_meta-data-computation/print-model.js";
+import type * as OldModel from "../01_meta-data-computation/print-model.js";
 
-import * as NewModel from "./print-model.js";
+import type * as NewModel from "./print-model.js";
 
 function createDefaultPageBreakBehavior(
 	path: string

@@ -34,7 +34,7 @@ package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.loader;
 import com.mgmtp.a12.print.engine.runtime.internal.PrintEngineRuntimeDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.RuntimeType;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.ValueDependency;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocument;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -42,7 +42,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(of = "documentModelId")
 @PrintEngineRuntimeDependency(type = RuntimeType.CORE)
-public class DocumentDependency implements ValueDependency<PrintDocument> {
+public class DocumentDependency implements ValueDependency<PrintDocumentContext> {
 	private final String documentModelId;
 
 	public DocumentDependency(final String documentModelId) {

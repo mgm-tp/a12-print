@@ -44,17 +44,9 @@ import java.util.Map;
 public class AddStylesToHtmlDependency implements ValueDependency<Element> {
 	private final Element htmlElement;
 	private final Map<String, String> newStyle;
-	private final boolean overwrite;
 
 	public AddStylesToHtmlDependency(Element htmlElement, Map<String, String> newStyle) {
 		this.htmlElement = htmlElement;
 		this.newStyle = newStyle;
-		this.overwrite = false;
-	}
-
-	public AddStylesToHtmlDependency(Element htmlElement, Map<String, String> newStyle, boolean overwrite) {
-		this.htmlElement = htmlElement;
-		this.newStyle = newStyle;
-		this.overwrite = overwrite;
 	}
 }

@@ -31,36 +31,57 @@
  */
 import * as React from "react";
 
-import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-line/index.js";
-import {
+import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core";
+import type {
 	BorderProperties,
-	BorderStyle,
+	InputSource,
+	PartialAnyPrintModelElement,
 	PartialBorderProperties,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+	PrintModelEntity,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { BorderStyle } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { InheritedValueResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import { InputValueSourceResolver, PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import { ColorPicker } from "../../color-picker/ColorPicker.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
-import { OmitId } from "../../../utils/index.js";
-import { PositiveNumberInput, formatLeadingDecimal } from "../../custom-input/PositiveNumberInput.js";
+import type { OmitId } from "../../../utils/index.js";
+import { changeInputSource, changeInputValue } from "../../../utils/input-source-utils.js";
+import type { BorderPropertiesPath } from "../../../types/input-source.js";
+import { formatLeadingDecimal } from "../../custom-input/PositiveNumberInput.js";
 
-import { CustomSelect } from "../custom-base-input-components/index.js";
+import { SourceColorPicker, SourceInput, SourceSelect } from "../custom-base-input-components/index.js";
 
-interface BorderFormProps {
+export interface InheritedBorderResolver {
+	resolveWidth?: InheritedValueResolver<string | number>;
+	resolveStyle?: InheritedValueResolver<string>;
+	resolveColor?: InheritedValueResolver<string>;
+}
+
+export interface BorderFormProps extends InheritedBorderResolver {
+	element: PartialAnyPrintModelElement;
 	setBorderProperties: (newProperties: OmitId<PartialBorderProperties>) => void;
 	getErrorMessage?: (property: keyof OmitId<BorderProperties>) => React.ReactNode;
 	borderProperties?: PartialBorderProperties;
+	determineInheritedSource?: (element: PrintModelEntity, inheritedCondition: string) => boolean;
+	propertiesPath: BorderPropertiesPath;
 }
 
 export const BorderForm = ({
+	element,
 	borderProperties,
 	setBorderProperties,
 	getErrorMessage = () => undefined,
+	determineInheritedSource,
+	propertiesPath,
+	resolveWidth,
+	resolveStyle,
+	resolveColor,
 }: BorderFormProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 
 	const BORDER_STYLE_ITEMS = React.useMemo(
 		(): { label: string; value: BorderStyle | "" }[] => [
-			{ label: localizer(RESOURCE_KEYS.elementOptions.borderStyles.none), value: "" },
 			{ label: localizer(RESOURCE_KEYS.elementOptions.borderStyles.solid), value: BorderStyle.Solid },
 			{ label: localizer(RESOURCE_KEYS.elementOptions.borderStyles.dotted), value: BorderStyle.Dotted },
 			{ label: localizer(RESOURCE_KEYS.elementOptions.borderStyles.dashed), value: BorderStyle.Dashed },
@@ -68,53 +89,132 @@ export const BorderForm = ({
 		[localizer]
 	);
 
-	const onBorderStyleChange = React.useCallback(
-		(newVal: BorderStyle | "") => {
-			setBorderProperties({
-				borderStyle: newVal === "" ? undefined : newVal,
-			});
+	const updateBorderProperty = React.useCallback(
+		<T extends string | number | BorderStyle>(
+			value: (DeepPartialRecursive<InputSource<T>> & PrintModelEntity) | undefined | string,
+			property: keyof PartialBorderProperties
+		) => {
+			setBorderProperties({ ...borderProperties, [property]: value });
 		},
-		[setBorderProperties]
+		[borderProperties, setBorderProperties]
 	);
 
 	const formatOnChange = React.useCallback((newValue: string) => {
 		return Number.isNaN(Number(newValue)) ? "" : formatLeadingDecimal(newValue);
 	}, []);
 
-	const onBlurNumberInput = React.useCallback(
-		(event: React.ChangeEvent<HTMLInputElement>) => {
-			setBorderProperties({
-				borderWidth: event.target.value !== "" ? Number(event.target.value) : undefined,
-			});
+	const isStyleUnset = borderProperties?.borderStyle?.source === PossibleInputSource.UNSET;
+
+	const onBorderStyleSourceChange = React.useCallback(
+		(source: PossibleInputSource, path: string) => {
+			if (source === PossibleInputSource.UNSET) {
+				const borderColorPath = InputValueSourceResolver.getInputSourceMetadata(
+					element,
+					propertiesPath.borderColor
+				).path;
+				const borderWidthPath = InputValueSourceResolver.getInputSourceMetadata(
+					element,
+					propertiesPath.borderWidth
+				).path;
+				setBorderProperties({
+					...borderProperties,
+					borderStyle: changeInputSource(source, path, borderProperties?.borderStyle),
+					borderColor: changeInputSource(
+						PossibleInputSource.DEFAULT,
+						borderColorPath,
+						borderProperties?.borderColor
+					),
+					borderWidth: changeInputSource(
+						PossibleInputSource.DEFAULT,
+						borderWidthPath,
+						borderProperties?.borderWidth
+					),
+				});
+			} else {
+				updateBorderProperty(changeInputSource(source, path, borderProperties?.borderStyle), "borderStyle");
+			}
 		},
-		[setBorderProperties]
+		[borderProperties, element, propertiesPath, setBorderProperties, updateBorderProperty]
 	);
 
 	return (
 		<div>
-			<PositiveNumberInput
-				label={localizer(RESOURCE_KEYS.elementForm.borderProperties.borderWidth)}
-				inputProps={{
-					type: "number",
-					min: 0,
-					step: 0.5,
+			<SourceSelect
+				id="borderStyle"
+				label={localizer(RESOURCE_KEYS.elementForm.borderProperties.borderStyle)}
+				onValueChanged={value =>
+					updateBorderProperty(changeInputValue(value, borderProperties!.borderStyle!), "borderStyle")
+				}
+				value={borderProperties?.borderStyle?.value || ""}
+				items={BORDER_STYLE_ITEMS}
+				errorMessage={getErrorMessage("borderStyle")}
+				inputProps={{ "data-testid": "border-style-select" } as React.HTMLProps<HTMLSelectElement>}
+				sourceProperties={{
+					element,
+					determineInheritedSource,
+					property: propertiesPath.borderStyle,
+					onSourceChange: onBorderStyleSourceChange,
+					inputSource: borderProperties?.borderStyle,
+					inheritedValueResolver: resolveStyle,
 				}}
-				value={borderProperties?.borderWidth ? String(borderProperties?.borderWidth) : undefined}
-				onBlur={onBlurNumberInput}
+			/>
+			<SourceInput
+				label={localizer(RESOURCE_KEYS.elementForm.borderProperties.borderWidth)}
+				inputProps={
+					{
+						type: "number",
+						min: 0,
+						step: 0.5,
+						"data-testid": "border-width-input",
+					} as React.HTMLProps<HTMLInputElement>
+				}
+				disabled={isStyleUnset}
+				value={String(borderProperties?.borderWidth?.value) || undefined}
 				suffixes={<TextAffix>pt</TextAffix>}
 				errorMessage={getErrorMessage("borderWidth")}
 				formatOnChange={formatOnChange}
+				onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+					updateBorderProperty(
+						changeInputValue(Number(ev.target.value), borderProperties!.borderWidth!),
+						"borderWidth"
+					);
+				}}
+				sourceProperties={{
+					element,
+					determineInheritedSource,
+					property: propertiesPath.borderWidth,
+					inputSource: borderProperties?.borderWidth,
+					onSourceChange: (source: PossibleInputSource, path: string) => {
+						updateBorderProperty(
+							changeInputSource(source, path, borderProperties?.borderWidth),
+							"borderWidth"
+						);
+					},
+					inheritedValueResolver: resolveWidth,
+				}}
 			/>
-			<CustomSelect
-				label={localizer(RESOURCE_KEYS.elementForm.borderProperties.borderStyle)}
-				onValueChanged={onBorderStyleChange}
-				value={borderProperties?.borderStyle || ""}
-				items={BORDER_STYLE_ITEMS}
-				errorMessage={getErrorMessage("borderStyle")}
-			/>
-			<ColorPicker
-				borderProperties={borderProperties}
-				setBorderProperties={setBorderProperties}
+			<SourceColorPicker
+				id="color"
+				label={localizer(RESOURCE_KEYS.elementForm.borderProperties.borderColor)}
+				inputProps={{ type: "color" }}
+				disabled={isStyleUnset}
+				value={borderProperties?.borderColor?.value}
+				sourceProperties={{
+					element,
+					determineInheritedSource,
+					property: propertiesPath.borderColor,
+					onSourceChange: (source: PossibleInputSource, path: string) => {
+						updateBorderProperty(
+							changeInputSource(source, path, borderProperties?.borderColor),
+							"borderColor"
+						);
+					},
+					inputSource: borderProperties?.borderColor,
+					inheritedValueResolver: resolveColor,
+				}}
+				onColorChange={value =>
+					updateBorderProperty(changeInputValue(value, borderProperties!.borderColor!), "borderColor")
+				}
 				errorMessage={getErrorMessage("borderColor")}
 			/>
 		</div>

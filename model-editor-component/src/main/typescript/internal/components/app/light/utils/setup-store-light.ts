@@ -29,24 +29,31 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { configureStore, Store } from "@reduxjs/toolkit";
+import type { Store } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 
-import { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import { Locale } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
-import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/lib/marshaller/model-marshaller.js";
-import { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/lib/internal/types/font.js";
-import { DocumentModelUtils } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/utils/document-model-utils.js";
+import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { Locale } from "@com.mgmtp.a12.utils/utils-localization";
+import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
+import { DocumentModelUtils } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
 import { EditorStateActions, RequestApiActions, ValidationActions } from "../../../../redux/index.js";
-import { PrintEditorComponentReducer, PrintEngineState } from "../../../../store/root-reducer.js";
-import { RequestApi } from "../../../../api/request-api.js";
+import { PrintEditorComponentReducer } from "../../../../store/root-reducer.js";
+import type { RequestApi } from "../../../../api/request-api.js";
+import type {
+	StaticImageData,
+	SaveStaticImageResponse,
+	StaticImageProvider,
+} from "../../../../../api/StaticImageProvider.js";
 import { PrintEditorComponentSagas } from "../../../../sagas/index.js";
 import { DEFAULT_FONT_NAME, DEFAULT_TEXT_STYLE_FONT_NAME } from "../../../../constant/textstyle.js";
 import createSagaMiddleware from "../../../../redux-saga/index.js";
-import { EditorComponentApiActions } from "../../../../api/actions-api.js";
+import { EditorComponentApiActions } from "../../../../../a12internal/api/actions-api.js";
 import { DocumentModelDataActions } from "../../../../redux/document-model-data/actions.js";
 import { PrintEngineActions } from "../../../../store/actions.js";
+import type { PrintEngineState } from "../../../../../a12internal/api/PrintEngineState.js";
 
 import { selectTransactionGroupsForCommit } from "../selectors.js";
 
@@ -57,6 +64,7 @@ export function setupStoreLight(
 	documentModels: readonly DocumentModel[],
 	fontMap: PrintFontMap,
 	locale: Locale,
+	staticImageProvider: StaticImageProvider,
 	onChange: (printModel: PrintModel, dirty: boolean) => void
 ): Store<PrintEngineState> {
 	const printModelMarshaller = new PrintModelMarshaller();
@@ -95,7 +103,10 @@ export function setupStoreLight(
 			onChange(printModel, false);
 			return Promise.resolve({ printModel });
 		},
-		loadDINTemplatePrintModels() {
+		loadPrintModelIds() {
+			return Promise.resolve([]);
+		},
+		loadDINTemplateSegments() {
 			return Promise.resolve([]);
 		},
 		persistInteractionLog(_printModelId, interactionLogPersistentEntry) {
@@ -104,10 +115,10 @@ export function setupStoreLight(
 		persistTransactionLog(transactionLogPersistentEntries) {
 			transactionLogPersistentEntries.forEach(it => logStorage.addTransaction(it));
 		},
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 		onValidationStateChange(_validationState) {},
 		serializePrintModel(apiObject) {
-			const result = printModelMarshaller.serialize(apiObject, documentModels);
+			const result = printModelMarshaller.serialize(apiObject, { html: false, references: { documentModels } });
 			store.dispatch(EditorComponentApiActions.setSerializePrintModelResult(result));
 			// This is necessary so that the selectTransactionGroupsForCommit returns the correct result
 			store.dispatch(ValidationActions.setErrorMap(result.report.errorMap));
@@ -119,9 +130,18 @@ export function setupStoreLight(
 		deserializePrintModel(validatorInput) {
 			store.dispatch(
 				EditorComponentApiActions.setDeserializePrintModelResult(
-					printModelMarshaller.deserialize(validatorInput, documentModels)
+					printModelMarshaller.deserialize(validatorInput, { html: false, references: { documentModels } })
 				)
 			);
+		},
+		listStaticImages: function (): Promise<string[]> {
+			return staticImageProvider.listStaticImages();
+		},
+		loadStaticImage: function (name: string): Promise<StaticImageData | undefined> {
+			return staticImageProvider.loadStaticImage(name);
+		},
+		uploadStaticImage: function (resource: StaticImageData): Promise<SaveStaticImageResponse | undefined> {
+			return staticImageProvider.uploadStaticImage(resource);
 		},
 	};
 
@@ -136,7 +156,13 @@ export function setupStoreLight(
 
 	const store = configureStore({
 		reducer: PrintEditorComponentReducer.rootReducer,
-		middleware: [sagaMiddleware],
+		middleware: getDefaultMiddleware =>
+			getDefaultMiddleware({
+				serializableCheck: {
+					ignoredPaths: ["DocumentModelData"],
+					ignoredActions: [DocumentModelDataActions.setDocumentModelData.type],
+				},
+			}).concat(sagaMiddleware),
 		devTools: { name: "Print Editor Component" },
 	});
 
@@ -144,7 +170,7 @@ export function setupStoreLight(
 
 	store.dispatch(PrintEngineActions.resetState());
 	store.dispatch(RequestApiActions.loadPrintModel(""));
-	store.dispatch(RequestApiActions.loadDINTemplatePrintModels());
+	store.dispatch(RequestApiActions.loadPrintModelIds());
 
 	store.dispatch(EditorStateActions.setFonts(fontMap));
 	store.dispatch(ValidationActions.validateTextStyles());

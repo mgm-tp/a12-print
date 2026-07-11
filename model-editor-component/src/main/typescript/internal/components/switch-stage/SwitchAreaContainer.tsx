@@ -32,10 +32,10 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { PartialArea } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialArea } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { EditorConst } from "../../constant/editor.js";
 

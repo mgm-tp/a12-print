@@ -60,7 +60,7 @@ public class TypedComputationExpressionCache {
 	public synchronized @NonNull TypedComputationExpression get(String operationProviderId) {
 		final var strategy = strategies.get(operationProviderId);
 		if (strategy == null) {
-			throw new PrintException("missing ComputationEvaluationStrategy for provider: " + operationProviderId);
+			throw new PrintException("Missing ComputationEvaluationStrategy for provider: " + operationProviderId);
 		}
 		return strategy;
 	}

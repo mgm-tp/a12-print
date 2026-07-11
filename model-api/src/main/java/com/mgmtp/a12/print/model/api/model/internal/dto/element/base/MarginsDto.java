@@ -33,7 +33,7 @@ package com.mgmtp.a12.print.model.api.model.internal.dto.element.base;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.base.Margin;
 import com.mgmtp.a12.print.model.api.model.element.base.Margins;
 import com.mgmtp.a12.print.model.api.model.internal.dto.JsonModel;
@@ -68,4 +68,4 @@ public class MarginsDto extends PrintModelEntityDto implements Margins, JsonMode
 	public Optional<Margin> getBottom() {
 		return Optional.ofNullable(bottom);
 	}
-};
+}

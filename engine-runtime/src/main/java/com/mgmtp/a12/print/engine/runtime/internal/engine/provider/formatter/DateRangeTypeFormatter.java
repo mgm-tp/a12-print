@@ -31,17 +31,15 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.FormattingResult;
+import com.mgmtp.a12.utils.conversion.InstantRange;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class DateRangeTypeFormatter implements ValueFormatProvider {
 
@@ -57,9 +55,9 @@ public class DateRangeTypeFormatter implements ValueFormatProvider {
 		final var formatterFrom = DateTimeFormatter.ofPattern(dateRangeFormattingDetails.getDateTimeFormatFrom(), parameters.locale());
 		final var formatterTo = DateTimeFormatter.ofPattern(dateRangeFormattingDetails.getDateTimeFormatTo(), parameters.locale());
 
-		if (value instanceof Date[] dateRangeValue && ((Date[]) value).length == 2) {
-			final var from = DateTimeLikeTypeFormatter.getDateInTimeZone(dateRangeValue[0], parameters.timeZone());
-			final var to = DateTimeLikeTypeFormatter.getDateInTimeZone(dateRangeValue[1], parameters.timeZone());
+		if (value instanceof InstantRange dateRangeValue) {
+			final var from = DateTimeLikeTypeFormatter.getDateInTimeZone(dateRangeValue.start(), parameters.timeZone());
+			final var to = DateTimeLikeTypeFormatter.getDateInTimeZone(dateRangeValue.end(), parameters.timeZone());
 			final var formattedValue = String.join(
 				dateRangeFormattingDetails.getDelimiter(),
 				List.of(
@@ -69,7 +67,7 @@ public class DateRangeTypeFormatter implements ValueFormatProvider {
 			);
 			return new FormattingResult(formattedValue, parameters.isHtml());
 		}
-		throw new PrintException("Unsupported field value for date range type: {}", value);
+		throw new PrintDomainException("Unsupported field value for date range type: {}", value);
 	}
 
 	@Data

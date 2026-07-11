@@ -31,12 +31,13 @@
  */
 import * as React from "react";
 
-import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react/lib/main/index.js";
-import { PrintError } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { LocalizableArgs, Localizer } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
-import { BulletList } from "@com.mgmtp.a12.widgets/widgets-core/lib/bullet-list/index.js";
+import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react";
+import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { LocalizableArgs, Localizer } from "@com.mgmtp.a12.utils/utils-localization";
+import { BulletList } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { EditorComponentContext, ILocalizer } from "../api/context-api.js";
+import type { ILocalizer } from "../api/context-api.js";
+import { EditorComponentContext } from "../api/context-api.js";
 
 export namespace PrintLocalizer {
 	export const useLocalizer = (): ILocalizer => {

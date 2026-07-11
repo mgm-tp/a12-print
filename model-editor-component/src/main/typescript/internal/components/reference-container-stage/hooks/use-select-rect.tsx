@@ -32,12 +32,8 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
-import {
-	createPlainMmMeasure,
-	EditorUtils,
-	PlainMeasureDimensions,
-	PlainMeasurePosition,
-} from "../../../utils/index.js";
+import type { PlainMeasureDimensions, PlainMeasurePosition } from "../../../utils/index.js";
+import { createPlainMmMeasure, EditorUtils } from "../../../utils/index.js";
 import { EditorConst } from "../../../constant/editor.js";
 import { DetailViewActions } from "../../../redux/index.js";
 import { useGetSectionOffset } from "../../../hooks/use-get-section-offset.js";

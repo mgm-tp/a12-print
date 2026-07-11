@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils;
 
-import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.markup.listing.ListingHtmlTemplateParameters;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing.ListingValues;
 import com.mgmtp.a12.print.model.api.inputSource.InputValueSourceResolver;
 import com.mgmtp.a12.print.model.api.model.element.base.Measure;
 import com.mgmtp.a12.print.model.api.model.element.type.listing.Listing;
@@ -57,7 +57,7 @@ public class TableColumnWidthUtil {
 
 	// Listing
 	public static Map<Integer, Long> calculateColumnWidth(
-		@NonNull List<ListingHtmlTemplateParameters.MarkupListingRowValue> rows,
+		@NonNull List<ListingValues.MarkupListingRowValue> rows,
 		@NonNull final Listing listing,
 		final long containerWidth,
 		final long borderWidth
@@ -166,7 +166,7 @@ public class TableColumnWidthUtil {
 
 	private static boolean[] getVisibleListingColumnMap(
 		@NonNull final Listing listing,
-		@NonNull final List<ListingHtmlTemplateParameters.MarkupListingRowValue> rows
+		@NonNull final List<ListingValues.MarkupListingRowValue> rows
 	) {
 		final boolean[] visibleColumnMap = new boolean[listing.getListingProperties().getColumns().size()];
 		for (int i = 0; i < listing.getListingProperties().getColumns().size(); i++) {
@@ -177,7 +177,7 @@ public class TableColumnWidthUtil {
 	}
 
 	private static boolean isListingColumnHidden(
-		@NonNull final List<ListingHtmlTemplateParameters.MarkupListingRowValue> rows,
+		@NonNull final List<ListingValues.MarkupListingRowValue> rows,
 		final int index
 	) {
 		return rows.stream().allMatch(row -> Objects.equals(

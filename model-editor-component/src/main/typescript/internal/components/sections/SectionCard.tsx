@@ -33,29 +33,27 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { PageOrientation, SectionUsage, PartialSection } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import {
-	GlobalRegion,
-	SidebarItem,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import { Icon, Button } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { PartialSection } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PageOrientation, SectionUsage } from "@com.mgmtp.a12.print/print-model-api/model";
+import { GlobalRegion, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import {
 	EditorStateActions,
 	InteractionLogActions,
+	NavigationActions,
+	NavigationSelectors,
 	TransactionLogStateActions,
 	ValidationCounter,
 } from "../../redux/index.js";
-import { PrintEngineSelectors } from "../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { createMmMeasure } from "../../utils/index.js";
 
 import { BadgeGroup } from "../badge/BadgeGroup.js";
-import { CustomTextLineStateful } from "../forms/custom-base-input-components/index.js";
+import { DynamicSourceTextField } from "../forms/custom-base-input-components/index.js";
 
 import { StyledSectionAction, StyledSectionCard, StyledSectionIcon } from "./SectionCard.styled.js";
 
@@ -72,10 +70,12 @@ export const SectionCard = (props: SectionCardProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
-	const printModelRefs = useSelector(PrintEngineSelectors.printModelRefs);
+	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
 	const error = useSelector((state: PrintEngineState) => ValidationSelectors.section(state, section?.id));
 	const sectionValidationCounter: ValidationCounter = useSelector((state: PrintEngineState) =>
-		section?.id ? ValidationSelectors.sectionValidationCounter(state, section?.id) : ValidationCounter.createEmpty()
+		section?.id
+			? ValidationSelectors.sectionValidationCounter(state, section?.id)
+			: ValidationCounter.EMPTY_VALIDATION_COUNTER
 	);
 
 	const isSelectedSection = React.useMemo(() => {
@@ -102,14 +102,8 @@ export const SectionCard = (props: SectionCardProps) => {
 				],
 			})
 		);
-		dispatch(
-			EditorStateActions.updatePrintModelRefs({
-				...printModelRefs,
-				sectionId: newSectionId,
-				currentRefType: SidebarItem.SECTION,
-			})
-		);
-	}, [dispatch, pageOrientation, printModelRefs, sectionUsage]);
+		dispatch(NavigationActions.setActiveEntity({ tab: SidebarItem.SECTION, entityId: newSectionId }));
+	}, [dispatch, pageOrientation, sectionUsage]);
 
 	const handleUpdateTitle = React.useCallback(
 		(event: React.FocusEvent<HTMLInputElement>) => {
@@ -191,7 +185,7 @@ export const SectionCard = (props: SectionCardProps) => {
 
 			{section ? (
 				<>
-					<CustomTextLineStateful
+					<DynamicSourceTextField
 						value={section.title}
 						placeholder={localizer(RESOURCE_KEYS.sidebar.section.titlePlaceholder)}
 						onClick={event => event.stopPropagation()}

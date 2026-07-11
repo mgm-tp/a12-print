@@ -33,19 +33,20 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { ListingProperties, PartialTextProperties } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { ListingProperties, PartialTextProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { CollapsibleSection } from "../../shared-components/CollapsibleSection.js";
 import { TransactionLogStateActions } from "../../../../../redux/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../../localization/index.js";
 import { InteractionLogActions } from "../../../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../../../redux/validation/selectors.js";
-import { getErrors, OmitId } from "../../../../../utils/index.js";
+import type { OmitId } from "../../../../../utils/index.js";
+import { getErrors } from "../../../../../utils/index.js";
 import { CustomCheckbox } from "../../../custom-base-input-components/index.js";
-import { BaseListingFormProps } from "../../base-listing-form.js";
+import type { BaseListingFormProps } from "../../base-listing-form.js";
 import { TextPropertiesInput } from "../../../shared-components/TextPropertiesInput.js";
 import { LISTING_PROPERTY_PATH } from "../../../../../constant/element-property-path.js";
 

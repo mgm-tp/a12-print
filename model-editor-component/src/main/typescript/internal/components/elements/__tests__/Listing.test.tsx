@@ -29,12 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ElementType, PartialPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
+import type { PartialPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { renderWithProviders, expectToThrow } from "../../../../../../test/typescript/test-utils/index.js";
 
-import { Listing, ListingProps } from "../Listing.js";
+import type { ListingProps } from "../Listing.js";
+import { Listing } from "../Listing.js";
 
 describe("Listing", () => {
 	const defaultListingProps = {

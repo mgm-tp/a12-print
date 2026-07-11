@@ -31,8 +31,10 @@
  */
 import { within } from "@testing-library/react";
 
-import { ElementType, PartialExpression } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PartialExpression } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import {
 	renderWithProviders,
@@ -40,6 +42,7 @@ import {
 	initialStateLogStoreMock,
 	createTransactionLogState,
 	mockSegment,
+	createNavigationStateWithForm,
 } from "../../../../../../test/typescript/test-utils/index.js";
 
 import { ExpressionFormContainer } from "../ExpressionFormContainer.js";
@@ -108,12 +111,13 @@ describe("ExpressionFormContainer", () => {
 	const setupTest = () =>
 		renderWithProviders(<ExpressionFormContainer />, {
 			PrintEditorState: () => defaultPrintEditorState,
-			DetailData: () => ({
-				[mockSegment.id]: {
-					refId: EXPRESSION_ID,
-					formContainers: [],
-				},
-			}),
+			Navigation: () =>
+				createNavigationStateWithForm(SidebarItem.SEGMENT, mockSegment.id, [
+					{
+						type: ElementType.Expression,
+						id: EXPRESSION_ID,
+					},
+				]),
 			TransactionLogState: createTransactionLogState(mockTransactionLogStore),
 		});
 

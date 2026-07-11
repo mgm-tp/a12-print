@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Index } from "../../model/index.js";
+import type { Index } from "../../../../a12internal/api/model/index.js";
 
-export default class HyphenIndex {
+export class HyphenIndex {
 	constructor(inputLength?: number, indices?: Index[]) {
 		if (inputLength) {
 			this._indices = new Array(Math.floor(inputLength / 4));

@@ -32,17 +32,12 @@
 import * as React from "react";
 import { nanoid } from "nanoid";
 
-import {
-	DefaultTableComponentRenderers,
-	Table,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/table.view.js";
-import { BaseColumnType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/column.api.js";
-import { TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/index.js";
-import { generateUid } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { GroupPropertyComputations } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import type { BaseColumnType, TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core";
+import { DefaultTableComponentRenderers, Table, generateUid } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { GroupPropertyComputations } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../../localization/index.js";
 import { ValidationCounter } from "../../../../../redux/index.js";
@@ -60,6 +55,7 @@ enum PropertyComputationKey {
 }
 
 interface GroupTablePropertyComputationProps {
+	elementId: string;
 	propertyComputations: DeepPartial<GroupPropertyComputations>[];
 	handleDeleteRow: (rowIndex: number) => void;
 	updatePropertyComputations: (newComputations: DeepPartial<GroupPropertyComputations>[]) => void;
@@ -67,6 +63,7 @@ interface GroupTablePropertyComputationProps {
 }
 
 export function GroupTablePropertyComputation({
+	elementId,
 	propertyComputations,
 	handleDeleteRow,
 	updatePropertyComputations,
@@ -78,9 +75,11 @@ export function GroupTablePropertyComputation({
 
 	const { labeledPropertyComputations, openPropertyComputationForm } =
 		useListingPropertiesTableHandler<GroupPropertyComputations>(
+			elementId,
 			propertyComputations,
 			propertyItems,
-			ListingRegion.GROUP_PROPERTY_COMPUTATION_FORM
+			ListingRegion.GROUP_PROPERTY_COMPUTATION_FORM,
+			"Main"
 		);
 
 	const onAddPropertyComputation = React.useCallback(() => {

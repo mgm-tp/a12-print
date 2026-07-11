@@ -31,10 +31,10 @@
  */
 import { styled } from "styled-components";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
+import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { EditorConst } from "../../constant/editor.js";
-import { MarginSide } from "../../types/margin.js";
+import type { MarginSide } from "../../types/margin.js";
 
 import { ToolTipTop, ToolTipBottom } from "../tool-tips/ToolTips.styled.js";
 

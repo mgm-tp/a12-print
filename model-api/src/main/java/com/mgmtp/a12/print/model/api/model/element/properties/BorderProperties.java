@@ -32,19 +32,25 @@
 package com.mgmtp.a12.print.model.api.model.element.properties;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.FloatInputSource;
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.InputSource;
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.InputSourceEnum;
+import com.mgmtp.a12.print.model.api.model.element.base.inputSource.StringInputSource;
 import lombok.Getter;
 
 import java.util.Map;
 import java.util.Optional;
 
 
+@OnlyForUsage
 public interface BorderProperties extends PrintModelEntity {
-	Optional<Float> getBorderWidth();
-	Optional<BorderStyle> getBorderStyle();
-	Optional<String> getBorderColor();
+	Optional<FloatInputSource> getBorderWidth();
+	Optional<InputSource<BorderStyle>> getBorderStyle();
+	Optional<StringInputSource> getBorderColor();
 
+	@OnlyForUsage
 	enum BorderStyle implements InputSourceEnum {
 		@JsonProperty("Solid") SOLID("Solid"),
 		@JsonProperty("Dotted") DOTTED("Dotted"),

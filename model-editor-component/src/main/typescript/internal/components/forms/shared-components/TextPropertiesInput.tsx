@@ -33,33 +33,29 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
 
-import {
-	Alignment,
+import type {
 	InputSource,
 	PartialAnyPrintModelElement,
 	PrintModelEntity,
 	PartialTextProperties,
 	PartialTextStyle,
 	TextStyle,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
-import {
-	InputValueSourceResolver,
-	PossibleInputSource,
-} from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
-import { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
-import { TEXT_STYLE } from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
-import type { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/lib/internal/types/font.js";
-import { getPrefixedFontFamily } from "@com.mgmtp.a12.print/print-fonts/lib/internal/api/utils/font-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { Alignment, TEXT_STYLE } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { InputValueSourceResolver, PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, addPrefix } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
+import { getPrefixedFontFamily } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
-import { OmitId } from "../../../utils/type-utils.js";
+import type { OmitId } from "../../../utils/type-utils.js";
 import { changeInputSource, changeInputValue } from "../../../utils/input-source-utils.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
-import { TextPropertiesPath } from "../../../types/input-source.js";
+import type { TextPropertiesPath } from "../../../types/input-source.js";
 import { TEXT_PROPERTIES_PATH } from "../../../constant/element-property-path.js";
 import { NO_TEXT_STYLE_FALLBACK } from "../../../constant/textstyle.js";
 

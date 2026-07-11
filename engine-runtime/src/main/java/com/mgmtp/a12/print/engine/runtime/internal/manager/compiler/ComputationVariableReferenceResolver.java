@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.ComputationSyntaxTree;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.SyntaxTreeElementVisitor;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.Variable;
@@ -75,8 +75,7 @@ public class ComputationVariableReferenceResolver implements ComputationVariable
 				return;
 			}
 
-			throw new PrintCompilerException("relative Computations are currently not implemented");
-
+			throw new PrintDomainException("Relative Computations are currently not supported ({})", basePath);
 		}
 
 	}

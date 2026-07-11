@@ -34,12 +34,11 @@ package com.mgmtp.a12.print.engine.runtime.pdfBox;
 import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PdfPrintResult;
 import com.mgmtp.a12.print.engine.api.PrintJob;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
+import com.mgmtp.a12.print.engine.api.message.PrintMessageReport;
 import com.mgmtp.a12.print.engine.runtime.PrintEngine;
-import com.mgmtp.a12.print.engine.runtime.internal.CustomXRLogger;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocument;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.loader.DocumentDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.loader.PrintModelDependency;
@@ -48,6 +47,8 @@ import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.metadata.Acce
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalPdfBoxPrintEngineRuntime;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.computation.ComputationExpression;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.LogicContainerEvaluationDependency;
+import com.mgmtp.a12.print.engine.runtime.internal.message.PrintMessageCollector;
+import com.mgmtp.a12.print.engine.runtime.internal.message.PrintMessageReportImpl;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle.PDDocumentHandle;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle.SegmentDocumentHandle;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.pdDocument.PDDocumentInitializer;
@@ -71,7 +72,6 @@ import com.mgmtp.a12.print.model.api.walker.DescendCommand;
 import com.mgmtp.a12.print.model.api.walker.TraversalCommand;
 import com.mgmtp.a12.print.model.api.walker.model.ExhaustivePrintModelVisitor;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
-import com.openhtmltopdf.util.XRLog;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -82,13 +82,16 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Provides the ability to execute {@link PrintJob}s.
  */
+@OnlyForUsage
 @Slf4j
 public class PdfBoxPrintEngine extends PrintEngine<PdfPrintResult> implements com.mgmtp.a12.print.engine.api.PdfBoxPrintEngine {
 
@@ -107,22 +110,17 @@ public class PdfBoxPrintEngine extends PrintEngine<PdfPrintResult> implements co
 			.build()
 			.build(this);
 		this.executorService = service;
-		XRLog.setLoggerImpl(new CustomXRLogger());
 	}
 
-	/**
-	 * @param printJob
-	 * @return
-	 * @throws PrintException if the print operation was interrupted by any exception.
-	 */
 	@Override
-	public PdfPrintResult execute(PrintJob printJob) throws PrintException {
+	public PrintMessageReport<PdfPrintResult> executeWithReport(PrintJob printJob) throws PrintException {
 		try {
-			return executorService.submit(() -> printInternal(printJob, runtimeFactory.apply(printJob))).get();
-		} catch (PrintCompilerException | PrintException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new PrintException("PrintJob was interrupted due to:",e);
+			return executorService.submit(() -> PrintMessageReportImpl.wrapException(() -> {
+				final var resultDocument = printInternal(printJob, runtimeFactory.apply(printJob));
+				return new PrintMessageReportImpl<>(resultDocument, PrintMessageCollector.getMessages());
+			}, PrintException.class, PrintException::new)).get();
+		} catch (ExecutionException | InterruptedException e) {
+			throw new PrintException("PrintJob was interrupted due to:", e);
 		}
 	}
 
@@ -136,13 +134,14 @@ public class PdfBoxPrintEngine extends PrintEngine<PdfPrintResult> implements co
 		).toList();
 
 		if (documentModelReferences.size() > 1) {
-			throw new PrintException("PrintModel currently does only support single DocumentModel References");
+			throw new PrintDomainException(
+				"PrintModel '{}' supports only a single DocumentModel reference, but {} were found.",
+				job.getPrintModelId().getModelHeaderId(), documentModelReferences.size());
 		}
 
 		final var printDocumentContext = Optional.of(documentModelReferences)
 			.filter(e -> !e.isEmpty())
-			.map(t -> runtime.provide(new DocumentDependency(t.getFirst().getReference()))
-				.map(PrintDocument::context).get()
+			.map(t -> runtime.provide(new DocumentDependency(t.getFirst().getReference())).get()
 			).orElse(null);
 
 		final var accessibilityMetadata = runtime.provide(
@@ -304,7 +303,7 @@ public class PdfBoxPrintEngine extends PrintEngine<PdfPrintResult> implements co
 			} else if (segment.getType().equals(ModelSegment.ModelSegmentType.DEFAULT)) {
 				addSegmentDependency(segment, path, documentContext);
 			} else {
-				throw new PrintException("The type {} of segment is not supported", segment.getType());
+				throw new PrintDomainException("The type {} of segment is not supported", segment.getType());
 			}
 
 			return TraversalCommand.CONTINUE;

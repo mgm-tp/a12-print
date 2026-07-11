@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import FixedSizeIntList from "./FixedSizeIntList.js";
+import type { FixedSizeIntList } from "./FixedSizeIntList.js";
 
-class ZeroInitializedFixedSizeIntArrayList implements FixedSizeIntList {
+export class ZeroInitializedFixedSizeIntArrayList implements FixedSizeIntList {
 	private readonly elements: number[];
 
 	constructor(size: number) {
@@ -63,5 +63,3 @@ class ZeroInitializedFixedSizeIntArrayList implements FixedSizeIntList {
 		this.elements[index] = value;
 	}
 }
-
-export default ZeroInitializedFixedSizeIntArrayList;

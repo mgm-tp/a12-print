@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { MeasureUnit } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { MeasureUnit } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import {
 	changeMmMeasureValue,

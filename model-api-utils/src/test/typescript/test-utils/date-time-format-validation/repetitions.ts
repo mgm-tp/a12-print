@@ -35,8 +35,8 @@ import {
 	UNLIMITED_REPETITION,
 } from "../../../../main/typescript/internal/validation/date-time-format-validation/index.js";
 
-import { DateFormatLetters } from "./dateFormatLetters.js";
-import { DateFormatTest } from "./dateFormatTest.js";
+import type { DateFormatLetters } from "./dateFormatLetters.js";
+import type { DateFormatTest } from "./dateFormatTest.js";
 
 const linearDateRepetitionCases: { letter: DateFormatLetters; maxRepetitions: number }[] = [
 	{ letter: "G", maxRepetitions: MaxRepetition.ERA },

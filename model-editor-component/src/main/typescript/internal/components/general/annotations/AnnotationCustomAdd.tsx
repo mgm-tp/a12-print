@@ -31,15 +31,14 @@
  */
 import * as React from "react";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { EntityKey, getEntityId } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { Button, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
+import { EntityKey, getEntityId } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
-import { CustomTextLineStateless } from "../../forms/custom-base-input-components/index.js";
+import { CustomTextField } from "../../forms/custom-base-input-components/index.js";
 
 import { StyledAnnotationAddContainer } from "./AnnotationCustomAdd.styled.js";
-import { AnnotationData } from "./annotation.js";
+import type { AnnotationData } from "./annotation.js";
 
 interface AnnotationCustomAddProps {
 	data: AnnotationData[];
@@ -78,7 +77,7 @@ export const AnnotationCustomAdd = ({ data, setData }: AnnotationCustomAddProps)
 	const isButtonDisabled = Boolean(errorMessage) || !name.trim();
 	return (
 		<StyledAnnotationAddContainer>
-			<CustomTextLineStateless
+			<CustomTextField
 				placeholder={`${localizer(RESOURCE_KEYS.sidebar.general.annotations.name)}...`}
 				value={name}
 				onChange={onNameChange}

@@ -36,36 +36,23 @@ import java.util.Optional;
 import com.mgmtp.a12.print.model.api.validation.custom.conditions.*;
 import lombok.NonNull;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import com.mgmtp.a12.kernel.md.rt.api.ICustomCondition;
 import com.mgmtp.a12.kernel.md.rt.api.ICustomConditionFactory;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 
+@OnlyForUsage
 public class PrintCustomConditionFactory implements ICustomConditionFactory {
 
-	@Override
-	public ICustomCondition createCustomCondition(String customConditionName) {
-		throw new NotImplementedException();
-	}
-
-	@Override
-	public Optional<ICustomCondition> createCustomConditionV2(@NonNull String customConditionName) {
-		switch (customConditionName) {
-			case "print_RolesNotInRoleModel":
-			case "print_RolesModelNotPresent":
-			case "print_RolesModelPresent":
-				return Optional.of(new AlwaysFalseCustomCondition());
-			case "print_RolesNotUnique":
-				return Optional.of(new IsRolesNotUniqueCustomCondition());
-			case "print_RoleNotEmpty":
-				return Optional.of(new IsRoleNotEmptyCustomCondition());
-			case "print_ElementReferenceOverlapped":
-				return Optional.of(new IsElementReferenceOverlapped());
-			case "print_OnlyOneIsSortingColumn":
-				return Optional.of(new OnlyOneIsSortingColumn());
-			default:
-				return Optional.empty();
-		}
-	}
+    @Override
+    public Optional<ICustomCondition> createCustomConditionV2(@NonNull String customConditionName) {
+        return switch (customConditionName) {
+            case "print_RolesNotInRoleModel", "print_RolesModelNotPresent", "print_RolesModelPresent" -> Optional.of(new AlwaysFalseCustomCondition());
+            case "print_RolesNotUnique" -> Optional.of(new IsRolesNotUniqueCustomCondition());
+            case "print_RoleNotEmpty" -> Optional.of(new IsRoleNotEmptyCustomCondition());
+            case "print_ElementReferenceOverlapped" -> Optional.of(new IsElementReferenceOverlapped());
+            case "print_OnlyOneIsSortingColumn" -> Optional.of(new OnlyOneIsSortingColumn());
+            default -> Optional.empty();
+        };
+    }
 }

@@ -49,10 +49,6 @@ const caseConfigResourceSchema = {
 		validation: val => typeof val === "string" && val.endsWith(".json"),
 		errMsg: "need to be a path to a json file.",
 	},
-	printSettingModel: {
-		validation: val => typeof val === "string" && val.endsWith(".json"),
-		errMsg: "need to be a path to a json file.",
-	},
 	documentModel: {
 		validation: val => typeof val === "string",
 		errMsg: "need to be a path.",
@@ -76,6 +72,11 @@ const caseConfigResourceSchema = {
 	store: {
 		validation: val => typeof val === "string" && val.endsWith(".json"),
 		errMsg: "need to be a path to a json file.",
+	},
+	fontMap: {
+		validation: val =>
+			typeof val === "object" && !Array.isArray(val) && Object.values(val).every(v => typeof v === "string"),
+		errMsg: "need to be a map.",
 	},
 };
 
@@ -111,15 +112,8 @@ module.exports = async function (source) {
 		const { resource } = config;
 		assertValidatedConfig(configPath, resource, caseConfigResourceSchema);
 
-		const {
-			printModel,
-			documentModel,
-			printSettingModel,
-			templatePrintModels,
-			typesettingModels,
-			store,
-			documents,
-		} = resource;
+		const { printModel, documentModel, templatePrintModels, typesettingModels, store, documents, fontMap } =
+			resource;
 
 		const printModelPath = Path.join(__dirname, "use-cases", printModel);
 
@@ -128,7 +122,6 @@ module.exports = async function (source) {
 		let templatePrintModelContents = [];
 		let typesettingModelsContents = [];
 		let documentNames = [];
-		let printSettingModelContent;
 		let storeContent;
 
 		if (documentModel) {
@@ -138,10 +131,6 @@ module.exports = async function (source) {
 
 		if (documents) {
 			documentNames = await getDocumentNames(documents, documentModels);
-		}
-
-		if (printSettingModel) {
-			printSettingModelContent = await fs.readFile(Path.join(__dirname, "use-cases", printSettingModel), "utf-8");
 		}
 
 		if (templatePrintModels) {
@@ -165,11 +154,11 @@ module.exports = async function (source) {
 				templatePrintModels: templatePrintModelContents.length
 					? parseDocumentModels(templatePrintModelContents)
 					: [],
-				printSettingModel: printSettingModelContent ? JSON.parse(printSettingModelContent) : undefined,
 				typesettingModels: typesettingModelsContents.length
 					? parseDocumentModels(typesettingModelsContents)
 					: undefined,
 				store: storeContent ? JSON.parse(storeContent) : undefined,
+				fontMap,
 			})
 		);
 	} catch (error) {

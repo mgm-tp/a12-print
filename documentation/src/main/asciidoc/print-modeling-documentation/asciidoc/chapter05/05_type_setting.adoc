@@ -1,0 +1,110 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+:Add: Test
+
+= Typesetting [[Typesetting]]
+
+This chapter instructs how to customize the typesetting of text within the Print Engine and is intended for modelers
+familiar with Print Modeling.
+Typesetting controls the composition and flow of text when a document is printed.
+
+== Typesetting Model Configuration [[TypeSettingModel]]
+The Print Engine has a dedicated Typesetting Model that allows you to add customizable rules to the setting of your text.
+
+image::chapter05/TypeSetting_EditorScreenshot.png[Typesetting Editor,title="Typesetting Editor"]
+
+You can create a new Typesetting Model in the SME workspace and edit it by selecting it.
+You can create, edit, and reference multiple Typesetting Models per workspace.
+
+To affect your text, follow these steps:
+
+1. Create, edit, and save a Typesetting Model.
+2. Reference the Typesetting Model in the <<SchemaTab,Schema tab>> of your Print Model.
++
+image::chapter05/Typesetting_ReferenceModel.png[Referencing Typesetting Model,title="Referencing Typesetting Model"]
++
+3. Create a Text Style and <<TypographySettings,reference>> the Typesetting Model.
++
+image::chapter05/Typesetting_TextStyleReference.png[Text Style with Typesetting Model,title="Text Style with Typesetting Model"]
++
+4. You can now apply the custom Text Style that you created to your Print Model Elements.
+
+=== Prevent Line Break Rule Settings
+These settings allow you to define exceptions to hyphenation and line wrapping when text is printed with the Print Engine.
+
+==== Character Sequence Rules
+
+This option allows you to define specific words or character sequences that should not be hyphenated.
+
+To add a new character sequence, click the btn:[Add] button. A new row will be added to a table, where you can enter the desired sequence.
+Do note that only hyphens (-) and alphabetical characters are allowed. Other characters like numbers will prompt an error message and
+prevent you from saving the model.
+
+To remove a rule press the button on the right of the row and confirm your choice in the dialog.
+
+image::chapter05/Typesetting_CharacterSequence.png[Character Sequence Rules,title="Character Sequence Rules"]
+
+==== Number Unit Rules
+
+This option allows you to define character strings that will be treated as units of measurement.
+They will not be line wrapped if preceded by a number, which means the number and unit will stay together on the same line.
+
+To add a new unit rule, click the btn:[Add] button. A new row will be added into a table, where you can enter the desired unit.
+
+To remove a rule press the button on the right of the row and confirm your choice in the dialog.
+
+image::chapter05/Typesetting_NumberUnitRule.png[Number Unit Rules,title="Number Unit Rules"]
+
+WARNING: While Number Unit Rules allow usage of a wide selection of possible symbols, they may not be supported by the font of the selected Text Style. In this case the Print Model can not be printed and will show an error in the print preview.
+
+==== Special Pattern Rules
+
+This option allows you to apply a set of curated rules that were designed for special use cases.
+Currently, there are two special patterns available:
+
+* §{digit} Abs. {digit} - e.g. §3 Abs. 7 for referencing german legal texts
+* {digit}({digit})({letter}) - e.g. 219(1)(a) for referring to document sections
+
+If you require different special patterns that cannot be covered by any of the preceding options, please contact the Print Engine Team to implement a new Special Pattern Rule.
+
+image::chapter05/Typesetting_SpecialPatternRule.png[Special Pattern Rules,title="Special Pattern Rules"]
+
+=== Orphan and Widow Settings
+
+In typesetting, "orphan" and "widow" are terms that define how text at the start or end of a page is treated in regard to the visual flow of the text.
+Proper management of widows and orphans results in professional-looking documents and prevents isolated lines from disrupting the reader's flow.
+As definitions vary, the Typesetting Model defines them as follows:
+
+* Widows: How many isolated lines are allowed at the start of a page (Default: 2)
+* Orphans: How many isolated lines are allowed at the end of a page (Default: 2)
+
+These settings allow the modeler to define their custom limits for Orphans and Widows for their texts.
+
+image::chapter05/Typesetting_OrphanWidowSetting.png[Widow and Orphan Settings,title="Widow and Orphan Settings."]
+
+image::chapter05/Typesetting_OrphanWidow2.png[Widow and Orphan Example (Default limit),title="Widow and Orphan Example (Default limit)."]
+
+image::chapter05/Typesetting_OrphanWidow5.png[Orphan and Widow Example with limit set to 5,title="Orphan and Widow Example with limit set to 5."]
+
+=== Roles
+
+The roles table allows you to define the allowed roles for the Typesetting Model.
+
+You can select roles from the workspace by clicking the btn:[Add] and selecting
+an option from the dropdown. Roles can be deleted by clicking the red button in the row
+and confirming your choice.

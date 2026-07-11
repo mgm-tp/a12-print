@@ -48,3 +48,4 @@ export * from "./PreconditionRepeat.js";
 export * from "./CompactErrorWrapper.js";
 export * from "./DataContextSelection.js";
 export * from "./TextPropertiesInput.js";
+export * from "./ClearTextPropertiesSection.js";

@@ -31,14 +31,16 @@
  */
 package com.mgmtp.a12.print.model.api.model.general;
 
-import com.mgmtp.a12.print.model.api.model.element.base.ComputationAlternative;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
+import com.mgmtp.a12.print.model.api.model.element.base.ComputationAlternative;
 import com.mgmtp.a12.print.model.api.model.element.base.internal.LogicComponent;
 import com.mgmtp.a12.print.model.api.model.element.base.internal.LogicContainer;
 
 import java.util.List;
 import java.util.stream.Stream;
 
+@OnlyForUsage
 public interface Metadata extends PrintModelEntity {
 	String getModel();
 	List<ComputationAlternative> getTitleComputation();
@@ -59,6 +61,7 @@ public interface Metadata extends PrintModelEntity {
 		return new MetadataLogicContainer(this, MetadataField.LANGUAGE);
 	}
 
+	@OnlyForUsage
 	enum MetadataField {
 		TITLE,
 		DESCRIPTION,
@@ -66,6 +69,7 @@ public interface Metadata extends PrintModelEntity {
 		LANGUAGE
 	}
 
+	@OnlyForUsage
 	class MetadataLogicContainer implements LogicContainer {
 		private final Metadata metadata;
 		private final MetadataField field;

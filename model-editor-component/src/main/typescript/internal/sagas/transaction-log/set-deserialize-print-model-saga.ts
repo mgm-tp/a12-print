@@ -29,25 +29,26 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Action, AnyAction } from "typescript-fsa";
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { getContext, put, select, takeEvery } from "typed-redux-saga";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { MarshallerResult } from "@com.mgmtp.a12.print/print-model-api-utils/lib/marshaller/marshaller.js";
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { MarshallerResult } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { ValidationActions } from "../../redux/index.js";
-import { EditorComponentApiActions, RequestApi } from "../../api/index.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
+import type { RequestApi } from "../../api/index.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
+import { EditorComponentApiActions } from "../../../a12internal/api/actions-api.js";
 
-export function* setDeserializePrintModelResultSaga(): SagaIterator {
+export function* setDeserializePrintModelResultSaga(): SagaGenerator<void> {
 	yield* takeEvery(
-		(action: AnyAction) => EditorComponentApiActions.setDeserializePrintModelResult.match(action),
+		EditorComponentApiActions.setDeserializePrintModelResult.match,
 		handleSetDeserializePrintModelResultSaga
 	);
 }
 
-function* handleSetDeserializePrintModelResultSaga(action: Action<MarshallerResult<PrintModel, PrintModel>>) {
+function* handleSetDeserializePrintModelResultSaga(action: PayloadAction<MarshallerResult<PrintModel, PrintModel>>) {
 	const deserializeRes = action.payload;
 
 	if (deserializeRes.report.relevantPaths.length) {

@@ -40,11 +40,7 @@ dependencies {
 	testFixturesImplementation(project(":model-api"))
 	testFixturesImplementation(project(":model-api-utils"))
 
-	testFixturesImplementation(a12Libs.kernelMdDocumentApi)
-	testFixturesImplementation(a12Libs.kernelMdA12internal)
-	testFixturesImplementation(a12Libs.kernelMdSerializer)
 	testFixturesImplementation(a12Libs.kernelMdFacade)
-	testFixturesImplementation(a12Libs.kernelMdModel)
 
 	testFixturesImplementation(thirdPartyLibs.commonsIO)
 }

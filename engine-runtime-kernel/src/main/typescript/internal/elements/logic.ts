@@ -29,13 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	LogicBranch,
-	SyntaxTreeElement,
-	SyntaxTreeElementType,
-	SyntaxTreeElementVisitor,
-	VisitationState,
-} from "./index.js";
+import type { SyntaxTreeElementVisitor, VisitationState } from "../../a12internal/elements/index.js";
+
+import type { LogicBranch, SyntaxTreeElement } from "./index.js";
+import { SyntaxTreeElementType } from "./index.js";
 
 export class Logic implements SyntaxTreeElement, LogicBranch {
 	_logicBranch = true;

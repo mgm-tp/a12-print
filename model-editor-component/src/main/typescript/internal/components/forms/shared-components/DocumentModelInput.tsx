@@ -34,7 +34,7 @@ import * as React from "react";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { useModelNameAliasGetter } from "../../../hooks/index.js";
 
-import { CustomTextLineStateless } from "../custom-base-input-components/index.js";
+import { CustomTextField } from "../custom-base-input-components/index.js";
 
 interface DocumentModelInputProps {
 	readonly documentModel: string | undefined;
@@ -46,7 +46,7 @@ export const DocumentModelInput = ({ documentModel, errorMessage }: DocumentMode
 	const getModelNameAlias = useModelNameAliasGetter();
 
 	return (
-		<CustomTextLineStateless
+		<CustomTextField
 			readonly
 			value={getModelNameAlias(documentModel) || documentModel || ""}
 			label={localizer(RESOURCE_KEYS.elementForm.model.documentModel)}

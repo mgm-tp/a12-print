@@ -31,46 +31,40 @@
  */
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { EditorProps } from "@monaco-editor/react";
+import type { EditorProps } from "@monaco-editor/react";
 
-import {
-	createLexer,
-	createParser,
-	Language,
-} from "@com.mgmtp.a12.kernel/kernel-core-parser-web/lib/main/js/a12internal/index.js";
-import {
-	AntlrCodeEditor,
+import type { Language } from "@com.mgmtp.a12.kernel/kernel-core-parser-web/a12internal";
+import { createLexer, createParser } from "@com.mgmtp.a12.kernel/kernel-core-parser-web/a12internal";
+import type {
 	IAntlrCodeEditorProps,
 	IAntlrConfig,
 	IMonacoEditorUIConfig,
 } from "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core";
-import { Logger } from "@com.mgmtp.a12.utils/utils-logging/api.js";
-import { defaultMonacoUiConfig } from "@com.mgmtp.a12.dml/dml/lib/ruleCodeEditor/theme/monacoUiConfig.js";
-import { InputElements } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/index.js";
-import { CssEllipsis } from "@com.mgmtp.a12.widgets/widgets-core/lib/css-ellipsis/index.js";
+import { AntlrCodeEditor } from "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core";
+import type { Logger } from "@com.mgmtp.a12.utils/utils-logging";
+import { InputElements, CssEllipsis } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { CompletionItemDocResolver, ItemSuggestor } from "@com.mgmtp.a12.dml/dml";
 import {
 	GRAMMAR_NAME,
 	GRAMMAR_ROOT_RULE_NAMES,
 	MONACO_LANGUAGE_CONFIGURATION,
-} from "@com.mgmtp.a12.dml/dml/lib/ruleCodeEditor/constants.js";
-import { getTheme } from "@com.mgmtp.a12.dml/dml/lib/ruleCodeEditor/theme/index.js";
-import {
-	CompletionItemDocResolver,
+	getTheme,
+	defaultMonacoUiConfig,
 	getCompletionItemProvider,
-	ItemSuggestor,
-} from "@com.mgmtp.a12.dml/dml/lib/ruleCodeEditor/context-assist/index.js";
-import { getCommonsTokenProvider } from "@com.mgmtp.a12.dml/dml/lib/ruleCodeEditor/commonsTokenProviderFactory.js";
-import { RuntimeVariable } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { PrintError } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { DocumentModelData } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/types/document-model-data.js";
+	getCommonsTokenProvider,
+} from "@com.mgmtp.a12.dml/dml";
+import type { RuntimeVariable } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { DocumentModelData } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 
 import { ErrorWrapper } from "../validation/index.js";
 
-import { getRootSuggester, getSuggester, SuggestionType } from "./rule-editor-suggesters.js";
+import type { SuggestionType } from "./rule-editor-suggesters.js";
+import { getRootSuggester, getSuggester } from "./rule-editor-suggesters.js";
 
 const GRAMMAR_LANGUAGE: Language = "en";
 const PARSER_PARAMETER = {
@@ -135,7 +129,8 @@ interface DebugProps {
 }
 
 export interface RuleCodeEditorProps
-	extends Pick<EditorProps, "loading">,
+	extends
+		Pick<EditorProps, "loading">,
 		Pick<IAntlrConfig, "theme">,
 		Pick<IAntlrCodeEditorProps, "delayFetchExternalErrors">,
 		Pick<IAntlrCodeEditorProps, "codeCompletionShortcut">,
@@ -188,6 +183,8 @@ export const RuleCodeEditor = (props: RuleCodeEditorProps) => {
 	const printGeneral = useSelector(PrintEngineSelectors.printContentGeneral);
 	const [monacoModelUri, setMonacoModelUri] = React.useState<monaco.Uri>();
 	const [errors, setErrors] = React.useState<monaco.editor.IMarker[]>();
+	const [prevMonacoModelUri, setPrevMonacoModelUri] = React.useState<monaco.Uri>();
+	const [prevRootRuleName, setPrevRootRuleName] = React.useState(rootRuleName);
 
 	const runtimeVariables: ReadonlyArray<DeepPartial<RuntimeVariable>> = React.useMemo(() => {
 		return printGeneral.runtimeVariables || [];
@@ -311,11 +308,13 @@ export const RuleCodeEditor = (props: RuleCodeEditorProps) => {
 		[getErrorMarkers, setNewRowData]
 	);
 
-	React.useEffect(() => {
+	if (prevMonacoModelUri !== monacoModelUri || prevRootRuleName !== rootRuleName) {
+		setPrevMonacoModelUri(monacoModelUri);
+		setPrevRootRuleName(rootRuleName);
 		if (monacoModelUri) {
 			setErrors(getErrorMarkers());
 		}
-	}, [getErrorMarkers, monacoModelUri, props.rootRuleName]);
+	}
 
 	React.useEffect(() => {
 		let disposable: monaco.IDisposable | undefined;

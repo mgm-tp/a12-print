@@ -31,9 +31,9 @@
  */
 package com.mgmtp.a12.print.shell.internal.service;
 
+import com.mgmtp.a12.print.shell.internal.exceptions.PrintShellException;
 import lombok.Data;
 import lombok.NonNull;
-import org.springframework.stereotype.Service;
 
 import java.io.PrintStream;
 import java.text.DecimalFormat;
@@ -41,7 +41,6 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-@Service
 public class ProfilingService {
 
 	@NonNull
@@ -60,7 +59,7 @@ public class ProfilingService {
 			final var ms = TimeUnit.MILLISECONDS.convert(endTime - startTime, TimeUnit.NANOSECONDS);
 			return new ExecutionTime<>(ms, result);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new PrintShellException(e);
 		}
 
 	}
@@ -93,7 +92,7 @@ public class ProfilingService {
 		try {
 			appendSnapshot(prefix, execTime.getTimeInMs(), stream);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new PrintShellException(e);
 		}
 		return execTime.getResult();
 	}

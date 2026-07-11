@@ -29,18 +29,22 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Header } from "@com.mgmtp.a12.base/base-model-api/lib/main/header/index.js";
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/model/typesetting-model.js";
+import type { Header } from "@com.mgmtp.a12.base/base-model-api";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
 
-import { DINTemplateSegment } from "../../api/index.js";
+import type { DINTemplateSegment } from "../../../internal/api/request-api.js";
+import type { StaticImageData } from "../../../api/StaticImageProvider.js";
 
 export interface RequestApiState {
-	printModelHeaders?: Header[];
 	referencedPrintModelHeaders?: Header[];
 	documentModelIds?: string[];
 	printModelData?: Record<string, PrintModel | undefined>;
 	typesettingModelHeaders?: Header[];
 	typesettingModelData?: Record<string, TypesettingModel | undefined>;
 	dinTemplatePrintModels?: Record<string, DINTemplateSegment[]>;
+	printModelIds?: string[];
+	resources: Record<string, StaticImageData>;
+	availableResources?: string[];
+	lastUploadedResource?: string;
 }

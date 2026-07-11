@@ -31,10 +31,10 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.computation;
 
-import com.mgmtp.a12.kernel.md.document.api.IEntityInstance;
 import com.mgmtp.a12.kernel.md.model.api.IElement;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.ValueDependency;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.Entity;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalCorePrintEngineRuntime;
 import lombok.Data;
@@ -99,6 +99,7 @@ public interface ComputationExpression {
 		private static final String ELEMENT_PARAMETER_KEY = "@Runtime/Element";
 		private static final String PRINT_DOCUMENT_CONTEXT_PARAMETER_KEY = "@Runtime/Print/Document/Context";
 		private static final String ENTITY_INSTANCE_PARAMETER_KEY = "@Runtime/EntityInstance";
+		private static final String PREVENT_REPEATABLE_CONTEXT_ERROR_KEY = "@Runtime/PreventRepeatableContextError";
 		public static final Parameters None = new Parameters();
 
 		private final Map<String, Object> values = new HashMap<>();
@@ -107,7 +108,7 @@ public interface ComputationExpression {
 			return key.startsWith("@Runtime");
 		}
 
-		public Parameters withEntityInstance(IEntityInstance entityInstance) {
+		public Parameters withEntityInstance(Entity<?> entityInstance) {
 			values.put(ENTITY_INSTANCE_PARAMETER_KEY, entityInstance);
 			return this;
 		}
@@ -122,8 +123,13 @@ public interface ComputationExpression {
 			return this;
 		}
 
-		public Optional<IEntityInstance> getEntityInstance() {
-			return Optional.ofNullable((IEntityInstance) values.get(ENTITY_INSTANCE_PARAMETER_KEY));
+		public Parameters preventRepeatableContextError() {
+			values.put(PREVENT_REPEATABLE_CONTEXT_ERROR_KEY, true);
+			return this;
+		}
+
+		public Optional<Entity<?>> getEntityInstance() {
+			return Optional.ofNullable((Entity<?>) values.get(ENTITY_INSTANCE_PARAMETER_KEY));
 		}
 
 		public Optional<IElement> getElement() {
@@ -132,6 +138,10 @@ public interface ComputationExpression {
 
 		public Optional<PrintDocumentContext> getPrintDocumentContext() {
 			return Optional.ofNullable((PrintDocumentContext) values.get(PRINT_DOCUMENT_CONTEXT_PARAMETER_KEY));
+		}
+
+		public boolean isPreventRepeatableContextError() {
+			return Optional.ofNullable((Boolean) values.get(PREVENT_REPEATABLE_CONTEXT_ERROR_KEY)).orElse(false);
 		}
 	}
 

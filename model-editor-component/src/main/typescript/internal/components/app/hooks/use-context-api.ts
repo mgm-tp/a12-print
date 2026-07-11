@@ -31,11 +31,11 @@
  */
 import { useMemo } from "react";
 
-import { createPrintFontMap } from "@com.mgmtp.a12.print/print-fonts/lib/internal/api/utils/font-map.js";
-import { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts/lib/types/font.js";
-import { Localizer } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import { createPrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
+import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
+import type { Localizer } from "@com.mgmtp.a12.utils/utils-localization";
 
-import { ContextApi } from "../../../api/context-api.js";
+import type { ContextApi } from "../../../api/context-api.js";
 
 import { useGetPrintComponentMessage } from "./use-get-print-component-message.js";
 

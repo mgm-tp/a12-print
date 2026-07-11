@@ -34,7 +34,7 @@ import { fileURLToPath } from "node:url";
 
 import { loadJsonFiles } from "../../../../../../../../../test/typescript/test-utils/files.js";
 import { PrintMigrationTool } from "../../../../../api.js";
-import { PrintModelDTO } from "../../02_description-field/print-model.js";
+import type { PrintModelDTO } from "../../02_description-field/print-model.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

@@ -65,3 +65,4 @@ public class Size {
 		return new Size(size.width - minusWidth, size.height - minusHeight);
 	}
 }
+

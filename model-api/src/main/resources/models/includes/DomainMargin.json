@@ -2,7 +2,7 @@
   "header": {
     "id": "DomainMargin",
     "modelType": "document",
-    "modelVersion": "28.4.0",
+    "modelVersion": "29.4.0",
     "locales": [
       {
         "code": "en"
@@ -20,7 +20,6 @@
     ],
     "modelReferences": [
       {
-        "alias": "DomainMeasure",
         "modelType": "document",
         "purpose": "include",
         "reference": "DomainMeasure"
@@ -33,8 +32,8 @@
       "immutable": false
     },
     "modelConfig": {
-      "decimalSeparator": ".",
       "timeZone": "UTC",
+      "decimalSeparator": ".",
       "conditionLanguage": {
         "code": "en_US"
       }
@@ -46,12 +45,28 @@
           "id": "group_d702b",
           "name": "margin",
           "Group": {
+            "label": [
+              {
+                "locale": "en",
+                "text": "Margin"
+              },
+              {
+                "locale": "de",
+                "text": "Seitenrand"
+              }
+            ],
             "repeatability": 1,
             "elements": [
               {
                 "type": "Field",
                 "id": "field_fe128",
                 "name": "id",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
@@ -62,6 +77,12 @@
                 "type": "Field",
                 "id": "field_edc1b",
                 "name": "type",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "EnumerationType",
@@ -95,7 +116,17 @@
                         }
                       ]
                     }
-                  }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "margin type"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Art des Abstands"
+                    }
+                  ]
                 }
               },
               {
@@ -167,7 +198,9 @@
                 "name": "margin",
                 "Group": {
                   "repeatability": 1,
-                  "modelAlias": "DomainMeasure"
+                  "includeConfig": {
+                    "reference": "DomainMeasure"
+                  }
                 }
               }
             ]

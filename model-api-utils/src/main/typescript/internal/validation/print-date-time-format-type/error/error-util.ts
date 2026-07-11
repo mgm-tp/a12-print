@@ -29,13 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ICustomFieldTypeCheckError } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts/lib/main/js/custom/ICustomFieldTypeCheckError.js";
-import { StaticResourceProvider } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts/lib/main/js/formatdef/error/bundles/StaticResourceProvider.js";
-import {
-	Localizable,
-	LocalizableArgs,
-	PlainPlaceholder,
-} from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import type { ICustomFieldTypeCheckError } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts";
+import { StaticResourceProvider } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts";
+import type { Localizable, LocalizableArgs, PlainPlaceholder } from "@com.mgmtp.a12.utils/utils-localization";
 
 import { PrintDateTimeFormatErrorEnum } from "./error-enum.js";
 import { PrintDateTimeFormatErrorImpl } from "./check-error-impl.js";

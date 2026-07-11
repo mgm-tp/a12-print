@@ -31,17 +31,12 @@
  */
 package com.mgmtp.a12.print.workspace.internal.utils;
 
-import com.mgmtp.a12.kernel.md.model.a12internal.DocumentModel;
-import com.mgmtp.a12.kernel.md.model.a12internal.DocumentModelConfig;
-import com.mgmtp.a12.kernel.md.model.a12internal.DocumentModelContent;
-import com.mgmtp.a12.kernel.md.model.a12internal.DocumentModelInfo;
-import com.mgmtp.a12.kernel.md.model.a12internal.FieldTypeDefinition;
+import com.mgmtp.a12.kernel.md.model.a12internal.*;
 import com.mgmtp.a12.kernel.md.model.a12internal.fieldtypes.CustomFieldType;
 import com.mgmtp.a12.kernel.md.model.a12internal.fieldtypes.FieldType;
 import com.mgmtp.a12.kernel.md.model.a12internal.fieldtypes.StringType;
 import com.mgmtp.a12.model.header.Header;
 import com.mgmtp.a12.print.workspace.internal.event.EventService;
-import com.mgmtp.a12.print.workspace.internal.exceptions.PrintWorkspaceException;
 import com.mgmtp.a12.print.workspace.internal.handler.ModelHandler;
 import com.mgmtp.a12.print.workspace.internal.handler.WorkspaceHandler;
 import org.junit.jupiter.api.Test;
@@ -58,7 +53,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.mgmtp.a12.print.workspace.internal.WorkspaceTest.RUNTIME_WORKSPACE;
 import static com.mgmtp.a12.print.workspace.internal.WorkspaceTest.TEST_WORKSPACE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -84,18 +78,18 @@ class DocumentModelUtilsTest {
     }
 
 	@Test
-	void givenInvalidDomainModel_whenExpand_thenThrowException() {
+	void givenInvalidDomainModel_whenExpand_stillSuccessfully() {
 		final var modelId = "DomainReferenceCycleTest";
 		final var modelHandler = new ModelHandler(workspaceHandler, eventService);
 		modelHandler.create(Paths.get(TEST_WORKSPACE, "invalid/DomainReferenceCycleTest.json"));
 
-		assertThatThrownBy(() -> underTest.expand(modelId))
-				.isInstanceOf(PrintWorkspaceException.class)
-				.hasMessageContaining("Following problems occurred during expansion of document model 'DomainReferenceCycleTest'");
+		final var result = underTest.expand(modelId);
+
+		assertThat(result).isNotNull();
 	}
 
     @Test
-    void suffixTypeDefinitionWithModelName() {
+    void prefixTypeDefinitionWithModelName() {
 		final var documentModelId = "TestFieldDM";
 		final var atomicInteger = new AtomicInteger(0);
 		final var mockHeader = mock(Header.class);
@@ -110,7 +104,7 @@ class DocumentModelUtilsTest {
 			FieldTypeDefinition.builder().id("id3").name("typeDef3").fieldType(mock(FieldType.class)).build()
 		));
 
-        underTest.suffixTypeDefinitionWithModelName(mockDocumentModel);
+        underTest.prefixTypeDefinitionWithModelName(mockDocumentModel);
 
 		mockContent.getTypeDefinitions().forEach(fieldTypeDefinition -> {
 			assertThat(fieldTypeDefinition.getName()).isEqualTo(String.format("%s_%s", documentModelId, "typeDef" + atomicInteger.incrementAndGet()));

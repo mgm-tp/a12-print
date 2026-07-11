@@ -33,7 +33,9 @@ package com.mgmtp.a12.print.model.api.exceptions;
 
 
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public class UnvisitedElementException extends RuntimeException {
 	public UnvisitedElementException(final PrintModelElement element) {
 		super("Not exhaustive visitation, element: " + (element == null ? "null" : element.getClass()) + " was visited by the default visitation.");

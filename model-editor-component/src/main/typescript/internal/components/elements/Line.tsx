@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PartialLine } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { PartialLine } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { BaseElementProps } from "./base.js";
+import type { BaseElementProps } from "./base.js";
 
 type LineProps = BaseElementProps;
 

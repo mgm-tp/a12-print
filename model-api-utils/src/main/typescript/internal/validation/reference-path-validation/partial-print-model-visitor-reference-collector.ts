@@ -30,7 +30,7 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
+import type {
 	ListingColumn,
 	ListingColumnField,
 	PartialArea,
@@ -51,20 +51,19 @@ import {
 	PartialTable,
 	PartialWatermark,
 	PrintModelEntity,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ExtendedEntityInstancePathBuilder } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { TraversalCommand } from "@com.mgmtp.a12.print/print-model-api/lib/walker/print-model-visitor.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { ExtendedEntityInstancePathBuilder } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { PartialPrintModelTrace } from "@com.mgmtp.a12.print/print-model-api/walker";
 import {
+	TraversalCommand,
 	createPartialPrintModelWalker,
-	PartialPrintModelTrace,
 	PartialPrintModelVisitor,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/partial/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/walker";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import { CollectedComputation, CollectedFieldReference, CollectedPath } from "../../types/reference-path.js";
+import type { CollectedComputation, CollectedFieldReference, CollectedPath } from "../../types/reference-path.js";
 
-import { extractFieldReferencePath } from "./reference-path-extraction.js";
-import { extractComputationPaths } from "./reference-path-extraction.js";
+import { extractFieldReferencePath, extractComputationPaths } from "./reference-path-extraction.js";
 
 /**
  * A PartialPrintModelVisitor that collects all objects which includes references to document model paths

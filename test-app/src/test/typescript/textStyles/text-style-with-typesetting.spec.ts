@@ -30,6 +30,9 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { expect, test } from "@playwright/test";
+
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+
 import {
 	closeDetail,
 	devAppTest,
@@ -37,10 +40,9 @@ import {
 	openEditorStage,
 	selectInputSource,
 	selectTab,
+	waitForInteractionSagasSettled,
 	writeToTextElement,
-} from "src/test/typescript/utils";
-
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+} from "../utils/index.js";
 
 const TEST_TEXT = `university self-hosting éléphant Überraschung Mädchen hôtel t-shirt 123 kW 1.234 m³
 100 $ 20 °C 1000 ₩ 50 % 75 € 5 Ω forêt §12 Abs. 3 12(34)(a) Hr. Schmidt Dr. Meier`;
@@ -51,51 +53,49 @@ test.describe("Text Style with Typesetting", () => {
 	devAppTest("Create a text element with typesetting", async ({ page }) => {
 		await test.step("Reference Typesetting Model", async () => {
 			await selectTab({ page, tab: "Schema" });
-			await page.locator(`_react=TypesettingModelReferences`).click();
+			await page.locator('[data-role="collapsible-panel"]').getByText("Typesetting Model References").click();
 
 			await page
-				.locator(`_react=TypesettingModelReferencesToolbar`)
+				.getByTestId("typesetting-references-toolbar")
 				.getByRole("combobox")
 				.selectOption("custom_prevent_break_line_rule");
 
-			await page.locator(`_react=TypesettingModelReferencesToolbar`).locator(`_react=Button`).click();
+			await page.getByTestId("typesetting-references-toolbar").getByRole("button", { name: "Add" }).click();
 		});
 
 		await test.step("Create new Text Style", async () => {
 			await selectTab({ page, tab: "Text Styles" });
-			await page.locator(`_react=Button[label = 'Add New Text Style']`).click();
-			await page.locator(`_react=TextStyleCard`).last().click();
+			await page.getByRole("button", { name: "Add New Text Style" }).click();
+			await page.getByTestId("text-style-card").last().click();
 		});
 
 		await test.step("Select typesetting model", async () => {
-			await page.locator(`_react=CustomSelect[label = 'Typesetting Model']`).click();
-
-			await page
-				.locator(`_react=AttachedPortal`)
-				.getByRole("option", { name: "custom_prevent_break_line_rule" })
-				.click();
+			await page.getByTestId("typesetting-model-select").click();
+			await page.getByRole("option", { name: "custom_prevent_break_line_rule" }).click();
 		});
 
 		await test.step("Create text element", async () => {
 			await selectTab({ page, tab: "Segment" });
 			await openEditorStage({ page, tab: "Segment", cardName: "First Segment" });
 			await dragElementToEditor({ page, elementName: "Text" });
-			await page.locator("_react=Text").dblclick();
+			await page.getByTestId("element-text").dblclick();
 			await writeToTextElement({
 				page,
 				text: TEST_TEXT,
 			});
 			await page.locator("#sidebar-panel").getByLabel("Close").click({ force: true });
+			await waitForInteractionSagasSettled(page);
 		});
 
 		await test.step("Select Text Style for text element", async () => {
 			await selectInputSource({ page, label: "Text Styles", source: PossibleInputSource.INPUT });
-			await page.locator("_react=CustomSelect[id = 'textStyleId']").getByRole("combobox").click();
+			await page.getByRole("combobox", { name: "Text Styles" }).click();
 			await page.getByRole("option", { name: "New Text Style" }).click();
 
 			await closeDetail({ page });
-			const textElement = page.locator("_react=Text");
-			await expect(textElement).toHaveScreenshot();
+			const textElement = page.getByTestId("element-text");
+			await textElement.click();
+			await expect.soft(textElement).toHaveScreenshot();
 		});
 	});
 });

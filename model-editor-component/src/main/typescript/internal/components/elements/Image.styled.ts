@@ -37,6 +37,13 @@ export const ImageAttachment = styled.img`
 	display: block;
 `;
 
+export const ImagePlaceholderAttachment = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+`;
+
 export const ImageField = styled.div`
 	background-color: #b7c0c7;
 	text-align: center;

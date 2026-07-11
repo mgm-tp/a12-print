@@ -32,6 +32,14 @@
 import { nanoid } from "nanoid";
 
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
+import type {
+	PrintModel,
+	PrintModelElement,
+	Reference,
+	Section,
+	Segment,
+	Watermark,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	ElementType,
 	PartialArea,
@@ -41,14 +49,8 @@ import {
 	PartialTable,
 	PartialTableLayout,
 	PartialText,
-	PrintModel,
-	PrintModelElement,
-	Reference,
-	Section,
-	Segment,
-	Watermark,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 const log = LoggerFactory.getLogger("PrintModelGarbageCollector");
 

@@ -29,15 +29,15 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Action, Reducer } from "redux";
+import type { Action, Reducer } from "redux";
 
-import { TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineActions } from "../../store/actions.js";
-import { DEFAULT_TEXT_STYLE_ID, DEFAULT_TEXT_STYLE } from "../../constant/textstyle.js";
+import { DEFAULT_TEXT_STYLE_ID, DEFAULT_TEXT_STYLE } from "../../../internal/constant/textstyle.js";
 
 import { EditorStateActions } from "./actions.js";
-import { EditorMode, PrintEditorState, PrintModelRefs } from "./state.js";
+import type { PrintEditorState } from "./state.js";
 
 const defaultEditorState: PrintEditorState = {
 	editorOptions: {
@@ -50,7 +50,6 @@ const defaultEditorState: PrintEditorState = {
 			vertical: [],
 			horizontal: [],
 		},
-		editorMode: EditorMode.Default,
 		showBorders: true,
 		isMarginVisible: true,
 	},
@@ -85,27 +84,6 @@ export const EditorStateReducer: Reducer<PrintEditorState> = (
 			},
 		};
 	}
-	if (EditorStateActions.updateEditorMode.match(action)) {
-		return {
-			...state,
-			editorStates: {
-				...state.editorStates,
-				...action.payload,
-			},
-		};
-	}
-	if (EditorStateActions.updatePrintModelRefs.match(action)) {
-		return {
-			...state,
-			printModelRefs: { ...action.payload },
-		};
-	}
-	if (EditorStateActions.deletePrintModelRefs.match(action)) {
-		return {
-			...state,
-			printModelRefs: undefined,
-		};
-	}
 	if (EditorStateActions.updateSelectedTextStyleId.match(action)) {
 		return {
 			...state,
@@ -133,7 +111,6 @@ export const EditorStateReducer: Reducer<PrintEditorState> = (
 	if (PrintEngineActions.removeInvalidSelections.match(action)) {
 		return {
 			...state,
-			printModelRefs: filterExistingPrintModelRefs(state.printModelRefs, action.payload),
 			sidebar: {
 				selectedTextStyleId: filterExistingTextStyleId(state.sidebar.selectedTextStyleId, action.payload),
 			},
@@ -148,29 +125,4 @@ function filterExistingTextStyleId(selectedTextStyleId: string, transactionLogSt
 		return DEFAULT_TEXT_STYLE_ID;
 	}
 	return selectedTextStyleId;
-}
-
-function filterExistingPrintModelRefs(
-	printModelRefs: PrintModelRefs | undefined,
-	transactionLogStore: TransactionLogStore
-) {
-	if (!printModelRefs) {
-		return undefined;
-	}
-
-	const { segmentId, sectionId, watermarkId } = printModelRefs;
-
-	const updatedPrintRefs = { ...printModelRefs };
-
-	if (!transactionLogStore.segments?.map?.[segmentId]) {
-		updatedPrintRefs.segmentId = "";
-	}
-	if (!transactionLogStore.sections?.map?.[sectionId]) {
-		updatedPrintRefs.sectionId = "";
-	}
-	if (!transactionLogStore.watermarks?.map?.[watermarkId]) {
-		updatedPrintRefs.watermarkId = "";
-	}
-
-	return updatedPrintRefs;
 }

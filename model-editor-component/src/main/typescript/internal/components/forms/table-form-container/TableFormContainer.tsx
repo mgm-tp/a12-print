@@ -31,29 +31,26 @@
  */
 import { useSelector } from "react-redux";
 
-import { PartialTable } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { TableRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import { PartialTable } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
+import { isTableColumnFormState, NavigationSelectors } from "../../../redux/index.js";
 
 import { TableColumnFormDetail } from "./TableColumnFormDetail.js";
 import { TableForm } from "./TableForm.js";
 
 export const TableFormContainer = () => {
-	const currentDetailData = useSelector(PrintEngineSelectors.currentDetailData);
-	const additionalData = useSelector(PrintEngineSelectors.additionalData);
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
+	const element = useSelector(PrintEngineSelectors.rootFormElement);
+	const currentForm = useSelector(NavigationSelectors.currentForm);
 
 	if (!element || !PartialTable.isInstance(element)) {
 		throw Error("Expected element of type Table");
 	}
 
-	const columnIndex = additionalData?.table?.columnIndex;
-	const isTableOpen =
-		currentDetailData?.formContainers.slice()?.pop() === TableRegion.TABLE_COLUMN_FORM && columnIndex !== undefined;
+	const isTableColumnForm = currentForm && isTableColumnFormState(currentForm);
 
-	return isTableOpen ? (
-		<TableColumnFormDetail element={element} columnIndex={columnIndex} />
+	return isTableColumnForm ? (
+		<TableColumnFormDetail element={element} columnIndex={currentForm.columnIndex} />
 	) : (
 		<TableForm element={element} />
 	);

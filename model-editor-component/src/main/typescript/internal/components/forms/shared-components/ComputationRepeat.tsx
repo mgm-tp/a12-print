@@ -33,25 +33,22 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { GRAMMAR_ROOT_RULE_NAMES } from "@com.mgmtp.a12.dml/dml/lib/ruleCodeEditor/constants.js";
-import { ComputationAlternative, PartialListing } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/button-group/index.js";
-import { TableTemplate } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/index.js";
+import { GRAMMAR_ROOT_RULE_NAMES } from "@com.mgmtp.a12.dml/dml";
+import type { ComputationAlternative } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialListing } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { BaseColumnType, TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core";
 import {
-	BaseColumnType,
+	Button,
+	ButtonGroup,
+	TableTemplate,
 	DefaultTableComponentRenderers,
 	Table,
-	TableRenderPropsType,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/index.js";
-import {
-	DeepPartialErrorMap,
-	ErrorSeverity,
-	PrintError,
-} from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { DocumentModelData } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/types/document-model-data.js";
+	Icon,
+} from "@com.mgmtp.a12.widgets/widgets-core";
+import type { DeepPartialErrorMap, PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { DocumentModelData } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { useModelNameAliasConverter } from "../../../hooks/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
@@ -59,7 +56,7 @@ import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { BadgeGroup } from "../../badge/BadgeGroup.js";
 import { ValidationCounter } from "../../../redux/index.js";
 import { RuleCodeEditor } from "../../rule-code-editor/RuleCodeEditor.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { DocumentModelDataSelectors } from "../../../redux/document-model-data/selectors.js";
 
 import { ActionColumnButtonGroup } from "./ActionColumnButtonGroup.js";
@@ -190,19 +187,17 @@ export const ComputationRepeat = ({
 	);
 
 	return (
-		<>
-			<div>
-				<Table<ComputationRepeatRowType>
-					columns={columns}
-					data={tableData}
-					componentRenderers={{
-						bodyContentRenderer,
-						bodyRowRenderer,
-					}}
-				/>
-			</div>
+		<div>
+			<Table<ComputationRepeatRowType>
+				columns={columns}
+				data={tableData}
+				componentRenderers={{
+					bodyContentRenderer,
+					bodyRowRenderer,
+				}}
+			/>
 			<AddButtonGroup onClick={onAddRowClick} />
-		</>
+		</div>
 	);
 };
 
@@ -231,7 +226,7 @@ const RepeatBodyRow = ({
 }: RepeatBodyRowProps) => {
 	const { rowIndex } = bodyRowProps;
 	const localizer = PrintLocalizer.useLocalizer();
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
+	const element = useSelector(PrintEngineSelectors.currentFormElement);
 
 	function onCloseClick(event: React.MouseEvent<HTMLElement, MouseEvent>) {
 		event.stopPropagation();

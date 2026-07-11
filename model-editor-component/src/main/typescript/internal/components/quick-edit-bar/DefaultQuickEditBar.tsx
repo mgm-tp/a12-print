@@ -29,32 +29,27 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { useCallback, useMemo, FocusEvent, useContext } from "react";
+import { type FocusEvent, useCallback, useMemo, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import {
-	PartialImage,
-	PartialOverride,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { Button, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { PartialOverride, type PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../constant/editor.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { DetailViewActions } from "../../redux/detail-view/actions.js";
-import { UpdateElementsTransactionLogAction, TransactionLogStateActions } from "../../redux/index.js";
-import { InteractionLogActions } from "../../redux/interaction-log/index.js";
+import { DetailViewActions } from "../../redux//detail-view/actions.js";
+import type { UpdateElementsTransactionLogAction } from "../../redux/index.js";
+import { TransactionLogStateActions } from "../../redux/index.js";
+import { InteractionLogActions } from "../../redux//interaction-log/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { ElementsUtils } from "../../utils/elements-utils.js";
 import { changeMmMeasureValue } from "../../utils/measure-utils.js";
 import { EditorUtils } from "../../utils/editor-utils.js";
 import { useIsElementInsideStage, useUpdateDimensionsHandler } from "../../hooks/index.js";
 
 import { EditorContext } from "../editor-stage/editor-context.js";
-import { getRefImageDimensions } from "../forms/image-form-container/ImageGeneralProperties.js";
 
 import { StyledFlexGroupContainer, StyledOuterContainer } from "./shares/QuickEditBar.styled.js";
 import { QuickNumberInput } from "./shares/QuickNumberInput.js";
@@ -164,22 +159,17 @@ export const DefaultQuickEditBar = ({ selected, deleteSelectedEls, groupSelected
 					x: type === "x" ? changeMmMeasureValue(newVal, mainTarget.position.x) : mainTarget.position.x,
 					y: type === "y" ? changeMmMeasureValue(newVal, mainTarget.position.y) : mainTarget.position.y,
 				},
-				dimensions: PartialImage.isInstance(refElement)
-					? {
-							...mainTarget.dimensions,
-							...getRefImageDimensions(type, newVal, mainTarget, refElement),
-						}
-					: {
-							...mainTarget.dimensions,
-							minWidth:
-								type === "width"
-									? changeMmMeasureValue(newVal, mainTarget.dimensions.minWidth)
-									: mainTarget.dimensions.minWidth,
-							minHeight:
-								type === "height"
-									? changeMmMeasureValue(newVal, mainTarget.dimensions.minHeight)
-									: mainTarget.dimensions.minHeight,
-						},
+				dimensions: {
+					...mainTarget.dimensions,
+					minWidth:
+						type === "width"
+							? changeMmMeasureValue(newVal, mainTarget.dimensions.minWidth)
+							: mainTarget.dimensions.minWidth,
+					minHeight:
+						type === "height"
+							? changeMmMeasureValue(newVal, mainTarget.dimensions.minHeight)
+							: mainTarget.dimensions.minHeight,
+				},
 			};
 		},
 		[mainTarget, refElement]

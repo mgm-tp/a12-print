@@ -32,7 +32,9 @@
 package com.mgmtp.a12.print.engine.runtime.xml.internal.exceptions;
 
 
-public class XmlMappingException extends RuntimeException {
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
+
+public class XmlMappingException extends PrintException {
 	public XmlMappingException(String message) {
 		super(message);
 	}

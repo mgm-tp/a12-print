@@ -30,5 +30,6 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 export * from "./internal/print-model/api.js";
+export * from "./internal/print-model/config.js";
 export * from "./internal/print-setting-model/api.js";
 export * from "./internal/typesetting-model/api.js";

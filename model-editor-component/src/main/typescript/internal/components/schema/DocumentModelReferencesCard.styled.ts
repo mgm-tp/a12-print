@@ -31,9 +31,9 @@
  */
 import { styled } from "styled-components";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/main/button.view.js";
+import { Button } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { CustomTextLineStateless } from "../forms/custom-base-input-components/index.js";
+import { CustomTextField } from "../forms/custom-base-input-components/index.js";
 
 interface StyledSchemaCardContainerProps {
 	highlight?: boolean;
@@ -54,7 +54,7 @@ export const StyledSchemaCard = styled.div`
 	justify-content: space-between;
 `;
 
-export const StyledTextLineStatelessReference = styled(CustomTextLineStateless)`
+export const StyledTextLineStatelessReference = styled(CustomTextField)`
 	min-width: 40%;
 	max-width: 40%;
 `;

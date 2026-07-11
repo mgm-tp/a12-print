@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.kernel.internal;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 
 public class ComputationParsingException extends PrintCompilerException {
 

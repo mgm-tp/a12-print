@@ -31,7 +31,7 @@
  */
 import { styled } from "styled-components";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
+import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PositiveNumberInput } from "../../custom-input/PositiveNumberInput.js";
 

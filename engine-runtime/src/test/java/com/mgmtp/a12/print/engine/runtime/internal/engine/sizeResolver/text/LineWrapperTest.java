@@ -32,7 +32,6 @@
 package com.mgmtp.a12.print.engine.runtime.internal.engine.sizeResolver.text;
 
 
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.rendering.HTMLCleanUpUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.sizeResolver.utils.TestTypesettingBuilder;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.factories.text.CachedTextWidthResolver;
@@ -64,7 +63,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class LineWrapperTest {
-	private static final HTMLCleanUpUtil cleanUpUtil = new HTMLCleanUpUtil(PrintEngineConfig.DEFAULT_ALLOWED_HTML_TAGS, PrintEngineConfig.DEFAULT_ALLOWED_STYLES);
+	private static final HTMLCleanUpUtil cleanUpUtil = new HTMLCleanUpUtil();
 
 	private final FontLoader fontLoader = new FontLoader(new PDDocument());
 

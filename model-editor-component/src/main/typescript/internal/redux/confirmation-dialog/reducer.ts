@@ -29,10 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Action, Reducer } from "redux";
+import type { Action, Reducer } from "redux";
 
 import { ConfirmationDialogActions } from "./actions.js";
-import { ConfirmationDialogState, LastActionType } from "./state.js";
+import type { ConfirmationDialogState } from "./state.js";
+import { LastActionType } from "./state.js";
 
 const defaultDialog: ConfirmationDialogState = null;
 

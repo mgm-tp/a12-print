@@ -31,8 +31,7 @@
  */
 import { useDispatch, useSelector } from "react-redux";
 
-import { ToastGroup, Toast } from "@com.mgmtp.a12.widgets/widgets-core/lib/toast";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon";
+import { ToastGroup, Toast, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { NotificationActions, NotificationSelector } from "../store/notification";
 

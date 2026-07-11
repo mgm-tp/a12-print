@@ -32,25 +32,25 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { Measure, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { Measure, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../constant/editor.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
+import type { OmitId } from "../../utils/index.js";
 import {
 	changeMmMeasureValue,
 	createPlainMmMeasure,
 	createPlainMmMeasureFromPx,
 	EditorUtils,
 	formatNumberToString,
-	OmitId,
 } from "../../utils/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { TransactionLogStateActions } from "../../redux/index.js";
-import { InteractionLogActions } from "../../redux/interaction-log/index.js";
+import { InteractionLogActions } from "../../redux//interaction-log/index.js";
 import { RESOURCE_KEYS } from "../../localization/index.js";
 import { useGetSectionOffset } from "../../hooks/use-get-section-offset.js";
-import { ISide } from "../../types/resize.js";
+import type { ISide } from "../../types/resize.js";
 import { useUpdateDimensionsHandler } from "../../hooks/use-update-dimensions-handler.js";
 
 import { ToolTipRight, ToolTipTop } from "../tool-tips/ToolTips.styled.js";

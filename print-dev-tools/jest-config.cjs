@@ -61,6 +61,9 @@ module.exports = {
 							runtime: "automatic",
 						},
 					},
+					experimental: {
+						keepImportAttributes: true,
+					},
 				},
 			},
 		],
@@ -76,4 +79,7 @@ module.exports = {
 
 	// set fixed worker size to prevent test run killing on jenkins
 	maxWorkers: 3,
+
+	// restart workers when they exceed this heap threshold to prevent OOM on coverage runs
+	workerIdleMemoryLimit: "512MB",
 };

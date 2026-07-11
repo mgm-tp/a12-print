@@ -35,7 +35,7 @@ import com.mgmtp.a12.kernel.md.model.api.IField;
 import com.mgmtp.a12.kernel.md.model.api.fieldtypes.IFieldType;
 import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.loader.DocumentModelDependency;
@@ -61,11 +61,11 @@ public class FieldTypeDependencyValueProducer implements CoreDependencyValueProv
 		final var field = documentModel
 			.getDocumentModelSearchService()
 			.getByPath(path)
-			.filter(e -> e instanceof IField)
+			.filter(IField.class::isInstance)
 			.map(e -> (IField) e)
-			.orElseThrow(() -> new PrintException(String.format("Field %s does not exists in DocumentModel %s", path, documentModel.getHeader().getId())));
+			.orElseThrow(() -> new PrintDomainException("Field {} does not exists in Document Model {}", path, documentModel.getHeader().getId()));
 		return () -> field
 			.getEffectiveType()
-			.orElseThrow(() -> new PrintException(String.format("Unable to resolve the effectiveFieldType for Field %s in DocumentModel %s", path, documentModel.getHeader().getId())));
+			.orElseThrow(() -> new PrintDomainException("Unable to resolve the effectiveFieldType for Field {} in Document Model {}", path, documentModel.getHeader().getId()));
 	}
 }

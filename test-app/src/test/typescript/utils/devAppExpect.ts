@@ -29,7 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { expect as baseExpect, Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import { expect as baseExpect } from "@playwright/test";
 
 export const expect = baseExpect.extend({
 	async toMatchStore(page: Page) {
@@ -64,8 +65,8 @@ export const expect = baseExpect.extend({
 	async toHaveEditorStageErrors(page: Page, count: number) {
 		const assertionName = "toHaveEditorStageErrors";
 		try {
-			const editorContainer = page.locator("_react=EditorContainer");
-			const errorBadge = editorContainer.locator("_react=ErrorBadge").first();
+			const editorContainer = page.getByTestId("editor-container");
+			const errorBadge = editorContainer.locator('[data-role="badge"]').first();
 			if (count === 0) {
 				await expect(errorBadge).toHaveCount(0);
 			} else {

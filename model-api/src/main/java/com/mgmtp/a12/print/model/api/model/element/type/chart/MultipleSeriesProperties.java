@@ -35,7 +35,9 @@ import com.mgmtp.a12.print.model.api.model.element.base.inputSource.StringInputS
 
 import java.util.List;
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface MultipleSeriesProperties extends ChartProperties {
 	StringInputSource getLabelX();
 	StringInputSource getLabelY();

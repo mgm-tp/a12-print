@@ -32,20 +32,24 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { Button, MessageBox, Typography } from "@com.mgmtp.a12.widgets/widgets-core";
-import { ProgressIndicator } from "@com.mgmtp.a12.widgets/widgets-core/lib/progress-indicator/index.js";
+import { Button, MessageBox, ProgressIndicator, Typography } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { CommitViewSelectors } from "../../redux/commit-view/selectors.js";
+import { CommitViewSelectors } from "../../redux//commit-view/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { countErrorDataNodes } from "../../utils/error-tree-utils.js";
 
+import { ErrorBadge, WarningBadge } from "../badge/ValidationBadge.js";
+
 import { ValidationErrorTree } from "./ValidationErrorTree.js";
+import { StyledValidationErrorsHeadline } from "./ValidationErrorView.styled.js";
+
+const IS_DEBUG_MODE = typeof process !== "undefined" && process?.env?.DEBUG;
 
 export function ValidationErrorView() {
 	const [isDebugMode, setIsDebugMode] = React.useState(false);
 	const localizer = PrintLocalizer.useLocalizer();
-	const hasCommitViewValidationErrors = useSelector(CommitViewSelectors.hasCommitViewValidationErrors);
-	const hasCommitViewValidationWarnings = useSelector(CommitViewSelectors.hasCommitViewValidationWarnings);
+	const commitViewValidationErrorsCount = useSelector(CommitViewSelectors.commitViewValidationErrorsCount);
+	const commitViewValidationWarningsCount = useSelector(CommitViewSelectors.commitViewValidationWarningsCount);
 	const errorMap = useSelector(CommitViewSelectors.commitViewErrorMapState);
 	const errorTreeDataDebug = useSelector(CommitViewSelectors.errorTreeStateDebug);
 	const errorTreeData = useSelector(CommitViewSelectors.errorTreeState);
@@ -62,14 +66,36 @@ export function ValidationErrorView() {
 					level={2}
 					className="-u-margin-l-sm"
 					addons={
-						<Button
-							label={localizer(RESOURCE_KEYS.validation.errorTree.buttons.debugMode)}
-							onClick={() => setIsDebugMode(prev => !prev)}
-							className="-u-hidden"
-						/>
+						IS_DEBUG_MODE && (
+							<Button
+								label={localizer(RESOURCE_KEYS.validation.errorTree.buttons.debugMode)}
+								onClick={() => setIsDebugMode(prev => !prev)}
+								active={isDebugMode}
+							/>
+						)
 					}
 				>
-					{localizer(RESOURCE_KEYS.validation.errorTree.heading)}
+					<StyledValidationErrorsHeadline>
+						{localizer(RESOURCE_KEYS.validation.errorTree.heading)}
+						<ErrorBadge
+							count={commitViewValidationErrorsCount}
+							type="descriptive"
+							title={localizer(
+								RESOURCE_KEYS.validation.title.toolbar.error,
+								PrintLocalizer.getLocalizableArgs({ count: commitViewValidationErrorsCount })
+							)}
+							standalone
+						/>
+						<WarningBadge
+							count={commitViewValidationWarningsCount}
+							type="descriptive"
+							title={localizer(
+								RESOURCE_KEYS.validation.title.toolbar.warning,
+								PrintLocalizer.getLocalizableArgs({ count: commitViewValidationWarningsCount })
+							)}
+							standalone
+						/>
+					</StyledValidationErrorsHeadline>
 				</Typography.Headline>
 			</Typography.Section>
 			{isDebugMode && (
@@ -88,7 +114,8 @@ export function ValidationErrorView() {
 			)}
 			{treeData === null ? (
 				<ProgressIndicator />
-			) : treeData.children?.length && (hasCommitViewValidationErrors || hasCommitViewValidationWarnings) ? (
+			) : treeData.children?.length &&
+			  (commitViewValidationErrorsCount > 0 || commitViewValidationWarningsCount > 0) ? (
 				<ValidationErrorTree isDebugMode={isDebugMode} treeData={treeData} />
 			) : (
 				<MessageBox

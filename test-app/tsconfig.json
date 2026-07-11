@@ -6,12 +6,13 @@
     "use-cases/**/*"
   ],
   "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false,
     "module": "ESNext",
     "moduleResolution": "bundler",
     "outDir": "./lib",
     "allowJs": true,
     "checkJs": false,
-    "baseUrl": ".",
     "paths": {
       "@use-cases/*": [
         "./use-cases/*"

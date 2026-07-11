@@ -32,20 +32,18 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import {
+import type {
 	Animation,
-	FocusLastLayout,
 	Layoutable,
 	LayoutResult,
-	MasterDetail,
-	MasterDetailLayout,
 	ViewWidth,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/master-detail/index.js";
-import { SizeDetectorProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/size-detector/main/size-detector.api.js";
-import { PartialSwitch } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+	SizeDetectorProps,
+} from "@com.mgmtp.a12.widgets/widgets-core";
+import { FocusLastLayout, MasterDetail, MasterDetailLayout } from "@com.mgmtp.a12.widgets/widgets-core";
+import { PartialSwitch } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { EditorMode } from "../../redux/index.js";
+import { EditorMode, NavigationSelectors } from "../../redux/index.js";
 
 import { FormContainer } from "../forms/index.js";
 import { EditorContextWrapper } from "../editor-stage/EditorContextWrapper.js";
@@ -81,35 +79,23 @@ const COMPONENTS: IComponents = {
 
 export const CustomMasterDetailLayout = () => {
 	const wrapperElement = useSelector(PrintEngineSelectors.currentWrapperContainer);
-	const currentDetailData = useSelector(PrintEngineSelectors.currentDetailData);
-	const [layoutArrState, setLayoutArrState] = React.useState<ModelComponent[]>(Object.values(COMPONENTS));
-	const [layoutPosMD, setLayoutPosMD] = React.useState<ModelComponent>(COMPONENTS.MainContainer);
+	const currentDetailData = useSelector(NavigationSelectors.detailForm);
 	const [smallView, setSmallView] = React.useState<boolean>(false);
-	const editorMode = useSelector(PrintEngineSelectors.editorMode);
+	const editorMode = useSelector(NavigationSelectors.currentMode);
 
-	const layoutManager = new FocusLastLayout<ModelComponent>(layoutArrState);
+	const isFormOpen = !!currentDetailData;
+	const layoutPosMD =
+		isFormOpen && [EditorMode.Default, EditorMode.Layout].includes(editorMode)
+			? COMPONENTS.FormContainer
+			: COMPONENTS.MainContainer;
+
+	const layoutManager = new FocusLastLayout<ModelComponent>(Object.values(COMPONENTS));
 	layoutManager.goto(layoutPosMD);
 	layoutManager.columnCount =
-		smallView || (wrapperElement && PartialSwitch.isInstance(wrapperElement)) || currentDetailData?.isFullScreenForm
+		smallView || (wrapperElement && PartialSwitch.isInstance(wrapperElement)) || currentDetailData?.isFullScreen
 			? 1
 			: 2;
 	const layout = layoutManager.layout();
-	const isFormOpen = currentDetailData?.isFormOpen?.[editorMode];
-
-	React.useEffect(() => {
-		if (currentDetailData) {
-			setLayoutArrState(Object.values(COMPONENTS));
-			setLayoutPosMD(COMPONENTS.FormContainer);
-		}
-	}, [currentDetailData]);
-
-	React.useEffect(() => {
-		if (isFormOpen && [EditorMode.Default, EditorMode.Layout].includes(editorMode)) {
-			setLayoutPosMD(layoutArrState[1]);
-		} else {
-			setLayoutPosMD(layoutArrState[0]);
-		}
-	}, [currentDetailData?.isFullScreenForm, isFormOpen, layoutArrState, editorMode]);
 
 	const handleWindowSizeChanged = React.useCallback((breakPoint: SizeDetectorProps.BreakPoint): void => {
 		setSmallView(breakPoint.size === "sm" || breakPoint.size === "xs");
@@ -117,7 +103,7 @@ export const CustomMasterDetailLayout = () => {
 
 	const animation: Animation = {
 		enabled: true,
-		animateSingleItem: smallView || (currentDetailData?.isFullScreenForm && isFormOpen) ? "rtl" : "ltr",
+		animateSingleItem: smallView || (currentDetailData?.isFullScreen && isFormOpen) ? "rtl" : "ltr",
 	};
 	const visibleViews = useVisibleViews(layout);
 
@@ -127,7 +113,7 @@ export const CustomMasterDetailLayout = () => {
 function useVisibleViews(layout: LayoutResult<ModelComponent>) {
 	const visibleSlots = MasterDetailLayout.visible(layout);
 
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
+	const currentCanvasEntityId = useSelector(PrintEngineSelectors.currentCanvasEntityId);
 
 	return visibleSlots.map(v => {
 		const isFormContainer =
@@ -135,7 +121,7 @@ function useVisibleViews(layout: LayoutResult<ModelComponent>) {
 		return {
 			width: v.width as ViewWidth,
 			key: v.layoutable.key,
-			element: isFormContainer ? <FormContainer key={currentDetailDataId} /> : <EditorContextWrapper />,
+			element: isFormContainer ? <FormContainer key={currentCanvasEntityId} /> : <EditorContextWrapper />,
 		};
 	});
 }

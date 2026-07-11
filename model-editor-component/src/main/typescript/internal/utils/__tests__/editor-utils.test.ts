@@ -31,18 +31,13 @@
  */
 import { nanoid } from "nanoid";
 
-import {
-	MeasureUnit,
-	PageOrientation,
-	SectionUsage,
-	PartialSection,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialSection, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { MeasureUnit, PageOrientation, SectionUsage } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { createPartialValidReference } from "../../../../../test/typescript/test-utils/index.js";
 
 import { EditorUtils } from "../editor-utils.js";
-import { PlainMeasureDimensions, PlainMeasurePosition } from "../measure-utils.js";
+import type { PlainMeasureDimensions, PlainMeasurePosition } from "../measure-utils.js";
 import { ElementsUtils } from "../elements-utils.js";
 
 describe("editor utils", () => {

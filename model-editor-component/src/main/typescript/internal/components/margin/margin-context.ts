@@ -31,7 +31,7 @@
  */
 import * as React from "react";
 
-import { MarginResizeContextValue } from "../../types/margin.js";
+import type { MarginResizeContextValue } from "../../types/margin.js";
 
 interface MarginContextData {
 	margin?: MarginResizeContextValue;

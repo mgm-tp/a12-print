@@ -30,8 +30,8 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { createMigrationTool } from "@com.mgmtp.a12.migrationtool/migrationtool-core/web";
-import { MigrationTool, MigrationResult } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
-import { TypesettingModelMarshaller } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/marshaller/model-marshaller.js";
+import type { MigrationTool, MigrationResult } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
+import { TypesettingModelMarshaller } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
 
 import { buildErrorFieldPaths } from "../utils/validation.js";
 

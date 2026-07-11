@@ -2,7 +2,7 @@
   "header": {
     "id": "PrintWithShell",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "locales": [
       {
         "code": "de"
@@ -12,11 +12,11 @@
     "annotations": [
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "modelReferences": [
@@ -158,6 +158,24 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
+        },
+        "borderProperties": {
+          "id": "GFiFXuLtAuSKNLqhBhWAz",
+          "borderWidth": {
+            "id": "z2Hk5Irz1ClDfv2gvILtR",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "esj1I7Gtlu0a1t1OPtrJ1",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "f9D310KPQaw-JFo48W8pa",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -167,6 +185,24 @@
           "id": "ISxwotnf65Z6k7Kr60yir",
           "model": "DomainShell",
           "path": "/general/test"
+        },
+        "borderProperties": {
+          "id": "vqazCv9pJ69ffDkvMvntG",
+          "borderWidth": {
+            "id": "7TmO2g0Wkm1Ww36HGMrW6",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "YPt8pxAxrSas9zMlitgTN",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "QE-3LglD8OwWAvE3SE1I1",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       }
     ]

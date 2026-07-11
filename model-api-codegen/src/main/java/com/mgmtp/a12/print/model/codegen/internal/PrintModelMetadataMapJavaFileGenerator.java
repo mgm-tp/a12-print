@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.model.codegen.internal;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.io.StringWriter;
 import java.util.TreeMap;
@@ -51,7 +51,7 @@ public class PrintModelMetadataMapJavaFileGenerator implements PrintModelMetadat
 			final var metadata = entry.getValue();
 
 			resultString.append(
-				String.format("put(\"%s\", new InputSourceMetadata(%s, %s, %s, %s));%n",
+				String.format("put(\"%s\", new InputSourceMetadata(%s, %s, %s, %s, %s));%n",
 					entry.getKey(),
 					metadata.defaultValue() != null
 						? "\"" + metadata.defaultValue() + "\""
@@ -60,6 +60,9 @@ public class PrintModelMetadataMapJavaFileGenerator implements PrintModelMetadat
 					metadata.hasInherited(),
 					metadata.inheritedCondition() != null
 						? "\"" + metadata.inheritedCondition() + "\""
+						: "null",
+					metadata.requiredCondition() != null
+						? "\"" + metadata.requiredCondition() + "\""
 						: "null"
 				)
 			);
@@ -84,7 +87,8 @@ public class PrintModelMetadataMapJavaFileGenerator implements PrintModelMetadat
 					String defaultValue,
 					boolean isRequired,
 					boolean hasInherited,
-					String inheritedCondition
+					String inheritedCondition,
+					String requiredCondition
 				) {}
 			}
 			""", resultString)

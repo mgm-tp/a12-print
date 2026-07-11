@@ -29,15 +29,15 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Action, Reducer } from "redux";
+import type { Action, Reducer } from "redux";
 
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
+import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineActions } from "../../store/actions.js";
+import type { ValidationState } from "../../../a12internal/api/ValidationState.js";
 
 import { ValidationActions } from "./actions.js";
-import { ValidationState } from "./state.js";
 
 const defaultValidationState: ValidationState = {
 	interaction: {

@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PrintModelEntity } from "../model/index.js";
+import { type PrintModelEntity } from "../model/index.js";
 
 export type PlainDeepPartial<T> = {
 	[K in keyof T]?: T[K] extends ReadonlyArray<infer U>
@@ -76,3 +76,11 @@ export type UnionToType<U> = {
 };
 
 export type KeysOfUnion<T> = T extends T ? keyof T : never;
+
+export type ArraysToSingleObject<T> = {
+	[K in keyof T]: NonNullable<T[K]> extends ReadonlyArray<infer U> | Array<infer U>
+		? ArraysToSingleObject<U>
+		: NonNullable<T[K]> extends object
+			? ArraysToSingleObject<NonNullable<T[K]>>
+			: T[K];
+};

@@ -96,6 +96,35 @@ Refer to the table below for fields that apply the input source and their respec
 | Background Color | ✔ (value: #ffffff) | ✔  | ✔
 |===
 
+[[BorderPropertiesInputSource]]
+.Border properties source fields
+[%header, cols="1,1,1,1,1"]
+|===
+| *Border Properties* | *Default* | *Input* | *Unset* | *Inherited*
+| Border Style | ✘ | ✔ | ✔ ^(2)^ | ✔ ^(1)^
+| Border Width | ✔ (value: 1pt) | ✔ | ✔ | ✔ ^(1)^
+| Border Color | ✔ (value: #000000) | ✔ | ✔ | ✔ ^(1)^
+|===
+^(1)^ The *Inherited* source is only available for elements that inherit border properties from a parent: listing columns (inherit from the listing) and text elements inside a table layout cell (inherit from the table layout).
+
+^(2)^ The *Unset* source is not available for *Border Style* on <<Line, Line>> elements — a value is always required. New Line elements default to *Solid*.
+
+NOTE: Setting *Border Style* to *Unset* automatically resets *Border Width* and *Border Color* to their *Default* source, since these properties have no effect without a border style.
+
+==== Inherited Source
+
+The *Inherited* source resolves the value from a parent element at runtime.
+The following inheritance relationships can exist:
+
+[%header, cols="1,1,1"]
+|===
+| Element | Can inherit from | Properties
+| Listing column | Listing | Border properties (border style, width, color)
+| Text (inside Table Layout cell) | Table Layout | Border properties (border style, width, color)
+| Expression (inside Table) | Table | Text properties (all fields)
+| All Elements (inside container elements)| Area, Bounding Box | Page break behavior
+|===
+
 == Text Properties [[TextProperties]]
 
 Allows the definition of properties affecting the text portions of the element.
@@ -296,5 +325,3 @@ image::chapter03/03_page_break_behavior_indicator.png[Page Break Behavior Indica
 === Default Input Source for New Elements
 * In the Segment stage: When creating a new element, the page break behavior's source is set to *Default*.
 * In the stage of container elements (Bounding Box/Area/Switch): When creating a new element, the page break behavior's source is set to *Inherited* and references the page break behavior of the container element containing it.
-
-CAUTION: The page break behavior is not available on <<legacy_rendering_mode, Legacy Rendering Mode>>

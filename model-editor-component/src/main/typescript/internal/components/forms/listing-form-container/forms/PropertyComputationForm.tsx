@@ -32,16 +32,16 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select/index.js";
-import { ComputationAlternative } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import type { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { ComputationAlternative } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
 
-import { ComputationRepeat, ComputationRepeatRowType } from "../../shared-components/ComputationRepeat.js";
-import { PrintEngineSelectors } from "../../../../store/selectors.js";
-import { ListingDataActions } from "../../../../redux/detail-data/listing/index.js";
+import type { ComputationRepeatRowType } from "../../shared-components/ComputationRepeat.js";
+import { ComputationRepeat } from "../../shared-components/ComputationRepeat.js";
 import { BackButtonGroup } from "../../shared-components/BackButtonGroup.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../localization/index.js";
-import { DetailDataActions } from "../../../../redux/index.js";
+import { NavigationActions } from "../../../../redux/index.js";
+import { NavigationSelectors } from "../../../../redux/navigation/selectors.js";
 import { CustomSelect } from "../../custom-base-input-components/index.js";
 
 interface PropertyComputationFormProps {
@@ -67,14 +67,11 @@ export const PropertyComputationForm = ({
 }: PropertyComputationFormProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 
 	const onBack = React.useCallback(() => {
-		dispatch(DetailDataActions.removeSubView({ containerId: currentDetailDataId }));
-		dispatch(
-			ListingDataActions.deleteAdditionalKey({ containerId: currentDetailDataId, category: "propertyComp" })
-		);
-	}, [dispatch, currentDetailDataId]);
+		dispatch(NavigationActions.popFormStack({ tab, entityId, mode }));
+	}, [dispatch, tab, entityId, mode]);
 
 	return (
 		<>

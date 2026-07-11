@@ -33,25 +33,31 @@ import { useDispatch, useSelector } from "react-redux";
 import * as React from "react";
 import { nanoid } from "nanoid";
 
-import { PartialExpression } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { TableRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import { PartialExpression, PartialTable } from "@com.mgmtp.a12.print/print-model-api/model";
+import { TableRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { TransactionLogStateActions } from "../../../redux/index.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
+import { hasNonInheritedTextProperties } from "../../../utils/text-properties-utils.js";
 
-import { DocumentModelInput } from "../shared-components/index.js";
+import { ClearTextPropertiesSection, DocumentModelInput } from "../shared-components/index.js";
 import { useExpressionPropertiesErrorMessage } from "../ExpressionFormContainer.js";
 import { CustomTextAreaStateful } from "../custom-base-input-components/index.js";
 
-import { TableColumnElementBaseProps } from "./table-column-element-base.js";
+import type { TableColumnElementBaseProps } from "./table-column-element-base.js";
+import { setInheritForExpressionTextProperties } from "./table-column-utils.js";
 
-export const TableColumnExpressionForm = ({ refId, model }: TableColumnElementBaseProps) => {
+export const TableColumnExpressionForm = ({ refId, model, tableId }: TableColumnElementBaseProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const element = useSelector((state: PrintEngineState) => PrintEngineSelectors.printModelElement(state, refId));
+	const tableElement = useSelector((state: PrintEngineState) =>
+		tableId ? PrintEngineSelectors.printModelElement(state, tableId) : undefined
+	);
+
 	if (!PartialExpression.isInstance(element)) {
 		throw Error("Expected element of type Expression");
 	}
@@ -75,6 +81,24 @@ export const TableColumnExpressionForm = ({ refId, model }: TableColumnElementBa
 		[dispatch, element]
 	);
 
+	const clearTextProperties = React.useCallback(() => {
+		const inheritedTextProperties =
+			tableElement && PartialTable.isInstance(tableElement)
+				? setInheritForExpressionTextProperties(element, tableElement)
+				: undefined;
+		const updatedElement: PartialExpression = { ...element, textProperties: inheritedTextProperties };
+		dispatch(
+			InteractionLogActions.start({
+				description:
+					RESOURCE_KEYS.interaction.form.tableFormContainer.tableColumnExpression.clearTextProperties,
+				region: TableRegion.TABLE_COLUMN_FORM,
+				transactionLogActions: [
+					TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }),
+				],
+			})
+		);
+	}, [dispatch, element, tableElement]);
+
 	const getPropertyErrorMessage = useExpressionPropertiesErrorMessage(element?.id);
 	return (
 		<>
@@ -84,6 +108,10 @@ export const TableColumnExpressionForm = ({ refId, model }: TableColumnElementBa
 				label={localizer(RESOURCE_KEYS.elementForm.expression.expressionText)}
 				value={element.expression?.text}
 				errorMessage={getPropertyErrorMessage("text")}
+			/>
+			<ClearTextPropertiesSection
+				hasLegacyProperties={hasNonInheritedTextProperties(element.textProperties)}
+				onClear={clearTextProperties}
 			/>
 		</>
 	);

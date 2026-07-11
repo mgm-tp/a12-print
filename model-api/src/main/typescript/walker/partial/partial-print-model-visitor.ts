@@ -35,7 +35,7 @@ import {
 	isPartialSection,
 	isPartialSegment,
 	isPartialWatermark,
-	PartialAnyContainerElement,
+	type PartialAnyContainerElement,
 	PartialArea,
 	PartialBarChart,
 	PartialBoundingBox,
@@ -46,31 +46,31 @@ import {
 	PartialLine,
 	PartialLineChart,
 	PartialListing,
-	PartialMetadata,
+	type PartialMetadata,
 	PartialOverride,
 	PartialPageNumber,
 	PartialPageNumberTotal,
 	PartialPieChart,
-	PartialPlaceableReference,
-	PartialPrintModel,
-	PartialPrintModelElement,
-	PartialReference,
-	PartialSection,
-	PartialSegment,
+	type PartialPlaceableReference,
+	type PartialPrintModel,
+	type PartialPrintModelElement,
+	type PartialReference,
+	type PartialSection,
+	type PartialSegment,
 	PartialSwitch,
-	PartialSwitchCaseReference,
+	type PartialSwitchCaseReference,
 	PartialTable,
-	PartialTableColumnReference,
+	type PartialTableColumnReference,
 	PartialTableLayout,
-	PartialTableLayoutCellReference,
+	type PartialTableLayoutCellReference,
 	PartialText,
-	PartialWatermark,
+	type PartialWatermark,
 } from "../../model/partial.js";
 import { isReference } from "../../model/reference/reference.js";
 import type { Segment } from "../../model/print-model.js";
 import { PrintModelElement } from "../../model/elements/print-model-element.js";
 import type { BoundingBox } from "../../model/elements/type/index.js";
-import { ExtendedEntityInstancePathBuilder } from "../../errors/extended-entity-instance-path.js";
+import type { ExtendedEntityInstancePathBuilder } from "../../errors/extended-entity-instance-path.js";
 
 import { DescendCommand, TraversalCommand } from "../print-model-visitor.js";
 

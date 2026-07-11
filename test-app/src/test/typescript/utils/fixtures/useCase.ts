@@ -49,7 +49,7 @@ export const useCaseTest = base.extend<UseCaseOptions & { forEachTest: void }>({
 			await page.getByLabel("Print Editorprint").locator("button").filter({ hasText: "close" }).click();
 			await use();
 			if (testInfo.tags.includes(TestTag.Screenshot)) {
-				await expect(page.getByRole("main").first()).toHaveScreenshot();
+				await expect.soft(page.getByRole("main").first()).toHaveScreenshot();
 			}
 			if (testInfo.tags.includes(TestTag.Store)) {
 				await expect(page).toMatchStore();

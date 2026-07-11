@@ -31,13 +31,14 @@
  */
 import { useSelector } from "react-redux";
 
-import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
-import { PrintModelElement, Styleable } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
+import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { PrintModelElement, Styleable } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { TEXT_PROPERTIES_PATH } from "../constant/element-property-path.js";
-import { PrintEngineState } from "../store/root-reducer.js";
+import type { PrintEngineState } from "../../a12internal/api/PrintEngineState.js";
+
 import { PrintEngineSelectors } from "../store/selectors.js";
+import { TEXT_PROPERTIES_PATH } from "../constant/element-property-path.js";
 
 export const useTextStyleSelector = (element: PrintModelElement & DeepPartial<Styleable>) => {
 	const textStyleId = InputValueSourceResolver.getSourceStringValue(

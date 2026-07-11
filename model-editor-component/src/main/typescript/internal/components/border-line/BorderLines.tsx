@@ -32,7 +32,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { Placeable } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { Placeable } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../constant/editor.js";
 import { EditorUtils, formatNumberWithFixedDecimals } from "../../utils/index.js";

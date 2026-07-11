@@ -29,12 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { TEXT_STYLE } from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+import { ElementType, TEXT_STYLE } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import * as OldModel from "../../../../version-2.1.0/print-model.js";
+import type * as OldModel from "../../../../version-2.1.0/print-model.js";
 import { TransformTreeTrace } from "../../../../../utils.ts/tree-trace.js";
 
-import * as NewModel from "../print-model.js";
+import type * as NewModel from "../print-model.js";
 import {
 	transformExpressionElement,
 	transformListingElement,
@@ -47,7 +47,7 @@ describe("Element Text Properties Transform", () => {
 		it("Should transform text properties correctly", () => {
 			const input: OldModel.ElementDefinitionsDTO = {
 				id: "text",
-				type: "Text",
+				type: ElementType.Text,
 				textProperties: {
 					id: "test",
 					textStyleId: "textStyleId",
@@ -65,7 +65,7 @@ describe("Element Text Properties Transform", () => {
 		it("Should transform text style as default if it's not existed", () => {
 			const input: OldModel.ElementDefinitionsDTO = {
 				id: "text",
-				type: "Text",
+				type: ElementType.Text,
 				textProperties: {
 					id: "test",
 					alignment: "Center",
@@ -82,7 +82,7 @@ describe("Element Text Properties Transform", () => {
 		it("Should set fallback no text style if if text properties is undefined", () => {
 			const input: OldModel.ElementDefinitionsDTO = {
 				id: "text",
-				type: "Text",
+				type: ElementType.Text,
 			};
 			const output = transformTextElement(input);
 			expect(output.textProperties?.textStyleId).not.toBeUndefined();
@@ -97,7 +97,7 @@ describe("Element Text Properties Transform", () => {
 		it("Should transform text properties correctly", () => {
 			const input: OldModel.ElementDefinitionsDTO = {
 				id: "table",
-				type: "Table",
+				type: ElementType.Table,
 				textProperties: {
 					id: "123",
 					textStyleId: "textstyleId",
@@ -152,7 +152,7 @@ describe("Element Text Properties Transform", () => {
 		it("Should transform text properties as default source if text properties are undefined", () => {
 			const input: OldModel.ElementDefinitionsDTO = {
 				id: "table",
-				type: "Table",
+				type: ElementType.Table,
 			};
 			const output = transformTableElement(input);
 
@@ -185,7 +185,7 @@ describe("Element Text Properties Transform", () => {
 		it("Should transform text properties correctly", () => {
 			const input: OldModel.ElementDefinitionsDTO = {
 				id: "listing",
-				type: "Listing",
+				type: ElementType.Listing,
 				textProperties: {
 					id: "123",
 					textStyleId: "textstyleId",
@@ -240,7 +240,7 @@ describe("Element Text Properties Transform", () => {
 		it("Should transform column's text properties correctly", () => {
 			const input: OldModel.ElementDefinitionsDTO = {
 				id: "listing",
-				type: "Listing",
+				type: ElementType.Listing,
 				listing: {
 					columns: [
 						{
@@ -338,7 +338,7 @@ describe("Element Text Properties Transform", () => {
 		it("Should transform text properties correctly", () => {
 			const input: OldModel.ElementDefinitionsDTO = {
 				id: "expression",
-				type: "Expression",
+				type: ElementType.Expression,
 				textProperties: {
 					id: "123",
 					textStyleId: "textstyleId",
@@ -367,12 +367,12 @@ describe("Element Text Properties Transform", () => {
 		it("Should transform text properties as inherit if there is a parent in tree trace", () => {
 			const parent: OldModel.ElementDefinitionsDTO = {
 				id: "table",
-				type: "Table",
+				type: ElementType.Table,
 			};
 
 			const input: OldModel.ElementDefinitionsDTO = {
 				id: "expression",
-				type: "Expression",
+				type: ElementType.Expression,
 			};
 
 			const output = transformExpressionElement(input, new TransformTreeTrace([parent]));

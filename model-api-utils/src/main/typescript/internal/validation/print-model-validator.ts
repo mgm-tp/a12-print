@@ -30,53 +30,41 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import {
-	GeneratedCodeAccessorFactory,
-	DocumentServiceFactory,
 	DocumentRtServiceFactory,
-} from "@com.mgmtp.a12.kernel/kernel-md-facade/lib/main/js/facade.js";
-import { PrintMetaModelValidationScript } from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/validation/print-meta-model-validation-script.js";
-import documentModelJson from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/model/DomainPrintMetaModel.json" with { type: "json" };
-import { PartialPrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
-import type { DocumentModel, EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+	DocumentServiceFactory,
+	GeneratedCodeAccessorFactory,
+} from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import { PrintMetaModelValidationScript } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import type { PrintModelDTO } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import documentModelJson from "@com.mgmtp.a12.print/print-model-api/generated/a12internal/model/DomainPrintMetaModel.json" with { type: "json" };
 
-import { FAILED_INTEGRITY_REPORT, PrintValidationMode, PrintValidator } from "./print-validator.js";
-import { fullValidation } from "./full-validation.js";
-import { ReferencePathValidation } from "./reference-path-validation/reference-path-validation.js";
+import { FAILED_INTEGRITY_REPORT, PrintValidator } from "../../a12internal/validation/print-validator.js";
+import { fullValidation } from "../../a12internal/validation/full-validation.js";
 
-export class PrintModelValidator extends PrintValidator {
-	private static instance: PrintModelValidator = new PrintModelValidator();
+export class PrintModelValidator extends PrintValidator<PrintModelDTO> {
+	private static readonly instance: PrintModelValidator = new PrintModelValidator();
 
-	private documentModelMarshaller = new DocumentServiceFactory().getDocumentModelSerializer();
-	private documentModel = this.documentModelMarshaller.deserialize(JSON.stringify(documentModelJson));
-	private documentRtService = DocumentRtServiceFactory.createDocumentRtService(
-		new GeneratedCodeAccessorFactory().createScriptAccessor(PrintMetaModelValidationScript)
+	private readonly documentModelMarshaller = new DocumentServiceFactory().getDocumentModelSerializer();
+	private readonly documentModel = this.documentModelMarshaller.deserialize(JSON.stringify(documentModelJson));
+	private readonly documentRtService = DocumentRtServiceFactory.createDocumentRtService(
+		new GeneratedCodeAccessorFactory().createScriptAccessor(PrintMetaModelValidationScript),
+		{
+			customConditionFactory: this.getCustomConditionFactory(),
+			customFieldTypeFactory: this.getCustomFieldTypeFactory(),
+		}
 	);
 
 	public validate<T>(
-		validatorInput: PrintValidator.Input,
-		relevantPaths: EntityInstancePath[] = []
+		validatorInput: PrintValidator.Input<PrintModelDTO>,
+		options?: PrintValidator.Options
 	): PrintValidator.IntegrityReport<T> {
 		const transformedInput = this.transformValidatorInput(validatorInput);
-		if (transformedInput) {
-			const result = relevantPaths
-				? fullValidation(transformedInput, this.documentRtService, this.documentModel, relevantPaths)
-				: fullValidation(transformedInput, this.documentRtService, this.documentModel, []);
-			return result;
+		if (!transformedInput) {
+			return FAILED_INTEGRITY_REPORT;
 		}
 
-		return FAILED_INTEGRITY_REPORT;
-	}
-
-	public validateReferences(
-		printModel: PartialPrintModel,
-		documentModels: readonly DocumentModel[],
-		mode: PrintValidationMode
-	) {
-		if (!this.shouldValidateReferences(mode)) {
-			return DeepPartialErrorMap.getEmptyMap();
-		}
-		return ReferencePathValidation.validateDocumentModelReferences(printModel, documentModels);
+		const relevantPaths = options?.partial?.relevantPaths ?? [];
+		return fullValidation<T>(transformedInput, this.documentRtService, this.documentModel, relevantPaths);
 	}
 
 	public static getInstance(): PrintModelValidator {

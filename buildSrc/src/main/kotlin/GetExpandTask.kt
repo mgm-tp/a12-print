@@ -29,7 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import org.gradle.api.tasks.JavaExec
+import com.mgmtp.a12.print.internal.tooling.DocumentModelExpander
+import org.gradle.api.Task
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.Project
 
@@ -37,26 +38,19 @@ fun Project.getExpandTask(
 	key: String,
 	includePath: String,
 	inputPath: String,
+	documentModelId: String,
 	destinationPath: String,
-): TaskProvider<JavaExec> {
-	return tasks.register("expand$key", JavaExec::class.java) {
-		classpath = project.configurations.getByName("printModelValidationCodeGeneration")
-		mainClass.set("com.mgmtp.a12.kernel.md.facade.cli.BatchDocumentModelExpander")
-
+): TaskProvider<Task> {
+	return tasks.register("expand$key") {
 		val outputFile = file(destinationPath)
-		val documentModelFile = file(inputPath)
 		val includeDirectory = file(includePath)
-		args(
-			includeDirectory.path,
-			documentModelFile.path,
-			outputFile.path
-		)
 
-		// set the encoding to use it in all file read and write operations
-		jvmArgs = listOf("-Dfile.encoding=UTF-8")
+		doLast {
+			DocumentModelExpander.expand(includeDirectory.toPath(), documentModelId, outputFile.toPath())
+		}
 
 		inputs.dir(includeDirectory)
-		inputs.files("gradle.lockfile", documentModelFile)
+		inputs.files("gradle.lockfile", file(inputPath))
 		outputs.file(outputFile)
 	}
 }

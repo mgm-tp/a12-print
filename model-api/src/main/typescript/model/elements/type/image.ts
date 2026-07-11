@@ -31,8 +31,7 @@
  */
 import type { PartialAnyPrintModelElement } from "../../partial.js";
 
-import type { Attachment, Measure, PrintModelEntity, Styleable } from "../base.js";
-import { isMeasure } from "../base.js";
+import type { Measure, PrintModelEntity, Styleable } from "../base.js";
 import type { PrintModelElement } from "../print-model-element.js";
 import { ElementType } from "../print-model-element.js";
 
@@ -45,13 +44,13 @@ export interface ImageProperties extends PrintModelEntity {
 	readonly imageSrcType: ImageSrcType;
 	readonly alternativeText: string;
 	readonly dimensions?: ImageDimensions;
-	readonly attachmentSource?: AttachmentSource;
+	readonly resourceSource?: ResourceSource;
 	readonly fieldSource?: FieldSource;
 }
 
 export enum ImageSrcType {
-	Attachment = "Attachment",
-	Field = "Field",
+	Static = "Static",
+	Dynamic = "Dynamic",
 }
 
 export interface ImageDimensions extends PrintModelEntity {
@@ -61,8 +60,8 @@ export interface ImageDimensions extends PrintModelEntity {
 	readonly originalWidth?: Measure;
 }
 
-export interface AttachmentSource extends PrintModelEntity {
-	readonly imageAttachment: Attachment;
+export interface ResourceSource extends PrintModelEntity {
+	readonly resourceName: string;
 }
 
 export interface FieldSource extends PrintModelEntity {
@@ -75,8 +74,7 @@ export namespace Image {
 		return (
 			element.type === ElementType.Image &&
 			typeof element.image?.alternativeText === "string" &&
-			Object.values(ImageSrcType).includes(element.image.imageSrcType as ImageSrcType) &&
-			(isMeasure(element.image.dimensions?.width) || isMeasure(element.image.dimensions?.originalWidth))
+			Object.values(ImageSrcType).includes(element.image.imageSrcType as ImageSrcType)
 		);
 	}
 }

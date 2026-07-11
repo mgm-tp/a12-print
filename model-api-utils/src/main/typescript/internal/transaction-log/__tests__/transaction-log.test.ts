@@ -32,23 +32,23 @@
 import cloneDeep from "lodash/cloneDeep.js";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	CalculationProperties,
-	DisplayType,
-	ElementType,
 	PartialAnyPrintModelElement,
-	PartialCalculation,
-	PartialText,
 	PrintModel,
 	PrintModelContentGeneral,
 	PrintModelHeader,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import {
+	DisplayType,
+	ElementType,
+	PartialCalculation,
+	PartialText,
 	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 	PRINT_MODEL_CONTENT_LOG_ID,
 	PRINT_MODEL_HEADER_LOG_ID,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import {
 	calcStoreEntry,
@@ -58,16 +58,18 @@ import {
 	headerStoreEntry,
 	transactionLogStore,
 } from "../../../../../test/typescript/test-utils/transaction-log/log-store.js";
-import { PrintModelCreator } from "../../print-model-creator/print-model-creator.js";
-
-import { InteractionLogPersistentEntry, createNewInteractionLogStore } from "../interaction-log.js";
-import {
+import { PrintModelCreator } from "../../../../../main/typescript/a12internal/utils/print-model-creator.js";
+import type {
+	InteractionLogPersistentEntry,
 	CreateStoreEntryObject,
-	TransactionLog,
 	TransactionLogPersistentEntry,
 	TransactionLogStoreEntryMap,
-} from "../transaction-log.js";
-import { Log } from "../log.js";
+} from "../../../../../main/typescript/a12internal/transaction-log/index.js";
+import {
+	createNewInteractionLogStore,
+	Log,
+	TransactionLog,
+} from "../../../../../main/typescript/a12internal/transaction-log/index.js";
 
 describe("Transaction Log", () => {
 	const initialInteractionLogStore = createNewInteractionLogStore();

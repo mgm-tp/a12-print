@@ -33,13 +33,13 @@ package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.compon
 
 import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.PdfBoxDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.image.ImageValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalPdfBoxPrintEngineRuntime;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.Component;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.ImageComponent;
-import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.PrintRenderingException;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.Size;
 import com.mgmtp.a12.print.model.api.model.element.base.Measure;
 
@@ -67,10 +67,10 @@ public class ImageComponentDependencyValueProducer implements PdfBoxDependencyVa
 			heightMm = dims.getHeight().get().getValue();
 		} else if (dims.getWidth().isEmpty() && dims.getHeight().isEmpty()) {
 			widthMm = dims.getOriginalWidth().map(Measure::getValue).orElseThrow(
-				() -> new PrintRenderingException("The width of an image element is required")
+				() -> new PrintDomainException("The original width of the image element with alt text '{}' is not set", altText)
 			);
 			heightMm = dims.getOriginalHeight().map(Measure::getValue).orElseThrow(
-				() -> new PrintRenderingException("The height of an image element is required")
+				() -> new PrintDomainException("The original height of the image element with alt text '{}' is not set", altText)
 			);
 		} else if (dims.getWidth().isPresent()) {
 			widthMm = dims.getWidth().get().getValue();
@@ -78,7 +78,7 @@ public class ImageComponentDependencyValueProducer implements PdfBoxDependencyVa
 		} else {
 			heightMm = dims.getHeight().get().getValue();
 			widthMm = dims.getOriginalWidth().map(Measure::getValue).orElseThrow(
-				() -> new PrintRenderingException("The width of an image element is required")
+				() -> new PrintDomainException("The width of the image element with alt text '{}' is not set", altText)
 			);
 		}
 

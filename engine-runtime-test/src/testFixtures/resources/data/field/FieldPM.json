@@ -2,7 +2,7 @@
   "header": {
     "id": "FieldPM",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "modelReferences": [
@@ -355,6 +355,24 @@
           "id": "ID_dd77d02e-6baf-4570-a74d-014ee7d9934d",
           "model": "FieldDM",
           "path": "/general/first"
+        },
+        "borderProperties": {
+          "id": "BGn-eyFPs__iNy8QAiK2S",
+          "borderWidth": {
+            "id": "6FXQ4bRliFhpIQ_j-lG1x",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "P8LHfBTllizjkvugk2e90",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "HHifkCbYJWPTlVm_xYC_6",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -377,8 +395,23 @@
         },
         "borderProperties": {
           "id": "ID_0029b88d-6663-4aec-896f-ce60a591b0ac",
-          "borderWidth": 0.75,
-          "borderColor": "#000"
+          "borderWidth": {
+            "id": "frD84KcqW_gzBfq1U-fAp",
+            "source": "INPUT",
+            "value": 0.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "nnS1bZvHwSF3CPK17a9Wt",
+            "source": "INPUT",
+            "value": "#000",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "cNkGBiTBrdOecBzrpcRot",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "text": {
           "id": "ID_f8ca2d37-c38c-46eb-866e-62ba47799c1c",
@@ -398,6 +431,24 @@
           "id": "ID_6bf3022c-f22e-4637-8d55-107f32de6436",
           "model": "FieldDM",
           "path": "/general/last"
+        },
+        "borderProperties": {
+          "id": "TmYZ1kMi0jtHVId3O4X3E",
+          "borderWidth": {
+            "id": "hHimCTRFH_71Q-pd6rv5I",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "mG2xsLhxaEnjV9ZwGT_E5",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "oWuzRRoxWXoFYOhKLLq1I",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -420,9 +471,24 @@
         },
         "borderProperties": {
           "id": "ID_8b566140-c7d4-4c64-bba8-f7b06836738e",
-          "borderWidth": 3.75,
-          "borderStyle": "Dashed",
-          "borderColor": "#0000ff"
+          "borderWidth": {
+            "id": "QVGqKdKD4h-3p2gKXgO31",
+            "source": "INPUT",
+            "value": 3.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "xMVUEpZb5TBNHyzDypY1K",
+            "source": "INPUT",
+            "value": "#0000ff",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "Jhy6jmEAnzG32Wal2SeTR",
+            "source": "INPUT",
+            "value": "Dashed",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "text": {
           "id": "ID_32bbbf48-2f94-4fa4-97f0-0c2b34203208",
@@ -448,6 +514,24 @@
             "checkboxChecked": "☑",
             "checkboxUnchecked": "☐"
           }
+        },
+        "borderProperties": {
+          "id": "eAaDpq68Jm3ZLhlS1iOHG",
+          "borderWidth": {
+            "id": "exxqV8-XdMab1LSwcsViH",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "VbkBzE1ujYiaxIg3LEci6",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "-8Y2iyErOugWcmnsnOX8I",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -470,9 +554,24 @@
         },
         "borderProperties": {
           "id": "ID_1174afac-09ce-4807-afe6-9a3461b6a859",
-          "borderWidth": 3.75,
-          "borderStyle": "Solid",
-          "borderColor": "#0000ff"
+          "borderWidth": {
+            "id": "xUujICOXtuesK7XdtjrnE",
+            "source": "INPUT",
+            "value": 3.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "3Ux89bO1wtoQsVX7pE2Pm",
+            "source": "INPUT",
+            "value": "#0000ff",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "C90AjCz8VIjsJsM3QUWJw",
+            "source": "INPUT",
+            "value": "Solid",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "text": {
           "id": "ID_1add05e6-f6fb-4522-a959-b139bec37ad7",
@@ -498,6 +597,24 @@
             "checkboxChecked": "☑",
             "checkboxUnchecked": "☐"
           }
+        },
+        "borderProperties": {
+          "id": "fnoOOX2_-y5VMMGhPoq77",
+          "borderWidth": {
+            "id": "w60FZX9PJNpIucp-0q56Q",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "IJtVyDiBDorxAMwkEdYnW",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "WELqjTi_cgQzThhEno0Yi",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -520,9 +637,24 @@
         },
         "borderProperties": {
           "id": "ID_73248104-529b-46b8-9386-7978b67e43f2",
-          "borderWidth": 3.75,
-          "borderStyle": "Solid",
-          "borderColor": "#0000ff"
+          "borderWidth": {
+            "id": "G3ysudnsiEzqw155G8Y1o",
+            "source": "INPUT",
+            "value": 3.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "vjjyt9pbPnmE4RRgSXJDs",
+            "source": "INPUT",
+            "value": "#0000ff",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "VJZ146s4KOwK1ZQCE1OTG",
+            "source": "INPUT",
+            "value": "Solid",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "text": {
           "id": "ID_347347d3-126e-46d2-b21d-11ab0aa9fa2f",
@@ -548,6 +680,24 @@
             "checkboxChecked": "☘",
             "checkboxUnchecked": "☙"
           }
+        },
+        "borderProperties": {
+          "id": "mFuPSVDvFtOHB8R16zgqx",
+          "borderWidth": {
+            "id": "euuUgDTr0RMZ-4bqTmtma",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "PiCZlSgkJMdgTQFvDcYSd",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "bafh4H39SDlO1QtK6-qTd",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -570,9 +720,24 @@
         },
         "borderProperties": {
           "id": "ID_cb39cccd-d18c-4b9f-a1b0-c42d35956f81",
-          "borderWidth": 3.75,
-          "borderStyle": "Solid",
-          "borderColor": "#0000ff"
+          "borderWidth": {
+            "id": "-ZM9l76sMVC4TUxodTTMs",
+            "source": "INPUT",
+            "value": 3.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "sbwRErjthaUdgjFZX00Wt",
+            "source": "INPUT",
+            "value": "#0000ff",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "QIddsF4YSdvEemSqYoumF",
+            "source": "INPUT",
+            "value": "Solid",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "text": {
           "id": "ID_e01a28cc-e5ed-4875-bd77-01332648ed25",
@@ -605,8 +770,23 @@
         },
         "borderProperties": {
           "id": "ID_9f949eae-c7a6-4ef1-be6c-e16faf0c89c7",
-          "borderWidth": 0.75,
-          "borderColor": "#000"
+          "borderWidth": {
+            "id": "Rz0hC5vYIy-cexHlWxFUn",
+            "source": "INPUT",
+            "value": 0.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "DUrK38GsG3Ibf-FestswP",
+            "source": "INPUT",
+            "value": "#000",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "wREXjWgjVpjKmI0guu1ji",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "text": {
           "id": "ID_5cff8c29-6471-4507-a843-b4c987cdf58b",
@@ -632,6 +812,24 @@
             "dateRangeFormatStart": "dd MM yyyy",
             "dateRangeFormatEnd": "dd MM yyyy",
             "dateRangeDelimiter": "-"
+          }
+        },
+        "borderProperties": {
+          "id": "K8rym0hTrD-gKbYY-77xH",
+          "borderWidth": {
+            "id": "-nZaYY81kjPsphz8IEMaX",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "6zrw4reDropNSfysi2fMU",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "XfRhyTYT4RSu4dy192qbZ",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
         }
       }

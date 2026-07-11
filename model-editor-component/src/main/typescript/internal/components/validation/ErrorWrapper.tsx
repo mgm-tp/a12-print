@@ -32,12 +32,11 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { PrintError } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { InputElements } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/index.js";
-import { ErrorTooltip, WarningTooltip, HintTooltip } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorTooltip, WarningTooltip, HintTooltip, InputElements } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { PrintLocalizer } from "../../localization/index.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
+import { PrintLocalizer } from "../../../internal/localization/index.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
 
 import { StyledErrorContainer } from "./ErrorWrapper.styled.js";
 

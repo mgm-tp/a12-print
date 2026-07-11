@@ -31,26 +31,28 @@
  */
 import * as React from "react";
 
-import {
-	Collapsible,
+import type {
 	CollapsibleTreeNodeModel,
 	MapTreeNode,
-	Selectable,
 	SelectableTreeNodeModel,
+} from "@com.mgmtp.a12.widgets/widgets-core";
+import {
+	Collapsible,
+	Selectable,
 	Tree,
 	TreeAdapter,
 	find,
 	findById,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/tree/index.js";
+	Icon,
+	Tooltip,
+} from "@com.mgmtp.a12.widgets/widgets-core";
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
-import { Tooltip } from "@com.mgmtp.a12.widgets/widgets-core/lib/tooltip/index.js";
-import { ElementMapEntry } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/types/document-model-data.js";
-import { DocumentModelUtils } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/utils/document-model-utils.js";
+import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { ElementMapEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { DocumentModelUtils } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
-import { ILocalizer } from "../../../api/index.js";
+import type { ILocalizer } from "../../../api/index.js";
 
 import { StyledLabel, StyledMessageBox } from "./DataContextSelection.styled.js";
 

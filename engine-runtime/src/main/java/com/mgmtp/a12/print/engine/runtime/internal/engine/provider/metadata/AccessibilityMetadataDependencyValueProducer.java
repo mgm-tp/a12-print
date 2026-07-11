@@ -33,7 +33,7 @@ package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.metadata;
 
 import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
@@ -41,6 +41,7 @@ import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.loader.PrintM
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalCorePrintEngineRuntime;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.computation.ComputationExpression;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.LogicContainerEvaluationDependency;
+import com.mgmtp.a12.print.engine.runtime.internal.message.PrintMessageCollector;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.pdDocument.AccessibilityMetadata;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.general.Metadata;
@@ -118,12 +119,13 @@ public class AccessibilityMetadataDependencyValueProducer implements CoreDepende
 				.orElse("");
 
 			if (result.isEmpty()) {
-				log.warn("Metadata field {} evaluated to an empty value. This may affect PDF accessibility.", logicContainer.getId());
+				PrintMessageCollector.addWarning(
+					String.format("Metadata field %s evaluated to an empty value. This may affect PDF accessibility.", logicContainer.getField())
+				);
 			}
 			return result;
 		} catch (Exception e) {
-			log.error("Failed to evaluate metadata field {}.", logicContainer.getId());
-			throw new PrintException(e.getMessage());
+			throw new PrintDomainException("Failed to evaluate the metadata computation for {}", logicContainer.getField(), e);
 		}
 	}
 

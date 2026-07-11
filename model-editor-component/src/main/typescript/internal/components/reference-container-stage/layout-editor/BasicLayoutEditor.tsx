@@ -32,20 +32,19 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import {
-	isPartialSegment,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { isPartialSegment } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { Toolbar } from "../../toolbar/index.js";
 import { ToolbarItem } from "../../../types/toolbar-item.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { LayoutQuickEditorBar } from "../../quick-edit-bar/index.js";
-import { DetailDataActions, InteractionLogActions, TransactionLogStateActions } from "../../../redux/index.js";
+import { InteractionLogActions, NavigationActions, TransactionLogStateActions } from "../../../redux/index.js";
 import { RESOURCE_KEYS } from "../../../localization/index.js";
 import { changePartialMarginValue } from "../../../utils/margin-utils.js";
-import { MarginSide } from "../../../types/margin.js";
+import type { MarginSide } from "../../../types/margin.js";
+import { NavigationSelectors } from "../../../redux/navigation/selectors.js";
 import { EditorContext } from "../../editor-stage/editor-context.js";
 import { LayoutElementContainer } from "../../element-container/LayoutElementContainer.js";
 import { MarginWrapper } from "../../margin/MarginWrapper.js";
@@ -53,7 +52,7 @@ import { MarginWrapper } from "../../margin/MarginWrapper.js";
 import { EditorContainer } from "../shared-components/EditorContainer.js";
 import { PlaceableElement } from "../shared-components/PlaceableElement.js";
 import { StyledBasicEditor, StyledEditorWrapper } from "../shared-components/Base.styled.js";
-import { LayoutEditorProps } from "../editor-interface.js";
+import type { LayoutEditorProps } from "../editor-interface.js";
 
 export const BasicLayoutEditor = ({
 	numberOfPages = 1,
@@ -83,6 +82,7 @@ export const BasicLayoutEditor = ({
 	const editorDimensions = useSelector(PrintEngineSelectors.editorDimensions);
 	const currentTopContainer = useSelector(PrintEngineSelectors.currentContainerElement);
 
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 	const [selectedReferenceId, setSelectedReferenceId] = React.useState<string>();
 	const [hoveredReferenceId, setHoveredReferenceId] = React.useState<string>();
 
@@ -95,13 +95,17 @@ export const BasicLayoutEditor = ({
 			if (!referenceContainer?.id || !currentTopContainer || !isPartialSegment(currentTopContainer)) return;
 
 			dispatch(
-				DetailDataActions.openPageBreakConfig({
-					containerId: referenceContainer?.id,
-					placeableRefId: reference.id,
+				NavigationActions.setDetailForm({
+					tab,
+					entityId,
+					mode,
+					form: {
+						formStack: [{ type: "PageBreakConfig", referenceId: reference.id }],
+					},
 				})
 			);
 		},
-		[dispatch, referenceContainer?.id, currentTopContainer]
+		[dispatch, tab, entityId, mode, referenceContainer?.id, currentTopContainer]
 	);
 
 	const debouncedOnHoverElement = (reference?: PartialValidPlaceableReference) => {

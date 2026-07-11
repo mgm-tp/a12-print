@@ -83,7 +83,7 @@ export const EditorContainer = ({
 	}, [zoomFactor, bodyRef, editorRef, previousEditorRef, containerId]);
 
 	return (
-		<StyledOuterEditorContainer ref={bodyRef}>
+		<StyledOuterEditorContainer data-testid="editor-container" ref={bodyRef}>
 			<BreadcrumbNavigation />
 			{renderTopSlots?.(bodyEl, editorEl, numberOfPages)}
 			<StyledEditorContainer

@@ -31,11 +31,11 @@
  */
 import * as React from "react";
 
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { EditorConst } from "../../constant/editor.js";
-import { MarginSide } from "../../types/margin.js";
+import type { MarginSide } from "../../types/margin.js";
 
 import { EditorContext } from "../editor-stage/editor-context.js";
 

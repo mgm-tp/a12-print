@@ -32,20 +32,21 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
+import type {
 	PartialAnyPrintModelElement,
 	PartialTextProperties,
 	PartialBorderProperties,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import {
 	PartialTableLayout,
 	PartialArea,
 	isPartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { Icon, Button } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { ElementsUtils } from "../../utils/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { DetailViewActions } from "../../redux/index.js";
 import { TEXT_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 import { useTextStyleSelector } from "../../hooks/use-text-style-selector.js";
@@ -54,7 +55,7 @@ import { TableLayout } from "../elements/index.js";
 
 import { OpenWrapperStageButton } from "./OpenWrapperStageButton.js";
 import { StyledFloatingButtonContainer } from "./FloatingButtonContainer.styled.js";
-import { ElementContainerProps } from "./base.js";
+import type { ElementContainerProps } from "./base.js";
 import { RepeatableAreaIconButton } from "./RepeatableAreaIconButton.js";
 import { ElementComponent } from "./ElementComponent.js";
 
@@ -96,7 +97,7 @@ export const DefaultElementContainer = React.memo(
 		);
 		const offset = React.useMemo(() => {
 			const borderProperties = element?.borderProperties;
-			return (borderProperties?.borderStyle && borderProperties?.borderWidth) || 0;
+			return (borderProperties?.borderStyle?.value && borderProperties?.borderWidth?.value) || 0;
 		}, [element]);
 
 		const onHideConditionClick = React.useCallback(

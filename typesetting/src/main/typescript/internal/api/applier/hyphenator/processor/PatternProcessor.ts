@@ -29,10 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { HyphenationPattern } from "../../../model/index.js";
+import type { HyphenationPattern } from "../../../../../a12internal/api/model/index.js";
 
-interface PatternProcessor<T> {
+export interface PatternProcessor<T> {
 	processPatterns(patterns: HyphenationPattern[]): T;
 }
-
-export default PatternProcessor;

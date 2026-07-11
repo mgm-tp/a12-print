@@ -36,9 +36,9 @@ The following tools are required in order to build this repository.
 
 | Tool     |  Version |
 | -------- | -------: |
-| [JDK]    | `21.0.1` |
-| [Gradle] | `8.12.1` |
-| [Node]   | `22.14` |
+| [JDK]    | `^21` |
+| [Gradle] | `9.3.1` |
+| [Node]   | `24.15` |
 | [pnpm]   | `10.4.1` |
 | [Trivy]  | `Latest` |
 
@@ -74,7 +74,6 @@ Some Fullstack modules have frontend code that relies on the build steps of thei
 
 -   engine-runtime-kernel
 -   model-api
--   print-setting
 -   typesetting
 
 #### How to Test
@@ -250,7 +249,6 @@ influences how to [build](#building-individual-modules) them.
 | model-migration        | contains migration steps for Print Models, Print Setting Models and Typesetting Models                        | FS          |
 | print-dev-tools        | shared configurations for frontend dev tools                                                                  | FE          |
 | print-fonts            | provides default font resources, shared constants and utilities for the Print Engine                          | FE          |
-| print-setting          | defines Print Setting Model and the corresponding UI editor                                                   | FS          |
 | print-shell            | CLI tool for the printing process and some utility functionality                                              | BE          |
 | print-workspace        | specific workspace functionality for print-shell to handle Print related files                                | BE          |
 | test-app               | serves as a running Print Model Editor for development purposes                                               | FE          |

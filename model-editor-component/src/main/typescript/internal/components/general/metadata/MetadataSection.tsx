@@ -32,10 +32,8 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { Typography } from "@com.mgmtp.a12.widgets/widgets-core";
-import { InputElements } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/index.js";
-import { LayoutGrid } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/layout-grid/index.js";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { Typography, InputElements, LayoutGrid } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
@@ -43,11 +41,13 @@ import { TransactionLogStateActions } from "../../../redux/transaction-log-state
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
 import { DocumentModelSelect } from "../../forms/shared-components/DocumentModelSelect.js";
-import { ComputationRepeat, ComputationRepeatRowType } from "../../forms/shared-components/ComputationRepeat.js";
+import type { ComputationRepeatRowType } from "../../forms/shared-components/ComputationRepeat.js";
+import { ComputationRepeat } from "../../forms/shared-components/ComputationRepeat.js";
 import { ErrorWrapper, useErrorMessagesByPath } from "../../validation/index.js";
 
 import { StyledMetadataGrid } from "./MetadataSection.styled.js";
-import { MetadataComputationField, useMetadataFieldErrors } from "./hooks/use-metadata-field-errors.js";
+import type { MetadataComputationField } from "./hooks/use-metadata-field-errors.js";
+import { useMetadataFieldErrors } from "./hooks/use-metadata-field-errors.js";
 
 const { Row, Column } = LayoutGrid;
 

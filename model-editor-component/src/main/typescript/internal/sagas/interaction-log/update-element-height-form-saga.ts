@@ -29,27 +29,28 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, delay, fork, put, race, select, take } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";
-import { PrintEngineSelectors, UndoInteractionLogEntry } from "../../store/selectors.js";
-import { RESOURCE_KEYS } from "../../localization/index.js";
+import type { UndoInteractionLogEntry } from "../../store/selectors.js";
+import { PrintEngineSelectors } from "../../store/selectors.js";
+import { RESOURCE_KEYS } from "../../../internal/localization/index.js";
 
-export function* updateElementHeightDomNodeSaga(): SagaIterator {
+export function* updateElementHeightDomNodeSaga(): SagaGenerator<void> {
 	yield* takeDomNodeHeightUpdate();
 }
 
 const DEBOUNCE_TIME = 300;
-const PATTERN = (action: AnyAction) => InteractionLogActions.updateElementHeightDomNode.match(action);
+const PATTERN = InteractionLogActions.updateElementHeightDomNode.match;
 
 function takeDomNodeHeightUpdate() {
 	return fork(function* () {
 		while (true) {
-			const payloadPlaceable = ((yield* take(PATTERN)) as Action<PartialValidPlaceableReference>).payload;
+			const payloadPlaceable = (yield* take(PATTERN)).payload;
 			const fullLogEntryList = yield* select(PrintEngineSelectors.currentViewInteractionList);
 			const lastEntry = fullLogEntryList[fullLogEntryList.length - 1];
 			const elementReferences = yield* select(PrintEngineSelectors.elementReferences);
@@ -88,13 +89,13 @@ function* collectDebouncedPlaceables(payloadPlaceable: PartialValidPlaceableRefe
 		const { debounced, latestAction } = (yield* race({
 			debounced: delay(DEBOUNCE_TIME),
 			latestAction: take(PATTERN),
-		})) as { debounced: true | undefined; latestAction?: Action<PartialValidPlaceableReference> };
+		})) as { debounced: true | undefined; latestAction?: PayloadAction<PartialValidPlaceableReference> };
 
 		if (debounced) {
 			break;
 		}
 		const latestPlaceable = latestAction?.payload;
-		if (latestPlaceable && !updatedPlaceables[latestPlaceable.id]) {
+		if (latestPlaceable) {
 			updatedPlaceables[latestPlaceable.id] = latestPlaceable;
 		}
 	}
@@ -110,7 +111,7 @@ function* handleRecentEntry(
 	lastEntry: UndoInteractionLogEntry,
 	payloadPlaceable: PartialValidPlaceableReference,
 	elementReferences: PartialValidPlaceableReference[]
-): SagaIterator<boolean> {
+): SagaGenerator<boolean> {
 	const isDebounce = Date.now() - lastEntry.timestamp < DEBOUNCE_TIME;
 
 	if (!isDebounce) {

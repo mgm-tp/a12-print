@@ -32,26 +32,28 @@
 import { useContext, useMemo, useState } from "react";
 import { nanoid } from "nanoid";
 
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { BaseColumnType, TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core";
 import {
-	BaseColumnType,
+	Autocomplete,
+	GlobalMessageBox,
 	Table,
-	TableRenderPropsType,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/index.js";
-import { Message } from "@com.mgmtp.a12.widgets/widgets-core/lib/message/index.js";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { Autocomplete, GlobalMessageBox } from "@com.mgmtp.a12.widgets/widgets-core";
-import { AnnotationEntity } from "@com.mgmtp.a12.print/print-model-api";
+	Message,
+	addPrefix,
+	Button,
+	Icon,
+} from "@com.mgmtp.a12.widgets/widgets-core";
+import type { AnnotationEntity } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { RESOURCE_KEYS } from "../../localization/keys.js";
 import { useDefaultLocalizer, useLocalizer } from "../../localization/localizer.js";
 import { DataKeys } from "../../types/role-table.js";
-import { AnnotationsDTO } from "../../../api/generated/dto/TypesettingModelDTO.js";
-import { Action, SET_ANNOTATION, SetAnnotationsPayload } from "../../store/action.js";
+import type { AnnotationsDTO } from "../../../api/generated/dto/TypesettingModelDTO.js";
+import type { Action, SetAnnotationsPayload } from "../../store/action.js";
+import { SET_ANNOTATION } from "../../store/action.js";
 import { TypesettingEditorContext } from "../../store/context.js";
-import { TypesettingModel } from "../../../api/model/index.js";
+import type { TypesettingModel } from "../../../../a12internal/api/model/index.js";
 
 import { ConfirmDeletionModal } from "../modal/ConfirmDeletionModal.js";
 
@@ -142,7 +144,7 @@ export const RolesTable = ({ annotations, errorMap, availableRoles }: CustomFont
 					items={availableRoles || []}
 					value={row}
 					onValueChange={role => typeof role === "string" && onRoleNameChange(role, rowIndex)}
-					allowAddingNewItem
+					allowAddingNewItem={true}
 					hintTemplate={localizer(RESOURCE_KEYS.roleSettings.autocompleteHint) ?? ""}
 				/>
 			);

@@ -29,19 +29,25 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ICustomFieldType } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts/lib/main/js/custom/ICustomFieldType.js";
-import { ICustomFieldTypeFactory } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts/lib/main/js/custom/ICustomFieldTypeFactory.js";
+import type { ICustomFieldTypeFactory, ICustomFieldValidator } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts";
 
 import { PrintDateTimeFormatFt } from "./date-time-format-ft.js";
 
 export class PrintDateTimeFormatFactory implements ICustomFieldTypeFactory {
-	private supportedTypes = new Set<string>();
+	private static readonly instance = new PrintDateTimeFormatFactory();
+	private readonly supportedTypes = new Set<string>();
+
+	private constructor() {}
 
 	getSupportedTypeNames(): Set<string> {
 		return this.supportedTypes;
 	}
 
-	createCustomFieldType(customFieldTypeName: string): ICustomFieldType | null {
+	public static getInstance(): PrintDateTimeFormatFactory {
+		return this.instance;
+	}
+
+	createCustomFieldType(customFieldTypeName: string): ICustomFieldValidator | null {
 		if (customFieldTypeName === PrintDateTimeFormatFt.NAME) {
 			return PrintDateTimeFormatFt.getInstance();
 		}

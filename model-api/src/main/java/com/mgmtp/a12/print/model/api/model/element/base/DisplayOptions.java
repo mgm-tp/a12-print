@@ -32,10 +32,12 @@
 package com.mgmtp.a12.print.model.api.model.element.base;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
 import java.util.Optional;
 
+@OnlyForUsage
 public interface DisplayOptions extends PrintModelEntity {
 	Optional<DisplayType> getDisplayType();
 
@@ -43,6 +45,7 @@ public interface DisplayOptions extends PrintModelEntity {
 		return getDisplayType().isPresent() && DisplayType.HTML.equals(getDisplayType().get());
 	}
 
+	@OnlyForUsage
 	enum DisplayType {
 		@JsonProperty("Html") HTML,
 		@JsonProperty("Date") DATE,

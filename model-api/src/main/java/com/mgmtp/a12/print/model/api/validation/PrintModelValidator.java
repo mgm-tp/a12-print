@@ -34,10 +34,12 @@ package com.mgmtp.a12.print.model.api.validation;
 import com.mgmtp.a12.print.model.api.validation.internal.utils.PrintModelValidationUtils;
 
 import java.util.Locale;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Validates {@link com.mgmtp.a12.print.model.api.model.PrintModel}s against the current version of the API.
  */
+@OnlyForUsage
 public class PrintModelValidator implements IPrintModelValidator {
 
 	/**
@@ -46,6 +48,15 @@ public class PrintModelValidator implements IPrintModelValidator {
 	 */
 	@Override
 	public IPrintModelIntegrityReport validate(String rawPrintModel, Locale locale) {
-		return PrintModelValidationUtils.validate(rawPrintModel, locale);
+		return validate(rawPrintModel, new PrintModelValidatorOptions(locale, true));
+	}
+
+	/**
+	 * @param rawPrintModel The String-representation of a {@link com.mgmtp.a12.print.model.api.model.PrintModel}.
+	 * @param options The validation options, including locale and optional HTML validation.
+	 */
+	@Override
+	public IPrintModelIntegrityReport validate(String rawPrintModel, PrintModelValidatorOptions options) {
+		return PrintModelValidationUtils.validate(rawPrintModel, options);
 	}
 }

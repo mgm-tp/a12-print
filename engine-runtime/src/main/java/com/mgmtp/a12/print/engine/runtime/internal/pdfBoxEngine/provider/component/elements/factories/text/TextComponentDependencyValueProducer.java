@@ -31,8 +31,8 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.factories.text;
 
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PrintEngine;
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.PdfBoxDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
@@ -83,7 +83,7 @@ public class TextComponentDependencyValueProducer implements PdfBoxDependencyVal
 		TextRenderStyle textRenderStyle = dependency.getTextRenderStyle().toBuilder().textStyle(textStyle).build();
 		String fontKey = textRenderStyle.getFont();
 		final var loadedFont = runtime.provide(new FontLoaderDependency(fontKey, document)).get();
-		final var fallbackFont = runtime.provide(new FontLoaderDependency(PrintEngineConfig.DEFAULT_FONT_KEY, document)).get();
+		final var fallbackFont = runtime.provide(new FontLoaderDependency(PdfBoxPrintEngineConfig.DEFAULT_FONT_KEY, document)).get();
 
 		if (fallbackFont == null) {
 			throw new FontLoadException("The requested fallback font could not be loaded");

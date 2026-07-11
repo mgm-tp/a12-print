@@ -31,7 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.factories.text;
 
-public class StringWidthMeasurementException extends RuntimeException {
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
+
+public class StringWidthMeasurementException extends PrintException {
 	public StringWidthMeasurementException(Exception exception) {
 		super(exception);
 	}

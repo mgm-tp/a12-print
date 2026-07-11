@@ -32,9 +32,7 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { ModalNotification } from "@com.mgmtp.a12.widgets/widgets-core/lib/modal-notification/index.js";
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/button-group/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
+import { ModalNotification, ButtonGroup, Button } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";

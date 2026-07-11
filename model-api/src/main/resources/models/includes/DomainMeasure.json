@@ -2,7 +2,7 @@
   "header": {
     "id": "DomainMeasure",
     "modelType": "document",
-    "modelVersion": "28.4.0",
+    "modelVersion": "29.4.0",
     "locales": [
       {
         "code": "en"
@@ -25,8 +25,8 @@
       "name": "DomainMeasure"
     },
     "modelConfig": {
-      "decimalSeparator": ".",
       "timeZone": "UTC",
+      "decimalSeparator": ".",
       "conditionLanguage": {
         "code": "en_US"
       }
@@ -65,8 +65,7 @@
                   }
                 ]
               }
-            ],
-            "categories": []
+            ]
           }
         }
       }
@@ -78,12 +77,28 @@
           "id": "group_59ce8",
           "name": "measure",
           "Group": {
+            "label": [
+              {
+                "locale": "en",
+                "text": "Measure"
+              },
+              {
+                "locale": "de",
+                "text": "Maß"
+              }
+            ],
             "repeatability": 1,
             "elements": [
               {
                 "type": "Field",
                 "id": "field_83323",
                 "name": "id",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
@@ -100,20 +115,46 @@
                     "NumberType": {
                       "minValue": 0
                     }
-                  }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "measure value"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Abschnittsgröße"
+                    }
+                  ]
                 }
               },
               {
                 "type": "Field",
                 "id": "field_f7972",
                 "name": "unit",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "TypeDefType",
                     "TypeDefType": {
                       "typeDefinitionId": "typedef_deaf13b7-7e7f-4236-8247-e35fd4083cad"
                     }
-                  }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Measure unit"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Einheit der Abschnittsgröße"
+                    }
+                  ]
                 }
               },
               {

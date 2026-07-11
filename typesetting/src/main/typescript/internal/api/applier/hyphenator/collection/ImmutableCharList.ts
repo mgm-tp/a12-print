@@ -29,10 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-interface ImmutableCharList {
+export interface ImmutableCharList {
 	readonly length: number;
 
 	get(i: number): string;
 }
-
-export default ImmutableCharList;

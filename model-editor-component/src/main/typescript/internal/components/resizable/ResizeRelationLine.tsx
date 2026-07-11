@@ -30,7 +30,7 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { EditorConst } from "../../constant/editor.js";
-import { IRsLine } from "../../types/resize.js";
+import type { IRsLine } from "../../types/resize.js";
 import { formatNumberToString } from "../../utils/index.js";
 
 import { ToolTipBottom, ToolTipLeft, ToolTipRight, ToolTipTop } from "../tool-tips/ToolTips.styled.js";

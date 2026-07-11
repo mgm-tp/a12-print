@@ -29,11 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	InputSourceDTO,
-	MeasureInputSourceDTO,
-} from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
-import { InputSource, MeasureInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { InputSourceDTO, MeasureInputSourceDTO } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import type { InputSource, MeasureInputSource } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { Deserializer } from "./deserializer.js";
 

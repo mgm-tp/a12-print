@@ -33,14 +33,13 @@ import { useDispatch } from "react-redux";
 import React from "react";
 import { styled } from "styled-components";
 
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { Button, ButtonGroup, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
-import { Badge } from "@com.mgmtp.a12.widgets/widgets-core/lib/badge/index.js";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { Button, ButtonGroup, Icon, Badge } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { useTransactionGroups } from "../../../hooks/index.js";
-import { SidebarActions } from "../../../redux/index.js";
+import { NavigationActions } from "../../../redux/index.js";
 
-import { PrintEditorSMEBaseProps } from "./types.js";
+import type { PrintEditorSMEBaseProps } from "./types.js";
 
 export const StyledButtonContainer = styled(ButtonGroup)`
 	border-top: ${props => props.theme.components.list.dividerBorder};
@@ -57,14 +56,16 @@ export const SidebarFooter = ({ onClose, onDeploy, isConnectedToServer }: Sideba
 
 	const hasNoLogs = React.useMemo(() => transactionGroups.length === 0, [transactionGroups]);
 	const onSaveClick = React.useCallback(() => {
-		dispatch(SidebarActions.setCurrentView({ selectedItem: SidebarItem.COMMIT_CHANGES, isOpen: true }));
+		dispatch(NavigationActions.setActiveTab(SidebarItem.COMMIT_CHANGES));
+		dispatch(NavigationActions.setExpandedState({ isOpen: true }));
 	}, [dispatch]);
 
 	const onCancelClick = React.useCallback(() => {
 		if (hasNoLogs) {
 			onClose();
 		} else {
-			dispatch(SidebarActions.setCurrentView({ selectedItem: SidebarItem.COMMIT_CHANGES, isOpen: true }));
+			dispatch(NavigationActions.setActiveTab(SidebarItem.COMMIT_CHANGES));
+			dispatch(NavigationActions.setExpandedState({ isOpen: true }));
 		}
 	}, [dispatch, hasNoLogs, onClose]);
 

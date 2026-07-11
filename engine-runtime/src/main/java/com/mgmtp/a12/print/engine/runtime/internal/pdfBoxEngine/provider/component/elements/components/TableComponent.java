@@ -274,6 +274,7 @@ public class TableComponent extends BaseComponent {
 			.remainingSpace(regionCursor.getRemainingRegionSpace())
 			.regionSpace(regionCursor.getRegionSpace())
 			.inset(this.inset)
+			.tagAsTable(!elementType.equals(ElementType.TABLE_LAYOUT))
 			.hideHeader(headerRow == null)
 			.hasDifferingBorderStyles(elementType.equals(ElementType.TABLE_LAYOUT) || elementType.equals(ElementType.LISTING))
 			.hasDifferingCellColors(elementType.equals(ElementType.LISTING)).build();

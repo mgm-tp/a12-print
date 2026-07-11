@@ -32,8 +32,8 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.element.type.image;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.mgmtp.a12.print.model.api.model.element.type.image.AttachmentSource;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import com.mgmtp.a12.print.model.api.model.element.type.image.ResourceSource;
 import com.mgmtp.a12.print.model.api.model.element.type.image.FieldSource;
 import com.mgmtp.a12.print.model.api.model.element.type.image.ImageDimensions;
 import com.mgmtp.a12.print.model.api.model.element.type.image.ImageProperties;
@@ -62,17 +62,17 @@ public class ImagePropertiesDto extends PrintModelEntityDto implements ImageProp
 	@JsonDeserialize(as = ImageDimensionsDto.class)
 	ImageDimensions dimensions;
 
-	@JsonProperty("attachmentSource")
-	@JsonDeserialize(as = AttachmentSourceDto.class)
-	AttachmentSource attachmentSource;
+	@JsonProperty("resourceSource")
+	@JsonDeserialize(as = ResourceSourceDto.class)
+	ResourceSource resourceSource;
 
 	@JsonProperty("fieldSource")
 	@JsonDeserialize(as = FieldSourceDto.class)
 	FieldSource fieldSource;
 
 	@Override
-	public Optional<AttachmentSource> getAttachmentSource() {
-		return Optional.ofNullable(attachmentSource);
+	public Optional<ResourceSource> getResourceSource() {
+		return Optional.ofNullable(resourceSource);
 	}
 	@Override
 	public Optional<FieldSource> getFieldSource() {

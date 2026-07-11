@@ -31,15 +31,20 @@
  */
 import { useSelector } from "react-redux";
 import { fireEvent } from "@testing-library/react";
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
+
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import {
+	createNavigationStateWithForm,
 	createTransactionLogState,
 	defaultPrintEditorState,
+	mockSegment,
 	renderWithProviders,
 } from "../../../../../../test/typescript/test-utils/index.js";
-import { EditorStateReducer, PrintEditorState } from "../../../redux/index.js";
+import type { PrintEditorState } from "../../../redux/index.js";
+import { EditorStateReducer } from "../../../redux/index.js";
 
 import { HideFrames } from "../toolbar-item/HideFrames.js";
 
@@ -62,6 +67,7 @@ describe("toggleShowFramesButton", () => {
 			{
 				TransactionLogState: createTransactionLogState(),
 				PrintEditorState: PrintEditorStateMock,
+				Navigation: () => createNavigationStateWithForm(SidebarItem.SEGMENT, mockSegment.id, []),
 			}
 		);
 

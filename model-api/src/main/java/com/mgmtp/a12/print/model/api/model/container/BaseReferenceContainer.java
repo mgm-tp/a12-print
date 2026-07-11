@@ -38,7 +38,9 @@ import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
 
 import java.util.Collection;
 import java.util.Iterator;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface BaseReferenceContainer<T extends ElementReference> extends Iterable<T>, PrintModelPathElement, PrintModelEntity {
 	@Override
 	default Iterator<T> iterator() {

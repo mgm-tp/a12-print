@@ -32,20 +32,17 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { LayoutGrid } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/layout-grid/index.js";
-import { SizeDetectorProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/size-detector/index.js";
-import { SidebarRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PartialTextStyle, TextStyle } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { Typography } from "@com.mgmtp.a12.widgets/widgets-core/lib/typography/index.js";
-import { HintTooltip } from "@com.mgmtp.a12.widgets/widgets-core";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
+import { SidebarRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PartialTextStyle, TextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { SizeDetectorProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { HintTooltip, LayoutGrid, Typography, addPrefix } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { OmitId } from "../../utils/index.js";
+import type { OmitId } from "../../utils/index.js";
 import { DEFAULT_TEXT_STYLE_ID } from "../../constant/textstyle.js";
 
 import { HiddenHeightComponentContext } from "../hidden-height-context-wrapper/index.js";

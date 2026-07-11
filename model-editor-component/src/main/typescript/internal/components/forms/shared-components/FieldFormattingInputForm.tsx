@@ -31,17 +31,18 @@
  */
 import * as React from "react";
 import { nanoid } from "nanoid";
-import { FocusEvent } from "react";
+import type { FocusEvent } from "react";
 
-import { DisplayOptions, DisplayType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import type { DisplayOptions } from "@com.mgmtp.a12.print/print-model-api/model";
+import { DisplayType } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 
 import { CustomSelect } from "../custom-base-input-components/index.js";
-import { CustomTextLineStateful } from "../custom-base-input-components/CustomTextLineStateful.js";
+import { DynamicSourceTextField } from "../custom-base-input-components/DynamicSourceTextField.js";
 
-import { DisplayOptionsKeys, FieldTypeKeys, DisplayTypeItems, DisplayTypeItemValue } from "./shared-interfaces.js";
+import type { DisplayOptionsKeys, FieldTypeKeys, DisplayTypeItems, DisplayTypeItemValue } from "./shared-interfaces.js";
 import { DateFormatInput } from "./DateFormatInput.js";
 
 export const FIELD_TYPE_KEY: Record<FieldTypeKeys, DisplayOptionsKeys> = {
@@ -133,13 +134,13 @@ const CheckBoxInput = ({ displayOptions, getErrorMessage, onBlur }: FieldAttribu
 
 	return (
 		<>
-			<CustomTextLineStateful
+			<DynamicSourceTextField
 				label={localizer(RESOURCE_KEYS.elementForm.field.checkboxChecked)}
 				value={displayOptions?.checkboxChecked}
 				onBlur={(e: FocusEvent<HTMLInputElement>) => onBlur(e.target.value, DisplayType.Checkbox)}
 				errorMessage={getErrorMessage("checkboxChecked")}
 			/>
-			<CustomTextLineStateful
+			<DynamicSourceTextField
 				label={localizer(RESOURCE_KEYS.elementForm.field.checkboxUnchecked)}
 				value={displayOptions?.checkboxUnchecked}
 				onBlur={(e: FocusEvent<HTMLInputElement>) => onBlur(e.target.value, "CheckboxUnchecked")}
@@ -173,7 +174,7 @@ const DateRangeInput = ({ displayOptions, getErrorMessage, onBlur }: FieldAttrib
 				onBlur={(e: FocusEvent<HTMLInputElement>) => onBlur(e.target.value, "DateRangeFormatStart")}
 				errorMessage={getErrorMessage("dateRangeFormatStart")}
 			/>
-			<CustomTextLineStateful
+			<DynamicSourceTextField
 				label={localizer(RESOURCE_KEYS.elementForm.field.dateRangeDelimiter)}
 				value={displayOptions?.dateRangeDelimiter}
 				onBlur={(e: FocusEvent<HTMLInputElement>) => onBlur(e.target.value, "DateRangeDelimiter")}
@@ -193,7 +194,7 @@ const DefaultInput = ({ displayOptions, getErrorMessage, onBlur }: FieldAttribut
 	const localizer = PrintLocalizer.useLocalizer();
 
 	return (
-		<CustomTextLineStateful
+		<DynamicSourceTextField
 			label={localizer(RESOURCE_KEYS.elementForm.field.suffix)}
 			value={displayOptions?.suffix}
 			onBlur={(e: FocusEvent<HTMLInputElement>) => onBlur(e.target.value, DisplayType.Html)}

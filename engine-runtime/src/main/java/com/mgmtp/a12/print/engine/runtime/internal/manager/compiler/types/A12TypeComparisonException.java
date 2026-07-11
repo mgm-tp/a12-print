@@ -31,7 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.types;
 
-public class A12TypeComparisonException extends RuntimeException {
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
+
+public class A12TypeComparisonException extends PrintException {
 
 	public A12TypeComparisonException(String message) {
 		super(message);

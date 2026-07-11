@@ -32,26 +32,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { jest } from "@jest/globals";
 
-import { AnyContainerElement, PrintModelElement } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { AnyContainerElement, PrintModelElement } from "@com.mgmtp.a12.print/print-model-api/model";
+import type {
+	SectionIdResolver,
+	SegmentIdResolver,
+	WatermarkIdResolver,
+} from "@com.mgmtp.a12.print/print-model-api/walker";
 import {
 	DescendCommand,
 	PrintModelVisitor,
 	TraversalCommand,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/print-model-visitor.js";
-import { PrintModelWalker, getReferences } from "@com.mgmtp.a12.print/print-model-api/lib/walker/print-model-walker.js";
-import { ReferenceListResolver } from "@com.mgmtp.a12.print/print-model-api/lib/walker/reference-resolver.js";
-import {
+	PrintModelWalker,
+	getReferences,
+	ReferenceListResolver,
 	DefaultSectionIdResolver,
-	SectionIdResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/section-id-resolver.js";
-import {
 	DefaultSegmentIdResolver,
-	SegmentIdResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/segment-id-resolver.js";
-import {
 	DefaultWatermarkIdResolver,
-	WatermarkIdResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/walker/watermark-id-resolver.js";
+} from "@com.mgmtp.a12.print/print-model-api/walker";
 
 import {
 	area,

@@ -31,5 +31,8 @@
  */
 package com.mgmtp.a12.print.engine.api;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
+@OnlyForUsage
 public interface JobRestrictionContext {
 }

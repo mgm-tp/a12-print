@@ -33,26 +33,20 @@ import { nanoid } from "nanoid";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { clonePrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/lib/utils/print-model/index.js";
-import {
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { clonePrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type {
 	InputSource,
-	isPartialSection,
-	isPartialWatermark,
 	PageBreakBehavior,
 	PartialValidPlaceableReference,
 	PrintModelEntity,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { isPartialSection, isPartialWatermark } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
-import {
-	PlainMeasurePosition,
-	createMmMeasure,
-	createPlainMmMeasureFromPx,
-	EditorUtils,
-	ElementsUtils,
-} from "../../../utils/index.js";
+import type { PlainMeasurePosition } from "../../../utils/index.js";
+import { createMmMeasure, createPlainMmMeasureFromPx, EditorUtils, ElementsUtils } from "../../../utils/index.js";
 import { TransactionLogStateActions } from "../../../redux/transaction-log-state/index.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
 import { RESOURCE_KEYS } from "../../../localization/index.js";

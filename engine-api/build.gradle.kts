@@ -53,4 +53,5 @@ dependencies {
 	testImplementation(thirdPartyLibs.assertj)
 
 	testRuntimeOnly(thirdPartyLibs.jupiterEngine)
+	testRuntimeOnly(thirdPartyLibs.junitLauncher)
 }

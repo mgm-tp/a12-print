@@ -31,20 +31,9 @@
  */
 package com.mgmtp.a12.print.shell.internal.command;
 
+import com.mgmtp.a12.print.shell.internal.PrintShellConstants;
 import com.mgmtp.a12.print.shell.internal.command.utils.ShellUtil;
-import com.mgmtp.a12.print.shell.internal.command.utils.TestConfiguration;
-import com.mgmtp.a12.print.shell.internal.configuration.PrintShellConfiguration;
-import com.mgmtp.a12.print.shell.internal.service.*;
-import com.mgmtp.a12.print.shell.internal.workspace.WorkspaceBuilder;
-import com.mgmtp.a12.print.shell.internal.workspace.WorkspaceVisitor;
-import com.mgmtp.a12.print.workspace.internal.handler.FileHandler;
-import org.jline.terminal.Terminal;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.shell.test.ShellTestClient;
-import org.springframework.shell.test.autoconfigure.ShellTest;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,43 +44,16 @@ import java.util.Objects;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ShellTest(terminalWidth = 200)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@Import({
-	WorkspaceBuilder.class,
-	WorkspaceVisitor.class,
-	FileHandler.class,
-	PrintShellConfiguration.class,
-	MigrationService.class,
-	PdfComparisonService.class,
-	PrintService.class,
-	ProfilingService.class,
-	PrintDocumentService.class,
-	TestConfiguration.class
-})
-public class PrintCommandTest {
+class PrintCommandTest {
 
-	private static final String PRINT_WORKSPACE_PATH = MigrationCommandTest.class.getResource("/print").getPath();
-	private static final String PRINT_ALL_WORKSPACE_PATH = MigrationCommandTest.class.getResource("/printAll").getPath();
-
-	@Autowired
-	ShellTestClient client;
-
-	@Autowired
-	Terminal terminal;
-
-	@Autowired
-	private PrintShellConfiguration printShellConfiguration;
+	private static final String PRINT_WORKSPACE_PATH = Objects.requireNonNull(PrintCommandTest.class.getResource("/print")).getPath();
+	private static final String PRINT_ALL_WORKSPACE_PATH = Objects.requireNonNull(PrintCommandTest.class.getResource("/printAll")).getPath();
 
 	@Test
 	void printTestWithoutDocument() {
 		String printModelId = "PrintWithoutDocumentModel";
 		printSuccessfully(
-			String.format(
-				"print -w %s -p %s",
-				PRINT_WORKSPACE_PATH,
-				printModelId
-			)
+			new String[]{"print", "-w", PRINT_WORKSPACE_PATH, "-p", printModelId}
 		);
 
 		List<String> files = getFiles(PRINT_WORKSPACE_PATH);
@@ -105,14 +67,14 @@ public class PrintCommandTest {
 		String printModelId = "PrintWithShell";
 		String documentId = "TestDocument";
 		printSuccessfully(
-			String.format(
-				"print -w %s -p %s -d %s -l %s -f %b",
-				PRINT_WORKSPACE_PATH,
-				printModelId,
-				documentId,
-				"DEBUG",
-				true
-			)
+			new String[]{
+				"print",
+				"-w", PRINT_WORKSPACE_PATH,
+				"-p", printModelId,
+				"-d", documentId,
+				"-l", "DEBUG",
+				"-f"
+			}
 		);
 
 		List<String> files = getFiles(PRINT_WORKSPACE_PATH);
@@ -126,10 +88,9 @@ public class PrintCommandTest {
 	@Test
 	void printAllTest() {
 		ShellUtil.runShellCommand(
-			terminal,
-			client,
-			String.format("print-all -w %s", PRINT_ALL_WORKSPACE_PATH),
-			List.of("PrintWithShell-TestDocument.pdf", "PrintWithShell-SecondTestDocument.pdf")
+			new String[]{"print-all", "-w", PRINT_ALL_WORKSPACE_PATH},
+			List.of("PrintWithShell-TestDocument.pdf", "PrintWithShell-SecondTestDocument.pdf"),
+			0
 		);
 
 		List<String> files = getFiles(PRINT_ALL_WORKSPACE_PATH);
@@ -146,29 +107,19 @@ public class PrintCommandTest {
 		String printModelId = "PrintWithShell";
 		String documentId = "TestDocument";
 		assertThatCode(() -> printSuccessfully(
-				String.format(
-					"print -w %s -p %s -d %s -t %s --locale %s",
-					PRINT_WORKSPACE_PATH,
-					printModelId,
-					documentId,
-					"GMT",
-					"en"
-				)
-			)
+			new String[] {"print", "-w", PRINT_WORKSPACE_PATH, "-p", printModelId, "-d", documentId, "-t", "GMT", "--locale", "en"})
 		).doesNotThrowAnyException();
 	}
 
-	private void printSuccessfully(String command) {
+	private void printSuccessfully(String[] command) {
 		ShellUtil.runShellCommand(
-			terminal,
-			client,
 			command,
 			"Save PDF result to"
 		);
 	}
 
 	private List<String> getFiles(String workspacePath) {
-		File folder = new File(workspacePath + "/" + printShellConfiguration.getResultDirectory());
+		File folder = new File(workspacePath + "/" + PrintShellConstants.RESULT_DIRECTORY);
 		List<String> files = new ArrayList<>();
 
 		Arrays.stream(Objects.requireNonNull(folder.listFiles())).forEach(file -> {

@@ -29,7 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SyntaxTreeElementType, SyntaxTreeElementVisitor, VisitationState } from "./index.js";
+import type { SyntaxTreeElementVisitor, VisitationState } from "../../a12internal/elements/index.js";
+
+import type { SyntaxTreeElementType } from "./index.js";
 
 export interface SyntaxTreeElement {
 	elementType(): SyntaxTreeElementType;

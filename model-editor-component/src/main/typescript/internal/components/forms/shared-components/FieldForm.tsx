@@ -33,22 +33,22 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { DisplayOptions, FieldProperties, PartialField } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { TextRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { DisplayOptions, FieldProperties, PartialField } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { TextRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { TransactionLogStateActions } from "../../../redux/index.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { ElementMapUtils } from "../../../utils/element-map-utils.js";
 import { DocumentModelDataSelectors } from "../../../redux/document-model-data/selectors.js";
 
-import { CustomTextLineStateless } from "../custom-base-input-components/index.js";
-import { ElementWithoutIdAndType } from "../type.js";
+import { CustomTextField } from "../custom-base-input-components/index.js";
+import type { ElementWithoutIdAndType } from "../type.js";
 
 import { FieldFormattingInputForm } from "./FieldFormattingInputForm.js";
 import { DocumentModelSelect } from "./DocumentModelSelect.js";
@@ -124,7 +124,7 @@ export const FieldForm = ({ element }: FieldFormProps) => {
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getErrorMessage("model")}
 			/>
-			<CustomTextLineStateless
+			<CustomTextField
 				readonly
 				label={localizer(RESOURCE_KEYS.elementForm.model.field)}
 				value={fieldPath}

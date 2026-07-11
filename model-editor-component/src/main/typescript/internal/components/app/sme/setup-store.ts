@@ -29,38 +29,42 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { applyMiddleware, createStore, Middleware, Reducer } from "redux";
+import { applyMiddleware, createStore, type Middleware, type Reducer } from "redux";
 import { composeWithDevTools } from "@redux-devtools/extension";
-import { actionCreatorFactory } from "typescript-fsa";
 
-import { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { Locale } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
-import {
-	PrintValidationMode,
-	PrintValidator,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/validation/index.js";
-import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/lib/marshaller/index.js";
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model/index.js";
-import { TypesettingModelMarshaller } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/marshaller/model-marshaller.js";
+import type { DocumentModel, EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { Locale } from "@com.mgmtp.a12.utils/utils-localization";
+import type { PrintValidator } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { DocumentModelUtils } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
+import type { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
+import { TypesettingModelMarshaller } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
-import { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/model/typesetting-model.js";
 
-import {
-	DINTemplatePrintModels,
-	EditorComponentApiActions,
-	RequestApi,
-	UpdatedReferenceModels,
-} from "../../../api/index.js";
-import { PrintEditorComponentReducer, PrintEngineState } from "../../../store/root-reducer.js";
+import type { DINTemplateSegment, RequestApi, UpdatedReferenceModels } from "../../../api/index.js";
+import { PrintEditorComponentReducer } from "../../../store/root-reducer.js";
 import { PrintEditorComponentSagas } from "../../../sagas/index.js";
 import createSagaMiddleware from "../../../redux-saga/index.js";
-import { ValidationState } from "../../../redux/index.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
+import type { ValidationState } from "../../../../a12internal/api/ValidationState.js";
+import { EditorComponentApiActions } from "../../../../a12internal/api/actions-api.js";
+import { actionCreatorFactory } from "../../../redux/actionCreatorFactory/actionCreatorFactory.js";
+import { PrintMessageSeverity } from "../../../../a12internal/api/PrintMessageReport.js";
+import type {
+	StaticImageData,
+	StaticImageProvider,
+	SaveStaticImageResponse,
+} from "../../../../api/StaticImageProvider.js";
+import { resolveImagesDataOfPrintModel } from "../../../../a12internal/components/utils/static-image.js";
+import { RequestApiSelectors } from "../../../redux/request-api/selectors.js";
+import { DocumentModelDataActions } from "../../../redux/document-model-data/actions.js";
 
-import { PrintEditorSMEProps } from "./types.js";
-import { getDinTemplatePrintModels } from "./utils/get-din-template-print-models.js";
+import type { PrintEditorSMEProps } from "./types.js";
 import { setSegmentReferences } from "./utils/set-segment-references.js";
 import { getModelReferencesMaps } from "./utils/model-references.js";
+import { getDinTemplateSegments } from "./utils/get-din-template-segments.js";
 
 const printModelMarshaller = new PrintModelMarshaller();
 const typesettinMarshaller = new TypesettingModelMarshaller();
@@ -100,17 +104,13 @@ function getDeserializeTypesettingModels(models: Model[]): TypesettingModel[] {
 export function setupStore(
 	requestApiContext: RequestApiContext,
 	showNotification: (notification: EditorComponentApiActions.AddNotificationPayload) => void,
-	locale: Locale
+	locale: Locale,
+	staticImageProvider: StaticImageProvider
 ) {
 	const typesettingModelsInstances = getDeserializeTypesettingModels(requestApiContext.typesettingModels);
 
 	const requestApi: RequestApi = {
 		loadPrintModel: (printModelId: string) => {
-			const documentModelDataMap = store.getState().DocumentModelData || {};
-			const documentModels = documentModelDataMap
-				? Object.values(documentModelDataMap).flatMap(dm => dm?.model ?? [])
-				: [];
-
 			const printModel =
 				printModelId === requestApiContext.printModel.header.id
 					? requestApiContext.printModel
@@ -120,20 +120,33 @@ export function setupStore(
 			if (!printModel) {
 				return Promise.resolve({ printModel: undefined, logPersistentEntries });
 			}
-			const deserializedResult = printModelMarshaller.deserialize(
-				printModel as unknown as Record<string, unknown>,
-				documentModels
+
+			const requiredDocumentModelIds =
+				printModel.header.modelReferences
+					?.filter(ref => ref.reference && ref.modelType === "document")
+					.map(ref => ref.reference) ?? [];
+
+			const rawDocumentModels = requestApiContext.loadReferencedDocumentModels(requiredDocumentModelIds);
+			const documentModels = DocumentModelUtils.getDeserializedDocumentModels(rawDocumentModels);
+			store.dispatch(
+				DocumentModelDataActions.setDocumentModelData(
+					documentModels.map(dm => ({
+						id: dm.header.id,
+						documentModelData: DocumentModelUtils.getDocumentModelData(dm, locale),
+					}))
+				)
 			);
 
-			if (deserializedResult.report.noErrorOccurred && deserializedResult.result) {
-				return Promise.resolve({
-					printModel: deserializedResult.result,
-					logPersistentEntries,
-				});
-			} else {
-				const errorMap = deserializedResult.report.errorMap;
-				return Promise.resolve({ errorMap });
-			}
+			const deserializedResult = printModelMarshaller.deserialize(
+				printModel as unknown as Record<string, unknown>,
+				{ html: false, references: { documentModels } }
+			);
+
+			return Promise.resolve({
+				printModel: deserializedResult.result,
+				logPersistentEntries,
+				errorMap: deserializedResult.report.noErrorOccurred ? undefined : deserializedResult.report.errorMap,
+			});
 		},
 		loadReferencedDocumentModels: (ids: string[]) => {
 			const documentModels = requestApiContext.loadReferencedDocumentModels(ids);
@@ -149,22 +162,16 @@ export function setupStore(
 			return Promise.resolve(typesettingModelsInstances.find(model => model.header.id === typesettingId));
 		},
 		setPrintModel: async (printModel, overwriteLog, persistentEntries) => {
-			const documentModelDataMap = store.getState().DocumentModelData || {};
-			const documentModels = documentModelDataMap
-				? Object.values(documentModelDataMap).flatMap(dm => dm?.model ?? [])
-				: [];
-
-			const serializedResult = printModelMarshaller.serialize(printModel, documentModels);
+			const documentModels = getDocumentModelsFromStore(store.getState());
+			const serializedResult = printModelMarshaller.serialize(printModel, {
+				html: false,
+				references: { documentModels },
+			});
 			if (!serializedResult.result) {
-				return Promise.resolve({ errorMap: serializedResult.report.errorMap });
+				return { errorMap: serializedResult.report.errorMap };
 			}
 
-			const printModelSerialized = JSON.stringify(serializedResult.result);
-
-			const documentModelIds = Object.values(documentModelDataMap)
-				.map(dm => dm?.model.header.id ?? [])
-				.flat();
-
+			const documentModelIds = documentModels.map(dm => dm.header.id);
 			const serializedDocumentModels = requestApiContext.loadReferencedDocumentModels(documentModelIds);
 
 			const { printModels } = requestApiContext;
@@ -173,31 +180,47 @@ export function setupStore(
 				serializedDocumentModels,
 				printModels
 			);
-			const preCompilePrintModelResponse = await requestApiContext.precompilePrintModel({
-				printModel: printModelSerialized,
+			const images = await resolveImagesDataOfPrintModel(
+				printModel,
+				staticImageProvider,
+				RequestApiSelectors.resources(store.getState())
+			);
+
+			const precompileMessages = await requestApiContext.precompilePrintModel({
+				printModel: JSON.stringify(serializedResult.result),
 				documentModelMap,
 				printModelMap,
+				images,
 			});
-			if (!preCompilePrintModelResponse) {
-				return Promise.resolve({ hasPreCompileError: true });
+			if (
+				!precompileMessages ||
+				precompileMessages.some(message => message.severity === PrintMessageSeverity.ERROR)
+			) {
+				return { precompileMessages };
 			}
 
-			requestApiContext.commitPrintModel(JSON.parse(printModelSerialized), overwriteLog, persistentEntries);
-			return Promise.resolve({ printModel });
+			requestApiContext.commitPrintModel(serializedResult.result, overwriteLog, persistentEntries);
+			return { printModel, precompileMessages };
 		},
 		persistTransactionLog: (transactionLogPersistentEntries, printModelId) => {
-			requestApiContext.onPrintModelChange &&
-				requestApiContext.onPrintModelChange(printModelId, transactionLogPersistentEntries, undefined);
+			requestApiContext.onPrintModelChange?.(printModelId, transactionLogPersistentEntries, undefined);
 		},
 		persistInteractionLog: (printModelId, interactionLogPersistentEntry) => {
-			requestApiContext.onPrintModelChange &&
-				requestApiContext.onPrintModelChange(printModelId, undefined, interactionLogPersistentEntry);
+			requestApiContext.onPrintModelChange?.(printModelId, undefined, interactionLogPersistentEntry);
 		},
 		onValidationStateChange: (validationState: ValidationState) => {
-			requestApiContext.onValidationStateChange && requestApiContext.onValidationStateChange(validationState);
+			requestApiContext.onValidationStateChange?.(validationState);
 		},
-		loadDINTemplatePrintModels(): Promise<DINTemplatePrintModels[]> {
-			return Promise.resolve(getDinTemplatePrintModels(requestApiContext.printModels));
+		loadPrintModelIds(): Promise<string[]> {
+			return Promise.resolve(requestApiContext.printModels.map(model => model.header.id));
+		},
+		loadDINTemplateSegments(id: string): Promise<DINTemplateSegment[]> {
+			const selectedModel = requestApiContext.printModels.find(model => model.header.id === id);
+
+			if (!selectedModel) {
+				return Promise.resolve([]);
+			}
+			return Promise.resolve(getDinTemplateSegments(selectedModel));
 		},
 		async setPrintModelReferences({
 			incomingPrintModelId,
@@ -221,36 +244,37 @@ export function setupStore(
 
 			await requestApiContext.setPrintModels([printModel, templatePrintModel]);
 
-			return Promise.resolve(undefined);
+			return undefined;
 		},
 		serializePrintModel(apiObject: PrintModel, relevantPaths?: EntityInstancePath[]) {
-			const documentModelDataMap = store.getState().DocumentModelData || {};
-			const documentModels = documentModelDataMap
-				? Object.values(documentModelDataMap).flatMap(dm => dm?.model ?? [])
-				: [];
-			const result = printModelMarshaller.serialize(
-				apiObject,
-				documentModels,
-				PrintValidationMode.FULL,
-				relevantPaths
-			);
+			const documentModels = getDocumentModelsFromStore(store.getState());
+			const result = printModelMarshaller.serialize(apiObject, {
+				html: false,
+				references: { documentModels },
+				partial: { relevantPaths },
+			});
 			store.dispatch(EditorComponentApiActions.setSerializePrintModelResult(result));
 		},
 		deserializePrintModel(_validatorInput: PrintValidator.Input, relevantPaths?: EntityInstancePath[]) {
-			const documentModelDataMap = store.getState().DocumentModelData || {};
-			const documentModels = documentModelDataMap
-				? Object.values(documentModelDataMap).flatMap(dm => dm?.model ?? [])
-				: [];
-			const result = printModelMarshaller.deserialize(
-				_validatorInput,
-				documentModels,
-				PrintValidationMode.FULL,
-				relevantPaths
-			);
+			const documentModels = getDocumentModelsFromStore(store.getState());
+			const result = printModelMarshaller.deserialize(_validatorInput, {
+				html: false,
+				references: { documentModels },
+				partial: { relevantPaths },
+			});
 			store.dispatch(EditorComponentApiActions.setDeserializePrintModelResult(result));
 		},
 		discardAllLogs() {
-			requestApiContext.discardAllLogs && requestApiContext.discardAllLogs();
+			requestApiContext.discardAllLogs?.();
+		},
+		listStaticImages: function (): Promise<string[]> {
+			return staticImageProvider.listStaticImages();
+		},
+		loadStaticImage: function (name: string): Promise<StaticImageData | undefined> {
+			return staticImageProvider.loadStaticImage(name);
+		},
+		uploadStaticImage: function (resource: StaticImageData): Promise<SaveStaticImageResponse | undefined> {
+			return staticImageProvider.uploadStaticImage(resource);
 		},
 	};
 
@@ -293,4 +317,8 @@ function catchNotificationMiddleware(
 		}
 		return result;
 	};
+}
+
+function getDocumentModelsFromStore(state: PrintEngineState): DocumentModel[] {
+	return Object.values(state.DocumentModelData || {}).flatMap(dm => dm?.model ?? []);
 }

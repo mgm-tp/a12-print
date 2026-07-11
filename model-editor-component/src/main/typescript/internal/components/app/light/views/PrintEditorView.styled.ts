@@ -31,10 +31,7 @@
  */
 import { styled } from "styled-components";
 
-import {
-	StyledMasterDetailLayoutBody,
-	StyledMasterDetailLayoutPane,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/master-detail/main/master-detail.styled.js";
+import { StyledMasterDetailLayoutBody, StyledMasterDetailLayoutPane } from "@com.mgmtp.a12.widgets/widgets-core";
 
 export const StyledLayout = styled.div`
 	width: 100%;

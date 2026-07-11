@@ -29,11 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { InputSource, PageBreakBehavior, PrintModelElement, PrintModelEntity } from "../../model/index.js";
+import type { PageBreakBehavior, PrintModelElement } from "../../model/index.js";
+import { type InputSource, type PrintModelEntity } from "../../model/index.js";
 
-import { DeepPartial } from "../type-utils.js";
+import { type DeepPartial } from "../type-utils.js";
 
-import { CloneTreeTrace } from "./clone-tree-trace.js";
+import type { CloneTreeTrace } from "./clone-tree-trace.js";
 
 export type ElementGetter = (elementId: string) => PrintModelElement | undefined;
 export type CloneFunction = <T extends object>(element: T) => T;

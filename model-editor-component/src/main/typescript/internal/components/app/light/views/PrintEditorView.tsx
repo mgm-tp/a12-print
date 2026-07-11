@@ -33,11 +33,11 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Button, Icon, SizeContext } from "@com.mgmtp.a12.widgets/widgets-core";
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { EditorComponentContext } from "../../../../api/context-api.js";
 import { PrintEngineSelectors } from "../../../../store/selectors.js";
-import { initialStateLogStore, CommitViewActions } from "../../../../redux/index.js";
+import { initialStateLogStore, CommitViewActions, NavigationSelectors } from "../../../../redux/index.js";
 import { initialize } from "../../../../utils/commit-changes-utils.js";
 import { StyledSlot, StyledSlotWrapper } from "../../../global-toolbar/GlobalToolbar.styled.js";
 import { RESOURCE_KEYS } from "../../../../localization/keys.js";
@@ -60,17 +60,17 @@ export const PrintEditorView: React.ComponentType = function PrintEditorView() {
 	const { localizer } = React.useContext(EditorComponentContext);
 	const { currentSize } = React.useContext(SizeContext);
 
-	const { isOpen, isFullscreen, selectedItem } = useSelector(PrintEngineSelectors.sidebar);
+	const { isOpen, isFullscreen, activeTab } = useSelector(NavigationSelectors.sidebarState);
 	const transactionLogState = useSelector(PrintEngineSelectors.transactionLogState);
 	const transactionGroupsForCommit = useSelector(selectTransactionGroupsForCommit);
 
 	const dispatch = useDispatch();
 
 	function getLayoutClassName() {
-		if (!isOpen || !selectedItem) {
+		if (!isOpen || !activeTab) {
 			return "minimized";
 		}
-		if (isFullscreen || currentSize !== "lg" || fullscreenItems.has(selectedItem)) {
+		if (isFullscreen || currentSize !== "lg" || fullscreenItems.has(activeTab)) {
 			return "maximized";
 		}
 		return "normal";

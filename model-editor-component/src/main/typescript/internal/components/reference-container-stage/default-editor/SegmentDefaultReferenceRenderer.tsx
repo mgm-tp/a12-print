@@ -39,7 +39,7 @@ import { EditorContext } from "../../editor-stage/editor-context.js";
 import { DefaultElementContainer } from "../../element-container/DefaultElementContainer.js";
 
 import { useRenderSegmentPages } from "../hooks/use-render-segment-pages.js";
-import { DefaultReferencesRendererProps } from "../editor-interface.js";
+import type { DefaultReferencesRendererProps } from "../editor-interface.js";
 import { BrokenElement } from "../shared-components/BrokenElement.js";
 import { DragSourceWrapper } from "../shared-components/DragSourceWrapper.js";
 

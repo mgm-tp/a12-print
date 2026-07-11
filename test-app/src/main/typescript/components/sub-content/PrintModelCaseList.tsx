@@ -32,12 +32,11 @@
 import { useDispatch } from "react-redux";
 import React from "react";
 
-import { BaseColumnType, Table, TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core";
+import { type BaseColumnType, type TableRenderPropsType, Table, Button } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { EditorActions } from "../../store/editor";
 
-import { CaseConfig } from "../case-config/CaseConfig";
+import type { CaseConfig } from "../case-config/CaseConfig";
 
 const columns: BaseColumnType<CaseConfig>[] = [
 	{

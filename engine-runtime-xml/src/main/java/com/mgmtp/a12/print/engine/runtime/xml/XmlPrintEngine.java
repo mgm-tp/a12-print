@@ -31,36 +31,29 @@
  */
 package com.mgmtp.a12.print.engine.runtime.xml;
 
-import com.mgmtp.a12.print.engine.api.PdfPrintResult;
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.api.XmlPrintResult;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.message.PrintMessageReport;
 import com.mgmtp.a12.print.engine.runtime.PrintEngine;
+import com.mgmtp.a12.print.engine.runtime.internal.message.PrintMessageReportImpl;
 import com.mgmtp.a12.print.engine.runtime.modelDocument.ModelDocumentPrintEngine;
 import com.mgmtp.a12.print.engine.runtime.xml.internal.mapping.ModelDocumentToXmlMapper;
 import com.mgmtp.a12.print.engine.runtime.xml.internal.serialization.XmlSerialization;
 import lombok.NonNull;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDDocumentNameDictionary;
-import org.apache.pdfbox.pdmodel.PDEmbeddedFilesNameTreeNode;
-import org.apache.pdfbox.pdmodel.common.filespecification.PDComplexFileSpecification;
-import org.apache.pdfbox.pdmodel.common.filespecification.PDEmbeddedFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 // tag::header[]
 /**
  * Provides the ability to execute {@link PrintJob}s.
  */
+@OnlyForUsage
 public class XmlPrintEngine extends PrintEngine<XmlPrintResult> implements com.mgmtp.a12.print.engine.api.XmlPrintEngine {
 // end::header[]
 
@@ -71,48 +64,48 @@ public class XmlPrintEngine extends PrintEngine<XmlPrintResult> implements com.m
 	// tag::ctr[]
 	/**
 	 * @param service the ExecutorService that is used for the execution of concurrent processes.
-	 * @param config the relevant {@link PrintEngineConfig}
+	 * @param config the relevant {@link PdfBoxPrintEngineConfig}
 	 */
 	public XmlPrintEngine(
 		@NonNull ExecutorService service,
-		@NonNull PrintEngineConfig config
+		@NonNull PdfBoxPrintEngineConfig config
 	) {
 		super(config);
 		this.service = service;
 	}
 	// end::ctr[]
 
-	/**
-	 * @param printJob
-	 * @return
-	 * @throws PrintException if the print operation was interrupted by any exception.
-	 */
 	@Override
-	public XmlPrintResult execute(PrintJob printJob) throws PrintException {
+	public PrintMessageReport<XmlPrintResult> executeWithReport(PrintJob printJob) throws PrintException {
 		return wrapResultWithXml(printJob);
 	}
 
-	protected XmlPrintResult wrapResultWithXml(
+	protected PrintMessageReport<XmlPrintResult> wrapResultWithXml(
 		PrintJob printJob
 	) {
 		final var modelDocumentEngine = new ModelDocumentPrintEngine(service, super.getConfig());
-		final var result = modelDocumentEngine.execute(printJob);
+		final var result = modelDocumentEngine.executeWithReport(printJob);
 
-		final var printDocumentXml = modelDocumentToXmlMapper.map(result.getPrintModelDocument());
+		if (!result.noErrorOccurred()) {
+			return new PrintMessageReportImpl<>(null, result.getMessages());
+		}
+
+		final var printDocumentXml = modelDocumentToXmlMapper.map(result.getResult().getPrintModelDocument());
 
 		final var serializedXml = XmlSerialization.serializeXML(printDocumentXml);
 		final var xmlContent = new String(serializedXml, StandardCharsets.UTF_8);
 
-		return new XmlPrintResult() {
+		return new PrintMessageReportImpl<>(new XmlPrintResult() {
 			@Override
 			public String getXmlMarkup() {
 				return xmlContent;
 			}
 
 			@Override
-			public void copyTo(OutputStream outputStream) throws IOException, PrintException {
+			public void copyTo(OutputStream outputStream) throws IOException {
 				outputStream.write(serializedXml);
 			}
-		};
+		}, result.getMessages());
 	}
 }
+

@@ -32,8 +32,10 @@
 package com.mgmtp.a12.print.engine.api.exception;
 
 import org.slf4j.helpers.MessageFormatter;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 
+@OnlyForUsage
 public class PrintException extends RuntimeException {
 
 	private final Object[] messageArguments;
@@ -44,7 +46,7 @@ public class PrintException extends RuntimeException {
 	}
 
 	public PrintException(final String message, final Object... args) {
-		super(message, args[args.length - 1] instanceof Throwable ? (Throwable) args[args.length - 1] : null);
+		super(message, args.length > 0 && args[args.length - 1] instanceof Throwable throwable ? throwable : null);
 		this.messageArguments = args;
 	}
 

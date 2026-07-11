@@ -29,8 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
+import * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/model";
+import type * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
 
 import { Deserializer } from "./deserializer.js";
 import { InputSourceDeserializer } from "./input-source-deserializer.js";
@@ -93,11 +93,23 @@ export class BorderPropertiesDeserializer extends Deserializer<
 			case "id":
 				return dto.id;
 			case "borderStyle":
-				return this.getOptional(dto.borderStyle, style => ModelAPI.BorderStyle[style]);
+				return this.deserializeOptional(
+					dto.borderStyle,
+					new InputSourceDeserializer<string>(this.path),
+					property
+				);
 			case "borderWidth":
-				return dto.borderWidth;
+				return this.deserializeOptional(
+					dto.borderWidth,
+					new InputSourceDeserializer<number>(this.path),
+					property
+				);
 			case "borderColor":
-				return dto.borderColor;
+				return this.deserializeOptional(
+					dto.borderColor,
+					new InputSourceDeserializer<string>(this.path),
+					property
+				);
 		}
 		this.unknownProperty(property);
 	}

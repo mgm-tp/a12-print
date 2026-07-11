@@ -29,9 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PartialPlaceableReference, PartialSection, PrintModelElement } from "../../model/index.js";
+import type { PrintModelElement } from "../../model/index.js";
+import { type PartialPlaceableReference, type PartialSection } from "../../model/index.js";
 
-import { CloneContext } from "./type.js";
+import { type CloneContext } from "./type.js";
 import { clonePrintModelElement } from "./print-model-element.js";
 import { CloneTreeTrace } from "./clone-tree-trace.js";
 

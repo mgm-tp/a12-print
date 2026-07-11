@@ -33,31 +33,34 @@ import { useDispatch, useSelector } from "react-redux";
 import * as React from "react";
 import { nanoid } from "nanoid";
 
-import { DisplayOptions, PartialField } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { TableRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { DisplayOptions } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialField } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { TableRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { TransactionLogStateActions } from "../../../redux/index.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
 import { ElementMapUtils } from "../../../utils/element-map-utils.js";
+import { hasAnyTextProperties } from "../../../utils/text-properties-utils.js";
 import { DocumentModelDataSelectors } from "../../../redux/document-model-data/selectors.js";
 
 import {
 	AllowedElementType,
+	ClearTextPropertiesSection,
 	DataContextSelection,
 	DocumentModelInput,
 	FieldFormattingInputForm,
 	useFieldDisplayOptionsErrorMessage,
 	useFieldPropertyErrorMessage,
 } from "../shared-components/index.js";
-import { CustomTextLineStateless } from "../custom-base-input-components/index.js";
+import { CustomTextField } from "../custom-base-input-components/index.js";
 
-import { TableColumnElementBaseProps } from "./table-column-element-base.js";
+import type { TableColumnElementBaseProps } from "./table-column-element-base.js";
 
-export const TableColumnFieldForm = ({ refId, group, model }: TableColumnElementBaseProps) => {
+export const TableColumnFieldForm = ({ refId, group, model, renderAppendContent }: TableColumnElementBaseProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const dispatch = useDispatch();
 	const element = useSelector((state: PrintEngineState) => PrintEngineSelectors.printModelElement(state, refId));
@@ -114,11 +117,24 @@ export const TableColumnFieldForm = ({ refId, group, model }: TableColumnElement
 		]);
 	}, [elementMap, group, wrapperDataContext]);
 
+	const clearTextProperties = React.useCallback(() => {
+		const updatedElement: PartialField = { ...element, textProperties: undefined };
+		dispatch(
+			InteractionLogActions.start({
+				description: RESOURCE_KEYS.interaction.form.tableFormContainer.tableColumnFieldForm.clearTextProperties,
+				region: TableRegion.TABLE_COLUMN_FORM,
+				transactionLogActions: [
+					TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }),
+				],
+			})
+		);
+	}, [dispatch, element]);
+
 	const getPropertyErrorMessage = useFieldPropertyErrorMessage(element.id);
 	return (
 		<>
 			<DocumentModelInput documentModel={model} errorMessage={getPropertyErrorMessage("model")} />
-			<CustomTextLineStateless
+			<CustomTextField
 				readonly
 				label={localizer(RESOURCE_KEYS.elementForm.model.field)}
 				value={element.field?.path}
@@ -136,6 +152,11 @@ export const TableColumnFieldForm = ({ refId, group, model }: TableColumnElement
 				displayOptions={field?.displayOptions}
 				updateDisplayOptions={updateDisplayOptions}
 				getErrorMessage={useFieldDisplayOptionsErrorMessage(element.id)}
+			/>
+			{renderAppendContent?.()}
+			<ClearTextPropertiesSection
+				hasLegacyProperties={hasAnyTextProperties(element.textProperties)}
+				onClear={clearTextProperties}
 			/>
 		</>
 	);

@@ -29,11 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Logger } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
+import type { Logger } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
 
-import * as OldModel from "../version-2.1.0/print-model.js";
+import type * as OldModel from "../version-2.1.0/print-model.js";
 
-import * as NewModel from "./steps/02_description-field/print-model.js";
+import type * as NewModel from "./steps/02_description-field/print-model.js";
 import { transformTextProperties } from "./steps/01_text-properties/index.js";
 import { transformDescriptionField } from "./steps/02_description-field/index.js";
 import { transformRolesToComma } from "./steps/03_roles-annotation/index.js";

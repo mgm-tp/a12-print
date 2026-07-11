@@ -32,25 +32,27 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
+import type {
 	InputSource,
+	PartialValidPlaceableReference,
+	PrintModelEntity,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import {
 	PageBreakBehavior,
 	PartialArea,
 	PartialBoundingBox,
 	PartialOverride,
-	PartialValidPlaceableReference,
-	PrintModelEntity,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { changeInputSource, changeInputValue } from "../../../utils/input-source-utils.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../../redux/index.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { useInheritedPageBreakResolver } from "../../../hooks/use-inherited-page-break-resolver.js";
 
 import { SourceSelect } from "../custom-base-input-components/index.js";
@@ -90,7 +92,7 @@ export const PageBreakBehaviorInput = ({ reference, infoMessage }: PageBreakBeha
 		(pageBreakBehavior: Partial<InputSource<PageBreakBehavior>> & PrintModelEntity) => {
 			dispatch(
 				InteractionLogActions.start({
-					description: RESOURCE_KEYS.interaction.relativeLayout.changeMargin,
+					description: RESOURCE_KEYS.interaction.relativeLayout.changePageBreakBehavior,
 					region: StageRegion.LAYOUT,
 					transactionLogActions: [
 						TransactionLogStateActions.updateReferenceElement({

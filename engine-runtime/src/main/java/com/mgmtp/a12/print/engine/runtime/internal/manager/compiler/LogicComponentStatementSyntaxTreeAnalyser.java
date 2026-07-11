@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.ComputationEvaluationAdvice;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.synthetics.SyntheticVariable;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.synthetics.SyntheticVariableType;
@@ -249,7 +249,7 @@ class LogicComponentStatementSyntaxTreeAnalyser {
 					final var computationFieldType = classifier.classifyFieldType(node);
 
 					if (computationFieldType.equals(ComputationFieldType.UNKNOWN)) {
-						throw new PrintCompilerException("invalid state, node cannot be classified: " + new SyntaxTreeRenderer().render(node));
+						throw new PrintCompilerException("Invalid state, node cannot be classified: " + new SyntaxTreeRenderer().render(node));
 					}
 
 					setProviderId(analysis);

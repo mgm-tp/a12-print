@@ -31,10 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.renderer.pdf;
 
+import com.mgmtp.a12.print.engine.api.constant.ConfigConstants;
 import com.mgmtp.a12.print.engine.api.exception.impl.FontLoadingException;
 import com.mgmtp.a12.print.engine.api.exception.impl.FontNotFoundException;
-import com.mgmtp.a12.print.engine.api.constant.ConfigConstants;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -42,7 +41,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.util.Optional;
 import java.util.Base64;
 
 public class FontUtils extends ResourceUtils {
@@ -58,7 +56,7 @@ public class FontUtils extends ResourceUtils {
 					return IOUtils.toByteArray(inputStream);
 				}
 			}
-			
+
 			if (path.startsWith(ConfigConstants.FILEPATH_SUFFIX)) {
 				final File file = new File(path.replace(ConfigConstants.FILEPATH_SUFFIX, ""));
 				final URI uri = file.toURI();
@@ -78,13 +76,4 @@ public class FontUtils extends ResourceUtils {
 		}
 		throw new FontLoadingException("{} is no valid filepath qualifier", path);
 	}
-
-	public static Optional<String> getFontFileExtension(final String path) {
-		try {
-			return Optional.of(FilenameUtils.getExtension(path).toLowerCase());
-		} catch (IllegalArgumentException illegalArgumentException) {
-			return Optional.empty();
-		}
-	}
-
 }

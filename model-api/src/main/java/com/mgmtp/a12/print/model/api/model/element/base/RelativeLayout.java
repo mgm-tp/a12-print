@@ -32,6 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.element.base;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.InputSource;
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.InputSourceEnum;
 import lombok.Getter;
@@ -39,11 +40,13 @@ import lombok.Getter;
 import java.util.Map;
 import java.util.Optional;
 
+@OnlyForUsage
 public interface RelativeLayout  {
     Optional<Margins> getMargins();
 
 	InputSource<PageBreakBehavior> getPageBreakBehavior();
 
+	@OnlyForUsage
 	enum PageBreakBehavior implements InputSourceEnum {
 		@JsonProperty("Allow") ALLOW("Allow"),
 		@JsonProperty("Avoid") AVOID("Avoid");

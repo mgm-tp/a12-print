@@ -31,8 +31,8 @@
  */
 package com.mgmtp.a12.print.model.api.utils.serialization;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,6 @@ import utils.FileUtils;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -70,9 +69,8 @@ public class SerializationTest {
 
 
 	private boolean checkJsonNodeKeysActualInExpected(JsonNode expected, JsonNode actual) {
-		Set<String> actualKeys = new HashSet<>();
+		Set<String> actualKeys = new HashSet<>(actual.propertyNames());
 
-		actual.fieldNames().forEachRemaining(actualKeys::add);
 		for (String key: actualKeys) {
 			if (!expected.has(key)) {
 				JsonNode actualObject = actual.get(key);

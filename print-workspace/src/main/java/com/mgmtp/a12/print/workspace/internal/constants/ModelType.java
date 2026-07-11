@@ -33,7 +33,6 @@ package com.mgmtp.a12.print.workspace.internal.constants;
 
 public class ModelType {
 	public static final String DOCUMENT_MODEL_TYPE = "document";
-	public static final String PRINT_SETTING_MODEL_TYPE = "print-setting";
 	public static final String TYPE_SETTING_MODEL_TYPE = "typesetting";
 
 }

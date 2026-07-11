@@ -49,3 +49,5 @@ public class HideConditionDto extends PrintModelEntityDto implements HideConditi
 	@JsonProperty("precondition")
 	String precondition;
 }
+
+

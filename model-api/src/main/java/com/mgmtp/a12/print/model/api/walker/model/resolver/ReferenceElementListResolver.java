@@ -41,10 +41,12 @@ import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Resolves {@link PrintModelElement} IDs from a given list of {@link PrintModelElement}s.
  */
+@OnlyForUsage
 public class ReferenceElementListResolver implements ReferenceElementResolver {
 	private final List<PrintModelTreeTrace<PrintModelReference>> elementList;
 

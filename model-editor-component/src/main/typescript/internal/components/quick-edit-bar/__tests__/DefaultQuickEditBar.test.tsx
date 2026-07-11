@@ -30,23 +30,17 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { jest } from "@jest/globals";
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
 
-import {
-	TransactionLog,
-	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
-import { Segment, SegmentType } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import { ElementType, PartialText } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { Segment, PartialText } from "@com.mgmtp.a12.print/print-model-api/model";
+import { SegmentType, ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import {
-	EditorStateReducer,
-	initialStateLogStore,
-	PrintEditorState,
-	TransactionLogStateReducer,
-} from "../../../redux/index.js";
-import { EDITOR_CONTEXT_DEFAULT_VALUE, EditorContext, IEditorContext } from "../../editor-stage/editor-context.js";
+import type { PrintEditorState } from "../../../redux/index.js";
+import { EditorStateReducer, initialStateLogStore, TransactionLogStateReducer } from "../../../redux/index.js";
+import type { IEditorContext } from "../../editor-stage/editor-context.js";
+import { EDITOR_CONTEXT_DEFAULT_VALUE, EditorContext } from "../../editor-stage/editor-context.js";
 import { createMmMeasure, createMmMeasureFromPx } from "../../../utils/measure-utils.js";
 import {
 	renderWithProviders,

@@ -33,9 +33,9 @@ import {
 	isPartialSection,
 	isPartialSegment,
 	isPartialWatermark,
-	PartialAnyContainerElement,
-	PartialPrintModelElement,
-	PartialReference,
+	type PartialAnyContainerElement,
+	type PartialPrintModelElement,
+	type PartialReference,
 } from "../../model/index.js";
 
 import { GenericPrintModelTrace, TraceElement } from "../print-model-trace.js";

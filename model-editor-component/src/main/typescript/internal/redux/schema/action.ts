@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { actionCreatorFactory } from "typescript-fsa";
+import type { ModelReferenceEntity } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { ModelReferenceEntity } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
 
 const factory = actionCreatorFactory("Print/Schema");
 

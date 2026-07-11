@@ -32,11 +32,15 @@
 import { useDeferredValue, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { TabPanel, TabPanelTemplateProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/tab-panel";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/main/icon.view";
-import { ActionContentbox, ContentBoxElements } from "@com.mgmtp.a12.widgets/widgets-core/lib/contentbox";
-import { TextField } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-field";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button";
+import {
+	type TabPanelTemplateProps,
+	TabPanel,
+	Icon,
+	ActionContentbox,
+	ContentBoxElements,
+	TextField,
+	Button,
+} from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { TestAppSelector, TestAppActions } from "../../store/app";
 import { SideBarItem } from "../../types";

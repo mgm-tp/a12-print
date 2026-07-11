@@ -31,8 +31,8 @@
  */
 import { styled } from "styled-components";
 
-import { OverflowDimensions } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import type { OverflowDimensions } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { EditorConst } from "../../constant/editor.js";
 import { SWITCH_CASE_MAX_ELEMENT_HEIGHT } from "../../constant/switch.js";
@@ -61,9 +61,9 @@ export const SwitchAreaInnerContainer = styled.div<{
 	transform-origin: 0 0;
 	transform: scale(${props => props.scale});
 	margin-bottom: -${({ dimensions, scale }) =>
-			MM_TO_PX(dimensions?.height?.value || 0) - MM_TO_PX(dimensions?.height?.value || 0) * scale + 1 / scale}px;
+		MM_TO_PX(dimensions?.height?.value || 0) - MM_TO_PX(dimensions?.height?.value || 0) * scale + 1 / scale}px;
 	margin-right: -${({ dimensions, scale }) =>
-			MM_TO_PX(dimensions?.width?.value || 0) - MM_TO_PX(dimensions?.width?.value || 0) * scale + 1 / scale}px;
+		MM_TO_PX(dimensions?.width?.value || 0) - MM_TO_PX(dimensions?.width?.value || 0) * scale + 1 / scale}px;
 `;
 
 export const ErrorBadgeContainer = styled.div`

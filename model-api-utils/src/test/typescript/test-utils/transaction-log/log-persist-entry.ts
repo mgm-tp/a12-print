@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
+import type {
 	EntryType,
 	InteractionLogEntryType,
 	InteractionLogPersistentEntry,
@@ -38,7 +38,7 @@ import {
 	PreventUndo,
 	TransactionLogEntryCommand,
 	TransactionLogEntryValue,
-} from "../../../../main/typescript/internal/transaction-log/index.js";
+} from "../../a12internal/transaction-log/index.js";
 
 export function createInteractionLogPersistentEntry(
 	interactionId: string,

@@ -32,7 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.element.type.expression;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.type.expression.Expression;
 import com.mgmtp.a12.print.model.api.model.element.type.expression.ExpressionProperties;
 import com.mgmtp.a12.print.model.api.model.internal.dto.JsonModel;

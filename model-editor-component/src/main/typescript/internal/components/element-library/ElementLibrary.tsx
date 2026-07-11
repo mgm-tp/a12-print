@@ -33,23 +33,22 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { CalloutHeaderProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/callout/main/template/callout.tpl.api.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { CommentContainer } from "@com.mgmtp.a12.widgets/widgets-core/lib/comment/index.js";
-import { ElementType, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { CalloutHeaderProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, Icon, CommentContainer } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { ElementTypes, TOOLBOX_ELEMENTS } from "../../constant/elements.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import {
 	createMmMeasure,
 	DEFAULT_ELEMENT_WIDTH,
 	DEFAULT_ELEMENT_HEIGHT,
 	DEFAULT_ELEMENT_CONTAINER_HEIGHT,
 } from "../../utils/index.js";
-import { DragItem } from "../../types/index.js";
+import type { DragItem } from "../../types/index.js";
 
 import { ElementItemWrapper } from "./ElementLibrary.styled.js";
 import { DragSourceListItem } from "./DragSourceListItem.js";

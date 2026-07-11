@@ -32,14 +32,17 @@
 package com.mgmtp.a12.print.model.api.model.element.base;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
+@OnlyForUsage
 public interface Margin extends PrintModelEntity {
 
     MarginType getType();
 
     Measure getMargin();
 
+	@OnlyForUsage
     enum MarginType {
         @JsonProperty("Implicit") IMPLICIT,
         @JsonProperty("Explicit") EXPLICIT,

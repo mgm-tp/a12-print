@@ -35,7 +35,9 @@ import com.mgmtp.a12.print.model.api.model.container.DefinitionsContainer;
 import com.mgmtp.a12.print.model.api.model.reference.PrintModelReference;
 
 import java.util.List;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface ModelSegmentContainer extends DefinitionsContainer {
 	List<ModelSegment> getDefinitions();
 

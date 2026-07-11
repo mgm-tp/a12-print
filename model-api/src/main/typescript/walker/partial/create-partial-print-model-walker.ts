@@ -29,14 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PartialPrintModel } from "../../model/partial.js";
-import { PrintModel } from "../../model/print-model.js";
+import { type PartialPrintModel } from "../../model/partial.js";
+import { type PrintModel } from "../../model/print-model.js";
 
 import { PrintModelListResolver, CachedPrintModelListResolver } from "../print-model-resolver.js";
 
 import { PartialPrintModelWalker } from "./partial-print-model-walker.js";
 import { PartialReferenceListResolver, PartialCachedReferenceResolver } from "./partial-reference-resolver.js";
-import { PartialPrintModelVisitor } from "./partial-print-model-visitor.js";
+import type { PartialPrintModelVisitor } from "./partial-print-model-visitor.js";
 import { DefaultPartialSegmentIdResolver, CachedPartialSegmentIdResolver } from "./partial-segment-id-resolver.js";
 import { DefaultPartialSectionIdResolver, CachedPartialSectionIdResolver } from "./partial-section-id-resolver.js";
 import {

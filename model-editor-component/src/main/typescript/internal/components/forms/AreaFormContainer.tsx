@@ -33,26 +33,25 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
-	DataContext,
-	PartialArea,
-	PartialBorderProperties,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import type { DataContext, PartialBorderProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialArea } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";
-import { OmitId, useBorderPropertiesErrorMessage } from "../../utils/index.js";
-import { RESOURCE_KEYS } from "../../localization/keys.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
+import type { OmitId } from "../../utils/index.js";
+import { useBorderPropertiesErrorMessage } from "../../utils/index.js";
+import { RESOURCE_KEYS } from "../../localization/index.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
+import { BORDER_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 
 import { RepeatableSettings } from "../custom-input/RepeatableSettings.js";
 
 import { BorderPropertiesForm } from "./shared-components/BorderPropertiesForm.js";
 
 export const AreaFormContainer = () => {
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
+	const element = useSelector(PrintEngineSelectors.currentFormElement);
 	const errorMap = useSelector((state: PrintEngineState) => ValidationSelectors.area(state, element?.id));
 	const wrapperDataContext = useSelector(PrintEngineSelectors.wrapperDataContext);
 
@@ -121,6 +120,8 @@ export const AreaFormContainer = () => {
 				dataContextErrorMap={errorMap?.area?.dataContexts}
 			/>
 			<BorderPropertiesForm
+				element={element}
+				propertiesPath={BORDER_PROPERTIES_PATH}
 				borderProperties={element.borderProperties}
 				setBorderProperties={setBorderProperties}
 				getErrorMessage={useBorderPropertiesErrorMessage(element.id)}

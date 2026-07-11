@@ -31,10 +31,12 @@
  */
 package com.mgmtp.a12.print.model.codegen.internal;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.ObjectNode;
 import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
 import com.mgmtp.a12.kernel.md.model.api.IField;
 import com.mgmtp.a12.kernel.md.model.api.IGroup;
@@ -57,26 +59,31 @@ public class PrintModelMetadataMapGenerator {
     private static final PrintModelMetadataMapFileGenerator printModelMetadataMapJavaFileGenerator =
             new PrintModelMetadataMapJavaFileGenerator();
 
-	private static final ObjectMapper mapper = new ObjectMapper();
+	private static final ObjectMapper mapper = new JsonMapper();
 
     private static final IDocumentModelSerializer documentModelSerializer = new MDSerializerFactory().createDocumentModelSerializer();
 
-    private static final Map<String, String> DEFAULT_VALUE_TYPE_MAP = Map.of(
-            "headerDefaultInputType", "Column",
-            "minimumTableLayoutRowHeightType", "10",
-		    "defaultFalse", "false",
-			"defaultTrue", "true",
-			"alignment", "Left",
-		    "defaultColor", "#000000",
-		    "defaultBackgroundColor", "#ffffff",
-			"defaultTextStyleId",  "default-text-style-id",
-		"pageBreakBehavior", "Allow"
-    );
+   private static final Map<String, String> DEFAULT_VALUE_TYPE_MAP;
+
+   static {
+       DEFAULT_VALUE_TYPE_MAP = new HashMap<>();
+       DEFAULT_VALUE_TYPE_MAP.put("headerDefaultInputType", "Column");
+       DEFAULT_VALUE_TYPE_MAP.put("minimumTableLayoutRowHeightType", "10");
+       DEFAULT_VALUE_TYPE_MAP.put("defaultFalse", "false");
+       DEFAULT_VALUE_TYPE_MAP.put("defaultTrue", "true");
+       DEFAULT_VALUE_TYPE_MAP.put("alignment", "Left");
+       DEFAULT_VALUE_TYPE_MAP.put("defaultColor", "#000000");
+       DEFAULT_VALUE_TYPE_MAP.put("defaultBackgroundColor", "#ffffff");
+       DEFAULT_VALUE_TYPE_MAP.put("defaultTextStyleId", "default-text-style-id");
+       DEFAULT_VALUE_TYPE_MAP.put("pageBreakBehavior", "Allow");
+       DEFAULT_VALUE_TYPE_MAP.put("defaultBorderWidth", "1");
+   }
 
 	public static final String INHERITED = "inherited";
     public static final String HAS_INHERITED = "hasInherited";
 	public static final String INHERIT_CONDITION = "inheritedCondition";
 	public static final String REQUIRED = "required";
+	public static final String REQUIRED_CONDITION = "requiredCondition";
 	public static final String IS_REQUIRED = "isRequired";
     public static final String DEFAULT_VALUE = "defaultValue";
     public static final String PATH = "path";
@@ -85,7 +92,7 @@ public class PrintModelMetadataMapGenerator {
     public static final String STRING = "string";
 
 
-    public static void main(String[] args) throws PrintModelMetadataMapGenerationException, JsonProcessingException {
+    public static void main(String[] args) throws PrintModelMetadataMapGenerationException {
         final var arguments = extractArgs(args);
         final var printMetaModel = loadDocumentModelFromResource(arguments.printMetaModelPath());
         final var metadataMap = new TreeMap<String, FieldMetadata>();
@@ -146,7 +153,7 @@ public class PrintModelMetadataMapGenerator {
 		}
 
 		Optional<JsonNode> typeDefValue = groupMetadata.optional(typeDefinitionName);
-		return typeDefValue.map(JsonNode::asText).orElse(null);
+		return typeDefValue.flatMap(JsonNode::asStringOpt).orElse(null);
 	}
 
 	private static void processField(
@@ -163,10 +170,11 @@ public class PrintModelMetadataMapGenerator {
 			field.getAnnotations().stream().anyMatch(a -> a.getName().equals(REQUIRED) && a.getValue().equals(TRUE));
 		final var inheritedAnno = field.getAnnotations().stream().filter(a -> a.getName().equals(INHERITED)).findFirst();
 		final var inheritedConditionAnno = field.getAnnotations().stream().filter(a -> a.getName().equals(INHERIT_CONDITION)).findFirst();
+		final var requiredConditionAnno = field.getAnnotations().stream().filter(a -> a.getName().equals(REQUIRED_CONDITION)).findFirst();
 
 		boolean inherited = inheritedAnno
 			.map(anno -> TRUE.equals(anno.getValue()) ||
-				(anno.getValue().equals("context") && groupMetadata.path(INHERITED).asText().equals(TRUE)))
+				(anno.getValue().equals("context") && groupMetadata.path(INHERITED).asStringOpt().orElse("").equals(TRUE)))
 			.orElse(false);
 
 		String inheritedCondition = null;
@@ -175,15 +183,19 @@ public class PrintModelMetadataMapGenerator {
 		if (inherited) {
 			inheritedCondition = inheritedConditionAnno
 				.map(Annotation::getValue)
-				.orElse(groupMetadata.path(INHERIT_CONDITION).asText());
+				.orElse(groupMetadata.path(INHERIT_CONDITION).asStringOpt().orElse(""));
 		}
 
+		String requiredCondition = requiredConditionAnno
+			.map(Annotation::getValue)
+			.orElse(groupMetadata.path(REQUIRED_CONDITION).asStringOpt().orElse(""));
 		final var elPath = getPath(path, field.getName());
-		metadataMap.put(elPath, new FieldMetadata(defaultValue, isRequired, inherited, inheritedCondition));
+		metadataMap.put(elPath, new FieldMetadata(defaultValue, isRequired, inherited, inheritedCondition, requiredCondition));
 
 
 		putOptional(fieldObject, HAS_INHERITED, inherited);
 		putOptional(fieldObject, INHERIT_CONDITION, inheritedCondition);
+		putOptional(fieldObject, REQUIRED_CONDITION, requiredCondition);
 		fieldObject.put(IS_REQUIRED, isRequired);
 		putOptional(fieldObject, DEFAULT_VALUE, defaultValue);
 		fieldObject.put(PATH, elPath);
@@ -195,6 +207,7 @@ public class PrintModelMetadataMapGenerator {
 		fieldTypeObject.put(PATH, STRING);
 		fieldTypeObject.put(HAS_INHERITED, BOOLEAN);
 		fieldTypeObject.put(INHERIT_CONDITION, STRING);
+		fieldTypeObject.put(REQUIRED_CONDITION, STRING);
 		groupTypeObject.replace(field.getName(), fieldTypeObject);
 	}
 
@@ -238,7 +251,7 @@ public class PrintModelMetadataMapGenerator {
 			});
 			metadataObject.set(group.getName(), groupObject);
 			typeObject.set(group.getName(), groupTypeObject);
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			throw new IllegalStateException(e);
 		}
 
@@ -249,7 +262,7 @@ public class PrintModelMetadataMapGenerator {
         return String.format("%s%s/", path, name);
     }
 
-    public record FieldMetadata(String defaultValue, boolean isRequired, boolean hasInherited, String inheritedCondition) {
+    public record FieldMetadata(String defaultValue, boolean isRequired, boolean hasInherited, String inheritedCondition, String requiredCondition) {
     }
 
     private record Arguments(String printMetaModelPath, String javaOutputPath, String typescriptPath) {

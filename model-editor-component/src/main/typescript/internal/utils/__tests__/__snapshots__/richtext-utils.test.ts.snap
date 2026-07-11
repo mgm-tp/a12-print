@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`rich text utils exportStateToHtml should correctly export editor state to HTML 1`] = `"<p><span style="">This is a test.</span></p>"`;
-
-exports[`rich text utils exportStateToHtml should correctly export editor state to HTML with styles and entities 1`] = `"<p><span style="font-size: 16pt">This</span><span style=""> is a test</span><span entity-id="456" entity-type="Calculation"><span style="">calc-entity</span></span><span entity-id="123" entity-type="Field"><span style="">field-entity</span></span><span style="">.</span></p>"`;
-
-exports[`rich text utils exportStateToHtml should exclude unsupported entity types 1`] = `"<p><span style="">Unsupported entity type test</span><span entity-id="456" entity-type="Calculation"><span style="">calc-entity</span></span><span style="">PageNumberTotal</span><span style="">.</span></p>"`;

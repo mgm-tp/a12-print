@@ -29,28 +29,28 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import fs from "node:fs";
-import * as path from "node:path";
+import { readFileSync, existsSync, mkdirSync, writeFileSync, appendFileSync } from "node:fs";
+import { basename } from "node:path";
 
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
 
-import { APIEnum, APIInterface, ExampleValueMap, generateAPI } from "./model-dto-generator.js";
+import { type APIEnum, type APIInterface, type ExampleValueMap, generateAPI } from "./model-dto-generator.js";
 
 const logger = LoggerFactory.getLogger("validation");
 
 export function generateAndSaveDtoFiles(inputFile: string, outputPath: string, name: string) {
-	const documentModelString = fs.readFileSync(inputFile, "utf-8");
+	const documentModelString = readFileSync(inputFile, "utf-8");
 	const dtoPath = outputPath + "/dto";
 
 	const { result, error } = generateAPI(documentModelString, name);
 	if (result) {
-		if (!fs.existsSync(dtoPath)) {
-			fs.mkdirSync(dtoPath, { recursive: true });
+		if (!existsSync(dtoPath)) {
+			mkdirSync(dtoPath, { recursive: true });
 		}
 
 		const apiFile = `${dtoPath}/${result.name}.ts`;
 		const exampleDataFile = `${dtoPath}/${result.name}Impl.ts`;
-		const modelName = path.basename(inputFile);
+		const modelName = basename(inputFile);
 		const fileHeader = `// Automatically generated from ${modelName} on ${new Date().toLocaleString()}.\n`;
 
 		writeDeclarationFile(apiFile, fileHeader, result.interfaces, result.enums);
@@ -73,7 +73,7 @@ function writeDeclarationFile(
 	interfaces: Map<string, APIInterface>,
 	enums: Map<string, APIEnum>
 ) {
-	fs.writeFileSync(outputFile, fileHeader);
+	writeFileSync(outputFile, fileHeader);
 
 	interfaces.forEach((value, key) => {
 		const memberText = value.members
@@ -87,7 +87,7 @@ function writeDeclarationFile(
 			.join("\n");
 		const generics = value.generics?.length ? `<${value.generics?.join(", ")}>` : "";
 		const interfaceText = `\nexport interface ${key}${generics} {\n${memberText}\n}\n`;
-		fs.appendFileSync(outputFile, interfaceText);
+		appendFileSync(outputFile, interfaceText);
 	});
 	enums.forEach((value, key) => {
 		const keysText = value.labels
@@ -96,7 +96,7 @@ function writeDeclarationFile(
 			})
 			.join("\n\t| ");
 		const enumText = `\nexport type ${key} = ${keysText};\n`;
-		fs.appendFileSync(outputFile, enumText);
+		appendFileSync(outputFile, enumText);
 	});
 }
 
@@ -104,22 +104,22 @@ function writeDeclarationFile(
  * Creates the .ts file with the example value of the DTO API
  * @param outputFile target file
  * @param fileHeader header of file
- * @param apiName name of the DTO APi
+ * @param apiName name of the DTO API
  * @param exampleValue example value for the API
  */
 function writeTestDataFile(outputFile: string, fileHeader: string, apiName: string, exampleValue: ExampleValueMap) {
-	fs.writeFileSync(outputFile, fileHeader);
+	writeFileSync(outputFile, fileHeader);
 
-	const importDtoTypeLine = `import { ${apiName} } from "./${apiName}.js"\n\n`;
-	fs.appendFileSync(outputFile, importDtoTypeLine);
+	const importDtoTypeLine = `import { type ${apiName} } from "./${apiName}.js"\n\n`;
+	appendFileSync(outputFile, importDtoTypeLine);
 
 	const allRequiredType = "type DeepRequired<T> = { [K in keyof T]: Required<DeepRequired<T[K]>> };\n\n";
-	fs.appendFileSync(outputFile, allRequiredType);
+	appendFileSync(outputFile, allRequiredType);
 
 	const exampleValueLine = `export const ${apiName}Impl: DeepRequired<${apiName}> = ${JSON.stringify(
 		exampleValue,
 		null,
 		2
 	)}`;
-	fs.appendFileSync(outputFile, exampleValueLine);
+	appendFileSync(outputFile, exampleValueLine);
 }

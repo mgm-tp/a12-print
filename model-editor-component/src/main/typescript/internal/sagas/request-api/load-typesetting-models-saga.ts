@@ -29,27 +29,24 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
-import { getContext, all, call, select, takeLatest, put, SagaGenerator, EffectReturnType } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
+import type { SagaGenerator, EffectReturnType } from "typed-redux-saga";
+import { getContext, all, call, select, takeLatest, put } from "typed-redux-saga";
 
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
-import { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/model/typesetting-model.js";
+import type { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
 
-import { EditorComponentApiActions, RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 import { RequestApiActions } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { RESOURCE_KEYS } from "../../localization/keys.js";
+import { RESOURCE_KEYS } from "../../../internal/localization/index.js";
+import { EditorComponentApiActions } from "../../../a12internal/api/actions-api.js";
 
 const log = LoggerFactory.getLogger("LoadTypesettingModelsSaga");
 
-export function* loadTypesettingModelsSaga(): SagaIterator {
-	yield* takeLatest(
-		(action: AnyAction) => RequestApiActions.loadTypesettingModels.match(action),
-		handleLoadTypesettingModelsSaga
-	);
+export function* loadTypesettingModelsSaga(): SagaGenerator<void> {
+	yield* takeLatest(RequestApiActions.loadTypesettingModels.match, handleLoadTypesettingModelsSaga);
 }
-function* handleLoadTypesettingModelsSaga(): SagaIterator {
+function* handleLoadTypesettingModelsSaga(): SagaGenerator<void> {
 	const textStyles = yield* select(PrintEngineSelectors.textStyles);
 
 	const typesettingNames = [
@@ -70,7 +67,7 @@ function* handleLoadTypesettingModelsSaga(): SagaIterator {
 	const unloadedModels: string[] = [];
 	models.forEach((model, idx) => {
 		if (!model) {
-			unloadedModels.push(typesettingNames[idx] as string);
+			unloadedModels.push(typesettingNames[idx]);
 		}
 	});
 

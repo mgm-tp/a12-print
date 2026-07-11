@@ -33,11 +33,9 @@ package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter;
 
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.FormattingResult;
-import freemarker.core.XHTMLOutputFormat;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-
 
 public class JavaStringFormatFormatter implements ValueFormatProvider {
 
@@ -57,7 +55,7 @@ public class JavaStringFormatFormatter implements ValueFormatProvider {
 			stringFormattingDetails.isLineBreakPermitted()
 		) {
 			if (!isHtml) {
-				valueAsString = XHTMLOutputFormat.INSTANCE.escapePlainText(valueAsString);
+				valueAsString = StringEscapeUtils.escapeXHTML(valueAsString);
 			}
 
 			valueAsString = valueAsString.replaceAll(Constants.NEW_LINE, Constants.BR_TAG);
@@ -95,5 +93,4 @@ public class JavaStringFormatFormatter implements ValueFormatProvider {
 		private final Object[] formatParams = new Object[0];
 
 	}
-
 }

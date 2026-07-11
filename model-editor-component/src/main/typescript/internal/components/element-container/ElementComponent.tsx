@@ -31,7 +31,7 @@
  */
 import * as React from "react";
 
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import type { BaseElementProps } from "../elements/base.js";
 import { Text } from "../elements/Text.js";

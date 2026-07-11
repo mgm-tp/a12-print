@@ -29,27 +29,22 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Reducer } from "redux";
+import type { Reducer } from "redux";
 import { fireEvent } from "@testing-library/react";
 
+import type { TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PrintModelHeader } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
-	TransactionLog,
-	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
-import {
-	Language,
-	PrintModelHeader,
 	getEntityId,
 	EntityKey,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import {
 	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 	PRINT_MODEL_HEADER_LOG_ID,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PRINT_MODEL_VERSION } from "../../../constant/model.js";
 import { initialStateLogStore, TransactionLogStateReducer } from "../../../redux/transaction-log-state/reducer.js";
-import { TransactionLogStateActions } from "../../../redux/transaction-log-state/actions.js";
+import type { TransactionLogStateActions } from "../../../redux/transaction-log-state/actions.js";
 import { renderWithProviders } from "../../../../../../test/typescript/test-utils/index.js";
 
 import { General, ModelNameRegExp } from "../index.js";
@@ -57,7 +52,6 @@ import { General, ModelNameRegExp } from "../index.js";
 describe("General", () => {
 	const generalMock: TransactionLogStateActions.UpdatePrintContentGeneralPayload = {
 		id: PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
-		details: { id: "ifnqjignqeg", author: "author", language: Language.DE },
 		metadata: {
 			id: "ifnqjignqeg",
 			authorComputation: [{ id: "authComp123", operation: "author" }],
@@ -65,7 +59,6 @@ describe("General", () => {
 			titleComputation: [{ id: "titleComp123", operation: "model-name" }],
 			descriptionComputation: [{ id: "titleComp123", operation: "Description" }],
 		},
-		title: "title",
 		segmentDefaults: { id: "engqioehgnmeqolg2", fontSize: 12, model: "DomainPerson" },
 		structure: [],
 	};

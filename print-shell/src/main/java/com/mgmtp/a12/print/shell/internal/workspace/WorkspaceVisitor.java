@@ -33,7 +33,6 @@ package com.mgmtp.a12.print.shell.internal.workspace;
 
 import com.mgmtp.a12.print.workspace.internal.handler.FileHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -41,7 +40,6 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
-@Component
 @RequiredArgsConstructor
 public class WorkspaceVisitor implements FileVisitor<Path> {
 

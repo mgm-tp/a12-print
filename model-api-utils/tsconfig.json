@@ -4,7 +4,6 @@
   "compilerOptions": {
     "outDir": "./lib",
     "rootDirs": ["./src/main/typescript", "./src/test/typescript"],
-    "allowSyntheticDefaultImports": true,
     "types": ["jest", "node"],
     "typeRoots": ["src/main/typescript/internal/types/antlr4", "node_modules/@types"]
   },
@@ -17,6 +16,6 @@
     "readme": "none",
     "entryPoints": ["src/main/typescript/"],
     "entryPointStrategy": "expand",
-    "exclude": ["**/internal/**/*"]
+    "exclude": ["**/a12internal/**/*"]
   }
 }

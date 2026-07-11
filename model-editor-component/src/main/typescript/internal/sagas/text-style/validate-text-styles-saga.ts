@@ -29,22 +29,18 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { put, select, takeLatest } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
 
-import { isFontNotConfigured } from "@com.mgmtp.a12.print/print-fonts/lib/internal/api/utils/font-utils.js";
+import { isFontNotConfigured } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
 import { ValidationActions } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { EditorComponentApiActions } from "../../api/index.js";
-import { RESOURCE_KEYS } from "../../localization/index.js";
+import { RESOURCE_KEYS } from "../../../internal/localization/index.js";
+import { EditorComponentApiActions } from "../../../a12internal/api/actions-api.js";
 
-export function* validateTextStylesSaga(): SagaIterator {
-	yield* takeLatest(
-		(action: AnyAction) => ValidationActions.validateTextStyles.match(action),
-		handleValidateTextStyles
-	);
+export function* validateTextStylesSaga(): SagaGenerator<void> {
+	yield* takeLatest(ValidationActions.validateTextStyles.match, handleValidateTextStyles);
 }
 
 function* handleValidateTextStyles() {
@@ -55,11 +51,15 @@ function* handleValidateTextStyles() {
 		if (isFontNotConfigured(fonts, textStyle.font)) {
 			yield* put(
 				EditorComponentApiActions.addNotification({
-					title: { key: RESOURCE_KEYS.textStyles.notification.useUnconfiguredFont.title },
+					title: {
+						key: RESOURCE_KEYS.textStyles.notification.useUnconfiguredFont.title,
+						args: {
+							textStyle: { type: "plain", value: textStyle.name },
+						},
+					},
 					message: {
 						key: RESOURCE_KEYS.textStyles.notification.useUnconfiguredFont.description,
 						args: {
-							textStyle: { type: "plain", value: textStyle.name },
 							font: { type: "plain", value: textStyle.font },
 						},
 					},

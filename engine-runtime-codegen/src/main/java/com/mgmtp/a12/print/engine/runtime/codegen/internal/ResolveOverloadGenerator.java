@@ -79,7 +79,7 @@ public class ResolveOverloadGenerator extends AbstractProcessor {
 			internalPrintEngineRuntimeFactory = cfg.getTemplate("InternalPrintEngineRuntimeApiFactory.ftl");
 
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new EngineRuntimeCodegenException(e);
 		}
 	}
 
@@ -144,8 +144,7 @@ public class ResolveOverloadGenerator extends AbstractProcessor {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
+			throw new EngineRuntimeCodegenException(e);
 		}
 
 		return true;

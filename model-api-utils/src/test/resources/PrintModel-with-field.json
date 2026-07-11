@@ -2,7 +2,7 @@
   "header": {
     "id": "LIZaGfXaMcuNB3POeNZqJ",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "modelReferences": [
@@ -149,6 +149,24 @@
           "id": "ID_006d02c6-9e80-45c9-85a5-7a2cf801c766",
           "model": "DomainPerson",
           "path": "/general/first"
+        },
+        "borderProperties": {
+          "id": "vZcMzi5o5gmxi8wNVoZTs",
+          "borderWidth": {
+            "id": "cMoVX1UM6HQEJBn2ErWI5",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "sAyKnMqx_2469PoRNSM0Y",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "JU7fhm7nBRgRgL5ZS6xGs",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -171,9 +189,24 @@
         },
         "borderProperties": {
           "id": "ID_2ed3030e-06d0-481d-8828-3c1536876dec",
-          "borderWidth": 0.75,
-          "borderStyle": "Dashed",
-          "borderColor": "#000"
+          "borderWidth": {
+            "id": "6yH5A8XF2S1A9YG-_2jNb",
+            "source": "INPUT",
+            "value": 0.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "NeXmi_uNF_kJpF3TxrpsE",
+            "source": "INPUT",
+            "value": "#000",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "YvFoX1IA4mHBfKzJpNo8f",
+            "source": "INPUT",
+            "value": "Dashed",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "text": {
           "id": "ID_860b7013-8bcb-44ce-8b52-ef698bf91de1",

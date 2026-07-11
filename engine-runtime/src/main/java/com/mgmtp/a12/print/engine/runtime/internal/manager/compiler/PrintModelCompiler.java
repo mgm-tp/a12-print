@@ -32,14 +32,15 @@
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler;
 
 import com.mgmtp.a12.print.engine.api.PrintModelId;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.expression.PreCompiledExpressionMap;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing.PreCompiledListingMap;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.ComputationEvaluationAdvice;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.PrintModelCompilerRuntime;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.eval.EvaluationDocumentModelCompiler;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.MarginLayoutDependencyValueProducerFactory;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.ComponentTreeDependencyValueProducerFactory;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.ComponentTreeDependencyValueProducerFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.TypedComputationExpressionCache;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.egg.EggNode;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.egg.EquivalenceGeneralizationGraph;
@@ -149,7 +150,7 @@ public class PrintModelCompiler {
 
 	public void await() throws InterruptedException, ExecutionException {
 		if (compilation == null) {
-			throw new PrintCompilerException("invalid compilation state");
+			throw new PrintCompilerException("Invalid compilation state");
 		} else {
 			compilation.get();
 		}
@@ -167,7 +168,7 @@ public class PrintModelCompiler {
 				try {
 					runCompilation(printModel);
 					log.debug("compileAsync runCompilation finished for {}", printModel.getId().getModelHeaderId());
-				} catch (PrintCompilerException e) {
+				} catch (PrintException | PrintDomainException e) {
 					throw e;
 				} catch (Exception e) {
 					throw new PrintCompilerException("Compilation for " + printModel.getId().getModelHeaderId() + " was interrupted by:", e);
@@ -187,7 +188,8 @@ public class PrintModelCompiler {
 		final var preCompiler = new PrintModelPreCompiler(
 			context,
 			printModelCompilerGraph.getEquivalenceGeneralizationGraph(),
-			printModelCompilerRuntime.getA12TypeComparisonMapping()
+			printModelCompilerRuntime.getA12TypeComparisonMapping(),
+			printModelCompilerRuntime.getStaticImageProvider()
 		);
 		visitElementDefinitionsAndPlaceableReferences(
 			context,
@@ -195,6 +197,14 @@ public class PrintModelCompiler {
 		);
 
 		final var preCompilationResult = preCompiler.build();
+
+		if (!preCompilationResult.getMissingStaticImageFilenames().isEmpty()) {
+			throw new PrintCompilerException(
+				"Missing static image resource(s): " +
+				String.join(", ", preCompilationResult.getMissingStaticImageFilenames())
+			);
+		}
+		context.getStaticImageMap().putAll(preCompilationResult.getStaticImageMap());
 
 		context.setPreCompiledListingMap(
 			PreCompiledListingMap.builder()
@@ -227,7 +237,8 @@ public class PrintModelCompiler {
 		final var evaluationDocumentModelCompiler = new EvaluationDocumentModelCompiler(
 			strategyCache,
 			context,
-			printModelCompilerGraph
+			printModelCompilerGraph,
+			context.getCommonDocumentLocales()
 		);
 
 		final var analyser = new LogicComponentStatementSyntaxTreeAnalyser(
@@ -280,21 +291,12 @@ public class PrintModelCompiler {
 
 		log.debug("setComputeDocumentDependencyValueProducer done for {}", context.getId().getModelHeaderId());
 
-		if (context.isPdfBoxPrintProcess()) {
-			// prepare component tree layout
-			final var componentTreeDependencyValueProducerFactory = ComponentTreeDependencyValueProducerFactory.builder()
-				.printModel(context.getModel())
-				.printModelCompilerRuntime(printModelCompilerRuntime)
-				.build();
-			componentTreeDependencyValueProducerFactory.setDependencyValueProducer(context);
-		} else {
-			// prepare margin layout
-			final var marginLayoutDependencyValueProducerFactor = MarginLayoutDependencyValueProducerFactory.builder()
-				.printModel(context.getModel())
-				.printModelCompilerRuntime(printModelCompilerRuntime)
-				.build();
-			marginLayoutDependencyValueProducerFactor.setDependencyValueProducer(context);
-		}
+		// prepare component tree layout
+		final var componentTreeDependencyValueProducerFactory = ComponentTreeDependencyValueProducerFactory.builder()
+			.printModel(context.getModel())
+			.printModelCompilerRuntime(printModelCompilerRuntime)
+			.build();
+		componentTreeDependencyValueProducerFactory.setDependencyValueProducer(context);
 	}
 
 	private void optimizeAdvices(List<LogicComponentStatementSyntaxTreeAnalysis> syntaxTreeAnalyses) {
@@ -450,7 +452,7 @@ public class PrintModelCompiler {
 					try {
 						task.call();
 					} catch (Exception e) {
-						throw new PrintCompilerException("classifyStatement", e);
+						throw new PrintCompilerException("ClassifyStatement", e);
 					}
 
 				}

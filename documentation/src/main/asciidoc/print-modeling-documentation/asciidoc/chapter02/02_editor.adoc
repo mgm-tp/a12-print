@@ -224,7 +224,9 @@ NOTE: You can add multiple Document Models in the Schema Tab, but currently only
 Document Model References:: The list of referenced Document Models and their optional alias in this Print Model.
 The "Open Setting" button may be used to update the given alias.
 
-Print Model References:: The list of referenced <<PrintModelTemplates, Print Model Templates>>. The Print Model Editor will only offer Print Models which conform to the <<CreateTemplate,Template specification>>.
+Print Model References:: The list of referenced <<PrintModelTemplates, Print Model Templates>>.
+After selection, the Print Model Editor will check the selected Print Model for compliance with the <<CreateTemplate,Template specification>>.
+If this check fails, the Print Model cannot be used as a reference.
 
 [NOTE]
 ====
@@ -295,26 +297,43 @@ Available options include:
 
 
 Font:: The font family of the Text Style.
-The available fonts are defined during the initial setup of the Print Engine.
-Extra fonts can be added using a <<ConfigureCustomFonts, Print Setting Model>>.
+See <<DefaultFonts, Default Fonts>> for available fonts. Additional fonts can be provided as workspace resources.
 Font Size:: The font size of the Text Style in `pt`.
 Line Height:: The line height of the Text Style in `pt`.
 
-CAUTION: Typesetting Model and Static Hyphenation are not compatible with the <<legacy_rendering_mode, Legacy Rendering Mode>> in the <<Preview,Preview>>.
-
 NOTE: If a Text Style employs a font that has not been configured in the Print Engine, any elements applying that Text Style will be displayed and printed with the default font.
+
+=== Available Default Fonts [[DefaultFonts]]
+
+The Print Engine comes with three available default fonts:
+
+- Open Sans
+- Noto Sans Mono
+- Noto Sans Symbols
+
+Additional fonts can be provided as workspace resources.
+
+==== Overwrite Default Fonts
+
+To overwrite a default font, add a custom font with the same name as the default font you wish to replace.
+Text Styles using that font name will then be rendered with your custom font instead.
+
+==== Font Support for DIN 91379
+
+DIN 91379 is a standard that ensures all relevant characters for European languages are correctly displayed.
+
+The default font _Noto Sans Mono_ included in the Print Engine supports all DIN 91379 characters. If this font does not match the desired style, you can provide a custom font in the workspace resources that also supports all required characters.
 
 === Custom Fonts [[ConfigureCustomFonts]]
 
-As described in <<SettingModelConfiguration, Setting Model Configuration>>, Print Engine empowers you to configure your own fonts.
-Those fonts will be synchronized from the Print Settings Model in your workspace and can be used in Print Model Editor.
-The customized fonts will be available in Print Model Editor, and can be used to define <<TextStylesTab, Text Styles>>.
+Custom fonts can be added by placing font files in the workspace resources folder.
+Once added, they will be available in the Print Model Editor and can be used to define <<TextStylesTab, Text Styles>>.
 
 image::chapter02/02_utilize_custom_fonts.png[Text Styles tab with custom fonts,title="Text Styles tab with custom fonts"]
 
-NOTE: In the event that any text styles in your print model were previously associated with fonts not present in the new customized list, a notification toast will promptly alert you to these inconsistencies.
+NOTE: In the event that any text styles in your print model were previously associated with fonts not present in the resources folder, a notification toast will promptly alert you to these inconsistencies.
 
-NOTE: To ensure the consistency, take a moment to reselect those fonts for affected text styles.
+NOTE: To ensure consistency, take a moment to reselect those fonts for affected text styles.
 Elements associated with these styles will adopt the default font if not addressed.
 
 image::chapter02/02_text_style_employ_unconfigured_font.png[A Text Style that uses un-configured font,title="A Text Style that uses un-configured font"]
@@ -464,6 +483,9 @@ To de-select a change, click on the Status of the Change to toggle the Status fr
 On the right-hand side, validation errors related to the selected changes are displayed in an error tree.
 By clicking on the "Go to" icon of an error in the tree, the user will be navigated to the place where the error has occurred.
 
+During the commit process the semantically correctness of the calculations inside the Print Model is checked.
+The error messages are visible above the validation errors.
+
 image::chapter02/02_commit_changes_tab.png[Commit Changes,title="Commit Changes tab"]
 
 == Preview [[Preview]]
@@ -479,7 +501,7 @@ Test Document:: Select a Document (from Workspace Data) based on the Document Mo
 Reload Button:: Manually regenerate the PDF with the current preview settings.
 Localization Dropdown:: Change the locale of the resulting PDF. Locale options are obtained from the referenced Document Model used for printing.
 Time Zone Dropdown:: Change the time zone of the resulting PDF. The user's current time zone is selected as the default and appears first in the dropdown list.
-Switching Rendering Mode:: Switch between <<legacy_rendering_mode, Legacy Rendering Mode>> and the new rendering mode for the preview. Legacy Rendering is not compatible with Typesetting Models and language-specific hyphenation rules.
+Fallback Font:: Select the font to use when a referenced font is unavailable. The default fallback font is _Open Sans_. All fonts available in the workspace resources are selectable as fallback options.
 Using Print model with pending changes:: Used to generate the preview with pending changes, which will re-render the PDF with each change made in the editor. When toggled off, only committed changes will be displayed.
 
 image::chapter02/02_preview_window.png[Preview window,title="Preview window"]
@@ -499,30 +521,6 @@ You can create Test Documents in several ways:
 
 Please refer to the Document or Form Modeling Documentation for more details.
 ====
-
-[#legacy_rendering_mode]
-=== Legacy Rendering Mode
-
-The Legacy Rendering Mode is an alternative rendering pipeline in the `PrintEngine`.
-It is incompatible with advanced features like <<TypeSettingModel, Typesetting Models>> and will be deprecated in the 2026.06 release.
-
-To disable/enable the different rendering modes, you can use, depending on the context, the toggle button in the <<Preview, Preview>> toolbar, the flag in the <<print_shell_printing, Print-Shell>> or the variable in the Print Engine configuration (see link:/docs/PRINT_ENGINE/print-technical-documentation/index.html#print_job_manager[PrintJobManager]).
-
-[#noticeable_differences]
-==== Noticeable Differences in the Legacy Rendering Mode
-
-1. Table Rows are spread over a page break instead of being moved completely to the next page if possible
-2. Image Elements that are larger than a page will not be scaled down to fit the page size
-3. Watermarks are also applied to attachment pages
-4. Attachments are printed, whether or not they are linked inside the main document body
-5. If a text can not be printed with the selected font or the defined fallback font, it will instead be printed with Open Sans
-6. Expression elements background color will apply to the whole element area, not just the text area
-7. Listing Property Computations can use other color descriptions beside hex color codes (e.g. "red", "blue", etc.)
-
-==== Performance Differences
-
-According to our benchmarks the Legacy Rendering Mode is generally slower than the default rendering mode.
-However, the performance can vary based on the specific Print Model and Document used.
 
 == Validation
 

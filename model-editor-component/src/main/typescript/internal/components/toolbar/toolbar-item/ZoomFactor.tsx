@@ -81,7 +81,12 @@ export const ZoomFactor = () => {
 			items={ZOOM_ITEMS}
 			value={String(zoomFactor)}
 			onValueChanged={onZoomSelectValueChange}
-			inputProps={{ style: { backgroundColor: theme.colors.background.secondaryBackground } }}
+			inputProps={
+				{
+					style: { backgroundColor: theme.colors.background.secondaryBackground },
+					"data-testid": "zoom-factor",
+				} as React.HTMLProps<HTMLSelectElement>
+			}
 			disabled={!isEditorActive}
 		/>
 	);

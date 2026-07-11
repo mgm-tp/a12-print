@@ -33,14 +33,13 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import uniqueId from "lodash/uniqueId.js";
 
-import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react/lib/main/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { Collapsible, MapTreeNode, Tree, TreeAdapter } from "@com.mgmtp.a12.widgets/widgets-core/lib/tree/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core";
+import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react";
+import type { MapTreeNode } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, Icon, Collapsible, Tree, TreeAdapter } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { CommitViewActions } from "../../redux/index.js";
-import { ErrorTreeNode } from "../../types/error-tree.js";
+import { NavigationActions } from "../../redux/index.js";
+import type { ErrorTreeNode } from "../../types/error-tree.js";
 
 const InteractiveTree = Collapsible(TreeAdapter(Tree));
 
@@ -89,7 +88,17 @@ export function ValidationErrorTree({ treeData, isDebugMode }: ValidationErrorTr
 					onClick={e => {
 						e.stopPropagation();
 						if (node.errorData?.navigation) {
-							dispatch(CommitViewActions.navigateIntoView(node.errorData.navigation));
+							dispatch(
+								NavigationActions.navigateFromPath({
+									path: node.errorData.jsonPath,
+									target: node.errorData.navigation.containerTarget
+										? {
+												type: node.errorData.navigation.sidebarTarget,
+												id: node.errorData.navigation.containerTarget,
+											}
+										: undefined,
+								})
+							);
 						}
 					}}
 				/>

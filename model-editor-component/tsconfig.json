@@ -1,14 +1,15 @@
 {
 	"extends": "./node_modules/@com.mgmtp.a12.print/print-dev-tools/tsconfig.json",
-	"include": ["src/**/*", "../model-api-utils/src/main/typescript/internal/validation/validation-relevant-path-utils.ts"],
+	"include": [
+		"src/**/*",
+		"../model-api-utils/src/main/typescript/a12internal/validation/validation-relevant-path-utils.ts"
+	],
 	"compilerOptions": {
-    "rootDirs": ["src/main/typescript", "src/test/typescript"],
-    "outDir": "lib",
+		"rootDirs": ["src/main/typescript", "src/test/typescript"],
+		"outDir": "lib",
 		"allowJs": true,
 		"checkJs": false,
-		"typeRoots": ["node_modules/@types",
-          "src/main/typescript/internal/types"
-        ],
-		"types": ["jest"]
+		"typeRoots": ["node_modules/@types", "src/main/typescript/internal/types"],
+		"types": ["jest", "node"]
 	}
 }

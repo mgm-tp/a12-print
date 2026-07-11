@@ -22,7 +22,8 @@ This section covers the API for the _Print Engine Runtime_, a package that provi
 [#print_job_manager]
 == PrintJobManager
 
-The `PrintJobManager` is an implementation of the <<job_manager, JobManager>>, that facilitates the creation of <<print_job, PrintJob>>s and the preparation of Print Models.
+The `PrintJobManager` is an implementation of the <<job_manager, JobManager>>, that facilitates the creation of <<print_job, PrintJob>> and the preparation of Print Models.
+An optional <<static_image_provider, StaticImageProvider>> can be supplied to the constructor to resolve static attachment images during the compile phase.
 
 [source,java,title="PrintJobManager implementation"]
 ----
@@ -46,14 +47,6 @@ include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/ru
 The `PdfBoxPrintEngine` is an implementation of <<pdf_box_print_engine, PdfBoxPrintEngine>>, that provides the ability to execute <<print_job, PrintJob>>s.
 This engine is able to work with Typesetting Models, which can be provided with the <<typesetting_model_provider, TypesettingModelProvider>>.
 
-[#pdf_print_engine_runtime]
-== PdfPrintEngine (Deprecated)
-
-CAUTION: Will be replaced with <<pdf_box_print_engine_runtime, PdfBoxPrintEngine>> in 2026.06.
-
-The `PdfPrintEngine` is an implementation of <<pdf_print_engine, PdfPrintEngine>>, that provides the ability to execute <<print_job, PrintJob>>s.
-There are noticable differences to the `PdfBoxPrintEngine` (see link:/docs/PRINT_ENGINE/print-modeling-documentation/index.html#legacy_rendering_mode[Legacy Rendering Mode]).
-
 [#kernel_document_v2_provider]
 == KernelDocumentV2Provider
 
@@ -61,19 +54,7 @@ There are noticable differences to the `PdfBoxPrintEngine` (see link:/docs/PRINT
 
 [source,java,title="KernelDocumentV2Provider interface"]
 ----
-include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/runtime/KernelDocumentV2Provider.java[tag=!*]
-----
-
-[#kernel_document_provider]
-== KernelDocumentProvider (Deprecated)
-
-CAUTION: Will be replaced with <<kernel_document_v2_provider, KernelDocumentV2Provider>> in 2026.06.
-
-`KernelDocumentProvider` is an interface for loading A12 Kernel _IDocument_.
-
-[source,java,title="KernelDocumentProvider interface"]
-----
-include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/runtime/KernelDocumentProvider.java[tag=!*]
+include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/runtime/KernelDocumentV2Provider.java[tag=KernelDocumentV2ProviderInterface]
 ----
 
 [#typesetting_model_provider]
@@ -83,7 +64,7 @@ include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/ru
 
 [source,java,title="TypesettingModelProvider interface"]
 ----
-include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/runtime/TypesettingModelProvider.java[tag=!*]
+include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/runtime/TypesettingModelProvider.java[tag=TypesettingModelProviderInterface]
 ----
 
 [#attachment_provider]
@@ -93,7 +74,7 @@ include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/ru
 
 [source,java,title="AttachmentProvider interface"]
 ----
-include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/runtime/AttachmentProvider.java[tag=!*]
+include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/runtime/AttachmentProvider.java[tag=AttachmentProviderInterface]
 ----
 
 [#page_range_restriction]
@@ -111,6 +92,6 @@ It is only possible to define one `PageRangeRestriction`
 
 [source,java,title="PageRangeRestriction"]
 ----
-include::../../sourceCode/engine-api/restriction/PageRangeRestriction.java[tag=!*]
+include::../../sourceCode/engine-api/restriction/PageRangeRestriction.java[tag=PageRangeRestrictionClass]
 ----
 

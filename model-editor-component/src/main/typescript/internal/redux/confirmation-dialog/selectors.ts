@@ -33,7 +33,7 @@ import { createSelector } from "reselect";
 
 import { createSliceSelector } from "../../store/selectors.js";
 
-import { ConfirmationDialogState } from "./state.js";
+import type { ConfirmationDialogState } from "./state.js";
 
 export namespace ConfirmationDialogSelectors {
 	export const confirmationDialogState = createSliceSelector<ConfirmationDialogState>(

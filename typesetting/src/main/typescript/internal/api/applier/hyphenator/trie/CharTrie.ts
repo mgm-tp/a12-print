@@ -29,11 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import CharTrieMapNode from "./CharTrieMapNode.js";
+import type { CharTrieMapNode } from "./CharTrieMapNode.js";
 
-interface CharTrie {
+export interface CharTrie {
 	put(ch: string, node: CharTrieMapNode): CharTrieMapNode | undefined;
 	get(ch: string): CharTrieMapNode | undefined;
 }
-
-export default CharTrie;

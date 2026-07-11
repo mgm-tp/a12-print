@@ -31,8 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base;
 
-import com.mgmtp.a12.print.engine.runtime.internal.engine.pdfBox.Incrementer;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.componentTrees.SectionComponentTree;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.componentTrees.SectionComponentTree;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle.ContainerDocumentHandle;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle.SectionDocumentHandle;
 import lombok.NonNull;
@@ -198,6 +197,10 @@ public class ContentStreamAdapter implements Closeable {
 
 	public void drawImage(PDImageXObject image, long x, long y, long width, long height) {
 		catchException(() -> this.contentStream.drawImage(image, longPtToFloat(x), longPtToFloat(y), longPtToFloat(width), longPtToFloat(height)));
+	}
+
+	public void drawImage(PDImageXObject image, Matrix matrix) {
+		catchException(() -> this.contentStream.drawImage(image, matrix));
 	}
 
 	public void moveTo(long x, long y) {

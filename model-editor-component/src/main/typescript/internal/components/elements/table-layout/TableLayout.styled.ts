@@ -31,14 +31,15 @@
  */
 import { css, styled } from "styled-components";
 
-import {
-	BorderProperties,
-	BorderStyle,
+import type {
+	InputSource,
 	VerticalAlignment,
 	PartialBorderProperties,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import { OmitId } from "../../../utils/index.js";
+import type { OmitId } from "../../../utils/index.js";
 import { optionalValueToString } from "../../../utils/css-utils.js";
 
 const DEFAULT_TR_HEIGHT = 40;
@@ -57,17 +58,17 @@ export const StyledTr = styled.tr<{ height: number | undefined }>`
 
 interface StyledTdEmptyProps {
 	width: number | undefined;
-	borderWidth?: number;
-	borderStyle?: BorderStyle;
-	borderColor?: string;
+	borderProp?: PartialBorderProperties;
 }
 
-export const StyledTdEmpty = styled.td<StyledTdEmptyProps>(({ width, borderWidth, borderStyle, borderColor }) => {
+export const StyledTdEmpty = styled.td<StyledTdEmptyProps>(({ width, borderProp }) => {
 	return css`
 		position: relative;
 		text-align: center;
 		width: ${width !== undefined ? `${width}%` : "auto"};
-		${getBorderStyles({ borderStyle, borderColor, borderWidth })}
+		border-style: ${borderProp?.borderStyle?.value};
+		border-color: ${borderProp?.borderColor?.value};
+		border-width: ${optionalValueToString(borderProp?.borderWidth?.value, "pt")};
 	`;
 });
 
@@ -91,18 +92,34 @@ export const StyledTdFilled = styled.td<StyledTdFilledProps>(
 );
 
 function getBorderStyles(
-	tableBorderProperties?: OmitId<BorderProperties>,
-	cellBorderProperties?: OmitId<BorderProperties>
+	tableBorderProperties?: OmitId<PartialBorderProperties>,
+	cellBorderProperties?: OmitId<PartialBorderProperties>
 ) {
-	const borderProperties = {
-		...tableBorderProperties,
-		...cellBorderProperties,
-	};
-	return css`
-		border-style: ${borderProperties?.borderStyle};
-		border-color: ${borderProperties?.borderColor};
-		border-width: ${optionalValueToString(borderProperties?.borderWidth, "pt")};
+	const borderStyle = resolveBorderProperty(tableBorderProperties?.borderStyle, cellBorderProperties?.borderStyle);
+	const borderColor = resolveBorderProperty(tableBorderProperties?.borderColor, cellBorderProperties?.borderColor);
+	const borderWidth = resolveBorderProperty(tableBorderProperties?.borderWidth, cellBorderProperties?.borderWidth);
+	const result = css`
+		border-style: ${borderStyle};
+		border-color: ${borderColor};
 	`;
+	if (borderWidth !== undefined) {
+		result.push(css`
+			border-width: ${optionalValueToString(borderWidth as string, "pt")};
+		`);
+	}
+	return result;
+}
+
+function resolveBorderProperty<T>(
+	tableProp?: DeepPartialRecursive<InputSource<T>>,
+	cellProp?: DeepPartialRecursive<InputSource<T>>
+) {
+	if (cellProp?.source === PossibleInputSource.INPUT) {
+		return cellProp?.value;
+	} else if (cellProp?.source === PossibleInputSource.INHERITED) {
+		return tableProp?.value;
+	}
+	return undefined;
 }
 
 export const StyledActionsWrapper = styled.div`

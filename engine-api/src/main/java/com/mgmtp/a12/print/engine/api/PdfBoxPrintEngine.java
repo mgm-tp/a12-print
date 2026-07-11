@@ -29,11 +29,16 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::PdfBoxPrintEngineInterface[]
 package com.mgmtp.a12.print.engine.api;
+
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 
 /**
  * Interface for the execution of a given {@link PrintJob}, that returns a {@link PdfPrintResult}.
  */
+@OnlyForUsage
 public interface PdfBoxPrintEngine extends PrintEngine<PdfPrintResult> {
 }
+// end::PdfBoxPrintEngineInterface[]

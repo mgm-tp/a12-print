@@ -31,29 +31,26 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.chart;
 
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.Entity;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.heightCalculation.EvaluatedHeightDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.renderer.pdf.FontUtils;
 import com.mgmtp.a12.print.model.api.inputSource.InputValueSourceResolver;
 import com.mgmtp.a12.print.model.api.inputSource.InputValueSourceResolver.ReferenceResolver;
-import com.mgmtp.a12.print.model.api.model.element.type.chart.*;
+import com.mgmtp.a12.print.model.api.model.element.type.chart.ChartData;
+import com.mgmtp.a12.print.model.api.model.element.type.chart.ChartOrientation;
+import com.mgmtp.a12.print.model.api.model.element.type.chart.KeyFieldChartData;
+import com.mgmtp.a12.print.model.api.model.element.type.chart.MultipleSeriesProperties;
 import com.mgmtp.a12.print.model.api.model.element.type.chart.barChart.BarChartProperties;
 import com.mgmtp.a12.print.model.api.model.element.type.chart.lineChart.LineChartProperties;
 import com.mgmtp.a12.print.model.api.model.element.type.chart.pieChart.PieChartProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 import lombok.NonNull;
-import org.knowm.xchart.BitmapEncoder;
-import org.knowm.xchart.CategoryChart;
-import org.knowm.xchart.CategoryChartBuilder;
-import org.knowm.xchart.PieChart;
-import org.knowm.xchart.PieChartBuilder;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
+import org.knowm.xchart.*;
 import org.knowm.xchart.internal.chartpart.Chart;
 import org.knowm.xchart.internal.chartpart.PlotContent_Pie;
 import org.knowm.xchart.internal.chartpart.Plot_;
@@ -62,6 +59,7 @@ import org.knowm.xchart.style.Styler.LegendLayout;
 import org.knowm.xchart.style.Styler.LegendPosition;
 import org.knowm.xchart.style.colors.ChartColor;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -71,17 +69,11 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.IntStream;
 
-import javax.imageio.ImageIO;
+import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil.MM_PER_INCH;
 
 public class ChartGeneratorUtils {
 
@@ -91,7 +83,7 @@ public class ChartGeneratorUtils {
 		PieChartProperties properties,
 		PrintDocumentContext printDocumentContext,
 		PrintJob job,
-		PrintEngineConfig printEngineConfig,
+		PdfBoxPrintEngineConfig printEngineConfig,
 		InputValueSourceResolver.ReferenceResolver referenceInputSourceResolver
 	) {
 		final ChartDocumentData data = getValues(properties.getBasePath(), properties.getData(), printDocumentContext);
@@ -103,7 +95,7 @@ public class ChartGeneratorUtils {
 		MultipleSeriesProperties properties,
 		PrintDocumentContext printDocumentContext,
 		PrintJob job,
-		PrintEngineConfig printEngineConfig,
+		PdfBoxPrintEngineConfig printEngineConfig,
 		InputValueSourceResolver.ReferenceResolver referenceInputSourceResolver
 	) {
 		final List<ChartDocumentData> dataList = properties.getData()
@@ -139,13 +131,13 @@ public class ChartGeneratorUtils {
 		LineChartProperties properties,
 		List<ChartDocumentData> dataList,
 		PrintJob job,
-		PrintEngineConfig printEngineConfig,
+		PdfBoxPrintEngineConfig printEngineConfig,
 		ReferenceResolver referenceInputSourceResolver) {
 
 		XYChart chart = new XYChartBuilder()
 			.title(InputValueSourceResolver.getInputValue(properties.getTitle(), referenceInputSourceResolver).orElse(""))
-			.width(EvaluatedHeightDependencyValueProducer.convertToPixel(properties.getDimensions().getWidth().getValue()))
-			.height(EvaluatedHeightDependencyValueProducer.convertToPixel(properties.getDimensions().getHeight().getValue()))
+			.width(convertToPixel(properties.getDimensions().getWidth().getValue()))
+			.height(convertToPixel(properties.getDimensions().getHeight().getValue()))
 			.build();
 
 		// Customize Chart
@@ -196,7 +188,7 @@ public class ChartGeneratorUtils {
 		BarChartProperties properties,
 		List<ChartDocumentData> dataList,
 		PrintJob job,
-		PrintEngineConfig printEngineConfig,
+		PdfBoxPrintEngineConfig printEngineConfig,
 		ReferenceResolver referenceInputSourceResolver) {
 
 		// Create Chart
@@ -205,8 +197,8 @@ public class ChartGeneratorUtils {
 				.title(InputValueSourceResolver.getInputValue(properties.getTitle(), referenceInputSourceResolver).orElse(""))
 				.xAxisTitle(InputValueSourceResolver.getInputValue(properties.getLabelX(), referenceInputSourceResolver).orElse(""))
 				.yAxisTitle(InputValueSourceResolver.getInputValue(properties.getLabelY(), referenceInputSourceResolver).orElse(""))
-				.width(EvaluatedHeightDependencyValueProducer.convertToPixel(properties.getDimensions().getWidth().getValue()))
-				.height(EvaluatedHeightDependencyValueProducer.convertToPixel(properties.getDimensions().getHeight().getValue()))
+				.width(convertToPixel(properties.getDimensions().getWidth().getValue()))
+				.height(convertToPixel(properties.getDimensions().getHeight().getValue()))
 				.build();
 
 		// Customize Chart
@@ -262,15 +254,15 @@ public class ChartGeneratorUtils {
 	private static PieChart buildPieChart(
 		PieChartProperties properties,
 		ChartDocumentData chartData,
-		PrintEngineConfig printEngineConfig,
+		PdfBoxPrintEngineConfig printEngineConfig,
 		ReferenceResolver referenceInputSourceResolver,
 		PrintJob job
 	) {
 		// Create Chart
 		PieChart chart = new PieChartBuilder()
 			.title(InputValueSourceResolver.getInputValue(properties.getTitle(), referenceInputSourceResolver).orElse(""))
-			.width(EvaluatedHeightDependencyValueProducer.convertToPixel(properties.getDimensions().getWidth().getValue()))
-			.height(EvaluatedHeightDependencyValueProducer.convertToPixel(properties.getDimensions().getHeight().getValue()))
+			.width(convertToPixel(properties.getDimensions().getWidth().getValue()))
+			.height(convertToPixel(properties.getDimensions().getHeight().getValue()))
 			.build();
 
 		final Float[] data = chartData.getData();
@@ -325,14 +317,14 @@ public class ChartGeneratorUtils {
 		}
 	}
 
-	private static void applyChartFont(Chart<?,?> chart, PrintEngineConfig printEngineConfig) {
-		byte[] fontFile = FontUtils.getFontFile(printEngineConfig.getAvailableFonts().get(PrintEngineConfig.DEFAULT_FONT_KEY));
+	private static void applyChartFont(Chart<?,?> chart, PdfBoxPrintEngineConfig printEngineConfig) {
+		byte[] fontFile = FontUtils.getFontFile(printEngineConfig.getAvailableFonts().get(PdfBoxPrintEngineConfig.DEFAULT_FONT_KEY));
 		InputStream inputStream = new ByteArrayInputStream(fontFile);
 		Font defaultFont;
 		try {
 			defaultFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
 		} catch (FontFormatException | IOException e) {
-			throw new PrintException("The font for the chart could not be created", e);
+			throw new PrintDomainException("The default font cannot be used for the chart generation", e);
 		}
 		if (chart instanceof PieChart pieChart) {
 			pieChart.getStyler()
@@ -374,7 +366,7 @@ public class ChartGeneratorUtils {
 		for(final var repetition: repetitions.toList()) {
 			final var evaluatedValue = repetition
 				.findSingleFieldInstance(chartData.getValueField())
-				.flatMap(PrintDocumentContext.Entity::getValue);
+				.flatMap(Entity::getValue);
 
 			if (evaluatedValue.isPresent() && evaluatedValue.get() instanceof final BigDecimal valueString) {
 				values.add(valueString.floatValue());
@@ -383,12 +375,12 @@ public class ChartGeneratorUtils {
 					labels.add(String.valueOf(x));
 					x = x + 1;
 				} else if (
-					chartData instanceof KeyFieldChartData &&
-						((KeyFieldChartData) chartData).getKeyField().isPresent()
+					chartData instanceof KeyFieldChartData keyFieldChartData &&
+						keyFieldChartData.getKeyField().isPresent()
 				) {
 					final var labelValue = repetition
-						.findSingleFieldInstance(((KeyFieldChartData) chartData).getKeyField().get())
-						.flatMap(PrintDocumentContext.Entity::getValue);
+						.findSingleFieldInstance(keyFieldChartData.getKeyField().get())
+						.flatMap(Entity::getValue);
 					labels.add(String.valueOf(labelValue.orElse("")));
 				}
 			}
@@ -406,6 +398,10 @@ public class ChartGeneratorUtils {
 		} else {
 			return Arrays.asList(data);
 		}
+	}
+
+	private static int convertToPixel(int millimeters) {
+		return (int) Math.floor((millimeters / MM_PER_INCH) * 96);
 	}
 
 	@Data

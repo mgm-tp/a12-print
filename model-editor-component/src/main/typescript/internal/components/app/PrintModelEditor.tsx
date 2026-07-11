@@ -35,25 +35,27 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useDispatch, useSelector } from "react-redux";
 import { useTheme, ThemeProvider } from "styled-components";
 
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { getDefaultTextStyleFont } from "@com.mgmtp.a12.print/print-fonts/lib/internal/api/utils/font-utils.js";
+import { getDefaultTextStyleFont } from "@com.mgmtp.a12.print/print-fonts/a12internal";
+import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import { ProgressIndicator } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { PrintEngineActions } from "../../store/actions.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import {
 	EditorStateActions,
-	FULLSCREEN_TABS,
 	initialStateLogStore,
 	InteractionLogActions,
-	RequestApiActions,
-	SidebarActions,
 	ValidationActions,
 } from "../../redux/index.js";
-import { ContextApi, EditorComponentContext } from "../../api/index.js";
+import { CommitViewSelectors } from "../../redux/commit-view/selectors.js";
+import { FULLSCREEN_TABS, NavigationSelectors } from "../../redux/navigation/index.js";
+import type { ContextApi } from "../../api/index.js";
+import { EditorComponentContext } from "../../api/index.js";
+import { PrintEngineActions } from "../../store/actions.js";
 
 import { Sidebar } from "../sidebar/index.js";
 import { DragListLayer } from "../drag-and-drop/DragListLayer.js";
-import { GlobalToolbar, GlobalToolbarProps } from "../global-toolbar/index.js";
+import type { GlobalToolbarProps } from "../global-toolbar/index.js";
+import { GlobalToolbar } from "../global-toolbar/index.js";
 import { HiddenHeightContextWrapper } from "../hidden-height-context-wrapper/index.js";
 import { CustomMasterDetailLayout } from "../custom-master-detail-layout/CustomMasterDetailLayout.js";
 import { ConfirmationDialog } from "../confirmation-dialog/index.js";
@@ -65,7 +67,7 @@ export interface ModelEditorComponentProps {
 	contextApi: ContextApi;
 	printModelId: string;
 	toolbarProps?: Omit<GlobalToolbarProps, "printModelId">;
-	isNewPrintModel?: boolean;
+	navigationPath?: EntityInstancePath;
 	sidebarFooter?: React.ReactNode;
 }
 
@@ -73,22 +75,24 @@ export const PrintModelEditor = ({
 	contextApi,
 	printModelId,
 	toolbarProps,
-	isNewPrintModel,
+	navigationPath,
 	sidebarFooter,
 }: ModelEditorComponentProps) => {
 	const dispatch = useDispatch();
 	const transactionLogState = useSelector(PrintEngineSelectors.transactionLogState);
-	const { selectedItem, isFullscreen, isOpen } = useSelector(PrintEngineSelectors.sidebar);
+	const { activeTab, isFullscreen, isOpen } = useSelector(NavigationSelectors.sidebarState);
 	const { isUndoDisabled, isRedoDisabled } = useSelector(PrintEngineSelectors.undoRedoButtonState);
+	const isCommitting = useSelector(CommitViewSelectors.isCommitting);
 
 	const fonts = React.useMemo(() => contextApi.getFonts(), [contextApi]);
-	const isDefaultTransactionLog = React.useMemo(() => {
-		return transactionLogState === initialStateLogStore;
-	}, [transactionLogState]);
+	const isDefaultTransactionLog = React.useMemo(
+		() => transactionLogState === initialStateLogStore,
+		[transactionLogState]
+	);
 
 	const subExpandedState = React.useMemo(
-		() => (FULLSCREEN_TABS.includes(selectedItem) || isFullscreen ? "maximized" : "minimized"),
-		[isFullscreen, selectedItem]
+		() => (FULLSCREEN_TABS.includes(activeTab) || isFullscreen ? "maximized" : "minimized"),
+		[isFullscreen, activeTab]
 	);
 	const onKeyDown = React.useCallback(
 		(e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -107,17 +111,8 @@ export const PrintModelEditor = ({
 	);
 
 	React.useEffect(() => {
-		dispatch(PrintEngineActions.resetState());
-		if (isNewPrintModel === false) {
-			dispatch(SidebarActions.setCurrentView({ selectedItem: SidebarItem.SEGMENT }));
-		}
-		dispatch(RequestApiActions.initializePrintModel(printModelId));
-		dispatch(RequestApiActions.loadDINTemplatePrintModels());
-		dispatch(RequestApiActions.loadTypesettingModelHeaders());
-
-		// Do not rerun effect when isNewPrintModel prop changes
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dispatch, printModelId]);
+		dispatch(PrintEngineActions.editorPropsChanged({ printModelId, navigationPath }));
+	}, [dispatch, printModelId, navigationPath]);
 
 	React.useEffect(() => {
 		dispatch(EditorStateActions.setFonts(fonts));
@@ -155,6 +150,7 @@ export const PrintModelEditor = ({
 										subResizableOptions={{ minWidth: 300 }}
 									/>
 								</StyledFrameContainer>
+								{isCommitting && <ProgressIndicator />}
 							</ThemeProvider>
 						</HiddenHeightContextWrapper>
 					</DndProvider>

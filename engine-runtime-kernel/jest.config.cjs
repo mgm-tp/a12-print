@@ -29,8 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+const baseConfig = require("@com.mgmtp.a12.print/print-dev-tools/jest-config.cjs");
+
 module.exports = {
-	...require("@com.mgmtp.a12.print/print-dev-tools/jest-config.cjs"),
+	...baseConfig,
 	testEnvironment: "node",
 	setupFilesAfterEnv: [],
+	coveragePathIgnorePatterns: [...(baseConfig.coveragePathIgnorePatterns ?? []), "/generated/"],
 };

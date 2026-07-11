@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.typesetting.internal.applier.hyphenator;
 
+import com.mgmtp.a12.print.typesetting.internal.applier.TypesettingApplierException;
 import com.mgmtp.a12.print.typesetting.internal.applier.hyphenator.collection.FixedSizeIntList;
 import com.mgmtp.a12.print.typesetting.internal.applier.hyphenator.collection.ImmutableCharArrayList;
 import com.mgmtp.a12.print.typesetting.internal.applier.hyphenator.collection.ImmutableCharList;
@@ -52,7 +53,7 @@ public class PatternHyphenator implements Hyphenator {
 
 	public PatternHyphenator(TypesettingModel typesettingModel) {
 		this.hyphenation = typesettingModel.getContent().getInternal().getHyphenation().orElseThrow(() ->
-			new RuntimeException("Hyphenation only possible with a Typesetting model with hyphenation rules")
+			new TypesettingApplierException("Hyphenation only possible with a Typesetting model with hyphenation rules")
 		);
 		this.root = new TriePatternProcessor().processPatterns(hyphenation.getPatterns());
 	}

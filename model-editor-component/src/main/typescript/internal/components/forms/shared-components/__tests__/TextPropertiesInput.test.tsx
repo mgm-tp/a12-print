@@ -32,10 +32,10 @@
 import { jest } from "@jest/globals";
 import { fireEvent, waitFor } from "@testing-library/react";
 
-import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { ElementType, PartialTable } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PartialTable } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType, PRINT_MODEL_CONTENT_GENERAL_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import {
 	createTransactionLogState,
@@ -147,7 +147,7 @@ describe("TextPropertiesInput", () => {
 	});
 
 	it("should call setTextProperties with correctly", async () => {
-		const { getAllByRole, queryByRole, getByRole } = setupTest();
+		const { getAllByRole, queryByRole, getByRole, container } = setupTest();
 
 		const [textStyleSelect, alignmentSelect] = getAllByRole("combobox");
 		fireEvent.click(textStyleSelect);
@@ -157,7 +157,9 @@ describe("TextPropertiesInput", () => {
 			fireEvent.click(selectOption);
 		});
 
-		const [boldCheckbox, italicCheckbox, underlineCheckbox] = getAllByRole("checkbox");
+		const [boldCheckbox, italicCheckbox, underlineCheckbox] = Array.from(
+			container.querySelectorAll('[data-role="checkbox-input"]')
+		) as HTMLElement[];
 
 		fireEvent.click(boldCheckbox);
 		fireEvent.click(italicCheckbox);

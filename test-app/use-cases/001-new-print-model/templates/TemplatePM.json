@@ -2,7 +2,7 @@
   "header": {
     "id": "TemplatePM",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "annotations": [
       {
         "name": "roles",
@@ -10,11 +10,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "labels": [],
@@ -260,9 +260,24 @@
         },
         "borderProperties": {
           "id": "ID_8366d6ca-3e26-4451-a1eb-049961fb1109B",
-          "borderStyle": "Solid",
-          "borderWidth": 0.75,
-          "borderColor": "#57d5ff"
+          "borderWidth": {
+            "id": "OutAD-bOeBWSLKZ6jMheT",
+            "source": "INPUT",
+            "value": 0.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "0Ez7P68gg4NOFd2zvFhNZ",
+            "source": "INPUT",
+            "value": "#57d5ff",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "efvDerS_qU2sq9qYgX7Ce",
+            "source": "INPUT",
+            "value": "Solid",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -287,9 +302,24 @@
         },
         "borderProperties": {
           "id": "ID_8366d6ca-3e26-4451-a1eb-049961fb1109Y",
-          "borderStyle": "Solid",
-          "borderWidth": 0.75,
-          "borderColor": "#ffd557"
+          "borderWidth": {
+            "id": "fU7uO8f5LzvloHHDhJZgI",
+            "source": "INPUT",
+            "value": 0.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "-8HZG4AyYd8G-T2OU9NoF",
+            "source": "INPUT",
+            "value": "#ffd557",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "3yQw-ehtudoPVbKGLeTgR",
+            "source": "INPUT",
+            "value": "Solid",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -314,9 +344,24 @@
         },
         "borderProperties": {
           "id": "ID_8366d6ca-3e26-4451-a1eb-049961fb1109G",
-          "borderStyle": "Solid",
-          "borderWidth": 0.75,
-          "borderColor": "#1CE86E"
+          "borderWidth": {
+            "id": "hvtMSfUGQLdnRGKKphreM",
+            "source": "INPUT",
+            "value": 0.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "K4ym1jrUk10ySY3Qn-18W",
+            "source": "INPUT",
+            "value": "#1CE86E",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "zncKIoP1sA_OpsjXQEgye",
+            "source": "INPUT",
+            "value": "Solid",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       }
     ],

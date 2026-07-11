@@ -41,7 +41,7 @@ import com.mgmtp.a12.kernel.md.model.internal.wrapper.fieldtypes.NumberTypeWrapp
 import com.mgmtp.a12.kernel.md.model.internal.wrapper.fieldtypes.StringTypeWrapper;
 import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
-import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.fieldType.FieldTypeFromPathValueDependency;
@@ -131,14 +131,14 @@ public class CalculationDependencyValueProducer implements CoreDependencyValuePr
 						yield new BooleanTypeWrapper(new BooleanType());
 					case TYPE_DEFINITION: {
 						final var typeDefinition = calculationProperties.getFieldType().get().getTypeDefinition().orElseThrow(
-							() -> new PrintException("The field type is \"TypeDefinition\" but there is no type definition selected")
+							() -> new PrintDomainException("The field type is \"TypeDefinition\" but there is no Type Definition selected")
 						);
 						yield ((ManagedPrintJob) job).getPrintModelCompilationContext()
 							.getDocumentModelIndexMap().values().stream().flatMap(documentModelIndex ->
 								documentModelIndex.getFieldType(typeDefinition).stream()
-							).findFirst().orElseThrow(() -> new PrintException(String.format(
-								"The type definition with the name %s is not present in the current document models", typeDefinition.getId()
-							)));
+							).findFirst().orElseThrow(() -> new PrintDomainException(
+								"The Type Definition with the name {} is not present in the current Document Model", typeDefinition.getId()
+							));
 					}
 				})
 		);

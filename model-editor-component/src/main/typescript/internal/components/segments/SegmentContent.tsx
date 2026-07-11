@@ -32,11 +32,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useCallback } from "react";
 
-import { PartialSegment } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialSegment } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { TransactionLogStateActions } from "../../redux/index.js";
-import { InteractionLogActions } from "../../redux/interaction-log/index.js";
+import { InteractionLogActions } from "../../redux//interaction-log/index.js";
 import { RESOURCE_KEYS } from "../../localization/index.js";
 import { SEGMENT_CARD } from "../../constant/drag.js";
 

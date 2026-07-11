@@ -41,7 +41,7 @@ const __dirname = path.dirname(__filename);
 describe("prefer-top-level-imports codemod", () => {
 	let tempDir: string;
 	const testDataDir = path.resolve(__dirname, "__testdata__/prefer-top-level-imports");
-	const cliPath = path.resolve(__dirname, "../../../lib/cli.js");
+	const cliPath = path.resolve(__dirname, "../../../lib/main/typescript/cli.js");
 
 	// temp test directory setup and teardown
 	beforeEach(() => {

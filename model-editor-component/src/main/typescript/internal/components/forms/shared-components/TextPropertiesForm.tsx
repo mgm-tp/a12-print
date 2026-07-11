@@ -33,7 +33,8 @@ import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { TEXT_PROPERTIES_PATH } from "../../../constant/element-property-path.js";
 
 import { FormContainerHeadline } from "./FormContainerHeadline.js";
-import { TextPropertiesInput, TextPropertiesInputProps } from "./TextPropertiesInput.js";
+import type { TextPropertiesInputProps } from "./TextPropertiesInput.js";
+import { TextPropertiesInput } from "./TextPropertiesInput.js";
 
 export interface TextPropertiesFormProps extends Omit<TextPropertiesInputProps, "propertiesPath"> {
 	label?: string;

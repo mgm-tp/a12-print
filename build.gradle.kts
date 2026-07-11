@@ -52,6 +52,7 @@ allprojects {
 	}
 }
 
+
 val pnpmInstallFrozen = tasks.register<PnpmTask>("pnpmInstallFrozen") {
 	group = "pnpm-install"
 	description = "Runs pnpm install in all subprojects"
@@ -74,14 +75,20 @@ tasks.matching {
 	dependsOn(pnpmInstallFrozen)
 }
 
+allprojects {
+	tasks.withType<PnpmTask>().configureEach {
+		if (name != "pnpmInstallFrozen") {
+			dependsOn(pnpmInstallFrozen)
+		}
+	}
+}
+
 val manifest = readManifest("$projectDir/package.json")
 
 version = manifest.version
 
 
 subprojects {
-	println("$projectDir")
-
 	apply(plugin = "idea")
 
 
@@ -118,8 +125,9 @@ subprojects {
 				withJavadocJar()
 				withSourcesJar()
 
-				sourceCompatibility = JavaVersion.VERSION_21
-				targetCompatibility = JavaVersion.VERSION_21
+				toolchain {
+					languageVersion.set(JavaLanguageVersion.of("21"))
+				}
 			}
 
 			tasks.test {

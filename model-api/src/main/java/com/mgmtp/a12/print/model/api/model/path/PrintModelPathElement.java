@@ -31,11 +31,14 @@
  */
 package com.mgmtp.a12.print.model.api.model.path;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import lombok.Data;
 
+@OnlyForUsage
 public interface PrintModelPathElement {
 
 	@Data
+	@OnlyForUsage
 	class ObjectProperty implements PrintModelPathElement {
 		private final String propertyName;
 	}

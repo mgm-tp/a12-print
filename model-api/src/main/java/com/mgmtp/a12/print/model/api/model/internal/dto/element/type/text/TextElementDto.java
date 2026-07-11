@@ -33,7 +33,7 @@ package com.mgmtp.a12.print.model.api.model.internal.dto.element.type.text;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.type.text.TextElement;
 import com.mgmtp.a12.print.model.api.model.element.type.text.TextElementProperties;
 import com.mgmtp.a12.print.model.api.model.reference.ElementReference;

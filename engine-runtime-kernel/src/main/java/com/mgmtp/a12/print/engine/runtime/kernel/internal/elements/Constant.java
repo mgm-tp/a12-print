@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.kernel.internal.elements;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -75,21 +75,16 @@ public class Constant implements SyntaxTreeElement, Predicate.Parameter, Arithme
 				return thisVal.compareTo(otherVal) == 0;
 			}
 		}
-		throw new PrintCompilerException("invalid Constant");
+		throw new PrintCompilerException("Invalid Constant");
 	}
 
 	@EqualsAndHashCode.Include
 	public Object getObjectValue() {
-		switch (constantType) {
-			case STRING:
-				return value;
-			case INTEGER, FLOAT:
-				return new BigDecimal(value);
-			case BOOLEAN: {
-				return TRUE.getValue().equalsIgnoreCase(getValue());
-			}
-		}
-		throw new PrintCompilerException("invalid Constant");
+		return switch (constantType) {
+			case STRING -> value;
+			case INTEGER, FLOAT -> new BigDecimal(value);
+			case BOOLEAN -> TRUE.getValue().equalsIgnoreCase(getValue());
+		};
 	}
 
 

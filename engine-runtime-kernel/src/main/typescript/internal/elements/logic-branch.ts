@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SyntaxTreeElement } from "./index.js";
+import type { SyntaxTreeElement } from "./index.js";
 
 export interface LogicBranch extends SyntaxTreeElement {
 	_logicBranch: boolean;

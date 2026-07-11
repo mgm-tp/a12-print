@@ -35,7 +35,9 @@ import com.mgmtp.a12.kernel.core.customfieldtype.ICustomFieldTypeCheckError;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public class PrintDateTimeFormatErrorUtil {
 
 	public static final String ERROR_MESSAGES_RESOURCE_NAME = "custom_field_types/error_messages";

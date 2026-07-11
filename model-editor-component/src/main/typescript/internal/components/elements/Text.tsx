@@ -30,22 +30,24 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import * as React from "react";
-import parse, { DOMNode, Text as TextNode, Element, HTMLReactParserOptions, domToReact } from "html-react-parser";
+import type { DOMNode, HTMLReactParserOptions } from "html-react-parser";
+import parse, { Text as TextNode, Element, domToReact } from "html-react-parser";
 import sanitizeHtml from "sanitize-html";
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 
-import { Tooltip } from "@com.mgmtp.a12.widgets/widgets-core/lib/tooltip/index.js";
-import { ElementType, PartialText } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source-resolver.js";
+import { Tooltip } from "@com.mgmtp.a12.widgets/widgets-core";
+import { ElementType, PartialText } from "@com.mgmtp.a12.print/print-model-api/model";
+import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { ILocalizer } from "../../api/index.js";
+import type { ILocalizer } from "../../api/index.js";
 import { useTypesettingApplier } from "../../hooks/use-typesetting-applier.js";
 import { TEXT_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 
-import { EntityColor } from "../richtext-editor/richtext-toolbar-components/Decorator.styled.js";
+import { EntityColor } from "../richtext-editor/themes/editor-theme.js";
 
-import { BaseElementProps } from "./base.js";
+import type { BaseElementProps } from "./base.js";
 
 export type TextProps = BaseElementProps;
 
@@ -76,7 +78,11 @@ export const Text = React.memo(
 			? getPreprocessedHTML(sanitizeHTML(applyTypesetting(html)), getPlaceholder, theme)
 			: localizer(RESOURCE_KEYS.editor.element.Text);
 
-		return <div style={styles}>{displayText}</div>;
+		return (
+			<div data-testid="element-text" style={styles}>
+				{displayText}
+			</div>
+		);
 	},
 	(preProps, nextProps) => {
 		return preProps.element === nextProps.element && preProps.styles === nextProps.styles;

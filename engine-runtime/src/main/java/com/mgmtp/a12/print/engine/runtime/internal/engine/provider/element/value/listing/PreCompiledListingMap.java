@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyFunction;
 import lombok.Builder;
 import lombok.NonNull;
@@ -49,7 +49,7 @@ public class PreCompiledListingMap implements CoreDependencyFunction<PreCompiled
 	public PreCompiledListing apply(PreCompiledListingDependency preCompiledListingDependency) {
 		final var result = preCompiledListing.get(preCompiledListingDependency.getListingId());
 		if (result == null) {
-			throw new PrintCompilerException("invalid Compilation State, missing Listing", preCompiledListingDependency.getListingId());
+			throw new PrintCompilerException("Invalid Compilation State, missing Listing", preCompiledListingDependency.getListingId());
 		}
 		return result;
 	}

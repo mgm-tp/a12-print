@@ -35,7 +35,9 @@ import com.mgmtp.a12.print.model.api.model.element.properties.BorderProperties;
 import com.mgmtp.a12.print.model.api.model.element.properties.TextProperties;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface Styleable {
 	Optional<TextProperties> getTextProperties();
 	Optional<BorderProperties> getBorderProperties();

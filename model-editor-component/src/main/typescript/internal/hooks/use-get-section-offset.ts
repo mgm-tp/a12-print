@@ -32,11 +32,12 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { PartialValidPlaceableReference, SectionUsage } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { SectionUsage } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../store/selectors.js";
-import { EditorUtils } from "../utils/index.js";
 import { EditorContext } from "../components/editor-stage/editor-context.js";
+import { EditorUtils } from "../utils/index.js";
 
 export const useGetSectionOffset = () => {
 	const { getSection } = React.useContext(EditorContext);

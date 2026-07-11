@@ -31,9 +31,9 @@
  */
 import { useContext, useMemo } from "react";
 
-import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react/lib/main/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
+import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react";
+import { Button, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
 import { GlobalOverride } from "../../../global-override.styled.js";
 
@@ -42,19 +42,20 @@ import { useContextApi } from "../hooks/use-context-api.js";
 
 import { createGlobalFontFaces } from "./font-face.js";
 import { SidebarFooter } from "./SidebarFooter.js";
-import { PrintEditorSMEBaseProps } from "./types.js";
+import type { PrintEditorSMEBaseProps } from "./types.js";
 
 interface PrintEditorAppProps extends PrintEditorSMEBaseProps {
 	printModelId: string;
-	isNewPrintModel: boolean;
+	navigationPath?: EntityInstancePath;
 }
+
 export const PrintModelEditorSMEView = ({
 	printModelId,
 	customFonts,
 	onClose,
 	onPreview,
 	onDeploy,
-	isNewPrintModel,
+	navigationPath,
 	isConnectedToServer,
 	modelIconPath,
 }: PrintEditorAppProps) => {
@@ -81,7 +82,7 @@ export const PrintModelEditorSMEView = ({
 				contextApi={contextApi}
 				printModelId={printModelId}
 				toolbarProps={toolbarProps}
-				isNewPrintModel={isNewPrintModel}
+				navigationPath={navigationPath}
 				sidebarFooter={
 					<SidebarFooter onClose={onClose} onDeploy={onDeploy} isConnectedToServer={isConnectedToServer} />
 				}

@@ -31,11 +31,8 @@
  */
 import { useCallback, useMemo } from "react";
 
-import { CheckboxProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/checkbox/index.js";
-import {
-	PossibleInputSource,
-	InputValueSourceResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+import type { CheckboxProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { PossibleInputSource, InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { useCustomBaseInputProps } from "../use-custom-base-input-props.js";
 import type { SourceCheckboxProperties } from "../types.js";

@@ -21,8 +21,6 @@ This chapter covers the print-shell. This is a command line interface which allo
 
 == Prerequisites
 
-print-shell is available in the artifactory.
-
 To run the print-shell, Java 21 must be installed and available from the command line.
 
 == Start print-shell
@@ -35,20 +33,6 @@ java -jar print-shell-[PrintEngineVersion].jar
 ----
 
 The print-shell is a handy tool, that allows you to use the following commands:
-
-=== Migration [[PrintShellMigration]]
-
-Until Print Model version `2.1.0` the migration is done by the print-shell command line interface.
-
-CAUTION: Since with release 2.1.0 we introduce a new typescript based migration tool to align with overall A12 standards. The print-shell migration will no longer validate and pretty print starting from version 3.0.0. To ensure the same output as prior versions, you need to run the print-shell migration and then the typescript migration in order to migrate to the latest version. In releases after 2.1.0, only the typescript migration will be relevant.
-
-[source,bash,subs="attributes"]
-----
-migrate -w workspacePath -o overwrite
-----
-
-* `workspacePath`: Path to the workspace containing the Print Models.
-* `overwrite`: `true` if you want your Print Models to be overwritten by the migrated models, `false` otherwise.
 
 === Comparison of Two PDF-Documents.
 
@@ -77,7 +61,7 @@ compare-all -w workspacePath -p percent --equal equal
 
 [source,bash,subs="attributes"]
 ----
-print -w workspacePath -p printModelId -d documentId -t timeZone --locale localeString --useExperimentalRendering useExperimentalRendering --suffix suffix
+print -w workspacePath -p printModelId -d documentId -t timeZone --locale localeString --suffix suffix
 ----
 
 * `workspacePath`: Path to the workspace containing the Print Models.
@@ -88,7 +72,6 @@ Example: For document file `DomainDocument-1` the ID is `1`.
 Example: `GMT`
 * `localeString`: Locale to use for the print operation.
 Example: `de`
-* `useExperimentalRendering`: This flag controls, which rendering pipeline is used. It is set to false by default, which means that <<legacy_rendering_mode, Legacy Rendering Mode>> will be used. For the default rendering mode, set it to be true. With the deprecation of the Legacy Rendering Mode in the 2026.06 release, this flag will be removed.
 * `suffix`: The suffix is attached separated with a '-' on the final PDF file name
 
 
@@ -96,7 +79,7 @@ Example: `de`
 
 [source,bash,subs="attributes"]
 ----
-print-all -w workspacePath -t timeZone --locale localeString --useExperimentalRendering useExperimentalRendering --suffix suffix --filter filter
+print-all -w workspacePath -t timeZone --locale localeString --suffix suffix --filter filter
 ----
 
 * `workspacePath`: Path to the workspace containing the Print Models.
@@ -104,6 +87,14 @@ print-all -w workspacePath -t timeZone --locale localeString --useExperimentalRe
 Example: `GMT`
 * `localeString`: Locale to use for the print operation.
 Example: `de`
-* `useExperimentalRendering`: This flag controls, which rendering pipeline is used. It is set to false by default, which means that <<legacy_rendering_mode, Legacy Rendering Mode>> will be used. For the default rendering mode, set it to be true. With the deprecation of the Legacy Rendering Mode in the 2026.06 release, this flag will be removed.
 * `suffix`: The suffix is attached separated with a '-' on the final PDF file name
 * `filter`: With the filter option it is possible to define a Regex to print only Print Models with IDs that match. If empty, all Print models in the workspace are printed.
+
+=== Attachment File Resolution
+
+When a Print Model references an attachment, the print-shell resolves it by searching the workspace for a file whose *base name* (filename without extension) matches the attachment ID defined in the Print Model.
+Only *PDF* and *image* files are supported as attachments.
+
+.Example
+If the Print Model references attachment ID `myReport`, place a file named `myReport.pdf` in the workspace directory.
+The file will be loaded and embedded as the attachment during printing.

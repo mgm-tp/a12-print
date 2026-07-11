@@ -34,8 +34,7 @@ import { useReducer } from "react";
 
 import { CollapsiblePanel } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { PrintLocalizer } from "../../localization/localizer.js";
-import { RESOURCE_KEYS } from "../../localization/keys.js";
+import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 
 import { TypesettingModelReferencesToolbar } from "./TypesettingModelReferencesToolbar.js";

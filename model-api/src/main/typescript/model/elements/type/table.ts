@@ -29,11 +29,19 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ReferenceContainer, ReferenceContainerLabels, TableColumnReference } from "../../reference/index.js";
-import { PartialAnyPrintModelElement } from "../../partial.js";
+import type { ReferenceContainerLabels } from "../../reference/index.js";
+import { type ReferenceContainer, type TableColumnReference } from "../../reference/index.js";
+import { type PartialAnyPrintModelElement } from "../../partial.js";
 
-import { InputSource, MeasureInputSource, PrintModelEntity, Styleable, TextProperties } from "../base.js";
-import { ElementType, PrintModelElement } from "../print-model-element.js";
+import {
+	type InputSource,
+	type MeasureInputSource,
+	type PrintModelEntity,
+	type Styleable,
+	type TextProperties,
+} from "../base.js";
+import type { PrintModelElement } from "../print-model-element.js";
+import { ElementType } from "../print-model-element.js";
 
 export interface Table extends PrintModelElement, Styleable {
 	readonly type: ElementType.Table;
@@ -41,8 +49,7 @@ export interface Table extends PrintModelElement, Styleable {
 }
 
 export interface TableProperties
-	extends ReferenceContainer<ReferenceContainerLabels.columns, TableColumnReference>,
-		PrintModelEntity {
+	extends ReferenceContainer<ReferenceContainerLabels.columns, TableColumnReference>, PrintModelEntity {
 	readonly model: string;
 	readonly basePath: string;
 	readonly maxRowCount: InputSource<number>;

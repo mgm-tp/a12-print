@@ -33,7 +33,7 @@ import * as React from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import debounce from "lodash/debounce.js";
-import { DropTargetMonitor } from "react-dnd";
+import type { DropTargetMonitor } from "react-dnd";
 
 import { StyledDragListItemWrapper } from "./DragListItemWrapper.styled.js";
 

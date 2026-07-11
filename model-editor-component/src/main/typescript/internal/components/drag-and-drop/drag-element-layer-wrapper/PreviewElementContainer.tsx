@@ -33,15 +33,15 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { ElementsUtils } from "../../../utils/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { EditorConst } from "../../../constant/editor.js";
 import { EditorContext } from "../../editor-stage/editor-context.js";
 import { DefaultElementBadgeWrapper } from "../../element-container/DefaultElementBadgeWrapper.js";
-import { BasePreviewProps } from "../../../types/index.js";
+import type { BasePreviewProps } from "../../../types/index.js";
 import { DefaultElementContainer } from "../../element-container/DefaultElementContainer.js";
 import { ReadOnlyMarginWrapper } from "../../margin/ReadOnlyMarginWrapper.js";
 

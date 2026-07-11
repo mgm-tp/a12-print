@@ -40,10 +40,12 @@ import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Resolves {@link PrintModel} IDs from a given list of {@link PrintModel}s.
  */
+@OnlyForUsage
 public class PrintModelListResolver implements PrintModelResolver {
 	private final List<PrintModelTreeTrace<PrintModel>> printModels;
 

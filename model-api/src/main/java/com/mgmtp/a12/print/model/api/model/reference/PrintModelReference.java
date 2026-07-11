@@ -32,21 +32,25 @@
 package com.mgmtp.a12.print.model.api.model.reference;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
 import java.util.List;
 
+@OnlyForUsage
 public interface PrintModelReference extends PrintModelEntity {
 	ModelReferencePurpose getPurpose();
 	ModelReferenceDirection getDirection();
 	String getReferenceModel();
 	List<ElementReference> getRefIds();
 
+	@OnlyForUsage
 	enum ModelReferenceDirection {
 		@JsonProperty("OutgoingReference") OUTGOING_REFERENCE,
 		@JsonProperty("IncomingReference") INCOMING_REFERENCE;
 	}
 
+	@OnlyForUsage
 	enum ModelReferencePurpose {
 		@JsonProperty("DINTemplate") DIN_TEMPLATE;
 	}

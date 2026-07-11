@@ -33,37 +33,40 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-line/index.js";
-import {
+import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core";
+import type {
 	ListingColumn,
 	PartialListing,
+	PartialTextProperties,
+	PartialBorderProperties,
+	Listing,
 	TextProperties,
 	BorderProperties,
-	PartialBorderProperties,
-	PartialTextProperties,
-	Listing,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import { InputSourceGenerator } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source-generator.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import { InputSourceGenerator } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
-import { PrintEngineSelectors } from "../../../../../store/selectors.js";
 import { BackButtonGroup } from "../../../shared-components/BackButtonGroup.js";
 import { BorderForm } from "../../../shared-components/BorderForm.js";
 import { TextPropertiesInput } from "../../../shared-components/TextPropertiesInput.js";
 import { CollapsibleSection } from "../../shared-components/CollapsibleSection.js";
-import { ListingDataActions } from "../../../../../redux/detail-data/listing/index.js";
-import { DetailDataActions, TransactionLogStateActions } from "../../../../../redux/index.js";
+import {
+	type ListingColumnFormState,
+	NavigationActions,
+	TransactionLogStateActions,
+} from "../../../../../redux/index.js";
+import { NavigationSelectors } from "../../../../../redux/navigation/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../../localization/index.js";
 import { InteractionLogActions } from "../../../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../../../redux/validation/selectors.js";
-import { ElementWithoutIdAndType } from "../../../type.js";
-import { getErrors, OmitId } from "../../../../../utils/index.js";
-import { CustomCheckbox, CustomTextLineStateful } from "../../../custom-base-input-components/index.js";
-import { BaseListingFormProps, ListingColumnChildProps } from "../../base-listing-form.js";
+import type { ElementWithoutIdAndType } from "../../../type.js";
+import { assertExists, type OmitId, getErrors } from "../../../../../utils/index.js";
+import { CustomCheckbox, DynamicSourceTextField } from "../../../custom-base-input-components/index.js";
+import type { BaseListingFormProps, ListingColumnChildProps } from "../../base-listing-form.js";
 import { PositiveNumberInput } from "../../../../custom-input/PositiveNumberInput.js";
 import {
 	changeMeasureInputValue,
@@ -72,6 +75,7 @@ import {
 	changeInputValue,
 	parseNumberInputValue,
 	stringifyInputValue,
+	createBorderPropertiesInheritedResolver,
 } from "../../../../../utils/input-source-utils.js";
 import { LISTING_PROPERTY_PATH } from "../../../../../constant/element-property-path.js";
 
@@ -79,13 +83,18 @@ import { GroupComputations } from "./GroupComputations.js";
 import { DefaultComputations } from "./DefaultComputations.js";
 import { TableFieldComputations } from "./TableFieldComputations.js";
 
-export const ListingColumnForm = ({ element }: BaseListingFormProps) => {
+interface ListingColumnFormProps extends BaseListingFormProps {
+	formState: ListingColumnFormState;
+}
+
+export const ListingColumnForm = ({ element, formState }: ListingColumnFormProps) => {
 	const dispatch = useDispatch();
-	const additionalData = useSelector(PrintEngineSelectors.additionalData);
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
-	const columnIndex = additionalData?.listing?.columnIndex;
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
+
+	const columnIndex = formState?.columnIndex;
+
 	const listing = element.listing;
 	const columns = React.useMemo(() => listing?.columns?.slice() || [], [listing?.columns]);
 	const currentColumn = columnIndex !== undefined ? columns[columnIndex] : undefined;
@@ -186,14 +195,9 @@ export const ListingColumnForm = ({ element }: BaseListingFormProps) => {
 	);
 
 	const onBack = React.useCallback(() => {
-		dispatch(
-			DetailDataActions.removeView({
-				containerId: currentDetailDataId,
-				view: ListingRegion.LISTING_COLUMN_FORM,
-			})
-		);
-		dispatch(ListingDataActions.deleteAdditionalKey({ containerId: currentDetailDataId, category: "column" }));
-	}, [dispatch, currentDetailDataId]);
+		assertExists(entityId);
+		dispatch(NavigationActions.popFormStack({ tab, entityId, mode }));
+	}, [dispatch, tab, entityId, mode]);
 
 	if (!currentColumn || columnIndex === undefined) {
 		return null;
@@ -201,7 +205,7 @@ export const ListingColumnForm = ({ element }: BaseListingFormProps) => {
 	const childProps = { element, columnIndex, columns };
 	return (
 		<>
-			<CustomTextLineStateful
+			<DynamicSourceTextField
 				sourceProperties={{
 					inputSource: currentColumn.label,
 					element,
@@ -247,30 +251,39 @@ export const ListingColumnForm = ({ element }: BaseListingFormProps) => {
 			<CustomCheckbox
 				label={localizer(RESOURCE_KEYS.elementForm.listing.columns.hasCustomTextProperties)}
 				checked={Boolean(currentColumn.hasCustomTextProperties)}
-				onChange={newVal =>
+				onChange={newVal => {
 					updateCurrentColumn(
 						{
 							hasCustomTextProperties: newVal,
-							textProperties:
-								InputSourceGenerator.generateInputSource<Listing>("textProperties").textProperties,
+							textProperties: InputSourceGenerator.generateInputSource<Listing>(
+								"listing.columns.textProperties"
+							).listing.columns?.textProperties,
 						},
 						RESOURCE_KEYS.interaction.form.listingFormContainer.form.column.listingColumnForm
 							.toggleColumnTextProperty
-					)
-				}
+					);
+				}}
 				fitToParent={false}
 				errorMessage={getPropertyError("hasCustomTextProperties")}
 			/>
 			<CustomCheckbox
 				label={localizer(RESOURCE_KEYS.elementForm.listing.columns.hasCustomBorderProperties)}
 				checked={Boolean(currentColumn.hasCustomBorderProperties)}
-				onChange={newVal =>
+				onChange={newVal => {
+					const generatedColumns =
+						InputSourceGenerator.generateInputSource<Listing>("listing.columns").listing.columns;
+					const borderProperties =
+						generatedColumns?.borderProperties &&
+						InputSourceGenerator.upgradeBorderPropertiesWithReference(
+							generatedColumns.borderProperties,
+							element.id
+						);
 					updateCurrentColumn(
-						{ hasCustomBorderProperties: newVal },
+						{ hasCustomBorderProperties: newVal, borderProperties },
 						RESOURCE_KEYS.interaction.form.listingFormContainer.form.column.listingColumnForm
 							.toggleColumnBorderProperty
-					)
-				}
+					);
+				}}
 				fitToParent={false}
 				errorMessage={getPropertyError("hasCustomBorderProperties")}
 			/>
@@ -362,6 +375,11 @@ const BorderProperties = ({ element, columnIndex, columns }: ListingColumnChildP
 
 	const borderProperties = columns[columnIndex].borderProperties;
 
+	const { inheritedWidthResolver, inheritedStyleResolver, inheritedColorResolver } = React.useMemo(
+		() => createBorderPropertiesInheritedResolver(element.borderProperties),
+		[element.borderProperties]
+	);
+
 	const handleSetBorderProperties = React.useCallback(
 		(newProperties: OmitId<PartialBorderProperties>) => {
 			const updatedElement: PartialListing = {
@@ -371,7 +389,14 @@ const BorderProperties = ({ element, columnIndex, columns }: ListingColumnChildP
 					...element.listing,
 					columns: columns.map((el, idx) =>
 						idx === columnIndex
-							? { ...el, borderProperties: { id: nanoid(), ...el.borderProperties, ...newProperties } }
+							? {
+									...el,
+									borderProperties: {
+										id: nanoid(),
+										...el.borderProperties,
+										...newProperties,
+									},
+								}
 							: el
 					),
 				},
@@ -393,9 +418,15 @@ const BorderProperties = ({ element, columnIndex, columns }: ListingColumnChildP
 	return (
 		<CollapsibleSection title={localizer(RESOURCE_KEYS.elementForm.borderProperties.headline)}>
 			<BorderForm
+				element={element}
+				propertiesPath={LISTING_PROPERTY_PATH.columns.borderProperties}
 				borderProperties={borderProperties}
+				determineInheritedSource={() => true}
 				setBorderProperties={handleSetBorderProperties}
 				getErrorMessage={getBorderPropertiesErrorMessage}
+				resolveWidth={inheritedWidthResolver}
+				resolveStyle={inheritedStyleResolver}
+				resolveColor={inheritedColorResolver}
 			/>
 		</CollapsibleSection>
 	);

@@ -31,7 +31,7 @@
  */
 import { nanoid } from "nanoid";
 
-import { PartialTextStyle } from "../../model/index.js";
+import { type PartialTextStyle } from "../../model/index.js";
 
 import { deepCloneObject } from "./base.js";
 

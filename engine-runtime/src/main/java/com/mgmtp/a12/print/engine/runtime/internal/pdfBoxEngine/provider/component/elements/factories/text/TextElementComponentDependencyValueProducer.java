@@ -75,7 +75,7 @@ public class TextElementComponentDependencyValueProducer implements PdfBoxDepend
 
 		return runtime.provide(new TextComponentDependency(
 			dependency.getPrintModelElementTrace(),
-			textValueResult.value().orElse(null),
+			textValueResult.orElse(null),
 			htmlStyle,
 			textRenderStyle,
 			dependency.getBorderProperties(),

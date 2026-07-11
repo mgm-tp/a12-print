@@ -31,30 +31,35 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.rendering;
 
+import com.mgmtp.a12.print.model.api.validation.internal.html.HtmlValidationConfig;
 import org.owasp.html.AttributePolicy;
 import org.owasp.html.CssSchema;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 
-import java.util.List;
-
 public class HTMLCleanUpUtil {
 
 	private final PolicyFactory policyFactory;
 
-	public HTMLCleanUpUtil(final List<String> allowedHtmlTags, final List<String> allowedPropertyStyles) {
-		final String[] allowedTags = allowedHtmlTags.toArray(String[]::new);
-		final CssSchema allowedStyles = CssSchema.withProperties(allowedPropertyStyles);
+	public HTMLCleanUpUtil() {
+		final String[] allowedTags = HtmlValidationConfig.ALLOWED_HTML_TAGS.toArray(String[]::new);
+		final CssSchema allowedStyles = CssSchema.withProperties(HtmlValidationConfig.ALLOWED_STYLES);
 
-		this.policyFactory = new HtmlPolicyBuilder()
+		var builder = new HtmlPolicyBuilder()
 			.allowElements(allowedTags)
-			.allowAttributes("style", "class", "entity-id", "entity-type").onElements("span")
-			.allowAttributes("style", "class").onElements("p")
-			.allowAttributes("href", "target", "title", "name").onElements("a")
-			.allowUrlProtocols("https", "http")
 			.allowStyling(allowedStyles)
-			.allowUrlsInStyles(AttributePolicy.REJECT_ALL_ATTRIBUTE_POLICY)
-			.toFactory();
+			.allowUrlsInStyles(AttributePolicy.REJECT_ALL_ATTRIBUTE_POLICY);
+
+		// Configure attributes per tag based on centralized configuration
+		HtmlValidationConfig.ALLOWED_ATTRIBUTES.forEach((tag, attributes) ->
+			builder.allowAttributes(attributes.toArray(String[]::new)).onElements(tag)
+		);
+
+		// Additional attributes for 'a' tags (not in validation config as 'a' is not an allowed tag)
+		builder.allowAttributes("href", "target", "title", "name").onElements("a")
+			.allowUrlProtocols("https", "http");
+
+		this.policyFactory = builder.toFactory();
 	}
 
 	public String sanitize(final String html) {

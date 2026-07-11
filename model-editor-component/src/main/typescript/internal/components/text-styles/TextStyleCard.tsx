@@ -34,14 +34,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 import isEmpty from "lodash/isEmpty.js";
 
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/main/button.view.js";
-import { PopUpMenu } from "@com.mgmtp.a12.widgets/widgets-core/lib/pop-up-menu/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { PartialTextStyle, Semantic } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { CssEllipsis } from "@com.mgmtp.a12.widgets/widgets-core/lib/css-ellipsis/index.js";
-import { isFontNotConfigured } from "@com.mgmtp.a12.print/print-fonts/lib/internal/api/utils/font-utils.js";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { Icon, Button, PopUpMenu, CssEllipsis } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
+import { Semantic } from "@com.mgmtp.a12.print/print-model-api/model";
+import { isFontNotConfigured } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import {
@@ -50,10 +48,10 @@ import {
 	TransactionLogStateActions,
 	ValidationCounter,
 } from "../../redux/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { EditorComponentApiActions } from "../../api/actions-api.js";
+import { EditorComponentApiActions } from "../../../a12internal/api/actions-api.js";
 import { DEFAULT_ERROR_TOAST_DURATION } from "../../constant/configs.js";
 import { useTypesettingModelData } from "../../hooks/use-typesetting-model-data.js";
 
@@ -159,7 +157,7 @@ export const TextStyleCard = ({ textStyle, isDefaultTextStyle = false }: TextSty
 	}, [dispatch, textStyle.id]);
 
 	return (
-		<StyledTextStyleCard isSelected={isSelected} onClick={onTextStyleClick} ref={ref}>
+		<StyledTextStyleCard data-testid="text-style-card" isSelected={isSelected} onClick={onTextStyleClick} ref={ref}>
 			<StyledTextStyleCardName data-testid="text-style-card-name">
 				<CssEllipsis maxLine={1}>{textStyle.name}</CssEllipsis>
 				<StyledTextStyleCardSemanticHyphen>-</StyledTextStyleCardSemanticHyphen>

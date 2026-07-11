@@ -61,7 +61,7 @@ class CustomDocumentModelReferenceResolverTest {
         final var modelHandler = new ModelHandler(workspaceHandler, eventService);
         modelHandler.create(Paths.get(RUNTIME_WORKSPACE, "test/TestFieldDM.json"));
 
-        final var result = underTest.getDocumentModel("TestFieldDM");
+        final var result = underTest.resolve("TestFieldDM");
 
         assertThat(result).isNotNull();
     }

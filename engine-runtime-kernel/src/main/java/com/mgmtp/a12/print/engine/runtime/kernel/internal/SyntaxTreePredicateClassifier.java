@@ -31,15 +31,16 @@
  */
 package com.mgmtp.a12.print.engine.runtime.kernel.internal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.*;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.dataformat.yaml.YAMLFactory;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -60,7 +61,7 @@ public class SyntaxTreePredicateClassifier {
 		this.predicateClassification = predicateClassification;
 	}
 
-	public static SyntaxTreePredicateClassifier load(@NonNull VariableTypeResolver typeResolver) throws RuntimeException {
+	public static SyntaxTreePredicateClassifier load(@NonNull VariableTypeResolver typeResolver) throws PrintCompilerException {
 		var classLoader = SyntaxTreePredicateClassifier.class.getClassLoader();
 		var inputStream = classLoader.getResourceAsStream("com/mgmtp/a12/print/engine/runtime/kernel/internal/KernelPredicateTypes.yaml");
 		try {
@@ -68,8 +69,8 @@ public class SyntaxTreePredicateClassifier {
 				typeResolver,
 				mapper.readValue(inputStream, PredicateClassification.class)
 			);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+		} catch (JacksonException e) {
+			throw new PrintCompilerException(e);
 		}
 	}
 
@@ -138,7 +139,7 @@ public class SyntaxTreePredicateClassifier {
 			SyntaxTreeElementVisitor.super.visit(node, state);
 			var predicate = syntaxTreePredicateClassifier.predicateClassification.getPredicates().get(node.getLabel());
 			if (predicate == null) {
-				throw new PrintCompilerException(String.format("Predicate '%s' is missing classification info.", node.getLabel()));
+				throw new PrintDomainException("The predicate '{}' is not supported.", node.getLabel());
 			}
 			predicate.getType().forEach(type -> addResultTypeCandidate(state, computationFieldTypeFrom(type)));
 		}

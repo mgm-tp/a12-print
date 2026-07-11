@@ -35,29 +35,26 @@ import com.github.romankh3.image.comparison.ImageComparison;
 import com.github.romankh3.image.comparison.ImageComparisonUtil;
 import com.github.romankh3.image.comparison.model.ImageComparisonResult;
 import com.github.romankh3.image.comparison.model.ImageComparisonState;
-import com.mgmtp.a12.print.shell.internal.configuration.PrintShellConfiguration;
 import com.mgmtp.a12.print.shell.internal.exceptions.PdfComparisonException;
 import com.mgmtp.a12.print.shell.internal.exceptions.PrintShellException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
-import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
-@Service
+import static com.mgmtp.a12.print.shell.internal.PrintShellConstants.RESULT_DIRECTORY;
+
 @Slf4j
 @AllArgsConstructor
 public class PdfComparisonService {
-
-	private final PrintShellConfiguration printShellConfiguration;
-
 
 	public void comparePdfs(
 		@NonNull final String firstPdfPath,
@@ -66,8 +63,8 @@ public class PdfComparisonService {
 	) {
 		File firstPdfFile = new File(firstPdfPath);
 		try (
-			PDDocument firstDocument = PDDocument.load(firstPdfFile);
-			PDDocument secondDocument = PDDocument.load(new File(secondPdfPath))
+			PDDocument firstDocument = Loader.loadPDF(firstPdfFile);
+			PDDocument secondDocument = Loader.loadPDF(new File(secondPdfPath))
 		) {
 			PDFRenderer firstRenderer = new PDFRenderer(firstDocument);
 			PDFRenderer secondRenderer = new PDFRenderer(secondDocument);
@@ -125,7 +122,7 @@ public class PdfComparisonService {
 		File resultImageFile = new File(path.resolveSibling(
 			String.format(
 				"%s/%s-comparison-result-%d.png",
-				printShellConfiguration.getResultDirectory(),
+				RESULT_DIRECTORY,
 				baseName,
 				pageIndex
 			)

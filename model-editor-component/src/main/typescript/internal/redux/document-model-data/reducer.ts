@@ -29,11 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Action, Reducer } from "redux";
+import type { Action, Reducer } from "redux";
 
 import { PrintEngineActions } from "../../store/actions.js";
 
-import { DocumentModelDataState } from "./state.js";
+import type { DocumentModelDataState } from "./state.js";
 import { DocumentModelDataActions } from "./actions.js";
 
 const defaultState: DocumentModelDataState = {};

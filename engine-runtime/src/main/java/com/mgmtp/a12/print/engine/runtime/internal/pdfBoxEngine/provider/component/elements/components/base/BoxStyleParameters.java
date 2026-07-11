@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base;
 
+import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.inputSource.ReferenceInputSourceResolver;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing.HtmlAttributesUtils;
 import com.mgmtp.a12.print.model.api.inputSource.InputValueSourceResolver;
 import com.mgmtp.a12.print.model.api.model.element.properties.BorderProperties;
@@ -73,7 +74,7 @@ public class BoxStyleParameters {
 	}
 
 	public boolean hasBorder() {
-		return borderStyle != null;
+		return borderStyle != null && borderWidth > 0;
 	}
 
 	public long getBorderWidth() {
@@ -146,27 +147,37 @@ public class BoxStyleParameters {
 	}
 
 	public static BoxStyleParametersBuilder fromBorderPropertiesBuilder(BorderProperties bp) {
-		return fromPropertiesBuilder(bp, null);
-	}
-
-	public static BoxStyleParameters fromBorderProperties(BorderProperties bp) {
-		return fromProperties(bp, null);
-	}
-
-	public static BoxStyleParameters fromTextProperties(TextProperties tp) {
-		return fromProperties(null, tp);
+		BoxStyleParameters.BoxStyleParametersBuilder builder = BoxStyleParameters.builder();
+		if (bp != null) {
+			bp.getBorderWidth()
+				.flatMap(width -> InputValueSourceResolver.getInputValue(width, null))
+				.ifPresent(borderWidth -> builder.borderWidth(floatToLongPt(borderWidth)));
+			bp.getBorderColor()
+				.flatMap(color -> InputValueSourceResolver.getInputValue(color, null))
+				.ifPresent(colorStr -> builder.borderColor(HtmlAttributesUtils.parseColor(colorStr)));
+			bp.getBorderStyle()
+				.flatMap(ip -> InputValueSourceResolver.getInputValue(ip, BorderProperties.BorderStyle::fromString, null))
+				.ifPresent(builder::borderStyle);
+		}
+		return  builder;
 	}
 
 	public static BoxStyleParameters fromProperties(BorderProperties bp, TextProperties tp) {
-		return fromPropertiesBuilder(bp, tp).build();
+		return fromPropertiesBuilder(bp, tp, null).build();
 	}
 
-	public static BoxStyleParametersBuilder fromPropertiesBuilder(BorderProperties bp, TextProperties tp) {
+	public static BoxStyleParametersBuilder fromPropertiesBuilder(BorderProperties bp, TextProperties tp, ReferenceInputSourceResolver referenceInputSourceResolver) {
 		BoxStyleParameters.BoxStyleParametersBuilder builder = BoxStyleParameters.builder();
 		if (bp != null) {
-			bp.getBorderWidth().ifPresent(borderWidth -> builder.borderWidth(floatToLongPt(borderWidth)));
-			bp.getBorderColor().ifPresent(colorStr -> builder.borderColor(HtmlAttributesUtils.parseColor(colorStr)));
-			bp.getBorderStyle().ifPresent(builder::borderStyle);
+			bp.getBorderWidth()
+				.flatMap(width -> InputValueSourceResolver.getInputValue(width, referenceInputSourceResolver))
+				.ifPresent(borderWidth -> builder.borderWidth(floatToLongPt(borderWidth)));
+			bp.getBorderColor()
+				.flatMap(color -> InputValueSourceResolver.getInputValue(color, referenceInputSourceResolver))
+				.ifPresent(colorStr -> builder.borderColor(HtmlAttributesUtils.parseColor(colorStr)));
+			bp.getBorderStyle()
+				.flatMap(ip -> InputValueSourceResolver.getInputValue(ip, BorderProperties.BorderStyle::fromString, referenceInputSourceResolver))
+				.ifPresent(builder::borderStyle);
 		}
 		if (tp != null) {
 			tp.getBackgroundColor()
@@ -174,19 +185,5 @@ public class BoxStyleParameters {
 				.ifPresent(colorStr -> builder.backgroundColor(HtmlAttributesUtils.parseColor(colorStr)));
 		}
 		return builder;
-	}
-
-	public BoxStyleParameters overrideFromProperties(BorderProperties bp, TextProperties tp) {
-		if (bp != null) {
-			bp.getBorderWidth().ifPresent(borderWidth -> this.setBorderWidth(floatToLongPt(borderWidth)));
-			bp.getBorderColor().ifPresent(colorStr -> this.setBorderColor(HtmlAttributesUtils.parseColor(colorStr)));
-			bp.getBorderStyle().ifPresent(this::setBorderStyle);
-		}
-		if (tp != null) {
-			tp.getBackgroundColor()
-				.flatMap(bg -> InputValueSourceResolver.getInputValue(bg, ref -> Optional.empty()))
-				.ifPresent(colorStr -> this.setBackgroundColor(HtmlAttributesUtils.parseColor(colorStr)));
-		}
-		return this;
 	}
 }

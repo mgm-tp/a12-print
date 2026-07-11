@@ -31,11 +31,14 @@
  */
 import { nanoid } from "nanoid";
 
-import { AffectedItemType } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import {
-	TransactionLog,
-	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
+import type { AffectedItemType, TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type {
+	PartialSection,
+	PartialSegment,
+	PartialValidPlaceableReference,
+	PartialWatermark,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	isPartialSection,
 	isPartialSegment,
@@ -43,11 +46,7 @@ import {
 	PartialArea,
 	PartialBoundingBox,
 	PartialOverride,
-	PartialSection,
-	PartialSegment,
-	PartialValidPlaceableReference,
-	PartialWatermark,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
 type TopLevelContainer = PartialSegment | PartialSection | PartialWatermark;
 type ElementContainer = PartialBoundingBox | PartialOverride | PartialArea;

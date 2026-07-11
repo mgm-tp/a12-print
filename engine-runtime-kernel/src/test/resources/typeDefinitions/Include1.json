@@ -2,7 +2,7 @@
   "header": {
     "id": "Include1",
     "modelType": "document",
-    "modelVersion": "28.4.0",
+    "modelVersion": "29.4.0",
     "locales": [
       {
         "code": "en"
@@ -14,7 +14,6 @@
     "annotations": [],
     "modelReferences": [
       {
-        "alias": "Include2",
         "modelType": "document",
         "purpose": "include",
         "reference": "Include2"
@@ -60,7 +59,9 @@
                 "name": "Include2",
                 "Group": {
                   "repeatability": 1,
-                  "modelAlias": "Include2"
+                  "includeConfig": {
+                    "reference": "Include2"
+                  }
                 }
               },
               {

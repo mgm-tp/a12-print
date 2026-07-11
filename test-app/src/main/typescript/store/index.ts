@@ -29,18 +29,50 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { configureStore, Store } from "@reduxjs/toolkit";
+import type { Store } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
-import { AnyAction } from "redux";
+import type { Middleware, UnknownAction } from "redux";
 
 import { rootSaga } from "../sagas";
 
-import { Editor, editorSlice } from "./editor";
-import { App, testAppSlice } from "./app";
-import { notificationSlice, PrintEngineNotificationStore } from "./notification";
-import { previewSlice, PreviewState } from "./preview";
+import type { Editor } from "./editor";
+import { editorSlice } from "./editor";
+import type { App } from "./app";
+import { testAppSlice } from "./app";
+import type { PrintEngineNotificationStore } from "./notification";
+import { notificationSlice } from "./notification";
+import type { PreviewState } from "./preview";
+import { previewSlice } from "./preview";
 
 const sagaMiddleware = createSagaMiddleware();
+
+/**
+ * Middleware that exposes interaction saga timing.
+ * Poll globalThis.__lastInteractionStart__ vs globalThis.__lastInteractionAddEntry__
+ * to know when the debounced interaction log saga has settled.
+ * Also tracks the outer-store persistence debounce via PERSIST_LOGS / setLogPersistentEntries.
+ */
+const sagaTrackingMiddleware: Middleware = () => next => action => {
+	const w = globalThis as unknown as Record<string, number>;
+	const type = (action as UnknownAction).type;
+	if (type === "Print/InteractionLog/START") {
+		w.__lastInteractionStart__ = Date.now();
+	}
+	// committed to the log
+	if (type === "Print/InteractionLog/ADD_LOG_ENTRY") {
+		w.__lastInteractionAddEntry__ = Date.now();
+	}
+	// outer-store persistence pipeline: PERSIST_LOGS starts the debounce,
+	// setLogPersistentEntries fires after the 500 ms debounce has settled
+	if (type === "PERSIST_LOGS") {
+		w.__lastPersistLogsStart__ = Date.now();
+	}
+	if (type === "editorSlice/setLogPersistentEntries") {
+		w.__lastPersistLogsEnd__ = Date.now();
+	}
+	return next(action);
+};
 
 export const store: Store<
 	{
@@ -49,7 +81,7 @@ export const store: Store<
 		notification: PrintEngineNotificationStore;
 		preview: PreviewState;
 	},
-	AnyAction
+	UnknownAction
 > = configureStore({
 	reducer: {
 		editor: editorSlice.reducer,
@@ -58,7 +90,8 @@ export const store: Store<
 		preview: previewSlice.reducer,
 	},
 	devTools: false,
-	middleware: getDefaultMiddleware => getDefaultMiddleware({ serializableCheck: false }).concat(sagaMiddleware),
+	middleware: getDefaultMiddleware =>
+		getDefaultMiddleware({ serializableCheck: false }).concat(sagaTrackingMiddleware, sagaMiddleware),
 });
 
 sagaMiddleware.run(rootSaga);

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`DefaultQuickEditBar should renders correctly 1`] = `
 .c5 {
@@ -47,7 +47,8 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   color: #7F8C9B;
   display: inline-block;
   direction: ltr;
-  font-family: Material Icons;
+  font-family: Material Symbols Outlined;
+  font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;
   font-size: 1rem;
   font-style: normal;
   font-weight: 400;
@@ -382,7 +383,7 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   width: 100%;
 }
 
-.c11 >.StyledTooltipWrapper-sc-bqyqat {
+.c11 >.StyledTooltipTriggerWrapper-sc-eBoCRM {
   margin: 0 4px 4px 0;
 }
 
@@ -492,14 +493,6 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
 }
 
 @media (pointer: coarse) {
-
-}
-
-@media (pointer: fine) {
-
-}
-
-@media (pointer: coarse) {
   .c24:not(:disabled):active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     background-color: #fff;
@@ -563,14 +556,6 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
 }
 
 @media (pointer: coarse) {
-
-}
-
-@media (pointer: fine) {
-
-}
-
-@media (pointer: coarse) {
   .c25:not(:disabled):active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     background-color: #fff;
@@ -628,19 +613,19 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
       </i>
       <div
         class="c6 field-wrapper field-wrapper--block c7"
-        data-role="textline"
+        data-role="text-field"
       >
         <div
           class="c8 c9 field__main"
         >
           <div
             class="c10 c11 field"
-            data-role="textline-control"
+            data-role="text-field-control"
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
               data-disabled="false"
-              data-role="textline-label"
+              data-role="text-field-label"
             >
               Position top
               <span
@@ -654,14 +639,14 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
               class="c15 field__input"
               data-disabled="false"
               data-readonly="false"
-              data-role="textline-input-wrapper"
+              data-role="text-field-input-wrapper"
             >
               <span
                 class="c16 supported-unseen-span"
               />
               <input
                 class="c17 field__text field__text--align-right"
-                data-role="textline-input"
+                data-role="text-field-input"
                 min="0"
                 placeholder="Top"
                 required=""
@@ -674,11 +659,11 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
               />
               <div
                 class="c18 field__suffix field__suffix--first -u-background-transparent"
-                data-role="textline-suffix-0"
+                data-role="text-field-suffix-0"
               >
                 <div
                   class="c19 c20 field__affix-text"
-                  data-role="textline-text-affix"
+                  data-role="text-field-text-affix"
                   title="cm"
                 >
                   <span>
@@ -713,19 +698,19 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
       </i>
       <div
         class="c6 field-wrapper field-wrapper--block c7"
-        data-role="textline"
+        data-role="text-field"
       >
         <div
           class="c8 c9 field__main"
         >
           <div
             class="c10 c11 field"
-            data-role="textline-control"
+            data-role="text-field-control"
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
               data-disabled="false"
-              data-role="textline-label"
+              data-role="text-field-label"
             >
               Position left
               <span
@@ -739,14 +724,14 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
               class="c15 field__input"
               data-disabled="false"
               data-readonly="false"
-              data-role="textline-input-wrapper"
+              data-role="text-field-input-wrapper"
             >
               <span
                 class="c16 supported-unseen-span"
               />
               <input
                 class="c17 field__text field__text--align-right"
-                data-role="textline-input"
+                data-role="text-field-input"
                 max="297"
                 min="0"
                 placeholder="Left"
@@ -760,11 +745,11 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
               />
               <div
                 class="c18 field__suffix field__suffix--first -u-background-transparent"
-                data-role="textline-suffix-0"
+                data-role="text-field-suffix-0"
               >
                 <div
                   class="c19 c20 field__affix-text"
-                  data-role="textline-text-affix"
+                  data-role="text-field-text-affix"
                   title="cm"
                 >
                   <span>
@@ -799,19 +784,19 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
       </i>
       <div
         class="c6 field-wrapper field-wrapper--block c7"
-        data-role="textline"
+        data-role="text-field"
       >
         <div
           class="c8 c9 field__main"
         >
           <div
             class="c10 c11 field"
-            data-role="textline-control"
+            data-role="text-field-control"
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
               data-disabled="false"
-              data-role="textline-label"
+              data-role="text-field-label"
             >
               Width
               <span
@@ -825,14 +810,14 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
               class="c15 field__input"
               data-disabled="false"
               data-readonly="false"
-              data-role="textline-input-wrapper"
+              data-role="text-field-input-wrapper"
             >
               <span
                 class="c16 supported-unseen-span"
               />
               <input
                 class="c17 field__text field__text--align-right"
-                data-role="textline-input"
+                data-role="text-field-input"
                 min="0"
                 placeholder="Width"
                 required=""
@@ -845,11 +830,11 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
               />
               <div
                 class="c18 field__suffix field__suffix--first -u-background-transparent"
-                data-role="textline-suffix-0"
+                data-role="text-field-suffix-0"
               >
                 <div
                   class="c19 c20 field__affix-text"
-                  data-role="textline-text-affix"
+                  data-role="text-field-text-affix"
                   title="cm"
                 >
                   <span>
@@ -884,19 +869,19 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
       </i>
       <div
         class="c6 field-wrapper field-wrapper--block c7"
-        data-role="textline"
+        data-role="text-field"
       >
         <div
           class="c8 c9 field__main"
         >
           <div
             class="c10 c11 field"
-            data-role="textline-control"
+            data-role="text-field-control"
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
               data-disabled="false"
-              data-role="textline-label"
+              data-role="text-field-label"
             >
               Height
               <span
@@ -910,14 +895,14 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
               class="c21 field__input field__input--readonly"
               data-disabled="false"
               data-readonly="true"
-              data-role="textline-input-wrapper"
+              data-role="text-field-input-wrapper"
             >
               <span
                 class="c16 supported-unseen-span"
               />
               <input
                 class="c17 field__text field__text--align-right"
-                data-role="textline-input"
+                data-role="text-field-input"
                 min="0"
                 placeholder="Height"
                 readonly=""
@@ -931,11 +916,11 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
               />
               <div
                 class="c18 field__suffix field__suffix--first -u-background-transparent"
-                data-role="textline-suffix-0"
+                data-role="text-field-suffix-0"
               >
                 <div
                   class="c19 c20 field__affix-text"
-                  data-role="textline-text-affix"
+                  data-role="text-field-text-affix"
                   title="cm"
                 >
                   <span>

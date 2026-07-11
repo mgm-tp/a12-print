@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
 
 export type PrintModelErrorMap = DeepPartialErrorMap<Partial<PrintModel>>;

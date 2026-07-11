@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Localizable, LocalizableArgs } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import type { Localizable, LocalizableArgs } from "@com.mgmtp.a12.utils/utils-localization";
 
 export namespace InternalLocalizableError {
 	export const parseError: Localizable = {

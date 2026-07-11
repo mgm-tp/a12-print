@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.typesetting.internal.serialization;
 
-import com.fasterxml.jackson.databind.util.StdConverter;
+import tools.jackson.databind.util.StdConverter;
 import org.apache.commons.lang3.LocaleUtils;
 
 import java.util.Locale;

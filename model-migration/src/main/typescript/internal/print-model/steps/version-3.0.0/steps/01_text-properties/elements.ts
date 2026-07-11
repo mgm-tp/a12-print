@@ -31,15 +31,15 @@
  */
 import { nanoid } from "nanoid";
 
-import { PRINT_MODEL_METADATA_MAP } from "@com.mgmtp.a12.print/print-model-api/lib/generated/print-model-metadata-map.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
-import { TEXT_STYLE } from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+import { PRINT_MODEL_METADATA_MAP } from "@com.mgmtp.a12.print/print-model-api/generated";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import { TEXT_STYLE } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import * as OldModel from "../../../version-2.1.0/print-model.js";
-import { TransformTreeTrace } from "../../../../utils.ts/tree-trace.js";
-import { GenericObject } from "../../../../utils.ts/types.js";
+import type * as OldModel from "../../../version-2.1.0/print-model.js";
+import type { TransformTreeTrace } from "../../../../utils.ts/tree-trace.js";
+import type { GenericObject } from "../../../../utils.ts/types.js";
 
-import * as NewModel from "./print-model.js";
+import type * as NewModel from "./print-model.js";
 
 const textPropertiesMetadata = PRINT_MODEL_METADATA_MAP.RootGroup.content.elementDefinitions.textProperties;
 const tableHeaderTextPropertiesMetadata =

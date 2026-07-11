@@ -29,22 +29,36 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::PrintEngineInterface[]
 package com.mgmtp.a12.print.engine.api;
 
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.message.PrintMessageReport;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Interface for the execution of a given {@link PrintJob}, that returns a {@link PrintResult}.
  */
+@OnlyForUsage
 public interface PrintEngine<Result extends PrintResult> {
 
 	/**
-	 * Executing the given PrintJob and return the PrintResult.
+	 * Executing the given PrintJob.
+	 * Throws a {@link PrintException} for issues during print.
 	 */
 	Result execute(PrintJob printJob) throws PrintException;
 
 	/**
+	 * Executing the given PrintJob.
+	 * <p>
+	 * Issues during print are captured as {@link com.mgmtp.a12.print.engine.api.message.PrintMessage}s
+	 * in the returned {@link PrintMessageReport} rather than being thrown.
+	 */
+	PrintMessageReport<Result> executeWithReport(PrintJob printJob) throws PrintException;
+
+	/**
 	 * Get general config of the current job
 	 */
-	PrintEngineConfig getConfig();
+	PdfBoxPrintEngineConfig getConfig();
 }
+// end::PrintEngineInterface[]

@@ -33,16 +33,16 @@ import { useDispatch, useSelector } from "react-redux";
 import * as React from "react";
 import { nanoid } from "nanoid";
 
-import { Typography } from "@com.mgmtp.a12.widgets/widgets-core/lib/typography/index.js";
-import { PartialTable, TableProperties } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
+import { Typography } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { PartialTable, TableProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { TransactionLogStateActions, InteractionLogActions } from "../../../redux/index.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { PositiveNumberInput } from "../../custom-input/PositiveNumberInput.js";
 import {
 	changeInputSource,
@@ -53,8 +53,8 @@ import {
 import { TABLE_PROPERTY_PATH } from "../../../constant/element-property-path.js";
 
 import { FormContainerHeadline } from "../shared-components/index.js";
-import { CustomTextLineStateful } from "../custom-base-input-components/index.js";
-import { ElementWithoutIdAndType } from "../type.js";
+import { DynamicSourceTextField } from "../custom-base-input-components/index.js";
+import type { ElementWithoutIdAndType } from "../type.js";
 
 interface GeneralPropertiesProps {
 	element: PartialTable;
@@ -194,7 +194,7 @@ export const GeneralProperties = ({ element }: GeneralPropertiesProps) => {
 				onBlur={onRowCountValueChange}
 				errorMessage={getPropertyErrorMessage("maxRowCount")}
 			/>
-			<CustomTextLineStateful
+			<DynamicSourceTextField
 				sourceProperties={{
 					inputSource: table?.sumLabel,
 					property: TABLE_PROPERTY_PATH.sumLabel,
@@ -209,7 +209,7 @@ export const GeneralProperties = ({ element }: GeneralPropertiesProps) => {
 			<Typography.Headline level={4} ariaLevel={4}>
 				{localizer(RESOURCE_KEYS.elementForm.table.filteringHeadline)}
 			</Typography.Headline>
-			<CustomTextLineStateful
+			<DynamicSourceTextField
 				label={localizer(RESOURCE_KEYS.elementForm.table.filterExpression)}
 				value={table?.filterExpression}
 				onBlur={onBlurFilterExpression}

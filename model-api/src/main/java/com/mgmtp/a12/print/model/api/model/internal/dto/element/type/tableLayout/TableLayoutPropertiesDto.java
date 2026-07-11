@@ -32,7 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.element.type.tableLayout;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.type.tableLayout.ColumnProperties;
 import com.mgmtp.a12.print.model.api.model.element.type.tableLayout.RowProperties;
 import com.mgmtp.a12.print.model.api.model.element.type.tableLayout.TableLayoutProperties;

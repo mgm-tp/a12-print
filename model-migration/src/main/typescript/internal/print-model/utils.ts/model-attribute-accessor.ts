@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { isModelInstance } from "@com.mgmtp.a12.base/base-model-api/lib/main/model/index.js";
+import { isModelInstance } from "@com.mgmtp.a12.base/base-model-api";
 import type { GenericModel, ModelAttributeAccessor } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
-import type { Annotation } from "@com.mgmtp.a12.base/base-model-api/lib/main/header/index.js";
+import type { Annotation } from "@com.mgmtp.a12.base/base-model-api";
 
 import {
 	LAST_VERSION_ANNOTATION,

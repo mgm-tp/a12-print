@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
 /**
  * Ordered List of Computation Field Types.

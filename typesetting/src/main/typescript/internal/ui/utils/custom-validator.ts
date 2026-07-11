@@ -29,12 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	ErrorSeverity,
-	PrintErrorMap,
-} from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
+import type { PrintErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
-import { PreventLineBreakRule } from "../../api/model/typesetting-model.js";
+import type { PreventLineBreakRule } from "../../../a12internal/api/model/typesetting-model.js";
 
 import {
 	characterRuleError,

@@ -32,8 +32,10 @@
 package com.mgmtp.a12.print.engine.api.exception.impl;
 
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 
+@OnlyForUsage
 public class PDDocumentCreationException extends PrintException {
 
 	public PDDocumentCreationException(final String message) {

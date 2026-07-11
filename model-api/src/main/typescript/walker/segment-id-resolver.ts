@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PrintModel, Segment } from "../model/index.js";
+import { type PrintModel, type Segment } from "../model/index.js";
 
 export interface SegmentMap {
 	[key: string]: Segment;

@@ -35,7 +35,7 @@ import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.Entity;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.fieldType.FieldTypeDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter.FormattedValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.html.SanitizeValueDependency;
@@ -67,7 +67,7 @@ public class FieldValueDependencyValueProducer implements CoreDependencyValuePro
 		).get();
 
 		final var formattingResult = printDocumentContext.findSingleFieldInstance(path)
-			.flatMap(PrintDocumentContext.Entity::getValue)
+			.flatMap(Entity::getValue)
 			.flatMap(value -> runtime.provide(
 				FormattedValueDependency.buildFrom(
 					value,

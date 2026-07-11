@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Locator } from "@playwright/test";
+import type { Locator } from "@playwright/test";
 
 /**
  *	Navigates through a tree component until it reaches the end of the path, where it clicks the
@@ -37,7 +37,7 @@ import { Locator } from "@playwright/test";
  *
  *	@param fieldPath should be the path within the tree - this function will not search the tree for field name
  * 	e.g. example/stringfield
- * 	@param tree should be the top level of the Tree component
+ * 	@param tree should be the top level of the Tree component (e.g. page.locator('[data-role="tree"]'))
  */
 export const selectFieldFromTree = async ({ tree, fieldPath }: { tree: Locator; fieldPath: string }) => {
 	const nodes = fieldPath.split("/");
@@ -45,13 +45,17 @@ export const selectFieldFromTree = async ({ tree, fieldPath }: { tree: Locator; 
 
 	let currNode = tree;
 	for (let i = 0; i < nodes.length - 1; i++) {
-		currNode = currNode.locator(`_react=TreeNode[label = '${nodes[i]}']`);
-		const btn = currNode.locator("_react=ArrowButton").first();
-		// expand_more does mean the Subtree is already expanded
-		if (!(await currNode.locator("_react=NodeContent").allInnerTexts()).toString().includes("expand_more")) {
-			await btn.locator("_react=Button").click();
+		currNode = currNode.getByRole("listitem").filter({ hasText: nodes[i] }).first();
+		const expandBtn = currNode.getByRole("button").first();
+		const isExpanded = await expandBtn.getAttribute("aria-expanded");
+		if (isExpanded !== "true") {
+			await expandBtn.click();
 		}
 	}
 
-	await currNode.locator(`_react=TreeNode[label = '${fieldPath.split("/").at(-1)}']`).click();
+	await currNode
+		.getByRole("listitem")
+		.filter({ hasText: fieldPath.split("/").at(-1)! })
+		.first()
+		.click();
 };

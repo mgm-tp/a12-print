@@ -35,7 +35,7 @@ import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.PdfBoxDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.markup.listing.ListingHtmlTemplateParameters;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing.ListingValues;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.inputSource.ReferenceInputSourceResolver;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.textStyleResolver.TextStyleDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalPdfBoxPrintEngineRuntime;
@@ -130,7 +130,7 @@ public class ListingComponentDependencyValueProducer implements PdfBoxDependency
 	}
 
 	private static List<ComponentRow> getRows(
-		@NonNull final List<ListingHtmlTemplateParameters.MarkupListingRowValue> rows,
+		@NonNull final List<ListingValues.MarkupListingRowValue> rows,
 		@NonNull final List<ListingColumn> columns,
 		@NonNull final Map<Integer, Long> columnWidthMap,
 		@NonNull PrintModelTreeTrace<Listing> listingTrace,
@@ -145,10 +145,10 @@ public class ListingComponentDependencyValueProducer implements PdfBoxDependency
 			.toList();
 	}
 
-	private static List<ListingHtmlTemplateParameters.MarkupListingRowValue> filterHiddenRows(
-		@NonNull final List<ListingHtmlTemplateParameters.MarkupListingRowValue> rows
+	private static List<ListingValues.MarkupListingRowValue> filterHiddenRows(
+		@NonNull final List<ListingValues.MarkupListingRowValue> rows
 	) {
-		final var groupHiddenFilteredRows = new ArrayList<ListingHtmlTemplateParameters.MarkupListingRowValue>();
+		final var groupHiddenFilteredRows = new ArrayList<ListingValues.MarkupListingRowValue>();
 		String currentHiddenBasePath = null;
 
 		for (var row : rows) {
@@ -228,7 +228,7 @@ public class ListingComponentDependencyValueProducer implements PdfBoxDependency
 	}
 
 	private static ComponentRow getRow(
-		@NonNull final ListingHtmlTemplateParameters.MarkupListingRowValue row,
+		@NonNull final ListingValues.MarkupListingRowValue row,
 		@NonNull final List<ListingColumn> columns,
 		@NonNull final Map<Integer, Long> columnWidthMap,
 		@NonNull PrintModelTreeTrace<Listing> listing,
@@ -237,7 +237,7 @@ public class ListingComponentDependencyValueProducer implements PdfBoxDependency
 		@NonNull final ReferenceInputSourceResolver referenceValueSourceResolver
 	) {
 		Listing listingElement = listing.getTracedElement();
-		List<ListingHtmlTemplateParameters.MarkupListingColumnValue> cells = row.getColumnValues();
+		List<ListingValues.MarkupListingColumnValue> cells = row.getColumnValues();
 
 		final var components = new ArrayList<ComponentCell>();
 		long maxCellHeight = 0;
@@ -289,7 +289,7 @@ public class ListingComponentDependencyValueProducer implements PdfBoxDependency
 		PrintModelTreeTrace<Listing> listing,
 		PDDocument document,
 		InternalPdfBoxPrintEngineRuntime runtime,
-		ListingHtmlTemplateParameters.MarkupListingColumnValue cell,
+		ListingValues.MarkupListingColumnValue cell,
 		HtmlStyle style,
 		TextRenderStyle textRenderStyle,
 		long cellContentWidth
@@ -315,13 +315,13 @@ public class ListingComponentDependencyValueProducer implements PdfBoxDependency
 	private record CellProperties(BoxStyleParameters boxStyle, HtmlStyle htmlStyle, TextRenderStyle textRenderStyle) {}
 
 	private static Map<Integer, CellProperties> getCellPropertiesMap(
-		@NonNull final ListingHtmlTemplateParameters.MarkupListingRowValue row,
+		@NonNull final ListingValues.MarkupListingRowValue row,
 		@NonNull final Map<Integer, Long> columnWidthMap,
 		@NonNull Listing listing,
 		@NonNull final ReferenceInputSourceResolver referenceValueSourceResolver,
 		InternalPdfBoxPrintEngineRuntime runtime
 	) {
-		List<ListingHtmlTemplateParameters.MarkupListingColumnValue> cells = row.getColumnValues();
+		List<ListingValues.MarkupListingColumnValue> cells = row.getColumnValues();
 
 		final var rowBorderMap = new HashMap<Integer, CellProperties>();
 		for (var i = 0; i < cells.size(); i++) {
@@ -338,7 +338,8 @@ public class ListingComponentDependencyValueProducer implements PdfBoxDependency
 			final BorderProperties borderProperties = getAppliedBorderProperties(listing, column);
 			final TextProperties textProperties = getAppliedTextProperties(listing, column);
 
-			final BoxStyleParameters boxStyle = BoxStyleParameters.fromProperties(borderProperties, textProperties)
+			final BoxStyleParameters boxStyle = BoxStyleParameters.fromPropertiesBuilder(borderProperties, textProperties, referenceValueSourceResolver)
+				.build()
 				.setComputedColumnProperties(colProperties)
 				.setComputedRowProperties(rowProperties);
 
@@ -441,20 +442,20 @@ public class ListingComponentDependencyValueProducer implements PdfBoxDependency
 		return defaultVal;
 	}
 
-	private static boolean getListingRowHidden(final ListingHtmlTemplateParameters.MarkupListingRowValue listingRowValue) {
+	public static boolean getListingRowHidden(final ListingValues.MarkupListingRowValue listingRowValue) {
 		return checkObjectIsBooleanAndTrue(listingRowValue.getRowProperties().get(RowPropertyComputation.PropertyType.IS_HIDDEN)) ||
 			listingRowValue.getColumnValues().stream().allMatch(ListingComponentDependencyValueProducer::getListingCellHidden);
 	}
 
-	private static boolean getListingGroupHidden(final ListingHtmlTemplateParameters.MarkupListingRowValue listingRowValue) {
+	private static boolean getListingGroupHidden(final ListingValues.MarkupListingRowValue listingRowValue) {
 		return checkObjectIsBooleanAndTrue(listingRowValue.getGroupProperties().get(GroupPropertyComputation.PropertyType.IS_HIDDEN));
 	}
 
-	private static boolean getListingCellHidden(final ListingHtmlTemplateParameters.MarkupListingColumnValue listingColumnValue) {
+	public static boolean getListingCellHidden(final ListingValues.MarkupListingColumnValue listingColumnValue) {
 		return checkObjectIsBooleanAndTrue(listingColumnValue.getColumnProperties().get(ColumnPropertyComputation.PropertyType.IS_HIDDEN));
 	}
 
-	private static boolean getListingCellContentHidden(final ListingHtmlTemplateParameters.MarkupListingColumnValue listingColumnValue) {
+	private static boolean getListingCellContentHidden(final ListingValues.MarkupListingColumnValue listingColumnValue) {
 		return checkObjectIsBooleanAndTrue(listingColumnValue.getColumnProperties().get(ColumnPropertyComputation.PropertyType.IS_CONTENT_HIDDEN));
 	}
 }

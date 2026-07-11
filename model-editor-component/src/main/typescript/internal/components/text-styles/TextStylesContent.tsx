@@ -32,8 +32,8 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { EditorStateActions, InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";

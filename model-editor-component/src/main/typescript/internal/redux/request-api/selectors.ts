@@ -29,17 +29,18 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { createSelector, Selector } from "reselect";
+import type { Selector } from "reselect";
+import { createSelector } from "reselect";
 
-import { Header } from "@com.mgmtp.a12.base/base-model-api/lib/main/header/index.js";
-import { PartialAnyPrintModelElement } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { Log, TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { Header } from "@com.mgmtp.a12.base/base-model-api";
+import type { PartialAnyPrintModelElement } from "@com.mgmtp.a12.print/print-model-api/model";
+import { Log, TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { createSliceSelector, idInputSelector, PrintEngineSelectors } from "../../store/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { DinTemplateSegmentItem } from "../../components/segments/din-template-segment-item.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import type { DinTemplateSegmentItem } from "../../../internal/components/segments/din-template-segment-item.js";
 
-import { RequestApiState } from "./state.js";
+import type { RequestApiState } from "./state.js";
 
 export function segmentReferenceItemSelector(_: PrintEngineState, printModelId: string, segmentId: string) {
 	return [printModelId, segmentId];
@@ -48,15 +49,12 @@ export function segmentReferenceItemSelector(_: PrintEngineState, printModelId: 
 export namespace RequestApiSelectors {
 	const printEngineState = createSliceSelector<PrintEngineState>(state => state);
 	export const requestApiState = createSliceSelector<RequestApiState>(state => state.RequestApi);
-	export const dinTemplatePrintModels = createSelector(
-		[requestApiState],
-		state => state.dinTemplatePrintModels || {}
-	);
-	export const dinTemplatePrintModelIds: Selector<PrintEngineState, string[]> = createSelector(
-		[dinTemplatePrintModels, PrintEngineSelectors.dinTemplateModelReferences, PrintEngineSelectors.printHeader],
-		(dinTemplatePrintModels, dinTemplateModelReferences, currentPrintModelHeader) => {
+	export const printModelIds = createSelector([requestApiState], state => state.printModelIds);
+	export const selectablePrintModelIds: Selector<PrintEngineState, string[] | undefined> = createSelector(
+		[printModelIds, PrintEngineSelectors.dinTemplateModelReferences, PrintEngineSelectors.printHeader],
+		(printModelIds, dinTemplateModelReferences, currentPrintModelHeader) => {
 			const usedModelIds = [...dinTemplateModelReferences.map(ref => ref.reference), currentPrintModelHeader.id];
-			return Object.keys(dinTemplatePrintModels || {}).filter(model => !usedModelIds.includes(model));
+			return (printModelIds || []).filter(model => !usedModelIds.includes(model));
 		}
 	);
 	export const referencedPrintModelHeaders: Selector<PrintEngineState, Header[]> = createSelector(
@@ -84,6 +82,10 @@ export namespace RequestApiSelectors {
 		[printEngineState, segmentReferenceItemSelector],
 		(state, [printModelId, segmentId]) =>
 			printModel(state, printModelId)?.content.segments.definitions.find(segment => segment.id === segmentId)
+	);
+	export const dinTemplatePrintModels = createSelector(
+		[requestApiState],
+		state => state.dinTemplatePrintModels || {}
 	);
 	export const dinTemplateSegmentItems: Selector<PrintEngineState, DinTemplateSegmentItem[]> = createSelector(
 		[PrintEngineSelectors.dinTemplateModelReferences, dinTemplatePrintModels],
@@ -146,4 +148,12 @@ export namespace RequestApiSelectors {
 
 	export const typesettingModel = (state: PrintEngineState, modelId: string) =>
 		typesettingModelData(state)?.[modelId];
+
+	export const resources = createSelector([requestApiState], state => state.resources);
+	export const resourceByName = createSelector(
+		[requestApiState, (_: PrintEngineState, name: string) => name],
+		(state, name) => state.resources[name]
+	);
+	export const availableResources = createSelector([requestApiState], state => state.availableResources);
+	export const lastUploadedResource = createSelector([requestApiState], state => state.lastUploadedResource);
 }

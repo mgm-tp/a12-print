@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DateFormatTest } from "../../../../../test/typescript/test-utils/date-time-format-validation/dateFormatTest.js";
+import type { DateFormatTest } from "../../../../../test/typescript/test-utils/date-time-format-validation/dateFormatTest.js";
 import { allInvalidLetterCases } from "../../../../../test/typescript/test-utils/date-time-format-validation/invalidLetters.js";
 import {
 	allMaxRepitionCases,

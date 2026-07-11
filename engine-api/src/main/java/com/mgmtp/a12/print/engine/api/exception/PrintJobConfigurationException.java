@@ -32,7 +32,9 @@
 package com.mgmtp.a12.print.engine.api.exception;
 
 import lombok.NonNull;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public class PrintJobConfigurationException extends PrintException{
 	public PrintJobConfigurationException(@NonNull String property) {
 		super(String.format("The Print Job was not configured with a %s, but a %s is required for the current Print.", property, property));

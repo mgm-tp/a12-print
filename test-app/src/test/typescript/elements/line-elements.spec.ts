@@ -30,8 +30,9 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { expect, test } from "@playwright/test";
-import { devAppTest } from "src/test/typescript/utils";
-import { closeDetail, dragElementToEditor, openEditorStage } from "src/test/typescript/utils/userActions/editorActions";
+
+import { devAppTest, setBorderColor, setBorderStyle, setBorderWidth } from "../utils/index.js";
+import { closeDetail, commitChanges, dragElementToEditor, openEditorStage } from "../utils/userActions/editorActions";
 
 devAppTest.use({ useCase: "003-automated-tests" });
 
@@ -40,7 +41,7 @@ test.describe("Line Element", () => {
 		await openEditorStage({ page, tab: "Segment", cardName: "First Segment" });
 		await dragElementToEditor({ page, elementName: "Line" });
 
-		const line = page.locator("_react=Line");
+		const line = page.getByTestId("element-line");
 
 		await line.dblclick();
 		await page.locator("#sidebar-panel").getByLabel("Close").click({ force: true });
@@ -48,53 +49,57 @@ test.describe("Line Element", () => {
 
 	devAppTest("Set border properties", async ({ page }) => {
 		await test.step("Set border width to 1", async () => {
-			const line = page.locator("_react=Line");
-			await page.locator("_react=PositiveNumberInput[label = 'Border Width']").getByRole("spinbutton").fill("1");
+			const line = page.getByTestId("element-line");
+			// await page.getByRole("combobox", { name: "Border Style" }).click();
+			// await page.getByRole("option", { name: "Solid" }).click();
+			await setBorderStyle(page, "Solid");
+			await setBorderWidth(page, "1");
 			await closeDetail({ page });
-			await expect(line).toHaveScreenshot();
+			await line.click();
+			await expect.soft(line).toHaveScreenshot();
 		});
 
 		await test.step("Set border width to 16", async () => {
-			const line = page.locator("_react=Line");
+			const line = page.getByTestId("element-line");
 			await line.dblclick();
-			await page.locator("_react=PositiveNumberInput[label = 'Border Width']").getByRole("spinbutton").fill("16");
+			await setBorderWidth(page, "16");
 			await closeDetail({ page });
-			await expect(line).toHaveScreenshot();
+			await line.click();
+			await expect.soft(line).toHaveScreenshot();
 		});
 
 		await test.step("Set border style to dotted", async () => {
-			const line = page.locator("_react=Line");
+			const line = page.getByTestId("element-line");
 			await line.dblclick();
-			await page.locator("_react=PositiveNumberInput[label = 'Border Width']").getByRole("spinbutton").fill("1");
-			await page
-				.locator("_react=CustomSelect[label = 'Border Style']")
-				.getByRole("combobox")
-				.selectOption("Dotted");
+			await setBorderWidth(page, "1");
+			await setBorderStyle(page, "Dotted");
 			await closeDetail({ page });
-			await expect(line).toHaveScreenshot();
+			await line.click();
+			await expect.soft(line).toHaveScreenshot();
 		});
 
 		await test.step("Set border style to dashed", async () => {
-			const line = page.locator("_react=Line");
+			const line = page.getByTestId("element-line");
 			await line.dblclick();
-			await page.locator("_react=PositiveNumberInput[label = 'Border Width']").getByRole("spinbutton").fill("1");
-			await page
-				.locator("_react=CustomSelect[label = 'Border Style']")
-				.getByRole("combobox")
-				.selectOption("Dashed");
+			await setBorderWidth(page, "1");
+			await setBorderStyle(page, "Dashed");
 			await closeDetail({ page });
-			await expect(line).toHaveScreenshot();
+			await line.click();
+			await expect.soft(line).toHaveScreenshot();
 		});
 
 		await test.step("Set border color to any color", async () => {
-			const line = page.locator("_react=Line");
+			const line = page.getByTestId("element-line");
 			await line.dblclick();
-			await page.locator("_react=PositiveNumberInput[label = 'Border Width']").getByRole("spinbutton").fill("1");
-			await page.getByLabel("Border Color").click();
-			await page.locator("input[type=color]").fill("#a12a12", { force: true });
-
+			await setBorderWidth(page, "1");
+			await setBorderColor(page, "#a12a12");
 			await closeDetail({ page });
-			await expect(line).toHaveScreenshot();
+			await line.click();
+			await expect.soft(line).toHaveScreenshot();
+		});
+
+		await test.step("Commit changes", async () => {
+			await commitChanges({ page });
 		});
 	});
 });

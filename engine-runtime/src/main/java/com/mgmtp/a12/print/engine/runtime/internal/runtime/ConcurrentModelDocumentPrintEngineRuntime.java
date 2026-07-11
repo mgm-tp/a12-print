@@ -35,7 +35,7 @@ package com.mgmtp.a12.print.engine.runtime.internal.runtime;
 import com.mgmtp.a12.kernel.md.model.api.fieldtypes.IFieldType;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocument;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.calculation.CalculationValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.chart.ChartValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.expression.ExpressionValueDependency;
@@ -43,6 +43,7 @@ import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.expression.PreCompiledExpressionDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.field.FieldValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.image.ImageValueDependency;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.image.StaticImageMapDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing.ListingValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing.ListingValueResult;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing.PreCompiledListing;
@@ -82,7 +83,6 @@ import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.modelDocument
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.modelDocument.watermark.ModelDocumentWatermarkResult;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.referenceElementResolver.PrintModelReferenceElementDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.referenceResolver.ReferenceElementDependency;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.renderer.HtmlDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.restriction.PdfJobRestrictionContext;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.restriction.PdfJobRestrictionContextDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.sectionResolver.SectionDependency;
@@ -107,6 +107,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
@@ -170,6 +171,11 @@ public class ConcurrentModelDocumentPrintEngineRuntime extends ConcurrentPrintEn
 	}
 
 	@Override
+	public ValueFactory<Map<String, byte[]>> provide(StaticImageMapDependency dependency) {
+		return awaitTask(() -> delegate.provide(dependency));
+	}
+
+	@Override
 	public ValueFactory<ListingValueResult> provide(ListingValueDependency dependency) {
 		return awaitTask(() -> delegate.provide(dependency));
 	}
@@ -190,7 +196,7 @@ public class ConcurrentModelDocumentPrintEngineRuntime extends ConcurrentPrintEn
 	}
 
 	@Override
-	public ValueFactory<TextValueDependency.TextValueResult> provide(TextValueDependency dependency) {
+	public ValueFactory<Optional<String>> provide(TextValueDependency dependency) {
 		return awaitTask(() -> delegate.provide(dependency));
 	}
 
@@ -220,7 +226,7 @@ public class ConcurrentModelDocumentPrintEngineRuntime extends ConcurrentPrintEn
 	}
 
 	@Override
-	public ValueFactory<HtmlReplacementDependency.HtmlReplacementResult> provide(HtmlReplacementDependency dependency) {
+	public ValueFactory<String> provide(HtmlReplacementDependency dependency) {
 		return awaitTask(() -> delegate.provide(dependency));
 	}
 
@@ -235,7 +241,7 @@ public class ConcurrentModelDocumentPrintEngineRuntime extends ConcurrentPrintEn
 	}
 
 	@Override
-	public ValueFactory<PrintDocument> provide(DocumentDependency dependency) {
+	public ValueFactory<PrintDocumentContext> provide(DocumentDependency dependency) {
 		return awaitTask(() -> delegate.provide(dependency));
 	}
 
@@ -260,7 +266,7 @@ public class ConcurrentModelDocumentPrintEngineRuntime extends ConcurrentPrintEn
 	}
 
 	@Override
-	public ValueFactory<PrintDocument> provide(ComputeDocumentDependency dependency) {
+	public ValueFactory<PrintDocumentContext> provide(ComputeDocumentDependency dependency) {
 		return awaitTask(() -> delegate.provide(dependency));
 	}
 
@@ -328,11 +334,6 @@ public class ConcurrentModelDocumentPrintEngineRuntime extends ConcurrentPrintEn
 
 	@Override
 	public ValueFactory<TextStyle> provide(TextStyleDependency dependency) {
-		return awaitTask(() -> delegate.provide(dependency));
-	}
-
-	@Override
-	public ValueFactory<String> provide(HtmlDependency dependency) {
 		return awaitTask(() -> delegate.provide(dependency));
 	}
 

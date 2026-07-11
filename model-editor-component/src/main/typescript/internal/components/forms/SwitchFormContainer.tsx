@@ -33,21 +33,21 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { PartialSwitch, SwitchProperties } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import type { SwitchProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialSwitch } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";
-import { RESOURCE_KEYS } from "../../localization/keys.js";
-import { PrintLocalizer } from "../../localization/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
+import { RESOURCE_KEYS, PrintLocalizer } from "../../localization/index.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
 
-import { CustomTextLineStateful } from "./custom-base-input-components/index.js";
+import { DynamicSourceTextField } from "./custom-base-input-components/index.js";
 import { DocumentModelSelect } from "./shared-components/DocumentModelSelect.js";
 
 export const SwitchFormContainer = () => {
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
+	const element = useSelector(PrintEngineSelectors.currentFormElement);
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const getErrorMessage = useSwitchPropertiesErrorMessage(element?.id);
@@ -93,7 +93,7 @@ export const SwitchFormContainer = () => {
 
 	return (
 		<>
-			<CustomTextLineStateful
+			<DynamicSourceTextField
 				value={element.switch?.name}
 				onBlur={onNameBlur}
 				label={localizer(RESOURCE_KEYS.elementForm.switch.name)}

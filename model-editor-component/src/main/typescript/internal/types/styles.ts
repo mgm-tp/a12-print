@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Alignment } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { Alignment } from "@com.mgmtp.a12.print/print-model-api/model";
 
 export interface StylableText {
 	readonly textStyleId?: string;

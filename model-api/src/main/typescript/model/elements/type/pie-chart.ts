@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PartialAnyPrintModelElement } from "../../partial.js";
+import { type PartialAnyPrintModelElement } from "../../partial.js";
 
 import type { BaseChartProperties, PrintModelEntity, Styleable } from "../base.js";
 import { isMeasure } from "../base.js";

@@ -31,12 +31,12 @@
  */
 import { call, select } from "typed-redux-saga";
 
-import { filterVisibleSetInteractions } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/utils/transaction-log-utils.js";
-import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
+import { filterVisibleSetInteractions, TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { PrintEngineSelectors, TransactionLogGroup } from "../../store/selectors.js";
+import type { TransactionLogGroup } from "../../store/selectors.js";
+import { PrintEngineSelectors } from "../../store/selectors.js";
 import { interactionGraph } from "../../constant/interaction-graph.js";
-import { CommitInteractionRow } from "../../types/commit-view.js";
+import type { CommitInteractionRow } from "../../types/commit-view.js";
 import { initialize } from "../../utils/commit-changes-utils.js";
 
 export function* createCommitInteractionRows() {

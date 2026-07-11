@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PartialField } from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DisplayOptionsDTO } from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
+import type { PartialField } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DisplayOptionsDTO } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
 
 import { DisplayOptionsDeserializer } from "../deserializer/misc-deserializer.js";
 import { ElementDefinitionSerializer } from "../serializer/element-definition-serializer.js";

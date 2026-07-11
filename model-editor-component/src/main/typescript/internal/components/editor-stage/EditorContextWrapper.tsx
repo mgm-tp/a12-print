@@ -31,35 +31,40 @@
  */
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
-import { PageOrientation, SectionUsage } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import {
+import type {
+	PageOrientation,
+	SectionUsage,
 	BoundingBoxDimensions,
 	DataContext,
 	ElementType,
-	isOverflowDimensions,
 	OverflowDimensions,
-	PartialArea,
 	PartialSection,
 	PartialSegment,
 	PartialValidPlaceableReference,
 	PartialWatermark,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { Dimensions, isDimensions } from "@com.mgmtp.a12.print/print-model-api/lib/model/elements/base.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+	Dimensions,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { isOverflowDimensions, PartialArea, isDimensions } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import { WrapperContext, WrapperActions } from "../../redux/index.js";
+import type { WrapperContext } from "../../redux/index.js";
+import { NavigationActions, NavigationSelectors } from "../../redux/index.js";
+import { EditorMode } from "../../redux/editor-state/state.js";
+import type { WrapperStackEntry } from "../../redux/navigation/state.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { createMmMeasure, createPlainMmMeasure } from "../../utils/index.js";
 
 import { EditorStage } from "./EditorStage.js";
-import { EditorContext, PreviousEditorRef } from "./editor-context.js";
+import type { PreviousEditorRef } from "./editor-context.js";
+import { EditorContext } from "./editor-context.js";
 import { StyledEditorWrapper } from "./EditorContextWrapper.styled.js";
 
 export const EditorContextWrapper = () => {
-	const printModelRefs = useSelector(PrintEngineSelectors.printModelRefs);
+	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
+	const containerId = useSelector(PrintEngineSelectors.currentElementContainerId);
+
 	const previousEditorRef = React.useRef<PreviousEditorRef>(null);
 
 	const sections = useSelector(PrintEngineSelectors.sections);
@@ -67,24 +72,6 @@ export const EditorContextWrapper = () => {
 
 	const [elementReferences, setElementReferences] = React.useState<ReadonlyArray<PartialValidPlaceableReference>>([]);
 	const [copyElements, setCopyElements] = React.useState<ReadonlyArray<PartialValidPlaceableReference>>([]);
-
-	const containerId = useMemo(() => {
-		let containerId;
-		if (printModelRefs.currentRefType === SidebarItem.SEGMENT) {
-			containerId = printModelRefs?.segmentId;
-		} else if (printModelRefs.currentRefType === SidebarItem.SECTION) {
-			containerId = printModelRefs?.sectionId;
-		} else {
-			containerId = printModelRefs?.watermarkId;
-		}
-
-		return containerId;
-	}, [
-		printModelRefs.currentRefType,
-		printModelRefs?.sectionId,
-		printModelRefs?.segmentId,
-		printModelRefs?.watermarkId,
-	]);
 
 	const dispatch = useDispatch();
 
@@ -103,34 +90,40 @@ export const EditorContextWrapper = () => {
 			}
 
 			if (containerId) {
+				const resolvedDimensions = {
+					height: createPlainMmMeasure(minHeight?.value || 0),
+					width: createPlainMmMeasure(minWidth?.value || 0),
+				};
 				dispatch(
-					WrapperActions.addWrapperStage({
-						containerId,
-						id: elementId,
-						type,
-						dimensions: {
-							height: createPlainMmMeasure(minHeight?.value || 0),
-							width: createPlainMmMeasure(minWidth?.value || 0),
+					NavigationActions.pushWrapper({
+						tab: printModelRefs.currentRefType,
+						entityId: containerId,
+						entry: {
+							id: elementId,
+							type: type as WrapperStackEntry["type"],
+							currentMode: EditorMode.Default,
+							modes: {},
+							dimensions: resolvedDimensions,
+							dataContexts,
+							wrapperContext,
 						},
-						dataContexts,
-						wrapperContext,
 					})
 				);
 			}
 		},
-		[containerId, dispatch]
+		[containerId, dispatch, printModelRefs.currentRefType]
 	);
 
 	const openPreviousStage = React.useCallback(
-		(referenceContainer: PartialSegment | PartialSection | PartialWatermark, wrapperId?: string) => {
+		(referenceContainer: PartialSegment | PartialSection | PartialWatermark) => {
 			dispatch(
-				WrapperActions.removeWrapperStage({
-					containerId: referenceContainer.id,
-					id: wrapperId || referenceContainer.id,
+				NavigationActions.popWrapper({
+					tab: printModelRefs.currentRefType,
+					entityId: referenceContainer.id,
 				})
 			);
 		},
-		[dispatch]
+		[dispatch, printModelRefs.currentRefType]
 	);
 
 	const getSection = React.useCallback(
@@ -142,17 +135,17 @@ export const EditorContextWrapper = () => {
 		[sections]
 	);
 
-	// Update the area dimensions if the current area changes: undo/redo
+	// Update the area dimensions if the current area changes (e.g., undo/redo)
 	useEffect(() => {
-		if (currentWrapperContainer && PartialArea.isInstance(currentWrapperContainer)) {
+		if (containerId && currentWrapperContainer && PartialArea.isInstance(currentWrapperContainer)) {
 			const dimensions = currentWrapperContainer.area?.dimensions;
 			const dataContexts = [...(currentWrapperContainer.area?.dataContexts || [])];
 
 			dispatch(
-				WrapperActions.updateWrapperStage({
-					containerId,
+				NavigationActions.updateWrapperEntry({
+					tab: printModelRefs.currentRefType,
+					entityId: containerId,
 					id: currentWrapperContainer.id,
-					type: currentWrapperContainer.type,
 					dimensions: {
 						height: createMmMeasure(
 							(dimensions?.height?.value || 0) + (dimensions?.overflowHeight?.value || 0)
@@ -163,7 +156,7 @@ export const EditorContextWrapper = () => {
 				})
 			);
 		}
-	}, [containerId, currentWrapperContainer, dispatch]);
+	}, [containerId, currentWrapperContainer, dispatch, printModelRefs.currentRefType]);
 
 	return (
 		<EditorContext.Provider

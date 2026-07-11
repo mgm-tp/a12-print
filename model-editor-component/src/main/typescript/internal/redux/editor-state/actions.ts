@@ -29,12 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { actionCreatorFactory } from "typescript-fsa";
+import type { Semantic } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
-import { Semantic } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/lib/internal/types/font.js";
+import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
 
-import { EditorMode, HelperLines, PrintModelRefs } from "./state.js";
+import type { HelperLines, PrintModelRefs } from "./state.js";
 
 const factory = actionCreatorFactory("Print/EditorState");
 
@@ -55,18 +55,7 @@ export namespace EditorStateActions {
 		isMarginVisible?: boolean;
 	}
 
-	export const updateEditorMode = factory<UpdateEditorModePayload>("UPDATE_EDITOR_MODE");
-
-	export interface UpdateEditorModePayload {
-		editorMode: EditorMode;
-	}
-
-	export const updatePrintModelRefs = factory<UpdatePrintModelRefPayload>("UPDATE_PRINT_MODEL_REFS");
-	export type UpdatePrintModelRefPayload = PrintModelRefs;
-
-	export const openEditorView = factory<UpdatePrintModelRefPayload>("OPEN_EDITOR_VIEW");
-
-	export const deletePrintModelRefs = factory("DELETE_PRINT_MODEL_REFS");
+	export const openEditorView = factory<PrintModelRefs>("OPEN_EDITOR_VIEW");
 
 	export const updateSelectedTextStyleId = factory<string>("UPDATE_SELECTED_TEXT_STYLE_ID");
 

@@ -36,14 +36,12 @@ import com.mgmtp.a12.print.workspace.internal.Workspace;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Component
 @RequiredArgsConstructor
 @Slf4j
 public class WorkspaceBuilder {

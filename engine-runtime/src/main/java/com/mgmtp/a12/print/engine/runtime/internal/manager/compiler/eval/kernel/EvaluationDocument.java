@@ -31,62 +31,33 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.eval.kernel;
 
-import com.mgmtp.a12.kernel.md.document.api.IDocument;
-import com.mgmtp.a12.kernel.md.document.api.IEntityInstance;
-import com.mgmtp.a12.kernel.md.document.api.IFieldInstance;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocument;
+import com.mgmtp.a12.kernel.md.document.apiV2.DocumentPointer;
+import com.mgmtp.a12.kernel.md.document.apiV2.PathPart;
+import com.mgmtp.a12.kernel.md.document.apiV2.UpdateAction;
+import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
+import com.mgmtp.a12.kernel.md.document.apiV2.immutable.FieldInstanceV2;
+import com.mgmtp.a12.kernel.md.document.apiV2.immutable.utils.IDocumentV2Visitor;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.computation.ComputationExpression;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.eval.EvaluationDocumentModelCompiler;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.DocumentModelIndex;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
-public class EvaluationDocument implements IDocument {
+public class EvaluationDocument {
 
 	@NonNull
 	private final DocumentModelIndex documentModelIndex;
-	private final List<PrintDocument> rootGroups = new ArrayList<>();
+	private final List<PrintDocumentContext> rootGroups = new ArrayList<>();
 	private final List<ComputationExpression.Parameters> parameters = new ArrayList<>();
 
-	private static void rewriteFieldInstance(HashSet<IEntityInstance> result, String prefix, IEntityInstance e) {
-		if (e instanceof IFieldInstance fieldInstance) {
-
-			final var repetitions = new int[e.getRepetitions().length + 2];
-			repetitions[0] = 1;
-			repetitions[1] = 1;
-			for (var i = 0; i < e.getRepetitions().length; i++) {
-				repetitions[i + 2] = e.getRepetitions()[i];
-			}
-			result.add(new FieldInstance(
-				fieldInstance.getValue().orElse(null),
-				String.format("/%s/%s%s", EvaluationDocumentModelCompiler.MODEL, prefix, e.getPath()),
-				repetitions
-			));
-		}
-	}
-
-	@Override
-	public Optional<String> getId() {
-		return Optional.of(documentModelIndex + "-1");
-	}
-
-	@Override
-	public void setId(String id) {
-		// Not needed for evaluation documents
-	}
-
-	public @NonNull String getDocumentModelId() {
-		return documentModelIndex.getDocumentModel().getHeader().getId();
-	}
-
-	@Override
-	public Set<IEntityInstance> getEntityInstances() {
-
-		final var result = new HashSet<IEntityInstance>();
+	public DocumentV2 getDocumentToCompute() {
+		final var updateActions = new ArrayList<UpdateAction>();
 
 		for (var doc : parameters) {
 			for (final var entry : doc.getValues().entrySet()) {
@@ -95,27 +66,10 @@ public class EvaluationDocument implements IDocument {
 					continue;
 				}
 
-				result.add(new IFieldInstance() {
-					@Override
-					public Optional<Object> getValue() {
-						return Optional.ofNullable(entry.getValue());
-					}
-
-					@Override
-					public void setValue(Object value) {
-						// Not needed
-					}
-
-					@Override
-					public String getPath() {
-						return String.format("/%s/%s", EvaluationDocumentModelCompiler.SyntheticModel.getSaveToEmbedModelName(), entry.getKey());
-					}
-
-					@Override
-					public int[] getRepetitions() {
-						return new int[]{1, 1};
-					}
-				});
+				final var pathParts = new ArrayList<PathPart>();
+				pathParts.add(PathPart.of(EvaluationDocumentModelCompiler.SyntheticModel.getSaveToEmbedModelName(), 1));
+				pathParts.add(PathPart.of(entry.getKey(), 1));
+				updateActions.add(UpdateAction.putFieldValue(DocumentPointer.of(pathParts), entry.getValue()));
 			}
 		}
 
@@ -124,31 +78,40 @@ public class EvaluationDocument implements IDocument {
 			final var reference = documentModelIndex.getDocumentModel().getHeader().getModelReferences().stream()
 				.filter(ref -> ref.getAlias().equals(modelId))
 				.findFirst()
-				.orElseThrow(() -> new PrintCompilerException("Could not find reference for " + modelId));
+				.orElseThrow(() -> new PrintDomainException("Could not find reference for the Document Model {}", modelId));
 			final var prefix = reference.getReference();
 
-			for (var e : doc.getEntityInstances()) {
-				rewriteFieldInstance(result, prefix, e);
-			}
+			doc.getDocument().traverse(new IDocumentV2Visitor() {
+				@Override
+				public void visitField(DocumentPointer pointerRelativeToBase, FieldInstanceV2 field) {
+					final var pathParts = new ArrayList<PathPart>();
+					pathParts.add(PathPart.of(EvaluationDocumentModelCompiler.MODEL, 1));
+					pathParts.add(PathPart.of(prefix, 1));
+					DocumentPointer.of(pathParts);
+
+					updateActions.add(UpdateAction.putFieldValue(
+						DocumentPointer.of(pathParts).withConcatenated(pointerRelativeToBase),
+						field.value()
+					));
+
+					IDocumentV2Visitor.super.visitField(pointerRelativeToBase, field);
+				}
+			});
 		}
-		return result;
+		final var resultDoc = DocumentV2.empty(getDocumentModelId());
+
+		return resultDoc.withBatchUpdates(updateActions);
 	}
 
-	@Override
-	public boolean addEntityInstance(IEntityInstance entityInstance) {
-		return false;
-	}
-
-	@Override
-	public boolean removeEntityInstance(IEntityInstance entityInstance) {
-		return false;
+	public @NonNull String getDocumentModelId() {
+		return documentModelIndex.getDocumentModel().getHeader().getId();
 	}
 
 	public void addDocumentFragment(ComputationExpression.Parameters p) {
 		parameters.add(p);
 	}
 
-	public void addDocumentFragment(PrintDocument document) {
-		rootGroups.add(document);
+	public void addDocumentFragment(PrintDocumentContext printDocumentContext) {
+		rootGroups.add(printDocumentContext);
 	}
 }

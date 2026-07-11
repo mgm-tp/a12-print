@@ -33,38 +33,35 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { Callout } from "@com.mgmtp.a12.widgets/widgets-core/lib/callout/index.js";
-import { List } from "@com.mgmtp.a12.widgets/widgets-core/lib/list/index.js";
-import {
-	BorderProperties,
+import { Button, Icon, Callout, List } from "@com.mgmtp.a12.widgets/widgets-core";
+import type {
 	ColumnProperties,
-	ElementType,
-	PartialTableLayout,
-	PartialText,
+	PartialBorderProperties,
 	TableLayoutCellReference,
 	TableLayoutProperties,
 	Text,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType, PartialTableLayout, PartialText } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import {
 	InputSourceGenerator,
 	InputValueSourceResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+	PossibleInputSource,
+} from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
+import type { ValidationCounter } from "../../../redux/index.js";
 import {
 	TransactionLogStateActions,
 	DetailViewActions,
-	DetailDataActions,
+	NavigationActions,
 	InteractionLogActions,
-	ValidationCounter,
 } from "../../../redux/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
-import { ILocalizer } from "../../../api/index.js";
+import { NavigationSelectors } from "../../../redux/navigation/selectors.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
+import type { ILocalizer } from "../../../api/index.js";
 import { EditorConst } from "../../../constant/editor.js";
 import { ContextMenuContext } from "../../context-menu/ContextMenuWrapper.js";
 import { CustomSelect } from "../../forms/custom-base-input-components/index.js";
@@ -72,9 +69,9 @@ import { BadgeGroup } from "../../badge/BadgeGroup.js";
 import { useErrorTitleElement } from "../../../hooks/index.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
 import { LayoutElementContainer } from "../../element-container/LayoutElementContainer.js";
-import { TABLE_LAYOUT_PROPERTY_PATH } from "../../../constant/element-property-path.js";
+import { BORDER_PROPERTIES_PATH, TABLE_LAYOUT_PROPERTY_PATH } from "../../../constant/element-property-path.js";
 
-import { BaseElementProps } from "../base.js";
+import type { BaseElementProps } from "../base.js";
 
 import { StyledActionsWrapper, StyledTable, StyledTdEmpty, StyledTdFilled, StyledTr } from "./TableLayout.styled.js";
 
@@ -85,7 +82,7 @@ interface BaseCellProps {
 	col: number;
 	columnProps: DeepPartial<ColumnProperties> | undefined;
 	element: PartialTableLayout;
-	borderProperties: BorderProperties | undefined;
+	borderProperties: PartialBorderProperties | undefined;
 	isNestedElement?: boolean;
 	floatingButton?: React.ReactNode;
 	disabled?: boolean;
@@ -236,7 +233,7 @@ const EmptyCell = (props: EmptyCellProps) => {
 				};
 				const defaultTextProperties =
 					InputSourceGenerator.generateInputSource<Required<Text>>("textProperties").textProperties;
-				const newTextElement: PartialText = {
+				let newTextElement: PartialText = {
 					id: newId,
 					type,
 					textProperties: {
@@ -245,6 +242,25 @@ const EmptyCell = (props: EmptyCellProps) => {
 						alignment: defaultTextProperties.alignment,
 					},
 				};
+				function createInheritedGroup(path: string) {
+					return {
+						id: nanoid(),
+						source: PossibleInputSource.INHERITED,
+						path: InputValueSourceResolver.getInputSourceMetadata(newTextElement, path).path,
+						reference: updatedElement.id,
+					};
+				}
+
+				newTextElement = {
+					...newTextElement,
+					borderProperties: {
+						id: nanoid(),
+						borderStyle: createInheritedGroup(BORDER_PROPERTIES_PATH.borderStyle),
+						borderWidth: createInheritedGroup(BORDER_PROPERTIES_PATH.borderWidth),
+						borderColor: createInheritedGroup(BORDER_PROPERTIES_PATH.borderColor),
+					},
+				};
+
 				dispatch(
 					InteractionLogActions.start({
 						description: RESOURCE_KEYS.interaction.tableLayout.selectCellElement,
@@ -280,7 +296,7 @@ const EmptyCell = (props: EmptyCellProps) => {
 				element,
 				TABLE_LAYOUT_PROPERTY_PATH.columnWidth
 			)}
-			{...borderProperties}
+			borderProp={borderProperties}
 		>
 			{showButton && !disabled && (
 				<Button
@@ -359,8 +375,9 @@ export const FilledCell = (props: FilledCellProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 
 	const dispatch = useDispatch();
-	const detailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
-	const detailDataRefId = useSelector(PrintEngineSelectors.detailDataRefId);
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.canvasNavigationContext);
+	const detailDataRefId = useSelector(NavigationSelectors.currentElementForm)?.id;
+
 	const cellElement = useSelector((state: PrintEngineState) =>
 		PrintEngineSelectors.printModelElement(state, cellRef.refId || "")
 	);
@@ -403,20 +420,23 @@ export const FilledCell = (props: FilledCellProps) => {
 				})
 			);
 
-			if (detailDataRefId && detailDataRefId === cellRef.refId) {
-				dispatch(DetailDataActions.remove({ containerId: detailDataId }));
+			if (entityId && detailDataRefId && detailDataRefId === cellRef.refId) {
+				dispatch(NavigationActions.setDetailForm({ tab, entityId, mode, form: undefined }));
+				dispatch(NavigationActions.setSelectedElement({ tab, entityId, mode, elementId: undefined }));
 			}
 		}
 	}, [
 		cellRef.refId,
 		col,
-		detailDataId,
 		detailDataRefId,
 		dispatch,
 		element,
+		entityId,
+		mode,
 		row,
 		setOuterContextMenu,
 		setShowContextMenu,
+		tab,
 	]);
 
 	const tableLayoutContextMenu = React.useMemo(

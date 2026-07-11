@@ -29,8 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ExtendedEntityInstancePathBuilder } from "@com.mgmtp.a12.print/print-model-api/lib/errors/extended-entity-instance-path.js";
-import {
+import type { ExtendedEntityInstancePathBuilder } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type {
 	SwitchCaseReference,
 	Precondition,
 	ComputationAlternative,
@@ -38,8 +38,8 @@ import {
 	PieChartProperties,
 	BarChartProperties,
 	LineChartProperties,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 export interface CollectedPath {
 	usedIn: "fieldPath" | "valueField" | "keyField" | "operation" | "precondition";

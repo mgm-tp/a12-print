@@ -1,0 +1,46 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+[[codemod]]
+= Codemod
+
+Codemods are automated scripts that help you update your codebase to accommodate breaking changes introduced in new versions of a library or framework. They can save you significant time and effort by automating repetitive tasks involved in code migration.
+
+We provide a codemod tool to assist you in migrating your Print Engine related code.
+
+At the moment, we only provide a recipe to replace deep-level imports with top-level imports in TypeScript projects.
+
+== How to Use the Codemod
+
+The codemod package is available via npx, so you don't need to install it globally. You'll need access to the a12 npm registry to use it.
+
+[source,bash]
+----
+npx @com.mgmtp.a12.print/print-engine-codemod [recipe-id-or-version] [tsconfig-path]
+----
+
+If you run the command without any parameters, it will guide you through an interactive prompt to select a recipe and the tsconfig path.
+
+.Optional Parameters
+* `recipe-id-or-version`: The ID of a specific recipe to run, or a target version to run all matching recipes. To see a list of available recipes, run `npx @com.mgmtp.a12.print/print-engine-codemod@latest --list`.
+* tsconfig-path: The path to your `tsconfig.json` file or a folder containing one. The settings of the tsconfig will be used to determine which files to migrate.
+
+For example, to run the codemod for replacing deep-level imports with top-level imports, you would execute:
+[source,bash]
+----
+npx @com.mgmtp.a12.print/print-engine-codemod prefer-top-level-imports ./tsconfig.json
+----

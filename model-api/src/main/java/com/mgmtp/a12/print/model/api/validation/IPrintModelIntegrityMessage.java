@@ -31,10 +31,14 @@
  */
 package com.mgmtp.a12.print.model.api.validation;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
+@OnlyForUsage
 public interface IPrintModelIntegrityMessage {
 	/**
 	 * Specifies the severity of a given {@link IPrintModelIntegrityMessage}.
 	 */
+	@OnlyForUsage
 	enum SeverityType {
 		ERROR,
 		WARNING,

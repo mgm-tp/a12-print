@@ -29,10 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ParserRuleContext } from "antlr4";
+import type { ParserRuleContext } from "antlr4";
 
-import DateTimeFormatListener from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/antlr/datetimeformat/DateTimeFormatListener.js";
-import {
+import type {
 	AmPmOfDayContext,
 	ClockHourOfAmPmContext,
 	ClockHourOfDayContext,
@@ -66,9 +65,10 @@ import {
 	ZoneOffsetXContext,
 	ZoneOffsetZContext,
 	ZoneOffsetZForZeroContext,
-} from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/antlr/datetimeformat/DateTimeFormatParser.js";
+} from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import { DateTimeFormatListener } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
 
-import { DateTimeFormatValidationError } from "./date-time-format-validation-error.js";
+import type { DateTimeFormatValidationError } from "./date-time-format-validation-error.js";
 import { DateTimeFormatErrorEnum } from "./date-time-format-error-enum.js";
 import { MaxRepetition, UNLIMITED_REPETITION } from "./max-repetition.js";
 

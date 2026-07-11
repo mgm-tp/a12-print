@@ -32,11 +32,15 @@
 package com.mgmtp.a12.print.engine.runtime.kernel.internal;
 
 import com.mgmtp.a12.kernel.md.facade.DocumentModelServiceFactory;
+import com.mgmtp.a12.kernel.md.model.a12internal.expansioninfo.ExpansionInfo;
+import com.mgmtp.a12.kernel.md.model.a12internal.expansioninfo.origingraph.ExpansionEdge;
+import com.mgmtp.a12.kernel.md.model.a12internal.expansioninfo.origingraph.ExpansionEdgeLabel;
+import com.mgmtp.a12.kernel.md.model.a12internal.expansioninfo.origingraph.ExpansionNode;
+import com.mgmtp.a12.kernel.md.model.a12internal.expansioninfo.origingraph.LocalCoordinates;
 import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
 import com.mgmtp.a12.kernel.md.model.api.IFieldTypeDefinition;
 import com.mgmtp.a12.kernel.md.model.api.fieldtypes.IFieldType;
 import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelSearchService;
-import com.mgmtp.a12.model.header.ModelReference;
 import com.mgmtp.a12.print.model.api.model.element.base.TypeDefinition;
 import lombok.Data;
 import lombok.NonNull;
@@ -53,37 +57,93 @@ public class DocumentModelIndex implements IDocumentModel, IDocumentModelSearchS
 	@Delegate(types = {IDocumentModelSearchService.class})
 	private final transient IDocumentModelSearchService documentModelSearchService;
 
+	private final transient ExpansionInfo expansionInfo;
+
 	public static DocumentModelIndex buildFrom(IDocumentModel documentModel) {
+		return buildFrom(documentModel, null);
+	}
+
+	public static DocumentModelIndex buildFrom(IDocumentModel documentModel, ExpansionInfo expansionInfo) {
 		var documentModelSearchService = new DocumentModelServiceFactory().createDocumentModelSearchService(documentModel);
-		return new DocumentModelIndex(documentModel, documentModelSearchService);
+		return new DocumentModelIndex(documentModel, documentModelSearchService, expansionInfo);
 	}
 
 	public static DocumentModelIndex load(@NonNull IDocumentModel documentModel) {
 		return buildFrom(documentModel);
 	}
 
+	public static DocumentModelIndex load(@NonNull IDocumentModel documentModel, ExpansionInfo expansionInfo) {
+		return buildFrom(documentModel, expansionInfo);
+	}
+
 	public Optional<IFieldType> getFieldType(TypeDefinition typeDefinition) {
-		return documentModel.getContent()
-							.getTypeDefinitions()
-							.stream()
-							.filter(e -> {
-								final var typeDefinitionIsEqual = e.getName().equals(typeDefinition.getId());
+		// direct name match (covers pre-prefixed type definitions from the print model editor)
+		var directMatch = documentModel.getContent()
+				.getTypeDefinitions()
+				.stream()
+				.filter(e -> e.getName().equals(typeDefinition.getId()))
+				.findAny()
+				.map(IFieldTypeDefinition::getFieldType);
 
-								return typeDefinitionIsEqual || (e.getAllModelReferencePaths().isEmpty()
-									? suffixTypeDefinitionWithModelName(documentModel.getHeader().getId(), e.getName()).equals(typeDefinition.getId())
-									: getDeepestModelReferenceFromFieldTypeDefinition(e)
-										.map(ref -> suffixTypeDefinitionWithModelName(ref.getReference(), e.getName()).equals(typeDefinition.getId()))
-										.orElse(false));
-							})
-							.findAny()
-							.map(IFieldTypeDefinition::getFieldType);
+		if (directMatch.isPresent()) {
+			return directMatch;
+		}
+
+		// resolve the origin model for each type definition (external case where type definition names are not pre-prefixed)
+		if (expansionInfo != null) {
+			return documentModel.getContent()
+					.getTypeDefinitions()
+					.stream()
+					.filter(e ->  canBeResolvedInAlternateOrigin(typeDefinition, e))
+					.findAny()
+					.map(IFieldTypeDefinition::getFieldType);
+		}
+
+		return Optional.empty();
 	}
 
-	private Optional<ModelReference> getDeepestModelReferenceFromFieldTypeDefinition(IFieldTypeDefinition fieldTypeDefinition) {
-		return fieldTypeDefinition.getAllModelReferencePaths().stream().findFirst().map((p) -> p.get(p.size() - 1));
+	private boolean canBeResolvedInAlternateOrigin(TypeDefinition typeDefinition, IFieldTypeDefinition e) {
+		ExpansionNode origin = expansionInfo.getOrigin(LocalCoordinates.Typedef.of(e.getId()));
+		if (origin == null) {
+			return false;
+		}
+
+		String baseTypeDefName = stripPrefix(e.getName());
+
+		if (hasImportEdge(origin)) {
+			// For imported type definitions (purpose "typeDefinitions"),
+			// attribute to the root model that imported them
+			String prefixed = String.format("%s_%s", documentModel.getHeader().getId(), baseTypeDefName);
+			return prefixed.equals(typeDefinition.getId());
+		}
+
+		// For included type definitions, attribute to the ultimate origin model
+		for (ExpansionNode ultimateOrigin : origin.ultimateOrigins()) {
+			String prefixed = String.format("%s_%s", ultimateOrigin.modelId(), baseTypeDefName);
+			if (prefixed.equals(typeDefinition.getId())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
-	private String suffixTypeDefinitionWithModelName(String modelName, String typeDefinitionName) {
-		return String.format("%s_%s", modelName, typeDefinitionName);
+	private static String stripPrefix(String typeDefName) {
+		int lastUnderscore = typeDefName.lastIndexOf('_');
+		if (lastUnderscore >= 0) {
+			return typeDefName.substring(lastUnderscore + 1);
+		}
+		return typeDefName;
+	}
+
+	private static boolean hasImportEdge(ExpansionNode node) {
+		for (ExpansionEdge edge : node.previousOrigins()) {
+			if (edge.label() instanceof ExpansionEdgeLabel.Dm.Import) {
+				return true;
+			}
+			if (hasImportEdge(edge.previousNode())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

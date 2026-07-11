@@ -31,10 +31,10 @@
  */
 import { styled } from "styled-components";
 
-import {
+import type {
 	PartialAnyPrintModelElement,
 	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../../constant/editor.js";
 import { ElementsUtils } from "../../../utils/index.js";

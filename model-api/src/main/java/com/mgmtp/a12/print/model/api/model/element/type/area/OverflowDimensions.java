@@ -33,7 +33,10 @@ package com.mgmtp.a12.print.model.api.model.element.type.area;
 
 import com.mgmtp.a12.print.model.api.model.element.base.Dimensions;
 import com.mgmtp.a12.print.model.api.model.element.base.Measure;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface OverflowDimensions extends Dimensions {
 	Measure getOverflowHeight();
 }
+

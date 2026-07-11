@@ -31,13 +31,20 @@
  */
 package com.mgmtp.a12.print.engine.runtime.kernel.internal;
 
+import com.mgmtp.a12.kernel.md.combination.a12internal.CombinationModelService;
+import com.mgmtp.a12.kernel.md.combination.a12internal.DMWrapper;
 import com.mgmtp.a12.kernel.md.model.a12internal.DocumentModel;
+import com.mgmtp.a12.kernel.md.model.a12internal.expansioninfo.ExpansionInfo;
 import com.mgmtp.a12.kernel.md.model.a12internal.services.DocumentModelService;
+import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
 import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelSerializer;
 import com.mgmtp.a12.kernel.md.model.internal.wrapper.fieldtypes.DateTypeWrapper;
 import com.mgmtp.a12.kernel.md.model.internal.wrapper.fieldtypes.NumberTypeWrapper;
 import com.mgmtp.a12.kernel.md.model.internal.wrapper.fieldtypes.TimeTypeWrapper;
 import com.mgmtp.a12.kernel.md.serializer.MDSerializerFactory;
+import com.mgmtp.a12.model.notification.Severity;
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
@@ -45,6 +52,7 @@ import java.io.InputStreamReader;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 class DocumentModelIndexTest {
 
 	private final IDocumentModelSerializer documentModelSerializer;
@@ -58,11 +66,12 @@ class DocumentModelIndexTest {
 
 	private static DocumentModel loadDocumentModel(
 		String modelName,
+		String pathToTestResources,
 		boolean replaceTypeDefinitionNames,
 		IDocumentModelSerializer documentModelSerializer,
 		DocumentModelService documentModelServer
 	) {
-		try(final var inputStream =  DocumentModelIndexTest.class.getResourceAsStream(String.format("/typeDefinitions/%s.json", modelName))){
+		try(final var inputStream =  DocumentModelIndexTest.class.getResourceAsStream(String.format("/%s/%s.json", pathToTestResources, modelName))){
 			if (inputStream != null) {
 				final var documentModel = documentModelSerializer.deserialize(new InputStreamReader(inputStream));
 
@@ -82,22 +91,44 @@ class DocumentModelIndexTest {
 		} catch(Exception e){
 			throw new RuntimeException(e);
 		}
-    }
+	}
 
-	private DocumentModel getExpandedDocumentModel(boolean replaceTypeDefinitionNames) {
+	private record ExpandedDocumentModel(IDocumentModel documentModel, ExpansionInfo expansionInfo) {}
+
+	private ExpandedDocumentModel getExpandedDocumentModel(String documentModelId, String documentModelFolder, boolean replaceTypeDefinitionNames) {
 		final var documentModel = loadDocumentModel(
-			"DocumentModelRoot",
+			documentModelId,
+			documentModelFolder,
 			replaceTypeDefinitionNames,
 			documentModelSerializer,
 			documentModelService
 		);
 
-		documentModelService.expand(
-			documentModel,
-			s -> loadDocumentModel(s, replaceTypeDefinitionNames, documentModelSerializer, documentModelService)
+		final ExpansionInfo[] capturedExpansionInfo = { null };
+		final var expandedDM = CombinationModelService.expand(
+			documentModelService.convertToExternal(documentModel),
+			dmId -> new DMWrapper(
+				documentModelService.convertToExternal(loadDocumentModel(dmId, documentModelFolder, replaceTypeDefinitionNames, documentModelSerializer, documentModelService))
+			),
+			CombinationModelService.CombinationModelExpandParams.builder()
+				.notificationReceiver(rankedNotification -> {
+					if (rankedNotification.getSeverity().equals(Severity.ERROR)) {
+						throw new PrintException(rankedNotification.getMessage());
+					} else if (rankedNotification.getSeverity().equals(Severity.WARNING)) {
+						log.warn(rankedNotification.getMessage());
+					} else {
+						log.info(rankedNotification.getMessage());
+					}
+				})
+				.a12Internal_expansionInfoReceiver(ei -> capturedExpansionInfo[0] = ei)
+				.build()
 		);
 
-		return documentModel;
+		if (expandedDM.isEmpty()) {
+			throw new PrintException("The expansion for the Document Model {} failed.", documentModel.getHeader().getId());
+		}
+
+		return new ExpandedDocumentModel(expandedDM.get(), capturedExpansionInfo[0]);
 	}
 
 	/*
@@ -106,7 +137,8 @@ class DocumentModelIndexTest {
 	 */
 	@Test
 	void evaluateFieldTypeDefinitionTestWithAlreadyChangedDocumentModel() {
-		final var documentModelIndex = DocumentModelIndex.load(this.documentModelService.convertToExternal(getExpandedDocumentModel(true)));
+		final var expanded = getExpandedDocumentModel("DocumentModelRoot", "typeDefinitions", true);
+		final var documentModelIndex = DocumentModelIndex.load(expanded.documentModel(), expanded.expansionInfo());
 
 		// the root model has a number type definition
 		final var rootFieldType = documentModelIndex.getFieldType(() -> "DocumentModelRoot_TypeDefinition");
@@ -134,7 +166,8 @@ class DocumentModelIndexTest {
 	 */
 	@Test
 	void evaluateFieldTypeDefinitionTestWithoutAlreadyChangedDocumentModel() {
-		final var documentModelIndex = DocumentModelIndex.load(this.documentModelService.convertToExternal(getExpandedDocumentModel(false)));
+		final var expanded = getExpandedDocumentModel("DocumentModelRoot", "typeDefinitions", false);
+		final var documentModelIndex = DocumentModelIndex.load(expanded.documentModel(), expanded.expansionInfo());
 
 		// the root model has a number type definition
 		final var rootFieldType = documentModelIndex.getFieldType(() -> "DocumentModelRoot_TypeDefinition");
@@ -155,5 +188,32 @@ class DocumentModelIndexTest {
 		final var fieldType = documentModelIndex.getFieldType(() -> "TypeDefinition");
 		assertTrue(fieldType.isPresent());
 		assertInstanceOf(TimeTypeWrapper.class, fieldType.get());
+	}
+
+	/*
+		This case covers Document Models that import Type Definitions via importing them from Type Definition Models.
+	*/
+	@Test
+	void evaluateImportedFieldTypeDefinitionTestWithAlreadyChangedDocumentModel() {
+		final var expanded = getExpandedDocumentModel("testCDM", "cdm", true);
+		final var documentModelIndex = DocumentModelIndex.load(expanded.documentModel(), expanded.expansionInfo());
+
+		// imported type definitions can be resolved from the root model
+		final var rootFieldType = documentModelIndex.getFieldType(() -> "testCDM_CustomDate");
+		assertTrue(rootFieldType.isPresent());
+	}
+
+	/*
+		This case covers the external perspective of importing Type Definitions - in this case we can't look at the
+		deepest reference.
+	*/
+	@Test
+	void evaluateImportedFieldTypeDefinitionTestWithOutAlreadyChangedDocumentModel() {
+		final var expanded = getExpandedDocumentModel("testCDM", "cdm", false);
+		final var documentModelIndex = DocumentModelIndex.load(expanded.documentModel(), expanded.expansionInfo());
+
+		// imported type definitions can be resolved from the root model
+		final var rootFieldType = documentModelIndex.getFieldType(() -> "testCDM_CustomDate");
+		assertTrue(rootFieldType.isPresent());
 	}
 }

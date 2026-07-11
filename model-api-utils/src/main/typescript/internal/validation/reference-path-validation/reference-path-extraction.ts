@@ -29,16 +29,16 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import type { Variable } from "@com.mgmtp.a12.print/print-engine-runtime-kernel/a12internal";
 import {
-	Variable,
 	VisitationState,
 	SyntaxTreeElementVisitor,
-} from "@com.mgmtp.a12.print/print-engine-runtime-kernel/lib/internal/index.js";
-import { ComputationParser } from "@com.mgmtp.a12.print/print-engine-runtime-kernel/lib/internal/computation-parser.js";
-import { SyntaxTreeRenderer } from "@com.mgmtp.a12.print/print-engine-runtime-kernel/lib/internal/elements/visitor/SyntaxTreeRenderer.js";
-import { ExtendedEntityInstancePathBuilder } from "@com.mgmtp.a12.print/print-model-api/lib/errors/extended-entity-instance-path.js";
+	ComputationParser,
+	SyntaxTreeRenderer,
+} from "@com.mgmtp.a12.print/print-engine-runtime-kernel/a12internal";
+import type { ExtendedEntityInstancePathBuilder } from "@com.mgmtp.a12.print/print-model-api/errors";
 
-import { CollectedComputation, CollectedFieldReference, CollectedPath } from "../../types/reference-path.js";
+import type { CollectedComputation, CollectedFieldReference, CollectedPath } from "../../types/reference-path.js";
 
 export const PARSER_ERROR = "PARSER_ERROR";
 

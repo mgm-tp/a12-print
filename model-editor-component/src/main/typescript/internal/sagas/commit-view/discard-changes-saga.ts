@@ -29,14 +29,13 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, getContext, put, select, takeLeading } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
 
-import { Log } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import { Log } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
 
-import { RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 import {
 	CommitViewActions,
 	ConfirmationDialogType,
@@ -53,8 +52,8 @@ import { createCommitInteractionRows } from "./utils.js";
 
 const log = LoggerFactory.getLogger("DiscardChangesSaga");
 
-export function* discardChangesSaga(): SagaIterator {
-	yield* takeLeading((action: AnyAction) => CommitViewActions.discardChanges.match(action), handleDiscardChangesSaga);
+export function* discardChangesSaga(): SagaGenerator<void> {
+	yield* takeLeading(CommitViewActions.discardChanges.match, handleDiscardChangesSaga);
 }
 
 function* handleDiscardChangesSaga() {
@@ -103,4 +102,5 @@ function* handleDiscardChangesSaga() {
 
 	const remainingCommitInteractionRows = yield* call(createCommitInteractionRows);
 	yield* put(CommitViewActions.setCommitInteractionRows(remainingCommitInteractionRows));
+	yield* put(CommitViewActions.setCommitViewPrecompileMessages([]));
 }

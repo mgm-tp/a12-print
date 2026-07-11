@@ -35,7 +35,7 @@ import com.mgmtp.a12.kernel.md.model.api.IElement;
 import com.mgmtp.a12.kernel.md.model.api.IField;
 import com.mgmtp.a12.kernel.md.model.api.IGroup;
 import com.mgmtp.a12.kernel.md.model.api.IIdNamed;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.egg.EggNode;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.egg.EquivalenceGeneralizationGraph;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.*;
@@ -82,7 +82,7 @@ public class SyntheticVariable {
 		try {
 			final var prefix = segments.next();
 			if (!PREFIX.equals(prefix)) {
-				throw new PrintCompilerException("invalid SyntheticVariable");
+				throw new PrintCompilerException("Invalid SyntheticVariable");
 			}
 			final var syntheticVariableType = SyntheticVariableType.valueOf(segments.next());
 			builder.syntheticVariableType(syntheticVariableType);
@@ -101,7 +101,7 @@ public class SyntheticVariable {
 			}
 			return builder.build();
 		} catch (NoSuchElementException e) {
-			throw new PrintCompilerException("invalid SyntheticVariable", e);
+			throw new PrintCompilerException("Invalid SyntheticVariable", e);
 		}
 	}
 
@@ -195,11 +195,11 @@ public class SyntheticVariable {
 				} else if (lastElement instanceof IField fieldElement) {
 					final var computationFieldType = ComputationFieldTypeExt.computationFieldTypeFrom(
 						fieldElement.getEffectiveType()
-											  .orElseThrow(() -> new PrintCompilerException("invalid field"))
+											  .orElseThrow(() -> new PrintCompilerException("Invalid field"))
 					);
 					segments.add(computationFieldType.name());
 				} else {
-					throw new PrintCompilerException("invalid Element");
+					throw new PrintCompilerException("Invalid Element");
 				}
 				break;
 			}
@@ -214,7 +214,7 @@ public class SyntheticVariable {
 				segments.add(metaConstant.getComputationFieldType().name());
 				break;
 			default:
-				throw new PrintCompilerException("invalid SyntheticListingVariable: " + metaField.name());
+				throw new PrintCompilerException("Invalid SyntheticListingVariable: " + metaField.name());
 		}
 
 		segments.add(metaField.name());
@@ -291,7 +291,7 @@ public class SyntheticVariable {
 				};
 			}
 			default:
-				throw new PrintCompilerException("unmapped SyntheticFieldType for Tree ", tree);
+				throw new PrintCompilerException("Unmapped SyntheticFieldType for Tree ", tree);
 		}
 	}
 
@@ -365,7 +365,6 @@ public class SyntheticVariable {
 				case PATH, ANNOTATION, NAME, PARENT_NAME, PARENT_PATH, DEPTH, REQUIRED, REPEATABILITY, IS_FIELD ->
 					false;
 				case LABEL, EXTERNAL_DESCRIPTION, ERROR_MESSAGE -> true;
-				default -> throw new PrintCompilerException("MetaConstant is not supported");
 			};
 		}
 	}
@@ -396,7 +395,6 @@ public class SyntheticVariable {
 			return switch (this) {
 				case VALUE, CONSTANT, LITERAL_VALUE -> true;
 				case REPETITIONS, CURRENT_REPETITION, REPETITIONS_OF_PARENT, CURRENT_REPETITION_OF_PARENT -> false;
-				default -> throw new PrintCompilerException("MetaField is not supported");
 			};
 		}
 	}

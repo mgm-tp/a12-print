@@ -31,11 +31,14 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.image;
 
+import com.google.common.base.Strings;
 import com.mgmtp.a12.kernel.md.model.api.IField;
 import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.Entity;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.attachments.AttachmentUtils;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.loader.AttachmentDependency;
@@ -46,7 +49,9 @@ import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.Variable;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.visitor.SyntaxTreeRenderer;
 import com.mgmtp.a12.print.model.api.model.element.type.image.Image;
 import com.mgmtp.a12.print.model.api.model.element.type.image.ImageProperties;
+import com.mgmtp.a12.print.model.api.model.element.type.image.ResourceSource;
 
+import java.net.URLConnection;
 import java.util.Optional;
 
 
@@ -56,13 +61,24 @@ public class ImageDependencyValueProducer implements CoreDependencyValueProvider
 	public ValueFactory<Optional<String>> produce(ImageValueDependency dependency, PrintJob job, PrintEngine<?> engine, InternalCorePrintEngineRuntime runtime) {
 		final Image image = dependency.getImage();
 		final PrintDocumentContext printDocumentContext = dependency.getPrintDocumentContext();
+		final var staticImageMap = runtime.provide(new StaticImageMapDependency()).get();
 		Optional<String> content = Optional.empty();
 		if (
-			image.getImageProperties().getImageSrcType().equals(ImageProperties.ImageSrcType.ATTACHMENT) &&
-				image.getImageProperties().getAttachmentSource().isPresent()
+			image.getImageProperties().getImageSrcType().equals(ImageProperties.ImageSrcType.STATIC) &&
+				image.getImageProperties().getResourceSource().isPresent()
 		) {
-			content =
-				Optional.ofNullable(image.getImageProperties().getAttachmentSource().get().getImageAttachment().getContent());
+			var filename = image.getImageProperties().getResourceSource()
+				.map(ResourceSource::getResourceName)
+				.filter(rsName -> !Strings.isNullOrEmpty(rsName))
+				.orElseThrow(() ->  new PrintException("Static image resource source is missing resource name"));
+			var preloaded = staticImageMap.get(filename);
+			if (preloaded == null) {
+				throw new PrintException(
+					"Static image '" + filename + "' was not pre-loaded. " +
+					"Ensure a StaticImageProvider is configured and the file exists in the resources folder."
+				);
+			}
+			content = Optional.of(AttachmentUtils.attachmentToBase64(preloaded, URLConnection.guessContentTypeFromName(filename)));
 		} else if (image.getImageProperties().getFieldSource().isPresent()) {
 			final String path = Variable.abs(image.getImageProperties().getFieldSource().get().getPath());
 
@@ -70,8 +86,8 @@ public class ImageDependencyValueProducer implements CoreDependencyValueProvider
 			if(element instanceof IField) {
 				final var elementContext = printDocumentContext.findSingleFieldInstance(path);
 				content = elementContext
-					.flatMap(PrintDocumentContext.Entity::getValue)
-					.filter(o -> o instanceof String)
+					.flatMap(Entity::getValue)
+					.filter(String.class::isInstance)
 					.map(o -> (String) o);
 
 				if (
@@ -81,11 +97,11 @@ public class ImageDependencyValueProducer implements CoreDependencyValueProvider
 							g -> g.getUsageType().filter(u -> u.equals("attachment")).isPresent()
 						).isPresent()
 				) {
-					final var attachmentGroup = elementContext.get().parentGroup().enableImplicitRelative();
+					final var attachmentGroup = elementContext.get().parentGroup();
 
 					final var mimeType = attachmentGroup
-						.findSingleFieldInstance("mime_type")
-						.flatMap(PrintDocumentContext.Entity::getValue);
+						.findSingleFieldInstance("mime_type", true)
+						.flatMap(Entity::getValue);
 
 					if (mimeType.isPresent() && mimeType.get() instanceof String mimeTypeIdentifier) {
 						content = Optional.of(AttachmentUtils.attachmentToBase64(
@@ -107,8 +123,8 @@ public class ImageDependencyValueProducer implements CoreDependencyValueProvider
 											).getSegments()
 										)
 									)
-									.flatMap(PrintDocumentContext.Entity::getValue)
-									.filter(o -> o instanceof String)
+									.flatMap(Entity::getValue)
+									.filter(String.class::isInstance)
 									.map(o -> (String) o);
 			}
 		}

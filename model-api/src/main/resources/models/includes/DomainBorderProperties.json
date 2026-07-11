@@ -2,7 +2,7 @@
   "header": {
     "id": "DomainBorderProperties",
     "modelType": "document",
-    "modelVersion": "28.4.0",
+    "modelVersion": "29.4.0",
     "locales": [
       {
         "code": "en"
@@ -26,8 +26,8 @@
       "immutable": false
     },
     "modelConfig": {
-      "decimalSeparator": ".",
       "timeZone": "UTC",
+      "decimalSeparator": ".",
       "conditionLanguage": {
         "code": "en_US"
       }
@@ -35,7 +35,7 @@
     "typeDefinitions": [
       {
         "id": "typedef_9986e85b-f88f-480d-8c25-fae4cf4cdc45",
-        "name": "borderStyle",
+        "name": "defaultBorderStyle",
         "fieldType": {
           "type": "EnumerationType",
           "EnumerationType": {
@@ -79,6 +79,124 @@
                   }
                 ]
               }
+            ]
+          }
+        }
+      },
+      {
+        "id": "typedef_630c58a4-8fc7-4da5-8fb9-23433c2bc970",
+        "name": "defaultColor",
+        "fieldType": {
+          "type": "StringType"
+        }
+      },
+      {
+        "id": "typedef_2e931797-bc33-4594-acce-f9feb9e2ce23",
+        "name": "sourceType",
+        "fieldType": {
+          "type": "EnumerationType",
+          "EnumerationType": {
+            "values": [
+              {
+                "value": "INPUT",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "INPUT"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "INPUT"
+                  }
+                ]
+              },
+              {
+                "value": "DEFAULT",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "DEFAULT"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "DEFAULT"
+                  }
+                ]
+              },
+              {
+                "value": "INHERITED",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "INHERITED"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "INHERITED"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "typedef_fab9868e-7c1f-4387-a6e6-2e44b78f5e10",
+        "name": "defaultBorderWidth",
+        "fieldType": {
+          "type": "NumberType",
+          "NumberType": {
+            "maxFractionalDigits": 2,
+            "minValue": 0
+          }
+        }
+      },
+      {
+        "id": "typedef_c87b521c-0af4-494d-903c-4eb418645e69",
+        "name": "defaultSourceTypeBorderStyle",
+        "fieldType": {
+          "type": "EnumerationType",
+          "EnumerationType": {
+            "values": [
+              {
+                "value": "INPUT",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "INPUT"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "INPUT"
+                  }
+                ]
+              },
+              {
+                "value": "UNSET",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "UNSET"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "UNSET"
+                  }
+                ]
+              },
+              {
+                "value": "INHERITED",
+                "label": [
+                  {
+                    "locale": "en",
+                    "text": "INHERITED"
+                  },
+                  {
+                    "locale": "de",
+                    "text": "INHERITED"
+                  }
+                ]
+              }
             ],
             "categories": []
           }
@@ -98,6 +216,12 @@
                 "type": "Field",
                 "id": "field_0670c",
                 "name": "id",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
@@ -115,68 +239,377 @@
                 }
               },
               {
-                "type": "Field",
-                "id": "field_fd915",
-                "name": "borderWidth",
-                "Field": {
-                  "fieldType": {
-                    "type": "NumberType",
-                    "NumberType": {
-                      "maxFractionalDigits": 2,
-                      "minValue": 0
-                    }
-                  },
-                  "label": [
-                    {
-                      "locale": "en",
-                      "text": "Border width"
-                    },
-                    {
-                      "locale": "de",
-                      "text": "Randgröße"
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "Field",
-                "id": "field_ea3cf",
+                "type": "Group",
+                "id": "group_7f9e8",
                 "name": "borderColor",
-                "Field": {
-                  "fieldType": {
-                    "type": "StringType"
-                  },
-                  "label": [
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
                     {
-                      "locale": "en",
-                      "text": "Border color"
+                      "type": "Field",
+                      "id": "field_e2860",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "relativeToParent"
+                        }
+                      }
                     },
                     {
-                      "locale": "de",
-                      "text": "Randfarbe"
+                      "type": "Field",
+                      "id": "field_9d55d",
+                      "name": "value",
+                      "annotations": [
+                        {
+                          "name": "required",
+                          "value": "true"
+                        },
+                        {
+                          "name": "inherited",
+                          "value": "context"
+                        }
+                      ],
+                      "Field": {
+                        "fieldType": {
+                          "type": "TypeDefType",
+                          "TypeDefType": {
+                            "typeDefinitionId": "typedef_630c58a4-8fc7-4da5-8fb9-23433c2bc970"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_3fc32",
+                      "name": "source",
+                      "Field": {
+                        "fieldType": {
+                          "type": "TypeDefType",
+                          "TypeDefType": {
+                            "typeDefinitionId": "typedef_2e931797-bc33-4594-acce-f9feb9e2ce23"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_393f6",
+                      "name": "reference",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_35e7b",
+                      "name": "path",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "relativeToParent"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_bcc0a",
+                      "name": "colorValueFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_bcc0a",
+                        "errorCondition": "GroupFilled(RuleGroup) And [source] == \"INPUT\" And FieldNotFilled(value)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Please specify a value"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Bitte gib einen Wert an"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_bd737",
+                      "name": "refferenceFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../reference",
+                        "errorCode": "Error rule_bd737",
+                        "errorCondition": "GroupFilled(RuleGroup) And [source] == \"INHERITED\" And FieldNotFilled(reference)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Please specify a value"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Bitte gib einen Wert an"
+                          }
+                        ]
+                      }
                     }
                   ]
                 }
               },
               {
-                "type": "Field",
-                "id": "field_f1345",
+                "type": "Group",
+                "id": "group_b70f4",
                 "name": "borderStyle",
-                "Field": {
-                  "fieldType": {
-                    "type": "TypeDefType",
-                    "TypeDefType": {
-                      "typeDefinitionId": "typedef_9986e85b-f88f-480d-8c25-fae4cf4cdc45"
-                    }
-                  },
-                  "label": [
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
                     {
-                      "locale": "en",
-                      "text": "Border style"
+                      "type": "Field",
+                      "id": "field_4a8df",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "relativeToParent"
+                        }
+                      }
                     },
                     {
-                      "locale": "de",
-                      "text": "Randart"
+                      "type": "Field",
+                      "id": "field_9b9f9",
+                      "name": "value",
+                      "annotations": [
+                        {
+                          "name": "required",
+                          "value": "false"
+                        },
+                        {
+                          "name": "inherited",
+                          "value": "context"
+                        },
+                        {
+                          "name": "requiredCondition",
+                          "value": "ElementType=Line"
+                        }
+                      ],
+                      "Field": {
+                        "fieldType": {
+                          "type": "TypeDefType",
+                          "TypeDefType": {
+                            "typeDefinitionId": "typedef_9986e85b-f88f-480d-8c25-fae4cf4cdc45"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_5fb53",
+                      "name": "source",
+                      "Field": {
+                        "fieldType": {
+                          "type": "TypeDefType",
+                          "TypeDefType": {
+                            "typeDefinitionId": "typedef_c87b521c-0af4-494d-903c-4eb418645e69"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_7568b",
+                      "name": "reference",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_4cb5c",
+                      "name": "path",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "relativeToParent"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_3d1e6",
+                      "name": "styleValueFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_3d1e6",
+                        "errorCondition": "GroupFilled(RuleGroup) And [source] == \"INPUT\" And FieldNotFilled(value)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Please specify a value"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Bitte gib einen Wert an"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_28984",
+                      "name": "refferenceFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../reference",
+                        "errorCode": "Error rule_28984",
+                        "errorCondition": "GroupFilled(RuleGroup) And [source] == \"INHERITED\" And FieldNotFilled(reference)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Please specify a value"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Bitte gib einen Wert an"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_43a7a",
+                "name": "borderWidth",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_90649",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "relativeToParent"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_6d958",
+                      "name": "value",
+                      "annotations": [
+                        {
+                          "name": "required",
+                          "value": "true"
+                        },
+                        {
+                          "name": "inherited",
+                          "value": "context"
+                        }
+                      ],
+                      "Field": {
+                        "fieldType": {
+                          "type": "TypeDefType",
+                          "TypeDefType": {
+                            "typeDefinitionId": "typedef_fab9868e-7c1f-4387-a6e6-2e44b78f5e10"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_719ea",
+                      "name": "source",
+                      "Field": {
+                        "fieldType": {
+                          "type": "TypeDefType",
+                          "TypeDefType": {
+                            "typeDefinitionId": "typedef_2e931797-bc33-4594-acce-f9feb9e2ce23"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_cb3ab",
+                      "name": "reference",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_79487",
+                      "name": "path",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "requirednessConfig": {
+                          "mode": "relativeToParent"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_5870f",
+                      "name": "widthValueFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_5870f",
+                        "errorCondition": "GroupFilled(RuleGroup) And [source] == \"INPUT\" And FieldNotFilled(value)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Please specify a value"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Bitte gib einen Wert an"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_a4d52",
+                      "name": "refferenceFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../reference",
+                        "errorCode": "Error rule_a4d52",
+                        "errorCondition": "GroupFilled(RuleGroup) And [source] == \"INHERITED\" And FieldNotFilled(reference)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Please specify a value"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Bitte gib einen Wert an"
+                          }
+                        ]
+                      }
                     }
                   ]
                 }

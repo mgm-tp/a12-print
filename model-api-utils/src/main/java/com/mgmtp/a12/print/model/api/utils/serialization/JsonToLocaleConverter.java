@@ -31,12 +31,14 @@
  */
 package com.mgmtp.a12.print.model.api.utils.serialization;
 
-import com.fasterxml.jackson.databind.util.StdConverter;
+import tools.jackson.databind.util.StdConverter;
 import org.apache.commons.lang3.LocaleUtils;
 
 import java.util.Locale;
 import java.util.Map;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public class JsonToLocaleConverter extends StdConverter<Object, Locale> {
 	JsonToLocaleConverter() {
 	}

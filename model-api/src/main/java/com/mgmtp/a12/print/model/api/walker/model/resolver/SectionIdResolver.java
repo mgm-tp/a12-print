@@ -35,7 +35,9 @@ import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 @FunctionalInterface
 public interface SectionIdResolver {
 	Optional<PrintModelTreeTrace<ModelSection>> resolveSectionId(String id);

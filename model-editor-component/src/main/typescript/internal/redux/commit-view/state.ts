@@ -29,14 +29,17 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import { LogPersistentEntry } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/log.js";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { LogPersistentEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { CommitInteractionRow, PrintModelErrorMap } from "../../types/index.js";
+import type { CommitInteractionRow, PrintModelErrorMap } from "../../../internal/types/index.js";
+import type { PrintMessage } from "../../../a12internal/api/PrintMessageReport.js";
 
 export interface CommitViewState {
 	commitInteractionRows: CommitInteractionRow[];
 	commitViewErrorMap?: PrintModelErrorMap;
 	printModel?: PrintModel;
 	logPersistentEntries?: LogPersistentEntry[];
+	precompileMessages: PrintMessage[];
+	isCommitting: boolean;
 }

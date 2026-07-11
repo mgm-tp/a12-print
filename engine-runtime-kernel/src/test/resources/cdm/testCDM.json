@@ -1,0 +1,57 @@
+{
+  "header": {
+    "id": "testCDM",
+    "modelType": "document",
+    "modelVersion": "29.4.0",
+    "locales": [
+      {
+        "code": "en"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "cdm.queryRoot",
+        "value": "testDM"
+      }
+    ],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "purpose": "include",
+        "reference": "testDM"
+      },
+      {
+        "modelType": "document",
+        "purpose": "composedData",
+        "reference": "testDM"
+      }
+    ]
+  },
+  "content": {
+    "modelInfo": {
+      "name": "testCDM"
+    },
+    "modelConfig": {
+      "timeZone": "UTC",
+      "decimalSeparator": ".",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "include_39baa",
+          "name": "root",
+          "Group": {
+            "repeatability": 1,
+            "includeConfig": {
+              "reference": "testDM"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

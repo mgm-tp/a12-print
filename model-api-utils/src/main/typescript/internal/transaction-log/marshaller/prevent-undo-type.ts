@@ -29,7 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PreventUndo, USED_TEXT_STYLE } from "../../transaction-log/index.js";
+import type { PreventUndo } from "../../../a12internal/transaction-log/interaction-log.js";
+import { USED_TEXT_STYLE } from "../../../a12internal/transaction-log/interaction-log.js";
 
 export enum PreventUndoType {
 	STRING = "string",

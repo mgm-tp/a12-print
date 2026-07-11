@@ -29,14 +29,13 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 
-import { BulletList } from "@com.mgmtp.a12.widgets/widgets-core/lib/bullet-list/index.js";
-import { MessageBox } from "@com.mgmtp.a12.widgets/widgets-core/lib/message-box/index.js";
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import { BulletList, MessageBox } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { useDefaultLocalizer } from "../../localization/localizer.js";
-import { TypesettingModel } from "../../../api/model/typesetting-model.js";
+import type { TypesettingModel } from "../../../../a12internal/api/model/typesetting-model.js";
 
 const { Item, Ordered, Unordered } = BulletList;
 

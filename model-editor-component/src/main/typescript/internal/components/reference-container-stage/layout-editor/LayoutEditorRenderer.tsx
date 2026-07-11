@@ -32,11 +32,12 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { ElementsUtils } from "../../../utils/index.js";
+import { NavigationSelectors } from "../../../redux/index.js";
 
 import { SegmentLayoutEditor } from "./SegmentLayoutEditor.js";
 import { SectionLayoutEditor } from "./SectionLayoutEditor.js";
@@ -55,7 +56,7 @@ const EditorProvider: Record<string, React.ComponentType> = {
 };
 
 export const LayoutEditorRenderer = React.memo(function DefaultEditorRenderer() {
-	const printModelRefs = useSelector(PrintEngineSelectors.printModelRefs);
+	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
 	const currentWrapperContainer = useSelector(PrintEngineSelectors.currentWrapperContainer);
 	let editorType;
 

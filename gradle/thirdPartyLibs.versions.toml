@@ -29,42 +29,44 @@
 # LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
 [versions]
 antlr4 = "4.13.2"
-assertj = "3.27.6"
+assertj = "3.27.7"
+awaitility = "4.3.0"
 collections4 = "4.5.0"
-commonmark = "0.26.0"
-commonsIO = "2.20.0"
+commonmark = "0.27.1"
+commonsIO = "2.21.0"
 commonsLang3 = "3.20.0"
-commonsText = "1.14.0"
-cyclonedxBom = "3.0.1"
-dependencyManagement = "1.1.7"
+commonsText = "1.15.0"
+cyclonedxBom = "3.2.2"
 freemarker = "2.3.34"
-guava = "33.4.8-jre"
+guava = "33.5.0-jre"
+hamcrest = "3.0"
 imageComparison = "4.4.0"
-jackson = "2.20.1"
-jacksonAnnotations = "2.20"
-jacksonDatatypeJsr = "2.20.0"
+jackson = "3.1.3"
+jacksonAnnotations = "2.21"
 jaxb = "4.0.6"
+jline = "3.30.6"
 jmh = "1.37"
-jsoup = "1.21.2"
-jupiter = "5.11.4"
-logback = "1.5.18"
-lombok = "8.14.2"
-mockito = "5.17.0"
+jsoup = "1.22.1"
+jupiter = "6.0.3"
+logback = "1.5.32"
+lombok = "9.2.0"
+metadataExtractor = "2.20.0"
+mockito = "5.22.0"
 nashorn = "15.7"
 nodeGradle = "7.1.0"
-owasp = "20240325.1"
-pdfbox = "2.0.25"
-shell = "3.4.1"
+owasp = "20260102.1"
+pdfbox = "3.0.7"
+picocli = "4.7.7"
+shadowJar = "9.3.2"
 slf4j = "2.0.17"
-springBoot = "3.5.9"
-veraPdf = "1.28.2"
 # Please be aware that after a XChart update, the reflection code for localizing PieCharts will either continue to be supported or will no longer be required
 xchart = "3.8.8"
-xmlBind = "4.0.2"
+xmlBind = "4.0.5"
 
 [libraries]
 antlr4 = { module = "org.antlr:antlr4", version.ref = "antlr4" }
 assertj = { module = "org.assertj:assertj-core", version.ref = "assertj" }
+awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
 collections4 = { module = "org.apache.commons:commons-collections4", version.ref = "collections4" }
 commonmark = { module = "org.commonmark:commonmark", version.ref = "commonmark" }
 commonsIO = { module = "commons-io:commons-io", version.ref = "commonsIO" }
@@ -72,45 +74,42 @@ commonsLang3 = { module = "org.apache.commons:commons-lang3", version.ref = "com
 commonsText = { module = "org.apache.commons:commons-text", version.ref = "commonsText" }
 freemarker = { module = "org.freemarker:freemarker", version.ref = "freemarker" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
+hamcrest = { module = "org.hamcrest:hamcrest", version.ref = "hamcrest" }
 imageComparison = { module = "com.github.romankh3:image-comparison", version.ref = "imageComparison" }
-jackson = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+jackson = { module = "tools.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
 jacksonAnnotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jacksonAnnotations" }
-jacksonCore = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
-jacksonDatabind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
-jacksonDatatypeJdk8 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jdk8", version.ref = "jackson" }
-jacksonDatatypeJsr = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jacksonDatatypeJsr" }
-jacksonYaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
+jacksonCore = { module = "tools.jackson.core:jackson-core", version.ref = "jackson" }
+jacksonDatabind = { module = "tools.jackson.core:jackson-databind", version.ref = "jackson" }
+jacksonYaml = { module = "tools.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson" }
 jaxb = { module = "org.glassfish.jaxb:jaxb-runtime", version.ref = "jaxb" }
 jaxbJxc = { module = "org.glassfish.jaxb:jaxb-jxc", version.ref = "jaxb" }
+jline = { module = "org.jline:jline", version.ref = "jline" }
 jmhCore = { module = "org.openjdk.jmh:jmh-core", version.ref = "jmh" }
-jmhGenreratorBytecode = { module = "org.openjdk.jmh:jmh-generator-bytecode", version.ref = "jmh" }
 jmhGeneratorAnnprocess = { module = "org.openjdk.jmh:jmh-generator-annprocess", version.ref = "jmh" }
+jmhGenreratorBytecode = { module = "org.openjdk.jmh:jmh-generator-bytecode", version.ref = "jmh" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+junitLauncher = { module = "org.junit.platform:junit-platform-launcher" }
 jupiterApi = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jupiter" }
 jupiterEngine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jupiter" }
 jupiterParams = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jupiter" }
 logbackClassic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+metadataExtractor = { module = "com.drewnoakes:metadata-extractor", version.ref = "metadataExtractor" }
 mockitoCore = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockitoJunitJupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 nashornCore = { module = "org.openjdk.nashorn:nashorn-core", version.ref = "nashorn" }
 nodeGradle = { module = "com.github.node-gradle:gradle-node-plugin", version.ref = "nodeGradle" }
 owaspJavaHtmlSanitizer = { module = "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer", version.ref = "owasp" }
 pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
+picocli = { module = "info.picocli:picocli", version.ref = "picocli" }
+picocliJline3 = { module = "info.picocli:picocli-shell-jline3", version.ref = "picocli" }
+shadowJar = { module = "com.gradleup.shadow:shadow-gradle-plugin", version.ref = "shadowJar" }
 slf4j = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
-slf4jSimple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 slf4jNop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
-springBootGradle = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "springBoot" }
-springBootStarter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "springBoot" }
-springBootStarterTest = { module = "org.springframework.boot:spring-boot-starter-test" }
-springLoaderTools = { module = "org.springframework.boot:spring-boot-loader-tools", version.ref = "springBoot" }
-springShellStarter = { module = "org.springframework.shell:spring-shell-starter", version.ref = "shell" }
-springShellTest = { module = "org.springframework.shell:spring-shell-test", version.ref = "shell" }
-springShellTestAuto = { module = "org.springframework.shell:spring-shell-test-autoconfigure", version.ref = "shell" }
-veraPdfValidationModelJakarta = { module = "org.verapdf:validation-model-jakarta", version.ref = "veraPdf" }
+slf4jSimple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 xchart = { module = "org.knowm.xchart:xchart", version.ref = "xchart" }
 xmlBind = { module = "jakarta.xml.bind:jakarta.xml.bind-api", version.ref = "xmlBind" }
+xmpbox = { module = "org.apache.pdfbox:xmpbox", version.ref = "pdfbox" }
 
 [plugins]
 cyclonedxBom = { id = "org.cyclonedx.bom", version.ref = "cyclonedxBom" }
 lombok = { id = "io.freefair.lombok", version.ref = "lombok" }
-springDependencyManagement = { id = "io.spring.dependency-management" }

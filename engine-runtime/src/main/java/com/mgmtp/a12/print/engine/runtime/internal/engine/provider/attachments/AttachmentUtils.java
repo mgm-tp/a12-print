@@ -37,6 +37,8 @@ import java.util.Base64;
 
 public class AttachmentUtils {
 
+	private AttachmentUtils() {}
+
 	public static String attachmentToBase64(byte[] content, String mimeType) {
 		final var base64 = Base64.getEncoder().encodeToString(content);
 		return String.format("data:%s;base64,%s", mimeType, base64);

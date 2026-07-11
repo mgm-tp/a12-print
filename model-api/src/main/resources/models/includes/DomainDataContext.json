@@ -2,7 +2,7 @@
   "header": {
     "id": "DomainDataContext",
     "modelType": "document",
-    "modelVersion": "28.4.0",
+    "modelVersion": "29.4.0",
     "locales": [
       {
         "code": "en"
@@ -25,8 +25,8 @@
       "immutable": false
     },
     "modelConfig": {
-      "decimalSeparator": ".",
       "timeZone": "UTC",
+      "decimalSeparator": ".",
       "conditionLanguage": {
         "code": "en_US"
       }
@@ -38,6 +38,16 @@
           "id": "group_277d3",
           "name": "dataContext",
           "Group": {
+            "label": [
+              {
+                "locale": "en",
+                "text": "Data context"
+              },
+              {
+                "locale": "de",
+                "text": "Datenkontext"
+              }
+            ],
             "repeatability": 1,
             "elements": [
               {
@@ -48,6 +58,16 @@
                   "fieldType": {
                     "type": "StringType"
                   },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Path to referenced entity in the Document Model"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Pfad zur referenzierten Entität im Dockumentmodell"
+                    }
+                  ],
                   "requirednessConfig": {
                     "mode": "absoluteOrRelativeToNextRepAncestor"
                   }
@@ -57,10 +77,26 @@
                 "type": "Field",
                 "id": "field_c6204",
                 "name": "isRepetition",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "BooleanType"
                   },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Is referenced entity repeatable?"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Ist die referenzierte Entität wiederholbar?"
+                    }
+                  ],
                   "requirednessConfig": {
                     "mode": "absoluteOrRelativeToNextRepAncestor"
                   }
@@ -70,6 +106,12 @@
                 "type": "Field",
                 "id": "field_7aff3",
                 "name": "id",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
@@ -87,6 +129,16 @@
                   "fieldType": {
                     "type": "StringType"
                   },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Document Model"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Dokumentenmodel"
+                    }
+                  ],
                   "requirednessConfig": {
                     "mode": "absoluteOrRelativeToNextRepAncestor"
                   }

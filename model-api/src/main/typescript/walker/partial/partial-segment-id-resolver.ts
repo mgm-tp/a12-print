@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PartialPrintModel, PartialSegment, PartialSegmentReference } from "../../model/index.js";
+import { type PartialPrintModel, type PartialSegment, type PartialSegmentReference } from "../../model/index.js";
 
 interface PartialSegmentMap {
 	[key: string]: PartialSegmentReference;

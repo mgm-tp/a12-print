@@ -32,13 +32,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { nanoid } from "nanoid";
 
-import { isPartialValidPlaceableReference, PartialTextProperties } from "../../model/partial.js";
-import { Alignment, InputSource } from "../../model/index.js";
+import { isPartialValidPlaceableReference, type PartialTextProperties } from "../../model/partial.js";
+import type { Alignment } from "../../model/index.js";
+import { type InputSource } from "../../model/index.js";
 import { TEXT_STYLE } from "../../model/constant.js";
 
-import { DeepPartial } from "../type-utils.js";
+import { type DeepPartial } from "../type-utils.js";
 
-import { CloneContext } from "./type.js";
+import { type CloneContext } from "./type.js";
 import { CloneTreeTrace } from "./clone-tree-trace.js";
 
 export function clonePrintModelEntity<T extends object>(target: T) {

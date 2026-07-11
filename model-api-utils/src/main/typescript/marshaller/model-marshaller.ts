@@ -29,25 +29,41 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PrintModelDTO } from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import { ErrorSeverity, PrintError } from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
-import { PartialPrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
-import { DocumentModel, EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { PrintModelDTO } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import type { PartialPrintModel, PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
-import { PrintModelValidator, PrintValidationMode, PrintValidator } from "../internal/validation/index.js";
+import { PrintModelValidator } from "../internal/validation/print-model-validator.js";
+import type { PrintValidator } from "../a12internal/validation/print-validator.js";
+import { collectHtmlErrors } from "../internal/validation/html/html-field-collector.js";
+import { ReferencePathValidation } from "../internal/validation/reference-path-validation/reference-path-validation.js";
 
 import { PrintModelSerializer } from "./serializer/model-serializer.js";
 import { PrintModelDeserializer } from "./deserializer/model-api-deserializer.js";
 import { Marshaller } from "./marshaller.js";
-import { Serializer } from "./serializer/serializer.js";
-import { Deserializer, DeserializerResult } from "./deserializer/deserializer.js";
+import type { Serializer } from "./serializer/serializer.js";
+import type { Deserializer, DeserializerResult } from "./deserializer/deserializer.js";
+
+export interface PrintModelValidatorOptions extends PrintValidator.Options {
+	/** When true, HTML validation is performed on all HTML-bearing fields. Default: true. */
+	html?: boolean;
+	/**
+	 * Reference validation configuration.
+	 * When `documentModels` is provided, references in the print model are validated against them.
+	 * When omitted, reference validation is skipped.
+	 */
+	references?: {
+		documentModels?: readonly DocumentModel[];
+	};
+}
 
 /**
  * Transforms the API-representation of a PrintModel into its JSON-representation and vice versa.
  * Validation is performed on the serialized JSON-representation.
  */
-export class PrintModelMarshaller extends Marshaller<PrintModelDTO, PrintModel> {
+export class PrintModelMarshaller extends Marshaller<PrintModelDTO, PrintModel, PrintModelValidatorOptions> {
 	override executeDeserializer(
 		deserializer: Deserializer<PrintModelDTO, PrintModel>,
 		printModelDTO: PrintModelDTO
@@ -58,10 +74,10 @@ export class PrintModelMarshaller extends Marshaller<PrintModelDTO, PrintModel> 
 				result: report.result,
 				errorMap: report.errorMap,
 			};
-		} catch (message) {
+		} catch (error) {
 			return {
 				errorMap: {
-					[ErrorSeverity.ERROR]: [message as PrintError],
+					[ErrorSeverity.ERROR]: [error as PrintError],
 					[ErrorSeverity.INFO]: [],
 					[ErrorSeverity.WARNING]: [],
 				},
@@ -69,16 +85,33 @@ export class PrintModelMarshaller extends Marshaller<PrintModelDTO, PrintModel> 
 		}
 	}
 
-	protected executeValidation(validatorInput: PrintValidator.Input, relevantPaths: EntityInstancePath[]) {
-		return PrintModelValidator.getInstance().validate(validatorInput, relevantPaths);
+	protected executeValidation(
+		validatorInput: PrintValidator.Input<PrintModelDTO>,
+		options?: PrintModelValidatorOptions
+	) {
+		return PrintModelValidator.getInstance().validate(validatorInput, options);
 	}
 
-	protected executeReferenceValidation(
-		printModel: PartialPrintModel,
-		documentModels: readonly DocumentModel[],
-		mode: PrintValidationMode
-	) {
-		return PrintModelValidator.getInstance().validateReferences(printModel, documentModels, mode);
+	protected override executePostApiValidation(
+		apiObject: PrintModel,
+		options?: PrintModelValidatorOptions
+	): DeepPartialErrorMap<PrintModel> {
+		const errorMap = DeepPartialErrorMap.getEmptyMap<PrintModel>();
+
+		if (options?.html !== false) {
+			const htmlErrorMap = collectHtmlErrors(apiObject as unknown as PartialPrintModel);
+			DeepPartialErrorMap.mergeErrorMaps(errorMap, htmlErrorMap);
+		}
+
+		if (options?.references?.documentModels) {
+			const refErrorMap = ReferencePathValidation.validateDocumentModelReferences(
+				apiObject as unknown as PartialPrintModel,
+				options.references.documentModels
+			);
+			DeepPartialErrorMap.mergeErrorMaps(errorMap, refErrorMap);
+		}
+
+		return errorMap;
 	}
 
 	protected initializeDeserializer(): Deserializer<PrintModelDTO, PrintModel> {

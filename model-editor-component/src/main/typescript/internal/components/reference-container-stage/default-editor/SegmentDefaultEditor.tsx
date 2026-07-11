@@ -35,7 +35,7 @@ import * as React from "react";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 
 import { useSetupSegmentEditor } from "../hooks/index.js";
-import { DefaultReferencesRendererProps } from "../editor-interface.js";
+import type { DefaultReferencesRendererProps } from "../editor-interface.js";
 
 import { SegmentDefaultReferenceRenderer } from "./SegmentDefaultReferenceRenderer.js";
 import { BasicDefaultEditor } from "./BasicDefaultEditor.js";

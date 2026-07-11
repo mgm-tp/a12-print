@@ -32,24 +32,25 @@
 import { useDispatch, useSelector } from "react-redux";
 import * as React from "react";
 
-import { Toggle } from "@com.mgmtp.a12.widgets/widgets-core/lib/toggle/index.js";
+import { Toggle } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { PrintEngineSelectors } from "../../../store/selectors.js";
-import { EditorMode, EditorStateActions } from "../../../redux/index.js";
+import { EditorMode, NavigationActions, NavigationSelectors } from "../../../redux/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
 import { ErrorBadge } from "../../badge/ValidationBadge.js";
+import { PrintEngineSelectors } from "../../../store/selectors.js";
 
 export const EditorModeToggle = () => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 
-	const { editorStates } = useSelector(PrintEngineSelectors.printEditorState);
+	const currentElementContainerId = useSelector(PrintEngineSelectors.currentElementContainerId);
+	const activeCanvasTab = useSelector(NavigationSelectors.activeCanvasTab);
+
+	const editorMode = useSelector(NavigationSelectors.currentMode);
 	const allPlaceableRefDefaultCounter = useSelector(ValidationSelectors.allPlaceableRefDefaultCounter);
 	const allPlaceableRefLayoutCounter = useSelector(ValidationSelectors.allPlaceableRefLayoutCounter);
 	const validationInteraction = useSelector(ValidationSelectors.validationInteraction);
-
-	const { editorMode } = editorStates;
 
 	const defaultTitle = localizer(RESOURCE_KEYS.editor.mode.default);
 	const layoutTitle = localizer(RESOURCE_KEYS.editor.mode.layout);
@@ -57,12 +58,14 @@ export const EditorModeToggle = () => {
 	const onEditorModeChange = React.useCallback(
 		(value: EditorMode) => {
 			dispatch(
-				EditorStateActions.updateEditorMode({
-					editorMode: value,
+				NavigationActions.setCurrentMode({
+					tab: activeCanvasTab,
+					entityId: currentElementContainerId,
+					mode: value,
 				})
 			);
 		},
-		[dispatch]
+		[activeCanvasTab, currentElementContainerId, dispatch]
 	);
 
 	return (

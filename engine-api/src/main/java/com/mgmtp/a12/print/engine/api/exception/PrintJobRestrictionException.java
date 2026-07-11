@@ -31,6 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.api.exception;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+
+@OnlyForUsage
 public class PrintJobRestrictionException extends PrintException {
 	public PrintJobRestrictionException(String message) {
 		super(message);

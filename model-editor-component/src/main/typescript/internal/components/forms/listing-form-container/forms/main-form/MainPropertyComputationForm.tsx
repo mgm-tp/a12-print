@@ -33,28 +33,30 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { PartialListing, RowPropertyKeyType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { PartialListing, RowPropertyKeyType } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { TransactionLogStateActions } from "../../../../../redux/index.js";
-import { PrintEngineSelectors } from "../../../../../store/selectors.js";
-import { ComputationRepeatRowType } from "../../../shared-components/ComputationRepeat.js";
+import { type ListingPropertyCompFormState, TransactionLogStateActions } from "../../../../../redux/index.js";
+import type { ComputationRepeatRowType } from "../../../shared-components/ComputationRepeat.js";
 import { useRowPropertyItems } from "../../constants/properties.js";
 import { InteractionLogActions } from "../../../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../../../redux/validation/selectors.js";
 import { PrintLocalizer } from "../../../../../localization/index.js";
 import { RESOURCE_KEYS } from "../../../../../localization/index.js";
-import { BaseListingFormProps } from "../../base-listing-form.js";
+import type { BaseListingFormProps } from "../../base-listing-form.js";
 
 import { PropertyComputationForm } from "../PropertyComputationForm.js";
 
-export const MainPropertyComputationForm = ({ element }: BaseListingFormProps) => {
+interface MainPropertyComputationFormProps extends BaseListingFormProps {
+	formState: ListingPropertyCompFormState;
+}
+
+export const MainPropertyComputationForm = ({ element, formState }: MainPropertyComputationFormProps) => {
 	const dispatch = useDispatch();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
-	const additionalData = useSelector(PrintEngineSelectors.additionalData);
-	const propertyCompIndex = additionalData?.listing?.propertyCompIndex;
+	const propertyCompIndex = formState?.propertyCompIndex;
 	const rowPropertyComputationErrorMap = useSelector((state: PrintEngineState) => {
 		const errorMap = ValidationSelectors.listing(state, element.id);
 		return propertyCompIndex !== undefined

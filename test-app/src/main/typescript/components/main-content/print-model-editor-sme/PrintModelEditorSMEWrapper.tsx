@@ -31,22 +31,26 @@
  */
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useMemo } from "react";
-import { Store } from "@reduxjs/toolkit";
+import type { Store } from "@reduxjs/toolkit";
 
-import {
+import type {
 	InteractionLogPersistentEntry,
 	LogPersistentEntry,
 	PartialTransactionLogPersistentEntry,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log";
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model";
-import { InternalPrintModelEditorSME } from "@com.mgmtp.a12.print/print-model-editor-component/lib/internal/components/app/sme/InternalPrintModelEditorSME";
-import { EditorComponentApiActions } from "@com.mgmtp.a12.print/print-model-editor-component/lib/internal/api";
-import { PrintEngineState } from "@com.mgmtp.a12.print/print-model-editor-component/lib/internal/store/root-reducer";
-import { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts/lib/types/font";
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
+import { InternalPrintModelEditorSME } from "@com.mgmtp.a12.print/print-model-editor-component/a12internal/components";
+import type {
+	EditorComponentApiActions,
+	PrintEngineState,
+} from "@com.mgmtp.a12.print/print-model-editor-component/a12internal/api";
+import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
 
 import { EditorActions, EditorSelector } from "../../../store/editor";
 import { NotificationActions } from "../../../store/notification";
 import { PreviewActions } from "../../../store/preview";
+
+import { createTestAppStaticImageProvider } from "./staticImageProviderTestApp";
 
 interface PrintEditorProps {
 	printModel: Model;
@@ -62,7 +66,7 @@ const devProps: Record<string, string[]> = {
 	roles: ["admin", "guest"],
 };
 
-const precompilePrintModel = () => Promise.resolve(true);
+const precompilePrintModel = () => Promise.resolve([]);
 const onDeploy = () => undefined;
 
 export function PrintModelEditorSMEWrapper({
@@ -146,7 +150,7 @@ export function PrintModelEditorSMEWrapper({
 	);
 
 	const printState = useCallback((store: Store) => {
-		if (process.env.test) {
+		if (process.env.TEST) {
 			store.subscribe(() => {
 				window.store = store.getState();
 			});
@@ -156,6 +160,8 @@ export function PrintModelEditorSMEWrapper({
 	const printModels = useMemo(() => {
 		return [...templatePrintModels, printModel];
 	}, [templatePrintModels, printModel]);
+
+	const staticImageProvider = useMemo(() => createTestAppStaticImageProvider(caseId ?? ""), [caseId]);
 
 	const loadReferencedDocumentModels = useCallback(
 		(ids: string[]) => {
@@ -189,6 +195,7 @@ export function PrintModelEditorSMEWrapper({
 			initialState={store}
 			hasExternalStore={hasExternalStore}
 			availableRoles={devProps.roles}
+			staticImageProvider={staticImageProvider}
 		/>
 	);
 }

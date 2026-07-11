@@ -31,11 +31,8 @@
  */
 import { useCallback } from "react";
 
-import {
-	LocalizableArgs,
-	localizableFromLocalizationTreeMap,
-	Localizer,
-} from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import type { LocalizableArgs, Localizer } from "@com.mgmtp.a12.utils/utils-localization";
+import { localizableFromLocalizationTreeMap } from "@com.mgmtp.a12.utils/utils-localization";
 
 import { PRINT_DEFAULT_TRANSLATIONS } from "../../../localization/index.js";
 

@@ -206,7 +206,7 @@ public class PdfGenerationTest {
 
 					@Override
 					public ByteArrayInputStream loadAttachment(AttachmentDependencyDescriptor descriptor) {
-						return PrintTestUtil.loadStreamFromResources("/data/image/referenceImage.jpg");
+						return PrintTestUtil.loadStreamFromResources("/data/image/REFERENCED_IMAGE.jpg");
 					}
 				}
 			);
@@ -623,7 +623,7 @@ public class PdfGenerationTest {
 
 				@Override
 				public ByteArrayInputStream loadAttachment(AttachmentDependencyDescriptor descriptor) {
-					return PrintTestUtil.loadStreamFromResources("/data/listing/referenceAttachment.pdf");
+					return PrintTestUtil.loadStreamFromResources("/data/listing/REFERENCED_ATTACHMENT.pdf");
 				}
 			}
 		);

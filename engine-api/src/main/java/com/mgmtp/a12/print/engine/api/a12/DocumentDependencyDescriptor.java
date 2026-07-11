@@ -33,7 +33,9 @@ package com.mgmtp.a12.print.engine.api.a12;
 
 import com.mgmtp.a12.model.header.ModelReference;
 import com.mgmtp.a12.print.engine.api.JobDependencyDescriptor;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface DocumentDependencyDescriptor extends JobDependencyDescriptor {
 
 	ModelReference getModelReference();

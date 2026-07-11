@@ -29,36 +29,90 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ImageSrcType, PartialImage } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { ImageSrcType, PartialImage } from "@com.mgmtp.a12.print/print-model-api/model";
+import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { RequestApiActions } from "../../redux/index.js";
+import { RequestApiSelectors } from "../../redux/request-api/selectors.js";
+import { EditorConst } from "../../constant/editor.js";
 
-import { ImageAttachment, ImageField, ImageInitialized } from "./Image.styled.js";
-import { BaseElementProps } from "./base.js";
+import { ImageAttachment, ImagePlaceholderAttachment, ImageField, ImageInitialized } from "./Image.styled.js";
+import type { BaseElementProps } from "./base.js";
 
 export type ImageProps = BaseElementProps;
 
+const { MM_TO_PX } = EditorConst;
+
 export const Image = ({ element, styles }: ImageProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
+	const dispatch = useDispatch();
 
 	if (!PartialImage.isInstance(element)) {
-		throw Error(`Expected element of type Image but got ${element.type}`);
+		throw new Error(`Expected element of type Image but got ${element.type}`);
 	}
 	const image = element.image;
 	const type = image?.imageSrcType;
-	if (type === ImageSrcType.Attachment && image?.attachmentSource?.imageAttachment?.content) {
+
+	const resourceName = image?.resourceSource?.resourceName ?? "";
+	const imageStaticImageData = useSelector((state: PrintEngineState) =>
+		RequestApiSelectors.resourceByName(state, resourceName)
+	);
+
+	React.useEffect(() => {
+		if (resourceName) {
+			dispatch(RequestApiActions.loadStaticImage(resourceName));
+		}
+	}, [dispatch, resourceName]);
+
+	const imageStyle = React.useMemo<React.CSSProperties>(() => {
+		const dims = image?.dimensions;
+		const widthMm = dims?.width?.value ?? dims?.originalWidth?.value;
+		const heightMm =
+			dims?.height?.value ??
+			(dims?.width?.value && dims?.originalWidth?.value && dims?.originalHeight?.value
+				? Math.round(dims.width.value * (dims.originalHeight.value / dims.originalWidth.value))
+				: dims?.originalHeight?.value);
+		return {
+			width: widthMm === undefined ? undefined : MM_TO_PX(widthMm),
+			height: heightMm === undefined ? undefined : MM_TO_PX(heightMm),
+		};
+	}, [image?.dimensions]);
+
+	if (type === ImageSrcType.Static && image?.resourceSource?.resourceName) {
+		if (imageStaticImageData?.content === undefined) {
+			return (
+				<ImagePlaceholderAttachment data-testid="element-image" style={imageStyle}>
+					<Icon style={{ fontSize: "48px" }}>image</Icon>
+					{image.alternativeText}
+				</ImagePlaceholderAttachment>
+			);
+		}
 		return (
 			<ImageAttachment
+				data-testid="element-image"
 				alt={image.alternativeText}
-				src={image.attachmentSource.imageAttachment.content}
-				style={styles}
+				src={imageStaticImageData.content}
+				style={imageStyle}
 			/>
 		);
 	}
 
-	if (type === ImageSrcType.Field && image?.fieldSource) {
-		return <ImageField style={styles}>{image.fieldSource.path}</ImageField>;
+	if (type === ImageSrcType.Dynamic && image?.fieldSource) {
+		return (
+			<ImageField data-testid="element-image" style={styles}>
+				{image.fieldSource.path}
+			</ImageField>
+		);
 	}
 
-	return <ImageInitialized style={styles}>{localizer(RESOURCE_KEYS.editor.element.Image)}</ImageInitialized>;
+	return (
+		<ImageInitialized data-testid="element-image" style={styles}>
+			{localizer(RESOURCE_KEYS.editor.element.Image)}
+		</ImageInitialized>
+	);
 };

@@ -32,15 +32,7 @@
 package com.mgmtp.a12.print.shell.internal.exceptions;
 
 public class PdfComparisonException extends PrintShellException {
-	public PdfComparisonException() {
-		super();
-	}
-
 	public PdfComparisonException(String message) {
 		super(message);
-	}
-
-	public PdfComparisonException(Exception exception) {
-		super(exception);
 	}
 }

@@ -29,14 +29,13 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { TextStyle } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/lib/internal/types/font.js";
+import type { TextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
 export interface PrintEditorState {
 	editorOptions: EditorOptions;
 	editorStates: EditorStates;
-	printModelRefs?: PrintModelRefs;
 	sidebar: EditorSidebarState;
 	defaultTextStyle: TextStyle;
 	fonts: PrintFontMap;
@@ -62,7 +61,6 @@ export enum EditorMode {
 
 export interface EditorStates {
 	helperLines: HelperLines;
-	editorMode: EditorMode;
 	showBorders?: boolean;
 	isMarginVisible?: boolean;
 }

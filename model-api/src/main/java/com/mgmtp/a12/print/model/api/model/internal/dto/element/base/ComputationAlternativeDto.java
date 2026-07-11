@@ -59,3 +59,4 @@ public class ComputationAlternativeDto extends PrintModelEntityDto implements Co
 		return Optional.ofNullable(precondition);
 	}
 }
+

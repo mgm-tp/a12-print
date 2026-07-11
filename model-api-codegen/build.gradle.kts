@@ -34,9 +34,7 @@ plugins {
 }
 
 dependencies {
-	implementation(a12Libs.kernelMdModelApi)
-	implementation(a12Libs.kernelMdA12internal)
-	implementation(a12Libs.kernelMdSerializer)
+	implementation(a12Libs.kernelMdFacade)
 
 	implementation(thirdPartyLibs.jacksonDatabind)
 	implementation(thirdPartyLibs.commonsIO)

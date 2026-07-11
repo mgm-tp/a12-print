@@ -30,9 +30,8 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { createMigrationTool } from "@com.mgmtp.a12.migrationtool/migrationtool-core/web";
-import { MigrationTool, MigrationResult } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
-import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/lib/marshaller/model-marshaller.js";
-import { PrintValidationMode } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/validation/print-validator.js";
+import type { MigrationTool, MigrationResult, Workspace } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
+import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
 
 import { buildErrorFieldPaths } from "../utils/validation.js";
 
@@ -42,15 +41,14 @@ const BasicMigrationTool = createMigrationTool(MIGRATION_PARAMETERS);
 const printModelMarshaller = new PrintModelMarshaller();
 
 export const PrintMigrationTool: MigrationTool = {
-	migrate: (models: object[]): MigrationResult[] => {
-		const migratedModels: MigrationResult[] = BasicMigrationTool.migrate(models);
+	migrate: (models: object[], workspace?: Workspace): MigrationResult[] => {
+		const migratedModels: MigrationResult[] = BasicMigrationTool.migrate(models, workspace);
 
 		return migratedModels.map(migrationResult => {
 			if (migrationResult.status === "success") {
 				const deserializeResult = printModelMarshaller.deserialize(
 					migrationResult.model as Record<string, unknown>,
-					[],
-					PrintValidationMode.SKIP_REFERENCES
+					{ html: false }
 				);
 
 				if (!deserializeResult.result) {
@@ -61,11 +59,7 @@ export const PrintMigrationTool: MigrationTool = {
 					};
 				}
 
-				const serializeResult = printModelMarshaller.serialize(
-					deserializeResult.result,
-					[],
-					PrintValidationMode.SKIP_REFERENCES
-				);
+				const serializeResult = printModelMarshaller.serialize(deserializeResult.result, { html: false });
 
 				if (!serializeResult.result) {
 					return {

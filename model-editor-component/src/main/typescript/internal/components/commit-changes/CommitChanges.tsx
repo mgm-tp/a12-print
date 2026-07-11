@@ -32,27 +32,25 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import {
-	getDataByKey,
+import type {
 	RowEventHandlerGetter,
 	RowStyleGetter,
 	TableRenderPropsType,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/index.js";
-import { BaseColumnType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/column.api.js";
-import { Table } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/table.view.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { TableTemplate } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/main/template/index.js";
+	BaseColumnType,
+} from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, getDataByKey, Table, Icon, TableTemplate } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { CommitViewSelectors } from "../../redux/commit-view/selectors.js";
 import { CommitViewActions } from "../../redux/index.js";
-import { EditorComponentContext, ILocalizer } from "../../api/index.js";
+import type { ILocalizer } from "../../api/index.js";
+import { EditorComponentContext } from "../../api/index.js";
 import { interactionGraph } from "../../constant/interaction-graph.js";
-import { CommitInteractionRow, CommitState, CommitTransactionRow } from "../../types/index.js";
+import type { CommitInteractionRow, CommitState, CommitTransactionRow } from "../../types/index.js";
 import { useTransactionGroups } from "../../hooks/index.js";
 
 import { ValidationErrorView } from "../error-tree/ValidationErrorView.js";
+import { PrecompileMessagesView } from "../precompile-messages/PrecompileMessagesView.js";
 
 import {
 	StyledCommitChangesContainer,
@@ -68,7 +66,8 @@ import {
 export const CommitChanges = () => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const dispatch = useDispatch();
-	const hasCommitViewValidationErrors = useSelector(CommitViewSelectors.hasCommitViewValidationErrors);
+	const commitViewValidationErrorsCount = useSelector(CommitViewSelectors.commitViewValidationErrorsCount);
+	const isCommitting = useSelector(CommitViewSelectors.isCommitting);
 	const [expandedRows, setExpandedRows] = React.useState<number[]>([]);
 	const columns = useCommitInteractionColumns();
 	const transactionGroups = useTransactionGroups();
@@ -78,6 +77,7 @@ export const CommitChanges = () => {
 	const discardAllChangesPossible = React.useContext(EditorComponentContext).discardAllChangesPossible;
 
 	React.useEffect(() => {
+		dispatch(CommitViewActions.setCommitViewPrecompileMessages([]));
 		dispatch(CommitViewActions.initialCommitView());
 	}, [dispatch]);
 
@@ -185,13 +185,14 @@ export const CommitChanges = () => {
 					/>
 				</StyledCommitTableContainer>
 				<StyledCommitErrorContainer>
+					<PrecompileMessagesView />
 					<ValidationErrorView />
 				</StyledCommitErrorContainer>
 			</StyledCommitChangesContent>
 			<StyledCommitChangesToolbar>
 				{(discardAllChangesPossible || false) && (
 					<StyledCommitChangesButton
-						disabled={transactionGroups.length === 0}
+						disabled={transactionGroups.length === 0 || isCommitting}
 						label={localizer(RESOURCE_KEYS.sidebar.commitChanges.discard)}
 						title={localizer(RESOURCE_KEYS.sidebar.commitChanges.discard)}
 						destructive
@@ -200,7 +201,7 @@ export const CommitChanges = () => {
 				)}
 				<StyledCommitChangesButton
 					right
-					disabled={transactionGroups.length === 0 || hasCommitViewValidationErrors}
+					disabled={transactionGroups.length === 0 || commitViewValidationErrorsCount > 0 || isCommitting}
 					label={localizer(RESOURCE_KEYS.sidebar.commitChanges.commit)}
 					title={localizer(RESOURCE_KEYS.sidebar.commitChanges.commit)}
 					onClick={onCommitClick}
@@ -420,7 +421,7 @@ const useCommitInteractionColumns = (): BaseColumnType<CommitInteractionRow>[] =
 				label: localizer(RESOURCE_KEYS.sidebar.commitChanges.columns.status),
 				dataKey: "state",
 				verticalAlignment: "middle",
-				width: 1.5,
+				width: 0.8,
 				fixedWidth: true,
 			},
 			{

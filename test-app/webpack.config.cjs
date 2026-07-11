@@ -159,7 +159,10 @@ module.exports = env => {
 				template: Path.join(context, "src/main/typescript/index.html"),
 				favicon: "public/images/Model-Print.svg",
 			}),
-			new DefinePlugin({ "process.env.test": JSON.stringify(env.test) }),
+			new DefinePlugin({
+				"process.env.TEST": JSON.stringify(env.test),
+				"process.env.DEBUG": JSON.stringify(env.debug),
+			}),
 		],
 	};
 };

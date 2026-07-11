@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.expression;
 
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyFunction;
 import lombok.Builder;
 import lombok.NonNull;
@@ -48,7 +48,7 @@ public class PreCompiledExpressionMap implements CoreDependencyFunction<PreCompi
 	public PreCompiledExpression apply(PreCompiledExpressionDependency preCompiledExpressionDependency) {
 		final var result = preCompiledExpressions.get(preCompiledExpressionDependency.getExpressionId());
 		if (result == null) {
-			throw new PrintCompilerException("invalid Compilation State, missing Expression", preCompiledExpressionDependency.getExpressionId());
+			throw new PrintCompilerException("Invalid Compilation State, missing Expression", preCompiledExpressionDependency.getExpressionId());
 		}
 		return result;
 

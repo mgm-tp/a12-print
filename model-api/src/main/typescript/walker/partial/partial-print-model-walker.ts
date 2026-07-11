@@ -30,12 +30,12 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import {
-	DINTemplateProperties,
+	type DINTemplateProperties,
 	isPartialSection,
 	isPartialSegment,
 	isPartialWatermark,
-	PartialAnyContainerElement,
-	PartialAnyPrintModelElement,
+	type PartialAnyContainerElement,
+	type PartialAnyPrintModelElement,
 	PartialAnyTopLevelContainerElement,
 	PartialArea,
 	PartialBarChart,
@@ -47,41 +47,41 @@ import {
 	PartialLine,
 	PartialLineChart,
 	PartialListing,
-	PartialMetadata,
+	type PartialMetadata,
 	PartialOverride,
 	PartialPageNumber,
 	PartialPageNumberTotal,
 	PartialPieChart,
-	PartialPrintModel,
-	PartialPrintModelContent,
-	PartialPrintModelElement,
-	PartialReference,
-	PartialSection,
-	PartialSegment,
+	type PartialPrintModel,
+	type PartialPrintModelContent,
+	type PartialPrintModelElement,
+	type PartialReference,
+	type PartialSection,
+	type PartialSegment,
 	PartialSwitch,
 	PartialTable,
 	PartialTableLayout,
 	PartialText,
-	PartialWatermark,
+	type PartialWatermark,
 	PrintModelElement,
-	Segment,
+	type Segment,
 } from "../../model/index.js";
 import { ExtendedEntityInstancePathBuilder } from "../../errors/extended-entity-instance-path.js";
 
 import { DescendCommand, TraversalCommand } from "../print-model-visitor.js";
-import { ReferenceListResolver, ReferenceResolver } from "../reference-resolver.js";
-import { PrintModelListResolver, PrintModelResolver } from "../print-model-resolver.js";
+import { ReferenceListResolver, type ReferenceResolver } from "../reference-resolver.js";
+import { PrintModelListResolver, type PrintModelResolver } from "../print-model-resolver.js";
 import { DefaultSegmentIdResolver } from "../segment-id-resolver.js";
 import { walkReferencedBoundingBoxes } from "../print-model-walker.js";
 
-import { PartialPrintModelVisitor } from "./partial-print-model-visitor.js";
-import { PartialSectionIdResolver } from "./partial-section-id-resolver.js";
-import { PartialWatermarkIdResolver } from "./partial-watermark-id-resolver.js";
-import { PartialSegmentIdResolver } from "./partial-segment-id-resolver.js";
-import { PartialReferenceResolver } from "./partial-reference-resolver.js";
+import type { PartialPrintModelVisitor } from "./partial-print-model-visitor.js";
+import { type PartialSectionIdResolver } from "./partial-section-id-resolver.js";
+import { type PartialWatermarkIdResolver } from "./partial-watermark-id-resolver.js";
+import { type PartialSegmentIdResolver } from "./partial-segment-id-resolver.js";
+import { type PartialReferenceResolver } from "./partial-reference-resolver.js";
 import {
 	PartialReferenceElementListResolver,
-	PartialReferenceElementResolver,
+	type PartialReferenceElementResolver,
 } from "./parital-reference-element-resolver.js";
 import { PartialPrintModelTrace } from "./partial-print-model-trace.js";
 

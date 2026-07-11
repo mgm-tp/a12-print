@@ -29,6 +29,6 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { DocumentModelData } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/types/document-model-data.js";
+import type { DocumentModelData } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 export type DocumentModelDataState = Record<string, DocumentModelData | undefined>;

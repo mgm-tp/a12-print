@@ -30,24 +30,23 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { nanoid } from "nanoid";
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { getContext, put, select, takeEvery } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
 
-import { InteractionLogEntry } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { InteractionLogEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 
-export function* redoInteractionSaga(): SagaIterator {
-	yield* takeEvery((action: AnyAction) => InteractionLogActions.redo.match(action), handleRedoInteractionSaga);
+export function* redoInteractionSaga(): SagaGenerator<void> {
+	yield* takeEvery(InteractionLogActions.redo.match, handleRedoInteractionSaga);
 }
 
-function* handleRedoInteractionSaga(): SagaIterator {
+function* handleRedoInteractionSaga(): SagaGenerator<void> {
 	const lastUndoInteraction = yield* select(PrintEngineSelectors.lastUndoInteraction);
 	if (!lastUndoInteraction) {
-		throw Error("Tried to redo but couldn't find any undo interaction to redo");
+		throw new Error("Tried to redo but couldn't find any undo interaction to redo");
 	}
 	const requestApi: RequestApi = yield* getContext("requestApi");
 	const interactionState = yield* select(PrintEngineSelectors.interactionLogState);
@@ -63,7 +62,7 @@ function* handleRedoInteractionSaga(): SagaIterator {
 		}
 	}
 	if (!interactionToRestore) {
-		throw Error("Tried to redo but couldn't find original interaction to restore");
+		throw new Error("Tried to redo but couldn't find original interaction to restore");
 	}
 	const newId = nanoid();
 	const logEntry: InteractionLogEntry = {

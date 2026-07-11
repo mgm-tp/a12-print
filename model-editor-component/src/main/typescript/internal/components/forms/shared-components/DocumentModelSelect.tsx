@@ -34,7 +34,7 @@ import { useSelector } from "react-redux";
 import { styled } from "styled-components";
 import sortBy from "lodash/sortBy.js";
 
-import { SelectItem, SelectProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select/index.js";
+import type { SelectItem, SelectProps } from "@com.mgmtp.a12.widgets/widgets-core";
 import { Button, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
@@ -79,6 +79,7 @@ export const DocumentModelSelect = ({ value, onValueChanged, onDelete, ...restPr
 	return (
 		<StyledDocumentModelSelectWrapper>
 			<CustomSelect
+				inputProps={{ "data-testid": "document-model-select" } as React.HTMLProps<HTMLSelectElement>}
 				placeholder={localizer(RESOURCE_KEYS.input.selectPlaceholder)}
 				value={value}
 				onValueChanged={onValueChanged}
@@ -89,6 +90,7 @@ export const DocumentModelSelect = ({ value, onValueChanged, onDelete, ...restPr
 			/>
 			{onDelete && value && (
 				<Button
+					data-testid="delete-document-model-button"
 					destructive
 					icon={<Icon>delete</Icon>}
 					title={localizer(RESOURCE_KEYS.elementForm.model.deleteDocumentModelButton)}

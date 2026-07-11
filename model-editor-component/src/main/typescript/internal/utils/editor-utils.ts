@@ -29,16 +29,17 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
+import type {
 	PageOrientation,
-	SectionUsage,
 	PartialValidPlaceableReference,
 	PartialSection,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PrintModelDTO } from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { SectionUsage } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PrintModelDTO } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
 
-import { PlainMeasureDimensions, PlainMeasurePosition, createPlainMmMeasure } from "./measure-utils.js";
-import { OmitId } from "./type-utils.js";
+import type { PlainMeasureDimensions, PlainMeasurePosition } from "./measure-utils.js";
+import { createPlainMmMeasure } from "./measure-utils.js";
+import type { OmitId } from "./type-utils.js";
 import { ElementsUtils } from "./elements-utils.js";
 
 const FIRST_PAGE_NUMBER = 1;

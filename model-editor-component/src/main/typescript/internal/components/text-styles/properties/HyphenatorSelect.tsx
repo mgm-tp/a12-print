@@ -29,14 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { StaticHyphenatorKey } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/constant/static-hyphenator.js";
-import { StaticHyphenator } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import { HintTooltip, SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
+import { StaticHyphenatorKey } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
+import type { StaticHyphenator } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { CustomSelect } from "../../forms/custom-base-input-components/index.js";
 
-import { BaseTextStylePropertyProps } from "./base-type.js";
+import type { BaseTextStylePropertyProps } from "./base-type.js";
 
 const hyphenatorOptions: SelectItem[] = [
 	{ label: "", value: "" },
@@ -62,9 +62,6 @@ export const HyphenatorSelect = (props: HyphenatorSelectProps) => {
 			onValueChanged={props.onValueChanged}
 			disabled={props.isDefaultTextStyle}
 			errorMessage={props.errorMessage}
-			tooltips={
-				<HintTooltip text={localizer(RESOURCE_KEYS.textStyles.tooltips.legacyRenderingMode)} key="hint" />
-			}
 		/>
 	);
 };

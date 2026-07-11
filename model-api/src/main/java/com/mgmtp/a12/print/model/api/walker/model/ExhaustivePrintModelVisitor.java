@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.model.api.walker.model;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.exceptions.UnvisitedElementException;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
 import com.mgmtp.a12.print.model.api.walker.TraversalCommand;
@@ -40,6 +41,7 @@ import com.mgmtp.a12.print.model.api.walker.TraversalCommand;
  * The interface Exhaustive print model visitor.
  * The visitor will throw if during visitation some default implementation of a concrete visitElement method was called
  */
+@OnlyForUsage
 public interface ExhaustivePrintModelVisitor extends PrintModelVisitor {
 
 	/**

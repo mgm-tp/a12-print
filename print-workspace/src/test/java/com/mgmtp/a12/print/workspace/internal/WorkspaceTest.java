@@ -54,7 +54,6 @@ public class WorkspaceTest {
     private static final Map<FileElementType, List<FileElement>> FILE_MAP = Map.ofEntries(
             new AbstractMap.SimpleEntry<>(FileElementType.MODEL, new ArrayList<>()),
             new AbstractMap.SimpleEntry<>(FileElementType.PROPERTIES, new ArrayList<>()),
-            new AbstractMap.SimpleEntry<>(FileElementType.YAML, new ArrayList<>()),
             new AbstractMap.SimpleEntry<>(FileElementType.PDF, new ArrayList<>()),
             new AbstractMap.SimpleEntry<>(FileElementType.LOG, new ArrayList<>()),
             new AbstractMap.SimpleEntry<>(FileElementType.DOCUMENT, new ArrayList<>()),
@@ -72,7 +71,7 @@ public class WorkspaceTest {
     public void testSetWorkspace() {
         final var initFileMap = underTest.getFileMap();
         final var initPath = underTest.getPath();
-        assertThat(initFileMap).hasSize(7).isEqualTo(FILE_MAP);
+        assertThat(initFileMap).hasSize(6).isEqualTo(FILE_MAP);
 		assertThat(initPath.toString()).isEqualTo("");
 
         final var mockPath = mock(Path.class, "Path");
@@ -81,14 +80,14 @@ public class WorkspaceTest {
         final var setFileMap = underTest.getFileMap();
         var setPath = underTest.getPath();
 
-        assertThat(setFileMap).hasSize(7).isEqualTo(FILE_MAP);
+        assertThat(setFileMap).hasSize(6).isEqualTo(FILE_MAP);
         assertThat(setPath).isEqualTo(mockPath);
     }
 
     @Test
     public void testGetFileMap() {
         final var fileMap = underTest.getFileMap();
-        assertThat(fileMap).hasSize(7).isEqualTo(FILE_MAP);
+        assertThat(fileMap).hasSize(6).isEqualTo(FILE_MAP);
     }
 
     @Test

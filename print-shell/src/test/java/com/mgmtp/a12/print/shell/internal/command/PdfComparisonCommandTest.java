@@ -32,70 +32,38 @@
 package com.mgmtp.a12.print.shell.internal.command;
 
 import com.mgmtp.a12.print.shell.internal.command.utils.ShellUtil;
-import com.mgmtp.a12.print.shell.internal.command.utils.TestConfiguration;
-import com.mgmtp.a12.print.shell.internal.configuration.PrintShellConfiguration;
-import com.mgmtp.a12.print.shell.internal.service.*;
-import com.mgmtp.a12.print.shell.internal.workspace.WorkspaceBuilder;
-import com.mgmtp.a12.print.shell.internal.workspace.WorkspaceVisitor;
-import com.mgmtp.a12.print.workspace.internal.handler.FileHandler;
-import org.jline.terminal.Terminal;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.shell.test.ShellTestClient;
-import org.springframework.shell.test.autoconfigure.ShellTest;
-import org.springframework.test.annotation.DirtiesContext;
+
+import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-@ShellTest(terminalWidth = 200)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@Import({
-	WorkspaceBuilder.class,
-	WorkspaceVisitor.class,
-	FileHandler.class,
-	PrintShellConfiguration.class,
-	MigrationService.class,
-	PdfComparisonService.class,
-	PrintService.class,
-	ProfilingService.class,
-	PrintDocumentService.class,
-	TestConfiguration.class
-})
-public class PdfComparisonCommandTest {
+class PdfComparisonCommandTest {
 
-	private static final String FIRST_PDF = PdfComparisonCommandTest.class.getResource(
+	private static final String FIRST_PDF = Objects.requireNonNull(PdfComparisonCommandTest.class.getResource(
 		"/pdfComparison/PrintWithShell-TestDocument-first.pdf"
-	).getPath();
+	)).getPath();
 
-	private static final String DIFFERENT_PDF = PdfComparisonCommandTest.class.getResource(
+	private static final String DIFFERENT_PDF = Objects.requireNonNull(PdfComparisonCommandTest.class.getResource(
 		"/pdfComparison/PrintWithShell-TestDocument-different.pdf"
-	).getPath();
+	)).getPath();
 
-	private static final String EQUAL_PDF = PdfComparisonCommandTest.class.getResource(
+	private static final String EQUAL_PDF = Objects.requireNonNull(PdfComparisonCommandTest.class.getResource(
 		"/pdfComparison/PrintWithShell-TestDocument-equal.pdf"
-	).getPath();
+	)).getPath();
 
-
-	private static final String DIFFERENT_PAGE_SIZE_PDF = PdfComparisonCommandTest.class.getResource(
+	private static final String DIFFERENT_PAGE_SIZE_PDF = Objects.requireNonNull(PdfComparisonCommandTest.class.getResource(
 		"/pdfComparison/PrintWithShell-TestDocument-different_page_size.pdf"
-	).getPath();
+	)).getPath();
 
 	private static final String COMPARE_ALL_WORKSPACE_PATH =
-		MigrationCommandTest.class.getResource("/pdfComparisonAll").getPath();
-
-	@Autowired
-	ShellTestClient client;
-
-	@Autowired
-	Terminal terminal;
+		Objects.requireNonNull(PdfComparisonCommandTest.class.getResource("/pdfComparisonAll")).getPath();
 
 	@Test
 	void pdfComparisonTest() {
 		assertThatCode(() -> ShellUtil.runShellCommand(
-				terminal,
-				client,
-				String.format("compare -1 %s -2 %s", FIRST_PDF, EQUAL_PDF),
+				new String[]{"compare", "-1", FIRST_PDF, "-2", EQUAL_PDF},
 				"The PDF documents are equal"
 			)
 		).doesNotThrowAnyException();
@@ -104,9 +72,7 @@ public class PdfComparisonCommandTest {
 	@Test
 	void pdfComparisonWithDifferentPercentTest() {
 		assertThatCode(() -> ShellUtil.runShellCommand(
-				terminal,
-				client,
-				String.format("compare -1 %s -2 %s -p %s", FIRST_PDF, DIFFERENT_PDF, 0.2),
+				new String[]{"compare", "-1", FIRST_PDF, "-2", DIFFERENT_PDF, "-p", "0.2"},
 				"The PDF documents are equal"
 			)
 		).doesNotThrowAnyException();
@@ -115,10 +81,9 @@ public class PdfComparisonCommandTest {
 	@Test
 	void pdfComparisonFailingTest() {
 		assertThatCode(() -> ShellUtil.runShellCommand(
-				terminal,
-				client,
-				String.format("compare -1 %s -2 %s", FIRST_PDF, DIFFERENT_PDF),
-				"The print shell comparison throws the exception"
+				new String[]{"compare", "-1", FIRST_PDF, "-2", DIFFERENT_PDF},
+				"The page with the index 0 of the PDF documents is different",
+			1
 			)
 		).doesNotThrowAnyException();
 	}
@@ -126,10 +91,9 @@ public class PdfComparisonCommandTest {
 	@Test
 	void pdfComparisonAllFailingTest() {
 		assertThatCode(() -> ShellUtil.runShellCommand(
-				terminal,
-				client,
-				String.format("compare-all -w %s", COMPARE_ALL_WORKSPACE_PATH),
-				"The print shell comparison throws the exception"
+				new String[]{"compare-all", "-w", COMPARE_ALL_WORKSPACE_PATH},
+				"The page with the index 0 of the PDF documents is different",
+			1
 			)
 		).doesNotThrowAnyException();
 	}
@@ -137,10 +101,9 @@ public class PdfComparisonCommandTest {
 	@Test
 	void pdfComparisonDifferentPageSizeTest() {
 		assertThatCode(() -> ShellUtil.runShellCommand(
-				terminal,
-				client,
-				String.format("compare -1 %s -2 %s", FIRST_PDF, DIFFERENT_PAGE_SIZE_PDF),
-				"The PDF documents do not have the same page size"
+				new String[]{"compare", "-1", FIRST_PDF, "-2", DIFFERENT_PAGE_SIZE_PDF},
+				List.of(),
+			1
 			)
 		).doesNotThrowAnyException();
 	}

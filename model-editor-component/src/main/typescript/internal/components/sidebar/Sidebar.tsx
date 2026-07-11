@@ -32,13 +32,11 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/main/button.view.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/main/icon.view.js";
-import { TabPanelTemplateProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/tab-panel/index.js";
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { TabPanelTemplateProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { FULLSCREEN_TABS, SidebarActions } from "../../redux/sidebar/index.js";
-import { PrintEngineSelectors } from "../../store/selectors.js";
+import { FULLSCREEN_TABS, NavigationActions, NavigationSelectors } from "../../redux/navigation/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 
 import { SidebarContent } from "./SidebarContent.js";
@@ -54,30 +52,31 @@ interface SidebarProps {
 export const Sidebar = ({ footer, hiddenItems }: SidebarProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
-	const { selectedItem, isOpen, isFullscreen } = useSelector(PrintEngineSelectors.sidebar);
+	const { activeTab, isOpen, isFullscreen } = useSelector(NavigationSelectors.sidebarState);
 
 	const sidebarTabs = useSidebarTabs(hiddenItems);
 
 	const onClose = React.useCallback(() => {
-		dispatch(SidebarActions.setExpandedState({ isOpen: false }));
+		dispatch(NavigationActions.setExpandedState({ isOpen: false }));
 	}, [dispatch]);
 
 	const onToggleFullscreen = React.useCallback(() => {
-		dispatch(SidebarActions.setExpandedState({ isFullscreen: !isFullscreen }));
+		dispatch(NavigationActions.setExpandedState({ isFullscreen: !isFullscreen }));
 	}, [dispatch, isFullscreen]);
 
 	const onSelect = React.useCallback(
 		(newTab: TabPanelTemplateProps.TabProps) => {
-			if (newTab.value === selectedItem) {
-				if (FULLSCREEN_TABS.includes(selectedItem)) {
+			if (newTab.value === activeTab) {
+				if (FULLSCREEN_TABS.includes(activeTab)) {
 					return;
 				}
-				dispatch(SidebarActions.setExpandedState({ isOpen: !isOpen }));
+				dispatch(NavigationActions.setExpandedState({ isOpen: !isOpen }));
 				return;
 			}
-			dispatch(SidebarActions.setCurrentView({ selectedItem: newTab.value as SidebarItem, isOpen: true }));
+			dispatch(NavigationActions.setActiveTab(newTab.value as SidebarItem));
+			dispatch(NavigationActions.setExpandedState({ isOpen: true }));
 		},
-		[dispatch, isOpen, selectedItem]
+		[dispatch, isOpen, activeTab]
 	);
 
 	const fullScreenButton = React.useMemo(
@@ -88,12 +87,12 @@ export const Sidebar = ({ footer, hiddenItems }: SidebarProps) => {
 		[localizer, isFullscreen]
 	);
 
-	const showPanelSuffixes = React.useMemo(() => !FULLSCREEN_TABS.includes(selectedItem), [selectedItem]);
+	const showPanelSuffixes = React.useMemo(() => !FULLSCREEN_TABS.includes(activeTab), [activeTab]);
 
 	return (
 		<TabPanel
 			onSelect={onSelect}
-			value={selectedItem}
+			value={activeTab}
 			tabs={sidebarTabs}
 			footer={footer}
 			header={
@@ -124,7 +123,7 @@ export const Sidebar = ({ footer, hiddenItems }: SidebarProps) => {
 			}
 			id="sidebar"
 		>
-			{isOpen && selectedItem && <SidebarContent />}
+			{isOpen && activeTab && <SidebarContent />}
 		</TabPanel>
 	);
 };

@@ -33,8 +33,9 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { ElementType, PartialArea, PartialSwitch } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { PartialArea } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType, PartialSwitch } from "@com.mgmtp.a12.print/print-model-api/model";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";

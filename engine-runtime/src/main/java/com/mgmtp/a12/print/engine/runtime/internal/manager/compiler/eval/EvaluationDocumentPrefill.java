@@ -32,7 +32,8 @@
 package com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.eval;
 
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocument;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.Entity;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.computation.ComputationExpression;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.ComputationExpressionDependency;
@@ -41,10 +42,7 @@ import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.Variable;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.visitor.SyntaxTreeRenderer;
 import lombok.Data;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiFunction;
 
 import static com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.eval.EvaluationDocumentModelCompiler.MODEL;
@@ -63,20 +61,12 @@ public class EvaluationDocumentPrefill {
 		final var resultPrefix = statement.getResultPrefix();
 
 		final var valueLens = resultPrefix.map(computedPrefix ->
-			(BiFunction<ComputationExpression.Parameters, PrintDocument, Optional<Object>>) (parameters, computedDocument) -> {
+			(BiFunction<ComputationExpression.Parameters, PrintDocumentContext, Optional<Object>>) (parameters, printDocumentContext) -> {
 
 				final var prefix = Variable.builder()
 										   .isAbsolute(true)
 										   .segments(Arrays.copyOfRange(computedPrefix.getSegments(), 1, computedPrefix.getSegments().length))
 										   .build();
-
-				final var context = parameters.getPrintDocumentContext().orElseThrow(
-					() -> new PrintException("repeatable computation requires a repetition context")
-				);
-
-				final var range = context.findRepetitionPrefix(prefix).orElseThrow(
-					() -> new PrintException("repeatable computation requires a repetition context")
-				);
 
 				final var repPath = String.format("/%s%s",
 					MODEL,
@@ -87,21 +77,39 @@ public class EvaluationDocumentPrefill {
 					)
 				);
 
-				final var documentContext = computedDocument.context();
-				final var compContext = documentContext
-					.findRepetitions(repPath)
-					.filter(rep -> rep.findCurrentRepetition().getStart() == range.getStart())
-					.findAny();
+				final var context = parameters.getPrintDocumentContext().orElseThrow(
+					() -> new PrintException("There are no values for the path {}", repPath)
+				);
 
-				return compContext.flatMap(printDocumentContext -> printDocumentContext
+				final var repetitionIndexes = context.findRepetitionPrefix(prefix);
+
+				final var prependRepetitions = new ArrayList<>(repetitionIndexes.size() + 2);
+				prependRepetitions.add(1);
+				prependRepetitions.add(1);
+				prependRepetitions.addAll(repetitionIndexes);
+
+				final var compContexts = printDocumentContext
+					.findRepetitions(repPath)
+					.filter(rep ->
+						Objects.equals(
+							rep.getDocumentPointer().repetitionIndexes(),
+							prependRepetitions
+						)
+					)
+					.toList();
+
+				if (compContexts.size() > 1) {
+					throw new PrintDomainException("There are multiple groups for the path {}, but only one is allowed", repPath);
+				}
+
+				return compContexts.stream().findAny().flatMap(subPrintDocumentContext -> subPrintDocumentContext
 					.findSingleFieldInstance(fieldPath)
-					.flatMap(PrintDocumentContext.Entity::getValue));
+					.flatMap(Entity::getValue));
 			}
 		).orElseGet(() ->
-			(p, document) -> document
-				.context()
+			(p, printDocumentContext) -> printDocumentContext
 				.findSingleFieldInstance(fieldPath)
-				.flatMap(PrintDocumentContext.Entity::getValue)
+				.flatMap(Entity::getValue)
 		);
 
 		final var evalDocumentModelName = statement.getEvaluationDocumentModelRequirements().getEvalDocumentModelName();

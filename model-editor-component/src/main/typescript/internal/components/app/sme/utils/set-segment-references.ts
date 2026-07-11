@@ -31,30 +31,21 @@
  */
 import { nanoid } from "nanoid";
 
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model/index.js";
-import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/lib/marshaller/index.js";
-import {
-	ModelReferenceEntity,
-	PrintModel,
-	SegmentReference,
-	SegmentReferenceDirection,
-	SegmentReferencePurpose,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PrintValidationMode } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/validation/print-validator.js";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
+import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
+import type { ModelReferenceEntity, PrintModel, SegmentReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { SegmentReferenceDirection, SegmentReferencePurpose } from "@com.mgmtp.a12.print/print-model-api/model";
 
 const printModelMarshaller = new PrintModelMarshaller();
 
 export const setSegmentReferences = (model: Model, templateModel: Model): [Model, Model] => {
-	const deserializerPrintModel = printModelMarshaller.deserialize(
-		model as unknown as Record<string, unknown>,
-		[],
-		PrintValidationMode.SKIP_REFERENCES
-	);
+	const deserializerPrintModel = printModelMarshaller.deserialize(model as unknown as Record<string, unknown>, {
+		html: false,
+	});
 
 	const deserializerTemplatePrintModel = printModelMarshaller.deserialize(
 		templateModel as unknown as Record<string, unknown>,
-		[],
-		PrintValidationMode.SKIP_REFERENCES
+		{ html: false }
 	);
 
 	const printModel = deserializerPrintModel.result;
@@ -95,17 +86,9 @@ export const setSegmentReferences = (model: Model, templateModel: Model): [Model
 	let updatedPrintModel = setReference(printModel, outgoingReference);
 	updatedPrintModel = setModelReference(updatedPrintModel, modelReference);
 
-	const serializerPrintModel = printModelMarshaller.serialize(
-		updatedPrintModel,
-		[],
-		PrintValidationMode.SKIP_REFERENCES
-	);
+	const serializerPrintModel = printModelMarshaller.serialize(updatedPrintModel, { html: false });
 
-	const serializerTemplatePrintModel = printModelMarshaller.serialize(
-		updatedTemplatePrintModel,
-		[],
-		PrintValidationMode.SKIP_REFERENCES
-	);
+	const serializerTemplatePrintModel = printModelMarshaller.serialize(updatedTemplatePrintModel, { html: false });
 
 	const updatedModel = serializerPrintModel.result;
 	const updateTemplateModel = serializerTemplatePrintModel.result;

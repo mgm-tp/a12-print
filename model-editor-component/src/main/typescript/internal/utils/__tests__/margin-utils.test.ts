@@ -31,13 +31,8 @@
  */
 import { nanoid } from "nanoid";
 
-import {
-	Margin,
-	Margins,
-	MarginType,
-	MeasureUnit,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { Margin, Margins, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { MarginType, MeasureUnit } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../constant/editor.js";
 import { createPartialValidReference } from "../../../../../test/typescript/test-utils/index.js";

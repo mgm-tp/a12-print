@@ -31,7 +31,7 @@
  */
 import { css, styled } from "styled-components";
 
-import { ApplicationFrame } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/application-frame/main/application-frame.view.js";
+import { ApplicationFrame } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { TOOLBAR_HEIGHT, TOOLBAR_PADDING_Y } from "../global-toolbar/GlobalToolbar.styled.js";
 

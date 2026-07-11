@@ -31,20 +31,17 @@
  */
 import { nanoid } from "nanoid";
 
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model/index.js";
-import {
-	DeepPartialErrorMap,
-	PrintErrorMap,
-} from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
+import type { DeepPartialErrorMap, PrintErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
 
-import { TypesettingModel } from "../../api/model/index.js";
-import { TypesettingModelMarshaller } from "../../api/marshaller/index.js";
+import type { TypesettingModel } from "../../../a12internal/api/model/index.js";
+import { TypesettingModelMarshaller } from "../../../a12internal/api/marshaller/index.js";
+import { createTypesettingModel } from "../../../a12internal/ui/utils/model.js";
 
-import { createTypesettingModel } from "../utils/model.js";
 import { PreventLineBreakRuleValidator } from "../utils/custom-validator.js";
 
+import type { Action } from "./action.js";
 import {
-	Action,
 	isSetSerializedResult,
 	isRequiredCustomValidation,
 	isRequiredValidation,

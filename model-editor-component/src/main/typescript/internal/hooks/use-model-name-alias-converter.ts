@@ -31,7 +31,7 @@
  */
 import * as React from "react";
 
-import { MONACO_LANGUAGE_CONFIGURATION } from "@com.mgmtp.a12.dml/dml/lib/ruleCodeEditor/constants.js";
+import { MONACO_LANGUAGE_CONFIGURATION } from "@com.mgmtp.a12.dml/dml";
 
 import { useModelNameAliasGetter } from "./use-model-name-alias-getter.js";
 

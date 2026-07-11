@@ -33,46 +33,28 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
-	DefaultTableComponentRenderers,
-	Table,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/table.view.js";
-import { TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/index.js";
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/button-group/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { BaseColumnType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/column.api.js";
-import {
-	Listing,
-	ListingColumn,
-	PartialListing,
-	MeasureUnit,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import {
-	GlobalRegion,
-	ListingRegion,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import {
-	InputSourceGenerator,
-	InputValueSourceResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+import type { TableRenderPropsType, BaseColumnType } from "@com.mgmtp.a12.widgets/widgets-core";
+import { DefaultTableComponentRenderers, Table, ButtonGroup, Button, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { Listing, ListingColumn, PartialListing } from "@com.mgmtp.a12.print/print-model-api/model";
+import { MeasureUnit } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { GlobalRegion, ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { InputSourceGenerator, InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { FormContainerHeadline } from "../../../shared-components/FormContainerHeadline.js";
 import { ReorderButton } from "../../../shared-components/ReorderButton.js";
-import { ListingDataActions } from "../../../../../redux/detail-data/listing/index.js";
-import { DetailDataActions, TransactionLogStateActions, ValidationCounter } from "../../../../../redux/index.js";
+import { NavigationActions, TransactionLogStateActions, ValidationCounter } from "../../../../../redux/index.js";
+import { NavigationSelectors } from "../../../../../redux/navigation/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../../localization/index.js";
-import { PrintEngineSelectors } from "../../../../../store/selectors.js";
 import { AddButtonGroup } from "../../../shared-components/AddButtonGroup.js";
 import { InteractionLogActions } from "../../../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../../../redux/validation/selectors.js";
 import { BadgeGroup } from "../../../../badge/BadgeGroup.js";
 import { ErrorWrapper } from "../../../../validation/index.js";
 import { CustomCheckbox } from "../../../custom-base-input-components/index.js";
-import { BaseListingFormProps } from "../../base-listing-form.js";
+import type { BaseListingFormProps } from "../../base-listing-form.js";
 import { stringifyMeasureInputValue } from "../../../../../utils/input-source-utils.js";
 import { LISTING_PROPERTY_PATH } from "../../../../../constant/element-property-path.js";
 
@@ -88,37 +70,47 @@ enum ColumnFieldKey {
 export const TableColumn = ({ element }: BaseListingFormProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
+	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 	const errorMap = useSelector(
 		(state: PrintEngineState) => ValidationSelectors.listing(state, element.id)?.listing?.columns
 	);
-
-	const currentDetailDataId = useSelector(PrintEngineSelectors.currentDetailDataId);
 
 	const listing = element.listing;
 
 	const columns = React.useMemo(() => listing?.columns?.slice() || [], [listing?.columns]);
 	const isSorted = React.useMemo(() => columns.some(column => Boolean(column.isSortingIndex)), [columns]);
 
-	const columnCreation = React.useCallback((id: string) => {
-		const listingsLifetimeInputSources = InputSourceGenerator.generateInputSource<Listing>("listing.columns");
-		const widthInputSource = InputSourceGenerator.upgradeToMeasureInputSource(
-			(listingsLifetimeInputSources.listing.columns as unknown as ListingColumn).width,
-			MeasureUnit.Percent
-		);
-		const listingColumnInputSources = {
-			...listingsLifetimeInputSources,
-			listing: {
-				columns: {
-					...listingsLifetimeInputSources.listing.columns,
-					width: widthInputSource,
+	const columnCreation = React.useCallback(
+		(id: string) => {
+			const listingsLifetimeInputSources = InputSourceGenerator.generateInputSource<Listing>("listing.columns");
+			const generatedColumns = listingsLifetimeInputSources.listing.columns as unknown as ListingColumn;
+			const widthInputSource = InputSourceGenerator.upgradeToMeasureInputSource(
+				generatedColumns.width,
+				MeasureUnit.Percent
+			);
+			const borderProperties =
+				generatedColumns.borderProperties &&
+				InputSourceGenerator.upgradeBorderPropertiesWithReference(
+					generatedColumns.borderProperties,
+					element.id
+				);
+			const listingColumnInputSources = {
+				...listingsLifetimeInputSources,
+				listing: {
+					columns: {
+						...listingsLifetimeInputSources.listing.columns,
+						width: widthInputSource,
+						borderProperties,
+					},
 				},
-			},
-		};
-		return {
-			id,
-			...listingColumnInputSources.listing.columns,
-		};
-	}, []);
+			};
+			return {
+				id,
+				...listingColumnInputSources.listing.columns,
+			} as ListingColumn;
+		},
+		[element.id]
+	);
 
 	const setTableData = React.useCallback(
 		(newTableData: RowType[], interactionDescription: string) => {
@@ -146,20 +138,15 @@ export const TableColumn = ({ element }: BaseListingFormProps) => {
 	const handleOnClickEdit = React.useCallback(
 		(rowIndex: number, columnId: string) => {
 			dispatch(
-				ListingDataActions.updateAdditionalColumn({
-					containerId: currentDetailDataId,
-					columnId,
-					columnIndex: rowIndex,
-				})
-			);
-			dispatch(
-				DetailDataActions.addView({
-					containerId: currentDetailDataId,
-					view: ListingRegion.LISTING_COLUMN_FORM,
+				NavigationActions.pushFormStack({
+					tab,
+					entityId,
+					mode,
+					form: { type: ListingRegion.LISTING_COLUMN_FORM, id: element.id, columnId, columnIndex: rowIndex },
 				})
 			);
 		},
-		[dispatch, currentDetailDataId]
+		[dispatch, tab, entityId, mode, element.id]
 	);
 
 	const onClickAddColumn = React.useCallback(() => {
@@ -170,19 +157,19 @@ export const TableColumn = ({ element }: BaseListingFormProps) => {
 			RESOURCE_KEYS.interaction.form.listingFormContainer.form.main.tableColumn.addColumn
 		);
 		dispatch(
-			ListingDataActions.updateAdditionalColumn({
-				containerId: currentDetailDataId,
-				columnIndex: columns.length,
-				columnId,
+			NavigationActions.pushFormStack({
+				tab,
+				entityId,
+				mode,
+				form: {
+					type: ListingRegion.LISTING_COLUMN_FORM,
+					id: element.id,
+					columnId,
+					columnIndex: columns.length,
+				},
 			})
 		);
-		dispatch(
-			DetailDataActions.addView({
-				containerId: currentDetailDataId,
-				view: ListingRegion.LISTING_COLUMN_FORM,
-			})
-		);
-	}, [columns, dispatch, currentDetailDataId, setTableData, columnCreation]);
+	}, [columns, dispatch, tab, entityId, mode, setTableData, columnCreation, element.id]);
 
 	const handleMoveDown = React.useCallback(
 		(rowIndex: number) => {

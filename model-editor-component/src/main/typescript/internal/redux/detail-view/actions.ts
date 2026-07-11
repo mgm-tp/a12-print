@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { actionCreatorFactory } from "typescript-fsa";
+import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
 
 const factory = actionCreatorFactory("Print/DetailView");
 

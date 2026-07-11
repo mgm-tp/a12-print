@@ -31,15 +31,11 @@
  */
 import * as React from "react";
 
-import { getDataByKey } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import {
-	InputSource,
-	isInputSource,
-	MeasureInputSource,
-	MeasureUnit,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import { getDataByKey } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { InputSource, MeasureInputSource } from "@com.mgmtp.a12.print/print-model-api/model";
+import { isInputSource, MeasureUnit } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import {
 	changeMeasureInputValue,
@@ -49,10 +45,10 @@ import {
 	changePercentInputSource,
 } from "../../../utils/input-source-utils.js";
 
-import { ElementWithoutIdAndType } from "../type.js";
+import type { ElementWithoutIdAndType } from "../type.js";
 import { SourceInput } from "../custom-base-input-components/source-input/index.js";
 
-import { CustomBodyContentProps } from "./types.js";
+import type { CustomBodyContentProps } from "./types.js";
 
 type RepeatInputSourceCellProps<RowType> = CustomBodyContentProps<RowType>;
 

@@ -33,15 +33,15 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { PartialTable, PartialTextProperties } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { PartialTable, PartialTextProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { TransactionLogStateActions } from "../../../redux/index.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
-import { OmitId } from "../../../utils/index.js";
+import type { OmitId } from "../../../utils/index.js";
 import { TABLE_PROPERTY_PATH } from "../../../constant/element-property-path.js";
 
 import { FormContainerHeadline, TextPropertiesInput } from "../shared-components/index.js";

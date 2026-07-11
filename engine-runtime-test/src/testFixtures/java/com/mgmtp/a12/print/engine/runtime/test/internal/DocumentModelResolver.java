@@ -38,6 +38,7 @@ import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelResolver;
 import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelSerializer;
 import com.mgmtp.a12.kernel.md.serializer.MDSerializerFactory;
 import lombok.Data;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
@@ -51,14 +52,13 @@ public class DocumentModelResolver implements IDocumentModelResolver {
 	public static final DocumentDeserializationConfig DESERIALIZATION_CONFIG
 		= DocumentDeserializationConfig.builder()
 		.format(DocumentSerializationConfig.Format.JSON)
-		.addTransientFields(true)
 		.build();
 
 	private static final IDocumentModelSerializer documentModelSerializer = new MDSerializerFactory().createDocumentModelSerializer();
 	private final String documentModelJson;
 
 	@Override
-	public IDocumentModel getDocumentModelById(String id) {
+	public IDocumentModel getDocumentModelById(@NonNull String id) {
 		try {
 			return documentModelSerializer.deserialize(new StringReader(documentModelJson));
 		} catch (IOException e) {

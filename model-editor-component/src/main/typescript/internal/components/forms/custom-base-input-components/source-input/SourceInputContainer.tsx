@@ -29,22 +29,17 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Children, cloneElement, isValidElement, ReactNode, useMemo } from "react";
+import type { ReactNode } from "react";
 
-import {
-	addPrefix,
-	HiddenText,
-	joinClassNames,
-	Styleable,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
-import { TextLineStatelessProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-line/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import { InputElements } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/index.js";
+import type { TextFieldProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import type { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+
+import { CustomInputWrapper } from "../../shared-components/CustomInputWrapper.js";
 
 import { SourceInputToggles } from "./SourceInputToggles.js";
 
-export type PickedTextLineStatelessProps = Pick<
-	TextLineStatelessProps,
+export type PickedTextFieldProps = Pick<
+	TextFieldProps,
 	| "label"
 	| "labelGraphic"
 	| "placeholder"
@@ -58,14 +53,12 @@ export type PickedTextLineStatelessProps = Pick<
 	| "labelRef"
 >;
 
-interface SourceInputBaseProps extends PickedTextLineStatelessProps {
+interface SourceInputBaseProps extends PickedTextFieldProps {
 	possibleInputSources: PossibleInputSource[];
 	onSourceChange: (newValue: string) => void;
 	children: ReactNode;
 	showInput?: boolean;
 }
-
-const baseFieldClassName = addPrefix("field");
 
 export const SourceInputContainer = (props: SourceInputBaseProps) => {
 	const {
@@ -86,76 +79,27 @@ export const SourceInputContainer = (props: SourceInputBaseProps) => {
 		showInput = false,
 	} = props;
 
-	const labelElement = useMemo((): ReactNode => {
-		if (!label && !placeholder) {
-			return undefined;
-		}
-
-		const labelEl = (
-			<>
-				{label}
-				{placeholder && <HiddenText>{`${label ? ", " : ""}${placeholder}`}</HiddenText>}
-			</>
-		);
-
-		return (
-			<InputElements.Label
-				graphic={labelGraphic}
-				htmlFor={id}
-				dataRole="textline-label"
-				label={labelEl}
-				hide={hideLabel || !label}
-				disabled={disabled}
-				wrapperRef={labelRef}
-			/>
-		);
-	}, [disabled, hideLabel, id, label, labelGraphic, labelRef, placeholder]);
-
-	const tooltipElement = useMemo(
-		() =>
-			tooltips &&
-			Children.map(
-				tooltips,
-				(element, index) =>
-					isValidElement<Styleable>(element) &&
-					cloneElement(element, {
-						key: "element-" + index,
-						className: joinClassNames(element.props.className, `${baseFieldClassName}__tooltip`),
-					})
-			),
-		[tooltips]
-	);
-
 	return (
 		<div>
-			{labelElement}
-			{tooltipElement}
-			{errorMessage && (
-				<InputElements.Error
-					className={`${baseFieldClassName}__message`}
-					dataRole="textline-error-message"
-					errorMessage={errorMessage}
-				/>
-			)}
-			{warningMessage && (
-				<InputElements.Warning
-					className={`${baseFieldClassName}__message`}
-					dataRole="textline-warning-message"
-					warningMessage={warningMessage}
-				/>
-			)}
-			{infoMessage && (
-				<InputElements.Info
-					className={`${baseFieldClassName}__message`}
-					dataRole="textline-info-message"
-					infoMessage={infoMessage}
-				/>
-			)}
-			{showInput ? (
-				children
-			) : (
-				<SourceInputToggles possibleInputSources={possibleInputSources} onValueChanged={onSourceChange} />
-			)}
+			<CustomInputWrapper
+				label={label}
+				labelGraphic={labelGraphic}
+				placeholder={placeholder}
+				id={id}
+				hideLabel={hideLabel}
+				disabled={disabled}
+				errorMessage={errorMessage}
+				warningMessage={warningMessage}
+				infoMessage={infoMessage}
+				labelRef={labelRef}
+				tooltips={tooltips}
+			>
+				{showInput ? (
+					children
+				) : (
+					<SourceInputToggles possibleInputSources={possibleInputSources} onValueChanged={onSourceChange} />
+				)}
+			</CustomInputWrapper>
 		</div>
 	);
 };

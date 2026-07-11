@@ -32,8 +32,8 @@
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle;
 
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.AttachmentToAppend;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.ComponentTreeReference;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.Spread;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.ComponentTreeReference;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.Spread;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.Position;
 import lombok.NonNull;
 import org.apache.pdfbox.pdmodel.PDDocument;

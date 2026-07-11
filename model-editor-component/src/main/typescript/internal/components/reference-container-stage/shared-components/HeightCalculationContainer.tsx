@@ -30,21 +30,19 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import {
+import type {
 	PartialAnyPrintModelElement,
 	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { EditorConst } from "../../../constant/editor.js";
-import { PrintEngineSelectors } from "../../../store/selectors.js";
-import { FIXED_DIMENSIONS_ELEMENTS } from "../../../constant/elements.js";
-import { InteractionLogActions } from "../../../redux/index.js";
 import { changeMmMeasureValue, ElementsUtils } from "../../../utils/index.js";
 import { EditorContext } from "../../editor-stage/editor-context.js";
+import { FIXED_DIMENSIONS_ELEMENTS } from "../../../constant/elements.js";
+import { InteractionLogActions } from "../../../redux/index.js";
 
-const { PX_TO_MM } = EditorConst;
+import { useMeasuredHeight } from "../hooks/use-measured-height.js";
 
 interface HeightContainerCalculationProps {
 	item: PartialValidPlaceableReference;
@@ -63,26 +61,14 @@ export const HeightCalculationContainer: React.FunctionComponent<HeightContainer
 
 	const { setElementReferences } = React.useContext(EditorContext);
 
-	const zoomFactor = useSelector(PrintEngineSelectors.zoomFactor);
-
-	const [dragContainerHeightNormalized, setDragContainerHeightNormalized] = React.useState<number>(
-		item.dimensions.minHeight.value
-	);
-	const isHeightUpdating = React.useRef(false);
-
-	const updateDragContainerHeight = (ref: HTMLDivElement | null) => {
-		if (ref) {
-			setDragContainerHeightNormalized(PX_TO_MM(Math.round(ref.getBoundingClientRect().height / zoomFactor)));
-		}
-	};
+	const { ref, heightMm } = useMeasuredHeight(item.dimensions.minHeight.value);
 
 	React.useEffect(() => {
 		if (
 			FIXED_DIMENSIONS_ELEMENTS.includes(itemElement.type) ||
-			item.dimensions.minHeight.value === dragContainerHeightNormalized ||
+			item.dimensions.minHeight.value === heightMm ||
 			ElementsUtils.isWrapperElement(itemElement)
 		) {
-			isHeightUpdating.current = false;
 			return;
 		}
 
@@ -95,34 +81,26 @@ export const HeightCalculationContainer: React.FunctionComponent<HeightContainer
 								...el,
 								dimensions: {
 									...el.dimensions,
-									minHeight: changeMmMeasureValue(
-										dragContainerHeightNormalized,
-										el.dimensions.minHeight
-									),
+									minHeight: changeMmMeasureValue(heightMm, el.dimensions.minHeight),
 								},
 							}
 				)
 			);
 			return;
 		}
-		if (!isHeightUpdating.current) {
-			isHeightUpdating.current = true;
-			dispatch(
-				InteractionLogActions.updateElementHeightDomNode({
-					...item,
-					dimensions: {
-						...item.dimensions,
-						minHeight: changeMmMeasureValue(dragContainerHeightNormalized, item.dimensions.minHeight),
-					},
-				})
-			);
-		}
-	}, [dispatch, dragContainerHeightNormalized, isResizing, item, itemElement, setElementReferences]);
+		dispatch(
+			InteractionLogActions.updateElementHeightDomNode({
+				...item,
+				dimensions: {
+					...item.dimensions,
+					minHeight: changeMmMeasureValue(heightMm, item.dimensions.minHeight),
+				},
+			})
+		);
+	}, [dispatch, heightMm, isResizing, item, itemElement, setElementReferences]);
+
 	return (
-		<div
-			ref={updateDragContainerHeight}
-			style={ElementsUtils.isWrapperElement(itemElement) ? { height: "100%" } : undefined}
-		>
+		<div ref={ref} style={ElementsUtils.isWrapperElement(itemElement) ? { height: "100%" } : undefined}>
 			{children}
 		</div>
 	);

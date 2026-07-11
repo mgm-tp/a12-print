@@ -29,8 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ModelPath } from "@com.mgmtp.a12.base/base-model-api/lib/main/model/index.js";
-import { EntityInstancePath, DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { ModelPath } from "@com.mgmtp.a12.base/base-model-api";
+import type { EntityInstancePath, DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
 export type ExtendedEntityInstancePath = {
 	readonly elementName: string;

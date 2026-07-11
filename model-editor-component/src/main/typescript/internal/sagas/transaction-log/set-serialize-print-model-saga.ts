@@ -29,26 +29,27 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Action, AnyAction } from "typescript-fsa";
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { getContext, put, select, takeEvery } from "typed-redux-saga";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { MarshallerResult } from "@com.mgmtp.a12.print/print-model-api-utils/lib/marshaller/marshaller.js";
-import { PrintModelDTO } from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { MarshallerResult } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
+import type { PrintModelDTO } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { ValidationActions } from "../../redux/index.js";
-import { EditorComponentApiActions, RequestApi } from "../../api/index.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
+import type { RequestApi } from "../../api/index.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
+import { EditorComponentApiActions } from "../../../a12internal/api/actions-api.js";
 
-export function* setSerializePrintModelResultSaga(): SagaIterator {
+export function* setSerializePrintModelResultSaga(): SagaGenerator<void> {
 	yield* takeEvery(
-		(action: AnyAction) => EditorComponentApiActions.setSerializePrintModelResult.match(action),
+		EditorComponentApiActions.setSerializePrintModelResult.match,
 		handleSetSerializePrintModelResultSaga
 	);
 }
 
-function* handleSetSerializePrintModelResultSaga(action: Action<MarshallerResult<PrintModel, PrintModelDTO>>) {
+function* handleSetSerializePrintModelResultSaga(action: PayloadAction<MarshallerResult<PrintModel, PrintModelDTO>>) {
 	const requestApi = yield* getContext<RequestApi>("requestApi");
 	const serializeRes = action.payload;
 

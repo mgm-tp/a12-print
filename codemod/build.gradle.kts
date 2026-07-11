@@ -43,5 +43,7 @@ tasks.frontendBuild {
 }
 
 tasks.frontendTests {
+	dependsOn(":model-api:frontendBuild")
+
 	inputs.dir("src/main/typescript")
 }

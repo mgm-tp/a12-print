@@ -32,6 +32,7 @@
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component;
 
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.expression.ExpressionValueDependency;
@@ -122,7 +123,7 @@ public class ComponentFactoryBuilder implements ExhaustivePrintModelVisitor {
 
 	private void setComponentFactory(Function<InternalPdfBoxPrintEngineRuntime, ValueFactory<Component>> factory) {
 		if (component != null) {
-			throw new PrintException("malformed component creation");
+			throw new PrintException("Malformed component creation");
 		}
 		component = factory;
 	}
@@ -130,7 +131,7 @@ public class ComponentFactoryBuilder implements ExhaustivePrintModelVisitor {
 
 	public Function<InternalPdfBoxPrintEngineRuntime, ValueFactory<Component>> single() {
 		if (component == null) {
-			throw new PrintException("malformed component result creation");
+			throw new PrintException("Malformed component result creation");
 		}
 		return component;
 	}
@@ -172,7 +173,7 @@ public class ComponentFactoryBuilder implements ExhaustivePrintModelVisitor {
 			if (containerWidth != null) {
 				width = containerWidth;
 			} else {
-				var ref = getPlaceableReference(text, path).orElseThrow(() -> new PrintException("placeable reference not found"));
+				var ref = getPlaceableReference(text, path).orElseThrow(() -> new PrintException("Placeable reference not found"));
 				width = PDFUnitUtil.mmToLongPt(ref.getDimensions().getWidth().getValue());
 			}
 
@@ -258,7 +259,7 @@ public class ComponentFactoryBuilder implements ExhaustivePrintModelVisitor {
 	public TraversalCommand visitPageNumber(PageNumber pageNumber, PrintModelPath path) {
 		final var trace = new PrintModelTreeTrace<>(path, pageNumber);
 		if (currentPageCount == -1) {
-			throw new PrintException("Page Numbers are only allowed on sections");
+			throw new PrintDomainException("Page Numbers are only allowed on sections");
 		}
 		setComponentFactory(runtime -> () -> new EntityComponent(
 			pageNumber.getId(), trace, FormattingResult.builder().formattedValue(String.valueOf(currentPageCount)).isHtml(false).build(), EMPTY_SIZE
@@ -270,7 +271,7 @@ public class ComponentFactoryBuilder implements ExhaustivePrintModelVisitor {
 	public TraversalCommand visitPageNumberTotal(PageNumberTotal pageNumberTotal, PrintModelPath path) {
 		final var trace = new PrintModelTreeTrace<>(path, pageNumberTotal);
 		if (totalPageCount == -1) {
-			throw new PrintException("Page Number Totals are only allowed on sections");
+			throw new PrintDomainException("Page Number Totals are only allowed on sections");
 		}
 		setComponentFactory(runtime -> () -> new EntityComponent(
 			pageNumberTotal.getId(), trace, FormattingResult.builder().formattedValue(String.valueOf(totalPageCount)).isHtml(false).build(), EMPTY_SIZE
@@ -294,7 +295,7 @@ public class ComponentFactoryBuilder implements ExhaustivePrintModelVisitor {
 			var ref = getPlaceableReference(
 				overrideElement.getOverrideProperties().getRefId(),
 				path
-			).orElseThrow(() -> new PrintException("placeable reference not found"));
+			).orElseThrow(() -> new PrintException("Placeable reference not found"));
 			return () -> new BoxComponent(
 				ref.getRefId(),
 				Size.ofReference(ref),
@@ -437,7 +438,7 @@ public class ComponentFactoryBuilder implements ExhaustivePrintModelVisitor {
 			return new TextComponentContent(component.getId(), entityComponent.getPrintModelElementTrace(), value, isHtml, formattedResult.isEmpty());
 		}
 
-		throw new PrintException("unsupported component type");
+		throw new PrintException("Unsupported component type {}", component.getClass().getName());
 	}
 
 	@Override

@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
-import { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/lib/internal/types/font";
-import { DEFAULT_FONTS } from "@com.mgmtp.a12.print/print-fonts/lib/internal/api/constant/default-fonts";
+import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
+import type { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
+import { DEFAULT_FONTS } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
 import { PRINT_FONT_PREFIX } from "../../../constant/textstyle.js";
 

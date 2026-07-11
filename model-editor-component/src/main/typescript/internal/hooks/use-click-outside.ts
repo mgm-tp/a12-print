@@ -29,7 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { RefObject, useCallback, useEffect } from "react";
+import type { RefObject } from "react";
+import { useCallback, useEffect } from "react";
 
 export function useClickOutside<T extends HTMLElement = HTMLElement>(
 	ref: RefObject<T | null>,

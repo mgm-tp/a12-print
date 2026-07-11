@@ -31,12 +31,11 @@
  */
 import { CharStreams, CommonTokenStream, ParseTreeWalker } from "antlr4";
 
-import DateTimeFormatParser from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/antlr/datetimeformat/DateTimeFormatParser.js";
-import DateTimeFormatLexer from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/antlr/datetimeformat/DateTimeFormatLexer.js";
+import { DateTimeFormatParser, DateTimeFormatLexer } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
 
 import { DateTimeFormatErrorListener } from "./date-time-format-error-listener.js";
 import { DateTimeFormatRepetitionListener } from "./date-time-format-repetition-listener.js";
-import { DateTimeFormatValidationError } from "./date-time-format-validation-error.js";
+import type { DateTimeFormatValidationError } from "./date-time-format-validation-error.js";
 
 export class DateTimeFormatValidator {
 	getValidationError(dateFormat: string): DateTimeFormatValidationError | undefined {

@@ -31,7 +31,7 @@
  */
 import * as React from "react";
 
-import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-line/index.js";
+import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { TextStyle } from "../../../constant/text-style.js";
@@ -39,7 +39,7 @@ import { formatLeadingDecimal } from "../../custom-input/PositiveNumberInput.js"
 
 import { TextPropertyButton } from "./TextPropertyButton.js";
 import { StyledTextInput } from "./CommonTextProperty.styled.js";
-import { BaseTextStylePropertyProps } from "./base-type.js";
+import type { BaseTextStylePropertyProps } from "./base-type.js";
 
 interface LineHeightInputProps extends BaseTextStylePropertyProps {
 	lineHeight?: number;

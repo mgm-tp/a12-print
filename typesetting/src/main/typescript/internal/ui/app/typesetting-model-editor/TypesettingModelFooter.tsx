@@ -29,13 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ContentBoxElements } from "@com.mgmtp.a12.widgets/widgets-core/lib/contentbox/index.js";
-import { ButtonGroupContainer } from "@com.mgmtp.a12.widgets/widgets-core/lib/layout/button-group-container/index.js";
+import { ContentBoxElements, ButtonGroupContainer } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { useLocalizer } from "../../localization/localizer.js";
-import { RESOURCE_KEYS } from "../../localization/keys.js";
-
-import { FooterSlots } from "./types.js";
+import { useLocalizer } from "../../../../internal/ui/localization/localizer.js";
+import { RESOURCE_KEYS } from "../../../../internal/ui/localization/keys.js";
+import type { FooterSlots } from "../../../../a12internal/ui/app/typesetting-model-editor/types.js";
 
 interface TypesettingModelFooterProps {
 	footerSlots?: FooterSlots;

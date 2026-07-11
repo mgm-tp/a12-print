@@ -34,18 +34,20 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
-import { GlobalMessageBox } from "@com.mgmtp.a12.widgets/widgets-core/lib/global-message-box";
-import { Switch } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/switch";
-import { Tag } from "@com.mgmtp.a12.widgets/widgets-core/lib/tag";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon";
-import { ContentBoxElements } from "@com.mgmtp.a12.widgets/widgets-core/lib/contentbox";
-import { Select } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select";
-import { Autocomplete } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/autocomplete";
-import { DropDownItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/dropdown";
-import { Model } from "@com.mgmtp.a12.base/base-model-api/lib/main/model";
-import { ProgressIndicator } from "@com.mgmtp.a12.widgets/widgets-core";
+import {
+	GlobalMessageBox,
+	Switch,
+	Tag,
+	addPrefix,
+	Button,
+	Icon,
+	ContentBoxElements,
+	Select,
+	Autocomplete,
+	type DropDownItem,
+	ProgressIndicator,
+} from "@com.mgmtp.a12.widgets/widgets-core";
+import type { Model } from "@com.mgmtp.a12.base/base-model-api";
 
 import { PreviewActions, PreviewSelectors } from "../../store/preview";
 import { Locale } from "../../types";

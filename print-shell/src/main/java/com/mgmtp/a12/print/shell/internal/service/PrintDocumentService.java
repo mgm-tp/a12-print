@@ -40,12 +40,10 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.shell.standard.ShellComponent;
 
 import java.util.Collection;
 import java.util.Optional;
 
-@ShellComponent
 @AllArgsConstructor
 @Slf4j
 public class PrintDocumentService {

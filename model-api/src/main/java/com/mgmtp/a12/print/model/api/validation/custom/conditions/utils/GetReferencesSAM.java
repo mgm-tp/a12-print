@@ -34,7 +34,9 @@ package com.mgmtp.a12.print.model.api.validation.custom.conditions.utils;
 import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 
 import java.util.List;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface GetReferencesSAM {
 	List<TypedElementReferenceWrapper> getReferences(DocumentV2 document, int index);
 }

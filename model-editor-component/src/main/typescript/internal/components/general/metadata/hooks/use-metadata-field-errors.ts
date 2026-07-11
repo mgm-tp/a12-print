@@ -32,16 +32,13 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 
-import { DeepPartialErrorMap, PrintError } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import type { DeepPartialErrorMap, PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { ValidationSelectors } from "../../../../redux/validation/selectors.js";
 import { collectAggregatedMessages } from "../../../../utils/validation-utils.js";
 
 export type MetadataComputationField =
-	| "titleComputation"
-	| "descriptionComputation"
-	| "authorComputation"
-	| "languageComputation";
+	"titleComputation" | "descriptionComputation" | "authorComputation" | "languageComputation";
 
 export function useMetadataFieldErrors(field: MetadataComputationField): {
 	errors: PrintError[];

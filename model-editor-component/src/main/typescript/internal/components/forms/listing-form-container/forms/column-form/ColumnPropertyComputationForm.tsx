@@ -33,40 +33,52 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	ColumnPropertyKeyType,
 	PartialListing,
 	ColumnPropertyComputations,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ListingRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { PrintEngineSelectors } from "../../../../../store/selectors.js";
 import { useColumnPropertyItems } from "../../constants/properties.js";
-import { ComputationRepeatRowType } from "../../../shared-components/ComputationRepeat.js";
-import { PropertyComputationField, TransactionLogStateActions } from "../../../../../redux/index.js";
+import type { ComputationRepeatRowType } from "../../../shared-components/ComputationRepeat.js";
+import {
+	isListingColumnFormState,
+	type ListingPropertyCompFormState,
+	NavigationSelectors,
+	TransactionLogStateActions,
+} from "../../../../../redux/index.js";
 import { InteractionLogActions } from "../../../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../../../redux/validation/selectors.js";
-import { PrintLocalizer } from "../../../../../localization/index.js";
-import { OmitId } from "../../../../../utils/index.js";
-import { RESOURCE_KEYS } from "../../../../../localization/index.js";
-import { BaseListingFormProps } from "../../base-listing-form.js";
+import { PrintLocalizer, RESOURCE_KEYS } from "../../../../../localization/index.js";
+import { assertType, type OmitId } from "../../../../../utils/index.js";
+import type { BaseListingFormProps } from "../../base-listing-form.js";
 
 import { PropertyComputationForm } from "../PropertyComputationForm.js";
 
-export const ColumnPropertyComputationForm = ({ element }: BaseListingFormProps) => {
+interface ColumnPropertyComputationFormProps extends BaseListingFormProps {
+	formState: ListingPropertyCompFormState;
+}
+
+export const ColumnPropertyComputationForm = ({ element, formState }: ColumnPropertyComputationFormProps) => {
 	const dispatch = useDispatch();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
-	const additionalData = useSelector(PrintEngineSelectors.additionalData);
+	const columnFormState = useSelector((state: PrintEngineState) =>
+		NavigationSelectors.formStateByType(state, ListingRegion.LISTING_COLUMN_FORM)
+	);
 
-	const propertyRowIndex = additionalData?.listing?.propertyCompIndex;
-	const fieldKey: PropertyComputationField | undefined = additionalData?.listing?.propertyCompType;
-	const columnRowIndex = additionalData?.listing?.columnIndex;
+	assertType(columnFormState, isListingColumnFormState);
+
+	const { columnIndex } = columnFormState;
+
+	const { propertyCompIndex: propertyRowIndex, propertyCompType: fieldKey } = formState;
 	const listing = element.listing;
+
 	const columns = React.useMemo(() => listing?.columns?.slice() || [], [listing?.columns]);
-	const currentColumn = columnRowIndex !== undefined && columns[columnRowIndex];
+	const currentColumn = columnIndex !== undefined && columns[columnIndex];
 	const fieldKeySubObject = fieldKey && currentColumn ? currentColumn[fieldKey] : undefined;
 	const propertyComputations = React.useMemo(
 		() => fieldKeySubObject?.propertyComputations?.slice() || [],
@@ -76,8 +88,8 @@ export const ColumnPropertyComputationForm = ({ element }: BaseListingFormProps)
 		propertyRowIndex !== undefined ? propertyComputations[propertyRowIndex] : undefined;
 	const columnPropertyComputationErrorMap = useSelector((state: PrintEngineState) => {
 		const errorMap = ValidationSelectors.listing(state, element.id);
-		return fieldKey && propertyRowIndex !== undefined && columnRowIndex !== undefined
-			? errorMap?.listing?.columns?.[columnRowIndex]?.[fieldKey]?.propertyComputations?.[propertyRowIndex]
+		return fieldKey && propertyRowIndex !== undefined && columnIndex !== undefined
+			? errorMap?.listing?.columns?.[columnIndex]?.[fieldKey]?.propertyComputations?.[propertyRowIndex]
 			: undefined;
 	});
 
@@ -89,7 +101,7 @@ export const ColumnPropertyComputationForm = ({ element }: BaseListingFormProps)
 					id: nanoid(),
 					...listing,
 					columns: columns.map((el, idx) =>
-						idx === columnRowIndex && fieldKey
+						idx === columnIndex && fieldKey
 							? {
 									...el,
 									[fieldKey]: {
@@ -116,7 +128,7 @@ export const ColumnPropertyComputationForm = ({ element }: BaseListingFormProps)
 			);
 		},
 		[
-			columnRowIndex,
+			columnIndex,
 			columns,
 			dispatch,
 			element,

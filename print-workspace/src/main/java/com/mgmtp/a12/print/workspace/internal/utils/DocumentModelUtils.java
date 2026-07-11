@@ -31,16 +31,17 @@
  */
 package com.mgmtp.a12.print.workspace.internal.utils;
 
+import com.mgmtp.a12.kernel.md.combination.a12internal.CombinationModelService;
+import com.mgmtp.a12.kernel.md.combination.a12internal.IUnexpandedModelResolver;
 import com.mgmtp.a12.kernel.md.model.a12internal.DocumentModel;
 import com.mgmtp.a12.kernel.md.model.a12internal.fieldtypes.CustomFieldType;
 import com.mgmtp.a12.kernel.md.model.a12internal.fieldtypes.StringType;
-import com.mgmtp.a12.kernel.md.model.a12internal.services.DocumentModelReferenceResolver;
 import com.mgmtp.a12.kernel.md.model.a12internal.services.DocumentModelService;
 import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
-import com.mgmtp.a12.kernel.md.model.api.services.DocumentModelExpansionException;
 import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelSerializer;
 import com.mgmtp.a12.kernel.md.serializer.MDSerializerFactory;
 import com.mgmtp.a12.model.notification.RankedNotification;
+import com.mgmtp.a12.model.notification.Severity;
 import com.mgmtp.a12.print.workspace.internal.exceptions.PrintWorkspaceException;
 import com.mgmtp.a12.print.workspace.internal.handler.WorkspaceHandler;
 import com.mgmtp.a12.print.workspace.internal.resolver.CustomDocumentModelReferenceResolver;
@@ -56,7 +57,7 @@ public class DocumentModelUtils {
 	@NonNull
 	private final IDocumentModelSerializer documentModelSerializer;
 	@NonNull
-	private final DocumentModelReferenceResolver documentModelReferenceResolver;
+	private final IUnexpandedModelResolver documentModelReferenceResolver;
 	@NonNull
 	private final WorkspaceHandler workspaceHandler;
 	@NonNull
@@ -72,21 +73,32 @@ public class DocumentModelUtils {
 	}
 
 	public IDocumentModel expand(String modelId) {
-		final var documentModel = workspaceHandler.getUnexpandedModel(modelId);
+		final var documentModel = this.documentModelService.convertToExternal(workspaceHandler.getUnexpandedModel(modelId));
 
-		try {
-			this.documentModelService.expand(
-				documentModel,
-				documentModelReferenceResolver
+		final var expandedModel = CombinationModelService.expand(
+			documentModel, documentModelReferenceResolver, CombinationModelService.CombinationModelExpandParams.builder()
+					.notificationReceiver(rankedNotification -> {
+						if (rankedNotification.getSeverity().equals(Severity.ERROR)) {
+							throw new PrintWorkspaceException(rankedNotification.getMessage());
+						} else if (rankedNotification.getSeverity().equals(Severity.WARNING)) {
+							log.warn(rankedNotification.getMessage());
+						} else {
+							log.info(rankedNotification.getMessage());
+						}
+					})
+				.build()
+		);
+
+		if (expandedModel.isEmpty()) {
+			throw new PrintWorkspaceException(
+				String.format("The expansion for the Document Model %s failed", documentModel.getHeader().getId())
 			);
-		} catch (DocumentModelExpansionException e) {
-			throw new PrintWorkspaceException(e);
 		}
 
-		return this.documentModelService.convertToExternal(documentModel);
+		return expandedModel.get();
 	}
 
-	public void suffixTypeDefinitionWithModelName(DocumentModel model) {
+	public void prefixTypeDefinitionWithModelName(DocumentModel model) {
 		final var documentModelId = model.getHeader().getId();
 		model.getContent().getTypeDefinitions().forEach(def ->
 			def.setName(String.format("%s_%s", documentModelId, def.getName()))

@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PlainMeasurePosition } from "../utils/measure-utils.js";
+import type { PlainMeasurePosition } from "../utils/measure-utils.js";
 
 export interface DndRsLine {
 	start: PlainMeasurePosition;

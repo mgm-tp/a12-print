@@ -36,7 +36,9 @@ import com.mgmtp.a12.print.model.api.model.element.base.internal.LogicContainer;
 import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
 
 import java.util.stream.Stream;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface SwitchCase extends ElementReference, LogicContainer {
     String getPrecondition();
 

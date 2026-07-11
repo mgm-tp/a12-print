@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import ImmutableCharList from "./ImmutableCharList.js";
+import type { ImmutableCharList } from "./ImmutableCharList.js";
 
-export default class ImmutableCharArrayList implements ImmutableCharList {
+export class ImmutableCharArrayList implements ImmutableCharList {
 	private readonly _length: number;
 	private readonly elements: string[];
 

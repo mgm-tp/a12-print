@@ -48,7 +48,7 @@ public class PrintDocumentV2Test {
 		final String document = PrintTestUtil.loadFromResources("/data/field/FieldDM-1.json");
 
 		final var result =
-			XmlRuntimeTestUtil.print(printModel, "FieldDM", TimeZone.getTimeZone("MST"), documentModel, document, true);
+			XmlRuntimeTestUtil.print(printModel, "FieldDM", TimeZone.getTimeZone("MST"), documentModel, document, null);
 
 		XmlRuntimeTestUtil.writeResultFiles(result, "field-v2");
 		assertThat(result).isNotNull();

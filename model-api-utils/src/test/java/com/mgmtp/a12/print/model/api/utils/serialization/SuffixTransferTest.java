@@ -31,7 +31,6 @@
  */
 package com.mgmtp.a12.print.model.api.utils.serialization;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mgmtp.a12.print.model.api.model.element.ElementType;
 import com.mgmtp.a12.print.model.api.model.element.type.field.Field;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelDto;
@@ -44,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SuffixTransferTest {
 
 	@Test
-	void testSuffixTransfer() throws JsonProcessingException {
+	void testSuffixTransfer() {
 		final String fileContent = FileUtils.getFileContent("/TestSuffixTransfer.json");
 
 		final var objectMapper = ObjectMapperFactory.createPrintModelMapper();

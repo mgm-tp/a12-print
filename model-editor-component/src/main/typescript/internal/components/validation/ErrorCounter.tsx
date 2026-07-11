@@ -32,13 +32,12 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core/lib/button-group/index.js";
+import { Icon, Button, ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { ValidationActions, ValidationCounter, ValidationSeverity } from "../../redux/index.js";
-import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
+import type { ValidationCounter, ValidationSeverity } from "../../redux/index.js";
+import { ValidationActions } from "../../redux/index.js";
+import { PrintLocalizer, RESOURCE_KEYS } from "../../../internal/localization/index.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
 
 import { ErrorBadge, WarningBadge } from "../badge/ValidationBadge.js";
 

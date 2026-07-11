@@ -29,7 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Select, SelectProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select/index.js";
+import type { SelectProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Select } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { useCustomBaseInputProps } from "./use-custom-base-input-props.js";
 

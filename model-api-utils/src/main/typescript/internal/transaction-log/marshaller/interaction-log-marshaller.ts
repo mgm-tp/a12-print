@@ -29,15 +29,16 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import type { InteractionLogPersistentEntry } from "../../../a12internal/transaction-log/interaction-log.js";
 import {
 	assertInteractionLogEntryType,
 	assertInteractionRegion,
-	InteractionLogPersistentEntry,
-} from "../../transaction-log/index.js";
+} from "../../../a12internal/transaction-log/interaction-log.js";
 
-import { LogIndexes, LogMarshaller } from "./log-marshaller.js";
+import type { LogIndexes } from "./log-marshaller.js";
+import { LogMarshaller } from "./log-marshaller.js";
 import { PreventUndoType } from "./prevent-undo-type.js";
-import { OutputCell, OutputRow } from "./tsv-output.js";
+import type { OutputCell, OutputRow } from "./tsv-output.js";
 
 export class InteractionLogMarshaller extends LogMarshaller {
 	private static CELL_COUNT = 10;

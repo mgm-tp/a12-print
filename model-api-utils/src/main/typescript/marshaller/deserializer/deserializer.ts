@@ -29,18 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	DeepPartialErrorMap,
-	ErrorOrigin,
-	ErrorSeverity,
-	ExtendedEntityInstancePath,
-	PrintError,
-} from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import {
-	ExtractArrays,
-	ExtractArrayType,
-	PlainDeepPartial,
-} from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import type { ExtendedEntityInstancePath, PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { DeepPartialErrorMap, ErrorOrigin, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { ExtractArrays, ExtractArrayType, PlainDeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import {
 	getPlainLocalizableArgs,

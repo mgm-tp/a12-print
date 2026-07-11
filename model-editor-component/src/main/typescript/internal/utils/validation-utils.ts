@@ -32,17 +32,15 @@
 import get from "lodash/get.js";
 import { useSelector } from "react-redux";
 
-import {
-	DeepPartialErrorMap,
-	ErrorSeverity,
-	PrintError,
-} from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { BorderProperties, TextProperties } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { DeepPartialErrorMap, PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { BorderProperties, TextProperties } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { PrintModelErrorMap } from "../types/index.js";
-import { PrintLocalizer } from "../localization/index.js";
-import { PrintEngineState } from "../store/root-reducer.js";
+import type { PrintEngineState } from "../../a12internal/api/PrintEngineState.js";
+
 import { ValidationSelectors } from "../redux/validation/selectors.js";
+import type { PrintModelErrorMap } from "../types/index.js";
+import { PrintLocalizer } from "../localization/index.js";
 
 export function joinErrorPath(path: string = "", severity: ErrorSeverity = ErrorSeverity.ERROR) {
 	return path ? `${path}.${severity}` : severity;

@@ -34,7 +34,9 @@ package com.mgmtp.a12.print.model.api.model.element.base.inputSource;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface InputSourceEnum {
 	String getJsonValue();
 

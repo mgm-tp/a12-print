@@ -27,7 +27,7 @@ The properties `locale` and `timezone` are needed for the localization of langua
 
 [source,java,title="PrintJob interface"]
 ----
-include::../../sourceCode/engine-api/PrintJob.java[tag=!*]
+include::../../sourceCode/engine-api/PrintJob.java[tag=PrintJobInterface]
 ----
 
 [#job_manager]
@@ -37,13 +37,15 @@ The `JobManager` is an interface for the creation of new <<print_job, PrintJobs>
 and the _preparation_ of the Print Models.
 Preparing a Print Model optimizes the Print Model beforehand, analyzing its Calculations, Conditions and other dynamic elements to optimize the print operations that use the given Print Model.
 
+It is also possible to get a <<print_report, PrintMessageReport>> as result, which catches the semanticall issues during the _preparation_ of the Print Models.
+
 NOTE: The preparation is necessary for the execution of a PrintJob, but needs to be only done once for each Print Model.
 If not done manually beforehand, it will be automatically done before the start of the first PrintJob of a given Print Model.
 To optimize the calculation time of a PrintJob, is recommended to prepare all necessary Print Models manually before the PrintJob is started.
 
 [source,java,title="JobManager interface"]
 ----
-include::../../sourceCode/engine-api/JobManager.java[tag=!*]
+include::../../sourceCode/engine-api/JobManager.java[tag=JobManagerInterface]
 ----
 
 [#print_engine]
@@ -51,9 +53,11 @@ include::../../sourceCode/engine-api/JobManager.java[tag=!*]
 
 The `PrintEngine` is an interface for the execution of a given <<print_job, PrintJob>>, that returns a <<print_result, PrintResult>>.
 
+It is also possible to get a <<print_report, PrintMessageReport>> as result, which catches the semanticall issues during the <<print_job, PrintJob>> execution.
+
 [source,java,title="PrintEngine interface"]
 ----
-include::../../sourceCode/engine-api/PrintEngine.java[]
+include::../../sourceCode/engine-api/PrintEngine.java[tag=PrintEngineInterface]
 ----
 
 [#pdf_box_print_engine]
@@ -63,19 +67,7 @@ The `PdfBoxPrintEngine` is an interface for the execution of a given <<print_job
 
 [source,java,title="PdfBoxPrintEngine interface"]
 ----
-include::../../sourceCode/engine-api/PdfBoxPrintEngine.java[]
-----
-
-[#pdf_print_engine]
-== PdfPrintEngine (Deprecated)
-
-CAUTION: Will be replaced with <<pdf_box_print_engine, PdfBoxPrintEngine>> in 2026.06.
-
-The `PdfPrintEngine` is an interface for the execution of a given <<print_job, PrintJob>>, that returns a <<pdf_print_result, PdfPrintResult>>.
-
-[source,java,title="PdfPrintEngine interface"]
-----
-include::../../sourceCode/engine-api/PdfPrintEngine.java[]
+include::../../sourceCode/engine-api/PdfBoxPrintEngine.java[tag=PdfBoxPrintEngineInterface]
 ----
 
 [#print_model_id]
@@ -83,7 +75,7 @@ include::../../sourceCode/engine-api/PdfPrintEngine.java[]
 
 [source,java,title="PrintModelId interface"]
 ----
-include::../../sourceCode/engine-api/PrintModelId.java[]
+include::../../sourceCode/engine-api/PrintModelId.java[tag=PrintModelIdInterface]
 ----
 
 [#print_result]
@@ -94,7 +86,7 @@ It provides the option to copy the resulting PDF directly into the serverless st
 
 [source,java,title="PrintResult interface"]
 ----
-include::../../sourceCode/engine-api/PrintResult.java[tag=!*]
+include::../../sourceCode/engine-api/PrintResult.java[tag=PrintResultInterface]
 ----
 
 [#pdf_print_result]
@@ -104,7 +96,29 @@ A `PdfPrintResult` is an interface for a PDF-based <<print_result, PrintResult>>
 
 [source,java,title="PdfPrintResult interface"]
 ----
-include::../../sourceCode/engine-api/PdfPrintResult.java[indent=0]
+include::../../sourceCode/engine-api/PdfPrintResult.java[tag=PdfPrintResultInterface]
+----
+
+[#print_report]
+== PrintMessageReport
+
+A `PrintMessageReport` is an interface for a report, which includes a result. The report itself has a list of messages.
+A message can be an error or a warning and contains issues that occurred during the printing or precompilation process.
+
+[source,java,title="PrintMessageReport interface"]
+----
+include::../../sourceCode/engine-api/message/PrintMessageReport.java[tag=PrintMessageReportInterface]
+----
+
+[#static_image_provider]
+== StaticImageProvider
+
+`StaticImageProvider` is an interface for resolving raw image bytes for static attachment images referenced by a Print Model.
+Implementations are called once per unique filename during the <<job_manager, JobManager>> prepare (compile) phase and must be thread-safe.
+
+[source,java,title="StaticImageProvider interface"]
+----
+include::../../sourceCode/engine-api/StaticImageProvider.java[tag=StaticImageProviderInterface]
 ----
 
 [#pdf_box_print_engine_config]
@@ -112,15 +126,7 @@ include::../../sourceCode/engine-api/PdfPrintResult.java[indent=0]
 
 The `PdfBoxPrintEngineConfig` provides options for the configuration of the Print Engine. It currently only allows integrating custom fonts.
 
-[#print_engine_config]
-== PrintEngineConfig (Deprecated)
-
-CAUTION: Will be replaced with <<pdf_box_print_engine_config, PdfBoxPrintEngineConfig>> in 2026.06.
-
-The `PrintEngineConfig` provides options for the configuration of the Print Engine.
-It allows integrating custom fonts, setting a default font and configuring the HTML-element and CSS-style whitelists.
-
-[source,java,title="PrintEngineConfig interface"]
+[source,java,title="PdfBoxPrintEngineConfig interface"]
 ----
-include::../../sourceCode/engine-api/PrintEngineConfig.java[tag=!*]
+include::../../sourceCode/engine-api/PdfBoxPrintEngineConfig.java[tag=PdfBoxPrintEngineConfigClass]
 ----

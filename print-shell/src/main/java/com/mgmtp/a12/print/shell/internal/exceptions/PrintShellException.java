@@ -31,11 +31,9 @@
  */
 package com.mgmtp.a12.print.shell.internal.exceptions;
 
-public class PrintShellException extends RuntimeException {
-	public PrintShellException() {
-		super();
-	}
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
 
+public class PrintShellException extends PrintException {
 	public PrintShellException(String message) {
 		super(message);
 	}

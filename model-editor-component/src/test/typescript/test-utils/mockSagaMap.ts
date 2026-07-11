@@ -29,24 +29,24 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
+import type { SagaGenerator } from "typed-redux-saga";
 import { put, select, takeEvery } from "typed-redux-saga";
 import { nanoid } from "nanoid";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { InteractionLogActions } from "../../../main/typescript/internal/redux/index.js";
-import { PrintEngineSelectors } from "../../../main/typescript/internal/store/selectors.js";
+import { InteractionLogActions, NavigationSelectors } from "../../../main/typescript/internal/redux/index.js";
 
-function* mockStartInteractionSaga(): SagaIterator {
+function* mockStartInteractionSaga(): SagaGenerator<void> {
 	yield* takeEvery(
-		(action: AnyAction) => InteractionLogActions.start.match(action),
-		function* mockHandleStartInteractionSaga(action: Action<InteractionLogActions.StartPayload>): SagaIterator {
+		InteractionLogActions.start.match,
+		function* mockHandleStartInteractionSaga(
+			action: PayloadAction<InteractionLogActions.StartPayload>
+		): SagaGenerator<void> {
 			const { transactionLogActions, region, description } = action.payload;
 			if (transactionLogActions.length === 0) {
 				return;
 			}
-			const regionId =
-				region === "sidebar" ? (yield* select(PrintEngineSelectors.sidebar)).selectedItem : "mockRegionId123";
+			const regionId = region === "sidebar" ? yield* select(NavigationSelectors.activeTab) : "mockRegionId123";
 			const newInteractionId = nanoid();
 			yield* put(
 				InteractionLogActions.addLogEntry({
@@ -71,11 +71,11 @@ function* mockStartInteractionSaga(): SagaIterator {
 	);
 }
 
-function* mockLoadDocumentModelDataSaga(): SagaIterator {
+function* mockLoadDocumentModelDataSaga(): SagaGenerator<void> {
 	// No-op mock saga
 }
 
-export const mockSagaMap: Record<string, () => SagaIterator> = {
+export const mockSagaMap: Record<string, () => SagaGenerator<void>> = {
 	startInteractionSaga: mockStartInteractionSaga,
 	loadDocumentModelDataSaga: mockLoadDocumentModelDataSaga,
 };

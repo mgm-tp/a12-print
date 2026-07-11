@@ -29,26 +29,27 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { actionCreatorFactory } from "typescript-fsa";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { LogPersistentEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import { LogPersistentEntry } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/log.js";
+import type { PrintModelErrorMap, CommitInteractionRow } from "../../../internal/types/index.js";
+import type { PrintMessage } from "../../../a12internal/api/PrintMessageReport.js";
 
-import { PrintModelErrorMap, CommitInteractionRow } from "../../types/index.js";
-import { NavigationTarget } from "../../types/error-tree.js";
+import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
 
 const factory = actionCreatorFactory("Print/CommitView");
 
 export namespace CommitViewActions {
 	export const setCommitViewErrorMap = factory<PrintModelErrorMap>("SET_COMMIT_VIEW_ERROR_MAP");
+	export const setCommitViewPrecompileMessages = factory<PrintMessage[]>("SET_COMMIT_VIEW_PRECOMPILE_MESSAGES");
 	export const setLoadingPrintModelResponse = factory<{
 		printModel: PrintModel;
 		logPersistentEntries?: LogPersistentEntry[];
 	}>("SET_LOADING_PRINT_MODEL_RESPONSE");
 	export const setCommitInteractionRows = factory<CommitInteractionRow[]>("SET_COMMIT_INTERACTION_ROWS");
+	export const setIsCommitting = factory<boolean>("SET_IS_COMMITTING");
 	export const initialCommitView = factory("INITIAL_COMMIT_VIEW");
 	export const validateChanges = factory("VALIDATE_CHANGES");
 	export const commitChanges = factory<CommitInteractionRow[]>("COMMIT_CHANGES");
 	export const discardChanges = factory<void>("DISCARD_CHANGES");
-	export const navigateIntoView = factory<NavigationTarget>("NAVIGATE_INTO_VIEW");
 }

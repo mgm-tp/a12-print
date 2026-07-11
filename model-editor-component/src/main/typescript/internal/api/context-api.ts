@@ -31,8 +31,8 @@
  */
 import React from "react";
 
-import { LocalizableArgs } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
-import { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/lib/internal/types/font.js";
+import type { LocalizableArgs } from "@com.mgmtp.a12.utils/utils-localization";
+import type { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
 export type ILocalizer = (key: string, args?: LocalizableArgs) => string;
 export type IGetFonts = () => PrintFontMap;

@@ -31,11 +31,11 @@
  */
 import React from "react";
 
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import { Icon, TabPanelTemplateProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { TabPanelTemplateProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { PrintLocalizer } from "../../../localization/localizer.js";
-import { RESOURCE_KEYS } from "../../../localization/keys.js";
+import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 
 import { useErrorBadgeCounterGetter } from "./use-error-badge-counter-getter.js";
 

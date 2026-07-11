@@ -33,6 +33,8 @@ package com.mgmtp.a12.print.engine.runtime.kernel.internal;
 
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.ComputationFieldType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -90,5 +92,22 @@ class SyntaxTreeComputationFieldTypeClassifierTest {
 		var type = classifier.classifyFieldType(result.getRoot());
 
 		assertThat(type).isEqualTo(ComputationFieldType.STRING);
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {
+			"YearFromDate(../dateField)",
+			"MonthFromDate(../dateField)",
+			"DayFromDate(../dateField)",
+			"QuarterFromDate(../dateField)"
+	})
+	void classifyDateExtractionPredicatesAsNumber(String src) {
+		var classifier = SyntaxTreePredicateClassifier.load((a, v) -> ComputationFieldType.UNKNOWN);
+		var parser = new ComputationParser();
+		var result = parser.parseTree(src);
+
+		var type = classifier.classifyFieldType(result.getRoot());
+
+		assertThat(type).isEqualTo(ComputationFieldType.NUMBER);
 	}
 }

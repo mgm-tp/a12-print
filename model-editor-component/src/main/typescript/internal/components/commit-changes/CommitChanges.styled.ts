@@ -84,7 +84,7 @@ export const StyledCommitTableContainer = styled.div(({ theme }) => {
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		width: 70%;
+		width: 60%;
 		border-right: 1px solid ${props => props.theme.colors.divider.colorLight};
 
 		@media only screen and (max-width: ${responsive.mobileMaxWidth}) {
@@ -102,7 +102,7 @@ export const StyledCommitErrorContainer = styled.div(({ theme }) => {
 		overflow-y: auto;
 		display: flex;
 		flex-direction: column;
-		width: 30%;
+		width: 40%;
 
 		@media only screen and (max-width: ${responsive.mobileMaxWidth}) {
 			border-top: 2px solid ${divider.colorLight};

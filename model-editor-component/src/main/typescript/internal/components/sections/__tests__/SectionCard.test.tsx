@@ -29,18 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 
-import {
-	SectionUsage,
-	PageOrientation,
-	Section,
-	PartialSection,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import {
-	TransactionLog,
-	TransactionLogStoreEntryMap,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { Section, PartialSection } from "@com.mgmtp.a12.print/print-model-api/model";
+import { SectionUsage, PageOrientation } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { TransactionLogStoreEntryMap } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { initialStateLogStore } from "../../../redux/index.js";
 import { createMmMeasure } from "../../../utils/index.js";

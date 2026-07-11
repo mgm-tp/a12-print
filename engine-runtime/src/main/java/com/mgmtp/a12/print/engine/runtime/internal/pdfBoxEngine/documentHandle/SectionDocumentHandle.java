@@ -31,8 +31,8 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.documentHandle;
 
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.ComponentTreeResult;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.componentTrees.SectionComponentTree;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.ComponentTreeResult;
+import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.componentTrees.SectionComponentTree;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.components.base.ContentStreamAdapter;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.Position;

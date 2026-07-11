@@ -1,0 +1,43 @@
+{
+  "header": {
+    "id": "testTDM",
+    "modelType": "document",
+    "modelVersion": "29.4.0",
+    "locales": [
+      {
+        "code": "en"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "tdonly",
+        "value": "true"
+      }
+    ],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "testTDM"
+    },
+    "modelConfig": {
+      "timeZone": "UTC",
+      "decimalSeparator": ".",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "typeDefinitions": [
+      {
+        "id": "typedef_3f4fd122-17cb-4e78-9dea-333681c05232",
+        "name": "CustomDate",
+        "fieldType": {
+          "type": "StringType"
+        }
+      }
+    ],
+    "modelRoot": {
+      "rootGroups": []
+    }
+  }
+}

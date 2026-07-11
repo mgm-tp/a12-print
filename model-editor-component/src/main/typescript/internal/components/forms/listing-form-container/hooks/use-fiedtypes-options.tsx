@@ -32,9 +32,9 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
-import { PrintEngineState } from "../../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../../a12internal/api/PrintEngineState.js";
 import { DocumentModelDataSelectors } from "../../../../redux/document-model-data/selectors.js";
 
 export const useFieldTypesOptions = (model?: string) => {

@@ -32,7 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.element;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.RegisterGetterByFieldName;
 import com.mgmtp.a12.print.model.api.model.element.base.Styleable;
 import com.mgmtp.a12.print.model.api.model.element.properties.BorderProperties;
@@ -60,6 +60,7 @@ public class StyleablePrintModelElementDto extends PrintModelElementDto implemen
 
 	@JsonProperty("borderProperties")
 	@JsonDeserialize(as = BorderPropertiesDto.class)
+	@RegisterGetterByFieldName
 	private final BorderProperties borderProperties;
 
 	@Override

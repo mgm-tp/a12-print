@@ -32,21 +32,18 @@
 import * as React from "react";
 import { css, styled } from "styled-components";
 
+import type { TabPanelProps, TabPanelTemplateProps, A11yDefinition } from "@com.mgmtp.a12.widgets/widgets-core";
 import {
 	TAB_PANEL_CLASS_NAME,
-	TabPanelProps,
 	TabPanelTemplate,
-	TabPanelTemplateProps,
-} from "@com.mgmtp.a12.widgets/widgets-core";
-import {
-	A11yDefinition,
 	A11YLanguageContext,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/common/main/a11y-localization/index.js";
-import { BaseTabPanelContent } from "@com.mgmtp.a12.widgets/widgets-core/lib/tab-panel/main/template/tab-panel.tpl.styled.js";
-import { joinClassNames } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
+	BaseTabPanelContent,
+	joinClassNames,
+} from "@com.mgmtp.a12.widgets/widgets-core";
 
 export interface PrintTabPanelProps extends TabPanelProps {
 	footer?: React.ReactNode;
+	tabs: TabPanelTemplateProps.TabProps[];
 }
 
 const baseDataRole = "tab-panel";

@@ -31,13 +31,13 @@
  */
 import * as React from "react";
 
-import { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select/index.js";
-import { Semantic } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Semantic } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { CustomSelect } from "../../forms/custom-base-input-components/index.js";
 
-import { BaseTextStylePropertyProps } from "./base-type.js";
+import type { BaseTextStylePropertyProps } from "./base-type.js";
 
 interface SemanticSelectProps extends BaseTextStylePropertyProps {
 	semantic?: string;

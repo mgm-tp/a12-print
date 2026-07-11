@@ -31,7 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils;
 
-public class FontLoadException extends RuntimeException {
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
+
+public class FontLoadException extends PrintException {
 	public FontLoadException(Exception exception) {
 		super(exception);
 	}

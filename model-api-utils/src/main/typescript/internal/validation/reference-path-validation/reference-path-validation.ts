@@ -29,16 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PartialPrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
-import {
-	PrintError,
-	ErrorOrigin,
-	DeepPartialErrorMap,
-} from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
-import { Localizable } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
-import { DocumentModel, DocumentServiceFactory } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import type { PartialPrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorOrigin, DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { Localizable } from "@com.mgmtp.a12.utils/utils-localization";
+import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import { DocumentServiceFactory } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
-import { CollectedPath } from "../../types/reference-path.js";
+import type { CollectedPath } from "../../types/reference-path.js";
 
 import { getAllReferencedPaths } from "./partial-print-model-visitor-reference-collector.js";
 import { ReferencePathValidationService } from "./reference-path-validation-service.js";

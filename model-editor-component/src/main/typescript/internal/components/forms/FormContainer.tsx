@@ -32,20 +32,19 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import {
-	GlobalRegion,
-	ListingRegion,
-	TableRegion,
-	TextRegion,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ListingRegion, TableRegion, TextRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { EditorMode } from "../../redux/index.js";
-import { PrintLocalizer } from "../../localization/localizer.js";
-import { RESOURCE_KEYS } from "../../localization/keys.js";
-import { ValidationSelectors } from "../../redux/validation/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import {
+	EditorMode,
+	isPageBreakConfigFormState,
+	isVisibilityConfigFormState,
+	NavigationSelectors,
+} from "../../redux/index.js";
+import { RESOURCE_KEYS, PrintLocalizer } from "../../localization/index.js";
+import { ValidationSelectors } from "../../redux//validation/selectors.js";
+import type { PrintEngineState } from "../../../a12internal/api/index.js";
 
 import { BarChartFormContainer } from "./BarChartFormContainer.js";
 import { ExpressionFormContainer } from "./ExpressionFormContainer.js";
@@ -64,7 +63,6 @@ import { OverrideFormContainer } from "./OverrideFormContainer.js";
 import { HideConditionsConfig } from "./hide-conditions-form/HideConditionsConfig.js";
 import { AreaFormContainer } from "./AreaFormContainer.js";
 import { SwitchFormContainer } from "./SwitchFormContainer.js";
-import { ListingViews } from "./listing-form-container/constants/form.js";
 import { LayoutConfigForm } from "./layout-config-form/LayoutConfigForm.js";
 
 const FormContainerProvider: Record<ElementType | string, React.ComponentType> = {
@@ -84,40 +82,56 @@ const FormContainerProvider: Record<ElementType | string, React.ComponentType> =
 	[ElementType.Switch]: SwitchFormContainer,
 };
 
-const DefaultModeForm = () => {
-	const element = useSelector(PrintEngineSelectors.detailPrintModelElement);
-	const { isVisibilityConfig } = useSelector(PrintEngineSelectors.hideConditionsFormData);
-	const detailData = useSelector(PrintEngineSelectors.currentDetailData);
+const DefaultModeElementForm = () => {
+	const element = useSelector(PrintEngineSelectors.rootFormElement);
+	const currentForm = useSelector(NavigationSelectors.currentForm);
 	const formValidationCounter = useSelector(ValidationSelectors.formHeaderValidationCounter);
 
 	const localizer = PrintLocalizer.useLocalizer();
 
-	const type = element?.type;
+	const elementType = element?.type;
 
 	const elementName = React.useMemo(() => {
-		const currentForm = detailData?.formContainers?.slice().pop();
-		if (!type) {
-			return "Error";
-		}
-
-		switch (currentForm) {
+		switch (currentForm?.type) {
 			case ListingRegion.LISTING_COLUMN_FORM:
+				return localizer(RESOURCE_KEYS.elementForm.listing.columns.title);
 			case ListingRegion.FIELD_COMPUTATION_FORM:
-				return localizer(ListingViews.titleMapping[currentForm]);
+				return localizer(RESOURCE_KEYS.elementForm.listing.fieldComputations.title);
 			case TableRegion.TABLE_COLUMN_FORM:
 				return localizer(RESOURCE_KEYS.elementForm.table.column.title);
-			case GlobalRegion.FORM:
 			case TextRegion.TEXT_FROM_CALCULATION:
+				return localizer(RESOURCE_KEYS.editor.element.Calculation);
 			case TextRegion.TEXT_FROM_FIELD:
-				return localizer(RESOURCE_KEYS.editor.element[type]);
+				return localizer(RESOURCE_KEYS.editor.element.Field);
 			default:
-				return "Form not found";
+				return elementType ? localizer(RESOURCE_KEYS.editor.element[elementType]) : null;
 		}
-	}, [detailData?.formContainers, localizer, type]);
+	}, [currentForm, localizer, elementType]);
 
-	if (isVisibilityConfig) {
+	const FormComponentToRender = elementType ? FormContainerProvider[elementType] : Placeholder;
+
+	const headline = `${localizer(RESOURCE_KEYS.elementForm.headline)} - ${elementName}`;
+
+	return (
+		<StyledOuterContainer data-testid="detail-form-container">
+			<FormHeader headline={headline} validationCounter={formValidationCounter} />
+			<FormComponentToRender />
+		</StyledOuterContainer>
+	);
+};
+
+const DefaultModeForm = () => {
+	const currentForm = useSelector(NavigationSelectors.currentForm);
+	const formValidationCounter = useSelector(ValidationSelectors.formHeaderValidationCounter);
+	const localizer = PrintLocalizer.useLocalizer();
+
+	if (!currentForm) {
+		return null;
+	}
+
+	if (isVisibilityConfigFormState(currentForm)) {
 		return (
-			<StyledOuterContainer>
+			<StyledOuterContainer data-testid="detail-form-container">
 				<FormHeader
 					headline={localizer(RESOURCE_KEYS.elementForm.hideConditions.headline)}
 					validationCounter={formValidationCounter}
@@ -127,31 +141,21 @@ const DefaultModeForm = () => {
 		);
 	}
 
-	const FormComponentToRender = type ? FormContainerProvider[type] : Placeholder;
-
-	const headline = `${localizer(RESOURCE_KEYS.elementForm.headline)} - ${elementName}`;
-
-	return (
-		<StyledOuterContainer>
-			<FormHeader headline={headline} validationCounter={formValidationCounter} />
-			<FormComponentToRender />
-		</StyledOuterContainer>
-	);
+	return <DefaultModeElementForm />;
 };
 
 const LayoutModeForm = () => {
-	const { isPageBreakConfig } = useSelector(PrintEngineSelectors.pageBreakConfigFormData);
-	const currentDetailData = useSelector(PrintEngineSelectors.currentDetailData);
+	const currentForm = useSelector(NavigationSelectors.currentReferenceForm);
 
 	const referenceValidationCounter = useSelector((state: PrintEngineState) =>
-		ValidationSelectors.placeableRefLayoutCounter(state, currentDetailData?.placeableRefId || "")
+		ValidationSelectors.placeableRefLayoutCounter(state, currentForm?.referenceId || "")
 	);
 
 	const localizer = PrintLocalizer.useLocalizer();
 
-	if (isPageBreakConfig) {
+	if (currentForm && isPageBreakConfigFormState(currentForm)) {
 		return (
-			<StyledOuterContainer>
+			<StyledOuterContainer data-testid="detail-form-container">
 				<FormHeader
 					headline={localizer(RESOURCE_KEYS.elementForm.layoutConfig.headline)}
 					validationCounter={referenceValidationCounter}
@@ -162,14 +166,14 @@ const LayoutModeForm = () => {
 	}
 
 	return (
-		<StyledOuterContainer>
+		<StyledOuterContainer data-testid="detail-form-container">
 			<Placeholder />
 		</StyledOuterContainer>
 	);
 };
 
 export const FormContainer = () => {
-	const editorMode = useSelector(PrintEngineSelectors.editorMode);
+	const editorMode = useSelector(NavigationSelectors.currentMode);
 
 	if (editorMode === EditorMode.Default) {
 		return <DefaultModeForm />;

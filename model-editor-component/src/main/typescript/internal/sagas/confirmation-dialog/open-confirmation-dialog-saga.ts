@@ -30,9 +30,9 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { put, race, take } from "typed-redux-saga";
-import { AnyAction } from "redux";
 
-import { ConfirmationDialogActions, ConfirmationDialogType } from "../../redux/index.js";
+import type { ConfirmationDialogType } from "../../redux/index.js";
+import { ConfirmationDialogActions } from "../../redux/index.js";
 import { resolveDialogPromise } from "../../hooks/use-confirmation-dialog.js";
 
 export function* openConfirmationDialogSaga(type: ConfirmationDialogType) {
@@ -42,8 +42,8 @@ export function* openConfirmationDialogSaga(type: ConfirmationDialogType) {
 		})
 	);
 	const { confirmed } = yield* race({
-		confirmed: take((action: AnyAction) => ConfirmationDialogActions.confirm.match(action)),
-		canceled: take((action: AnyAction) => ConfirmationDialogActions.cancel.match(action)),
+		confirmed: take(ConfirmationDialogActions.confirm.match),
+		canceled: take(ConfirmationDialogActions.cancel.match),
 	});
 
 	// resolve promise for useConfirmationDialog hook in case its running

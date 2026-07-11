@@ -1,7 +1,0 @@
-{
-	"extends": "./tsconfig.json",
-	"exclude": ["src/test/**/*", "src/**/__tests__/*"],
-  "compilerOptions": {
-    "rootDir": "src/main/typescript",
-  },
-}

@@ -41,7 +41,6 @@ tasks.frontendBuild {
 	dependsOn(
 		":model-editor-component:frontendBuild",
 		":model-api:frontendBuild",
-		":print-setting:frontendBuild",
 		":print-fonts:frontendBuild",
 	)
 

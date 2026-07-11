@@ -35,7 +35,6 @@ import com.mgmtp.a12.kernel.md.document.api.services.DocumentDeserializationConf
 import com.mgmtp.a12.kernel.md.document.api.services.DocumentSerializationConfig;
 import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 import com.mgmtp.a12.kernel.md.document.apiV2.services.IDocumentV2Serializer;
-import com.mgmtp.a12.kernel.md.facade.DocumentRtCustomExtensionService;
 import com.mgmtp.a12.kernel.md.facade.DocumentRtServiceFactory;
 import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelResolver;
 import com.mgmtp.a12.kernel.md.rt.api.*;
@@ -58,17 +57,13 @@ public class TypesettingValidationUtils {
 
 	private static final IDocumentV2Serializer documentSerializer = new MDSerializerFactory().createDocumentSerializerV2(documentResolver);
 
-	private static final DocumentRtCustomExtensionService customKernelExtensionService = new DocumentRtCustomExtensionService();
-
-	static {
-		customKernelExtensionService.registerCustomConditionsV2(new PrintCustomConditionFactory());
-	}
-
 	public static ITypesettingModelIntegrityReport validate(String rawTypesettingModel, Locale locale) {
 		DocumentRtServiceFactory rtFactory = new DocumentRtServiceFactory(documentResolver);
 		IDocumentRtService docRtService = rtFactory.createDocumentRtService(getDocumentStaticServiceConfig());
-		IDocumentValidationResult result = docRtService.validateFull(deserializeDocument(rawTypesettingModel),
-			locale);
+		DocumentProcessingConfig documentProcessConfig = DocumentProcessingConfig.builder(locale)
+			.customConditionFactory(new PrintCustomConditionFactory())
+			.build();
+		IDocumentValidationResult result = docRtService.validateFull(deserializeDocument(rawTypesettingModel), documentProcessConfig);
 
 		return new TypesettingModelIntegrityReport(result);
 	}
@@ -76,15 +71,11 @@ public class TypesettingValidationUtils {
 	private static DocumentV2 deserializeDocument(String documentString) {
 		Reader reader = new StringReader(documentString);
 
-		DocumentV2 document = documentSerializer.deserializeV2(reader, TYPESETTING_META_MODEL,
+		return documentSerializer.deserializeV2(reader, TYPESETTING_META_MODEL,
 			DocumentDeserializationConfig.builder()
 				.format(DocumentSerializationConfig.Format.JSON)
-				.addTransientFields(true)
 				.build(), (RankedNotification rankedNotification) -> {
 			});
-
-		// Ignore the problems of the documentSerializer, because they are the same as the validation process
-		return document;
 	}
 
 	private static final IStaticModelCodeCache cache = new IStaticModelCodeCache() {
@@ -107,14 +98,10 @@ public class TypesettingValidationUtils {
 			}
 
 			@Override
-			public Optional<String> getVariant() {
-				return Optional.empty();
-			}
-
-			@Override
 			public Optional<ILabelProvider> getLabelProvider() {
 				return Optional.empty();
 			}
+
 			@Override
 			public Optional<String> getModelPackage(String documentModelId) {
 				return Optional.of(GENERATED_MODEL_PACKAGE);

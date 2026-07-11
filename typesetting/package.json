@@ -1,6 +1,6 @@
 {
   "name": "@com.mgmtp.a12.print/print-typesetting",
-  "version": "3.2.3",
+  "version": "4.0.0",
   "license": "(EUPL-1.2 OR LicenseRef-commercial)",
   "description": "Print Typesetting",
   "type": "module",
@@ -10,7 +10,7 @@
     "format": "prettier --check \"./*.{js,cjs,mjs}\" \"src/**/*.{ts,tsx}\"",
     "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest",
     "start": "webpack-dev-server --config ./webpack.config.cjs",
-    "clean": "rimraf lib coverage build src/main/typescript/internal/api/generated",
+    "clean": "rimraf lib coverage build --glob src/main/typescript/**/generated",
     "generate": "pnpm run /^generate:.*/",
     "watch": "tsc -p tsconfig.build.json -w",
     "fix": "pnpm run /^.*:fix$/",
@@ -42,12 +42,26 @@
     "NOTICE",
     "THIRD_PARTY_NOTICES"
   ],
+  "exports": {
+    "./a12internal/api": "./lib/a12internal/api/index.js",
+    "./a12internal/ui": "./lib/a12internal/ui/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "a12internal/api": [
+        "./lib/a12internal/api/index.d.ts"
+      ],
+      "a12internal/ui": [
+        "./lib/a12internal/ui/index.d.ts"
+      ]
+    }
+  },
   "dependencies": {
-    "md5": "catalog:"
+    "md5": "catalog:",
+    "yjs": "catalog:"
   },
   "devDependencies": {
     "@com.mgmtp.a12.base/base-model-api": "catalog:a12",
-    "@com.mgmtp.a12.devtools/tsconfig": "catalog:a12",
     "@com.mgmtp.a12.devtools/eslint-config": "catalog:a12",
     "@com.mgmtp.a12.devtools/prettier-config": "catalog:a12",
     "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts": "catalog:a12",
@@ -93,7 +107,6 @@
     "style-loader": "catalog:",
     "styled-components": "catalog:",
     "ts-loader": "catalog:",
-    "ts-node": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
     "webpack": "catalog:",

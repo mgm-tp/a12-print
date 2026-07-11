@@ -29,25 +29,22 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, getContext, put, takeLatest } from "typed-redux-saga";
-import { AnyAction, Action } from "typescript-fsa";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
 
-import { RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 import { RequestApiActions } from "../../redux/index.js";
 
 const log = LoggerFactory.getLogger("LoadTypesettingModelSaga");
 
-export function* loadTypesettingModelSaga(): SagaIterator {
-	yield* takeLatest(
-		(action: AnyAction) => RequestApiActions.loadTypesettingModel.match(action),
-		handleLoadTypesettingModelSaga
-	);
+export function* loadTypesettingModelSaga(): SagaGenerator<void> {
+	yield* takeLatest(RequestApiActions.loadTypesettingModel.match, handleLoadTypesettingModelSaga);
 }
 
-function* handleLoadTypesettingModelSaga(action: Action<string>): SagaIterator {
+function* handleLoadTypesettingModelSaga(action: PayloadAction<string>): SagaGenerator<void> {
 	const requestApi: RequestApi = yield* getContext("requestApi");
 	const typesettingModel = yield* call(requestApi.loadTypesettingModel, action.payload);
 

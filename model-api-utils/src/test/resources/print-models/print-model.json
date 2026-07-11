@@ -2,7 +2,7 @@
   "header": {
     "id": "TestPrintModel-Valid",
     "modelType": "print",
-    "modelVersion": "3.2.0",
+    "modelVersion": "4.0.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "3.2.0"
+        "value": "4.0.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "3.2.0-rc.1"
+        "value": "4.0.0-rc.3"
       }
     ],
     "modelReferences": [
@@ -200,6 +200,24 @@
           "id": "ID_9767d54e-29d1-47d2-bf22-edcbc15a180f",
           "model": "DomainTableLayout",
           "path": "/general/StringField1"
+        },
+        "borderProperties": {
+          "id": "o25lsuVZkf0xQwKs6khqf",
+          "borderWidth": {
+            "id": "65iML5XgNtavBHSeYreGm",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "cpFREwdg6baTJUemA7rOR",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "NYmWZOJmfQPY5yQ7REEx1",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -227,6 +245,27 @@
             "id": "s1Pq9a-72FzzP71hqGY8d",
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
+          }
+        },
+        "borderProperties": {
+          "id": "text1",
+          "borderWidth": {
+            "id": "RF8H7hE3qsRkTqz979RzD",
+            "source": "INHERITED",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/",
+            "reference": "tableLayout2"
+          },
+          "borderColor": {
+            "id": "6WyqcqmircORenOnZyTPu",
+            "source": "INHERITED",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/",
+            "reference": "tableLayout2"
+          },
+          "borderStyle": {
+            "id": "WnEgkBVXIYZCw77wfH44L",
+            "source": "INHERITED",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
+            "reference": "tableLayout2"
           }
         }
       },
@@ -271,6 +310,27 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
+        },
+        "borderProperties": {
+          "id": "text2",
+          "borderWidth": {
+            "id": "G7WL-hJ1A7ynfsfrglIls",
+            "source": "INHERITED",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/",
+            "reference": "tableLayout2"
+          },
+          "borderColor": {
+            "id": "xP5F8GcQvfeS8VtgMkWW4",
+            "source": "INHERITED",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/",
+            "reference": "tableLayout2"
+          },
+          "borderStyle": {
+            "id": "6X4qsNUEe2oC2Q-f7LRqM",
+            "source": "INHERITED",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
+            "reference": "tableLayout2"
+          }
         }
       },
       {
@@ -280,6 +340,24 @@
           "id": "ID_ce5ea1af-a3e2-44d1-9d26-70395e3541d6",
           "model": "DomainTableLayout",
           "path": "/general/StringField2"
+        },
+        "borderProperties": {
+          "id": "YdGzenJIKYuLwqEeebQNp",
+          "borderWidth": {
+            "id": "lUYV4BgIgrAtdTr8YY0Wj",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "-icDnldmylJKSjb2P8Ne3",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "AjeOw6F4mXgjh-7jQ6HLy",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         }
       },
       {
@@ -327,6 +405,27 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
+        },
+        "borderProperties": {
+          "id": "text3",
+          "borderWidth": {
+            "id": "3LxP_GMXUa5MZ8kPh3mrS",
+            "source": "INHERITED",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/",
+            "reference": "tableLayout2"
+          },
+          "borderColor": {
+            "id": "szrI3TE-q7Z9CQy8qgz6_",
+            "source": "INHERITED",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/",
+            "reference": "tableLayout2"
+          },
+          "borderStyle": {
+            "id": "7EyF4eGlOOcGzSXNt7d2l",
+            "source": "INHERITED",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
+            "reference": "tableLayout2"
+          }
         }
       },
       {
@@ -334,9 +433,24 @@
         "type": "TableLayout",
         "borderProperties": {
           "id": "ID_565de615-e00f-4ab2-a3d4-8fdfef24535a",
-          "borderWidth": 0.75,
-          "borderStyle": "Solid",
-          "borderColor": "#000000"
+          "borderWidth": {
+            "id": "Eg_WGinY4jT1WTs_wVZIH",
+            "source": "INPUT",
+            "value": 0.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "OqoUOqqr-SXeOon5xY4Au",
+            "source": "INPUT",
+            "value": "#000000",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "9ed_iv3i_0fR8tZdL3pIh",
+            "source": "INPUT",
+            "value": "Solid",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "tableLayout": {
           "id": "ID_4b1ec72e-5c15-467d-87ac-423da84e0dc3",
@@ -408,9 +522,24 @@
         "type": "TableLayout",
         "borderProperties": {
           "id": "ID_0c4cc864-1e63-49f8-8946-2f11386f5b7d",
-          "borderWidth": 0.75,
-          "borderStyle": "Solid",
-          "borderColor": "#000000"
+          "borderWidth": {
+            "id": "BYhSf5ycEiof7cI91BsQE",
+            "source": "INPUT",
+            "value": 0.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "Ccl944XbOXWxDoN7kjNdm",
+            "source": "INPUT",
+            "value": "#000000",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "NNZNCdqHKH4iVYLkPXvRp",
+            "source": "INPUT",
+            "value": "Solid",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
         },
         "tableLayout": {
           "id": "ID_220f71d6-ca0a-4e86-9f82-4d9fef789a82",

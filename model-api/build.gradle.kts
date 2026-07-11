@@ -60,10 +60,8 @@ val buildOutputDir = printMetaModelPreprocessing["build_output_dir"].toString()
 val javaCodeDest = replaceRelativeDirectories(buildOutputDir) + "/java"
 val javascriptCodeDest = replaceRelativeDirectories(buildOutputDir) + "/javascript"
 val expandMetaModelDest = replaceRelativeDirectories(printMetaModelPreprocessing["print_model_file"].toString())
-val expandElementDefinitionDest = replaceRelativeDirectories(printMetaModelPreprocessing["element_model_file"].toString())
 
 val javascriptMetaModelFile = "${javascriptCodeDest}/print-meta-model-validation.js"
-val javascriptElementFile = "${javascriptCodeDest}/print-element-validation.js"
 
 val printModelsPath = "src/main/resources/models"
 val metaModelPath = "${printModelsPath}/DomainPrintMetaModel.json"
@@ -76,10 +74,31 @@ val generateMetaModelMapDestTypescript =
 
 val validationScriptFolder = "$typescriptCodeDest/validation"
 
+sourceSets {
+	sourceSets {
+		create("generatedTypings", Action {
+			java.srcDir(generatedTypingsOutputDir)
+		})
+	}
+	main {
+		java {
+			srcDirs(listOf("src/main/java", javaCodeDest, generatedTypingsOutputDir))
+			compileClasspath += sourceSets["generatedTypings"].output
+			runtimeClasspath += sourceSets["generatedTypings"].output
+		}
+		resources {
+			srcDirs(listOf("src/main/resources", "src/main/typescript/generated/a12internal/model"))
+		}
+	}
+	test {
+		compileClasspath += sourceSets["generatedTypings"].output
+		runtimeClasspath += sourceSets["generatedTypings"].output
+	}
+}
+
 configurations {
 	create("printModelValidationCodeGeneration")
 	create("runTypedAccessorGeneratorConfig")
-	create("generatedTypingsImplementation")
 	create("documentModelMigration")
 	create("metadataMapGeneration")
 }
@@ -92,12 +111,8 @@ val metadataMapGeneration by configurations.getting
 
 dependencies {
 	implementation(a12Libs.baseModelApi)
-	implementation(a12Libs.kernelMdRuntimeApi)
-	implementation(a12Libs.kernelMdModelApi)
-	implementation(a12Libs.kernelMdDocumentApi)
+	implementation(a12Libs.baseModelUtils)
 	implementation(a12Libs.kernelMdFacade)
-	implementation(a12Libs.kernelMdSerializer)
-	implementation(a12Libs.kernelCoreRuntime)
 
 	implementation(thirdPartyLibs.commonsIO)
 	implementation(thirdPartyLibs.commonsLang3)
@@ -108,14 +123,13 @@ dependencies {
 	antlr(thirdPartyLibs.antlr4)
 
 	// TypedAccessorGenerator dependencies
-	generatedTypingsImplementation(a12Libs.kernelMdDocument)
-	runTypedAccessorGeneratorConfig("${a12Libs.kernelAccessor.get()}:TypedAccessorGenerator-CLI")
+	generatedTypingsImplementation(a12Libs.kernelMdFacade)
+	runTypedAccessorGeneratorConfig(variantOf(a12Libs.kernelMdFacade) { classifier("typed-accessor-gen-cli") })
 
-	printModelValidationCodeGeneration(a12Libs.kernelMdModel)
 	printModelValidationCodeGeneration(a12Libs.kernelMdFacade)
 	printModelValidationCodeGeneration(thirdPartyLibs.slf4jSimple)
 
-	documentModelMigration(a12Libs.kernelToolMigration)
+	documentModelMigration(variantOf(a12Libs.kernelMdFacade) { classifier("migrator-cli") })
 
 	metadataMapGeneration(project(":model-api-codegen"))
 	annotationProcessor(project(":model-api-codegen"))
@@ -126,6 +140,7 @@ dependencies {
 	testImplementation(thirdPartyLibs.mockitoCore)
 
 	testRuntimeOnly(thirdPartyLibs.jupiterEngine)
+	testRuntimeOnly(thirdPartyLibs.junitLauncher)
 }
 
 tasks.generateGrammarSource {
@@ -138,7 +153,7 @@ val generateTypeScriptGrammar = tasks.register<AntlrTask>("generateTypeScriptGra
 	group = "model-api"
 	description = "Generates TypeScript parser code for DateTimeFormat.g4 ANTLR grammar"
 
-	val antlrPath = "src/main/typescript/generated/internal/antlr/datetimeformat"
+	val antlrPath = "src/main/typescript/generated/a12internal/antlr/datetimeformat"
 
 	source = fileTree("src/main/antlr/DateTimeFormat.g4")
 	arguments.addAll(listOf("-visitor", "-long-messages", "-Dlanguage=TypeScript"))
@@ -155,26 +170,6 @@ val generateTypeScriptGrammar = tasks.register<AntlrTask>("generateTypeScriptGra
 
 	inputs.files("src/main/antlr/DateTimeFormat.g4", "gradle.lockfile")
 	outputs.dir(antlrPath)
-}
-
-sourceSets {
-	create("generatedTypings", Action {
-		java.srcDir(generatedTypingsOutputDir)
-	})
-	main {
-		java {
-			srcDirs(listOf("src/main/java", javaCodeDest, generatedTypingsOutputDir))
-			compileClasspath += sourceSets["generatedTypings"].output
-			runtimeClasspath += sourceSets["generatedTypings"].output
-		}
-		resources {
-			srcDirs(listOf("src/main/resources", "src/main/typescript/generated/internal/model"))
-		}
-	}
-	test {
-		compileClasspath += sourceSets["generatedTypings"].output
-		runtimeClasspath += sourceSets["generatedTypings"].output
-	}
 }
 
 val runTypedAccessorGenerator = tasks.register<JavaExec>("runTypedAccessorGenerator") {
@@ -219,21 +214,11 @@ val generateJavaValidationCode = getValidationGeneratorTask(
 val generateJavaScriptValidationCode = getValidationGeneratorTask(
 	"MetaModel", "JAVASCRIPT", expandMetaModelDest, javascriptMetaModelFile
 ).get()
-val generateJavaScriptElementValidationCode = getValidationGeneratorTask(
-	"ElementDefinition", "JAVASCRIPT", expandElementDefinitionDest, javascriptElementFile
-).get()
-
 val generateUsableModelJavaScriptValidation = getGenerateUsableJavaScriptValidationTask(
 	"MetaModel", "meta-model", javascriptMetaModelFile, validationScriptFolder
 )
-val generateUsableElementJavaScriptValidation = getGenerateUsableJavaScriptValidationTask(
-	"ElementDefinition", "element-definition", javascriptElementFile, validationScriptFolder
-)
 val expandPrintMetaModel = getExpandTask(
-	"MetaModel", printModelsPath, metaModelPath, expandMetaModelDest
-).get()
-val expandElementDefinition = getExpandTask(
-	"ElementDefinition", printModelsPath, elementDefinitionPath, expandElementDefinitionDest
+	"MetaModel", printModelsPath, metaModelPath, "DomainPrintMetaModel", expandMetaModelDest
 ).get()
 
 expandPrintMetaModel.finalizedBy(generateJavaValidationCode)
@@ -255,17 +240,47 @@ val pnpmGenerate = tasks.register<PnpmTask>("pnpmGenerate") {
 	outputs.cacheIf { true }
 }
 
+val pnpmGenerateExports = tasks.register<PnpmTask>("pnpmGenerateExports") {
+	group = "model-api"
+	description = "Generates index.ts files for generated code"
+
+	dependsOn(
+		pnpmGenerate,
+		generateTypeScriptGrammar,
+		generateUsableModelJavaScriptValidation,
+		generatePrintModelMetadataMap
+	)
+
+	args.set(listOf("run", "generate:exports"))
+
+	inputs.dir("$typescriptCodeDest/dto")
+	inputs.dir("$typescriptCodeDest/validation")
+	inputs.dir("src/main/typescript/generated/a12internal/antlr/datetimeformat")
+	inputs.file(generateMetaModelMapDestTypescript)
+	outputs.file("src/main/typescript/generated/index.ts")
+	outputs.file("$typescriptCodeDest/dto/index.ts")
+	outputs.file("$typescriptCodeDest/validation/index.ts")
+	outputs.file("src/main/typescript/generated/a12internal/antlr/datetimeformat/index.ts")
+	outputs.cacheIf { true }
+}
+
 val pnpmTypedoc = tasks.register<PnpmTask>("pnpmTypedoc") {
 	group = "model-api"
 	description = "Generates TypeScript documentation using TypeDoc"
 
-	dependsOn(generatePrintModelMetadataMap)
+	dependsOn(
+		generatePrintModelMetadataMap,
+		pnpmGenerate,
+		generateUsableModelJavaScriptValidation,
+		generateTypeScriptGrammar,
+		pnpmGenerateExports
+	)
 
 	args.set(listOf("run", "typedoc"))
 
 	inputs.files(
 		fileTree("src/main/typescript") {
-			exclude("**/internal/**/*", "**/__tests__/**/*", "**/node_modules/**/*")
+			exclude("**/a12internal/**/*", "**/__tests__/**/*", "**/node_modules/**/*")
 		}
 	)
 	inputs.files("tsconfig.build.json", "tsconfig.json", "../pnpm-lock.yaml")
@@ -281,10 +296,9 @@ tasks.frontendBuild {
 	dependsOn(
 		generateTypeScriptGrammar,
 		generateUsableModelJavaScriptValidation,
-		generateUsableElementJavaScriptValidation,
-		expandElementDefinition,
 		pnpmGenerate,
-		pnpmTypedoc
+		pnpmTypedoc,
+		pnpmGenerateExports
 	)
 
 	inputs.files("tsconfig.build.json", ".prettierignore")
@@ -300,17 +314,14 @@ tasks.generateGrammarSource {
 }
 
 expandPrintMetaModel.finalizedBy(generateJavaScriptValidationCode)
-expandElementDefinition.finalizedBy(generateJavaScriptElementValidationCode)
 generateJavaScriptValidationCode.finalizedBy(generateUsableModelJavaScriptValidation)
-generateJavaScriptElementValidationCode.finalizedBy(generateUsableElementJavaScriptValidation)
 
 tasks.processResources {
-	dependsOn(expandPrintMetaModel, expandElementDefinition)
+	dependsOn(expandPrintMetaModel)
 }
 tasks.sourcesJar {
 	dependsOn(
 		"generateGrammarSource",
-		expandElementDefinition,
 		runTypedAccessorGenerator,
 		generatePrintModelMetadataMap,
 		generateJavaValidationCode

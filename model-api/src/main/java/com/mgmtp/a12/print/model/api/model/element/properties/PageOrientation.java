@@ -32,7 +32,9 @@
 package com.mgmtp.a12.print.model.api.model.element.properties;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public enum PageOrientation {
 	@JsonProperty("Portrait") PORTRAIT,
 	@JsonProperty("Landscape") LANDSCAPE;

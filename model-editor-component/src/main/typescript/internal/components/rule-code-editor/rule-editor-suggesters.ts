@@ -29,10 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ItemSuggestor, SuggestionItem } from "@com.mgmtp.a12.dml/dml/lib/ruleCodeEditor/context-assist/index.js";
-import { ElementMap } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/types/document-model-data.js";
-import { RuntimeVariable, RuntimeVariableType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import type { ItemSuggestor, SuggestionItem } from "@com.mgmtp.a12.dml/dml";
+import type { ElementMap } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { RuntimeVariable } from "@com.mgmtp.a12.print/print-model-api/model";
+import { RuntimeVariableType } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 export type SuggestionType = "listing" | "default";
 

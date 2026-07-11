@@ -29,19 +29,19 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as path from "node:path";
-import * as fs from "node:fs";
+import { readdirSync } from "node:fs";
+import { extname, join } from "node:path";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
 
 export function loadJsonFiles<T extends object>(dirPath: string): Array<T> {
-	const files = fs.readdirSync(dirPath);
+	const files = readdirSync(dirPath);
 	const jsons: Array<object> = [];
 
 	files.forEach(file => {
-		if (path.extname(file) === ".json") {
-			const fileContent = require(path.join(dirPath, file));
+		if (extname(file) === ".json") {
+			const fileContent = require(join(dirPath, file));
 
 			jsons.push(fileContent);
 		}

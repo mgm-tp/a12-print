@@ -34,5 +34,7 @@ package com.mgmtp.a12.print.model.api.model.element.type.chart.lineChart;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
 import com.mgmtp.a12.print.model.api.model.element.base.Styleable;
 import com.mgmtp.a12.print.model.api.model.element.type.chart.Chart;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface LineChart extends Chart {}

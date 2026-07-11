@@ -36,7 +36,9 @@ import com.mgmtp.a12.print.model.api.model.element.base.Dimensions;
 import com.mgmtp.a12.print.model.api.model.reference.PlaceableReference;
 
 import java.util.List;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface BoundingBoxProperties extends PrintModelEntity {
 	Dimensions getDimensions();
 	List<PlaceableReference> getElementReferences();

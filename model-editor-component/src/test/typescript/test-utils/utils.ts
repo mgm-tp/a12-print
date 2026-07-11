@@ -32,14 +32,22 @@
 import { jest } from "@jest/globals";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	Margins,
-	MeasureUnit,
 	PrintModelEntity,
 	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { MeasureUnit } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
+import {
+	type AnyFormState,
+	type CanvasTab,
+	EditorMode,
+	type NavigationState,
+	tabToEntityType,
+} from "../../../main/typescript/internal/redux/index.js";
 import { changePartialMarginValue } from "../../../main/typescript/internal/utils/margin-utils.js";
 
 export function createPartialValidReference(
@@ -110,12 +118,13 @@ export enum TestWarningIdentifier {
 	WDGET_SPREAD_KEY = 'A props object containing a "key" prop is being spread into JSX:',
 }
 export function setupIgnoreTestWarning(warningsToIgnore: TestWarningIdentifier[]) {
+	const originalError = console.error;
 	beforeEach(() => {
 		jest.spyOn(console, "error").mockImplementation(msg => {
 			if (typeof msg === "string" && warningsToIgnore.some(warning => msg.includes(warning))) {
 				return;
 			}
-			console.error(msg);
+			originalError.call(console, msg);
 		});
 	});
 }
@@ -162,4 +171,42 @@ export function mockElementLayoutMetrics(width: number, height: number) {
 			});
 		}
 	});
+}
+
+export function createNavigationStateWithForm(
+	tab: CanvasTab,
+	entityId: string,
+	formStack: AnyFormState[]
+): NavigationState {
+	const activeTabState = {
+		activeEntityId: entityId,
+		entities: {
+			[entityId]: [
+				{
+					id: entityId,
+					type: tabToEntityType(tab),
+					currentMode: EditorMode.Default,
+					modes: {
+						[EditorMode.Default]: {
+							detailForm: { formStack },
+						},
+					},
+				},
+			],
+		},
+	};
+	const emptyTabState = { entities: {} };
+
+	return {
+		sidebarState: {
+			activeTab: tab,
+			activeCanvasTab: tab,
+			isOpen: true,
+			isFullscreen: false,
+		},
+		[SidebarItem.SEGMENT]: tab === SidebarItem.SEGMENT ? activeTabState : emptyTabState,
+		[SidebarItem.SECTION]: tab === SidebarItem.SECTION ? activeTabState : emptyTabState,
+		[SidebarItem.WATERMARK]: tab === SidebarItem.WATERMARK ? activeTabState : emptyTabState,
+		[SidebarItem.TEXT_STYLES]: {},
+	};
 }

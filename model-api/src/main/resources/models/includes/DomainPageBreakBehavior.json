@@ -2,7 +2,7 @@
   "header": {
     "id": "DomainPageBreakBehavior",
     "modelType": "document",
-    "modelVersion": "28.4.0",
+    "modelVersion": "29.4.0",
     "locales": [
       {
         "code": "en"
@@ -80,12 +80,28 @@
           "id": "group_9a367",
           "name": "pageBreakBehavior",
           "Group": {
+            "label": [
+              {
+                "locale": "en",
+                "text": "Page break behavior"
+              },
+              {
+                "locale": "de",
+                "text": "Seitenumbruchverhalten"
+              }
+            ],
             "repeatability": 1,
             "elements": [
               {
                 "type": "Field",
                 "id": "field_71429",
                 "name": "id",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
@@ -99,10 +115,26 @@
                 "type": "Field",
                 "id": "field_69318",
                 "name": "path",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
                   },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Path to Input Source Default"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Pfad zum Standardwert der Input Source"
+                    }
+                  ],
                   "requirednessConfig": {
                     "mode": "relativeToParent"
                   }
@@ -119,6 +151,16 @@
                       "typeDefinitionId": "typedef_fc34f107-df66-46dc-868c-99a695067cde"
                     }
                   },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Input Source type"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Typ der Input Source"
+                    }
+                  ],
                   "requirednessConfig": {
                     "mode": "absoluteOrRelativeToNextRepAncestor"
                   }
@@ -144,17 +186,43 @@
                     "TypeDefType": {
                       "typeDefinitionId": "typedef_80b07803-b5e7-45a8-bc96-a2b891521938"
                     }
-                  }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Pagebreak behavior"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Verhalten beim Seitenbruch"
+                    }
+                  ]
                 }
               },
               {
                 "type": "Field",
                 "id": "field_5a545",
                 "name": "reference",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
-                  }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "ID of referenced element"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "ID des referenzierten Elements"
+                    }
+                  ]
                 }
               },
               {

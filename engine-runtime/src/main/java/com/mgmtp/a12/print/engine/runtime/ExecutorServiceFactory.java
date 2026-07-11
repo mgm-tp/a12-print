@@ -37,10 +37,12 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinWorkerThread;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Used to get default instance of {@link ExecutorService}.
  */
+@OnlyForUsage
 public class ExecutorServiceFactory {
 
 	/**

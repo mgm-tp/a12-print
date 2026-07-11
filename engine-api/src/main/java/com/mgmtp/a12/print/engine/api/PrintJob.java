@@ -29,6 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::PrintJobInterface[]
 package com.mgmtp.a12.print.engine.api;
 // tag::Import[]
 
@@ -38,12 +39,14 @@ import lombok.NonNull;
 
 import java.util.Locale;
 import java.util.TimeZone;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 // end::Import[]
 
 
 /**
  * A job description for the PrintEngine to execute the print operation for a particular {@link com.mgmtp.a12.print.model.api.model.PrintModel}.
  */
+@OnlyForUsage
 public interface PrintJob {
 
 	PrintModelId getPrintModelId();
@@ -60,3 +63,4 @@ public interface PrintJob {
 
 	@NonNull TimeZone getTimeZone() throws PrintJobConfigurationException;
 }
+// end::PrintJobInterface[]

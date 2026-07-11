@@ -31,11 +31,8 @@
  */
 import { useMemo } from "react";
 
-import { Table } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/table.view.js";
-import { BaseColumnType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/column.api.js";
-import { TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/table-renderer.api.js";
-import { Button, Icon, Message } from "@com.mgmtp.a12.widgets/widgets-core";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
+import type { BaseColumnType, TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, Icon, Message, Table, addPrefix } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { useLocalizer } from "../../localization/localizer.js";
 import { RESOURCE_KEYS } from "../../localization/keys.js";
@@ -44,7 +41,8 @@ import { usePreventLineBreakRuleErrorGetter } from "../../hooks/use-prevent-line
 
 import { CustomTextField } from "../input/CustomTextField.js";
 
-import { ExtendedPreventLineBreakRule, RuleType } from "./types.js";
+import type { ExtendedPreventLineBreakRule } from "./types.js";
+import { RuleType } from "./types.js";
 
 export enum DataKeys {
 	data = "data",

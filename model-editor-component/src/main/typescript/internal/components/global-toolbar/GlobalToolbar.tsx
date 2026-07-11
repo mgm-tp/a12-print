@@ -52,7 +52,11 @@ export const GlobalToolbar = ({ leftSlots, rightSlots, printModelId, modelIcon }
 				{modelIcon && <ModelIcon src={modelIcon} />}
 				<ContentBoxElements.Title
 					key={printModelId}
-					text={<CssEllipsis maxLine={1}>{printModelId}</CssEllipsis>}
+					text={
+						<CssEllipsis maxLine={1} useTooltip>
+							{printModelId}
+						</CssEllipsis>
+					}
 				/>
 				{renderSlots(leftSlots)}
 			</StyledSlotWrapper>

@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { TransactionLogEntry } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { TransactionLogEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 export type CommitState = "commit" | "pending" | "overwritten";
 

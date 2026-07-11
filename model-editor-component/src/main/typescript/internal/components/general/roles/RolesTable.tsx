@@ -31,27 +31,27 @@
  */
 import { useCallback, useContext, useMemo, useState } from "react";
 
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { BaseColumnType, TableRenderPropsType } from "@com.mgmtp.a12.widgets/widgets-core";
 import {
-	BaseColumnType,
+	Autocomplete,
+	GlobalMessageBox,
 	Table,
-	TableRenderPropsType,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/table/new-api/index.js";
-import { Message } from "@com.mgmtp.a12.widgets/widgets-core/lib/message/index.js";
-import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
-import { Autocomplete, GlobalMessageBox } from "@com.mgmtp.a12.widgets/widgets-core";
-import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react/lib/main/index.js";
-import { Localizer } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
-import { EntityKey, getEntityId } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
+	Message,
+	addPrefix,
+	Button,
+	Icon,
+} from "@com.mgmtp.a12.widgets/widgets-core";
+import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react";
+import type { Localizer } from "@com.mgmtp.a12.utils/utils-localization";
+import { EntityKey, getEntityId } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { RESOURCE_KEYS } from "../../../localization/keys.js";
-import { PrintLocalizer } from "../../../localization/localizer.js";
+import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { useConfirmationDialog } from "../../../hooks/use-confirmation-dialog.js";
 import { ConfirmationDialogType } from "../../../redux/index.js";
 
-import { AnnotationData } from "../annotations/annotation.js";
+import type { AnnotationData } from "../annotations/annotation.js";
 import { StyledGeneralRolesTable } from "../General.styled.js";
 
 interface GeneralRolesTableProps {
@@ -153,7 +153,7 @@ export const RolesTable = ({ annotations, onChange, errorMap, availableRoles }: 
 					items={availableRoles || []}
 					value={row}
 					onValueChange={role => typeof role === "string" && onRoleNameChange(role, rowIndex)}
-					allowAddingNewItem
+					allowAddingNewItem={true}
 					hintTemplate={localizer(RESOURCE_KEYS.sidebar.general.roleSettings.autocompleteHint) ?? ""}
 				/>
 			);

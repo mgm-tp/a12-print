@@ -31,14 +31,13 @@
  */
 import { useMemo } from "react";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import {
-	PageBreakBehavior,
+import { Icon, Button } from "@com.mgmtp.a12.widgets/widgets-core";
+import type {
 	PartialAnyPrintModelElement,
 	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PageBreakBehavior } from "@com.mgmtp.a12.print/print-model-api/model";
+import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { useInheritedPageBreakResolver } from "../../hooks/use-inherited-page-break-resolver.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";

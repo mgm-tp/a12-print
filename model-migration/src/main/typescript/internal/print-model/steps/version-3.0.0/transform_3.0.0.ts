@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as NewModel from "./steps/02_description-field/print-model.js";
+import type * as NewModel from "./steps/02_description-field/print-model.js";
 import { transformNoEmptyRoles } from "./steps/04_empty-roles/index.js";
 
 export default function transform(newModel: NewModel.PrintModelDTO): NewModel.PrintModelDTO {

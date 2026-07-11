@@ -31,14 +31,12 @@
  */
 import { useCallback, useMemo } from "react";
 
-import { Select, SelectProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select/index.js";
-import {
-	PossibleInputSource,
-	InputValueSourceResolver,
-} from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+import type { SelectProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Select } from "@com.mgmtp.a12.widgets/widgets-core";
+import { PossibleInputSource, InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { useCustomBaseInputProps } from "../use-custom-base-input-props.js";
-import { SourceSelectProperties } from "../types.js";
+import type { SourceSelectProperties } from "../types.js";
 
 import { SourceInputContainer } from "./SourceInputContainer.js";
 import { SourceInputToggles } from "./SourceInputToggles.js";
@@ -73,8 +71,7 @@ export const SourceSelect = (props: SourceSelectProps) => {
 		undefined
 	);
 
-	const { onSourceChange, inputSource, element, property, determineInheritedSource, inheritedValueResolver } =
-		sourceProperties;
+	const { onSourceChange, inputSource, element, property, determineInheritedSource } = sourceProperties;
 
 	const { path: sourcePath, possibleInputSources } = InputValueSourceResolver.getInputSourceMetadata(
 		element,
@@ -93,11 +90,12 @@ export const SourceSelect = (props: SourceSelectProps) => {
 		[inputSource, onSourceChange, sourcePath]
 	);
 
-	const inputSourceValue = InputValueSourceResolver.getSourceStringValue(
+	const inputSourceValue = InputValueSourceResolver.getSourceInputValue(
 		inputSource,
 		element,
 		property,
-		inheritedValueResolver
+		(value?: string) => value,
+		sourceProperties.inheritedValueResolver
 	);
 
 	const select = useMemo(() => {
@@ -130,6 +128,7 @@ export const SourceSelect = (props: SourceSelectProps) => {
 					source={inputSource.source}
 					onValueChanged={handleSourceChange}
 					showOnlySelectedOption
+					disabled={disabled}
 				/>
 				<Select
 					{...restProps}
@@ -152,6 +151,7 @@ export const SourceSelect = (props: SourceSelectProps) => {
 		tooltips,
 		inputSourceValue,
 		value,
+		disabled,
 	]);
 
 	return (

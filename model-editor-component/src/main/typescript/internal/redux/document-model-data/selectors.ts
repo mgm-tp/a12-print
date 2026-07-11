@@ -29,14 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { createSelector, Selector } from "reselect";
+import { createSelector, type Selector } from "reselect";
 
-import { DocumentModelData } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/types/document-model-data.js";
+import type { DocumentModelData } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { createSliceSelector } from "../../store/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 
-import { DocumentModelDataState } from "./state.js";
+import type { DocumentModelDataState } from "./state.js";
 
 export namespace DocumentModelDataSelectors {
 	const documentModelDataState = createSliceSelector<DocumentModelDataState>(state => state.DocumentModelData);

@@ -31,16 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup;
 
-import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter.FormattedValueDependency;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter.ValueFormatProvider;
-import com.mgmtp.a12.print.model.api.model.element.base.DisplayOptions;
-import com.mgmtp.a12.print.model.api.model.element.type.field.FieldProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.Optional;
 
 @Data
 @Builder(toBuilder = true)

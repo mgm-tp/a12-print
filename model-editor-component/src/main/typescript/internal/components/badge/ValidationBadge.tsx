@@ -29,9 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Badge, BadgeProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/badge/index.js";
+import type { BadgeProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Badge } from "@com.mgmtp.a12.widgets/widgets-core";
 
-import { InteractionType } from "../../redux/index.js";
+import type { InteractionType } from "../../redux/index.js";
 
 type ValidationBadgeProps = Pick<BaseBadgeProps, "count" | "type" | "standalone" | "title" | "hidden" | "className">;
 

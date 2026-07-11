@@ -39,10 +39,12 @@ import com.mgmtp.a12.print.model.api.model.textStyle.TextStylesContainer;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Resolves {@link TextStyle} IDs from a given list of {@link TextStyle}s.
  */
+@OnlyForUsage
 public class TextStyleIdListResolver implements TextStyleIdResolver {
 	private final List<TextStyle> textStyleList;
 

@@ -29,6 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+// tag::TypesettingModelProviderInterface[]
 package com.mgmtp.a12.print.engine.runtime;
 
 // tag::Import[]
@@ -88,3 +89,4 @@ public interface TypesettingModelProvider extends JobDependencyProvider {
 		typesettingModelJobDependency.setTypesettingModel(loadTypesettingModel(typesettingModelJobDependency.getDescriptor()));
 	}
 }
+// end::TypesettingModelProviderInterface[]

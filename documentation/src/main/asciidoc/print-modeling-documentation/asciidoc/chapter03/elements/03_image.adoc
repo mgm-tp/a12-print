@@ -21,15 +21,15 @@ The Image element inserts an image into the resulting PDF.
 
 Image source type:: The image data can be inserted from two different sources:
 +
-* <<Attachment, Attachment>>
-* <<ImageField, Field>>
+* <<Static, Static>>
+* <<Dynamic, Dynamic>>
 
 Alternative Text:: The text that will be accessed by screen readers.
 This is required for accessibility purposes.
 Height:: The height in millimeters that the image will be scaled to.
 If not set, the image height will be scaled according to its aspect ratio with respect to the provided image width.
 Width:: The width in millimeters, that the image will be scaled to.
-This is required for images with source type _Field_.
+This is required for images with source type _Dynamic_.
 
 [ACCESSIBILITY_HINT]
 ====
@@ -40,17 +40,30 @@ For accessibility standards, the alternative text should be short but descriptiv
 Do not use images that contain important textual information (exception for logos), use the text element instead.
 ====
 
-== Attachment  [[Attachment]]
+== Static [[Static]]
 
-The image content is uploaded in the Print Model Editor as an image attachment. This way the image will be stored as static content in your Print Model.
-The original image dimensions are used if they are not overwritten by the user input. If only the `width` property is provided by the user (with leaving the `height` property empty), the image will be scaled while keeping the original aspect ratio.
+The image is stored as a named file in the resources folder of the workspace and referenced by name in the Print Model.
+The original image dimensions are derived from the file at upload/selection time and used if not overridden by the user.
+If only the `width` property is provided (with `height` left empty), the image will be scaled while keeping the original aspect ratio.
 
 NOTE: The supported image formats are: `GIF`, `BMP`, `JPEG`, `JPG`, and `PNG`. When using `GIF` images, only the first frame will be displayed in the PDF.
 
-image::chapter03/03_image_attachment_detail_view.png[Image element detail view using attachment,title="Image element detail view using attachment"]
+=== Picking an existing resource
+
+The resource selector lists all image files available in the workspace's `resources` folder.
+Selecting an entry sets the image reference to that resource.
+
+=== Uploading a new image
+
+Click the upload button next to the selector to choose a local file.
+The file is saved to the workspace's `resources/` folder under a deduplicated name (`basename-sizeId.ext`, where `sizeId` is the file size in base-36).
+If a file with that name already exists it is reused without re-uploading.
+After upload, the new resource is automatically selected.
+
+image::chapter03/03_image_static_detail_view.png[Image element detail view using static image,title="Image element detail view using static image"]
 
 
-== Field [[ImageField]]
+== Dynamic [[Dynamic]]
 
 The image content is inserted from an A12 field instance during the printing process, allowing the image to be dynamically sourced from Document Model data.
 The content of the field instance must be a valid base64-encoded string to be correctly rendered in the resulting PDF.
@@ -77,4 +90,4 @@ Please note that the <<Preview, Print Preview>> will not work with the `attachme
 
 Since the image dimensions are not available during the editing, the width must be explicitly set by the user.
 
-image::chapter03/03_image_field_detail_view.png[Image element detail view using field,title="Image element detail view using field"]
+image::chapter03/03_image_dynamic_detail_view.png.png[Image element detail view using dynamic image,title="Image element detail view using dynamic image"]

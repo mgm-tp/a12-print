@@ -31,13 +31,13 @@
  */
 import { useCallback } from "react";
 
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
-import { Measure } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference, Measure } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { useGetSectionOffset } from "../../../../hooks/use-get-section-offset.js";
-import { createPlainMmMeasure, PlainMeasurePosition } from "../../../../utils/measure-utils.js";
-import { OmitId } from "../../../../utils/type-utils.js";
-import { DndRsLine } from "../../../../types/dnd.js";
+import type { PlainMeasurePosition } from "../../../../utils/measure-utils.js";
+import { createPlainMmMeasure } from "../../../../utils/measure-utils.js";
+import type { OmitId } from "../../../../utils/type-utils.js";
+import type { DndRsLine } from "../../../../types/dnd.js";
 
 const SNAP_TRIGGER_MM = 3;
 

@@ -1,0 +1,49 @@
+{
+  "root1": {
+    "rep1": [
+      {
+        "rep2": [
+          {
+            "Text": "Text 1.1",
+            "rep3": [
+              {
+                "static": {
+                  "Text2": "Text2 1.1.1"
+                }
+              },
+              {
+                "static": {
+                  "Text2": "Text2 1.1.2"
+                }
+              }
+            ]
+          },
+          {
+            "Text": "Text 1.2",
+            "rep3": [
+              {
+                "static": {
+                  "Text2": "Text2 1.2.1"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "rep2": [
+          {
+            "Text": "Text 2.1",
+            "rep3": [
+              {
+                "static": {
+                  "Text2": "Text2 2.1.1"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

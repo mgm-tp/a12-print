@@ -31,15 +31,13 @@
  */
 import { useSelector } from "react-redux";
 
-import { Button } from "@com.mgmtp.a12.widgets/widgets-core/lib/button/index.js";
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { GRAMMAR_ROOT_RULE_NAMES } from "@com.mgmtp.a12.dml/dml/lib/ruleCodeEditor/constants.js";
-import { PartialArea } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { InputElements } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/index.js";
-import { PrintError } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import { Button, Icon, InputElements } from "@com.mgmtp.a12.widgets/widgets-core";
+import { GRAMMAR_ROOT_RULE_NAMES } from "@com.mgmtp.a12.dml/dml";
+import type { PartialArea } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { useModelNameAliasConverter } from "../../hooks/index.js";
 import { DocumentModelDataSelectors } from "../../redux/document-model-data/selectors.js";
@@ -54,7 +52,7 @@ import {
 	StyledDragIcon,
 	StyledRuleCodeEditor,
 } from "./SwitchCaseCard.styled.js";
-import { PartialSwitchCase } from "./switch-stage.js";
+import type { PartialSwitchCase } from "./switch-stage.js";
 
 export interface SwitchCaseProps {
 	row: PartialSwitchCase;

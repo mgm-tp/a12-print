@@ -32,11 +32,13 @@
  */
 import { createCodemodCLI } from "@com.mgmtp.a12.devtools/codemod";
 
-import { preferTopLevelImports } from "./recipes/prefer-top-level-imports.js";
+import packageJson from "../../../package.json" with { type: "json" };
+
+import { preferTopLevelImports } from "./internal/recipes/prefer-top-level-imports.js";
 
 createCodemodCLI({
 	name: "print-engine-codemod",
-	version: "3.2.3-rc.1",
 	description: "Codemod tooling for assisting migrations of the A12 Print Engine",
+	version: packageJson.version,
 	recipes: [preferTopLevelImports],
 });

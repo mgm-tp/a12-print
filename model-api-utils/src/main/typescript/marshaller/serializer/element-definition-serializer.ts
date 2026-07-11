@@ -29,31 +29,27 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
-import {
-	DeepPartialErrorMap,
-	ErrorOrigin,
-	ErrorSeverity,
-	ExtendedEntityInstancePath,
-	PrintError,
-} from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/model";
+import type * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import type { ExtendedEntityInstancePath, PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { DeepPartialErrorMap, ErrorOrigin, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import {
 	getPlainLocalizableArgs,
 	InternalLocalizableError,
 } from "../../internal/validation/internal-localizable-error.js";
 
-import { Serializer, SerializerResult } from "./serializer.js";
+import type { Serializer, SerializerResult } from "./serializer.js";
 import { mapMeasure } from "./measure-serializer.js";
 import { mapDataContext } from "./data-context-serializer.js";
 import { mapMargin } from "./margin-serializer.js";
 import { mapInputSource, mapMeasureInputSource } from "./input-source-serializer.js";
 import { mapComputationAlternative } from "./computation-alternative-serializer.js";
 
-export class ElementDefinitionSerializer
-	implements Serializer<ModelAPI.PrintModelElement, GeneratedDTO.ElementDefinitionsDTO>
-{
+export class ElementDefinitionSerializer implements Serializer<
+	ModelAPI.PrintModelElement,
+	GeneratedDTO.ElementDefinitionsDTO
+> {
 	errorMap = DeepPartialErrorMap.getEmptyMap<ModelAPI.PrintModelElement>();
 
 	serialize(
@@ -157,7 +153,7 @@ export class ElementDefinitionSerializer
 					valueField: element?.pieChart.data?.valueField,
 				},
 			},
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
 		};
 	}
@@ -189,7 +185,7 @@ export class ElementDefinitionSerializer
 					};
 				}),
 			},
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
 		};
 	}
@@ -222,7 +218,7 @@ export class ElementDefinitionSerializer
 					};
 				}),
 			},
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
 		};
 	}
@@ -259,7 +255,7 @@ export class ElementDefinitionSerializer
 					};
 				}),
 			},
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 		};
 	}
 
@@ -288,7 +284,7 @@ export class ElementDefinitionSerializer
 					};
 				}),
 			},
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
 		};
 	}
@@ -330,7 +326,7 @@ export class ElementDefinitionSerializer
 					}
 				),
 			},
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
 		};
 	}
@@ -386,7 +382,7 @@ export class ElementDefinitionSerializer
 			hasCustomTextProperties: element.hasCustomTextProperties,
 			hasCustomBorderProperties: element.hasCustomBorderProperties,
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 		};
 	}
 
@@ -422,39 +418,38 @@ export class ElementDefinitionSerializer
 					width: mapMeasure(element?.image?.dimensions?.width),
 					originalWidth: mapMeasure(element?.image?.dimensions?.originalWidth),
 				},
-				attachmentSource: {
-					id: element?.image?.attachmentSource?.id,
-					imageAttachment: this.mapAttachmentSource(element?.image?.attachmentSource?.imageAttachment),
-				},
-				fieldSource: {
-					id: element?.image?.fieldSource?.id,
-					model: element?.image?.fieldSource?.model,
-					path: element?.image?.fieldSource?.path,
-				},
+				resourceSource: this.mapResourceSource(element.image),
+				fieldSource: this.mapFieldSource(element.image),
 			},
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
 		};
 	}
-
-	private mapAttachmentSource(attachment?: ModelAPI.Attachment): GeneratedDTO.ImageAttachmentDTO {
-		return {
-			original_filename: attachment?.original_filename,
-			internal_filename: attachment?.internal_filename,
-			content: attachment?.content,
-			attachment_id: attachment?.attachment_id,
-			size: attachment?.size,
-			mime_type: attachment?.mime_type,
-			category: attachment?.category,
-			description: attachment?.description,
-		};
+	private mapResourceSource(image?: ModelAPI.ImageProperties): GeneratedDTO.ResourceSourceDTO | undefined {
+		if (image?.imageSrcType === ModelAPI.ImageSrcType.Static) {
+			return {
+				id: image?.resourceSource?.id,
+				resourceName: image?.resourceSource?.resourceName,
+			};
+		}
+		return undefined;
+	}
+	private mapFieldSource(image?: ModelAPI.ImageProperties): GeneratedDTO.FieldSourceDTO | undefined {
+		if (image?.imageSrcType === ModelAPI.ImageSrcType.Dynamic) {
+			return {
+				id: image?.fieldSource?.id,
+				model: image?.fieldSource?.model,
+				path: image?.fieldSource?.path,
+			};
+		}
+		return undefined;
 	}
 
 	private mapLineElement(element: ModelAPI.Line): GeneratedDTO.ElementDefinitionsDTO {
 		return {
 			id: element.id,
 			type: element.type,
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
 		};
 	}
@@ -471,7 +466,7 @@ export class ElementDefinitionSerializer
 				hideIfEmpty: element?.expression?.hideIfEmpty,
 			},
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 		};
 	}
 
@@ -513,7 +508,7 @@ export class ElementDefinitionSerializer
 				displayOptions: this.mapDisplayOptions(element?.field?.displayOptions),
 			},
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 		};
 	}
 
@@ -533,7 +528,7 @@ export class ElementDefinitionSerializer
 				hideIfEmpty: element?.text?.hideIfEmpty,
 			},
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 		};
 	}
 
@@ -553,7 +548,7 @@ export class ElementDefinitionSerializer
 					this.mapElementReference
 				),
 			},
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 		};
 	}
 
@@ -597,7 +592,7 @@ export class ElementDefinitionSerializer
 				elementReferences: this.mapRepeatableGroup(element.area?.elementReferences, this.mapElementReference),
 				dataContexts: this.mapRepeatableGroup(element.area?.dataContexts, mapDataContext),
 			},
-			borderProperties: this.mapBorderProperties(element.borderProperties),
+			borderProperties: this.mapBorderProperties(element?.borderProperties),
 		};
 	}
 

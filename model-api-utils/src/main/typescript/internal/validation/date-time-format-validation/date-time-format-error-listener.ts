@@ -29,10 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ErrorListener, Recognizer, Token } from "antlr4";
+import type { Recognizer, Token } from "antlr4";
+import { ErrorListener } from "antlr4";
 
 import { DateTimeFormatErrorEnum } from "./date-time-format-error-enum.js";
-import { DateTimeFormatValidationError } from "./date-time-format-validation-error.js";
+import type { DateTimeFormatValidationError } from "./date-time-format-validation-error.js";
 
 export class DateTimeFormatErrorListener extends ErrorListener<Token> {
 	private error?: DateTimeFormatValidationError;

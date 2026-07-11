@@ -33,25 +33,30 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { Typography } from "@com.mgmtp.a12.widgets/widgets-core/lib/typography/index.js";
-import { Radio } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/radio/index.js";
-import {
-	ImageSrcType,
-	Measure,
-	PartialImage,
-	PlaceableReference,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { ImageProperties, PartialImage } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ImageSrcType } from "@com.mgmtp.a12.print/print-model-api/model";
+import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
-import { UpdateElementsTransactionLogAction, TransactionLogStateActions } from "../../../redux/index.js";
+import type { UpdateElementsTransactionLogAction } from "../../../redux/index.js";
+import { TransactionLogStateActions } from "../../../redux/index.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
-import { DEFAULT_ELEMENT_WIDTH, DEFAULT_IMAGE_HEIGHT } from "../../../utils/index.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
+import { ValidationSelectors } from "../../../redux/validation/selectors.js";
+import { DEFAULT_ELEMENT_WIDTH, DEFAULT_IMAGE_HEIGHT } from "../../../utils/elements-utils.js";
+
+import {
+	StyledCustomToggle,
+	StyledCustomToggleItem,
+} from "../custom-base-input-components/source-input/SourceInputToggles.styled.js";
+import { CustomInputWrapper } from "../shared-components/CustomInputWrapper.js";
+import type { ElementWithoutIdAndType } from "../type.js";
 
 import { ImageSourceTypeAttachment } from "./ImageSourceTypeAttachment.js";
 import { ImageSourceTypeField } from "./ImageSourceTypeField.js";
-import { getImageAttachmentHeight, useImagePropertiesPropertyErrorMessage } from "./ImageGeneralProperties.js";
+import { StyledImageSrcToggleContainer } from "./ImageSourceTypeAttachment.styled.js";
 
 interface ImageSourceTypeProps {
 	element: PartialImage;
@@ -71,7 +76,15 @@ export const ImageSourceType = ({ element }: ImageSourceTypeProps) => {
 					id: nanoid(),
 					...element.image,
 					imageSrcType,
-					...(imageSrcType === ImageSrcType.Field ? { fieldSource: { id: nanoid() } } : {}),
+					...(imageSrcType === ImageSrcType.Dynamic
+						? { resourceSource: undefined }
+						: { fieldSource: undefined }),
+					dimensions: {
+						...element.image?.dimensions,
+						id: nanoid(),
+						originalHeight: undefined,
+						originalWidth: undefined,
+					},
 				},
 			};
 			const actions: UpdateElementsTransactionLogAction[] = [
@@ -87,12 +100,14 @@ export const ImageSourceType = ({ element }: ImageSourceTypeProps) => {
 										...el,
 										dimensions: {
 											...el.dimensions,
-											...(imageDimensions?.height?.value
-												? {}
-												: { minHeight: getImageMinHeight(element, el, imageSrcType) }),
-											...(imageDimensions?.width?.value
-												? {}
-												: { minWidth: getImageMinWidth(element, el) }),
+											minHeight: {
+												...el.dimensions?.minHeight,
+												value: imageDimensions?.height?.value ?? DEFAULT_IMAGE_HEIGHT,
+											},
+											minWidth: {
+												...el.dimensions?.minWidth,
+												value: imageDimensions?.width?.value ?? DEFAULT_ELEMENT_WIDTH,
+											},
 										},
 									}
 								: el
@@ -114,21 +129,29 @@ export const ImageSourceType = ({ element }: ImageSourceTypeProps) => {
 
 	return (
 		<>
-			<Typography.Body>
-				<Radio
-					inline
-					label={localizer(RESOURCE_KEYS.elementForm.image.imageSrcType)}
-					value={element.image?.imageSrcType}
-					onValueChanged={onChangeImgSrcType}
-					errorMessage={useImagePropertiesPropertyErrorMessage(element.id)("imageSrcType")}
+			<StyledImageSrcToggleContainer>
+				<CustomInputWrapper
+					label={localizer(RESOURCE_KEYS.elementForm.image.imageSrc)}
+					errorMessage={useImageAttachmentTypeErrorMessage(element.id)("imageSrcType")}
 				>
-					<Radio.Item
-						label={localizer(RESOURCE_KEYS.elementForm.image.attachment)}
-						value={ImageSrcType.Attachment}
-					/>
-					<Radio.Item label={localizer(RESOURCE_KEYS.elementForm.image.field)} value={ImageSrcType.Field} />
-				</Radio>
-			</Typography.Body>
+					<StyledCustomToggle value={element.image?.imageSrcType} onValueChanged={onChangeImgSrcType}>
+						<StyledCustomToggleItem
+							value={ImageSrcType.Static}
+							title={localizer(RESOURCE_KEYS.elementForm.image.imageSrcType.static)}
+							data-testid="image-src-type-static"
+						>
+							<Icon style={{ margin: 0 }}>image</Icon>
+						</StyledCustomToggleItem>
+						<StyledCustomToggleItem
+							value={ImageSrcType.Dynamic}
+							title={localizer(RESOURCE_KEYS.elementForm.image.imageSrcType.dynamic)}
+							data-testid="image-src-type-dynamic"
+						>
+							<Icon style={{ margin: 0 }}>dynamic_form</Icon>
+						</StyledCustomToggleItem>
+					</StyledCustomToggle>
+				</CustomInputWrapper>
+			</StyledImageSrcToggleContainer>
 			<ImageSourceTypeProperties element={element} />
 		</>
 	);
@@ -139,37 +162,19 @@ interface ImageSourceTypePropertiesProps {
 }
 
 const ImageSourceTypeProperties = ({ element }: ImageSourceTypePropertiesProps) => {
-	if (element.image?.imageSrcType === ImageSrcType.Field) {
-		return <ImageSourceTypeField element={element} />;
+	if (element.image?.imageSrcType === ImageSrcType.Static) {
+		return <ImageSourceTypeAttachment element={element} />;
 	}
 
-	if (element.image?.imageSrcType === ImageSrcType.Attachment) {
-		return <ImageSourceTypeAttachment element={element} />;
+	if (element.image?.imageSrcType === ImageSrcType.Dynamic) {
+		return <ImageSourceTypeField element={element} />;
 	}
 	return <></>;
 };
 
-const getImageMinHeight = (
-	image: PartialImage,
-	elementRef: PartialValidPlaceableReference,
-	imageSrcType: ImageSrcType
-): Measure => {
-	const minHeightValue =
-		imageSrcType === ImageSrcType.Attachment
-			? getImageAttachmentHeight(elementRef.dimensions, image.image?.dimensions)
-			: image.image?.dimensions?.height?.value || DEFAULT_IMAGE_HEIGHT;
+function useImageAttachmentTypeErrorMessage<T extends keyof ElementWithoutIdAndType<ImageProperties>>(id = "") {
+	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
+	const error = useSelector((state: PrintEngineState) => ValidationSelectors.image(state, id));
 
-	return {
-		...elementRef.dimensions.minHeight,
-		value: minHeightValue,
-	};
-};
-
-const getImageMinWidth = (image: PartialImage, elementRef: PlaceableReference): Measure => {
-	const imageDimensions = image.image?.dimensions;
-
-	return {
-		...elementRef.dimensions?.minWidth,
-		value: imageDimensions?.width?.value || imageDimensions?.originalWidth?.value || DEFAULT_ELEMENT_WIDTH,
-	};
-};
+	return (property: T) => (error ? errorMessageLocalizer(error.image?.[property]?.[ErrorSeverity.ERROR]) : undefined);
+}

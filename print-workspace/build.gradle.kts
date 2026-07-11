@@ -41,20 +41,14 @@ publishingInfoExtension {
 
 dependencies {
 	implementation(project(":engine-api"))
-	implementation(project(":print-setting"))
 
 	implementation(a12Libs.baseModelApi)
 	implementation(a12Libs.baseModelConsistency)
-	implementation(a12Libs.kernelMdModelApi)
-	implementation(a12Libs.kernelMdDocumentApi)
-	implementation(a12Libs.kernelMdSerializer)
-	implementation(a12Libs.kernelMdModel)
+	implementation(a12Libs.kernelMdFacade)
 
 	implementation(thirdPartyLibs.slf4j)
 	implementation(thirdPartyLibs.commonsLang3)
 	implementation(thirdPartyLibs.commonsIO)
-
-	runtimeOnly(thirdPartyLibs.jacksonYaml)
 
 	testImplementation(thirdPartyLibs.assertj)
 	testImplementation(thirdPartyLibs.mockitoCore)
@@ -62,4 +56,5 @@ dependencies {
 	testImplementation(thirdPartyLibs.jupiterApi)
 
 	testRuntimeOnly(thirdPartyLibs.jupiterEngine)
+	testRuntimeOnly(thirdPartyLibs.junitLauncher)
 }

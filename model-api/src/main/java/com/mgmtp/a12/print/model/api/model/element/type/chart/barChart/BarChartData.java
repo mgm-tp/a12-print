@@ -33,5 +33,7 @@ package com.mgmtp.a12.print.model.api.model.element.type.chart.barChart;
 
 import com.mgmtp.a12.print.model.api.model.element.type.chart.KeyFieldChartData;
 import com.mgmtp.a12.print.model.api.model.element.type.chart.SeriesData;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface BarChartData extends KeyFieldChartData, SeriesData {}

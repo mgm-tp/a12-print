@@ -31,7 +31,7 @@
  */
 import { useSelector } from "react-redux";
 
-import { PartialOverride } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { PartialOverride } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 

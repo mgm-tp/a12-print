@@ -29,24 +29,22 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
-import { call, getContext, put, select, takeEvery } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
+import type { SagaGenerator } from "typed-redux-saga";
+import { actionChannel, call, getContext, put, select, take } from "typed-redux-saga";
+import type { Action } from "redux";
+import { buffers } from "redux-saga";
 
-import {
+import type {
 	AffectedItem,
 	PartialTransactionLogPersistentEntry,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
 
-import {
-	AnyTransactionLogAction,
-	isTransactionLogStateAction,
-	isValidAnyTransactionLogAction,
-} from "../../redux/index.js";
+import type { AnyTransactionLogAction } from "../../redux/index.js";
+import { isTransactionLogStateAction, isValidAnyTransactionLogAction } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { RequestApi } from "../../api/index.js";
-import { InteractionLogActions } from "../../redux/interaction-log/index.js";
+import type { RequestApi } from "../../api/index.js";
+import { InteractionLogActions } from "../../redux//interaction-log/index.js";
 import { interactionGraph } from "../../constant/interaction-graph.js";
 
 import {
@@ -63,14 +61,21 @@ import {
 
 const logger = LoggerFactory.getLogger("ProcessAllLogActionSaga");
 
-export function* processAllLogActionsSaga(): SagaIterator {
-	yield* takeEvery(
-		(action: AnyAction) => isTransactionLogStateAction(action) && action.payload.interactionId !== undefined,
-		handleProcessAllLogActionsSaga
+export function* processAllLogActionsSaga(): SagaGenerator<void> {
+	// We use actionChannel + call (instead of takeEvery) to ensure sequential processing.
+	// This prevents race conditions where parallel handlers operate on stale state snapshots.
+	const channel = yield* actionChannel(
+		(action: Action) => isTransactionLogStateAction(action) && action.payload.interactionId !== undefined,
+		buffers.expanding() // we want all actions
 	);
+
+	while (true) {
+		const action = yield* take(channel);
+		yield* call(handleProcessAllLogActionsSaga, action as AnyTransactionLogAction);
+	}
 }
 
-function* handleProcessAllLogActionsSaga(action: AnyTransactionLogAction): SagaIterator {
+function* handleProcessAllLogActionsSaga(action: AnyTransactionLogAction): SagaGenerator<void> {
 	if (!isValidAnyTransactionLogAction(action)) {
 		logger.error(`Invalid transaction log action received. Action type: ${action.type}, Payload:`, action.payload);
 		return;
@@ -81,7 +86,7 @@ function* handleProcessAllLogActionsSaga(action: AnyTransactionLogAction): SagaI
 	const requestApi: RequestApi = yield* getContext("requestApi");
 	const state = yield* select(PrintEngineSelectors.transactionLogState);
 	const persistentEntries: PartialTransactionLogPersistentEntry[] = [];
-	const newAffectedItems: AffectedItem[] = affectedItems;
+	const newAffectedItems: AffectedItem[] = [...affectedItems];
 
 	if (SegmentTransactionLogHandler.match(action)) {
 		const segmentAffectedItems: AffectedItem[] = yield* call(SegmentTransactionLogHandler.handle, {

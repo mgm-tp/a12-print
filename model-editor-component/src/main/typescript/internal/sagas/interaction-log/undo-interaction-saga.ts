@@ -31,28 +31,26 @@
  */
 import isEmpty from "lodash/isEmpty.js";
 import { nanoid } from "nanoid";
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, getContext, put, select, takeEvery } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
 
-import {
-	InteractionLogEntry,
-	USED_TEXT_STYLE,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
+import type { InteractionLogEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { USED_TEXT_STYLE } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { EditorComponentApiActions } from "../../api/actions-api.js";
-import { RESOURCE_KEYS } from "../../localization/keys.js";
+import { EditorComponentApiActions } from "../../../a12internal/api/actions-api.js";
+import { RESOURCE_KEYS } from "../../../internal/localization/index.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../redux/index.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
-import { PrintEngineSelectors, UndoInteractionLogEntry } from "../../store/selectors.js";
-import { RequestApi } from "../../api/index.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import type { UndoInteractionLogEntry } from "../../store/selectors.js";
+import { PrintEngineSelectors } from "../../store/selectors.js";
+import type { RequestApi } from "../../api/index.js";
 import { DEFAULT_ERROR_TOAST_DURATION } from "../../constant/configs.js";
 
-export function* undoInteractionSaga(): SagaIterator {
-	yield* takeEvery((action: AnyAction) => InteractionLogActions.undo.match(action), handleUndoInteractionSaga);
+export function* undoInteractionSaga(): SagaGenerator<void> {
+	yield* takeEvery(InteractionLogActions.undo.match, handleUndoInteractionSaga);
 }
 
-function* handleUndoInteractionSaga(): SagaIterator {
+function* handleUndoInteractionSaga(): SagaGenerator<void> {
 	const lastSetInteraction = yield* select(PrintEngineSelectors.lastSetInteraction);
 	if (!lastSetInteraction) {
 		throw Error("Tried to undo but couldn't find any interaction to undo");

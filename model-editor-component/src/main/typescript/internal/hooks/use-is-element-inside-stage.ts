@@ -32,15 +32,12 @@
 import { useSelector } from "react-redux";
 import { useCallback } from "react";
 
-import {
-	isPartialSection,
-	isPartialSegment,
-	PartialSection,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialSection, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { isPartialSection, isPartialSegment } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../store/selectors.js";
-import { createPlainMmMeasure, PlainMeasureDimensions, PlainMeasurePosition } from "../utils/measure-utils.js";
+import type { PlainMeasureDimensions, PlainMeasurePosition } from "../utils/measure-utils.js";
+import { createPlainMmMeasure } from "../utils/measure-utils.js";
 import { EditorUtils } from "../utils/editor-utils.js";
 
 export const useIsElementInsideStage = () => {

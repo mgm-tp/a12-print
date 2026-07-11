@@ -29,32 +29,25 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { put, select } from "typed-redux-saga";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	PartialTransactionLogPersistentEntry,
 	StoreEntryMapWithId,
-	TransactionLog,
 	TransactionLogStore,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
-import {
 	AffectedItem,
-	SidebarItem,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import {
-	PartialSection,
-	PartialSegment,
-	PartialWatermark,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PartialSection, PartialSegment, PartialWatermark } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import {
-	AnyTransactionLogAction,
+	type AnyTransactionLogAction,
+	NavigationSelectors,
 	TransactionLogStateActions,
-	ValidAnyTransactionLogAction,
+	type ValidAnyTransactionLogAction,
 } from "../../../redux/index.js";
-import { PrintEngineSelectors } from "../../../store/selectors.js";
 
 const REFERENCE_CONTAINER_ACTIONS = [TransactionLogStateActions.updateReferenceContainer];
 
@@ -73,13 +66,13 @@ function* handleReferenceContainerActions({
 	state: TransactionLogStore;
 	action: ValidAnyTransactionLogAction;
 	persistentEntries: PartialTransactionLogPersistentEntry[];
-}): SagaIterator<AffectedItem[]> {
+}): SagaGenerator<AffectedItem[]> {
 	const { interactionId } = action.payload;
 
 	const newAffectedItems: AffectedItem[] = [];
 
 	if (TransactionLogStateActions.updateReferenceContainer.match(action)) {
-		const printModelRefs = yield* select(PrintEngineSelectors.printModelRefs);
+		const printModelRefs = yield* select(NavigationSelectors.activeEntities);
 
 		const { entryKey, entryData, storeEntryFunction } = getReferenceContainerStore(
 			state,

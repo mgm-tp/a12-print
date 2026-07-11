@@ -29,40 +29,37 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
-import { call, getContext, put, SagaGenerator, select, takeEvery } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
+import type { SagaGenerator } from "typed-redux-saga";
+import { call, getContext, put, select, takeEvery } from "typed-redux-saga";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
-import { DocumentModelUtils } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/utils/document-model-utils.js";
-import { Locale } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import { DocumentModelUtils } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { Locale } from "@com.mgmtp.a12.utils/utils-localization";
 
-import { RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 import { DocumentModelDataActions } from "../../redux/document-model-data/actions.js";
 import { DocumentModelDataSelectors } from "../../redux/document-model-data/selectors.js";
 
 const log = LoggerFactory.getLogger("LoadDocumentModelDataSaga");
 
-export function* loadDocumentModelDataSaga(): SagaIterator {
-	yield* takeEvery(
-		(action: AnyAction) => DocumentModelDataActions.loadDocumentModelData.match(action),
-		handleLoadDocumentModelDataSaga
-	);
+export function* loadDocumentModelDataSaga(): SagaGenerator<void> {
+	yield* takeEvery(DocumentModelDataActions.loadDocumentModelData.match, handleLoadDocumentModelDataSaga);
 }
 
-function* handleLoadDocumentModelDataSaga(action: Action<string>): SagaIterator {
+function* handleLoadDocumentModelDataSaga(action: PayloadAction<string>): SagaGenerator<void> {
 	const id = action.payload;
 
 	const documentModelData = yield* select(DocumentModelDataSelectors.documentModelData, id);
 
 	if (!documentModelData) {
 		const requestApi: RequestApi = yield* getContext("requestApi");
-		const documentModel = yield* call(requestApi.loadReferencedDocumentModels, [id]);
-		if (!documentModel) {
+		const documentModels = yield* call(requestApi.loadReferencedDocumentModels, [id]);
+		if (!documentModels?.length) {
 			log.error("No document model available to load document model data");
 			return;
 		}
-		const deserializedDocumentModel = DocumentModelUtils.getDeserializedDocumentModels(documentModel);
+		const deserializedDocumentModel = DocumentModelUtils.getDeserializedDocumentModels(documentModels);
 		const getLocale: () => Locale = yield* getContext("getLocale");
 		const documentModelDataEntry = DocumentModelUtils.getDocumentModelData(
 			deserializedDocumentModel[0],
@@ -80,16 +77,7 @@ function* handleLoadDocumentModelDataSaga(action: Action<string>): SagaIterator 
 	}
 }
 
-export function* batchLoadDocumentModelDataSaga(): SagaGenerator<void> {
-	yield* takeEvery(
-		(action: AnyAction) => DocumentModelDataActions.batchLoadDocumentModelData.match(action),
-		handleBatchLoadDocumentModelDataSaga
-	);
-}
-
-function* handleBatchLoadDocumentModelDataSaga(action: Action<string[]>): SagaGenerator<void> {
-	const ids = action.payload;
-
+export function* ensureDocumentModelsLoaded(ids: string[]): SagaGenerator<void> {
 	const unloadedIds: string[] = [];
 	for (const id of ids) {
 		const isLoaded = yield* select(DocumentModelDataSelectors.documentModelData, id);
@@ -103,16 +91,15 @@ function* handleBatchLoadDocumentModelDataSaga(action: Action<string[]>): SagaGe
 	}
 
 	const requestApi: RequestApi = yield* getContext("requestApi");
-	const documentModels = yield* call(requestApi.loadReferencedDocumentModels, unloadedIds);
+	const rawDocumentModels = yield* call(requestApi.loadReferencedDocumentModels, unloadedIds);
 
-	if (!documentModels?.length) {
+	if (!rawDocumentModels?.length) {
 		log.error("No document models available to load document model data");
 		return;
 	}
 
 	const getLocale: () => Locale = yield* getContext("getLocale");
-	const deserializedModels = DocumentModelUtils.getDeserializedDocumentModels(documentModels);
-
+	const deserializedModels = DocumentModelUtils.getDeserializedDocumentModels(rawDocumentModels);
 	yield* put(
 		DocumentModelDataActions.setDocumentModelData(
 			deserializedModels.map(model => ({

@@ -31,9 +31,9 @@
  */
 import { useSelector } from "react-redux";
 
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { PrintEngineSelectors } from "../../store/selectors.js";
+import { NavigationSelectors } from "../../redux/navigation/selectors.js";
 
 import { Segments } from "../segments/index.js";
 import { General } from "../general/General.js";
@@ -44,7 +44,7 @@ import { CommitChanges } from "../commit-changes/index.js";
 import { WatermarkContent } from "../watermarks/index.js";
 
 export const SidebarContent = () => {
-	const { selectedItem } = useSelector(PrintEngineSelectors.sidebar);
+	const selectedItem = useSelector(NavigationSelectors.activeTab);
 
 	switch (selectedItem) {
 		case SidebarItem.SEGMENT:

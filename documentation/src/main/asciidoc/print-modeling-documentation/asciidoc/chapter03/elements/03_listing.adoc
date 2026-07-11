@@ -96,6 +96,23 @@ The output of the Value Computation should match this Field Type.
 Field Type:: The formatting can be modified based on the Field type of the instance, by selecting one of the following types:
 +
 * *HTML:* Formats a Field instance containing HTML content. HTML tags are processed and rendered in the resulting PDF.
++
+--
+The following HTML tags are supported:
+
+`<p>`, `<span>`, `<strong>`, `<em>`, `<u>`, `<br>`
+
+The following CSS properties are supported in `style` attributes:
+
+* `color` – any valid hex color value (e.g. `#ff0000`)
+* `background-color` – any valid hex color value (e.g. `#ff0000`)
+* `text-align` – `left`, `right`, `center`, `justify`
+
+[CAUTION]
+====
+Unsupported tags and CSS properties are stripped silently during rendering.
+====
+--
 * *Date:* Formats a Date Field instance into a readable date format based on the locale. The formatting can be customized by defining a specific pattern for evaluation. For example, the pattern `YYYY.MM.dd` evaluates to e.g. `2025.02.17`, while the pattern `dd'th of' MMMM YYYY 'at' HH:mm 'o''clock'` evaluates to `17th of February 2025 at 13:54 o'clock`.
 * *Date range:* Formats a DateRange Field instance into a readable format based on the locale. The formatting of the start date, end date, and separator can be customized by defining an evaluation pattern.
 +
@@ -251,8 +268,7 @@ To allow referenced attachments, you need to use the link:/docs/PRINT_ENGINE/pri
 
 [NOTE]
 ====
-* If the attachment type is not supported, the content field is not shown in the listing result, and the attachment is not rendered.
-* The rendering of attachments may differ when using <<legacy_rendering_mode, Legacy Rendering Mode>>.
+If the attachment type is not supported, the content field is not shown in the listing result, and the attachment is not rendered.
 ====
 
 

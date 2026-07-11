@@ -3,3 +3,6 @@
 
 # Don't pretty generated interfaces
 /src/main/typescript/internal/steps/**/print-model.ts
+
+# Don't pretty dto
+/src/main/typescript/internal/print-setting-model/dto/**

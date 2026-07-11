@@ -42,7 +42,6 @@ val generatePnpmLock = tasks.register<PnpmTask>("generatePnpmLock") {
 	args.set(
 		listOf(
 			"install",
-			"--frozen-lockfile",
 			"--lockfile-only",
 			"--lockfile-dir=./",
 			"--fix-lockfile",

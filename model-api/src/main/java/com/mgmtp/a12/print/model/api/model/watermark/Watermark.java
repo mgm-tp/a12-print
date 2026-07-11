@@ -40,7 +40,9 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface Watermark extends TopLevelReferenceContainer, LogicContainer {
 	String getTitle();
 

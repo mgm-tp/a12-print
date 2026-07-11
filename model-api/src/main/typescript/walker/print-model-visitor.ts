@@ -32,8 +32,8 @@
 // Disabling unused vars rule due to the need to maintain method signatures in abstract classes and their derivatives.
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-	AnyContainerElement,
-	AnyTopLevelContainerElement,
+	type AnyContainerElement,
+	type AnyTopLevelContainerElement,
 	Area,
 	BarChart,
 	BoundingBox,
@@ -52,21 +52,21 @@ import {
 	Override,
 	PageNumber,
 	PageNumberTotal,
-	PartialReference,
-	PartialTableColumnReference,
+	type PartialReference,
+	type PartialTableColumnReference,
 	PieChart,
-	PlaceableReference,
-	PrintModel,
+	type PlaceableReference,
+	type PrintModel,
 	PrintModelElement,
-	Reference,
-	Section,
-	Segment,
+	type Reference,
+	type Section,
+	type Segment,
 	Switch,
 	Table,
 	TableLayout,
-	TableLayoutCellReference,
+	type TableLayoutCellReference,
 	Text,
-	Watermark,
+	type Watermark,
 } from "../model/index.js";
 
 import type { PrintModelTrace } from "./print-model-trace.js";

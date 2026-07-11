@@ -29,38 +29,37 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, put, select } from "typed-redux-saga";
 
-import {
+import type {
 	PartialTransactionLogPersistentEntry,
 	StoreEntryMapWithId,
 	TransactionLogStore,
 	TransactionLogStoreEntry,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
-import { AffectedItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import {
-	isPartialSection,
-	isPartialSegment,
-	isPartialWatermark,
+	AffectedItem,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type {
 	PartialAnyPrintModelElement,
 	PartialArea,
 	PartialBoundingBox,
 	PartialOverride,
 	PartialSection,
 	PartialSegment,
-	PartialSwitch,
 	PartialValidPlaceableReference,
 	PartialWatermark,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
-
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import {
-	AnyTransactionLogAction,
-	TransactionLogStateActions,
-	ValidAnyTransactionLogAction,
-} from "../../../redux/index.js";
+	isPartialSection,
+	isPartialSegment,
+	isPartialWatermark,
+	PartialSwitch,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+
+import type { AnyTransactionLogAction, ValidAnyTransactionLogAction } from "../../../redux/index.js";
+import { TransactionLogStateActions } from "../../../redux/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { ElementsUtils } from "../../../utils/elements-utils.js";
 import { createAffectedItemMeta } from "../../../utils/validation-relevant-path-utils.js";
 
@@ -86,7 +85,7 @@ function* handleElementReferenceActions({
 	state: TransactionLogStore;
 	action: ValidAnyTransactionLogAction;
 	persistentEntries: PartialTransactionLogPersistentEntry[];
-}): SagaIterator<AffectedItem[]> {
+}): SagaGenerator<AffectedItem[]> {
 	const { interactionId } = action.payload;
 
 	const newAffectedItems: AffectedItem[] = [];
@@ -98,7 +97,7 @@ function* handleElementReferenceActions({
 			return newAffectedItems;
 		}
 
-		const { affectedItems, newPersistentEntries } = yield* call(
+		const { newPersistentEntries } = yield* call(
 			updateReferences,
 			state,
 			interactionId,
@@ -107,7 +106,6 @@ function* handleElementReferenceActions({
 			newAffectedItems
 		);
 		persistentEntries.push(...newPersistentEntries);
-		newAffectedItems.push(...affectedItems);
 		return newAffectedItems;
 	}
 
@@ -128,7 +126,7 @@ function* handleElementReferenceActions({
 				) as PartialValidPlaceableReference[])
 			: [action.payload.data];
 
-		const { affectedItems, newPersistentEntries } = yield* call(
+		const { newPersistentEntries } = yield* call(
 			updateReferences,
 			state,
 			interactionId,
@@ -138,7 +136,6 @@ function* handleElementReferenceActions({
 		);
 
 		persistentEntries.push(...newPersistentEntries);
-		newAffectedItems.push(...affectedItems);
 		return newAffectedItems;
 	}
 
@@ -159,6 +156,9 @@ function* getContainerElements() {
 	return { currentContainerElement, wrapperElement };
 }
 
+/**
+ * Mutates `affectedItems` by pushing the new entry.
+ */
 function* updateReferences(
 	state: TransactionLogStore,
 	interactionId: string,
@@ -206,10 +206,7 @@ function* updateReferences(
 				},
 			};
 
-	yield* put(TransactionLogStateActions.setLogStore(updatedStore, createAffectedItemMeta(affectedItems)));
+	yield* put(TransactionLogStateActions.setLogStore({ ...updatedStore, ...createAffectedItemMeta(affectedItems) }));
 
-	return {
-		newPersistentEntries: storeEntry.persistentEntries,
-		affectedItems,
-	};
+	return { newPersistentEntries: storeEntry.persistentEntries };
 }

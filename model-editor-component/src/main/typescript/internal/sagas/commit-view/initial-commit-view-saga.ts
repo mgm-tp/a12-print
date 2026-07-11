@@ -29,21 +29,17 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, getContext, put, select, takeLeading } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
 
 import { CommitViewActions } from "../../redux/index.js";
-import { RequestApi } from "../../api/request-api.js";
+import type { RequestApi } from "../../api/request-api.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 
 import { createCommitInteractionRows } from "./utils.js";
 
-export function* initialCommitViewSaga(): SagaIterator {
-	yield* takeLeading(
-		(action: AnyAction) => CommitViewActions.initialCommitView.match(action),
-		handleInitialCommitViewSaga
-	);
+export function* initialCommitViewSaga(): SagaGenerator<void> {
+	yield* takeLeading(CommitViewActions.initialCommitView.match, handleInitialCommitViewSaga);
 }
 
 function* handleInitialCommitViewSaga() {

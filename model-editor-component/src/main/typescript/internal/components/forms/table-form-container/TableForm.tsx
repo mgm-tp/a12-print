@@ -33,24 +33,26 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	PartialTable,
 	TableProperties,
-	PartialBorderProperties,
 	PartialTextProperties,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+	PartialBorderProperties,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { TransactionLogStateActions } from "../../../redux/index.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
-import { OmitId, useBorderPropertiesErrorMessage } from "../../../utils/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { OmitId } from "../../../utils/index.js";
+import { useBorderPropertiesErrorMessage } from "../../../utils/index.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { ElementMapUtils } from "../../../utils/element-map-utils.js";
 import { DocumentModelDataSelectors } from "../../../redux/document-model-data/selectors.js";
+import { BORDER_PROPERTIES_PATH } from "../../../constant/element-property-path.js";
 
 import {
 	AllowedElementType,
@@ -59,8 +61,8 @@ import {
 	TextPropertiesForm,
 } from "../shared-components/index.js";
 import { DocumentModelSelect } from "../shared-components/DocumentModelSelect.js";
-import { ElementWithoutIdAndType } from "../type.js";
-import { CustomTextLineStateless } from "../custom-base-input-components/index.js";
+import type { ElementWithoutIdAndType } from "../type.js";
+import { CustomTextField } from "../custom-base-input-components/index.js";
 
 import { TableColumns } from "./TableColumns.js";
 import { GeneralProperties } from "./GeneralProperties.js";
@@ -175,7 +177,7 @@ export const TableForm = ({ element }: TableFormProps) => {
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getPropertyError("model")}
 			/>
-			<CustomTextLineStateless
+			<CustomTextField
 				readonly
 				label={localizer(RESOURCE_KEYS.elementForm.model.group)}
 				value={group}
@@ -199,6 +201,8 @@ export const TableForm = ({ element }: TableFormProps) => {
 				textPropertyErrors={errorMap?.textProperties}
 			/>
 			<BorderPropertiesForm
+				element={element}
+				propertiesPath={BORDER_PROPERTIES_PATH}
 				borderProperties={element.borderProperties}
 				setBorderProperties={setBorderProperties}
 				getErrorMessage={useBorderPropertiesErrorMessage(element.id)}

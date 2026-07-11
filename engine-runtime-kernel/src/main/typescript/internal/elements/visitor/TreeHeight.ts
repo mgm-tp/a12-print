@@ -29,18 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	Arithmetic,
-	Compare,
-	Constant,
-	Dereference,
-	Logic,
-	Predicate,
-	SyntaxTreeElement,
-	SyntaxTreeElementVisitor,
-	Variable,
-	VisitationState,
-} from "../index.js";
+import type { Variable } from "../../../a12internal/elements/index.js";
+import { SyntaxTreeElementVisitor, VisitationState } from "../../../a12internal/elements/index.js";
+
+import type { Arithmetic, Compare, Constant, Dereference, Logic, Predicate, SyntaxTreeElement } from "../index.js";
 
 export class TreeHeight extends SyntaxTreeElementVisitor {
 	private height: number = 0;

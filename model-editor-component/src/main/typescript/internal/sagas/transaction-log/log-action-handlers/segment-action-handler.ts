@@ -29,42 +29,42 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, put, select } from "typed-redux-saga";
 import { nanoid } from "nanoid";
 
-import {
+import type {
 	PartialTransactionLogPersistentEntry,
 	SegmentsStoreEntryMapWithId,
-	TransactionLog,
 	TransactionLogStore,
 	TransactionLogStoreEntry,
 	TransactionLogStoreEntryMap,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/transaction-log.js";
-import { AffectedItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
-import { cloneSegment } from "@com.mgmtp.a12.print/print-model-api/lib/utils/print-model/segment.js";
-import {
+	AffectedItem,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { cloneSegment, clonePrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type {
 	PartialAnyPrintModelElement,
 	PartialOverride,
 	PartialPrintModelContentGeneral,
 	PartialSegment,
 	PartialSegmentReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/partial.js";
-import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
-import { clonePrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/lib/utils/print-model/base.js";
-import { Segment } from "@com.mgmtp.a12.print/print-model-api/lib/model/print-model.js";
-import { PlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+	Segment,
+	PlaceableReference,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { openConfirmationDialogSaga } from "../../confirmation-dialog/open-confirmation-dialog-saga.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import {
-	AnyTransactionLogAction,
+	type AnyTransactionLogAction,
 	ConfirmationDialogType,
-	EditorStateActions,
+	NavigationActions,
+	NavigationSelectors,
 	TransactionLogStateActions,
-	ValidAnyTransactionLogAction,
+	type ValidAnyTransactionLogAction,
 } from "../../../redux/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { RequestApiSelectors } from "../../../redux/request-api/selectors.js";
 import { getBoundingOverrideElements } from "../../../utils/din-template-utils.js";
 
@@ -93,7 +93,7 @@ function* handleSegmentActions({
 	state: TransactionLogStore;
 	action: ValidAnyTransactionLogAction;
 	persistentEntries: PartialTransactionLogPersistentEntry[];
-}): SagaIterator<AffectedItem[]> {
+}): SagaGenerator<AffectedItem[]> {
 	const { interactionId } = action.payload;
 
 	const newAffectedItems: AffectedItem[] = [];
@@ -137,7 +137,7 @@ function* handleSegmentActions({
 			return newAffectedItems;
 		}
 
-		const printModelRefs = yield* select(PrintEngineSelectors.printModelRefs);
+		const printModelRefs = yield* select(NavigationSelectors.activeEntities);
 
 		const segmentId = action.payload.data.id;
 		const contentGeneral = TransactionLog.selectPrintModelContentGeneral(state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]);
@@ -165,12 +165,7 @@ function* handleSegmentActions({
 
 		const currentSegmentId = printModelRefs?.segmentId;
 		if (currentSegmentId === action.payload.data.id) {
-			yield* put(
-				EditorStateActions.updatePrintModelRefs({
-					...printModelRefs,
-					segmentId: "",
-				})
-			);
+			yield* put(NavigationActions.clearActiveEntity({ tab: SidebarItem.SEGMENT }));
 		}
 		yield* put(
 			TransactionLogStateActions.setLogStore({
@@ -520,7 +515,7 @@ function getElementReference(
 		ref =>
 			({
 				...ref,
-				id: nanoid(),
+				id: ref.id, // use stable id from template
 				refId: overrideElements.find(element => element.override?.refId === ref.refId)?.id,
 			}) as PlaceableReference
 	);

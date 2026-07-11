@@ -32,7 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.segment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.container.TopLevelReferenceContainer;
 import com.mgmtp.a12.print.model.api.model.element.base.DataContext;
 import com.mgmtp.a12.print.model.api.model.element.properties.PageOrientation;
@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Optional;
 
 
+@OnlyForUsage
 public interface ModelSegment extends TopLevelReferenceContainer {
 	String getTitle();
 
@@ -52,6 +53,7 @@ public interface ModelSegment extends TopLevelReferenceContainer {
 
 	List<DataContext> getDataContexts();
 
+	@OnlyForUsage
 	enum ModelSegmentType {
 		@JsonProperty("Default") DEFAULT,
 		@JsonProperty("Repeatable") REPEATABLE

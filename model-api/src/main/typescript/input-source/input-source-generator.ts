@@ -32,14 +32,15 @@
 import { nanoid } from "nanoid";
 import get from "lodash/get.js";
 
+import type { MeasureUnit } from "../model/index.js";
 import {
-	InputSource,
-	MeasureInputSource,
-	MeasureUnit,
-	PartialPrintModelElement,
-	PrintModelEntity,
+	type BorderProperties,
+	type InputSource,
+	type MeasureInputSource,
+	type PartialPrintModelElement,
+	type PrintModelEntity,
 } from "../model/index.js";
-import { DeepPartialRecursive } from "../utils/type-utils.js";
+import { type ArraysToSingleObject, type DeepPartialRecursive } from "../utils/type-utils.js";
 import { PRINT_MODEL_METADATA_MAP } from "../generated/print-model-metadata-map.js";
 
 import { findPropertyPathsInObject } from "./utils.js";
@@ -47,7 +48,10 @@ import { PossibleInputSource } from "./input-source.js";
 import { InputValueSourceResolver } from "./input-source-resolver.js";
 
 export class InputSourceGenerator {
-	public static generateInputSource<T extends PartialPrintModelElement>(path: string, ignoreGroups?: string[]) {
+	public static generateInputSource<T extends PartialPrintModelElement>(
+		path: string,
+		ignoreGroups?: string[]
+	): ArraysToSingleObject<T> {
 		const elementProperties = get(PRINT_MODEL_METADATA_MAP.RootGroup.content.elementDefinitions, path);
 		let inputSourcePaths = findPropertyPathsInObject(elementProperties, "source");
 		inputSourcePaths = inputSourcePaths.map(element => `${path}.${element}`);
@@ -67,11 +71,13 @@ export class InputSourceGenerator {
 			source: InputValueSourceResolver.hasValueForInputSourceDefault(property)
 				? PossibleInputSource.DEFAULT
 				: PossibleInputSource.UNSET,
-			path: `/content/elementDefinitions/${property.replace(/\./g, "/")}/value/`,
+			path: `/content/elementDefinitions/${property.replaceAll(".", "/")}/value/`,
 		};
 	}
 
-	public static generateInputSourcesForGroup<T extends PrintModelEntity>(inputSourcePaths: string[]): T {
+	public static generateInputSourcesForGroup<T extends PrintModelEntity>(
+		inputSourcePaths: string[]
+	): ArraysToSingleObject<T> {
 		// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 		const inputSourceMap: Record<string, any> = { id: nanoid() };
 		for (const propertyPath in inputSourcePaths) {
@@ -88,7 +94,7 @@ export class InputSourceGenerator {
 			const lastKey = paths.at(-1)!;
 			current[lastKey] = this.createInputSourceForElement<unknown>(inputSourcePaths[propertyPath]);
 		}
-		return inputSourceMap as T;
+		return inputSourceMap as ArraysToSingleObject<T>;
 	}
 
 	public static upgradeToMeasureInputSource(
@@ -98,6 +104,18 @@ export class InputSourceGenerator {
 		return {
 			...inputSource,
 			unit,
+		};
+	}
+
+	public static upgradeBorderPropertiesWithReference(
+		borderProperties: BorderProperties,
+		referenceId: string
+	): BorderProperties {
+		return {
+			...borderProperties,
+			borderColor: borderProperties.borderColor && { ...borderProperties.borderColor, reference: referenceId },
+			borderStyle: borderProperties.borderStyle && { ...borderProperties.borderStyle, reference: referenceId },
+			borderWidth: borderProperties.borderWidth && { ...borderProperties.borderWidth, reference: referenceId },
 		};
 	}
 }

@@ -31,10 +31,10 @@
  */
 import { useSelector } from "react-redux";
 
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/interaction-log.js";
+import type { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
-import { ValidationCounter } from "../../../redux/index.js";
+import type { ValidationCounter } from "../../../redux/index.js";
 import { ErrorBadge } from "../../badge/ValidationBadge.js";
 
 export function useErrorBadgeCounterGetter() {

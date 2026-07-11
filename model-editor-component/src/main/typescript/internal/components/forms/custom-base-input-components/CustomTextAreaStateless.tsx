@@ -29,10 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	TextAreaStateless,
-	TextAreaStatelessProps,
-} from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-area/index.js";
+import type { TextAreaStatelessProps } from "@com.mgmtp.a12.widgets/widgets-core";
+import { TextAreaStateless } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { useCustomBaseInputProps } from "./use-custom-base-input-props.js";
 

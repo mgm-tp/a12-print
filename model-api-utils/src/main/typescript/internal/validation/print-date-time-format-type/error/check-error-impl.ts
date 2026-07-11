@@ -29,8 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ICustomFieldTypeCheckError } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts/lib/main/js/custom/ICustomFieldTypeCheckError.js";
-import { Localizable } from "@com.mgmtp.a12.utils/utils-localization/lib/main/index.js";
+import type { ICustomFieldTypeCheckError } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts";
+import type { Localizable } from "@com.mgmtp.a12.utils/utils-localization";
 
 export class PrintDateTimeFormatErrorImpl implements ICustomFieldTypeCheckError {
 	constructor(

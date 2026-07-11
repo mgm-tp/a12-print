@@ -29,24 +29,25 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { call, getContext, put, takeEvery } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
-import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { EditorComponentApiActions, RequestApi } from "../../api/index.js";
+import type { RequestApi } from "../../api/index.js";
 import { RequestApiActions } from "../../redux/index.js";
-import { RESOURCE_KEYS } from "../../localization/index.js";
+import { RESOURCE_KEYS } from "../../../internal/localization/index.js";
+import { EditorComponentApiActions } from "../../../a12internal/api/actions-api.js";
 
 const log = LoggerFactory.getLogger("SetPrintModelSaga");
 
-export function* setPrintModelSaga(): SagaIterator {
-	yield* takeEvery((action: AnyAction) => RequestApiActions.setPrintModel.match(action), handleSetPrintModelSaga);
+export function* setPrintModelSaga(): SagaGenerator<void> {
+	yield* takeEvery(RequestApiActions.setPrintModel.match, handleSetPrintModelSaga);
 }
 
-function* handleSetPrintModelSaga(action: Action<PrintModel>): SagaIterator {
+function* handleSetPrintModelSaga(action: PayloadAction<PrintModel>): SagaGenerator<void> {
 	const requestApi: RequestApi = yield* getContext("requestApi");
 
 	const printModel = yield* call(requestApi.setPrintModel, action.payload, false);

@@ -31,9 +31,10 @@
  */
 export * from "./editor-utils.js";
 export * from "./elements-utils.js";
+export * from "./input-source-utils.js";
 export * from "./measure-utils.js";
 export * from "./type-utils.js";
 export * from "./utils.js";
-export * from "./richtext-utils.js";
 export * from "./validation-utils.js";
 export * from "./format-utils.js";
+export * from "./text-properties-utils.js";

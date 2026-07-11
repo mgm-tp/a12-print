@@ -31,11 +31,11 @@
  */
 import { createContext } from "react";
 
-import { PrintErrorMap } from "@com.mgmtp.a12.print/print-model-api/lib/errors/deep-partial-error-map.js";
+import type { PrintErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
 
-import { TypesettingModel } from "../../api/model/typesetting-model.js";
+import type { TypesettingModel } from "../../../a12internal/api/index.js";
 
-import { ActionType } from "./action.js";
+import type { ActionType } from "./action.js";
 
 interface TypesettingEditorContext {
 	customValidation?: {

@@ -32,6 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.element.type.listing.column;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 import com.mgmtp.a12.print.model.api.model.element.base.ComputationAlternative;
 import com.mgmtp.a12.print.model.api.model.element.base.internal.LogicComponent;
@@ -40,9 +41,11 @@ import com.mgmtp.a12.print.model.api.model.element.base.internal.LogicContainer;
 import java.util.List;
 import java.util.stream.Stream;
 
+@OnlyForUsage
 public interface ColumnPropertyComputation extends PrintModelEntity, LogicContainer{
 	PropertyType getProperty();
 
+	@OnlyForUsage
 	enum PropertyType {
 		@JsonProperty("Bold") BOLD,
 		@JsonProperty("Italic") ITALIC,

@@ -1,6 +1,6 @@
 {
   "name": "@com.mgmtp.a12.print/print-fonts",
-  "version": "3.2.3",
+  "version": "4.0.0",
   "license": "(EUPL-1.2 OR LicenseRef-commercial)",
   "description": "Print Fonts",
   "type": "module",
@@ -9,7 +9,7 @@
     "lint": "eslint . --ext .ts,.tsx --max-warnings 0",
     "format": "prettier --check \"./*.{js,cjs,mjs}\" \"src/**/*.{ts,tsx}\"",
     "test": "node --experimental-vm-modules --no-warnings node_modules/jest/bin/jest",
-    "clean": "rimraf lib build",
+    "clean": "rimraf coverage lib build",
     "watch": "tsc -p tsconfig.build.json -w",
     "fix": "pnpm run /^.*:fix$/",
     "compile:lint": "pnpm run lint && pnpm run format",
@@ -31,12 +31,18 @@
     "NOTICE",
     "THIRD_PARTY_NOTICES"
   ],
-  "main": "./lib/types/font.js",
   "exports": {
     ".": "./lib/types/font.js",
-    "./lib/*": "./lib/*.js",
-    "./lib/*.js": "./lib/*.js"
+    "./a12internal": "./lib/a12internal/index.js"
   },
+  "typesVersions": {
+    "*": {
+      "a12internal": [
+        "./lib/a12internal/index.d.ts"
+      ]
+    }
+  },
+  "types": "./lib/types/font.d.ts",
   "devDependencies": {
     "@com.mgmtp.a12.print/print-dev-tools": "workspace:*",
     "@swc/core": "catalog:",

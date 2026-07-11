@@ -32,19 +32,16 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select/index.js";
-import {
-	getFontFamily,
-	isFontNotConfigured,
-} from "@com.mgmtp.a12.print/print-fonts/lib/internal/api/utils/font-utils.js";
+import type { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
+import { getFontFamily, isFontNotConfigured } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { CustomSelect } from "../../forms/custom-base-input-components/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { DEFAULT_FONT_NAME } from "../../../constant/textstyle.js";
 
-import { BaseTextStylePropertyProps } from "./base-type.js";
+import type { BaseTextStylePropertyProps } from "./base-type.js";
 import { StyledDefaultFontTooltip } from "./CommonTextProperty.styled.js";
 
 interface FontSelectProps extends BaseTextStylePropertyProps {

@@ -31,10 +31,10 @@
  */
 import * as React from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 
-import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
-import { PopUpMenu } from "@com.mgmtp.a12.widgets/widgets-core/lib/pop-up-menu/index.js";
+import { Icon, PopUpMenu } from "@com.mgmtp.a12.widgets/widgets-core";
 
 interface Item {
 	id: string;

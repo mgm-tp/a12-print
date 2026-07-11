@@ -29,7 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PrintModel, PrintModelElement, Reference } from "../model/index.js";
+import type { PrintModelElement } from "../model/index.js";
+import { type PrintModel, type Reference } from "../model/index.js";
 
 export interface PrintModelElementMap {
 	[key: string]: PrintModelElement;

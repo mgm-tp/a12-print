@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PlainMeasurePosition } from "../utils/index.js";
+import type { PlainMeasurePosition } from "../utils/index.js";
 
 export type ISide = "left" | "right" | "top" | "bottom";
 

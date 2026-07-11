@@ -33,13 +33,13 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { FieldSource, PartialImage } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+import type { FieldSource, PartialImage } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { TransactionLogStateActions } from "../../../redux/index.js";
 import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { ElementMapUtils } from "../../../utils/element-map-utils.js";
@@ -47,8 +47,8 @@ import { DocumentModelDataSelectors } from "../../../redux/document-model-data/s
 
 import { AllowedElementType, DataContextSelection } from "../shared-components/index.js";
 import { DocumentModelSelect } from "../shared-components/DocumentModelSelect.js";
-import { ElementWithoutIdAndType } from "../type.js";
-import { CustomTextLineStateless } from "../custom-base-input-components/index.js";
+import type { ElementWithoutIdAndType } from "../type.js";
+import { CustomTextField } from "../custom-base-input-components/index.js";
 
 interface ImageSourceTypeFieldProps {
 	element: PartialImage;
@@ -126,7 +126,7 @@ export const ImageSourceTypeField = ({ element }: ImageSourceTypeFieldProps) => 
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getFieldSourceErrorMessage("model")}
 			/>
-			<CustomTextLineStateless
+			<CustomTextField
 				readonly
 				label={localizer(RESOURCE_KEYS.elementForm.model.field)}
 				value={selectedPath}

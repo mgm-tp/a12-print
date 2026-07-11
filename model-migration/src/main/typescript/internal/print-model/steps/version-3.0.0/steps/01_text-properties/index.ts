@@ -29,15 +29,15 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Logger } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
+import type { Logger } from "@com.mgmtp.a12.migrationtool/migrationtool-core/types";
 
-import { TransformTreeTrace } from "../../../../utils.ts/tree-trace.js";
-import * as OldModel from "../../../version-2.1.0/print-model.js";
+import type { TransformTreeTrace } from "../../../../utils.ts/tree-trace.js";
+import type * as OldModel from "../../../version-2.1.0/print-model.js";
 import { ReferenceTransformer } from "../../../../utils.ts/reference-transformer.js";
 import { Transformer } from "../../../../utils.ts/transformer.js";
 import { PrintModelTransformError } from "../../../../utils.ts/error.js";
 
-import * as NewModel from "./print-model.js";
+import type * as NewModel from "./print-model.js";
 import {
 	transformExpressionElement,
 	transformListingElement,

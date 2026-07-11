@@ -32,12 +32,13 @@
 import { jest } from "@jest/globals";
 import { fireEvent } from "@testing-library/react";
 
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { renderWithProviders } from "../../../../../../../test/typescript/test-utils/index.js";
 
-import { ChartCommonProperties, ChartCommonPropertiesProps } from "../ChartCommonProperties.js";
+import type { ChartCommonPropertiesProps } from "../ChartCommonProperties.js";
+import { ChartCommonProperties } from "../ChartCommonProperties.js";
 
 describe("ChartCommonProperties", () => {
 	const mockOnPropertyChange = jest.fn();

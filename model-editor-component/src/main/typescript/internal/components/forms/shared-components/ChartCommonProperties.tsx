@@ -30,23 +30,23 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import * as React from "react";
-import { FocusEvent } from "react";
+import type { FocusEvent } from "react";
 
-import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-line/index.js";
-import {
+import type { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
+import { TextAffix } from "@com.mgmtp.a12.widgets/widgets-core";
+import type {
 	BaseChartProperties,
 	ChartDimensions,
-	ChartOrientation,
 	InputSource,
 	PartialBarChart,
 	PartialLineChart,
 	PartialPieChart,
 	PrintModelEntity,
 	RepeatableChartProperties,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select/index.js";
-import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/input-source.js";
-import { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import { ChartOrientation } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { EditorConst } from "../../../constant/editor.js";
@@ -55,8 +55,8 @@ import { PositiveNumberInput } from "../../custom-input/PositiveNumberInput.js";
 import { changeInputSource, changeInputValue } from "../../../utils/input-source-utils.js";
 import { CHARTS_PROPERTY_PATH } from "../../../constant/element-property-path.js";
 
-import { CustomSelect, CustomTextLineStateful } from "../custom-base-input-components/index.js";
-import { ElementWithoutIdAndType } from "../type.js";
+import { CustomSelect, DynamicSourceTextField } from "../custom-base-input-components/index.js";
+import type { ElementWithoutIdAndType } from "../type.js";
 
 const { CM_TO_MM, MM_TO_CM } = EditorConst;
 
@@ -149,7 +149,7 @@ export const ChartCommonProperties = ({
 
 	return (
 		<div>
-			<CustomTextLineStateful
+			<DynamicSourceTextField
 				sourceProperties={{
 					inputSource: properties.title,
 					element,
@@ -180,7 +180,7 @@ export const ChartCommonProperties = ({
 			/>
 			{isRepeatable && (
 				<>
-					<CustomTextLineStateful
+					<DynamicSourceTextField
 						sourceProperties={{
 							inputSource: properties.labelX,
 							element,
@@ -193,7 +193,7 @@ export const ChartCommonProperties = ({
 						onBlur={(e: FocusEvent<HTMLInputElement>) => onValueChange("labelX", e.target.value)}
 						errorMessage={getRepeatableChartErrorMessage?.("labelX")}
 					/>
-					<CustomTextLineStateful
+					<DynamicSourceTextField
 						sourceProperties={{
 							inputSource: properties.labelY,
 							element,

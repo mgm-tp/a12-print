@@ -30,14 +30,19 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { test } from "@playwright/test";
+
 import {
 	closeDetail,
+	commitChanges,
 	dragAndDrop,
 	dragElementToEditor,
 	openEditorStage,
 	devAppTest,
 	expect,
-} from "src/test/typescript/utils";
+	setBorderColor,
+	setBorderStyle,
+	setBorderWidth,
+} from "../utils/index.js";
 
 devAppTest.use({ useCase: "003-automated-tests" });
 
@@ -50,27 +55,24 @@ test.describe("Area Element", () => {
 	});
 
 	devAppTest("General interactions", async ({ page }) => {
-		const area = page.locator("_react=Area");
+		const area = page.getByTestId("element-area");
 
 		await test.step("Add border properties", async () => {
 			await area.dblclick();
-			await page.locator("_react=PositiveNumberInput[label = 'Border Width']").getByRole("spinbutton").fill("2");
-			await page
-				.locator("_react=CustomSelect[label = 'Border Style']")
-				.getByRole("combobox")
-				.selectOption("Dashed");
-			await page.getByLabel("Border Color").click();
-			await page.locator("input[type=color]").fill("#a12a12", { force: true });
+			await setBorderStyle(page, "Dashed");
+			await setBorderWidth(page, "2");
+			await setBorderColor(page, "#a12a12");
 
 			await closeDetail({ page });
-			await expect(area).toHaveScreenshot();
+			await area.click();
+			await expect.soft(area).toHaveScreenshot();
 		});
 
 		await test.step("Open Wrapper Stage and increase the area stage height", async () => {
 			await area.hover();
 			await page.getByRole("button", { name: "Edit", exact: true }).click();
 
-			const resizeHandle = page.locator("_react=ResizeHandle").nth(0);
+			const resizeHandle = page.getByTestId("resize-handle").nth(0);
 			await dragAndDrop(page, resizeHandle, 0, 100);
 		});
 
@@ -89,7 +91,7 @@ test.describe("Area Element", () => {
 		});
 
 		await test.step("Decrease the area stage height by dragging the bottom handler of the area stage", async () => {
-			const resizeHandle = page.locator("_react=ResizeHandle").nth(0);
+			const resizeHandle = page.getByTestId("resize-handle").nth(0);
 
 			const parent = resizeHandle.locator("..");
 			let boundingBox = await parent.boundingBox();
@@ -107,7 +109,12 @@ test.describe("Area Element", () => {
 			boundingBox = await parent.boundingBox();
 			expect(boundingBox?.height).toBe(232);
 
-			await expect(parent).toHaveScreenshot();
+			await expect.soft(parent).toHaveScreenshot();
+		});
+
+		await test.step("Commit changes", async () => {
+			await page.getByRole("link", { name: "First Segment" }).click();
+			await commitChanges({ page, hasErrors: true });
 		});
 	});
 });

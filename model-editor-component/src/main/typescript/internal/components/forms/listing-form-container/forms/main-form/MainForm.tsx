@@ -33,17 +33,17 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import {
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type {
 	ListingProperties,
 	PartialListing,
-	PartialBorderProperties,
 	PartialTextProperties,
 	RowPropertyComputations,
 	GroupPropertyComputations,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
-import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/lib/errors/index.js";
+	PartialBorderProperties,
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import {
 	AllowedElementType,
@@ -57,14 +57,16 @@ import { TransactionLogStateActions } from "../../../../../redux/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../../localization/index.js";
 import { InteractionLogActions } from "../../../../../redux/interaction-log/index.js";
 import { DocumentModelSelect } from "../../../shared-components/DocumentModelSelect.js";
-import { getErrors, OmitId, useBorderPropertiesErrorMessage } from "../../../../../utils/index.js";
-import { PrintEngineState } from "../../../../../store/root-reducer.js";
+import type { OmitId } from "../../../../../utils/index.js";
+import { getErrors, useBorderPropertiesErrorMessage } from "../../../../../utils/index.js";
+import type { PrintEngineState } from "../../../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../../../redux/validation/selectors.js";
-import { CustomTextLineStateless } from "../../../custom-base-input-components/index.js";
+import { CustomTextField } from "../../../custom-base-input-components/index.js";
 import { PrintEngineSelectors } from "../../../../../store/selectors.js";
 import { ElementMapUtils } from "../../../../../utils/element-map-utils.js";
-import { BaseListingFormProps } from "../../base-listing-form.js";
+import type { BaseListingFormProps } from "../../base-listing-form.js";
 import { RowTablePropertyComputation } from "../../shared-components/RowTablePropertyComputation.js";
+import { BORDER_PROPERTIES_PATH } from "../../../../../constant/element-property-path.js";
 import { DocumentModelDataSelectors } from "../../../../../redux/document-model-data/selectors.js";
 
 import { GroupTablePropertyComputation } from "./GroupTablePropertyComputation.js";
@@ -253,7 +255,7 @@ export const MainForm = ({ element }: BaseListingFormProps) => {
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getPropertyErrorMessage("model")}
 			/>
-			<CustomTextLineStateless
+			<CustomTextField
 				readonly
 				label={localizer(RESOURCE_KEYS.elementForm.model.group)}
 				value={listing?.basePath}
@@ -268,12 +270,15 @@ export const MainForm = ({ element }: BaseListingFormProps) => {
 			/>
 			<TableColumn element={element} />
 			<RowTablePropertyComputation
+				elementId={element.id}
 				propertyComputations={rowPropertyComputations}
 				handleDeleteRow={handleDeleteRowPropertyComputation}
 				updatePropertyComputations={updatePropertyComputations}
 				propertyComputationErrorMap={listingErrorMap?.rowPropertyComputations}
+				formType="Main"
 			/>
 			<GroupTablePropertyComputation
+				elementId={element.id}
 				propertyComputations={groupPropertyComputations}
 				handleDeleteRow={handleDeleteGroupPropertyComputation}
 				updatePropertyComputations={updateGroupPropertyComputations}
@@ -295,6 +300,9 @@ export const MainForm = ({ element }: BaseListingFormProps) => {
 			</CollapsibleSection>
 			<CollapsibleSection title={localizer(RESOURCE_KEYS.elementForm.borderProperties.headline)}>
 				<BorderPropertiesForm
+					element={element}
+					propertiesPath={BORDER_PROPERTIES_PATH}
+					determineInheritedSource={() => false}
 					hideLabel
 					borderProperties={element.borderProperties}
 					setBorderProperties={setBorderProperties}

@@ -31,10 +31,9 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal;
 
-import com.mgmtp.a12.kernel.md.document.api.IDocument;
+import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 import com.mgmtp.a12.print.engine.api.JobDependency;
 import com.mgmtp.a12.print.engine.api.a12.DocumentDependencyDescriptor;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.MutablePrintDocument;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -53,13 +52,13 @@ public class KernelDocumentJobDependency implements JobDependency {
 	}
 
 
-	public void setDocument(@NonNull IDocument document) {
+	public void setDocument(@NonNull DocumentV2 document) {
 		this.document = document;
 	}
 
-	public Optional<IDocument> getDocument() {
+	public Optional<DocumentV2> getDocument() {
 		return Optional.ofNullable(document);
 	}
-	private IDocument document;
+	private DocumentV2 document;
 
 }

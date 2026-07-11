@@ -32,7 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.textStyle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.textStyle.TextStyle;
 import com.mgmtp.a12.print.model.api.model.textStyle.TextStylesContainer;
 import com.mgmtp.a12.print.model.api.model.internal.dto.JsonModel;

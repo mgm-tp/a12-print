@@ -37,20 +37,20 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.FileAppender;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
-import com.mgmtp.a12.print.engine.api.PdfPrintEngine;
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngine;
 import com.mgmtp.a12.print.engine.api.PdfPrintResult;
 import com.mgmtp.a12.print.engine.api.PrintJobConfig;
 import com.mgmtp.a12.print.engine.api.PrintModelId;
+import com.mgmtp.a12.print.engine.api.exception.StaticImageNotFoundException;
 import com.mgmtp.a12.print.engine.runtime.*;
-import com.mgmtp.a12.print.shell.internal.configuration.PrintShellConfiguration;
 import com.mgmtp.a12.print.shell.internal.exceptions.PrintShellException;
 import com.mgmtp.a12.print.typesetting.internal.model.impl.TypesettingModelDto;
 import com.mgmtp.a12.print.typesetting.internal.serialization.ObjectMapperFactory;
 import com.mgmtp.a12.print.typesetting.internal.validation.ITypesettingModelValidator;
 import com.mgmtp.a12.print.typesetting.internal.validation.TypesettingModelValidator;
+import com.mgmtp.a12.print.workspace.internal.elements.FileElement;
+import com.mgmtp.a12.print.workspace.internal.elements.FileElementType;
 import com.mgmtp.a12.print.workspace.internal.elements.ModelFileElement;
 import com.mgmtp.a12.print.workspace.internal.handler.FileHandler;
 import com.mgmtp.a12.print.workspace.internal.handler.WorkspaceHandler;
@@ -61,18 +61,26 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Stream;
 
-@Service
+import static com.mgmtp.a12.print.shell.internal.PrintShellConstants.RESULT_DIRECTORY;
+
 @RequiredArgsConstructor
 @Slf4j
 public class PrintService {
@@ -81,7 +89,6 @@ public class PrintService {
 	private static final String LOG_PACKAGE = "com.mgmtp.a12.print";
 
 	private final WorkspaceHandler workspaceHandler;
-	private final PrintShellConfiguration printShellConfiguration;
 	@NonNull
 	private final ExecutorService printThreadPool;
 	@NonNull
@@ -93,7 +100,7 @@ public class PrintService {
 	private final ITypesettingModelValidator typesettingModelValidator = new TypesettingModelValidator();
 
 	public PdfPrintResult printWithoutPrepare(
-		final PdfPrintEngine printEngine,
+		final PdfBoxPrintEngine printEngine,
 		PrintModelId printModelId,
 		DocumentV2 documentToPrint,
 		final TimeZone timeZone,
@@ -117,7 +124,6 @@ public class PrintService {
 		final boolean createLogFile,
 		final String timeZone,
 		final String locale,
-		final boolean useExperimentalRendering,
 		final String suffix
 	) {
 		try {
@@ -130,34 +136,58 @@ public class PrintService {
 
 			log.info("Start to prepare the print model: {}", printModelFileElement.getModelHeader().getId());
 
-			final var printJobManager = new PrintJobManager(printThreadPool, printJobManagerApi, PrintJobConfig.DEFAULT, useExperimentalRendering);
+			// tag::PrintJobManager[]
+			final var printJobManager = new PrintJobManager(
+				printThreadPool,
+				printJobManagerApi,
+				PrintJobConfig.DEFAULT,
+				internalFilename -> {
+					byte[] imageBytes = loadStaticImageBytes(internalFilename);
+					if (imageBytes == null) {
+						throw new StaticImageNotFoundException(internalFilename);
+					}
+					return imageBytes;
+				});
+			// end::PrintJobManager[]
 			final var printModelPrepareId = printJobManager.prepare(printModelContent);
+			// tag::PrintJob[]
 			final var printJob = printJobManager.createNewJob(printModelPrepareId);
-
-			printJob.withProvider(KernelDocumentV2Provider.fromDocument(documentToPrint));
-			printJob.withProvider(TypesettingModelProvider.fromLoader(id -> {
-				final var typesettingFileModel = workspaceHandler.getModelFileElement(id);
-				if (typesettingFileModel.isEmpty()) {
-					throw new PrintShellException(String.format("The typesetting model with the given id (%s) is not present.", id));
-				}
-				final var content = workspaceHandler.getFileElementContent(typesettingFileModel.get());
-
-				return this.validateAndMarshallTypesettingDto(content);
-			}));
-
 			Locale parsedLocale = LocaleUtils.toLocale(locale);
 			printJob.withLocale(parsedLocale);
-
 			printJob.withTimeZone(
 				StringUtils.isBlank(timeZone)
 					? TimeZone.getDefault()
 					: TimeZone.getTimeZone(ZoneId.of(timeZone))
 			);
+			// end::PrintJob[]
+			// tag::PrintJobProviderV2[]
+			if (documentToPrint != null) {
+				printJob.withProvider(KernelDocumentV2Provider.fromDocument(documentToPrint)); // <1>
+			}
+			// end::PrintJobProviderV2[]
+			// tag::TypesettingModelProvider[]
+			printJob.withProvider(TypesettingModelProvider.fromLoader(id -> {
+				String rawContent = loadTypesettingModelContent(id);
+				return validateAndMarshallTypesettingDto(rawContent);
+			}));
+			// end::TypesettingModelProvider[]
+			// tag::AttachmentPrintJobProvider[]
+			printJob.withProvider(AttachmentProvider.fromLoader(attachmentId -> {
+				byte[] data = loadAttachmentBytes(attachmentId);
+				if (data == null) {
+					throw new IllegalArgumentException("No attachment found for id: " + attachmentId);
+				}
+				return new ByteArrayInputStream(data);
+			}));
+			// end::AttachmentPrintJobProvider[]
 
 			log.info("Start to print the print model: {}", printModelFileElement.getModelHeader().getId());
-			PdfPrintResult pdfPrintResult = printEngine.execute(printJob);
-
-			savePDFResult(printModelPath, resultFileName, pdfPrintResult, suffix);
+			final var pdfPrintResult = printEngine.executeWithReport(printJob);
+			if (!pdfPrintResult.noErrorOccurred()) {
+				pdfPrintResult.getMessages().forEach(m -> log.error("Execute error: {}", m.getDescription()));
+				throw new PrintShellException("Print execution failed.");
+			}
+			savePDFResult(printModelPath, resultFileName, pdfPrintResult.getResult(), suffix);
 
 			resetLogSettings();
 		} catch (Exception exception) {
@@ -172,7 +202,7 @@ public class PrintService {
 	) {
 		String printModelFileName = FilenameUtils.getBaseName(printModelPath.getFileName().toString());
 
-		String documentIdToPrint = documentToPrint.getId().orElse(null);
+		String documentIdToPrint = Optional.ofNullable(documentToPrint).flatMap(DocumentV2::getId).orElse(null);
 		return documentIdToPrint == null
 			? printModelFileName
 			: String.format("%s-%s", printModelFileName, documentIdToPrint);
@@ -189,7 +219,7 @@ public class PrintService {
 		try {
 			action.call();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new PrintShellException(e);
 		} finally {
 			resetLogSettings();
 		}
@@ -249,14 +279,14 @@ public class PrintService {
 		String extension
 	) {
 		return printModelPath.resolveSibling(
-			String.format("%s/%s.%s", printShellConfiguration.getResultDirectory(), resultFileName, extension)
+			String.format("%s/%s.%s", RESULT_DIRECTORY, resultFileName, extension)
 		).toString();
 	}
 
 	public void createResultDirectory(
 		Path printModelPath
 	) {
-		String parentPathOfPdfFile = printModelPath.getParent().resolve(printShellConfiguration.getResultDirectory()).toString();
+		String parentPathOfPdfFile = printModelPath.getParent().resolve(RESULT_DIRECTORY).toString();
 		new File(parentPathOfPdfFile).mkdirs();
 	}
 
@@ -290,6 +320,14 @@ public class PrintService {
 		fileHandler.create(pdfResultFile.toPath());
 	}
 
+	private String loadTypesettingModelContent(String id) {
+		final var typesettingFileModel = workspaceHandler.getModelFileElement(id);
+		if (typesettingFileModel.isEmpty()) {
+			throw new PrintShellException(String.format("The typesetting model with the given id (%s) is not present.", id));
+		}
+		return workspaceHandler.getFileElementContent(typesettingFileModel.get());
+	}
+
 	private TypesettingModelDto validateAndMarshallTypesettingDto(String typesetting) {
 		try {
 			var validation = typesettingModelValidator.validate(typesetting, Locale.ENGLISH);
@@ -298,8 +336,42 @@ public class PrintService {
 			}
 			return objectMapper.readValue(typesetting, TypesettingModelDto.class);
 
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			throw new PrintShellException("Unable to load printModel", e);
 		}
+	}
+
+	private byte[] loadStaticImageBytes(String internalFilename) {
+		return workspaceHandler.getFileMap().values().stream()
+			.flatMap(Collection::stream)
+			.map(FileElement::getPath)
+			.filter(p -> p.getFileName().toString().equals(internalFilename))
+			.findFirst()
+			.map(p -> {
+				try {
+					return Files.readAllBytes(p);
+				} catch (IOException e) {
+					throw new PrintShellException("Unable to load static image: " + internalFilename, e);
+				}
+			})
+			.orElse(null);
+	}
+
+	private byte[] loadAttachmentBytes(String attachmentId) {
+		final var fileMap = workspaceHandler.getFileMap();
+		return Stream.of(FileElementType.UNKNOWN, FileElementType.PDF)
+			.map(fileMap::get)
+			.flatMap(List::stream)
+			.map(FileElement::getPath)
+			.filter(p -> FilenameUtils.getBaseName(p.getFileName().toString()).equals(attachmentId))
+			.findFirst()
+			.map(p -> {
+				try {
+					return Files.readAllBytes(p);
+				} catch (IOException e) {
+					throw new PrintShellException("Unable to load attachment: " + attachmentId, e);
+				}
+			})
+			.orElse(null);
 	}
 }

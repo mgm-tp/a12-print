@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ErrorLocalizationBundle } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts/lib/main/js/formatdef/error/bundles/ErrorLocalizationBundle.js";
+import { ErrorLocalizationBundle } from "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts";
 
 import { PrintDateTimeFormatErrorEnum } from "../error-enum.js";
 

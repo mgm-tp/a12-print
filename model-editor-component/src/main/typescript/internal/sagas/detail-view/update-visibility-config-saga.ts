@@ -29,33 +29,34 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { put, select, takeLatest } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { DetailViewActions, EditorMode } from "../../redux/index.js";
+import { DetailViewActions, isVisibilityConfigFormState, NavigationSelectors } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 
-export function* updateVisibilityConfigSaga(): SagaIterator {
-	yield* takeLatest(
-		(action: AnyAction) => DetailViewActions.updateVisibilityConfig.match(action),
-		handleUpdateVisibilityConfig
-	);
+export function* updateVisibilityConfigSaga(): SagaGenerator<void> {
+	yield* takeLatest(DetailViewActions.updateVisibilityConfig.match, handleUpdateVisibilityConfig);
 }
 
-function* handleUpdateVisibilityConfig(action: Action<DetailViewActions.UpdateVisibilityConfigPayload>) {
+function* handleUpdateVisibilityConfig(action: PayloadAction<DetailViewActions.UpdateVisibilityConfigPayload>) {
 	const { selected } = action.payload;
 	if (selected.length === 0) {
 		return;
 	}
 
-	const detailData = yield* select(PrintEngineSelectors.currentDetailData);
+	const detailData = yield* select(NavigationSelectors.currentReferenceForm);
 	const elementReferences = yield* select(PrintEngineSelectors.elementReferences);
 
-	const { isFormOpen, isVisibilityConfig, placeableRefId } = detailData || {};
 	const currentRefId = elementReferences.find(ref => ref.refId === selected[0])?.id || "";
 
-	if (isFormOpen?.[EditorMode.Default] && isVisibilityConfig && currentRefId && placeableRefId !== currentRefId) {
+	if (
+		detailData &&
+		isVisibilityConfigFormState(detailData) &&
+		currentRefId &&
+		detailData.referenceId !== currentRefId
+	) {
 		yield* put(DetailViewActions.openVisibilityConfig(currentRefId));
 	}
 }

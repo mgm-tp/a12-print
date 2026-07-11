@@ -29,20 +29,19 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { actionCreatorFactory } from "typescript-fsa";
-
-import {
+import type {
 	AffectedItem,
 	InteractionLogEntry,
 	InteractionLogStore,
 	InteractionRegion,
 	PreventUndo,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { NewElementHeight } from "../../components/hidden-height-context-wrapper/types.js";
+import type { NewElementHeight } from "../../../internal/components/hidden-height-context-wrapper/types.js";
 
 import type { AnyTransactionLogAction } from "../transaction-log-state/actions.js";
+import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
 
 const factory = actionCreatorFactory("Print/InteractionLog");
 

@@ -32,15 +32,19 @@
 import path from "path";
 import { fileURLToPath } from "url";
 
-import test, { expect, Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
+import test, { expect } from "@playwright/test";
+
 import {
 	closeDetail,
+	commitChanges,
 	dragElementToEditor,
 	openEditorStage,
 	devAppTest,
 	selectFieldFromTree,
 	uploadImage,
-} from "src/test/typescript/utils";
+	waitForInteractionSagasSettled,
+} from "../utils/index.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,62 +58,58 @@ test.describe("Image-Element", () => {
 
 	devAppTest("Adjust Properties for image source attachment", async ({ page }) => {
 		await test.step("Change alternative Text", async () => {
-			const image = page.locator("_react=Image");
+			const image = page.getByTestId("element-image");
 			await image.dblclick();
-			await page
-				.locator("_react=CustomTextLineStateful[label = 'Alternative Text']")
-				.getByRole("textbox")
-				.first()
-				.fill("Hello World!");
+			await page.getByTestId("image-alt-text").fill("Hello World!");
+			await page.keyboard.press("Enter");
+			await waitForInteractionSagasSettled(page);
 
 			await closeDetail({ page });
 			await expect(image).toHaveAttribute("alt", "Hello World!");
 		});
 
 		await test.step("Change Width and Height", async () => {
-			const image = page.locator("_react=Image");
-			await expect(image).toHaveScreenshot("baseImage.png");
+			const image = page.getByTestId("element-image");
+			await expect.soft(image).toHaveScreenshot("baseImage.png");
 
 			await image.dblclick();
-			await page
-				.locator("_react=PositiveNumberInput[label = 'Height']")
-				.getByRole("spinbutton")
-				.nth(1)
-				.fill("18");
+			await page.getByTestId("image-height-input").fill("18");
 			await page.keyboard.press("Enter");
-			await page.locator("_react=PositiveNumberInput[label = 'Width']").getByRole("spinbutton").nth(1).fill("50");
+			await page.getByTestId("image-width-input").fill("50");
 			await page.keyboard.press("Enter");
 			await closeDetail({ page });
-			await expect(image).toHaveScreenshot();
+			await image.click();
+			await expect.soft(image).toHaveScreenshot();
 
 			await image.dblclick();
-			await page.locator("_react=PositiveNumberInput[label = 'Height']").getByRole("spinbutton").nth(1).clear();
+			await page.getByTestId("image-height-input").clear();
 			await page.keyboard.press("Enter");
-			await page.locator("_react=PositiveNumberInput[label = 'Width']").getByRole("spinbutton").nth(1).clear();
+			await page.getByTestId("image-width-input").clear();
 			await page.keyboard.press("Enter");
 			await closeDetail({ page });
-			await expect(image).toHaveScreenshot("baseImage.png");
+			await image.click();
+			await expect.soft(image).toHaveScreenshot("baseImage.png");
 		});
 
 		await test.step("Should retain width", async () => {
-			const image = page.locator("_react=Image");
+			const image = page.getByTestId("element-image");
 
 			await image.dblclick();
 
-			const widthPromise = async () =>
-				page.locator("_react=TextLineStateless[label = 'Width']").getByRole("spinbutton").nth(1).inputValue();
+			const widthPromise = async () => page.getByTestId("image-width-input").inputValue();
 
 			const originalWidth = await widthPromise();
 
-			await page
-				.locator("_react=PositiveNumberInput[label = 'Height']")
-				.getByRole("spinbutton")
-				.nth(1)
-				.fill("18");
+			await page.getByTestId("image-height-input").fill("18");
 			await page.keyboard.press("Enter");
 
 			const secondWidth = await widthPromise();
 			expect(secondWidth).toBe(originalWidth!);
+		});
+
+		await test.step("Commit changes", async () => {
+			await closeDetail({ page });
+			await commitChanges({ page });
 		});
 	});
 });
@@ -119,107 +119,62 @@ test.describe("Image-Element", () => {
 		await openEditorStage({ page, tab: "Segment", cardName: "First Segment" });
 		await dragElementToEditor({ page, elementName: "Image" });
 
-		const image = page.locator("_react=Image");
+		const image = page.getByTestId("element-image");
 
 		await image.dblclick();
 		await page.locator("#sidebar-panel").getByLabel("Close").click({ force: true });
 
-		await page
-			.locator("_react=ImageSourceType")
-			.getByRole("radiogroup")
-			.getByRole("radio", { name: "Field" })
-			.click();
+		await page.getByTestId("image-src-type-dynamic").click();
 
-		await page
-			.locator("_react=CustomSelect[label = 'Document Model']")
-			.getByRole("combobox")
-			.selectOption({ index: 1 });
+		await page.getByTestId("document-model-select").selectOption({ index: 1 });
 
-		await selectFieldFromTree({ tree: page.locator("_react=Tree"), fieldPath: "/example/imageField/content" });
+		await selectFieldFromTree({
+			tree: page.locator('[data-role="tree"]'),
+			fieldPath: "/example/imageField/content",
+		});
 
 		await closeDetail({ page });
 	});
 
 	devAppTest("Adjust properties for image source field", async ({ page }) => {
 		await test.step("Change Alternative Text", async () => {
-			const image = page.locator("_react=Image");
+			const image = page.getByTestId("element-image");
 			await image.dblclick();
-			await page
-				.locator("_react=CustomTextLineStateful[label = 'Alternative Text']")
-				.getByRole("textbox")
-				.first()
-				.fill("Hello World!");
+			await page.getByTestId("image-alt-text").fill("Hello World!");
+			await page.keyboard.press("Enter");
+			await waitForInteractionSagasSettled(page);
 
 			await closeDetail({ page });
 		});
 
 		await test.step("Change Height and Width", async () => {
-			const image = page.locator("_react=Image");
+			const image = page.getByTestId("element-image");
 			await image.dblclick();
-			await page
-				.locator("_react=PositiveNumberInput[label = 'Height']")
-				.getByRole("spinbutton")
-				.nth(1)
-				.fill("18");
+			await page.getByTestId("image-height-input").fill("18");
 			await page.keyboard.press("Enter");
-			await page.locator("_react=PositiveNumberInput[label = 'Width']").getByRole("spinbutton").nth(1).fill("50");
+			await page.getByTestId("image-width-input").fill("50");
 			await page.keyboard.press("Enter");
 			await closeDetail({ page });
-			await expect(image).toHaveScreenshot();
-		});
-	});
-});
-
-test.describe("Image-Element", () => {
-	devAppTest.beforeEach(async ({ page }) => {
-		await addMgmLogo({ page });
-	});
-
-	devAppTest("Interactions in the image form", async ({ page }) => {
-		await test.step("Download the image", async () => {
-			const image = page.locator("_react=Image");
-			await image.dblclick();
-
-			await page.locator("_react=PopUpMenu").click();
-			const downloadPromise = page.waitForEvent("download");
-			await page.getByRole("button", { name: "Download" }).click();
-			const download = await downloadPromise;
-			expect(download.suggestedFilename()).toBe("test.png");
+			await image.click();
+			await expect.soft(image).toHaveScreenshot();
 		});
 
-		await test.step("Delete the image", async () => {
-			const image = page.locator("_react=Image");
-			await image.dblclick();
-
-			await page.locator("_react=PopUpMenu").click();
-			await page.getByRole("button", { name: "Delete", exact: true }).click();
-			await expect(page.getByRole("main").first()).toHaveScreenshot();
-			await closeDetail({ page });
-		});
-
-		await test.step("Replace the image", async () => {
-			const image = page.locator("_react=Image");
-			await image.dblclick();
-			await uploadImage({ page, imageFilePath: path.join(__dirname, "resources/test.png") });
-			await page.locator("_react=PopUpMenu").click();
-			const fileChooserPromise = page.waitForEvent("filechooser");
-			await page.getByRole("button", { name: "Replace" }).click();
-			const fileChooser = await fileChooserPromise;
-
-			await fileChooser.setFiles(path.join(__dirname, "resources/tree.jpg"));
-			await expect(page.getByRole("main").first()).toHaveScreenshot();
+		await test.step("Commit changes", async () => {
+			await commitChanges({ page });
 		});
 	});
 });
 
 const addMgmLogo = async ({ page }: { page: Page }) => {
 	await openEditorStage({ page, tab: "Segment", cardName: "First Segment" });
+	await waitForInteractionSagasSettled(page);
 	await dragElementToEditor({ page, elementName: "Image" });
 
-	const image = page.locator("_react=Image");
+	const image = page.getByTestId("element-image");
 
 	await image.dblclick();
 	await page.locator("#sidebar-panel").getByLabel("Close").click({ force: true });
 	await uploadImage({ page, imageFilePath: path.join(__dirname, "resources/test.png") });
+	await expect(image).toHaveAttribute("src");
 	await closeDetail({ page });
 };

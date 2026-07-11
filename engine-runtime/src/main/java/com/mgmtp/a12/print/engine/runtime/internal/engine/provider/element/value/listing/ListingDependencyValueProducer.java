@@ -31,9 +31,8 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.value.listing;
 
-import com.mgmtp.a12.kernel.md.document.api.IEntityInstance;
-import com.mgmtp.a12.kernel.md.document.api.IFieldInstance;
-import com.mgmtp.a12.kernel.md.document.api.IGroupInstance;
+import com.mgmtp.a12.kernel.md.document.apiV2.immutable.FieldInstanceV2;
+import com.mgmtp.a12.kernel.md.document.apiV2.immutable.GroupInstanceV2;
 import com.mgmtp.a12.kernel.md.model.api.IElement;
 import com.mgmtp.a12.kernel.md.model.api.IField;
 import com.mgmtp.a12.kernel.md.model.api.IGroup;
@@ -42,11 +41,12 @@ import com.mgmtp.a12.kernel.md.model.internal.wrapper.FieldWrapper;
 import com.mgmtp.a12.print.engine.api.PrintEngine;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
+import com.mgmtp.a12.print.engine.runtime.internal.engine.document.Entity;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.element.markup.listing.ListingHtmlTemplateParameters;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.fieldType.FieldTypeFromPathValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter.FormattedValueDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.html.SanitizeValueDependency;
@@ -176,7 +176,7 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 						.ifPresent(e -> setCellValue(cell, e, runtime));
 				}
 			}
-			default -> throw new PrintException("invalid container");
+			default -> throw new PrintException("Invalid container: {}", container.getClass().getName());
 		}
 	}
 
@@ -248,7 +248,7 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 				.streamLogicContainerEvaluationDependency(dependencyStream)
 				.forEach(evaluation -> handleEvaluationFor(columnOrdering, listingRow, evaluation, runtime));
 
-			handleHiddenGroupComputations(listingRows, listingRow, entityInstance);
+			handleHiddenGroupComputations(listingRows, listingRow, entityInstance.getPath());
 
 			listingRows.add(listingRow);
 		}
@@ -273,9 +273,9 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 					sb.append("\t");
 				}
 				sb.append("\t");
-				sb.append(String.format("%1$-" + 20 + "s", Arrays.toString(r.getEntityInstance().getRepetitions())));
+				sb.append(String.format("%1$-" + 20 + "s", Arrays.toString(r.getRepetition().getRepetitions())));
 				sb.append("\t");
-				sb.append(r.getEntityInstance().getPath());
+				sb.append(r.getRepetition().getPath());
 				sb.append("\t");
 				log.trace(sb.toString());
 			});
@@ -303,8 +303,8 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 			).toList();
 
 		LinkedHashMap<String, AttachmentToAppend> attachmentsToAppend = new LinkedHashMap<>();
-		final var markupRowValues = result.stream().map(row -> new ListingHtmlTemplateParameters.MarkupListingRowValue(
-			row.getEntityInstance().getPath(),
+		final var markupRowValues = result.stream().map(row -> new ListingValues.MarkupListingRowValue(
+			row.getRepetition().getPath(),
 			row.getRowProperties(),
 			row.getGroupProperties().entrySet().stream().collect(
 				HashMap::new,
@@ -323,7 +323,7 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 	private static void handleHiddenGroupComputations(
 		@NonNull final List<ListingRowValue> listingRows,
 		@NonNull final ListingRowValue listingRow,
-		@NonNull final IEntityInstance entityInstance
+		@NonNull final String instancePath
 	) {
 		final var hiddenGroupPaths = listingRow.getGroupProperties().entrySet().stream()
 			.filter(e -> e.getKey().getLeft().equals(IS_HIDDEN) &&
@@ -335,8 +335,8 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 
 		if (!hiddenGroupPaths.isEmpty()) {
 			for (final var hiddenGroupPath : hiddenGroupPaths) {
-				if (!checkIsSubPath(entityInstance.getPath(), hiddenGroupPath, true)) {
-					throw new PrintException("The instance path needs to be a sub-path of the hidden group path");
+				if (!checkIsSubPath(instancePath, hiddenGroupPath, true)) {
+					throw new PrintDomainException("The instance path {} needs to be a sub-path of the hidden group path {}", instancePath, hiddenGroupPath);
 				}
 				setHiddenInLastMatching(listingRows, hiddenGroupPath);
 			}
@@ -346,14 +346,14 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 	private static void setHiddenInLastMatching(List<ListingRowValue> list, String hiddenGroupPath) {
 		for (int i = list.size() - 1; i >= 0; i--) {
 			final var row = list.get(i);
-			if (checkPathsEqual(row.getEntityInstance().getPath(), hiddenGroupPath)) {
+			if (checkPathsEqual(row.getRepetition().getPath(), hiddenGroupPath)) {
 				row.getGroupProperties().put(
 					new ImmutablePair<>(GroupPropertyComputation.PropertyType.IS_HIDDEN, hiddenGroupPath), true
 				);
 				return;
 			}
 		}
-		throw new PrintException("There needs to be a matching group");
+		throw new PrintDomainException("No matching group for the hidden group path: {}", hiddenGroupPath);
 	}
 
 	private List<Optional<Integer>> findColGroups(Listing listing, List<ListingRowValue> rows) {
@@ -383,14 +383,14 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 
 	}
 
-	private List<ListingHtmlTemplateParameters.MarkupListingColumnValue> getColumns(
+	private List<ListingValues.MarkupListingColumnValue> getColumns(
 		InternalCorePrintEngineRuntime runtime,
 		ListingRowValue row,
 		ListingValueDependency.TextStyleProvider textStyleProvider,
 		LinkedHashMap<String, AttachmentToAppend> attachmentsToAppend,
 		InputValueSourceResolver.ReferenceResolver referenceInputSourceResolver
 	) {
-		List<ListingHtmlTemplateParameters.MarkupListingColumnValue> resultColumns = new ArrayList<>();
+		List<ListingValues.MarkupListingColumnValue> resultColumns = new ArrayList<>();
 
 		String attachmentId = null;
 
@@ -417,7 +417,7 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 		ListingValueDependency.TextStyleProvider textStyleProvider,
 		String attachmentId,
 		LinkedHashMap<String, AttachmentToAppend> attachmentsToAppend,
-		List<ListingHtmlTemplateParameters.MarkupListingColumnValue> resultColumns,
+		List<ListingValues.MarkupListingColumnValue> resultColumns,
 		InputValueSourceResolver.ReferenceResolver referenceInputSourceResolver
 	) {
 		final var path = rowValue.getPath();
@@ -425,21 +425,21 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 		final var attachmentParentGroup
 			= Optional.ofNullable(currentElement.getParent())
 			.filter(g -> g.getUsageType().filter(u -> u.equals("attachment")).isPresent());
-		final var rowValueEntity = rowValue.getEntityInstance();
-		final Optional<String> currentInstanceValue = rowValueEntity instanceof IFieldInstance fieldInstance && fieldInstance.getValue().isPresent() &&
-			fieldInstance.getValue().get() instanceof String instanceValue
+		final var rowValueEntity = rowValue.getRepetition();
+		final Optional<String> currentInstanceValue = rowValueEntity.getInstance() instanceof FieldInstanceV2 &&
+			rowValueEntity.getValue().isPresent() &&
+			rowValueEntity.getValue().get() instanceof String instanceValue
 				? Optional.of(instanceValue)
 				: Optional.empty();
 
 		if (isAttachmentField(attachmentParentGroup.orElse(null), currentElement, attachmentId)) {
 			final var attachmentGroup = rowValue
 				.getRepetition()
-				.parentGroup()
-				.enableImplicitRelative();
+				.parentGroup();
 
 			final var mimeTypeObject = attachmentGroup
-				.findSingleFieldInstance("mime_type")
-				.flatMap(PrintDocumentContext.Entity::getValue);
+				.findSingleFieldInstance("mime_type", true)
+				.flatMap(Entity::getValue);
 
 			if (
 				mimeTypeObject.isPresent() &&
@@ -476,7 +476,7 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 			);
 		}
 
-		resultColumns.add(new ListingHtmlTemplateParameters.MarkupListingColumnValue(
+		resultColumns.add(new ListingValues.MarkupListingColumnValue(
 			textStyleProvider.provideTextStyle(
 				 TextStyleDependency.create(originColumnValue.getColumn().getTextProperties().flatMap(TextProperties::getTextStyleId), referenceInputSourceResolver)
 			),
@@ -499,13 +499,13 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 	) {
 		String attachmentId = null;
 		final var altText = attachmentGroup
-			.findSingleFieldInstance("description")
-			.flatMap(PrintDocumentContext.Entity::getValue)
+			.findSingleFieldInstance("description", true)
+			.flatMap(Entity::getValue)
 			.map(Object::toString)
 			.orElse(
 				attachmentGroup
-					.findSingleFieldInstance("original_filename")
-					.flatMap(PrintDocumentContext.Entity::getValue)
+					.findSingleFieldInstance("original_filename", true)
+					.flatMap(Entity::getValue)
 					.map(Object::toString)
 					.orElse(Constants.EMPTY_STRING)
 			);
@@ -578,8 +578,8 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 		String name
 	) {
 		return attachmentGroup
-			.findSingleFieldInstance(name)
-			.flatMap(PrintDocumentContext.Entity::getValue)
+			.findSingleFieldInstance(name, true)
+			.flatMap(Entity::getValue)
 			.map(Object::toString)
 			.filter(value -> !value.isBlank());
 	}
@@ -599,7 +599,7 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 				if (tree.value == null) {
 					return -1;
 				}
-				assert tree.value.getEntityInstance() instanceof IGroupInstance;
+				assert tree.value.getRepetition().getInstance() instanceof GroupInstanceV2;
 				final var el = ((IGroup) tree.value.getPath()[tree.value.getPath().length - 1]).getElements();
 				return IntStream.range(0, el.size()).filter(e -> el.get(e).getName().equals(a.getKey())).findAny().orElse(Integer.MAX_VALUE);
 			};
@@ -615,7 +615,7 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 				this.value = value;
 			} else {
 				final var name = value.getPath()[index].getName();
-				final var rep = value.getEntityInstance().getRepetitions()[index];
+				final var rep = value.getRepetition().getRepetitions()[index];
 
 				subtree
 					.computeIfAbsent(name, k -> new HashMap<>())
@@ -639,7 +639,8 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 			return streamInternal(
 				tree -> (
 					Comparator.comparing((Map.Entry<String, Map<Integer, SortingTree>> a)
-							-> a.getValue().values().stream().allMatch(e -> e.getValue().getEntityInstance() instanceof IFieldInstance) ? 0 : 1)
+							-> a.getValue().values().stream().allMatch(e ->
+							e.getValue().getRepetition().getInstance() instanceof FieldInstanceV2) ? 0 : 1)
 						.thenComparing((a, b) -> sortByValue(sortingColumnIndex, a, b))
 				)
 					.thenComparing(compareByTreePosition(tree))
@@ -648,8 +649,8 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 					.comparing((Map.Entry<Integer, SortingTree> a) ->
 						Optional.ofNullable(a.getValue())
 							.map(SortingTree::getValue)
-							.map(ListingRowValue::getEntityInstance)
-							.map(i -> i instanceof IFieldInstance ? 0 : 100)
+							.map(ListingRowValue::getRepetition)
+							.map(i -> i.getInstance() instanceof FieldInstanceV2 ? 0 : 100)
 							.orElse(0)
 					)
 					.thenComparing((a, b) -> {
@@ -717,7 +718,7 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 		private final List<ListingCell> listingCells;
 
 		@NonNull
-		private final PrintDocumentContext.Entity<IEntityInstance> repetition;
+		private final Entity<?> repetition;
 		private final Map<RowPropertyComputation.PropertyType, Object> rowProperties = new EnumMap<>(RowPropertyComputation.PropertyType.class);
 		private final Map<ImmutablePair<GroupPropertyComputation.PropertyType, String>, Object> groupProperties = new HashMap<>();
 
@@ -741,12 +742,7 @@ public class ListingDependencyValueProducer implements CoreDependencyValueProvid
 		}
 
 		@Override
-		public @NonNull IEntityInstance getEntityInstance() {
-			return repetition.getInstance();
-		}
-
-		@Override
-		public PrintDocumentContext.@NonNull Entity<IEntityInstance> getRepetition() {
+		public @NonNull Entity<?> getRepetition() {
 			return repetition;
 		}
 

@@ -31,7 +31,7 @@
  */
 import * as React from "react";
 
-import {
+import type {
 	DataContext,
 	BoundingBoxDimensions,
 	ElementType,
@@ -42,11 +42,11 @@ import {
 	PartialSection,
 	PartialSegment,
 	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { createPlainMmMeasure } from "../../utils/index.js";
-import { WrapperContext } from "../../redux/index.js";
+import type { WrapperContext } from "../../redux/index.js";
 
 export interface PreviousEditorRef {
 	id: string;

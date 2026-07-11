@@ -53,3 +53,4 @@ public class RequiredComputationAlternativeDto extends PrintModelEntityDto imple
 	@JsonProperty(value = "precondition", required = true)
 	String precondition;
 }
+

@@ -29,14 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { TextLineStateless } from "@com.mgmtp.a12.widgets/widgets-core";
+import { TextField } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { StyledPrintModelReferenceContainer } from "./PrintModelReference.styled.js";
 
 export const TypesettingModelReference = ({ reference }: { reference: string }) => {
 	return (
 		<StyledPrintModelReferenceContainer>
-			<TextLineStateless value={reference} readonly />
+			<TextField value={reference} readonly />
 		</StyledPrintModelReferenceContainer>
 	);
 };

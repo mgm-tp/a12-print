@@ -34,11 +34,11 @@ import { useSelector } from "react-redux";
 import parse from "html-react-parser";
 import sanitizeHtml from "sanitize-html";
 
-import { BaseTypesettingApplier } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/applier/TypesettingApplier.js";
-import { StaticHyphenatorKey } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/constant/static-hyphenator.js";
+import type { StaticHyphenatorKey } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
+import { BaseTypesettingApplier } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { useTypesettingModelData } from "../../hooks/use-typesetting-model-data.js";
 
 interface TypeSettingApplierProps {

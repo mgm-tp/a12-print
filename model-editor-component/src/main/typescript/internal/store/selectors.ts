@@ -30,26 +30,32 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import sortBy from "lodash/sortBy.js";
-import { DefaultRootState } from "react-redux";
 import { createSelector } from "reselect";
 
-import {
-	GlobalRegion,
+import type {
 	InteractionLogEntry,
 	InteractionLogStore,
 	InteractionRegion,
-	ListingRegion,
-	SidebarItem,
-	SidebarRegion,
-	StageRegion,
-	TableRegion,
-	TextRegion,
-	TransactionLog,
 	TransactionLogEntry,
 	TransactionLogStore,
 	TransactionLogStoreEntryMap,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
-import { ModelReference } from "@com.mgmtp.a12.base/base-model-api/lib/main/header/index.js";
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import {
+	GlobalRegion,
+	SidebarItem,
+	SidebarRegion,
+	TransactionLog,
+	PrintModelCreator,
+	getAllInteractionsFromLogStore,
+	StageRegion,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { ModelReference } from "@com.mgmtp.a12.base/base-model-api";
+import type {
+	PartialAnyPrintModelElement,
+	PartialPlaceableReference,
+	PartialValidPlaceableReference,
+	PlaceableReference,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	Area,
 	BoundingBox,
@@ -59,14 +65,10 @@ import {
 	isSegment,
 	Override,
 	PageOrientation,
-	PartialAnyPrintModelElement,
 	PartialArea,
 	PartialBoundingBox,
 	PartialOverride,
-	PartialPlaceableReference,
 	PartialSwitch,
-	PartialValidPlaceableReference,
-	PlaceableReference,
 	SectionUsage,
 	SegmentReferenceDirection,
 	SegmentReferencePurpose,
@@ -74,33 +76,44 @@ import {
 	Table,
 	TableLayout,
 	Text,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { PrintModelCreator } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/print-model-creator/index.js";
-import { getAllInteractionsFromLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/utils/transaction-log-utils.js";
-import {
 	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 	PRINT_MODEL_HEADER_LOG_ID,
 	TEXT_STYLE,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { WrapperState } from "../redux/wrapper/state.js";
-import { SidebarState } from "../redux/sidebar/state.js";
-import { FULLSCREEN_TABS } from "../redux/sidebar/reducer.js";
-import { PrintModelRefs, PrintEditorState, EditorMode } from "../redux/editor-state/state.js";
-import { DetailData, DetailDataState } from "../redux/detail-data/state.js";
-import { ConfirmationDialogState } from "../redux/confirmation-dialog/state.js";
-import { getListingRegionId } from "../components/forms/listing-form-container/utils.js";
-import { getTableRegionId } from "../components/forms/table-form-container/utils.js";
+import type { PrintEngineState } from "../../a12internal/api/PrintEngineState.js";
+
 import { ElementsUtils } from "../utils/elements-utils.js";
 import { DEFAULT_TEXT_STYLE_ID, NO_TEXT_STYLE_FALLBACK } from "../constant/textstyle.js";
 import { createPlainMmMeasure } from "../utils/measure-utils.js";
 import { ROOT_DATA_CONTEXT_ENTRY } from "../constant/data-context.js";
-import { DataContextEntry } from "../types/data-context.js";
+import type { DataContextEntry } from "../types/data-context.js";
+import { EditorMode, type PrintEditorState } from "../redux/editor-state/state.js";
+import type { ConfirmationDialogState } from "../redux/confirmation-dialog/state.js";
+import {
+	type BaseFormState,
+	type CanvasTab,
+	FULLSCREEN_TABS,
+	type NavigationState,
+	type Wrapper,
+	isElementFormState,
+	isBaseElementFormState,
+	isListingColumnFormState,
+	isListingFieldCompFormState,
+	isListingGroupPropertyCompFormState,
+	isListingPropertyCompFormState,
+	isPageBreakConfigFormState,
+	isBaseReferenceFormState,
+	isTableColumnFormState,
+	isTextCalculationFormState,
+	isTextFieldFormState,
+	isVisibilityConfigFormState,
+} from "../redux/navigation/state.js";
+import { NavigationSelectors } from "../redux/navigation/selectors.js";
 
-import { PrintEngineState } from "./root-reducer.js";
+import { createSliceSelector, isFpeStore } from "./create-slice-selector.js";
 import { STAGE_REGION_MAP } from "./region-stage-map.js";
 
-type Selector<T> = (state: PrintEngineState) => T;
 export type UndoInteractionLogEntry = InteractionLogEntry & { region: InteractionRegion; regionId: string };
 type ContainerElement = PartialBoundingBox | PartialOverride | PartialArea | PartialSwitch;
 
@@ -119,34 +132,6 @@ export interface TransactionLogGroup {
 	transactions: TransactionLogEntry[];
 }
 
-const DEFAULT_PRINT_MODEL_REF: PrintModelRefs = {
-	segmentId: "",
-	sectionId: "",
-	watermarkId: "",
-	currentRefType: SidebarItem.SEGMENT,
-};
-
-function isFpeStore(slice: PrintEngineState | DefaultRootState): slice is PrintEngineState {
-	return (
-		slice instanceof Object &&
-		"PrintEditorState" in slice &&
-		"DetailData" in slice &&
-		"Sidebar" in slice &&
-		"TransactionLogState" in slice &&
-		"RequestApi" in slice &&
-		"InteractionLogState" in slice
-	);
-}
-
-export function createSliceSelector<T>(selector: (state: PrintEngineState) => T): Selector<T> {
-	return store => {
-		if (isFpeStore(store)) {
-			return selector(store);
-		}
-		throw new Error("Current store is not Print Model Editor store");
-	};
-}
-
 export function idInputSelector(_: PrintEngineState, id = "") {
 	return id;
 }
@@ -158,11 +143,9 @@ export function idInputSelectorSecond(_: PrintEngineState, _arg: unknown, id = "
 export namespace PrintEngineSelectors {
 	// top level
 	export const state = createSliceSelector<PrintEngineState>(state => state);
-	export const detailData = createSliceSelector<DetailDataState>(state => state.DetailData);
 	export const printEditorState = createSliceSelector<PrintEditorState>(state => state.PrintEditorState);
-	export const sidebar = createSliceSelector<SidebarState>(state => state.Sidebar);
 	export const transactionLogState = createSliceSelector<TransactionLogStore>(state => state.TransactionLogState);
-	export const wrapperState = createSliceSelector<WrapperState>(state => state.Wrapper);
+	export const navigationState = createSliceSelector<NavigationState>(state => state.Navigation);
 	export const interactionLogState = createSliceSelector<InteractionLogStore>(state => state.InteractionLogState);
 	export const confirmationDialogState = createSliceSelector<ConfirmationDialogState>(
 		state => state.ConfirmationDialogState
@@ -174,15 +157,6 @@ export namespace PrintEngineSelectors {
 	export const selectedTextStyleId = createSelector(
 		printEditorState,
 		editorState => editorState.sidebar.selectedTextStyleId
-	);
-
-	export const printModelRefs = createSelector(
-		printEditorState,
-		printEditorState => printEditorState.printModelRefs || DEFAULT_PRINT_MODEL_REF
-	);
-	export const editorMode = createSelector(
-		printEditorState,
-		printEditorState => printEditorState.editorStates.editorMode
 	);
 
 	export const zoomFactor = createSelector(
@@ -197,19 +171,35 @@ export namespace PrintEngineSelectors {
 		printEditorState,
 		printEditorState => printEditorState?.editorStates?.isMarginVisible
 	);
-	export const currentElementContainerId = createSelector([printModelRefs], printModelRefsState => {
-		const { sectionId, segmentId, watermarkId, currentRefType } = printModelRefsState;
-		if (currentRefType === SidebarItem.SEGMENT) {
-			return segmentId;
-		} else if (currentRefType === SidebarItem.SECTION) {
-			return sectionId;
-		} else {
-			return watermarkId;
+	export const currentElementContainerId = createSelector(
+		[NavigationSelectors.activeEntities],
+		printModelRefsState => {
+			const { sectionId, segmentId, watermarkId, currentRefType } = printModelRefsState;
+			if (currentRefType === SidebarItem.SEGMENT) {
+				return segmentId;
+			} else if (currentRefType === SidebarItem.SECTION) {
+				return sectionId;
+			} else {
+				return watermarkId;
+			}
 		}
-	});
-	export const wrappers = createSelector([currentElementContainerId, wrapperState], (containerId, wrapperState) => {
-		return wrapperState[containerId] || [];
-	});
+	);
+	export const wrappers = createSelector(
+		[navigationState, NavigationSelectors.activeEntities],
+		(nav, refs): ReadonlyArray<Wrapper> => {
+			const tab = refs.currentRefType as CanvasTab;
+			const entityId =
+				tab === SidebarItem.SEGMENT
+					? refs.segmentId
+					: tab === SidebarItem.SECTION
+						? refs.sectionId
+						: refs.watermarkId;
+			if (!entityId) return [];
+			const stack = nav[tab].entities[entityId];
+			if (!stack || stack.length <= 1) return [];
+			return stack.slice(1) as unknown as ReadonlyArray<Wrapper>;
+		}
+	);
 	export const currentWrapperContainerId = createSelector([wrappers], wrapperState => {
 		return wrapperState.length > 0 ? wrapperState[wrapperState.length - 1]?.id : undefined;
 	});
@@ -218,41 +208,12 @@ export namespace PrintEngineSelectors {
 		return wrapperId ? (printModelElement(state, wrapperId) as ContainerElement) : undefined;
 	});
 
-	export const currentDetailDataId = createSelector(
+	export const currentCanvasEntityId = createSelector(
 		[currentElementContainerId, wrappers],
 		(containerId, wrappersState) => {
 			return wrappersState.length > 0 ? wrappersState[wrappersState.length - 1]?.id : containerId;
 		}
 	);
-	export const currentDetailData = createSelector(
-		[detailData, currentDetailDataId],
-		(detailDataState, currentDetailDataId) => {
-			return currentDetailDataId ? detailDataState[currentDetailDataId] : undefined;
-		}
-	);
-
-	export const editPositionTextDetailData = createSelector(currentDetailData, currentDetailDataState => {
-		return currentDetailDataState?.additionalData?.text?.editPosition;
-	});
-
-	export const additionalData = createSelector(
-		currentDetailData,
-		currentDetailDataState => currentDetailDataState?.additionalData
-	);
-	export const detailDataRefId = createSelector(
-		currentDetailData,
-		currentDetailDataState => currentDetailDataState?.refId
-	);
-
-	export const hideConditionsFormData = createSelector(currentDetailData, detailData => ({
-		isVisibilityConfig: detailData?.isVisibilityConfig,
-		placeabeRefId: detailData?.placeableRefId,
-	}));
-
-	export const pageBreakConfigFormData = createSelector(currentDetailData, detailData => ({
-		isPageBreakConfig: detailData?.isPageBreakConfig,
-		placeabeRefId: detailData?.placeableRefId,
-	}));
 
 	// raw entries for builder
 	const rawPrintHeader = createSelector(transactionLogState, logStore => logStore[PRINT_MODEL_HEADER_LOG_ID]);
@@ -388,11 +349,14 @@ export namespace PrintEngineSelectors {
 	);
 
 	// builder computed values
-	export const currentSegment = createSelector([state, printModelRefs], (state, { segmentId }) => {
-		return segmentId ? segment(state, segmentId) : undefined;
-	});
+	export const currentSegment = createSelector(
+		[state, NavigationSelectors.activeEntities],
+		(state, { segmentId }) => {
+			return segmentId ? segment(state, segmentId) : undefined;
+		}
+	);
 	export const wrapperDataContext = createSelector(
-		[printModelRefs, currentSegment, wrappers],
+		[NavigationSelectors.activeEntities, currentSegment, wrappers],
 		({ currentRefType }, currentSegment, wrappers) => {
 			const dataContext: DataContextEntry[] = [ROOT_DATA_CONTEXT_ENTRY];
 
@@ -414,7 +378,7 @@ export namespace PrintEngineSelectors {
 		}
 	);
 	export const repeatableBasePath = createSelector(
-		[printModelRefs, currentSegment, wrappers],
+		[NavigationSelectors.activeEntities, currentSegment, wrappers],
 		({ currentRefType }, currentSegment, wrappers) => {
 			let nearestDataContext = null;
 
@@ -440,26 +404,46 @@ export namespace PrintEngineSelectors {
 	export const currentWrapperContext = createSelector([wrappers], wrappers => {
 		return wrappers.length > 0 ? wrappers[wrappers.length - 1]?.wrapperContext : undefined;
 	});
-	export const currentSection = createSelector([state, printModelRefs], (state, { sectionId }) => {
-		return sectionId ? section(state, sectionId) : undefined;
-	});
-	export const currentWatermark = createSelector([state, printModelRefs], (state, { watermarkId }) => {
-		return watermarkId ? watermark(state, watermarkId) : undefined;
-	});
-	export const detailPrintModelElement = createSelector(
-		[rawPrintModelElements, detailDataRefId],
-		(rawPrintModelElements, refId) => {
-			return refId ? TransactionLog.selectPrintModelElement(rawPrintModelElements, refId) : undefined;
+	export const currentSection = createSelector(
+		[state, NavigationSelectors.activeEntities],
+		(state, { sectionId }) => {
+			return sectionId ? section(state, sectionId) : undefined;
+		}
+	);
+	export const currentWatermark = createSelector(
+		[state, NavigationSelectors.activeEntities],
+		(state, { watermarkId }) => {
+			return watermarkId ? watermark(state, watermarkId) : undefined;
 		}
 	);
 
-	export const textEntityElement = createSelector(
-		[rawPrintModelElements, additionalData],
-		(rawPrintElements, additionalData) => {
-			const refId = additionalData?.text?.refId;
-			return refId ? TransactionLog.selectPrintModelElement(rawPrintElements, refId) : undefined;
+	export const currentSubFormElement = createSelector(
+		[rawPrintModelElements, NavigationSelectors.currentSubForm],
+		(rawPrintModelElements, currentSubForm) => {
+			return currentSubForm && isBaseElementFormState(currentSubForm)
+				? TransactionLog.selectPrintModelElement(rawPrintModelElements, currentSubForm.id)
+				: undefined;
 		}
 	);
+
+	export const currentFormElement = createSelector(
+		[rawPrintModelElements, NavigationSelectors.currentElementForm],
+		(rawPrintModelElements, currentForm) => {
+			return currentForm
+				? TransactionLog.selectPrintModelElement(rawPrintModelElements, currentForm.id)
+				: undefined;
+		}
+	);
+
+	export const rootFormElement = createSelector(
+		[rawPrintModelElements, NavigationSelectors.firstForm],
+		(rawPrintModelElements, firstForm) => {
+			return firstForm && isBaseElementFormState(firstForm)
+				? TransactionLog.selectPrintModelElement(rawPrintModelElements, firstForm.id)
+				: undefined;
+		}
+	);
+
 	export const entityElementIds = createSelector([state, idInputSelector], (state, id) => {
 		const element = printModelElement(state, id);
 		if (element) {
@@ -497,7 +481,7 @@ export namespace PrintEngineSelectors {
 		}, []);
 	});
 
-	export const isEditorActive = createSelector(printModelRefs, printModelRefs => {
+	export const isEditorActive = createSelector(NavigationSelectors.activeEntities, printModelRefs => {
 		const { sectionId, segmentId, watermarkId, currentRefType } = printModelRefs;
 		return (
 			(currentRefType === SidebarItem.SEGMENT && segmentId) ||
@@ -508,7 +492,7 @@ export namespace PrintEngineSelectors {
 
 	export const elementReferences = createSelector(
 		[
-			printModelRefs,
+			NavigationSelectors.activeEntities,
 			currentSegment,
 			currentSection,
 			currentWatermark,
@@ -553,7 +537,7 @@ export namespace PrintEngineSelectors {
 	);
 
 	export const currentContainerElement = createSelector(
-		[printModelRefs, currentSegment, currentSection, currentWatermark],
+		[NavigationSelectors.activeEntities, currentSegment, currentSection, currentWatermark],
 		({ currentRefType }, currentSegment, currentSection, currentWatermark) => {
 			if (currentRefType === SidebarItem.SEGMENT) {
 				return currentSegment;
@@ -638,7 +622,7 @@ export namespace PrintEngineSelectors {
 	);
 
 	export const currentPageOrientation = createSelector(
-		[printModelRefs, currentSegment, currentSection, currentWatermark],
+		[NavigationSelectors.activeEntities, currentSegment, currentSection, currentWatermark],
 		({ currentRefType }, currentSegment, currentSection, currentWatermark) => {
 			if (currentRefType === SidebarItem.SEGMENT) {
 				return currentSegment?.defaultSegment?.pageOrientation;
@@ -711,7 +695,7 @@ export namespace PrintEngineSelectors {
 	);
 
 	export const isIncomingDinTemplatePrintModel = createSelector(
-		[segmentReferences, printModelRefs],
+		[segmentReferences, NavigationSelectors.activeEntities],
 		(segmentReferences, { segmentId }) =>
 			Boolean(segmentId) &&
 			segmentReferences.find(
@@ -766,30 +750,32 @@ export namespace PrintEngineSelectors {
 	// undo-redo
 	export const currentViewInteractionList = createSelector(
 		[
-			sidebar,
+			NavigationSelectors.sidebarState,
+			NavigationSelectors.detailForm,
+			NavigationSelectors.currentForm,
+			NavigationSelectors.currentMode,
 			interactionLogState,
-			currentDetailDataId,
-			currentDetailData,
+			currentCanvasEntityId,
 			selectedTextStyleId,
-			editorMode,
 			currentWrapperContainer,
 		],
 		(
 			sidebarState,
+			detailForm,
+			currentForm,
+			currentMode,
 			interactionState,
 			curContainerId,
-			curDetailData,
 			selectedTextStyleId,
-			editorMode,
 			wrapperElement
 		) => {
 			const fullLogEntryList: UndoInteractionLogEntry[] = [];
-			const { isFullscreen, isOpen, selectedItem } = sidebarState;
+			const { isFullscreen, isOpen, activeTab } = sidebarState;
 
 			function handleSideContentFullscreen() {
-				if (selectedItem === SidebarItem.TEXT_STYLES) {
+				if (activeTab === SidebarItem.TEXT_STYLES) {
 					fullLogEntryList.push(
-						...(interactionState.textStyles[selectedTextStyleId]?.map(entry => ({
+						...(interactionState.textStyles[selectedTextStyleId]?.map((entry: InteractionLogEntry) => ({
 							...entry,
 							region: SidebarRegion.TEXT_STYLES as InteractionRegion,
 							regionId: selectedTextStyleId,
@@ -797,47 +783,46 @@ export namespace PrintEngineSelectors {
 					);
 				}
 				fullLogEntryList.push(
-					...interactionState.sidebar[selectedItem].map(entry => ({
+					...interactionState.sidebar[activeTab].map((entry: InteractionLogEntry) => ({
 						...entry,
 						region: GlobalRegion.SIDEBAR as InteractionRegion,
-						regionId: selectedItem,
+						regionId: activeTab,
 					}))
 				);
 			}
 
 			function handleSidebarOpen() {
 				fullLogEntryList.push(
-					...interactionState.sidebar[selectedItem].map(entry => ({
+					...interactionState.sidebar[activeTab].map((entry: InteractionLogEntry) => ({
 						...entry,
 						region: GlobalRegion.SIDEBAR as InteractionRegion,
-						regionId: selectedItem,
+						regionId: activeTab,
 					}))
 				);
 			}
 
 			function handleCurrentContainer() {
-				const { isFullScreenForm, refId, formContainers, subFormContainer, placeableRefId } =
-					curDetailData || {};
-				const isFormOpen = Object.values(curDetailData?.isFormOpen || {}).filter(Boolean).length > 0;
-
-				const currentFormContainer = formContainers?.slice()?.pop();
-				const formRegion = subFormContainer || currentFormContainer;
+				const isFormOpen = Boolean(detailForm);
 
 				const isSwitchStage = wrapperElement && PartialSwitch.isInstance(wrapperElement);
-				const isStageOpen = !isFullScreenForm || !isFormOpen;
+				const isStageOpen = !detailForm?.isFullScreen || !isFormOpen;
 
 				if (isSwitchStage) {
 					fullLogEntryList.push(
-						...(interactionState.switchStage[wrapperElement.id] || []).map(entry => ({
-							...entry,
-							region: StageRegion.SWITCH as InteractionRegion,
-							regionId: wrapperElement.id,
-						}))
+						...(interactionState.switchStage[wrapperElement.id] || []).map(
+							(entry: InteractionLogEntry) => ({
+								...entry,
+								region: StageRegion.SWITCH as InteractionRegion,
+								regionId: wrapperElement.id,
+							})
+						)
 					);
 				} else if (isStageOpen) {
-					const stageRegion = STAGE_REGION_MAP[editorMode] as StageRegion.RegionKeys;
+					const stageRegion = STAGE_REGION_MAP[
+						currentMode as keyof typeof STAGE_REGION_MAP
+					] as StageRegion.RegionKeys;
 					fullLogEntryList.push(
-						...(interactionState[stageRegion][curContainerId] || []).map(entry => ({
+						...(interactionState[stageRegion][curContainerId] || []).map((entry: InteractionLogEntry) => ({
 							...entry,
 							region: stageRegion as InteractionRegion,
 							regionId: curContainerId,
@@ -845,13 +830,17 @@ export namespace PrintEngineSelectors {
 					);
 				}
 
-				if (isFormOpen && [EditorMode.Default, EditorMode.Layout].includes(editorMode)) {
-					const regionId =
-						refId && formRegion ? getRegionId(formRegion, refId, curDetailData) : placeableRefId || "";
-					const tempFormRegion = formRegion || GlobalRegion.FORM;
+				if (currentForm && [EditorMode.Default, EditorMode.Layout].includes(currentMode)) {
+					const regionId = getRegionId(currentForm);
+
+					const tempFormRegion = (
+						isElementFormState(currentForm) || isBaseReferenceFormState(currentForm)
+							? GlobalRegion.FORM
+							: currentForm.type
+					) as InteractionRegion;
 
 					fullLogEntryList.push(
-						...(interactionState[tempFormRegion][regionId] || []).map(entry => ({
+						...(interactionState[tempFormRegion][regionId] || []).map((entry: InteractionLogEntry) => ({
 							...entry,
 							region: tempFormRegion,
 							regionId,
@@ -860,7 +849,7 @@ export namespace PrintEngineSelectors {
 				}
 			}
 
-			if (FULLSCREEN_TABS.includes(selectedItem) || (isOpen && isFullscreen)) {
+			if (FULLSCREEN_TABS.includes(activeTab) || (isOpen && isFullscreen)) {
 				handleSideContentFullscreen();
 				return fullLogEntryList.sort((a, b) => a.timestamp - b.timestamp);
 			}
@@ -1026,29 +1015,41 @@ function isTextStyleUsed(
 	}
 }
 
-function getRegionId(region: InteractionRegion, refId: string, currentDetailData?: DetailData) {
-	let regionId;
-
-	switch (region) {
-		case ListingRegion.LISTING_COLUMN_FORM:
-		case ListingRegion.FIELD_COMPUTATION_FORM:
-		case ListingRegion.PROPERTY_COMPUTATION_FORM:
-			regionId = getListingRegionId(region, currentDetailData);
-			break;
-		case TableRegion.TABLE_COLUMN_FORM:
-			regionId = getTableRegionId(currentDetailData);
-			break;
-		case TextRegion.TEXT_FROM_FIELD:
-		case TextRegion.TEXT_FROM_CALCULATION:
-			if (!currentDetailData?.additionalData?.text?.refId) {
-				throw new Error("Text region id does not exist");
-			}
-			regionId = currentDetailData?.additionalData?.text?.refId;
-			break;
-		default:
-			regionId = refId;
-			break;
+function getRegionId(currentForm: BaseFormState) {
+	if (isListingColumnFormState(currentForm)) {
+		return currentForm.columnId;
 	}
 
-	return regionId;
+	if (isListingFieldCompFormState(currentForm)) {
+		return currentForm.fieldCompId;
+	}
+
+	if (isListingPropertyCompFormState(currentForm)) {
+		return currentForm.propertyCompId;
+	}
+
+	if (isListingGroupPropertyCompFormState(currentForm)) {
+		return currentForm.propertyCompId;
+	}
+
+	if (isTableColumnFormState(currentForm)) {
+		return currentForm.columnId;
+	}
+
+	if (isVisibilityConfigFormState(currentForm) || isPageBreakConfigFormState(currentForm)) {
+		return currentForm.referenceId;
+	}
+
+	if (
+		isElementFormState(currentForm) ||
+		isTextCalculationFormState(currentForm) ||
+		isTextFieldFormState(currentForm)
+	) {
+		return currentForm.id;
+	}
+
+	throw new Error("Unknown form state");
 }
+
+export { createSliceSelector, isFpeStore };
+export type { Selector } from "./create-slice-selector.js";

@@ -31,7 +31,7 @@
  */
 import { styled } from "styled-components";
 
-import { MessageBox } from "@com.mgmtp.a12.widgets/widgets-core/lib/message-box/index.js";
+import { MessageBox } from "@com.mgmtp.a12.widgets/widgets-core";
 
 export const StyledMessageBox = styled(MessageBox)`
 	margin: 5px 0;

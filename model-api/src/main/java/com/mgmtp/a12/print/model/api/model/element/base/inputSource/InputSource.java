@@ -34,7 +34,9 @@ package com.mgmtp.a12.print.model.api.model.element.base.inputSource;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface InputSource<T> extends PrintModelEntity {
     Optional<T> getValue();
 
@@ -45,3 +47,4 @@ public interface InputSource<T> extends PrintModelEntity {
 	Optional<String> getReference();
 
 }
+

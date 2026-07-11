@@ -30,16 +30,52 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { jest } from "@jest/globals";
-import { fireEvent } from "@testing-library/react";
+import { fireEvent, waitFor } from "@testing-library/react";
+
+import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { PartialTable } from "@com.mgmtp.a12.print/print-model-api/model";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { renderWithProviders } from "../../../../../../../test/typescript/test-utils/index.js";
+import { BORDER_PROPERTIES_PATH } from "../../../../constant/element-property-path.js";
 
 import { BorderForm } from "../BorderForm.js";
 
 describe("BorderForm", () => {
 	const mockSetBorderProperties = jest.fn();
 
-	const setupTest = () => renderWithProviders(<BorderForm setBorderProperties={mockSetBorderProperties} />);
+	const mockElement: PartialTable = {
+		id: "tableId",
+		type: ElementType.Table,
+		borderProperties: {
+			id: "k0FFvYRpIj2vM_3z-UAYe",
+			borderWidth: {
+				id: "nz0ZXHR730XA_ajw5afbT",
+				path: "/content/elementDefinitions/table/borderProperties/borderWidth/value/",
+				source: PossibleInputSource.INPUT,
+			},
+			borderColor: {
+				id: "nz0ZXHR730XA_ajw5afbE",
+				path: "/content/elementDefinitions/table/borderProperties/borderColor/value/",
+				source: PossibleInputSource.INPUT,
+			},
+			borderStyle: {
+				id: "nz0ZXHR730XA_ajw5afbZ",
+				path: "/content/elementDefinitions/table/borderProperties/borderStyle/value/",
+				source: PossibleInputSource.INPUT,
+			},
+		},
+	};
+
+	const setupTest = () =>
+		renderWithProviders(
+			<BorderForm
+				setBorderProperties={mockSetBorderProperties}
+				element={mockElement}
+				borderProperties={mockElement.borderProperties}
+				propertiesPath={BORDER_PROPERTIES_PATH}
+			/>
+		);
 
 	it("renders correctly", () => {
 		const { container, queryByText } = setupTest();
@@ -50,20 +86,32 @@ describe("BorderForm", () => {
 		expect(queryByText("Border Color")).toBeInTheDocument();
 	});
 
-	it("should call setBorderProperties with appropriate payload", () => {
-		const { getByDisplayValue, getByRole } = setupTest();
-		const borderWidthInput = getByDisplayValue("");
-		const borderStyleSelect = getByRole("combobox");
+	it("should call setBorderProperties with appropriate payload", async () => {
+		const { getAllByRole } = setupTest();
 
-		expect(borderStyleSelect).toHaveValue("");
+		const [borderStyleSelect] = getAllByRole("combobox");
+		const [borderWidthInput] = getAllByRole("spinbutton");
 
-		fireEvent.change(borderWidthInput, { target: { value: "10" } });
-		fireEvent.blur(borderWidthInput);
+		fireEvent.click(borderStyleSelect);
 
-		expect(mockSetBorderProperties).toHaveBeenCalledWith({ borderWidth: 10 });
+		await waitFor(() => {
+			const borderStyleOptions = getAllByRole("option");
+			const selectOption = borderStyleOptions.find(option => option.textContent === "Solid");
+			if (selectOption) {
+				fireEvent.click(selectOption);
+			}
+		});
 
-		fireEvent.change(borderStyleSelect, { target: { value: "Solid" } });
+		fireEvent.change(borderWidthInput, { target: { value: "20" } });
 
-		expect(mockSetBorderProperties).toHaveBeenCalledWith({ borderStyle: "Solid" });
+		expect(mockSetBorderProperties).toHaveBeenNthCalledWith(1, {
+			...mockElement.borderProperties,
+			borderStyle: { ...mockElement.borderProperties!.borderStyle, value: "Solid" },
+		});
+
+		expect(mockSetBorderProperties).toHaveBeenNthCalledWith(2, {
+			...mockElement.borderProperties,
+			borderWidth: { ...mockElement.borderProperties!.borderWidth, value: 20 },
+		});
 	});
 });

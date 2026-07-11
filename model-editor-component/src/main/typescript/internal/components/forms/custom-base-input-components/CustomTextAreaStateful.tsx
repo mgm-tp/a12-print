@@ -31,13 +31,19 @@
  */
 import * as React from "react";
 
-import { TextAreaStatelessProps } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-area/index.js";
+import type { TextAreaStatelessProps } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { CustomTextAreaStateless } from "./CustomTextAreaStateless.js";
 
 export const CustomTextAreaStateful = (props: TextAreaStatelessProps) => {
 	const { value: originalValue = "", onChange, onBlur, ...restProps } = props;
 	const [value, setValue] = React.useState<string>(originalValue);
+	const [prevOriginalValue, setPrevOriginalValue] = React.useState(originalValue);
+
+	if (prevOriginalValue !== originalValue) {
+		setPrevOriginalValue(originalValue);
+		setValue(originalValue);
+	}
 
 	const handleOnChange = React.useCallback(
 		(event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -55,10 +61,6 @@ export const CustomTextAreaStateful = (props: TextAreaStatelessProps) => {
 		},
 		[onBlur, originalValue, value]
 	);
-
-	React.useEffect(() => {
-		setValue(originalValue);
-	}, [originalValue]);
 
 	return <CustomTextAreaStateless {...restProps} value={value} onChange={handleOnChange} onBlur={handleOnBlur} />;
 };

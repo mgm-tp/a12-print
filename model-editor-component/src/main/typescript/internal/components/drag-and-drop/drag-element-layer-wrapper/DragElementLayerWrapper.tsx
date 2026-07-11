@@ -31,11 +31,12 @@
  */
 import * as React from "react";
 
-import { PlainMeasurePosition } from "../../../utils/index.js";
+import type { PlainMeasurePosition } from "../../../utils/index.js";
 import { ElementTypes } from "../../../constant/elements.js";
-import { DragItem } from "../../../types/index.js";
+import type { DragItem } from "../../../types/index.js";
 
-import { BasicDragLayerProps, createDragLayerWrapper, DragItemType } from "../create-drag-layer-wrapper.js";
+import type { BasicDragLayerProps, DragItemType } from "../create-drag-layer-wrapper.js";
+import { createDragLayerWrapper } from "../create-drag-layer-wrapper.js";
 
 import { OutsideEditorDragLayer } from "./OutsideEditorDragLayer.js";
 import { InsideEditorDragLayer } from "./InsideEditorDragLayer.js";

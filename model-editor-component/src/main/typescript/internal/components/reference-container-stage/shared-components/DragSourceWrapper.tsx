@@ -34,12 +34,12 @@ import { useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { useSelector } from "react-redux";
 
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 
-import { DefaultPlaceableElementProps } from "../editor-interface.js";
+import type { DefaultPlaceableElementProps } from "../editor-interface.js";
 
 import { DefaultPlaceableElement } from "./DefaultPlaceableElement.js";
 

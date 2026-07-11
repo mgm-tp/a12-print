@@ -77,28 +77,22 @@ dependencies {
 	implementation(project(":model-api"))
 
 	implementation(a12Libs.baseModelApi)
-	implementation(a12Libs.kernelMdRuntimeApi)
-	implementation(a12Libs.kernelMdModelApi)
-	implementation(a12Libs.kernelMdDocumentApi)
 	implementation(a12Libs.kernelMdFacade)
-	implementation(a12Libs.kernelMdSerializer)
-	implementation(a12Libs.kernelCoreRuntime)
 
 	implementation(thirdPartyLibs.commonsIO)
 	implementation(thirdPartyLibs.commonsLang3)
 	implementation(thirdPartyLibs.slf4j)
 	implementation(thirdPartyLibs.jacksonAnnotations)
 	implementation(thirdPartyLibs.jacksonDatabind)
-	implementation(thirdPartyLibs.jacksonDatatypeJdk8)
 	implementation(thirdPartyLibs.jacksonYaml)
 
-	printModelValidationCodeGeneration(a12Libs.kernelMdModel)
-	printModelValidationCodeGeneration(thirdPartyLibs.slf4jSimple)
 	printModelValidationCodeGeneration(a12Libs.kernelMdFacade)
+	printModelValidationCodeGeneration(thirdPartyLibs.slf4jSimple)
 
 	testImplementation(thirdPartyLibs.jupiterApi)
 
 	testRuntimeOnly(thirdPartyLibs.jupiterEngine)
+	testRuntimeOnly(thirdPartyLibs.junitLauncher)
 }
 
 sourceSets {
@@ -124,7 +118,7 @@ val generateUsableModelJavaScriptValidation = getGenerateUsableJavaScriptValidat
 ).get()
 
 val expandTypesettingModel = getExpandTask(
-	"TypesettingModel", modelsPath, typesettingModelPath, expandTypesettingModelDest
+	"TypesettingModel", modelsPath, typesettingModelPath, "DomainTypesettingMetaModel", expandTypesettingModelDest
 ).get()
 
 expandTypesettingModel.finalizedBy(generateJavaValidationCode)

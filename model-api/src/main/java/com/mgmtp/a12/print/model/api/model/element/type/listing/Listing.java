@@ -35,7 +35,9 @@ package com.mgmtp.a12.print.model.api.model.element.type.listing;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
 import com.mgmtp.a12.print.model.api.model.element.base.Styleable;
 import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface Listing extends PrintModelElement, Styleable, PrintModelPathElement {
 	ListingProperties getListingProperties();
 }

@@ -33,21 +33,19 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
-import {
-	ElementType,
-	Measure,
-	PartialArea,
-	PartialValidPlaceableReference,
-} from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import {
-	SidebarItem,
-	StageRegion,
-} from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
+import type { Measure, PartialArea, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { createMmMeasure, createPlainMmMeasureFromPx, EditorUtils, ElementsUtils, OmitId } from "../../utils/index.js";
+import type { OmitId } from "../../utils/index.js";
+import { createMmMeasure, createPlainMmMeasureFromPx, EditorUtils, ElementsUtils } from "../../utils/index.js";
 import { EditorConst } from "../../constant/editor.js";
-import { InteractionLogActions, TransactionLogStateActions, WrapperActions } from "../../redux/index.js";
+import {
+	InteractionLogActions,
+	NavigationActions,
+	NavigationSelectors,
+	TransactionLogStateActions,
+} from "../../redux/index.js";
 import { RESOURCE_KEYS } from "../../localization/index.js";
 
 import { ResizeHandle } from "./ResizeHandle.js";
@@ -61,9 +59,9 @@ interface AreaResizeHandleProps {
 
 export const AreaResizeHandle = ({ areaElement }: AreaResizeHandleProps) => {
 	const { editorOptions } = useSelector(PrintEngineSelectors.printEditorState);
-	const currentElementContainerId = useSelector(PrintEngineSelectors.currentElementContainerId);
 	const editorDimensions = useSelector(PrintEngineSelectors.editorDimensions);
-	const printModelRefs = useSelector(PrintEngineSelectors.printModelRefs);
+	const activeCanvasTab = useSelector(NavigationSelectors.activeCanvasTab);
+	const currentElementContainerId = useSelector(PrintEngineSelectors.currentElementContainerId);
 
 	const [startPos, setStartPos] = React.useState<OmitId<Measure> | null>(null);
 	const dispatch = useDispatch();
@@ -99,22 +97,13 @@ export const AreaResizeHandle = ({ areaElement }: AreaResizeHandleProps) => {
 				return;
 			}
 
-			let containerId;
-			if (printModelRefs.currentRefType === SidebarItem.SEGMENT) {
-				containerId = printModelRefs?.segmentId;
-			} else if (printModelRefs.currentRefType === SidebarItem.SECTION) {
-				containerId = printModelRefs?.sectionId;
-			} else {
-				containerId = printModelRefs?.watermarkId;
-			}
-
 			dispatch(
-				WrapperActions.updateWrapperStage({
-					containerId,
+				NavigationActions.updateWrapperEntry({
+					tab: activeCanvasTab,
+					entityId: currentElementContainerId,
 					id: areaElement.id,
-					type: ElementType.Area,
 					dimensions: {
-						width: editorDimensions?.minWidth,
+						width: editorDimensions?.minWidth || createPlainMmMeasureFromPx(0),
 						height: createPlainMmMeasureFromPx(newEditorHeight),
 					},
 				})
@@ -126,11 +115,9 @@ export const AreaResizeHandle = ({ areaElement }: AreaResizeHandleProps) => {
 			dimensions?.overflowHeight?.value,
 			zoomFactor,
 			lowestElementPos,
-			printModelRefs.currentRefType,
-			printModelRefs.segmentId,
-			printModelRefs.sectionId,
-			printModelRefs.watermarkId,
 			dispatch,
+			activeCanvasTab,
+			currentElementContainerId,
 			areaElement.id,
 			editorDimensions.minWidth,
 		]
@@ -161,19 +148,28 @@ export const AreaResizeHandle = ({ areaElement }: AreaResizeHandleProps) => {
 				transactionLogActions: [TransactionLogStateActions.updateArea({ data: updatedElement })],
 			})
 		);
+
 		dispatch(
-			WrapperActions.updateWrapperStage({
-				containerId: currentElementContainerId,
+			NavigationActions.updateWrapperEntry({
+				tab: activeCanvasTab,
+				entityId: currentElementContainerId,
 				id: areaElement.id,
-				type: areaElement.type,
 				dimensions: {
 					height: createMmMeasure(editorHeight),
-					width: editorDimensions.minWidth,
+					width: editorDimensions?.minWidth || createPlainMmMeasureFromPx(0),
 				},
 			})
 		);
 		setStartPos(null);
-	}, [areaElement, areaHeight, currentElementContainerId, dispatch, editorDimensions.minWidth, editorHeight]);
+	}, [
+		activeCanvasTab,
+		areaElement,
+		areaHeight,
+		currentElementContainerId,
+		dispatch,
+		editorDimensions.minWidth,
+		editorHeight,
+	]);
 
 	React.useEffect(() => {
 		if (startPos) {

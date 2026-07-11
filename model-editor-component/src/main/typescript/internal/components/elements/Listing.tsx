@@ -29,8 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PartialListing } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/lib/input-source/index.js";
+import { PartialListing } from "@com.mgmtp.a12.print/print-model-api/model";
+import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { LISTING_PROPERTY_PATH } from "../../constant/element-property-path.js";
@@ -39,7 +39,7 @@ import type { StylableText } from "../../types/styles.js";
 
 import { TypeSettingApplier } from "../typesetting/TypeSettingApplier.js";
 
-import { BaseElementProps } from "./base.js";
+import type { BaseElementProps } from "./base.js";
 import { StyledTableContainer, StyledTableHeader } from "./Table.styled.js";
 
 export type ListingProps = BaseElementProps;
@@ -47,7 +47,7 @@ export type ListingProps = BaseElementProps;
 export const Listing = ({ element }: ListingProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	if (!PartialListing.isInstance(element)) {
-		throw Error(`Expected element of type Listing but got ${element.type}`);
+		throw new Error(`Expected element of type Listing but got ${element.type}`);
 	}
 	const columns = element.listing?.columns;
 
@@ -59,7 +59,7 @@ export const Listing = ({ element }: ListingProps) => {
 
 	if (columns?.some(col => col.label)) {
 		return (
-			<StyledTableContainer>
+			<StyledTableContainer data-testid="element-listing">
 				<thead>
 					<tr>
 						{columns.map((col, index) => (
@@ -89,10 +89,8 @@ export const Listing = ({ element }: ListingProps) => {
 	}
 
 	return (
-		<div>
-			<TypeSettingApplier textStyleId={headerTextProperties?.textStyleId}>
-				{localizer(RESOURCE_KEYS.editor.element.Listing)}
-			</TypeSettingApplier>
-		</div>
+		<TypeSettingApplier textStyleId={headerTextProperties?.textStyleId} data-testid="element-listing">
+			{localizer(RESOURCE_KEYS.editor.element.Listing)}
+		</TypeSettingApplier>
 	);
 };

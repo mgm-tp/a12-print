@@ -29,4 +29,4 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-export * from "@com.mgmtp.a12.print/print-model-api/lib/constant/model.js";
+export * from "@com.mgmtp.a12.print/print-model-api/constant";

@@ -29,9 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { AnnotationEntity, DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api";
+import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { AnnotationEntity } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { PreventLineBreakRule, TypesettingModel } from "../../api/model/index.js";
+import type { PreventLineBreakRule, TypesettingModel } from "../../../a12internal/api/model/index.js";
 
 export const SET_TYPESETTING_MODEL = "SET_TYPESETTING_MODEL";
 export const SET_ANNOTATION = "SET_ANNOTATION";

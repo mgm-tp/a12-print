@@ -29,8 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { ElementMapEntry } from "../../types/index.js";
-import { DataContextEntry } from "../../types/data-context.js";
+import type { ElementMapEntry } from "../../types/index.js";
+import type { DataContextEntry } from "../../types/data-context.js";
 
 import { ElementMapUtils } from "../element-map-utils.js";
 

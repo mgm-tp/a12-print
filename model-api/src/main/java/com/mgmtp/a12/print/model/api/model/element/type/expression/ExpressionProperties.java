@@ -35,7 +35,9 @@ package com.mgmtp.a12.print.model.api.model.element.type.expression;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface ExpressionProperties extends PrintModelEntity {
 	String getModel();
 

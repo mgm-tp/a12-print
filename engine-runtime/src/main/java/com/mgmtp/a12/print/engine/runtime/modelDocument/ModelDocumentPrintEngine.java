@@ -31,15 +31,15 @@
  */
 package com.mgmtp.a12.print.engine.runtime.modelDocument;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.engine.api.ModelDocumentPrintResult;
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PrintJob;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
+import com.mgmtp.a12.print.engine.api.message.PrintMessageReport;
 import com.mgmtp.a12.print.engine.runtime.PrintEngine;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocument;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.document.PrintDocumentContext;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.loader.DocumentDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.loader.PrintModelDependency;
@@ -55,6 +55,8 @@ import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.modelDocument
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalModelDocumentPrintEngineRuntime;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.computation.ComputationExpression;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.LogicContainerEvaluationDependency;
+import com.mgmtp.a12.print.engine.runtime.internal.message.PrintMessageCollector;
+import com.mgmtp.a12.print.engine.runtime.internal.message.PrintMessageReportImpl;
 import com.mgmtp.a12.print.engine.runtime.internal.runtime.ModelDocumentPrintEngineRuntimeFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.runtime.RuntimeWalker;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.Variable;
@@ -84,10 +86,13 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -96,10 +101,11 @@ import java.util.stream.Stream;
 /**
  * Provides the ability to execute {@link PrintJob}s.
  */
+@OnlyForUsage
 @Slf4j
 public class ModelDocumentPrintEngine extends PrintEngine<ModelDocumentPrintResult> implements com.mgmtp.a12.print.engine.api.ModelDocumentPrintEngine {
 
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	private static final ObjectMapper OBJECT_MAPPER = new JsonMapper();
 
 	private final @NonNull ExecutorService executorService;
 	@NonNull
@@ -110,7 +116,7 @@ public class ModelDocumentPrintEngine extends PrintEngine<ModelDocumentPrintResu
 	 */
 	public ModelDocumentPrintEngine(
 		@NonNull ExecutorService service,
-		@NonNull PrintEngineConfig config
+		@NonNull PdfBoxPrintEngineConfig config
 	) {
 		super(config);
 		this.runtimeFactory = ModelDocumentPrintEngineRuntimeFactory
@@ -121,19 +127,15 @@ public class ModelDocumentPrintEngine extends PrintEngine<ModelDocumentPrintResu
 		this.executorService = service;
 	}
 
-	/**
-	 * @param printJob
-	 * @return
-	 * @throws PrintException if the print operation was interrupted by any exception.
-	 */
 	@Override
-	public ModelDocumentPrintResult execute(PrintJob printJob) throws PrintException {
+	public PrintMessageReport<ModelDocumentPrintResult> executeWithReport(PrintJob printJob) throws PrintException {
 		try {
-			return executorService.submit(() -> printInternal(printJob, runtimeFactory.apply(printJob))).get();
-		} catch (PrintCompilerException | PrintException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new PrintException("PrintJob was interrupted due to:",e);
+			return executorService.submit(() -> PrintMessageReportImpl.wrapException(() -> {
+				final var result = printInternal(printJob, runtimeFactory.apply(printJob));
+				return new PrintMessageReportImpl<>(result, PrintMessageCollector.getMessages());
+			}, PrintException.class, PrintException::new)).get();
+		} catch (ExecutionException | InterruptedException e) {
+			throw new PrintException("PrintJob was interrupted due to: ", e);
 		}
 	}
 
@@ -151,7 +153,9 @@ public class ModelDocumentPrintEngine extends PrintEngine<ModelDocumentPrintResu
 		).toList();
 
 		if (documentModelReferences.size() > 1) {
-			throw new PrintException("PrintModel currently does only support single DocumentModel References");
+			throw new PrintDomainException(
+				"PrintModel '{}' supports only a single DocumentModel reference, but {} were found.",
+				job.getPrintModelId().getModelHeaderId(), documentModelReferences.size());
 		}
 
 		var printDocumentContext = Optional.of(documentModelReferences)
@@ -159,8 +163,7 @@ public class ModelDocumentPrintEngine extends PrintEngine<ModelDocumentPrintResu
 			.map(t -> runtime.provide(
 					new DocumentDependency(
 						t.get(0).getReference()
-					)
-				).map(PrintDocument::context).get()
+					)).get()
 			).orElse(null);
 
 		final var attachments = new ArrayList<PrintAttachment>();
@@ -382,7 +385,7 @@ public class ModelDocumentPrintEngine extends PrintEngine<ModelDocumentPrintResu
 						segment.getReferences().stream().map(segmentTrace::createDescendent).toList()
 					));
 				} else {
-					throw new PrintException("The type {} of segment is not supported", segment.getType());
+					throw new PrintDomainException("The type {} of segment is not supported", segment.getType());
 				}
 			} else {
 				segmentsWithDinSegment.put(dinTemplate.get().getRefId(), new PrintModelTreeTrace<>(
@@ -458,9 +461,11 @@ public class ModelDocumentPrintEngine extends PrintEngine<ModelDocumentPrintResu
 	}
 
 	@Value
+	@OnlyForUsage
 	public static class OverriddenBoundingBoxes {
 		@NonNull BoundingBox boundingBox;
 		@NonNull PrintModelPath path;
 		@NonNull OverrideElement overrideElement;
 	}
 }
+

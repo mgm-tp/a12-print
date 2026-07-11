@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing;
 
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
 import lombok.NonNull;
 import lombok.Value;
 
@@ -105,7 +106,7 @@ public class TokenLine implements CharSequence {
 		}
 
 		if (subTokens.isEmpty()) {
-			throw new HtmlTokenizerException("Subsequent token lengths mismatch");
+			throw new PrintException("Subsequent token lengths mismatch");
 		}
 
 		return new LineSubSequence(firstStart, firstStart + totalLen, subTokens);

@@ -32,9 +32,9 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { PrintEngineState } from "../../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { LayoutElementBadgeWrapper } from "../../element-container/LayoutElementBadgeWrapper.js";
 

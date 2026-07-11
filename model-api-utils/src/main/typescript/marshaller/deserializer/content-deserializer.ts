@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
-import * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/lib/generated/internal/dto/PrintModelDTO.js";
-import { UnionToType } from "@com.mgmtp.a12.print/print-model-api/lib/utils/type-utils.js";
+import * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/model";
+import type * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import type { UnionToType } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { Deserializer } from "./deserializer.js";
 import * as ElementDeserializer from "./element-deserializer.js";
@@ -87,13 +87,6 @@ export class GeneralDeserializer extends Deserializer<GeneratedDTO.GeneralDTO, M
 	};
 
 	map(property: keyof GeneratedDTO.GeneralDTO, dto: GeneratedDTO.GeneralDTO) {
-		this.addAdditionalProperty("title", dto.metadata?.titleComputation?.[0]?.operation ?? "");
-		this.addAdditionalProperty("details", {
-			id: this.getRequired(dto.metadata?.id, "id"),
-			author: dto.metadata?.authorComputation?.[0]?.operation ?? "",
-			language: (dto.metadata?.languageComputation?.[0]?.operation ?? "") as ModelAPI.Language,
-		});
-
 		switch (property) {
 			case "id":
 				return dto.id;
@@ -114,7 +107,7 @@ export class GeneralDeserializer extends Deserializer<GeneratedDTO.GeneralDTO, M
 			case "textStyles":
 				return dto.textStyles ? dto.textStyles.map(style => style.id) : [];
 			case "structure":
-				return this.getRequired(dto.structure, "structure").map(style => style.id);
+				return this.getRequired(dto.structure, "structure").map(ref => ref.id);
 			case "sections":
 				return dto.sections ? dto.sections.map(section => section.id) : [];
 			case "watermarks":

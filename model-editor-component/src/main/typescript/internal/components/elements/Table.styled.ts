@@ -32,13 +32,14 @@
 import { styled } from "styled-components";
 import { useSelector } from "react-redux";
 
-import { Alignment, PartialBorderProperties } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialBorderProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import { Alignment } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { PrintEngineState } from "../../store/root-reducer.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { CssUtils } from "../../utils/css-utils.js";
 import { DEFAULT_TEXT_STYLE_ID } from "../../constant/textstyle.js";
-import { StylableText } from "../../types/styles.js";
+import type { StylableText } from "../../types/styles.js";
 
 export const StyledTableContainer = styled.table`
 	width: 100%;

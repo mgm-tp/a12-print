@@ -31,7 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.tokenizing;
 
-import com.mgmtp.a12.print.engine.api.PrintEngineConfig;
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil;
 import com.mgmtp.a12.print.model.api.model.element.type.listing.RowPropertyComputation;
 import com.mgmtp.a12.print.model.api.model.element.type.listing.column.ColumnPropertyComputation;
@@ -91,7 +91,7 @@ public class TextRenderStyle {
 	public String getFont() {
 		if (font != null) return font;
 		if (textStyle != null) return textStyle.getFont();
-		return PrintEngineConfig.DEFAULT_FONT_KEY;
+		return PdfBoxPrintEngineConfig.DEFAULT_FONT_KEY;
 	}
 	public String getWrappingStructType() {
 		if (textStyle == null) {

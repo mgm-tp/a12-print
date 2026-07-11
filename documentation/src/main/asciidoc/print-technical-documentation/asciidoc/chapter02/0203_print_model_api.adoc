@@ -1,0 +1,190 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+[#print_model_api]
+= Print Model API
+
+This section covers the APIs for validating and marshalling Print Models.
+
+[#print_model_marshaller]
+== PrintModelMarshaller (TypeScript)
+
+The `PrintModelMarshaller` transforms a `PrintModel` between its TypeScript API representation and its JSON-based DTO representation.
+Validation is performed automatically during serialization and deserialization.
+
+Import the marshaller from the `@com.mgmtp.a12.print/print-model-api-utils` package:
+
+[source,typescript]
+----
+import { PrintModelMarshaller, PrintModelValidatorOptions } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
+----
+
+=== Deserializing a Print Model
+
+Call `deserialize` to parse a raw JSON string into a `PrintModel`.
+The method returns a `MarshallerResult` containing the deserialized model and a validation report.
+
+[source,typescript]
+----
+const marshaller = new PrintModelMarshaller();
+const { result, report } = marshaller.deserialize(rawJson);
+
+if (report.noErrorOccurred) {
+    const printModel = result; // PrintModel
+}
+----
+
+=== Serializing a Print Model
+
+Call `serialize` to convert a `PrintModel` back to its JSON DTO representation.
+
+[source,typescript]
+----
+const { result, report } = marshaller.serialize(printModel);
+
+if (report.noErrorOccurred) {
+    const json = JSON.stringify(result); // JSON string
+}
+----
+
+=== Validation Options
+
+Both `serialize` and `deserialize` accept an optional `PrintModelValidatorOptions` object to control validation behaviour.
+
+[source,typescript]
+----
+interface PrintModelValidatorOptions {
+    /** Document Models to validate field and calculation references against. */
+    references?: {
+        documentModels?: readonly DocumentModel[];
+    };
+    /** When true, HTML content in Text elements is validated. Default: true. */
+    html?: boolean;
+    /** Restricts validation to a subset of the model by entity instance paths. */
+    partial?: {
+        relevantPaths?: EntityInstancePath[];
+    };
+}
+----
+
+==== Reference Validation
+
+Pass the document models that the Print Model references to validate field paths and calculations:
+
+[source,typescript]
+----
+const { result, report } = marshaller.deserialize(rawJson, {
+    references: { documentModels: [myDocumentModel] }
+});
+----
+
+==== HTML Validation
+
+Disable HTML validation if you want to skip checking HTML content:
+
+[source,typescript]
+----
+const { result, report } = marshaller.deserialize(rawJson, { html: false });
+
+const htmlMessages = report.errorMap[ErrorSeverity.ERROR]
+    .filter(e => e.origin === ErrorOrigin.HTML);
+----
+
+Errors indicate unsupported constructs that will not render correctly (e.g., malformed HTML, invalid CSS color values).
+Warnings indicate constructs that are ignored by the Print Engine (e.g., unsupported tags or CSS properties).
+
+==== Partial Validation
+
+Restrict validation to a subset of the model by providing the entity instance paths of the changed elements.
+This is useful for incremental validation in editors:
+
+[source,typescript]
+----
+const { result, report } = marshaller.serialize(printModel, {
+    partial: { relevantPaths: [changedPath] }
+});
+----
+
+=== MarshallerResult
+
+The result object returned by both `serialize` and `deserialize`:
+
+[source,typescript]
+----
+interface MarshallerResult<TModel, TDTO> {
+    /** The transformed model, or undefined if errors occurred. */
+    result?: TModel | TDTO;
+    report: {
+        /** True if no errors occurred during serialization and validation. */
+        noErrorOccurred: boolean;
+        /** Validation messages grouped by severity (ERROR, WARNING, INFO). */
+        errorMap: DeepPartialErrorMap<TModel>;
+        /** The relevant paths used for partial validation. */
+        relevantPaths: EntityInstancePath[];
+    };
+}
+----
+
+[#print_model_validator]
+== IPrintModelValidator (Java)
+
+The `IPrintModelValidator` interface validates a raw JSON string representation of a `PrintModel` against the current version of the model API.
+The default implementation is `PrintModelValidator`.
+
+[source,java]
+----
+IPrintModelValidator validator = new PrintModelValidator();
+----
+
+=== Validating with a Locale
+
+[source,java]
+----
+IPrintModelIntegrityReport report = validator.validate(rawJson, Locale.GERMAN);
+
+if (report.noErrorOccurred()) {
+    // model is valid
+}
+
+for (IPrintModelIntegrityMessage message : report.getMessages()) {
+    System.out.println(message.getSeverityType() + ": " + message.getText());
+}
+----
+
+=== Validating with Options
+
+Use `PrintModelValidatorOptions` to configure validation features. HTML validation is enabled by default:
+
+[source,java]
+----
+PrintModelValidatorOptions options = new PrintModelValidatorOptions(Locale.GERMAN); // html=true by default
+IPrintModelIntegrityReport report = validator.validate(rawJson, options);
+----
+
+To disable HTML validation:
+
+[source,java]
+----
+PrintModelValidatorOptions options = new PrintModelValidatorOptions(Locale.GERMAN, false /* html */);
+IPrintModelIntegrityReport report = validator.validate(rawJson, options);
+----
+
+When `html` is `true`, every `Text` element's HTML content is validated.
+Errors are reported for malformed HTML or invalid CSS values (e.g., non-hex color values).
+Warnings are reported for HTML tags or CSS properties that the Print Engine does not support.
+
+HTML validation is enabled by default.

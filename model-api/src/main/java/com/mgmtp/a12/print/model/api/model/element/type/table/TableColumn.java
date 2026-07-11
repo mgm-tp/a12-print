@@ -37,7 +37,9 @@ import com.mgmtp.a12.print.model.api.model.element.base.inputSource.MeasureInput
 import com.mgmtp.a12.print.model.api.model.element.base.inputSource.StringInputSource;
 
 import java.util.Optional;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface TableColumn extends PrintModelEntity {
 	StringInputSource getLabel();
 	MeasureInputSource getWidth();

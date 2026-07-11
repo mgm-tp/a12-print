@@ -29,10 +29,10 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { Deserializer } from "@com.mgmtp.a12.print/print-model-api-utils";
+import { Deserializer } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
 
-import * as ModelAPI from "../../model/index.js";
-import * as GeneratedDTO from "../../generated/dto/TypesettingModelDTO.js";
+import type * as ModelAPI from "../../../../a12internal/api/model/index.js";
+import type * as GeneratedDTO from "../../generated/dto/TypesettingModelDTO.js";
 
 export class PreventLineBreakRuleDeserializer extends Deserializer<
 	GeneratedDTO.PreventLineBreakRulesDTO,

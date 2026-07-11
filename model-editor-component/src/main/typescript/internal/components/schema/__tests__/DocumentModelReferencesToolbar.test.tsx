@@ -31,8 +31,8 @@
  */
 import { fireEvent } from "@testing-library/react";
 
-import { ModelReference } from "@com.mgmtp.a12.base/base-model-api/lib/main/header/index.js";
-import { PRINT_MODEL_HEADER_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/lib/model/constant.js";
+import type { ModelReference } from "@com.mgmtp.a12.base/base-model-api";
+import { PRINT_MODEL_HEADER_LOG_ID } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import {
 	setupTestWithSchema,

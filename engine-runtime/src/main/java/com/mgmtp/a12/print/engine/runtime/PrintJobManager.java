@@ -36,19 +36,26 @@ import com.mgmtp.a12.print.engine.api.JobManager;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.api.PrintJobConfig;
 import com.mgmtp.a12.print.engine.api.PrintModelId;
-import com.mgmtp.a12.print.engine.api.exception.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.StaticImageProvider;
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
+import com.mgmtp.a12.print.engine.api.message.PrintMessageReport;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.ManagedPrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.PrintModelCompilerRuntime;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.PrintModelCompilationContext;
+import com.mgmtp.a12.print.engine.runtime.internal.message.PrintMessageCollector;
+import com.mgmtp.a12.print.engine.runtime.internal.message.PrintMessageReportImpl;
 import lombok.NonNull;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.ExecutorService;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 // tag::PrintJobManager[]
 
 /**
  * Used to create {@link PrintJob}s and compile {@link com.mgmtp.a12.print.model.api.model.PrintModel}s
  */
+@OnlyForUsage
 public class PrintJobManager implements JobManager {
 	private final PrintModelCompilerRuntime compiler;
 
@@ -57,37 +64,62 @@ public class PrintJobManager implements JobManager {
 		@NonNull PrintJobManagerApi api,
 		@NonNull PrintJobConfig printJobConfig
 	) {
-		this.compiler = new PrintModelCompilerRuntime(executorService, api, printJobConfig, false);
+		this.compiler = new PrintModelCompilerRuntime(executorService, api, printJobConfig);
 	}
 
 	public PrintJobManager(
 		@NonNull ExecutorService executorService,
 		@NonNull PrintJobManagerApi api,
 		@NonNull PrintJobConfig printJobConfig,
-		boolean usePdfBoxPrintProcess
+		@NonNull StaticImageProvider staticImageProvider
 	) {
-		this.compiler = new PrintModelCompilerRuntime(executorService, api, printJobConfig, usePdfBoxPrintProcess);
+		this.compiler = new PrintModelCompilerRuntime(executorService, api, printJobConfig, staticImageProvider);
+	}
+
+	@Override
+	public PrintMessageReport<PrintModelId> prepareWithReport(@NonNull String printModel) {
+		return PrintMessageReportImpl.wrapException(() -> {
+			PrintModelId id = compiler.compile(printModel).getId();
+			return new PrintMessageReportImpl<>(id, PrintMessageCollector.getMessages());
+		}, PrintCompilerException.class, PrintCompilerException::new);
 	}
 
 	/**
 	 * Compiles a {@link com.mgmtp.a12.print.model.api.model.PrintModel}.
 	 */
 	@Override
-	public PrintModelId prepare(@NonNull String printModel) throws PrintCompilerException {
-		return compiler.compile(printModel).getId();
+	public PrintModelId prepare(String printModel) throws PrintCompilerException {
+		final var prepareResult = prepareWithReport(printModel);
+		if (prepareResult.noErrorOccurred()) {
+			return prepareResult.getResult();
+		}
+		throw new PrintCompilerException(
+			"The Print Model prepare failed with the following messages: {}",
+			StringUtils.join(prepareResult.getMessages(), "\n")
+		);
 	}
 
-	/**
-	 * Creates a new {@link PrintJob} from the given {@link PrintModelId}.
-	 * Compiles the {@link com.mgmtp.a12.print.model.api.model.PrintModel} if it has not already been compiled.
-	 */
 	@Override
-	public PrintJob createNewJob(@NonNull PrintModelId printModelId) throws PrintCompilerException {
-		final var printJob = ManagedPrintJob.builder()
-			.printModelCompilationContext(getCompiledPrintModel(printModelId))
-			.build();
-		printJob.withProvider(PrintModelProvider.fromLoader(this::getCompiledPrintModel));
-		return printJob;
+	public PrintMessageReport<PrintJob> createNewJobWithReport(@NonNull PrintModelId printModelId) {
+		return PrintMessageReportImpl.wrapException(() -> {
+			final var printJob = ManagedPrintJob.builder()
+				.printModelCompilationContext(getCompiledPrintModel(printModelId))
+				.build();
+			printJob.withProvider(PrintModelProvider.fromLoader(this::getCompiledPrintModel));
+			return new PrintMessageReportImpl<>(printJob, PrintMessageCollector.getMessages());
+		}, PrintCompilerException.class, PrintCompilerException::new);
+	}
+
+	@Override
+	public PrintJob createNewJob(PrintModelId printModelId) throws PrintCompilerException {
+		final var result = createNewJobWithReport(printModelId);
+		if (result.noErrorOccurred()) {
+			return result.getResult();
+		}
+		throw new PrintCompilerException(
+			"The Print Job creation failed with the following messages: {}",
+			StringUtils.join(result.getMessages(), "\n")
+		);
 	}
 
 	private PrintModelCompilationContext getCompiledPrintModel(@NonNull PrintModelId printModelId) {

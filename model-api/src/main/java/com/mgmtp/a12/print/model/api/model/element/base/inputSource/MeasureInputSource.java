@@ -32,7 +32,9 @@
 package com.mgmtp.a12.print.model.api.model.element.base.inputSource;
 
 import com.mgmtp.a12.print.model.api.model.element.base.Measure;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+@OnlyForUsage
 public interface MeasureInputSource extends IntegerInputSource {
 	Measure.MeasureUnit getUnit();
 }

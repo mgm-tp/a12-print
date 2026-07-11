@@ -2,7 +2,7 @@
   "header": {
     "id": "DomainTextStyles",
     "modelType": "document",
-    "modelVersion": "28.4.0",
+    "modelVersion": "29.4.0",
     "locales": [
       {
         "code": "en"
@@ -25,8 +25,8 @@
       "immutable": false
     },
     "modelConfig": {
-      "decimalSeparator": ".",
       "timeZone": "UTC",
+      "decimalSeparator": ".",
       "conditionLanguage": {
         "code": "en_US"
       }
@@ -38,12 +38,28 @@
           "id": "group_aff10",
           "name": "textStyle",
           "Group": {
+            "label": [
+              {
+                "locale": "en",
+                "text": "Text style"
+              },
+              {
+                "locale": "de",
+                "text": "Textstil"
+              }
+            ],
             "repeatability": 1,
             "elements": [
               {
                 "type": "Field",
                 "id": "field_46563",
                 "name": "id",
+                "annotations": [
+                  {
+                    "name": "sme.globalSearch.hide",
+                    "value": "true"
+                  }
+                ],
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
@@ -398,10 +414,19 @@
                             }
                           ]
                         }
-                      ],
-                      "categories": []
+                      ]
                     }
-                  }
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Available static hyphenators"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Verfügbare statische Hyphenator"
+                    }
+                  ]
                 }
               }
             ]

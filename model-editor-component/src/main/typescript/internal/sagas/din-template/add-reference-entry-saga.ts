@@ -29,23 +29,20 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { all, call, getContext, put, takeLatest } from "typed-redux-saga";
-import { Action, AnyAction } from "typescript-fsa";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { ConfirmationDialogType, DINTemplateActions, RequestApiActions } from "../../redux/index.js";
-import { RequestApi } from "../../api/request-api.js";
+import type { RequestApi } from "../../api/request-api.js";
 
 import { openConfirmationDialogSaga } from "../confirmation-dialog/open-confirmation-dialog-saga.js";
 
-export function* addReferenceEntrySaga(): SagaIterator {
-	yield* takeLatest(
-		(action: AnyAction) => DINTemplateActions.addReferenceEntry.match(action),
-		handleAddReferenceEntrySaga
-	);
+export function* addReferenceEntrySaga(): SagaGenerator<void> {
+	yield* takeLatest(DINTemplateActions.addReferenceEntry.match, handleAddReferenceEntrySaga);
 }
 
-function* handleAddReferenceEntrySaga(action: Action<DINTemplateActions.AddReferenceEntryPayload>) {
+function* handleAddReferenceEntrySaga(action: PayloadAction<DINTemplateActions.AddReferenceEntryPayload>) {
 	const isConfirmed = yield* call(openConfirmationDialogSaga, ConfirmationDialogType.CANNOT_BE_UNDONE);
 	if (!isConfirmed) {
 		return;

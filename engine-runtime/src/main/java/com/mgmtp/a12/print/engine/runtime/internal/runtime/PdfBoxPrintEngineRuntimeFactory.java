@@ -44,8 +44,6 @@ import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalCorePrintEn
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalPdfBoxPrintEngineRuntime;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalPdfBoxPrintEngineRuntimeApiFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.ManagedPrintJob;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.ComponentTreeDependencySelectorProducer;
-import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.pdfBoxEngine.ComponentTreeManager;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.factories.text.CachedTextWidthResolver;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.factories.text.LineWrapper;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.factories.text.TextComponentDependencyValueProducer;
@@ -163,11 +161,6 @@ public class PdfBoxPrintEngineRuntimeFactory extends InternalPdfBoxPrintEngineRu
 		ManagedPrintJob managedPrintJob
 	) {
 		final var printModelCompilationContext = managedPrintJob.getPrintModelCompilationContext();
-
-		if (!printModelCompilationContext.isPdfBoxPrintProcess()) {
-			throw new PrintException("Please initialize the 'PrintJobManager' with the flag 'usePdfBoxPrintProcess' set to 'true' in order to be able to run the PdfBoxPrintEngine");
-		}
-
 		final var componentTreeManager = printModelCompilationContext
 			.getComponentTreeManager().asCacheable();
 		final var providers = new ArrayList<>(managedPrintJob.getDataProviderList().keySet());

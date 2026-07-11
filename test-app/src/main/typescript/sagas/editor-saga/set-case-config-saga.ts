@@ -29,21 +29,21 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { AnyAction, SagaIterator } from "redux-saga";
+import type { SagaGenerator } from "typed-redux-saga";
 import { takeEvery, call, put } from "typed-redux-saga";
-import { Action } from "typescript-fsa";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { LogHandler } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/marshaller";
+import { LogHandler } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { EditorActions } from "../../store/editor";
 import { FileService } from "../../services/files-service";
 import { CaseConfig } from "../../components/case-config/CaseConfig";
 
-export function* setCaseConfigSage(): SagaIterator {
-	yield* takeEvery((action: AnyAction) => EditorActions.setCaseConfig.match(action), handleSetCaseConfig);
+export function* setCaseConfigSaga(): SagaGenerator<void> {
+	yield* takeEvery(EditorActions.setCaseConfig.match, handleSetCaseConfig);
 }
 
-function* handleSetCaseConfig(action: Action<CaseConfig>) {
+function* handleSetCaseConfig(action: PayloadAction<CaseConfig>) {
 	const walFilePath = CaseConfig.getWalFilePath(action.payload.resource);
 	const response = yield* call(FileService.fetchWalFile, walFilePath);
 

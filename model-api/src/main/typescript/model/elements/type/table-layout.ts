@@ -42,8 +42,7 @@ export interface TableLayout extends PrintModelElement, Styleable {
 }
 
 export interface TableLayoutProperties
-	extends ReferenceContainer<ReferenceContainerLabels.cells, TableLayoutCellReference>,
-		PrintModelEntity {
+	extends ReferenceContainer<ReferenceContainerLabels.cells, TableLayoutCellReference>, PrintModelEntity {
 	readonly rowCount: number;
 	readonly columnCount: number;
 	readonly rowProperties?: ReadonlyArray<RowProperties>;

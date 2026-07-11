@@ -29,9 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import FixedSizeIntList from "./FixedSizeIntList.js";
+import type { FixedSizeIntList } from "./FixedSizeIntList.js";
 
-export default class FixedSizeIntArrayList implements FixedSizeIntList {
+export class FixedSizeIntArrayList implements FixedSizeIntList {
 	private elements: number[];
 
 	constructor(size: number) {

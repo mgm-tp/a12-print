@@ -29,10 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { PartialArea, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
+import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialArea } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { BoundingBoxElements } from "../bounding-box/BoundingBoxElements.js";
-import { BaseElementProps } from "../base.js";
+import type { BaseElementProps } from "../base.js";
 
 type AreaProps = Omit<BaseElementProps, "reference">;
 
@@ -42,7 +43,7 @@ export const Area = ({ element, styles, ElementContainer }: AreaProps) => {
 	}
 
 	return (
-		<div style={styles}>
+		<div data-testid="element-area" style={styles}>
 			{element?.area?.elementReferences?.map((ref, index) => (
 				<BoundingBoxElements item={ref as PartialValidPlaceableReference} key={index}>
 					{ElementContainer && <ElementContainer reference={ref} isNestedElement={true} />}
