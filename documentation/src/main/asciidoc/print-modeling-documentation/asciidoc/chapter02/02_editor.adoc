@@ -224,7 +224,9 @@ NOTE: You can add multiple Document Models in the Schema Tab, but currently only
 Document Model References:: The list of referenced Document Models and their optional alias in this Print Model.
 The "Open Setting" button may be used to update the given alias.
 
-Print Model References:: The list of referenced <<PrintModelTemplates, Print Model Templates>>. The Print Model Editor will only offer Print Models which conform to the <<CreateTemplate,Template specification>>.
+Print Model References:: The list of referenced <<PrintModelTemplates, Print Model Templates>>.
+After selection, the Print Model Editor will check the selected Print Model for compliance with the <<CreateTemplate,Template specification>>.
+If this check fails, the Print Model cannot be used as a reference.
 
 [NOTE]
 ====

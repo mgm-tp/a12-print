@@ -29,8 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
-import { call, getContext, put, select, takeEvery } from "typed-redux-saga";
+import { SagaIterator, buffers } from "redux-saga";
+import { actionChannel, call, getContext, put, select, take } from "typed-redux-saga";
 import { AnyAction } from "typescript-fsa";
 
 import {
@@ -64,10 +64,17 @@ import {
 const logger = LoggerFactory.getLogger("ProcessAllLogActionSaga");
 
 export function* processAllLogActionsSaga(): SagaIterator {
-	yield* takeEvery(
+	// We use actionChannel + call (instead of takeEvery) to ensure sequential processing.
+	// This prevents race conditions where parallel handlers operate on stale state snapshots.
+	const channel = yield* actionChannel(
 		(action: AnyAction) => isTransactionLogStateAction(action) && action.payload.interactionId !== undefined,
-		handleProcessAllLogActionsSaga
+		buffers.expanding() // we want all actions
 	);
+
+	while (true) {
+		const action = yield* take(channel);
+		yield* call(handleProcessAllLogActionsSaga, action as AnyTransactionLogAction);
+	}
 }
 
 function* handleProcessAllLogActionsSaga(action: AnyTransactionLogAction): SagaIterator {

@@ -37,6 +37,7 @@ import { useTheme, ThemeProvider } from "styled-components";
 
 import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/transaction-log/index.js";
 import { getDefaultTextStyleFont } from "@com.mgmtp.a12.print/print-fonts/lib/internal/api/utils/font-utils.js";
+import { ProgressIndicator } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintEngineActions } from "../../store/actions.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
@@ -49,6 +50,7 @@ import {
 	SidebarActions,
 	ValidationActions,
 } from "../../redux/index.js";
+import { CommitViewSelectors } from "../../redux/commit-view/selectors.js";
 import { ContextApi, EditorComponentContext } from "../../api/index.js";
 
 import { Sidebar } from "../sidebar/index.js";
@@ -80,6 +82,7 @@ export const PrintModelEditor = ({
 	const transactionLogState = useSelector(PrintEngineSelectors.transactionLogState);
 	const { selectedItem, isFullscreen, isOpen } = useSelector(PrintEngineSelectors.sidebar);
 	const { isUndoDisabled, isRedoDisabled } = useSelector(PrintEngineSelectors.undoRedoButtonState);
+	const isCommitting = useSelector(CommitViewSelectors.isCommitting);
 
 	const fonts = React.useMemo(() => contextApi.getFonts(), [contextApi]);
 	const isDefaultTransactionLog = React.useMemo(() => {
@@ -112,7 +115,7 @@ export const PrintModelEditor = ({
 			dispatch(SidebarActions.setCurrentView({ selectedItem: SidebarItem.SEGMENT }));
 		}
 		dispatch(RequestApiActions.initializePrintModel(printModelId));
-		dispatch(RequestApiActions.loadDINTemplatePrintModels());
+		dispatch(RequestApiActions.loadPrintModelIds());
 		dispatch(RequestApiActions.loadTypesettingModelHeaders());
 
 		// Do not rerun effect when isNewPrintModel prop changes
@@ -155,6 +158,7 @@ export const PrintModelEditor = ({
 										subResizableOptions={{ minWidth: 300 }}
 									/>
 								</StyledFrameContainer>
+								{isCommitting && <ProgressIndicator />}
 							</ThemeProvider>
 						</HiddenHeightContextWrapper>
 					</DndProvider>

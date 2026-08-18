@@ -36,11 +36,11 @@ import { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/lib/int
 import { DINTemplateSegment } from "../../api/index.js";
 
 export interface RequestApiState {
-	printModelHeaders?: Header[];
 	referencedPrintModelHeaders?: Header[];
 	documentModelIds?: string[];
 	printModelData?: Record<string, PrintModel | undefined>;
 	typesettingModelHeaders?: Header[];
 	typesettingModelData?: Record<string, TypesettingModel | undefined>;
 	dinTemplatePrintModels?: Record<string, DINTemplateSegment[]>;
+	printModelIds?: string[];
 }

@@ -49,7 +49,9 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -589,20 +591,30 @@ public class PrintModelWalker {
 		final PrintModelPath originPath
 	) {
 		var result = TraversalCommand.CONTINUE;
+		final Map<BoundingBox, PrintModelPath> consumerPathsWithBB = new HashMap<>();
 
 		for(final var visitedBoundingBox: boundingBoxListVisitor.getVisitedBoundingBoxes()) {
 			final var boundingBox = visitedBoundingBox.getBoundingBox();
 			final var boundingBoxPath = visitedBoundingBox.getPrintModelPath();
 			final var placeableReference = boundingBoxPath.findReferenceCallSite(boundingBox);
 
+			// Use the parent BB's consumer path (incl. the parent BB itself) as origin,
+			// so nested Overrides get a hierarchical path just like normal nested BoundingBoxes.
+			final PrintModelPath effectiveOriginPath = visitedBoundingBox.getParentBoundingBox()
+				.map(consumerPathsWithBB::get)
+				.orElse(originPath);
+
 			if (placeableReference.isPresent()) {
-				final var reference = new PrintModelTreeTrace<>(originPath, placeableReference.get().getTracedElement());
+				final var reference = new PrintModelTreeTrace<>(effectiveOriginPath, placeableReference.get().getTracedElement());
 				final var element = referenceResolver.resolveReference(reference);
 
 				if (element.isPresent() && element.get().getTracedElement() instanceof OverrideElement overrideBoundingBox) {
-					final var pathWithElement = originPath
+					final var pathWithElement = effectiveOriginPath
 						.with(reference.getTracedElement(), 0)
 						.with(overrideBoundingBox, 0);
+
+					// Store path including this BB so nested BBs can use it as their origin.
+					consumerPathsWithBB.put(boundingBox, pathWithElement.with(boundingBox, 0));
 
 					result = visitOverrideElement(overrideBoundingBox, boundingBox, pathWithElement);
 				}
@@ -689,7 +701,14 @@ public class PrintModelWalker {
 
 		@Override
 		public TraversalCommand visitBoundingBox(BoundingBox box, PrintModelPath path) {
-			visitedBoundingBoxes.add(new VisitedBoundingBox(box, path));
+			// path ends with box itself; skip it to find the nearest BoundingBox ancestor.
+			final Optional<BoundingBox> parent = path.getParents().reverse().stream()
+				.skip(1)
+				.map(PrintModelPath.PathElement::getElement)
+				.filter(BoundingBox.class::isInstance)
+				.map(BoundingBox.class::cast)
+				.findFirst();
+			visitedBoundingBoxes.add(new VisitedBoundingBox(box, path, parent));
 			return TraversalCommand.CONTINUE;
 		}
 
@@ -697,6 +716,7 @@ public class PrintModelWalker {
 		private static class VisitedBoundingBox {
 			private final BoundingBox boundingBox;
 			private final PrintModelPath printModelPath;
+			private final Optional<BoundingBox> parentBoundingBox;
 		}
 	}
 }

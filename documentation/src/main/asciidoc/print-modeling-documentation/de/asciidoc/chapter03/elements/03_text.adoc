@@ -1,0 +1,146 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Text [[Text]]
+
+Das Text Element zeigt Text im resultierenden PDF an.
+Der Inhalt des Text Elements kann aus statischem Text und dynamischen Inline-Einfügungen bestehen:
+
+* <<Field, Field>>
+* <<Calculation, Calculation>>
+* <<PageNumber, Page Number>>
+
+[NOTE]
+====
+Page Number Elemente sind nur für Text Elemente verfügbar, die innerhalb von <<SectionTab, Sections>> platziert sind.
+====
+
+Der Inhalt des Text Elements wird über den Rich Text Editor definiert. Die folgenden Einstellungen stehen in der Kopfzeile des Rich Text Editors zur Verfügung.
+
+Bold:: Setzt die Formatierung des aktuell markierten Textes auf fett.
+Italic:: Setzt die Formatierung des aktuell markierten Textes auf kursiv.
+Underline:: Setzt die Formatierung des aktuell markierten Textes auf unterstrichen.
+Color:: Setzt die Farbe des aktuell markierten Textes auf die im hexadezimalen Farbcode-Picker rechts daneben angezeigte Farbe.
+Background Color:: Setzt die Hintergrundfarbe des aktuell markierten Textes auf die im hexadezimalen Farbcode-Picker rechts daneben angezeigte Farbe.
+Field:: Fügt über den <<Field>>-Editor eine Referenz auf ein Field aus einem referenzierten Document Model hinzu.
+Calculation:: Fügt über den <<Calculation>>-Editor das Ergebnis einer Calculation basierend auf Daten aus dem Dokument hinzu.
+Remove font size inline styles:: Entfernt alle Inline-`font-size`-Styles aus dem Text.
+Dies ist nützlich, wenn Inhalte aus externen Quellen eingefügt werden, die das Standard-Styling überschreiben.
+
+Darüber hinaus ist das Text Element über <<BorderProperties, Border Properties>> und eine Teilmenge der <<TextProperties, Text Properties>> konfigurierbar.
+
+Wenn alle dynamischen Inline-Elemente zu einem leeren Wert ausgewertet werden, haben Sie die Möglichkeit, das Text Element auszublenden. Um dieses Verhalten zu aktivieren, wählen Sie die Option `Hide this element if all nested entities are empty`.
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Barrierefreiheitshinweis*
+
+Für die Barrierefreiheit gibt es einige Empfehlungen bei der Modellierung von Text Elementen:
+
+- Verwenden Sie den korrekten semantischen Textstil für Überschriften und Absätze, z. B. kann `Headline 2` nur als Unterüberschrift nach `Headline 1` verwendet werden usw.
+- Vermeiden Sie die Verwendung von Kursiv- oder Unterstreichungsformatierungen.
+- Verwenden Sie nicht die Textausrichtung „Blocksatz".
+- Stellen Sie bei Verwendung benutzerdefinierter Farben einen ausreichenden Farbkontrast zwischen Text und Hintergrund sicher.
+- Verwenden Sie Textfarben nicht als alleiniges Mittel zur Informationsvermittlung (z. B. Rot für Fehler). Nutzen Sie stattdessen Icons oder zusätzlichen Text.
+- Verweisen Sie nicht ausschließlich über visuelle Informationen auf andere Textabschnitte (verwenden Sie z. B. nicht „siehe unten"). Nutzen Sie stattdessen Links oder geben Sie die Überschrift des jeweiligen Absatzes an (`Siehe Kapitel 5.1 dieses Dokuments`).
+- Das Kopieren von Listen (z. B. `Aufzählungslisten`) aus anderen Quellen in den Texteditor erzeugt im resultierenden PDF nicht die korrekte semantische Barrierefreiheitsstruktur für Listen. Falls Sie diese Anforderung in Ihrem Projekt haben, wenden Sie sich bitte an das Print Engine-Team.
+====
+
+image::chapter03/03_text_detail_view.png[Detailansicht des Text Elements,title="Detailansicht des Text Elements"]
+
+== Field [[Field]]
+
+Das Field Element kann den Inhalt einer Document Model Field-Instanz in das resultierende PDF-Dokument einfügen.
+Der Inhalt der ausgewählten Field-Instanz wird ausgewertet und als formatierter String zurückgegeben.
+Die Formatierung des Strings wird durch die nachfolgend beschriebenen Field-Type-Einstellungen bestimmt.
+
+Fügen Sie ein Field Element hinzu, indem Sie im Rich Text Editor eines <<Text, Text>> Elements auf die Schaltfläche „Field" klicken.
+
+Document Model:: Wählen Sie ein im <<SchemaTab, Schema Tab>> referenziertes Document Model aus.
+Field:: Navigieren Sie zum gewünschten Field, indem Sie Groups im ausgewählten Document Model aufklappen, und klicken Sie dann auf das Field.
+Field Type:: Die Formatierung kann basierend auf dem Field-Typ der Instanz angepasst werden, indem einer der folgenden Typen ausgewählt wird:
++
+* *Text (keine Auswahl):* Zeigt die Daten einer Field-Instanz als Klartext ohne Formatierung an.
+* *HTML:* Formatiert eine Field-Instanz, die HTML-Inhalt enthält. HTML-Tags werden verarbeitet und im resultierenden PDF gerendert.
+* *Date:* Formatiert eine Date-Field-Instanz in ein lesbares Datumsformat basierend auf der Locale. Die Formatierung kann durch die Definition eines spezifischen Patterns für die Auswertung angepasst werden. Beispielsweise wird das Pattern `YYYY.MM.dd` zu z. B. `2025.02.17` ausgewertet, während das Pattern `dd'th of' MMMM YYYY 'at' HH:mm 'o''clock'` zu `17th of February 2025 at 13:54 o'clock` ausgewertet wird.
+* *Date range:* Formatiert eine DateRange-Field-Instanz in ein lesbares Format basierend auf der Locale. Die Formatierung von Startdatum, Enddatum und Trennzeichen kann durch die Definition eines Auswertungspatterns angepasst werden.
++
+[NOTE]
+====
+Ausführlichere Informationen zu Auswertungspatterns für Datumsangaben finden Sie, indem Sie auf das Info-Icon neben dem Pattern-Eingabefeld klicken oder die
+https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html[offizielle Java-Dokumentation] lesen.
+====
++
+* *Checkbox:* Formatiert eine Boolean-Field-Instanz basierend auf ihrem Wert. Sie können festlegen, welcher Wert für `true` und `false` angezeigt werden soll.
++
+[NOTE]
+====
+Um Sonderzeichen wie ☐ oder ☑ als Anzeigewert für den Checkbox-Typ darzustellen, stellen Sie sicher, dass der ausgewählte <<TextStylesTab, Text Style>> eine Schriftart verwendet, die diese Zeichen unterstützt.
+Der Print Model Editor stellt die Schriftart <<DefaultFonts, Noto Sans Symbols>> bereit, die mit diesen Symbolen kompatibel ist.
+====
+
+Suffix:: Modellieren Sie ein Suffix für die formatierten String-Daten.
+
+Klicken Sie auf „Back", um zum Text Editor zurückzukehren.
+
+
+image::chapter03/03_field_detail_view.png[Detailansicht des Field Elements,title="Field-Detailansicht"]
+
+== Calculation [[Calculation]]
+
+Das Calculation Element kann das Ergebnis einer link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language]-Berechnung in das resultierende PDF-Dokument einfügen.
+Die Kernel-Berechnung funktioniert analog zu Berechnungen in Document Models.
+Wenn die <<Computations, Computation>> keinen String zurückgibt, muss der Ergebnistyp der Berechnung explizit vom Benutzer definiert werden, damit die Standardformatierungsoptionen angewendet werden können.
+
+Fügen Sie eine Calculation hinzu, indem Sie im Rich Text Editor eines <<Text, Text>> Elements auf die Schaltfläche „Calculation" klicken.
+
+CAUTION: Das Calculation Element ist kein Ersatz für Berechnungen von Geschäftsdaten und bietet nicht dasselbe Maß an Genauigkeit wie Berechnungen innerhalb eines Document Model.
+
+
+Name:: Der Name der Calculation.
+Document Model:: Wählen Sie ein im <<SchemaTab, Schema Tab>> referenziertes Document Model aus.
+Field Type:: Das Ergebnis der Calculation wird standardmäßig als String angenommen.
+Wenn das Ergebnis einen anderen Typ hat, muss die Field-Type-Eigenschaft entsprechend gesetzt werden.
+Die folgenden Field Types stehen über diese Konfiguration zur Verfügung:
++
+* Boolean
+* Number
+* String
+* TypeDefinition
+[NOTE]
+====
+Wenn TypeDefinition ausgewählt ist, muss eine TypeDefinition aus dem ausgewählten Document Model angegeben werden.
+====
+Formatting Type:: Wenn ein Field Type angegeben ist, kann zusätzlich ein Formatting Type gesetzt werden.
+Die Optionen sind ähnlich den String-Formatierungsoptionen, die im <<Field>> angeboten werden.
+Suffix:: Modellieren Sie ein Suffix für die formatierten String-Daten.
+
+Precondition und Operation:: Eine Computation Table wird wie in der link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language]-Dokumentation beschrieben modelliert.
+
+Klicken Sie auf „Back", um zum Text Editor zurückzukehren.
+
+image::chapter03/03_calculation_detail_view.png[Detailansicht des Calculation Elements,title="Calculation-Detailansicht"]
+
+== Page Number & Page Number Total [[PageNumber]]
+
+Das Page Number Element fügt die aktuelle Seitenzahl in das resultierende PDF-Dokument ein. Das Page Number Total Element fügt die Gesamtseitenzahl ein.
+
+Fügen Sie ein Page Number oder Page Number Total Element hinzu, indem Sie im Rich Text Editor eines <<Text, Text>> Elements, das innerhalb einer <<SectionTab, Section>> platziert ist, auf die entsprechende Schaltfläche klicken.
+
+Eine weitere Modellierung ist nicht erforderlich.
+
+image::chapter03/03_page_and_page_total.png[Seitennummer und Gesamtseitenzahl,title="Page Number und Total Page Number in einer Section"]

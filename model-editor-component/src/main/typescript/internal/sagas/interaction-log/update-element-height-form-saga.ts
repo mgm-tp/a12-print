@@ -94,7 +94,7 @@ function* collectDebouncedPlaceables(payloadPlaceable: PartialValidPlaceableRefe
 			break;
 		}
 		const latestPlaceable = latestAction?.payload;
-		if (latestPlaceable && !updatedPlaceables[latestPlaceable.id]) {
+		if (latestPlaceable) {
 			updatedPlaceables[latestPlaceable.id] = latestPlaceable;
 		}
 	}

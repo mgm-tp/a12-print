@@ -1,0 +1,80 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Bild [[Image]]
+
+Das Image-Element fügt ein Bild in das resultierende PDF ein.
+
+Bildquellentyp:: Die Bilddaten können aus zwei verschiedenen Quellen eingefügt werden:
++
+* <<Attachment, Attachment>>
+* <<ImageField, Field>>
+
+Alternativtext:: Der Text, der von Screenreadern ausgelesen wird.
+Dieser ist aus Gründen der Barrierefreiheit erforderlich.
+Höhe:: Die Höhe in Millimetern, auf die das Bild skaliert wird.
+Wenn kein Wert angegeben ist, wird die Bildhöhe entsprechend dem Seitenverhältnis auf Basis der angegebenen Bildbreite skaliert.
+Breite:: Die Breite in Millimetern, auf die das Bild skaliert wird.
+Diese Angabe ist für Bilder mit dem Quellentyp _Field_ erforderlich.
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Hinweis zur Barrierefreiheit*
+
+Für Barrierefreiheitsstandards sollte der Alternativtext kurz, aber beschreibend für den Bildinhalt sein. Bei Infografiken kann die Beschreibung ausführlicher ausfallen.
+
+Verwenden Sie keine Bilder, die wichtige textuelle Informationen enthalten (Ausnahme: Logos). Nutzen Sie stattdessen das Text-Element.
+====
+
+== Attachment  [[Attachment]]
+
+Der Bildinhalt wird im Print Model Editor als Bildanhang hochgeladen. Auf diese Weise wird das Bild als statischer Inhalt in Ihrem Print Model gespeichert.
+Die ursprünglichen Bildabmessungen werden verwendet, sofern sie nicht durch Benutzereingaben überschrieben werden. Wenn nur die Eigenschaft `width` angegeben wird (und die Eigenschaft `height` leer bleibt), wird das Bild unter Beibehaltung des ursprünglichen Seitenverhältnisses skaliert.
+
+NOTE: Die unterstützten Bildformate sind: `GIF`, `BMP`, `JPEG`, `JPG` und `PNG`. Bei `GIF`-Bildern wird nur das erste Frame im PDF angezeigt.
+
+
+image::chapter03/03_image_attachment_detail_view.png[Image-Element-Detailansicht mit Attachment,title="Image-Element-Detailansicht mit Attachment"]
+
+== Field [[ImageField]]
+
+
+Der Bildinhalt wird während des Druckvorgangs aus einer A12-Field-Instanz eingefügt. Dadurch kann das Bild dynamisch aus Document Model-Daten bezogen werden.
+Der Inhalt der Field-Instanz muss ein gültiger Base64-kodierter String sein, damit er im resultierenden PDF korrekt gerendert wird.
+
+Document Model:: Wählen Sie ein Document Model aus, das im <<SchemaTab, Schema Tab>> referenziert ist.
+Field:: Navigieren Sie zum gewünschten Field, indem Sie Groups im ausgewählten Document Model aufklappen, und klicken Sie dann auf das Field.
++
+Die folgenden Fields aus der Attachment-Group sollten ausgewählt werden, wenn Anhänge aus dem Document Model referenziert werden:
++
+* `content`-Field bei Verwendung von Anhängen im Embedded-Modus.
+* `attachment_id`-Field bei Verwendung von Anhängen im Reference-Modus.
+
+
+[NOTE]
+====
+Jedes andere Field in einem Document Model, das einen gültigen Base64-kodierten Bild-String enthält, kann ebenfalls ausgewählt werden.
+====
+
+[CAUTION]
+====
+Bitte beachten Sie, dass die <<Preview, Print Preview>> nicht funktioniert, wenn `attachment_id` ausgewählt ist. Diese Funktionalität ist für den Einsatz in A12-Anwendungen vorgesehen, in denen ein _AttachmentProvider_ implementiert ist.
+====
+
+Da die Bildabmessungen während der Bearbeitung nicht verfügbar sind, muss die Breite explizit angegeben werden.
+
+image::chapter03/03_image_field_detail_view.png[Image-Element-Detailansicht mit Field,title="Image-Element-Detailansicht mit Field"]

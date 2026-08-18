@@ -29,24 +29,19 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SagaIterator } from "redux-saga";
-import { call, getContext, put, takeEvery } from "typed-redux-saga";
-import { AnyAction } from "typescript-fsa";
+import { call, getContext, put, SagaGenerator, takeEvery } from "typed-redux-saga";
 
 import { RequestApiActions } from "../../redux/request-api/index.js";
 import { RequestApi } from "../../api/index.js";
 
-export function* loadDinTemplatePrintModelsSaga(): SagaIterator {
-	yield* takeEvery(
-		(action: AnyAction) => RequestApiActions.loadDINTemplatePrintModels.match(action),
-		handleLoadDINTemplatePrintModelsSaga
-	);
+export function* loadPrintModelIdsSaga(): SagaGenerator<void> {
+	yield* takeEvery(RequestApiActions.loadPrintModelIds.match, handleLoadPrintModelIdsSaga);
 }
 
-function* handleLoadDINTemplatePrintModelsSaga(): SagaIterator {
+function* handleLoadPrintModelIdsSaga(): SagaGenerator<void> {
 	const requestApi: RequestApi = yield* getContext("requestApi");
-	const dinTemplatePrintModels = yield* call(requestApi.loadDINTemplatePrintModels);
-	if (dinTemplatePrintModels.length) {
-		yield* put(RequestApiActions.setDINTemplatePrintModels(dinTemplatePrintModels));
+	const printModelIds = yield* call(requestApi.loadPrintModelIds);
+	if (printModelIds.length > 0) {
+		yield* put(RequestApiActions.setPrintModelIds(printModelIds));
 	}
 }

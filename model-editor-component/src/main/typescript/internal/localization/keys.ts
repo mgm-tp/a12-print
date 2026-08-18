@@ -70,6 +70,7 @@ export const RESOURCE_KEYS = {
 				fieldRequired: "",
 				modelNameValidation: "",
 				annotationNameDuplicate: "",
+				annotationNameProtected: "",
 			},
 		},
 		schema: {
@@ -82,6 +83,7 @@ export const RESOURCE_KEYS = {
 			},
 			tooltips: {
 				defaultTypesettingModel: "",
+				printModelReferenceWithoutSegments: "",
 			},
 		},
 		content: "",
@@ -729,6 +731,7 @@ export const RESOURCE_KEYS = {
 		},
 		relativeLayout: {
 			changeMargin: "",
+			changePageBreakBehavior: "",
 		},
 		useCopyPaste: {
 			pasteElements: "",

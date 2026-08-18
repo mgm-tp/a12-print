@@ -69,6 +69,7 @@ export const CommitChanges = () => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const dispatch = useDispatch();
 	const hasCommitViewValidationErrors = useSelector(CommitViewSelectors.hasCommitViewValidationErrors);
+	const isCommitting = useSelector(CommitViewSelectors.isCommitting);
 	const [expandedRows, setExpandedRows] = React.useState<number[]>([]);
 	const columns = useCommitInteractionColumns();
 	const transactionGroups = useTransactionGroups();
@@ -191,7 +192,7 @@ export const CommitChanges = () => {
 			<StyledCommitChangesToolbar>
 				{(discardAllChangesPossible || false) && (
 					<StyledCommitChangesButton
-						disabled={transactionGroups.length === 0}
+						disabled={transactionGroups.length === 0 || isCommitting}
 						label={localizer(RESOURCE_KEYS.sidebar.commitChanges.discard)}
 						title={localizer(RESOURCE_KEYS.sidebar.commitChanges.discard)}
 						destructive
@@ -200,7 +201,7 @@ export const CommitChanges = () => {
 				)}
 				<StyledCommitChangesButton
 					right
-					disabled={transactionGroups.length === 0 || hasCommitViewValidationErrors}
+					disabled={transactionGroups.length === 0 || hasCommitViewValidationErrors || isCommitting}
 					label={localizer(RESOURCE_KEYS.sidebar.commitChanges.commit)}
 					title={localizer(RESOURCE_KEYS.sidebar.commitChanges.commit)}
 					onClick={onCommitClick}

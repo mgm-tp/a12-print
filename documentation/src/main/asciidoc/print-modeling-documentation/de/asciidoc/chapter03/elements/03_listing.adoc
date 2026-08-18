@@ -1,0 +1,256 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Listing [[Listing]]
+
+Das Listing-Element fügt eine tabellarische Darstellung eines bestimmten Teilbaums eines Dokuments in das resultierende PDF ein.
+Jede Zeile der generierten Tabelle entspricht einer Field- oder Group-Instanz des ausgewählten Dokuments.
+
+[NOTE]
+====
+Aufgrund der Komplexität der Anpassungsoptionen wird das Listing-Element für erfahrenere Benutzer empfohlen.
+
+Erwägen Sie die Modellierung einer <<Table, Table>>, sofern der Anwendungsfall dies zulässt.
+====
+
+Die Spalten der Tabelle werden am Listing-Element konfiguriert.
+Zelleninhalte und -stile werden durch link:/docs/KERNEL/kernel-documentation-ba-en/index.html[A12 Kernel-Berechnungen] definiert, die in der jeweiligen Spaltenkonfiguration festgelegt werden.
+Diese Berechnungen werden auf der jeweiligen Field- oder Group-Instanz der Zeile ausgeführt, um deren Ergebniswerte zu bestimmen.
+
+Document Model:: Wählen Sie ein Document Model aus, das im <<SchemaTab, Schema Tab>> referenziert ist.
+Group:: Der Path zur Group im Document Model, die den Root des Table Elements definiert.
+Diese Group sowie jede darin enthaltene Group oder jedes Field erzeugt eine Zeile in der resultierenden Tabelle.
+Columns:: Jede Spalte des Table Elements bezieht sich auf ein definiertes verschachteltes Element.
+Klicken Sie auf „Add", um neue Spalten hinzuzufügen, oder klicken Sie auf die Spalte in der Tabelle, um sie zu bearbeiten.
+Siehe <<ListingColumn>> für weitere Details.
+Row Property Computations:: Es können Property Computations modelliert werden, die auf jede Zeile des Listings angewendet werden. Siehe <<PropertyComputation>> für weitere Details.
+Group Property Computations:: Es können Group Property Computations modelliert werden, die auf die ausgewählte Group-Instanz angewendet werden. Siehe <<GroupPropertyComputation>> für weitere Details.
+
+Darüber hinaus lässt sich das Listing-Element über <<BorderProperties, Border Properties>> sowie separate Konfigurationen der <<TextProperties, Text Properties>> für Header und Body des Listings konfigurieren.
+
+image::chapter03/03_listing_detail_view.png[Detailansicht des Listing-Elements,title="Detailansicht des Listing-Elements",width=415.13]
+
+== Listing-Spalten [[ListingColumn]]
+
+Column label:: Die Beschriftung der Spalte im Header des Table Elements.
+Siehe <<InputSource>> für weitere Details zu diesen Einstellungen.
++
+* *Default Value*
+* *User Input*
+* *Unset Value*
+Column Width:: Prozentuale Breite der Spalte in Bezug auf die Breite des Listing-Elements.
+Falls keine Breite gesetzt ist, wird das Standard-HTML-Tabellenverhalten angewendet.
+Der Wert muss eine Ganzzahl zwischen 1 und 100 sein.
+Die Summe aller Breiten wird ebenfalls validiert, um sicherzustellen, dass sie 100 oder weniger beträgt.
+Sort group content by this column:: Die resultierenden Tabellenzeilen werden nach dem Inhalt dieser Spalte sortiert.
++
+[NOTE]
+====
+Die Verschachtelungsstruktur des A12-Dokuments bleibt bei der Sortierung erhalten.
+Die Inhalte einer Group werden gemäß der Sortierung umstrukturiert, aber keine Instanz innerhalb einer Group wird nach außen verschoben.
+====
+Column has custom text properties:: Ermöglicht die vollständige Konfiguration der <<TextProperties, Text Properties>> für die aktuelle Spalte.
+Die Text Properties werden am unteren Rand des Listing Column Editors angezeigt.
+
+Column has custom border properties:: Ermöglicht die vollständige Konfiguration der <<BorderProperties, Border Properties>> für die aktuelle Spalte.
+Die Border Properties werden am unteren Rand des Listing Column Editors angezeigt.
+
+=== Standardberechnungen [[ListingDefaultComputation]]
+
+Ein Satz von <<ValueComputations, Value Computations>> und <<PropertyComputation, Property Computations>>, die ausgeführt werden, wenn weder <<ListingGroupComputation,Group Computations>> noch <<ListingFieldComputation,Field Computations>> für die jeweilige Instanz der Zeile zutreffen.
+
+Value Computations:: Eine Computation Table wird modelliert, um unter einer bestimmten Menge von Bedingungen einen bestimmten Wert zurückzugeben.
+Siehe <<ValueComputations>> für weitere Details.
+
+Property Computations:: Es können Property Computations modelliert werden, die auf jede Zeile dieser Listing-Spalte angewendet werden. Siehe <<PropertyComputation>> für weitere Details.
+
+image::chapter03/03_listing_column_detail_view.png[Detailansicht der Listing-Spalte,title="Detailansicht der Listing-Spalte",width=400]
+
+=== Group Computations [[ListingGroupComputation]]
+
+Ein Satz von <<ValueComputations, Value Computations>> und <<PropertyComputation, Property Computations>>, die auf jede Zeile angewendet werden, die einer Group-Instanz entspricht.
+
+=== Field Computations [[ListingFieldComputation]]
+
+Ein Satz von <<ValueComputations, Value Computations>> und <<PropertyComputation, Property Computations>>, die auf jede Zeile angewendet werden, die einer Field-Instanz entspricht, deren Field Type mit dem Document Field Type übereinstimmt.
+
+Select the field type of the results of the value computations:: Erwarteter Eingabe-Field-Type für die Field Value Computation.
+
+Computation Output Type:: Erwarteter Ausgabe-Field-Type für die Field Value Computations.
+Die Ausgabe der Value Computation sollte diesem Field Type entsprechen.
+
+Field Type:: Die Formatierung kann basierend auf dem Field Type der Instanz angepasst werden, indem einer der folgenden Typen ausgewählt wird:
++
+* *HTML:* Formatiert eine Field-Instanz mit HTML-Inhalt. HTML-Tags werden verarbeitet und im resultierenden PDF gerendert.
+* *Date:* Formatiert eine Date-Field-Instanz in ein lesbares Datumsformat basierend auf der Locale. Die Formatierung kann durch die Definition eines spezifischen Musters zur Auswertung angepasst werden. Beispielsweise ergibt das Muster `YYYY.MM.dd` z. B. `2025.02.17`, während das Muster `dd'th of' MMMM YYYY 'at' HH:mm 'o''clock'` zu `17th of February 2025 at 13:54 o'clock` ausgewertet wird.
+* *Date range:* Formatiert eine DateRange-Field-Instanz in ein lesbares Format basierend auf der Locale. Die Formatierung von Startdatum, Enddatum und Trennzeichen kann durch die Definition eines Auswertungsmusters angepasst werden.
++
+[NOTE]
+====
+Ausführlichere Informationen zu Auswertungsmustern für Datumsangaben finden Sie durch Klicken auf das Info-Symbol neben dem Mustereingabefeld oder in der
+https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html[offiziellen Java-Dokumentation].
+====
++
+* *Checkbox:* Formatiert eine boolesche Field-Instanz basierend auf ihrem Wert. Sie können angeben, welcher Wert für `true` und `false` angezeigt werden soll.
++
+[NOTE]
+====
+Um Sonderzeichen wie ☐ oder ☑ als Anzeigewert für den Checkbox-Typ darzustellen, stellen Sie sicher, dass der ausgewählte <<TextStylesTab, Text Style>> eine Schriftart verwendet, die diese Zeichen unterstützt.
+Der Print Model Editor stellt die Schriftart <<DefaultFonts, Noto Sans Symbols>> bereit, die mit diesen Symbolen kompatibel ist.
+====
+
+Suffix:: Modellieren Sie ein Suffix für die formatierten Zeichenkettendaten.
+
+== Value Computations [[ValueComputations]]
+Zusätzlich zu den Operatoren und Language Constructs in der
+link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language] sowie den Fields und Groups im referenzierten Document Model unterstützen die im Listing-Element verwendeten <<Computations, Computations>> die Nutzung von <<ListingAdditionalFields, Additional Computation Fields>>.
+Die Additional Computation Fields ermöglichen den Zugriff auf Eigenschaften relativ zur Field- oder Group-Instanz der aktuellen Zeile.
+
+=== Additional Computation Fields [[ListingAdditionalFields]]
+
+Die Berechnungen innerhalb des komplexen Listings unterstützen Referenzen auf die folgenden Fields, um Informationen über die Entität der aktuellen Zeile abzurufen:
+
+* `value` – Referenz auf den Wert des aktuellen Fields. Für Groups nicht gefüllt.
+* `path` – Referenz auf den Path des aktuellen Fields oder der aktuellen Group.
+* `name` – Referenz auf den Namen des aktuellen Fields oder der aktuellen Group.
+* `depth` – Referenz auf die Verschachtelungstiefe des aktuellen Fields oder der aktuellen Group innerhalb des Document Models. Root Groups haben `[depth] == 0`.
+* `isField` – Ergibt _True_, wenn die aktuelle Entität ein Field ist, andernfalls _False_.
+* `currentRepetition` – Der Wiederholungsindex der aktuellen Entität.
+* `repetitions` – Der Wiederholungswert der aktuellen Entität.
+* `relativeMetadata/...` – Präfix für den Zugriff auf die <<MetadataFieldsInComputations, Metadata>> der aktuellen Entität.
+* `relativeAnnotation/...` – Präfix für den Zugriff auf die <<AnnotationFieldsInComputations, Annotations>> der aktuellen Entität.
+
+Darüber hinaus können Referenzen auf die folgenden Fields verwendet werden, um Informationen über die übergeordnete Group der aktuellen Entität abzurufen:
+
+* `currentRepetitionOfParent` – Der Wiederholungsindex der übergeordneten Group der aktuellen Entität.
+* `repetitionsOfParent` – Der Wiederholungswert der übergeordneten Group der aktuellen Entität.
+* `parentName` – Der Name der übergeordneten Group der aktuellen Entität.
+* `parentPath` – Der Path der übergeordneten Group der aktuellen Entität.
+
+.Einfache Beispiele für Preconditions mit Additional Computation Fields
+[%header, cols="3a,2"]
+|===
+|Preconditions mit Additional Field|Ergebnis
+|``[depth] == 1``
+|Gibt `_True_` für jedes Child der Root Group des Document Models zurück.
+|``FieldFilled(relativeAnnotation/annotationA)``
+|Gibt `_True_` zurück, wenn die aktuelle Entität die Annotation annotationA besitzt.
+|===
+
+.Einfache Beispiele für Operationen mit Additional Computation Fields
+[%header, cols="3a,2"]
+|===
+|Operationen mit Additional Field|Ergebnis
+|``[value]``
+|Gibt den Wert des aktuellen Fields zurück.
+|``[relativeMetadata/label]``
+|Gibt das Label der aktuellen Entität zurück.
+|===
+
+.Fortgeschrittene Beispiele für Preconditions mit Additional Computation Fields
+[%header, cols="3a,2"]
+|===
+|Precondition mit Additional Fields|Ergebnis
+|``[parentPath] == "/general/phone/" AND [repetitionsOfParent] < 2``
+|Gibt `_True_` für jedes Child der Group /general/phone/ zurück, wenn die Group weniger als 2 Instanzen hat.
+|``[repetitionsOfParent] > 1 AND RoundDown ([currentRepetitionOfParent] / 2, 0) != RoundUp([currentRepetitionOfParent] / 2, 0)``
+|Gibt `_True_` für jedes zweite Child einer wiederholbaren Group zurück.
+|===
+
+== Property Computation [[PropertyComputation]]
+
+Eine Property Computation besteht aus einer Ziel-Property und einer Menge von Computation Alternatives, die jeweils aus einer Precondition und einer Operation bestehen.
+Eine Vielzahl von Properties kann als Ziel-Property festgelegt werden, darunter:
+
+* <<TextProperties, Text Properties>>
+* <<BorderProperties, Border Properties>>
+* <<TextStylesTab, Text Styles>>
+
+Zusätzlich können die folgenden Properties gesetzt werden:
+
+* *Vertical Alignment:* Definiert die vertikale Ausrichtung des Zelleninhalts.
+* *Hide Cell:* Ein boolescher Wert, der bei _True_ die Zelle vollständig ausblendet.
+* *Hide Value:* Ein boolescher Wert, der bei _True_ den Wert der Zelle ausblendet. (Nur verfügbar für Property Computations in <<ListingColumn, Listing-Spalten>>)
+* *Column Span:* Ein numerischer Wert, der die Anzahl der Spalten definiert, über die sich die Zelle erstreckt. (Nur verfügbar für Property Computations in <<ListingColumn, Listing-Spalten>>)
+
+Die <<ListingAdditionalFields, Additional Computational Fields>> können auch in den Preconditions und Operations von Property Computations verwendet werden.
+
+
+== Group Property Computation [[GroupPropertyComputation]]
+
+Eine Group Property Computation wendet Properties auf alle Listing-Zeilen an, die einer ausgewählten Group-Instanz entsprechen.
+Sie besteht aus einer Ziel-Property, einer Group-Instanz und einer Menge von Computation Alternatives, die jeweils aus einer Precondition und einer Operation bestehen.
+
+Derzeit kann nur *Hide Group* als Ziel-Property für Group Property Computations verwendet werden.
+Wenn die Computation Alternatives zu _True_ ausgewertet werden, werden alle Zeilen der ausgewählten Group-Instanz ausgeblendet.
+
+WARNING: Die Precondition darf nur für Fields und Groups innerhalb des ausgewählten Group Path zu „true" ausgewertet werden.
+
+=== Beispiel: Hide Group
+
+Das folgende Beispiel zeigt, wie eine wiederholbare `addresses`-Group basierend auf einer Bedingung ausgeblendet wird.
+
+image::chapter03/03_listing_hide_group_detail_view.png[Detailansicht der Hide Group Property Computation,title="Detailansicht der Hide Group Property Computation",width=400]
+
+.Beispiel: Ausblenden einer wiederholbaren Adress-Group, wenn sie als nicht öffentlich markiert ist
+* **Group Path:** `/customer/addresses`
+* **Precondition:** `[path] == [metadata/customer/addresses/isPublic/path] And [value] == False`
+* **Operation:** `True`
+
+In diesem Beispiel werden alle Zeilen der `addresses`-Group ausgeblendet, wenn der Wert des Fields `isPublic` `False` ist. Die folgenden Bilder zeigen die gerenderte PDF-Ausgabe:
+
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter03/03_listing_hide_group_no_condition.png[Ergebnis ohne Bedingung,title="Alle Groups sichtbar",width=300]
+|
+image::chapter03/03_listing_hide_group_with_condition.png[Ergebnis mit Bedingung,title="Nicht öffentliche Groups ausgeblendet",width=300]
+|===
+
+NOTE: Sie können das Metadaten-Field `path` in Berechnungen verwenden, um den Path eines Elements als Zeichenkettenwert zu referenzieren.
+Beispielsweise wird `[metadata/customer/addresses/isPublic/path]` zu `"/customer/addresses/isPublic/"` aufgelöst.
+
+
+== Anhänge [[ListingAttachment]]
+
+Anhänge im Listing-Element werden in das generierte PDF aufgenommen, wenn die ausgewählte Group Attachment-Groups enthält. Diese Anhänge werden am Ende des PDFs nach dem Rendern aller Print Model-Inhalte hinzugefügt. Jeder Anhang beginnt auf einer neuen Seite.
+
+=== Rendern von Anhängen
+
+Anhänge können auf zwei Arten aufgelöst werden:
+
+- **Eingebetteter Anhang**: Der Inhalt des Anhangs ist in den Dokumentdaten eingebettet.
+- **Referenzierter Anhang**: Ein Anhang wird durch Angabe der Attachment-ID referenziert. Der AttachmentProvider verwendet diese ID, um den Anhanginhalt zur Renderzeit bereitzustellen.
+
+==== Renderverhalten:
+- Wenn der Anhanginhalt vorhanden ist, wird er gerendert.
+- Wenn die Attachment-ID vorhanden ist, wird der referenzierte Anhang gerendert.
+- Wenn sowohl Inhalt als auch ID angegeben sind, hat der Inhalt Vorrang und wird gerendert.
+
+Um referenzierte Anhänge zu ermöglichen, müssen Sie den link:/docs/PRINT_ENGINE/print-technical-documentation/index.html#attachment_provider[AttachmentProvider] verwenden.
+
+- **Attachment Fields**: Im gerenderten Listing werden alle Attachment-Fields angezeigt, wobei das Content-Field als Link dargestellt wird, der auf den gerenderten Anhang verweist.
+- **Bildgröße**: Die Bildgröße wird so skaliert, dass sie die volle Seitenbreite ausfüllt.
+- **Unterstützte Anhangtypen**:
+  * Bilder: `png`, `jpg`
+  * PDFs: `pdf`
+
+[NOTE]
+====
+* Wenn der Anhangtyp nicht unterstützt wird, wird das Content-Field nicht im Listing-Ergebnis angezeigt und der Anhang nicht gerendert.
+* Das Rendern von Anhängen kann sich bei Verwendung des <<legacy_rendering_mode, Legacy Rendering Mode>> unterscheiden.
+====

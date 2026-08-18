@@ -34,7 +34,6 @@ import { Action, Reducer } from "redux";
 import { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/model/typesetting-model.js";
 
 import { PrintEngineActions } from "../../store/actions.js";
-import { DINTemplateSegment } from "../../api/index.js";
 
 import { RequestApiActions } from "./actions.js";
 import { RequestApiState } from "./state.js";
@@ -51,10 +50,10 @@ export const RequestApiReducer: Reducer<RequestApiState> = (
 		return defaultState;
 	}
 
-	if (RequestApiActions.setPrintModelHeaders.match(action)) {
+	if (RequestApiActions.setPrintModelIds.match(action)) {
 		return {
 			...state,
-			printModelHeaders: action.payload,
+			printModelIds: action.payload,
 		};
 	}
 
@@ -75,16 +74,13 @@ export const RequestApiReducer: Reducer<RequestApiState> = (
 		};
 	}
 
-	if (RequestApiActions.setDINTemplatePrintModels.match(action)) {
+	if (RequestApiActions.setDINTemplatePrintModel.match(action)) {
 		return {
 			...state,
-			dinTemplatePrintModels: action.payload.reduce(
-				(dinTemplatePrintModels: Record<string, DINTemplateSegment[]>, { printModelId, templateSegments }) => {
-					dinTemplatePrintModels[printModelId] = templateSegments;
-					return dinTemplatePrintModels;
-				},
-				{}
-			),
+			dinTemplatePrintModels: {
+				...state.dinTemplatePrintModels,
+				[action.payload.id]: action.payload.templateSegments,
+			},
 		};
 	}
 

@@ -39,6 +39,7 @@ const defaultCommitViewState: CommitViewState = {
 	printModel: undefined,
 	logPersistentEntries: [],
 	commitInteractionRows: [],
+	isCommitting: false,
 };
 
 export const CommitViewReducer: Reducer<CommitViewState> = (
@@ -64,6 +65,13 @@ export const CommitViewReducer: Reducer<CommitViewState> = (
 		return {
 			...state,
 			commitInteractionRows: action.payload,
+		};
+	}
+
+	if (CommitViewActions.setIsCommitting.match(action)) {
+		return {
+			...state,
+			isCommitting: action.payload,
 		};
 	}
 

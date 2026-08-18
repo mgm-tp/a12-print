@@ -38,11 +38,13 @@ import { Icon } from "@com.mgmtp.a12.widgets/widgets-core/lib/icon/index.js";
 import { Select, SelectItem } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/select/index.js";
 import { addPrefix } from "@com.mgmtp.a12.widgets/widgets-core/lib/common/index.js";
 import { TextLineStateless } from "@com.mgmtp.a12.widgets/widgets-core/lib/input/text-line/index.js";
+import { Tooltip } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { DINTemplateActions } from "../../redux/din-template/index.js";
 import { RequestApiSelectors } from "../../redux/request-api/selectors.js";
+import { RequestApiActions } from "../../redux/index.js";
 
 import { StyledSchemaToolbar } from "./DocumentModelReferencesToolbar.styled.js";
 import { StyledPrintModelReferenceContainer } from "./PrintModelReference.styled.js";
@@ -74,16 +76,33 @@ const PrintModelReferencesToolbar = () => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const [selectedPrintModel, setSelectedPrintModel] = React.useState("");
-	const dinTemplatePrintModelIds = useSelector(RequestApiSelectors.dinTemplatePrintModelIds);
+	const [pendingModel, setPendingModel] = React.useState<string | null>(null);
+
+	const dinTemplateSegments = useSelector(RequestApiSelectors.dinTemplatePrintModels);
+	const printModelIds = useSelector(RequestApiSelectors.selectablePrintModelIds);
 	const printHeader = useSelector(PrintEngineSelectors.printHeader);
 	const dinTemplatePrintModelItems: SelectItem[] = React.useMemo(
 		() =>
-			dinTemplatePrintModelIds.map(id => ({
+			(printModelIds || []).map(id => ({
 				value: id,
 				label: id,
 			})),
-		[dinTemplatePrintModelIds]
+		[printModelIds]
 	);
+
+	const segmentsAlreadyLoaded = React.useMemo(() => {
+		return Object.keys(dinTemplateSegments).includes(selectedPrintModel);
+	}, [dinTemplateSegments, selectedPrintModel]);
+
+	const dinTemplateSegmentsLoading =
+		pendingModel !== null && !Object.keys(dinTemplateSegments).includes(pendingModel);
+
+	const currentSelectedModelHasTemplateSegments = React.useMemo(() => {
+		if (segmentsAlreadyLoaded) {
+			return dinTemplateSegments[selectedPrintModel].length > 0;
+		}
+		return false;
+	}, [dinTemplateSegments, segmentsAlreadyLoaded, selectedPrintModel]);
 
 	const addReferencedPrintModel = React.useCallback(() => {
 		dispatch(
@@ -95,6 +114,18 @@ const PrintModelReferencesToolbar = () => {
 		setSelectedPrintModel("");
 	}, [dispatch, printHeader, selectedPrintModel]);
 
+	const onValueChanged = React.useCallback(
+		(newValue: string) => {
+			const alreadyLoaded = Object.keys(dinTemplateSegments).includes(newValue);
+			if (!alreadyLoaded) {
+				dispatch(RequestApiActions.loadDINTemplatePrintModel(newValue));
+				setPendingModel(newValue);
+			}
+			setSelectedPrintModel(newValue);
+		},
+		[dinTemplateSegments, dispatch]
+	);
+
 	const addButtonLabel = localizer(RESOURCE_KEYS.button.add);
 
 	return (
@@ -103,17 +134,24 @@ const PrintModelReferencesToolbar = () => {
 				className={addPrefix("-u-flex-1")}
 				placeholder={localizer(RESOURCE_KEYS.input.selectPlaceholder)}
 				value={selectedPrintModel}
-				onValueChanged={reference => setSelectedPrintModel(reference)}
+				onValueChanged={onValueChanged}
 				items={dinTemplatePrintModelItems}
 				fitToParent={false}
 			/>
-			<Button
-				title={addButtonLabel}
-				label={addButtonLabel}
-				icon={<Icon>add</Icon>}
-				disabled={!selectedPrintModel}
-				onClick={addReferencedPrintModel}
-			/>
+			<Tooltip
+				disabled={currentSelectedModelHasTemplateSegments || !selectedPrintModel}
+				variant="hint"
+				text={localizer(RESOURCE_KEYS.sidebar.schema.tooltips.printModelReferenceWithoutSegments)}
+			>
+				<Button
+					loading={dinTemplateSegmentsLoading}
+					title={addButtonLabel}
+					label={addButtonLabel}
+					icon={<Icon>add</Icon>}
+					disabled={!selectedPrintModel || !currentSelectedModelHasTemplateSegments}
+					onClick={addReferencedPrintModel}
+				/>
+			</Tooltip>
 		</StyledSchemaToolbar>
 	);
 };

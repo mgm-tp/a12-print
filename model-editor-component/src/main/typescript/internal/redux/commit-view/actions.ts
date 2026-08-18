@@ -46,6 +46,7 @@ export namespace CommitViewActions {
 		logPersistentEntries?: LogPersistentEntry[];
 	}>("SET_LOADING_PRINT_MODEL_RESPONSE");
 	export const setCommitInteractionRows = factory<CommitInteractionRow[]>("SET_COMMIT_INTERACTION_ROWS");
+	export const setIsCommitting = factory<boolean>("SET_IS_COMMITTING");
 	export const initialCommitView = factory("INITIAL_COMMIT_VIEW");
 	export const validateChanges = factory("VALIDATE_CHANGES");
 	export const commitChanges = factory<CommitInteractionRow[]>("COMMIT_CHANGES");

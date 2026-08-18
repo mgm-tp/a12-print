@@ -90,7 +90,7 @@ export const PageBreakBehaviorInput = ({ reference, infoMessage }: PageBreakBeha
 		(pageBreakBehavior: Partial<InputSource<PageBreakBehavior>> & PrintModelEntity) => {
 			dispatch(
 				InteractionLogActions.start({
-					description: RESOURCE_KEYS.interaction.relativeLayout.changeMargin,
+					description: RESOURCE_KEYS.interaction.relativeLayout.changePageBreakBehavior,
 					region: StageRegion.LAYOUT,
 					transactionLogActions: [
 						TransactionLogStateActions.updateReferenceElement({

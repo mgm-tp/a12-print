@@ -40,7 +40,6 @@ import {
 	setCommitInteractionRowsSaga,
 } from "./commit-view/index.js";
 import {
-	loadDinTemplatePrintModelsSaga,
 	loadPrintModelSaga,
 	loadReferencedPrintModelSaga,
 	loadReferencedPrintModelsSaga,
@@ -50,6 +49,7 @@ import {
 	setPrintModelSaga,
 	initializePrintModelSaga,
 	loadDocumentModelIdsSaga,
+	loadPrintModelIdsSaga,
 } from "./request-api/index.js";
 import { openDetailViewSaga, openVisibilityConfigSaga, updateVisibilityConfigSaga } from "./detail-view/index.js";
 import {
@@ -74,6 +74,7 @@ import {
 	batchLoadDocumentModelDataSaga,
 	loadDocumentModelDataSaga,
 } from "./document-model-data/load-document-model-data-saga.js";
+import { loadDinTemplatePrintModelSaga } from "./request-api/load-din-template-print-model-saga.js";
 
 export namespace PrintEditorComponentSagas {
 	export const sagas = {
@@ -105,7 +106,8 @@ export namespace PrintEditorComponentSagas {
 		updateElementHeightTextStyleSaga,
 		updateElementHeightDomNodeSaga,
 		addReferenceEntrySaga,
-		loadDinTemplatePrintModelsSaga,
+		loadDinTemplatePrintModelSaga,
+		loadPrintModelIdsSaga,
 		openVisibilityConfigSaga,
 		updateVisibilityConfigSaga,
 		validateTextStylesSaga,

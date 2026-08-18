@@ -33,7 +33,7 @@ export * from "./load-print-model-saga.js";
 export * from "./load-referenced-print-model-saga.js";
 export * from "./load-referenced-print-models-saga.js";
 export * from "./load-document-model-ids-saga.js";
-export * from "./load-din-template-print-models-saga.js";
+export * from "./load-print-model-ids-saga.js";
 export * from "./load-typesetting-model-headers-saga.js";
 export * from "./load-typesetting-model-saga.js";
 export * from "./load-typesetting-models-saga.js";

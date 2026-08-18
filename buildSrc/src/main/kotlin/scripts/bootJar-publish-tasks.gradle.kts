@@ -60,14 +60,16 @@ tasks.named<BootJar>("bootJar") {
 	}
 }
 
-tasks.withType<Jar>().configureEach {
+tasks.withType<BootJar>().configureEach {
     metaInf {
-        from(rootDir) {
-            include("LICENSE")
-        	include("NOTICE")
-        	include("THIRD_PARTY_NOTICES")
+		from(projectDir) {
+			include("THIRD_PARTY_NOTICES")
 			include("licenses/**")
-        }
+		}
+		from(rootDir) {
+			include("LICENSE")
+			include("NOTICE")
+		}
     }
 }
 

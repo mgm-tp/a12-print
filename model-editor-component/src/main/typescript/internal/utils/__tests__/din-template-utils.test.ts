@@ -208,7 +208,8 @@ describe("din template utils", () => {
 										},
 									},
 									hideConditions: [],
-									id: expect.any(String),
+									// use stable id from template (regression guard: must NOT be a new nanoid)
+									id: "ID_f6e15bb8-9627-488b-87f0-1c673a0adf0eBG",
 									position: {
 										id: "ID_77109cdf-45ea-41e2-a2b6-4ea560ca8c38BG",
 										x: {

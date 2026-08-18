@@ -520,7 +520,7 @@ function getElementReference(
 		ref =>
 			({
 				...ref,
-				id: nanoid(),
+				id: ref.id, // use stable id from template
 				refId: overrideElements.find(element => element.override?.refId === ref.refId)?.id,
 			}) as PlaceableReference
 	);

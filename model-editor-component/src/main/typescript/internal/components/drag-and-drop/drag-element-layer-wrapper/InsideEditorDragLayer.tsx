@@ -230,7 +230,6 @@ export const InsideEditorDragLayer = ({
 					y: createPlainMmMeasure(PX_TO_MM((clientY - top) / zoomFactor)),
 				};
 			}
-			calculateSnapOffset(currentDifference, mainTarget);
 
 			return currentDifference;
 		}
@@ -238,17 +237,23 @@ export const InsideEditorDragLayer = ({
 			x: createPlainMmMeasure(0),
 			y: createPlainMmMeasure(0),
 		};
-	}, [
-		calculateSnapOffset,
-		clientOffset,
-		differenceOffset,
-		editorState,
-		isDragging,
-		isOver,
-		item.newType,
-		mainTarget,
-		zoomFactor,
-	]);
+	}, [clientOffset, differenceOffset, editorState, isDragging, isOver, item.newType, mainTarget, zoomFactor]);
+
+	// Calculate snap offset as a side effect (not during render) to avoid
+	// updating state of another component while this component is rendering.
+	React.useLayoutEffect(() => {
+		if (!(isDragging && isOver && mainTarget)) {
+			return;
+		}
+
+		const frameId = globalThis.requestAnimationFrame(() => {
+			calculateSnapOffset(newPos, mainTarget);
+		});
+
+		return () => {
+			globalThis.cancelAnimationFrame(frameId);
+		};
+	}, [calculateSnapOffset, isDragging, isOver, mainTarget, newPos]);
 
 	React.useEffect(() => {
 		if (mainTarget) {

@@ -1,0 +1,110 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Table [[Table]]
+
+Das Table-Element fügt eine Tabelle in das resultierende PDF ein, die auf eine ausgewählte Repeatable Group in einem referenzierten A12 Document Model verweist.
+Jede Zeile der resultierenden Tabelle entspricht einer Instanz der Repeatable Group.
+Das Table-Element kann beliebig viele Spalten enthalten, benötigt jedoch mindestens eine Spalte für eine korrekte Darstellung.
+Jede Spalte kann einen Titel haben, der in der Kopfzeile angezeigt wird und auf einem Element-Typ basiert:
+
+* Field
+* Expression
+
+Wenn eine Spalte als _Sum Column_ markiert ist, wird am Ende der Tabelle eine zusätzliche Zeile erzeugt, die die Summen jeder Sum Column enthält.
+Um diese letzte Zeile als Summenzeile zu kennzeichnen, können Sie ein _Sum Label_ definieren. Dieses Label wird in der ersten Spalte der Tabelle gerendert, sofern mindestens eine _Sum Column_ in den anderen Spalten der Tabelle definiert ist.
+
+Document Model:: Wählen Sie ein Document Model aus, das im <<SchemaTab, Schema Tab>> referenziert ist.
+Group:: Der Path zur Group im Document Model, die den Root des Table Elements definiert.
+Jede Zeile des Table Elements entspricht einer Wiederholung dieser Group.
++
+[NOTE]
+====
+Es können nur Groups ausgewählt werden, die entweder nicht wiederholbar sind oder Repeatable Groups, die keine Children anderer Repeatable Groups sind.
+====
+Columns:: Jede Spalte des Table Elements gehört zu einem definierten verschachtelten Element.
+Klicken Sie auf „Add", um neue Spalten hinzuzufügen, oder klicken Sie auf die Spalte in der Tabelle, um sie zu bearbeiten.
+Weitere Details finden Sie unter <<TableColumn>>.
+General Properties::
+Maximum Row Count::: Numerischer Wert, der die maximale Anzahl an Zeilen angibt, die für das Table Element erzeugt werden.
+Klicken Sie auf „Unset Value", um diese Einstellung zu überspringen.
+Weitere Details zu diesen Einstellungen finden Sie unter <<InputSource>>.
+Sum Row Label::: Ein String-Label, das in der ersten Zelle der Zeile angezeigt wird, die die Ergebnisse der Sum Columns enthält.
+Wenn das Sum Row Label nicht gesetzt ist, wird kein Label angezeigt.
+Weitere Details zu diesen Einstellungen finden Sie unter <<InputSource>>.
++
+[NOTE]
+====
+Wenn die erste Spalte als Sum Column markiert ist, enthält die Zeile kein Label.
+====
+Filtering::
+Filter Expression::: Ein Filterausdruck, der einen Filter auf die Menge der Zeilen anwendet.
+Die Syntax entspricht der im Form Model verwendeten Filter Expression Syntax.
+Die Zeile wird angezeigt, wenn die Bedingung erfüllt ist.
+
+Darüber hinaus ist das Table-Element über <<BorderProperties, Border Properties>> sowie separate Konfigurationen der <<TextProperties, Text Properties>> für Kopfzeile und Inhalt der Tabelle konfigurierbar.
+
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter03/03_table_detail_view.png[Table-Element-Detailansicht,title="Table-Detailansicht",width=436.7688]
+|
+image::chapter03/03_table_properties_detail_view.png[Table-Eigenschaften-Detailansicht,title="Table-Element-Detailansicht (Fortsetzung)",width=400]
+|===
+
+== Columns [[TableColumn]]
+
+Element type:: Der Typ dieses Elements muss ausgewählt werden, da er den Inhalt der jeweiligen Spalte definiert.
++
+* *Field*: Jede Zelle der Spalte wird direkt aus einer bestimmten Field-Instanz eingefügt, analog zum <<Field, Field>>-Element.
+* *Expression*: Jede Zelle ist das Ergebnis eines Ausdrucks, der auf der Instanz der Repeatable Group ausgewertet wird, analog zum <<Expression, Expression>>-Element.
+Label:: Das Label der Spalte in der Kopfzeile des Table Elements.
+Weitere Details zu diesen Einstellungen finden Sie unter <<InputSource>>.
++
+* *Default Value*
+* *User Input*
+Hide label?:: Blendet das Label für diese Spalte aus.
+Width:: Prozentuale Breite der Spalte in Bezug auf die Breite des Listing-Elements.
+Wenn keine Breite gesetzt ist, wird das Standard-HTML-Tabellenverhalten angewendet.
+Der Wert muss eine Ganzzahl zwischen 1 und 100 sein.
+Die Summe aller Breiten wird ebenfalls validiert, um sicherzustellen, dass sie 100 oder weniger beträgt.
+Sum Column:: Markiert die Spalte für eine Summierung am Ende der Tabelle.
++
+[NOTE]
+====
+Eine Spalte kann nur als Sum Column markiert werden, wenn der Element Type ein Field ist, das ein Number Field ist.
+====
+
+Klicken Sie auf „Back", um zum Table Editor zurückzukehren.
+
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter03/03_table_column_field_detail_view.png[Table-Spalte-Field-Detailansicht,title="Table-Field-Spalten-Detailansicht",width=400]
+|
+image::chapter03/03_table_column_expression_detail_view.png[Table-Spalte-Expression-Detailansicht,title="Table-Expression-Spalten-Detailansicht",width=400]
+|===
+
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Barrierefreiheitshinweis*
+
+Aus Gründen der Barrierefreiheit sollte ein Table-Element mehr als eine Spalte und mehr als eine Zeile haben.
+
+Verwenden Sie nicht die Option „Hide Label" für Spalten und nicht die Option „Hide Header" für die Tabelle.
+====

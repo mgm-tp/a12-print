@@ -1,0 +1,30 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Expression [[Expression]]
+
+Das Expression-Element fügt das Ergebnis eines Form-Engine-Ausdrucks in das resultierende PDF ein.
+
+Document Model:: Wählen Sie ein Document Model aus, das im <<SchemaTab, Schema Tab>> referenziert ist.
+Content:: Der Inhalt des Expression-Elements wird aus dem Expression-_content_ erzeugt.
+Weitere Informationen zur erwarteten Syntax finden Sie in der link:/docs/SME/sme-dm-ba-docs/index.html[Expression-Dokumentation].
+
+Das Expression-Element kann automatisch ausgeblendet werden, wenn alle referenzierten Fields einen leeren Wert oder String ergeben. Um dieses Verhalten zu aktivieren, wählen Sie die Option `Hide this element if all nested entities are empty`.
+
+Darüber hinaus lässt sich das Expression-Element über <<BorderProperties, Border Properties>> und <<TextProperties, Text Properties>> konfigurieren.
+
+image::chapter03/03_expression_detail_view.png[Expression element detail view,title="Detailansicht des Expression-Elements"]

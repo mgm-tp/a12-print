@@ -39,4 +39,5 @@ export interface CommitViewState {
 	commitViewErrorMap?: PrintModelErrorMap;
 	printModel?: PrintModel;
 	logPersistentEntries?: LogPersistentEntry[];
+	isCommitting: boolean;
 }

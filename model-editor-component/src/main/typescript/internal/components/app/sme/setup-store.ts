@@ -47,7 +47,7 @@ import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
 import { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/model/typesetting-model.js";
 
 import {
-	DINTemplatePrintModels,
+	DINTemplateSegment,
 	EditorComponentApiActions,
 	RequestApi,
 	UpdatedReferenceModels,
@@ -58,9 +58,9 @@ import createSagaMiddleware from "../../../redux-saga/index.js";
 import { ValidationState } from "../../../redux/index.js";
 
 import { PrintEditorSMEProps } from "./types.js";
-import { getDinTemplatePrintModels } from "./utils/get-din-template-print-models.js";
 import { setSegmentReferences } from "./utils/set-segment-references.js";
 import { getModelReferencesMaps } from "./utils/model-references.js";
+import { getDinTemplateSegments } from "./utils/get-din-template-segments.js";
 
 const printModelMarshaller = new PrintModelMarshaller();
 const typesettinMarshaller = new TypesettingModelMarshaller();
@@ -196,8 +196,16 @@ export function setupStore(
 		onValidationStateChange: (validationState: ValidationState) => {
 			requestApiContext.onValidationStateChange && requestApiContext.onValidationStateChange(validationState);
 		},
-		loadDINTemplatePrintModels(): Promise<DINTemplatePrintModels[]> {
-			return Promise.resolve(getDinTemplatePrintModels(requestApiContext.printModels));
+		loadPrintModelIds(): Promise<string[]> {
+			return Promise.resolve(requestApiContext.printModels.map(model => model.header.id));
+		},
+		loadDINTemplateSegments(id: string): Promise<DINTemplateSegment[]> {
+			const selectedModel = requestApiContext.printModels.find(model => model.header.id === id);
+
+			if (!selectedModel) {
+				return Promise.resolve([]);
+			}
+			return Promise.resolve(getDinTemplateSegments(selectedModel));
 		},
 		async setPrintModelReferences({
 			incomingPrintModelId,

@@ -50,6 +50,7 @@ export const de: typeof RESOURCE_KEYS = {
 				modelNameValidation:
 					"Verwenden Sie nur Buchstaben, Ziffern, Bindestriche, Unterstriche und Punkte. Außerdem darf der Name nur mit einem Buchstaben oder Unterstrich beginnen, nicht aber mit 'xml'.",
 				annotationNameDuplicate: "Der Name der Annotation muss einzigartig sein",
+				annotationNameProtected: "Dieser Name der Annotation ist nicht erlaubt",
 			},
 			roleSettings: {
 				header: {
@@ -84,6 +85,7 @@ export const de: typeof RESOURCE_KEYS = {
 			},
 			tooltips: {
 				defaultTypesettingModel: "Standard-Silbentrennungsmodell",
+				printModelReferenceWithoutSegments: "Das ausgewählte Print Model besitzt keine DINTemplate-Segmente",
 			},
 		},
 		content: "Inhalt",
@@ -752,6 +754,7 @@ export const de: typeof RESOURCE_KEYS = {
 		},
 		relativeLayout: {
 			changeMargin: "Geänderte Ränder von Elementen auf der Bühne",
+			changePageBreakBehavior: "Seitenumbruch-Verhalten geändert",
 		},
 		useCopyPaste: {
 			pasteElements: "Kopierte Elemente einfügen",

@@ -162,8 +162,8 @@ export const ImageSourceTypeAttachment = ({ element }: ImageSourceTypeAttachment
 					const imageHtml = new Image();
 					imageHtml.src = reader.result?.toString();
 					imageHtml.onload = function () {
-						const naturalHeight = createMmMeasure(PX_TO_MM(imageHtml.naturalHeight));
-						const naturalWidth = createMmMeasure(PX_TO_MM(imageHtml.naturalWidth));
+						const naturalHeightMm = PX_TO_MM(imageHtml.naturalHeight);
+						const naturalWidthMm = PX_TO_MM(imageHtml.naturalWidth);
 						updateAttachment(
 							{
 								id: getEntityId(EntityKey.Attachment, imageHtml.src),
@@ -177,10 +177,12 @@ export const ImageSourceTypeAttachment = ({ element }: ImageSourceTypeAttachment
 								id: nanoid(),
 								height: isMeasure(image?.dimensions?.height)
 									? image?.dimensions?.height
-									: naturalHeight,
-								width: isMeasure(image?.dimensions?.width) ? image?.dimensions?.width : naturalWidth,
-								originalHeight: naturalHeight,
-								originalWidth: naturalWidth,
+									: createMmMeasure(naturalHeightMm),
+								width: isMeasure(image?.dimensions?.width)
+									? image?.dimensions?.width
+									: createMmMeasure(naturalWidthMm),
+								originalHeight: createMmMeasure(naturalHeightMm),
+								originalWidth: createMmMeasure(naturalWidthMm),
 							}
 						);
 					};

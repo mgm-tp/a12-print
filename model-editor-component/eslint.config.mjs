@@ -38,6 +38,10 @@ export default [
 	...printReactDevtoolsConfig,
 	...printReduxDevtoolsConfig,
 	{
-		ignores: ["src/main/typescript/internal/types/draft-js-*-html/"],
+		ignores: [
+			"src/main/typescript/internal/types/draft-js-*-html/",
+			"jest.integration.config.cjs",
+			"jest.integration.setup.cjs",
+		],
 	},
 ];

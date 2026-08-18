@@ -50,6 +50,7 @@ export const en: typeof RESOURCE_KEYS = {
 				modelNameValidation:
 					"Use only letters, digits, hyphens, underscores and periods. Furthermore, the name may only start with a letter or underscore, but not with 'xml'.",
 				annotationNameDuplicate: "The annotation name must be unique",
+				annotationNameProtected: "This annotation name is not allowed",
 			},
 			roleSettings: {
 				header: {
@@ -83,6 +84,7 @@ export const en: typeof RESOURCE_KEYS = {
 			},
 			tooltips: {
 				defaultTypesettingModel: "Default typesetting model",
+				printModelReferenceWithoutSegments: "The selected print model does not have a DINTemplate segment",
 			},
 		},
 		content: "Content",
@@ -745,6 +747,7 @@ export const en: typeof RESOURCE_KEYS = {
 		},
 		relativeLayout: {
 			changeMargin: "Changed margins of elements on stage",
+			changePageBreakBehavior: "Changed page break behavior",
 		},
 		useCopyPaste: {
 			pasteElements: "Paste copied elements",

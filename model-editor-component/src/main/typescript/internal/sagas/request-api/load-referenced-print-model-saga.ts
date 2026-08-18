@@ -349,6 +349,7 @@ function syncReferenceSegment(
 		if (!overrideElementRef) {
 			overrideElementRef = {
 				...clonePrintModelEntity(templateElementRef.placeable),
+				id: templateElementRef.placeable.id, // use stable id from template
 				refId: nestedOverride.id,
 			};
 			newElementReferences.push(overrideElementRef);
@@ -435,6 +436,7 @@ function syncOverride(
 		if (!overrideElementRef) {
 			overrideElementRef = {
 				...clonePrintModelEntity(templateElementRef.placeable),
+				id: templateElementRef.placeable.id, // use stable id from template
 				refId: nestedOverride.id,
 			};
 			newElementReferences.push(overrideElementRef);
@@ -583,6 +585,7 @@ function handleNewBoundingBox(
 	const newOverride = createOverride(boundingBox, segment);
 	const newPlaceableReference: PartialPlaceableReference = {
 		...clonePrintModelEntity(reference),
+		id: reference.id, // use stable id from template
 		refId: newOverride.id,
 	};
 	return { newOverride, newPlaceableReference };

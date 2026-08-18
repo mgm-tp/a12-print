@@ -48,15 +48,12 @@ export function segmentReferenceItemSelector(_: PrintEngineState, printModelId: 
 export namespace RequestApiSelectors {
 	const printEngineState = createSliceSelector<PrintEngineState>(state => state);
 	export const requestApiState = createSliceSelector<RequestApiState>(state => state.RequestApi);
-	export const dinTemplatePrintModels = createSelector(
-		[requestApiState],
-		state => state.dinTemplatePrintModels || {}
-	);
-	export const dinTemplatePrintModelIds: Selector<PrintEngineState, string[]> = createSelector(
-		[dinTemplatePrintModels, PrintEngineSelectors.dinTemplateModelReferences, PrintEngineSelectors.printHeader],
-		(dinTemplatePrintModels, dinTemplateModelReferences, currentPrintModelHeader) => {
+	export const printModelIds = createSelector([requestApiState], state => state.printModelIds);
+	export const selectablePrintModelIds: Selector<PrintEngineState, string[] | undefined> = createSelector(
+		[printModelIds, PrintEngineSelectors.dinTemplateModelReferences, PrintEngineSelectors.printHeader],
+		(printModelIds, dinTemplateModelReferences, currentPrintModelHeader) => {
 			const usedModelIds = [...dinTemplateModelReferences.map(ref => ref.reference), currentPrintModelHeader.id];
-			return Object.keys(dinTemplatePrintModels || {}).filter(model => !usedModelIds.includes(model));
+			return (printModelIds || []).filter(model => !usedModelIds.includes(model));
 		}
 	);
 	export const referencedPrintModelHeaders: Selector<PrintEngineState, Header[]> = createSelector(
@@ -84,6 +81,10 @@ export namespace RequestApiSelectors {
 		[printEngineState, segmentReferenceItemSelector],
 		(state, [printModelId, segmentId]) =>
 			printModel(state, printModelId)?.content.segments.definitions.find(segment => segment.id === segmentId)
+	);
+	export const dinTemplatePrintModels = createSelector(
+		[requestApiState],
+		state => state.dinTemplatePrintModels || {}
 	);
 	export const dinTemplateSegmentItems: Selector<PrintEngineState, DinTemplateSegmentItem[]> = createSelector(
 		[PrintEngineSelectors.dinTemplateModelReferences, dinTemplatePrintModels],

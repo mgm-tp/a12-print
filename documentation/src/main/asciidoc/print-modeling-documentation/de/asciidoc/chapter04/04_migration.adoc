@@ -1,0 +1,109 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= print-shell [[PrintShell]]
+
+Dieses Kapitel behandelt die print-shell. Dabei handelt es sich um eine Kommandozeilenschnittstelle, die den Zugriff auf nützliche Werkzeuge der Print Engine ermöglicht.
+
+== Voraussetzungen
+
+print-shell ist im Artifactory verfügbar.
+
+Um die print-shell auszuführen, muss Java 21 installiert und über die Kommandozeile verfügbar sein.
+
+== print-shell starten
+
+Die print-shell muss in der Kommandozeile mit folgendem Befehl gestartet werden:
+
+[source,bash,subs="attributes"]
+----
+java -jar print-shell-[PrintEngineVersion].jar
+----
+
+Die print-shell ist ein nützliches Werkzeug, das Ihnen die Verwendung folgender Befehle ermöglicht:
+
+=== Migration [[PrintShellMigration]]
+
+Bis zur Print Model-Version `2.1.0` wird die Migration über die Kommandozeilenschnittstelle der print-shell durchgeführt.
+
+CAUTION: Ab Release 2.1.0 wird ein neues TypeScript-basiertes Migrationstool eingeführt, um den allgemeinen A12-Standards zu entsprechen. Die Migration über die print-shell führt ab Version 3.0.0 keine Validierung und Formatierung (Pretty Print) mehr durch. Um dieselbe Ausgabe wie bei früheren Versionen zu erhalten, müssen Sie zunächst die print-shell-Migration und anschließend die TypeScript-Migration ausführen, um auf die neueste Version zu migrieren. In Releases nach 2.1.0 ist nur noch die TypeScript-Migration relevant.
+
+[source,bash,subs="attributes"]
+----
+migrate -w workspacePath -o overwrite
+----
+
+* `workspacePath`: Pfad zum Workspace, der die Print Models enthält.
+* `overwrite`: `true`, wenn die Print Models durch die migrierten Modelle überschrieben werden sollen, andernfalls `false`.
+
+=== Vergleich zweier PDF-Dokumente
+
+[source,bash,subs="attributes"]
+----
+compare -1 pdf1 -2 pdf2 -p percent
+----
+
+* `pdf1`: Name des ersten PDF-Dokuments
+* `pdf2`: Name des zweiten PDF-Dokuments
+* `percent`: Der prozentuale Anteil der Pixel, die beim Vergleich abweichen dürfen. Gültige Werte liegen zwischen 0 und 100. Der Standardwert ist 0.
+
+=== Vergleich aller PDF-Dokumente mit demselben Namen
+
+[source,bash,subs="attributes"]
+----
+compare-all -w workspacePath -p percent --equal equal
+----
+
+* `workspacePath`: Pfad zum Workspace, der die PDF-Dokumente enthält.
+* `percent`: Der prozentuale Anteil der Pixel, die beim Vergleich abweichen dürfen. Gültige Werte liegen zwischen 0 und 100. Der Standardwert ist 0.
+* `equal`: Dieser Parameter legt fest, wie die zugehörigen PDF-Dateien gefunden werden. Standardmäßig prüft der Befehl mit `startWith`. Wenn dieser Parameter auf true gesetzt wird, müssen die Dateinamen der PDF-Dateien vollständig übereinstimmen.
+
+[#print_shell_printing]
+=== Drucken eines bestimmten Print Models
+
+[source,bash,subs="attributes"]
+----
+print -w workspacePath -p printModelId -d documentId -t timeZone --locale localeString --useExperimentalRendering useExperimentalRendering --suffix suffix
+----
+
+* `workspacePath`: Pfad zum Workspace, der die Print Models enthält.
+* `printModelId`: ID des Print Models, das für den Druckvorgang verwendet wird.
+* `documentId`: ID des A12-Dokuments, das für den Druckvorgang verwendet wird.
+Beispiel: Für die Dokumentdatei `DomainDocument-1` lautet die ID `1`.
+* `timeZone`: Zeitzone für den Druckvorgang.
+Beispiel: `GMT`
+* `localeString`: Locale, die für den Druckvorgang verwendet wird.
+Beispiel: `de`
+* `useExperimentalRendering`: Dieses Flag steuert, welche Rendering-Pipeline verwendet wird. Standardmäßig ist es auf false gesetzt, d. h. es wird der <<legacy_rendering_mode, Legacy Rendering Mode>> verwendet. Für den Standard-Rendering-Modus setzen Sie es auf true. Mit der Deprecation des Legacy Rendering Mode im Release 2026.06 wird dieses Flag entfernt.
+* `suffix`: Das Suffix wird durch ein '-' getrennt an den endgültigen PDF-Dateinamen angehängt.
+
+
+=== Drucken aller Print Models im aktuellen Workspace
+
+[source,bash,subs="attributes"]
+----
+print-all -w workspacePath -t timeZone --locale localeString --useExperimentalRendering useExperimentalRendering --suffix suffix --filter filter
+----
+
+* `workspacePath`: Pfad zum Workspace, der die Print Models enthält.
+* `timeZone`: Zeitzone für den Druckvorgang.
+Beispiel: `GMT`
+* `localeString`: Locale, die für den Druckvorgang verwendet wird.
+Beispiel: `de`
+* `useExperimentalRendering`: Dieses Flag steuert, welche Rendering-Pipeline verwendet wird. Standardmäßig ist es auf false gesetzt, d. h. es wird der <<legacy_rendering_mode, Legacy Rendering Mode>> verwendet. Für den Standard-Rendering-Modus setzen Sie es auf true. Mit der Deprecation des Legacy Rendering Mode im Release 2026.06 wird dieses Flag entfernt.
+* `suffix`: Das Suffix wird durch ein '-' getrennt an den endgültigen PDF-Dateinamen angehängt.
+* `filter`: Mit der Filter-Option kann ein regulärer Ausdruck (Regex) angegeben werden, um nur Print Models zu drucken, deren IDs dem Muster entsprechen. Wenn der Wert leer ist, werden alle Print Models im Workspace gedruckt.

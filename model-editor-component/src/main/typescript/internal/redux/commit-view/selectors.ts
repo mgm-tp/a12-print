@@ -85,6 +85,8 @@ export namespace CommitViewSelectors {
 		state => state.CommitViewState.commitInteractionRows
 	);
 
+	export const isCommitting = createSliceSelector<boolean>(state => state.CommitViewState.isCommitting);
+
 	export const hasCommitViewValidationErrors = createSelector(
 		[commitViewErrorMapState],
 		errorMap => !!errorMap?.["@error"].length

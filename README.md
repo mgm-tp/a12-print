@@ -37,7 +37,7 @@ The following tools are required in order to build this repository.
 | Tool     |  Version |
 | -------- | -------: |
 | [JDK]    | `21.0.1` |
-| [Gradle] | `8.12.1` |
+| [Gradle] | `8.14.5` |
 | [Node]   | `22.14` |
 | [pnpm]   | `10.4.1` |
 | [Trivy]  | `Latest` |

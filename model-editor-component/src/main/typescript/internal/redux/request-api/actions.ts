@@ -35,26 +35,28 @@ import { Header } from "@com.mgmtp.a12.base/base-model-api/lib/main/header/index
 import { PrintModel } from "@com.mgmtp.a12.print/print-model-api/lib/model/index.js";
 import { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/lib/internal/api/model/typesetting-model.js";
 
-import { DINTemplatePrintModels } from "../../api/index.js";
+import { DINTemplateSegment } from "../../api/request-api.js";
 
 const factory = actionCreatorFactory("Print/RequestApi");
 
 export namespace RequestApiActions {
 	export const loadPrintModel = factory<string>("LOAD_PRINT_MODEL");
-	export const loadPrintModelHeaders = factory<void>("LOAD_PRINT_MODEL_HEADERS");
 	export const loadReferencedPrintModel = factory<string>("LOAD_REFERENCED_PRINT_MODEL");
 	export const loadReferencedPrintModels = factory<void>("LOAD_REFERENCED_PRINT_MODELS");
 	export const loadDocumentModelIds = factory<void>("LOAD_DOCUMENT_MODEL_IDS");
-	export const loadDINTemplatePrintModels = factory<void>("LOAD_DIN_TEMPLATE_PRINT_MODELS");
+	export const loadDINTemplatePrintModel = factory<string>("LOAD_DIN_TEMPLATE_PRINT_MODEL");
+	export const loadPrintModelIds = factory<void>("LOAD_PRINT_MODEL_IDS");
 	export const loadTypesettingModelHeaders = factory<void>("LOAD_TYPE_SETTING_MODEL_HEADERS");
 	export const loadTypesettingModel = factory<string>("LOAD_TYPE_SETTING_MODEL");
 	export const loadTypesettingModels = factory<void>("LOAD_TYPE_SETTING_MODELS");
 
 	export const setPrintModel = factory<PrintModel>("SET_PRINT_MODEL");
-	export const setPrintModelHeaders = factory<Header[]>("SET_PRINT_MODEL_HEADERS");
 	export const setDocumentModelIds = factory<string[]>("SET_DOCUMENT_MODEL_IDS");
 	export const setPrintModelData = factory<{ id: string; printModel: PrintModel }>("SET_PRINT_MODEL_DATA");
-	export const setDINTemplatePrintModels = factory<DINTemplatePrintModels[]>("SET_DIN_TEMPLATE_PRINT_MODELS");
+	export const setDINTemplatePrintModel = factory<{ id: string; templateSegments: DINTemplateSegment[] }>(
+		"SET_DIN_TEMPLATE_PRINT_MODEL"
+	);
+	export const setPrintModelIds = factory<string[]>("SET_PRINT_MODEL_IDS");
 	export const setTypesettingModelHeaders = factory<Header[]>("SET_TYPE_SETTING_MODEL_HEADERS");
 	export const setTypesettingModel = factory<TypesettingModel>("SET_TYPE_SETTING_MODEL");
 	export const setTypesettingModels = factory<TypesettingModel[]>("SET_TYPE_SETTING_MODELS");

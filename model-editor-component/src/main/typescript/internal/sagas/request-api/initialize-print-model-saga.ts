@@ -30,7 +30,7 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { SagaIterator } from "redux-saga";
-import { call, getContext, put, takeEvery } from "typed-redux-saga";
+import { all, call, getContext, put, takeEvery } from "typed-redux-saga";
 import { Action, AnyAction } from "typescript-fsa";
 
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
@@ -56,8 +56,8 @@ export function* initializePrintModelSaga(): SagaIterator {
 	);
 }
 
-function* handleInitializePrintModelSaga(action: Action<string>): SagaIterator {
-	const requestApi: RequestApi = yield* getContext("requestApi");
+function* handleInitializePrintModelSaga(action: Action<string>) {
+	const requestApi: RequestApi = yield* getContext<RequestApi>("requestApi");
 	const loadPrintModelResponse = yield* call(requestApi.loadPrintModel, action.payload);
 
 	if (loadPrintModelResponse?.printModel && loadPrintModelResponse.logPersistentEntries) {
@@ -74,11 +74,14 @@ function* handleInitializePrintModelSaga(action: Action<string>): SagaIterator {
 
 		const partialPrintModel = PrintModelCreator.createStoreModel(stores.transactionLogStore);
 
+		const references = partialPrintModel.header?.modelReferences;
 		const referencedDocumentModels =
-			partialPrintModel.header?.modelReferences?.flatMap(ref =>
-				ref.reference && ref.modelType === "document" ? [ref.reference] : []
-			) || [];
+			references?.flatMap(ref => (ref.reference && ref.modelType === "document" ? [ref.reference] : [])) || [];
 		yield* put(DocumentModelDataActions.batchLoadDocumentModelData(referencedDocumentModels));
+		const referencedPrintModels =
+			references?.flatMap(ref => (ref.reference && ref.modelType === "print" ? [ref.reference] : [])) || [];
+		const effects = referencedPrintModels.map(ref => put(RequestApiActions.loadDINTemplatePrintModel(ref)));
+		yield* all(effects);
 	} else {
 		if (loadPrintModelResponse?.errorMap) {
 			yield* put(ValidationActions.setErrorMap(loadPrintModelResponse.errorMap));

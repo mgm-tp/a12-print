@@ -241,6 +241,13 @@ exports[`SchemaContent should render correctly 1`] = `
 `;
 
 exports[`SchemaContent should render correctly 2`] = `
+.c33 {
+  display: inline-block;
+  font-size: 0;
+  vertical-align: middle;
+  color: #0568ae;
+}
+
 .c5 {
   box-sizing: border-box;
   color: #7F8C9B;
@@ -267,6 +274,10 @@ exports[`SchemaContent should render correctly 2`] = `
 
 .c5.c5 {
   max-width: unset;
+}
+
+.c32 .c5 {
+  color: inherit;
 }
 
 .c7 {
@@ -389,6 +400,17 @@ exports[`SchemaContent should render correctly 2`] = `
   color: inherit;
 }
 
+.c32 .c17 .c4 {
+  font-size: 1.25rem;
+}
+
+.c32 .c17.c17 {
+  color: #a9b3bc;
+  width: auto;
+  height: auto;
+  min-height: 0;
+}
+
 .h_inlineBlock.h_middleAlign .c17.c17 {
   display: block;
   height: auto;
@@ -444,6 +466,26 @@ exports[`SchemaContent should render correctly 2`] = `
   box-shadow: none;
   color: #d50075;
   border: 2px solid #d50075;
+}
+
+.c32 .c29.c29 {
+  font-size: 1.25rem;
+  height: fit-content;
+  min-height: 0;
+  padding: 0;
+  width: fit-content;
+}
+
+.c32 .c29.c29:not(:active):not(:hover):not(:focus) {
+  color: inherit;
+}
+
+.c32 .c29.c29:not(:active):not(:hover):not(:focus) .c4:not(.StyledVariantIconWrapper-sc-bMgxYI) {
+  color: inherit;
+}
+
+.c32 .c29.c29:focus .c4 {
+  color: inherit;
 }
 
 .h_inlineBlock.h_middleAlign .c29.c29 {
@@ -525,13 +567,20 @@ exports[`SchemaContent should render correctly 2`] = `
   display: inline-block;
 }
 
+.c10 .c32 {
+  align-self: center;
+  flex-shrink: 0;
+  text-align: right;
+  width: 28px;
+}
+
 .c24 {
   box-sizing: border-box;
   flex-grow: 1;
   width: 100%;
 }
 
-.c24 >.StyledTooltipWrapper-sc-bqyqat {
+.c24 >.c32 {
   margin: 0 4px 4px 0;
 }
 
@@ -540,7 +589,7 @@ exports[`SchemaContent should render correctly 2`] = `
   display: inline-block;
 }
 
-.c31 >.StyledTooltipWrapper-sc-bqyqat {
+.c31 >.c32 {
   margin: 0 4px 4px 0;
 }
 
@@ -752,11 +801,19 @@ exports[`SchemaContent should render correctly 2`] = `
 }
 
 @media (pointer: coarse) {
+  .c32 .c29.c29:active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
 
+  .c32 .c29.c29:active .c4 {
+    color: inherit;
+  }
 }
 
 @media (pointer: fine) {
-
+  .c32 .c29.c29:hover .c4 {
+    color: inherit;
+  }
 }
 
 @media (pointer: coarse) {
@@ -1104,30 +1161,37 @@ exports[`SchemaContent should render correctly 2`] = `
             </div>
           </div>
         </div>
-        <button
-          aria-label="Add"
-          class="c16 c17 button button--secondary"
-          data-role="button"
-          disabled=""
-          title="Add"
-          type="button"
+        <span
+          class="c32 c33 tooltip tooltip--hint"
+          data-role="tooltip"
+          role="tooltip"
+          title=""
         >
-          <i
-            class="c4 c5 plasma-icon"
-            data-role="plasma-icon"
+          <button
+            aria-label="Add"
+            class="c16 c17 button button--secondary"
+            data-role="button"
+            disabled=""
+            title="Add"
+            type="button"
           >
-            <span
-              aria-hidden="true"
+            <i
+              class="c4 c5 plasma-icon"
+              data-role="plasma-icon"
             >
-              add
+              <span
+                aria-hidden="true"
+              >
+                add
+              </span>
+            </i>
+            <span
+              data-role="button-label"
+            >
+              Add
             </span>
-          </i>
-          <span
-            data-role="button-label"
-          >
-            Add
-          </span>
-        </button>
+          </button>
+        </span>
       </div>
     </div>
   </div>

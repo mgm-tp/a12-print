@@ -63,7 +63,7 @@ import {
 } from "@com.mgmtp.a12.print/print-model-api/lib/walker/print-model-resolver.js";
 import { PrintValidationMode } from "@com.mgmtp.a12.print/print-model-api-utils/lib/internal/validation/print-validator.js";
 
-import { DINTemplatePrintModels, DINTemplateSegment } from "../../../../api/index.js";
+import { DINTemplateSegment } from "../../../../api/index.js";
 
 class TemplateReferenceVisitor extends PrintModelVisitor {
 	templateReferences: Set<string> = new Set();
@@ -99,27 +99,22 @@ class TemplateReferenceVisitor extends PrintModelVisitor {
 }
 const printModelMarshaller = new PrintModelMarshaller();
 
-export const getDinTemplatePrintModels = (printModels: Model[]): DINTemplatePrintModels[] => {
-	const dinTemplatePrintModels: DINTemplatePrintModels[] = [];
-	printModels.forEach(printModel => {
-		const deserializedResult = printModelMarshaller.deserialize(
-			printModel as unknown as Record<string, unknown>,
-			[],
-			PrintValidationMode.SKIP_REFERENCES
-		);
-		if (deserializedResult.result) {
-			const dinTemplatePrintModel = getDinTemplatePrintModel(deserializedResult.result);
+export const getDinTemplateSegments = (printModel: Model): DINTemplateSegment[] => {
+	const deserializedResult = printModelMarshaller.deserialize(
+		printModel as unknown as Record<string, unknown>,
+		[],
+		PrintValidationMode.SKIP_REFERENCES
+	);
+	if (deserializedResult.result) {
+		return getTemplateSegments(deserializedResult.result);
+	}
 
-			dinTemplatePrintModel && dinTemplatePrintModels.push(dinTemplatePrintModel);
-		}
-	});
-
-	return dinTemplatePrintModels;
+	return [];
 };
 
 const templateReferenceVisitor = new TemplateReferenceVisitor();
 
-const getDinTemplatePrintModel = (printModel: PrintModel): DINTemplatePrintModels | undefined => {
+const getTemplateSegments = (printModel: PrintModel): DINTemplateSegment[] => {
 	const refResolver = ReferenceListResolver.fromModel(printModel);
 	const segmentIdResolver = DefaultSegmentIdResolver.fromModel(printModel);
 	const sectionIdResolver = DefaultSectionIdResolver.fromModel(printModel);
@@ -157,10 +152,5 @@ const getDinTemplatePrintModel = (printModel: PrintModel): DINTemplatePrintModel
 		}
 	});
 
-	return templateSegments.length
-		? {
-				printModelId: printModel.header.id,
-				templateSegments,
-			}
-		: undefined;
+	return templateSegments;
 };

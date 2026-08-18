@@ -1,0 +1,94 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+:Add: Test
+
+= Print Setting [[PrintSetting]]
+
+Dieses Kapitel beschreibt, wie Sie die Konfiguration der Print Engine anpassen können.
+
+== Konfiguration des Setting Model [[SettingModelConfiguration]]
+Die Print Engine verfügt über ein eigenes Print Setting Model, mit dem Sie die Einstellungen der Print Engine anpassen können. Derzeit werden ausschließlich Anpassungen der Schrifteinstellungen unterstützt.
+
+Sie können ein neues Print Setting Model im SME Workspace erstellen und es durch Auswahl bearbeiten. Pro Workspace ist nur ein Print Setting Model zulässig.
+
+image::chapter05/05_setting_editor_modal.png[Der Setting Editor,title="Der Setting Editor"]
+
+=== Roles
+
+Die Roles-Tabelle ermöglicht es Ihnen, die zulässigen Roles für das Print Setting Model zu definieren.
+
+Sie können Roles aus dem Workspace hinzufügen, indem Sie auf btn:[Add] klicken und eine Option aus dem Dropdown-Menü auswählen. Roles können gelöscht werden, indem Sie auf die rote Schaltfläche in der jeweiligen Zeile klicken und Ihre Auswahl bestätigen.
+
+=== Schrifteinstellungen
+Die Schrifteinstellungen ermöglichen es Ihnen, benutzerdefinierte Schriftarten zu definieren und die Fallback-Schriftart anzupassen.
+
+==== Benutzerdefinierte Schriftarten
+Um eine neue benutzerdefinierte Schriftart hinzuzufügen, klicken Sie auf die Schaltfläche btn:[Add] im Abschnitt „Customs". Es wird eine neue Zeile für die benutzerdefinierte Schriftart hinzugefügt. Dort können Sie den `font name` eingeben und den `font value` definieren, um die Schriftdatei einzubinden.
+
+Die Schriftdatei kann entweder als Dateipfad oder als Anhang angegeben werden:
+
+- *Pfad:* Geben Sie einen gültigen relativen Pfad zu einer Schriftdatei innerhalb Ihres SME Workspace ein, z. B. '/folder/font1.ttf'. Schriftdateien außerhalb des Workspace können nicht verwendet werden. Kopieren Sie die Schriftdateien bei Bedarf in Ihren Workspace.
+- *Anhang:* Wählen Sie die Schriftdatei über den Dateidialog aus. Die Schriftart wird dann direkt an Ihr Print Setting Model angehängt.
+
+Um zwischen diesen Typen zu wechseln, klicken Sie auf die Schnellzugriffs-Schaltfläche neben der Eingabe für `font value`. Ein Dropdown-Menü wird angezeigt, in dem Sie den Typ des `font value` auswählen können:
+
+image::chapter05/05_font_value_dropdown.png[Das font-value-Dropdown,title="Das font-value-Dropdown"]
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Hinweis zur Barrierefreiheit*
+
+Um die Einhaltung der Barrierefreiheit sicherzustellen, ist es wichtig, Schriftarten auszuwählen, die alle erforderlichen Zeichen für die in Ihren Dokumenten verwendeten Sprachen und Texte unterstützen.
+
+Vermeiden Sie verzierte oder dekorative Schriftarten. Verwenden Sie serifenlose oder einfache Serifenschriftarten mit klar unterscheidbaren Zeichen (z. B. sehen die Zeichen „I", „l" und „1" in einigen Schriftarten sehr ähnlich aus).
+
+Verwenden Sie reguläre oder fette Schriftschnitte einer Schriftfamilie. Dünne Schriftarten können schwer wahrnehmbar sein, insbesondere für sehbeeinträchtigte Personen.
+
+Wählen Sie Schriftarten, die gut mit hohem Kontrast funktionieren: Manche Schriftarten verlieren an Klarheit bei starkem Vordergrund-/Hintergrundkontrast. Testen Sie Ihre Auswahl.
+
+Darüber hinaus gibt es mehrere technische Anforderungen an Schriftarten im PDF/UA-Standard (siehe das Matterhorn Protocol (https://pdfa.org/resource/the-matterhorn-protocol/) für weitere Details). Sie können eine Schriftart in einem PDF mit dem PDF Accessibility Checker (PAC) und PDFaPilot testen.
+====
+
+==== Zulässige Dateierweiterungen für benutzerdefinierte Schriftarten
+Das einzige vollständig unterstützte Schriftdateiformat ist `ttf` (TrueType-Schriftarten).
+
+==== Verfügbare Standardschriftarten [[DefaultFonts]]
+
+Die Print Engine wird mit drei verfügbaren Standardschriftarten ausgeliefert:
+
+- Open Sans
+- Noto Sans Mono
+- Open Sans Symbols
+
+==== Schriftunterstützung für DIN 91379
+
+DIN 91379 ist ein Standard, der sicherstellt, dass alle relevanten Zeichen für europäische Sprachen korrekt dargestellt werden.
+
+Die in der Print Engine enthaltene Standardschriftart _'Noto Sans Mono'_ unterstützt alle Zeichen gemäß DIN 91379. Falls diese Schriftart nicht dem gewünschten Stil entspricht, können Sie in den Druckeinstellungen eine eigene benutzerdefinierte Schriftart definieren, die ebenfalls alle Zeichen unterstützt.
+
+==== Standardschriftarten überschreiben
+Im Abschnitt „Defaults" finden Sie eine Liste der von der Print Engine unterstützten Standardschriftarten. Diese Standardschrifteinstellungen können nicht direkt geändert, aber überschrieben werden.
+
+Um eine Standardschriftart zu überschreiben, definieren Sie eine benutzerdefinierte Schriftart mit demselben Namen wie die zu überschreibende Standardschriftart. Der Name der Standardschriftart wird dann durchgestrichen angezeigt. Text, der die Standardschriftart verwendet, wird anschließend in Ihrer benutzerdefinierten Schriftart dargestellt.
+
+image::chapter05/05_overwrite_default_font.png[Standardschriftarten überschreiben,title="Standardschriftarten überschreiben"]
+
+==== Fallback-Schriftarten festlegen
+Die Fallback-Schriftart wird verwendet, wenn eine bestimmte Schriftart nicht verfügbar ist. Die Standard-Fallback-Schriftart ist Open Sans aus dem Standardschriftarten-Set. Alle benutzerdefinierten Schriftarten stehen als Fallback-Optionen zur Auswahl.
+
+image::chapter05/05_fallback_font.png[Fallback-Schriftart,title="Fallback-Schriftart"]

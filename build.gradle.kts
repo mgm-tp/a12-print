@@ -41,6 +41,7 @@ plugins {
 }
 
 
+
 allprojects {
 	apply(plugin = "base")
 
@@ -80,7 +81,7 @@ version = manifest.version
 
 
 subprojects {
-	println("$projectDir")
+	logger.info("$projectDir")
 
 	apply(plugin = "idea")
 

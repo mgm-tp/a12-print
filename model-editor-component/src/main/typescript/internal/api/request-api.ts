@@ -50,7 +50,8 @@ export interface RequestApi {
 	loadDocumentModelIds: () => Promise<string[]>;
 	loadTypesettingModelHeaders: () => Promise<Header[]>;
 	loadTypesettingModel: (typesettingModelId: string) => Promise<TypesettingModel | undefined>;
-	loadDINTemplatePrintModels: () => Promise<DINTemplatePrintModels[]>;
+	loadPrintModelIds: () => Promise<string[]>;
+	loadDINTemplateSegments: (id: string) => Promise<DINTemplateSegment[]>;
 	setPrintModel: (
 		printModel: PrintModel,
 		overwriteLog: boolean,
@@ -100,19 +101,4 @@ export interface DINTemplateSegment {
 	readonly segmentId: string;
 	readonly segmentTitle: string;
 	readonly pageOrientation: PageOrientation;
-}
-
-export interface DINTemplatePrintModels {
-	readonly printModelId: string;
-	readonly templateSegments: DINTemplateSegment[];
-}
-
-export namespace DINTemplatePrintModels {
-	export function isInstance(obj: unknown): obj is DINTemplatePrintModels {
-		return obj instanceof Object && "printModelId" in obj && "templateSegments" in obj;
-	}
-
-	export function isArrayInstance(arr: unknown): arr is DINTemplatePrintModels[] {
-		return Array.isArray(arr) && arr.every(isInstance);
-	}
 }

@@ -54,7 +54,14 @@ import { createCommitInteractionRows } from "./utils.js";
 const log = LoggerFactory.getLogger("CommitChangesSaga");
 
 export function* commitChangesSaga(): SagaIterator {
-	yield* takeEvery((action: AnyAction) => CommitViewActions.commitChanges.match(action), handleCommitChangesSaga);
+	yield* takeEvery(
+		(action: AnyAction) => CommitViewActions.commitChanges.match(action),
+		function* (action: Action<CommitInteractionRow[]>) {
+			yield* put(CommitViewActions.setIsCommitting(true));
+			yield* call(handleCommitChangesSaga, action);
+			yield* put(CommitViewActions.setIsCommitting(false));
+		}
+	);
 }
 
 function* handleCommitChangesSaga(action: Action<CommitInteractionRow[]>) {

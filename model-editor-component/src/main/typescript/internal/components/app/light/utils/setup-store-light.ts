@@ -95,7 +95,10 @@ export function setupStoreLight(
 			onChange(printModel, false);
 			return Promise.resolve({ printModel });
 		},
-		loadDINTemplatePrintModels() {
+		loadPrintModelIds() {
+			return Promise.resolve([]);
+		},
+		loadDINTemplateSegments() {
 			return Promise.resolve([]);
 		},
 		persistInteractionLog(_printModelId, interactionLogPersistentEntry) {
@@ -144,7 +147,7 @@ export function setupStoreLight(
 
 	store.dispatch(PrintEngineActions.resetState());
 	store.dispatch(RequestApiActions.loadPrintModel(""));
-	store.dispatch(RequestApiActions.loadDINTemplatePrintModels());
+	store.dispatch(RequestApiActions.loadPrintModelIds());
 
 	store.dispatch(EditorStateActions.setFonts(fontMap));
 	store.dispatch(ValidationActions.validateTextStyles());

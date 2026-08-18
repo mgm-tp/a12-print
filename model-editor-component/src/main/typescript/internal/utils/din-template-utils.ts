@@ -88,7 +88,7 @@ export function* getBoundingOverrideElements(
 							ref =>
 								({
 									...ref,
-									id: nanoid(),
+									id: ref.id, // use stable id from template
 									refId: getOverrideElementByRefId(overrideElements, ref.refId)?.id,
 									dimensions: {
 										...ref.dimensions,
