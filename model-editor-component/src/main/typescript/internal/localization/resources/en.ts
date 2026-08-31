@@ -50,6 +50,7 @@ export const en: typeof RESOURCE_KEYS = {
 				modelNameValidation:
 					"Use only letters, digits, hyphens, underscores and periods. Furthermore, the name may only start with a letter or underscore, but not with 'xml'.",
 				annotationNameDuplicate: "The annotation name must be unique",
+				annotationNameProtected: "This annotation name is not allowed",
 			},
 			roleSettings: {
 				header: {
@@ -528,8 +529,8 @@ export const en: typeof RESOURCE_KEYS = {
 			title: "Title",
 			height: "Height",
 			width: "Width",
-			labelX: "Label X-Axis",
-			labelY: "Label Y-Axis",
+			labelX: "Label Category Axis",
+			labelY: "Label Value Axis",
 			orientation: {
 				label: "Orientation",
 				vertical: "Vertical",

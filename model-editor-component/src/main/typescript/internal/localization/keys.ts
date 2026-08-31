@@ -70,6 +70,7 @@ export const RESOURCE_KEYS = {
 				fieldRequired: "",
 				modelNameValidation: "",
 				annotationNameDuplicate: "",
+				annotationNameProtected: "",
 			},
 		},
 		schema: {

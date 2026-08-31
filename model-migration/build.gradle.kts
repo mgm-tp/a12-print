@@ -38,7 +38,7 @@ configurations {
 	create("documentModelMigration")
 }
 
-val documentModelMigration by configurations.getting
+val documentModelMigration = configurations.getByName("documentModelMigration")
 
 dependencies {
 	documentModelMigration(variantOf(a12Libs.kernelMdFacade) { classifier("migrator-cli") })

@@ -136,6 +136,15 @@ export const General = () => {
 	);
 
 	const annotationsData = React.useMemo(() => header?.annotations?.slice() || [], [header?.annotations]);
+
+	const setGenericAnnotationsData = React.useCallback(
+		(data: AnnotationData[]) => {
+			const protectedAnnotations = annotationsData.filter(entry => entry.name && entry.name === "roles");
+			setAnnotationsData([...protectedAnnotations, ...data]);
+		},
+		[annotationsData, setAnnotationsData]
+	);
+
 	const { errorMessage, warningMessage } = useErrorMessagesByPath("header.description");
 
 	const { reducedAnnotationErrorMap, roleErrorMap } = React.useMemo(() => {
@@ -187,7 +196,7 @@ export const General = () => {
 					data={stripRolesFromAnnotations(annotationsData)}
 					columns={useAnnotationOptionsColumns()}
 					headline={localizer(RESOURCE_KEYS.sidebar.general.annotations.headline)}
-					setTableData={setAnnotationsData}
+					setTableData={setGenericAnnotationsData}
 					createEmptyRow={createEmptyRow}
 					errorMap={reducedAnnotationErrorMap}
 					getErrorMessage={getAnnotationErrorMessage}

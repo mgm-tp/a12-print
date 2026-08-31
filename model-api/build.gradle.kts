@@ -103,11 +103,11 @@ configurations {
 	create("metadataMapGeneration")
 }
 
-val generatedTypingsImplementation by configurations.getting
-val runTypedAccessorGeneratorConfig by configurations.getting
-val printModelValidationCodeGeneration by configurations.getting
-val documentModelMigration by configurations.getting
-val metadataMapGeneration by configurations.getting
+val generatedTypingsImplementation = configurations.getByName("generatedTypingsImplementation")
+val runTypedAccessorGeneratorConfig = configurations.getByName("runTypedAccessorGeneratorConfig")
+val printModelValidationCodeGeneration = configurations.getByName("printModelValidationCodeGeneration")
+val documentModelMigration = configurations.getByName("documentModelMigration")
+val metadataMapGeneration = configurations.getByName("metadataMapGeneration")
 
 dependencies {
 	implementation(a12Libs.baseModelApi)

@@ -33,4 +33,9 @@ import printDevtoolsConfig from "@com.mgmtp.a12.print/print-dev-tools/eslint.con
 import printReactDevtoolsConfig from "@com.mgmtp.a12.print/print-dev-tools/eslint-config-react.mjs";
 import printReduxDevtoolsConfig from "@com.mgmtp.a12.print/print-dev-tools/eslint-config-redux.mjs";
 
-export default [...printDevtoolsConfig, ...printReactDevtoolsConfig, ...printReduxDevtoolsConfig];
+export default [
+	{ ignores: ["jest.integration.config.cjs", "jest.integration.setup.cjs"] },
+	...printDevtoolsConfig,
+	...printReactDevtoolsConfig,
+	...printReduxDevtoolsConfig,
+];

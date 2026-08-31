@@ -61,6 +61,7 @@ import java.util.Optional;
 @EqualsAndHashCode(callSuper = true)
 @JsonTypeInfo(
 	use = JsonTypeInfo.Id.NAME,
+	include = JsonTypeInfo.As.EXISTING_PROPERTY,
 	property = "type",
 	defaultImpl = ModelSegmentDto.class,
 	visible = true

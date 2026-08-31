@@ -1,0 +1,540 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Print Model Editor
+
+Dieses Kapitel bietet einen Überblick über die grundlegenden Funktionen und Ansichten des Print Model Editor.
+
+== Übersicht [[Editing]]
+
+Der Print Model Editor lässt sich in vier Hauptbereiche unterteilen:
+
+. Editor-Kopfzeile
+. Seitenleiste
+. Tab
+. Editor Stage
+
+=== Editor-Kopfzeile [[EditorHeader]]
+Die Kopfzeile des Print Model Editor enthält die folgenden Schaltflächen.
+Diese befinden sich in der oberen rechten Ecke des Editors:
+
+Undo:: Macht die letzte Änderung in der aktuellen Ansicht rückgängig.
+Redo:: Macht das letzte *Undo* in der aktuellen Ansicht rückgängig.
+Errors:: Zeigt die Anzahl der Fehlermeldungen für das aktuelle Print Model an.
+Warnings:: Zeigt die Anzahl der Warnmeldungen für das aktuelle Print Model an.
+Print:: Öffnet die <<Preview, Vorschau>> für das aktuelle Print Model.
+Close:: Schließt das aktuelle Modell.
+
+=== Seitenleiste [[SidebarPME]]
+Die Seitenleiste dient als Hauptnavigation.
+Über die Seitenleiste können die folgenden Tabs geöffnet werden:
+
+. General
+. Schema
+. Text Styles
+. Segment
+. Section
+. Watermark
+. Commit changes
+
+Die Standardschaltflächen „Save", „Cancel" und „Deploy" befinden sich am unteren Rand der Seitenleiste. Im Print Model Editor öffnet die Schaltfläche „Save" am unteren Rand der Seitenleiste den <<CommitChangesTab, Commit change Tab>>.
+
+=== Tab [[TabPME]]
+Sobald ein Element in der Seitenleiste ausgewählt wird, öffnet sich der entsprechende Tab.
+Der Tab kann über die Schaltflächen in der oberen rechten Ecke maximiert, minimiert oder geschlossen werden.
+
+[NOTE]
+====
+Nur Tabs mit einer <<EditorStage, Editor Stage>> können maximiert, minimiert oder geschlossen werden.
+
+Die Tabs „General", „Text Styles" und „Commit Changes" bieten diese Optionen daher nicht.
+====
+
+=== Editor Stage [[EditorStage]]
+Die Editor Stage dient zum Platzieren und Bearbeiten von Print Model Elements.
+Die Editor Stage ist über die folgenden Tabs erreichbar:
+
+* <<SegmentTab, Segment Tab>>
+* <<SectionTab, Section Tab>>
+* <<WatermarkTab, Watermark Tab>>
+
+[CAUTION]
+====
+Die Editor Stage wird bei geöffnetem <<SchemaTab, Schema Tab>> angezeigt, um einen besseren Überblick über das aktuelle Modell zu bieten.
+
+Das Platzieren und Bearbeiten der Print Model Elements sollte dennoch über die jeweiligen Tabs erfolgen, um sicherzustellen, dass das richtige Segment, die richtige Section oder das richtige Watermark bearbeitet wird.
+====
+
+In der Editor Stage stehen zwei Modi zur Verfügung: <<StageMode, Stage Mode>> und <<LayoutMode, Layout Mode>>. Zwischen diesen Modi können Sie bequem über die Schaltflächen am oberen Rand der Editor Stage wechseln.
+
+image::chapter02/02_editor_modes.png[Editor-Modus umschalten, title="Editor-Modus umschalten"]
+
+==== Stage Mode (Standard) [[StageMode]]
+Im Stage Mode können Print Model Elements verschoben, in der Größe verändert und inhaltlich bearbeitet werden.
+Jedes Print Model Element wird mit einem eigenen Detail Editor bearbeitet, wie in <<PrintModelElement, Editoren für Modellelemente>> beschrieben.
+
+image::chapter02/02_add_element_toolbar.png[Element Library hinzufügen,title="Element Library hinzufügen"]
+
+Neue Elemente können hinzugefügt werden, indem Sie im „Default"-Modus auf die „Element Library" oben links in der Editor Stage klicken und das gewünschte Element per Drag-and-Drop auf die Editor Stage ziehen.
+
+Vorhandene Elemente können per Drag-and-Drop verschoben und in der Größe verändert werden.
+Alternativ lassen sich Position und Größe über die folgenden Einstellungen in der Kopfzeile der Element Stage präzise definieren:
+
+* Position Top
+* Position Left
+* Width
+* Height
+
+Ein Rechtsklick auf ein Element öffnet ein Kontextmenü mit den folgenden Optionen:
+
+* Copy
+* Delete
+* <<GroupIntoArea, Group into Area>>
+* <<HideConditions, Hide Conditions>>
+
+[NOTE]
+====
+Print Model Elements können kopiert oder gelöscht werden über:
+
+* Die Schaltflächen „Delete selected elements" und „Copy selected elements" in der Kopfzeile der Element Stage
+* Tastaturkürzel: Entf und Strg+C
+====
+[TIP]
+====
+Kopierte Elemente können eingefügt werden über:
+
+* Rechtsklick auf die Stage und Auswahl von „Paste" im Kontextmenü
+* Tastaturkürzel: Strg+V
+====
+
+Um die Detailansicht eines Elements zu öffnen, können Sie auf das Element doppelklicken oder das Element auswählen und die Schaltfläche „Open Detail Edit" in der rechten Ecke der Stage-Kopfzeile anklicken.
+[cols="a,a",frame=none,grid=none]
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter02/02_editor_topbar.png[Optionen der Editor Stage,title="Optionen der Editor Stage",width=800]
+
+|
+image::chapter02/02_element_context_menu.png[Kontextmenü des Elements,title="Kontextmenü des Elements",width=300]
+|===
+
+===== Group into Area [[GroupIntoArea]]
+Diese Funktion ermöglicht es, mehrere ausgewählte Elemente in ein Area-Element zu gruppieren. Dadurch können sie von der <<PageBreakBehavior, Page Break Behavior>>-Konfiguration der neuen Area beeinflusst werden.
+
+So gruppieren Sie Elemente in eine Area:
+
+. Wählen Sie mehrere Elemente in der Editor Stage aus.
+. Klicken Sie mit der rechten Maustaste und wählen Sie „Group into Area" aus dem Kontextmenü, oder klicken Sie auf die Schaltfläche „Group selected elements into Area" in der rechten Ecke der Stage-Kopfzeile.
+
+Die ausgewählten Elemente werden in ein Area-Element gruppiert.
+
+Beim Gruppieren in eine Area werden die <<PageBreakBehavior, Page Break Behavior>>-Einstellungen der Elemente automatisch angepasst:
+
+* Elemente, deren Page Break Behavior die Quelle *Default* hat, werden auf *Inherited* geändert und übernehmen das Page Break Behavior von der neuen übergeordneten Area.
+* Elemente, deren Page Break Behavior die Quelle *Inherited* hat, erben weiterhin, jedoch nun von der neuen übergeordneten Area anstatt von der vorherigen.
+* Elemente, deren Page Break Behavior die Quelle *Input* hat, bleiben unverändert und behalten ihr explizit definiertes Page Break Behavior bei.
+
+[NOTE]
+====
+* Die Option „Group into Area" ist deaktiviert, wenn ein einzelnes Area-, Bounding-Box- oder Switch-Element ausgewählt ist. Da diese Elemente bereits als Container fungieren, würde das Umschließen eines einzelnen Containers mit einer weiteren Area eine redundante Verschachtelung ohne zusätzliche Funktionalität erzeugen.
+====
+
+==== Layout Mode [[LayoutMode]]
+Der Layout Mode dient zum Anzeigen und Ändern der Abstände (Margins) vorhandener Print Model Elements.
+Dies ermöglicht eine präzise Layoutsteuerung, wie in <<PositioningLayout>> beschrieben.
+
+Die Margin-Werte werden ober- und unterhalb des Elements angezeigt.
+
+Die Margin-Werte können angepasst werden über:
+
+* Drag-and-Drop
+* Die Eingabefelder in der Kopfzeile der Editor Stage
+
+[NOTE]
+====
+Im Layout Mode hinzugefügte obere und untere Margins werden auch im Stage Mode (Standard) angezeigt.
+====
+
+image::chapter02/02_adjust_margins.png[Abstände anpassen,title="Abstände anpassen"]
+
+== General Tab [[GeneralTab]]
+
+Im General Tab können die Metainformationen des Modells bearbeitet werden.
+Die folgenden Eigenschaften sind in diesem Tab editierbar:
+
+Description:: Die interne Beschreibung dieses Print Model.
+Roles:: Die zulässigen Roles für dieses Print Model.
+Annotations:: Die Annotations dieses Print Model.
+
+Sie können Roles aus dem Workspace hinzufügen, indem Sie auf die Schaltfläche btn:[Add] klicken und eine Option aus dem Dropdown-Menü auswählen. Roles können über die rote Schaltfläche in der jeweiligen Zeile gelöscht werden, nachdem Sie Ihre Auswahl bestätigt haben.
+
+=== PDF-Metadaten
+
+Im Abschnitt PDF-Metadaten können Sie PDF-Metadatenfelder konfigurieren, die in das generierte Dokument eingebettet werden.
+Diese Metadatenfelder sind für die PDF/UA-Barrierefreiheitskonformität unerlässlich, da sie assistierenden Technologien wichtige Dokumentinformationen bereitstellen.
+Alle Metadatenfelder werden als Liste von <<Computations, Berechnungsalternativen>> konfiguriert, was dynamische Werte basierend auf Document Model-Daten ermöglicht.
+
+Document Model (optional):: Das Document Model, das für die Berechnung der Metadatenfelder verwendet wird. Es bestimmt, welche Datenpfade für die Berechnungsoperationen verfügbar sind.
+
+Title:: Der Titel des PDF-Dokuments.
+Description:: Die Beschreibung bzw. der Betreff des PDF-Dokuments.
+Author:: Der Autor des PDF-Dokuments.
+Language:: Die Sprache des PDF-Dokuments.
+
+Jede Berechnungsalternative besteht aus:
+
+* *Operation*: Ein link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language]-Ausdruck, der den Metadatenwert berechnet. Dies kann ein Pfadverweis auf ein Field im Document Model, ein statischer Wert oder eine beliebige gültige Kernel Language-Berechnung sein.
+* *Precondition* (optional): Ein link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language]-Ausdruck, der bestimmt, ob diese Berechnungsalternative verwendet werden soll. Die Berechnung wird nur angewendet, wenn die Precondition den Wert _True_ ergibt.
+
+Die Berechnungsalternativen werden der Reihe nach ausgewertet, und die erste mit einer zutreffenden Precondition wird verwendet.
+
+NOTE: Für neue Print Models werden automatisch Standardwerte für die Metadaten gesetzt. Es wird empfohlen, diese Metadatenfelder mit aussagekräftigen, dokumentspezifischen Werten anzupassen, um eine korrekte Barrierefreiheitskonformität sicherzustellen.
+
+CAUTION: Wenn alle Preconditions den Wert _False_ ergeben oder ein leeres Ergebnis liefern, wird für dieses Feld kein Metadatenwert gesetzt. Dies wirkt sich negativ auf die PDF-Barrierefreiheitskonformität aus.
+
+image::chapter02/02_general_tab.png[General Tab,title="General Tab"]
+
+== Schema Tab [[SchemaTab]]
+
+Im Schema Tab können die Modellreferenzen des Print Model bearbeitet werden.
+Das Print Model kann Document Models referenzieren, um die Einbindung dynamischer Inhalte zu ermöglichen.
+Für Document Model References kann ein Alias vergeben werden, der die Unterscheidung der referenzierten Modelle erleichtert.
+
+Zusätzlich können Sie Print Model References hinzufügen, um Template-Segmente einzubinden, sowie Typesetting Model References zur Verwaltung von Typografie-Einstellungen.
+
+CAUTION: Das referenzierte Document Model darf keine Punkte im Namen enthalten. Sie können das Document Model umbenennen oder einen Alias ohne Punkte verwenden, um diese Einschränkung zu umgehen.
+
+NOTE: Sie können im Schema Tab mehrere Document Models hinzufügen, allerdings kann derzeit nur eines als Referenz im Print Model verwendet werden.
+
+Document Model References:: Die Liste der referenzierten Document Models und ihrer optionalen Aliase in diesem Print Model.
+Über die Schaltfläche „Open Setting" kann der angegebene Alias aktualisiert werden.
+
+Print Model References:: Die Liste der referenzierten <<PrintModelTemplates, Print Model Templates>>.
+Nach der Auswahl prüft der Print Model Editor das ausgewählte Print Model auf Übereinstimmung mit der <<CreateTemplate,Template-Spezifikation>>.
+Wenn diese Prüfung fehlschlägt, kann das Print Model nicht als Referenz verwendet werden.
+
+[NOTE]
+====
+Wenn Änderungen am referenzierten Document Model vorgenommen werden, können die von den Elementen des Print Model verwendeten Field-Referenzen ungültig werden.
+In solchen Fällen müssen Sie die Field-Referenzen im Print Model manuell aktualisieren, um die Konsistenz sicherzustellen.
+
+Änderungen an referenzierten Templates werden erkannt, wenn ein Segment modelliert wird, das das aktualisierte Template referenziert.
+Diese Änderung erzeugt Aktualisierungen, die committed werden müssen.
+====
+
+Typesetting Model References:: Die Liste der referenzierten Typesetting Models wird für die Text Styles verwendet. Typesetting Models können mit dem <<Typesetting,Typesetting Model Editor>> erstellt werden.
+
+image::chapter02/02_schema_tab.png[Schema Tab,title="Schema Tab"]
+
+== Text Style Tab [[TextStylesTab]]
+
+Im Text Style Tab können Text Styles erstellt, bearbeitet und entfernt werden.
+Der obere Bereich des Text Style Tabs zeigt ein Beispiel des aktuellen Text Style, dessen Eigenschaften darunter bearbeitet werden können.
+Ein neu erstelltes Print Model enthält einen Standard-Text Style, der nicht gelöscht werden kann.
+
+Die modellierten Text Styles werden in der Liste auf der linken Seite angezeigt.
+
+Der aktuell ausgewählte Text Style wird auf den Vorschautext am oberen Rand der Text-Style-Ansicht angewendet.
+Dieser Text Style kann über die nachfolgend beschriebenen Modellierungseinstellungen bearbeitet werden.
+
+image::chapter02/02_text_styles_tab.png[Text Style Tab,title="Text Style Tab"]
+
+Klicken Sie auf „Add New Text Style" in der unteren rechten Ecke, um einen neuen Text Style hinzuzufügen.
+
+=== Text-Style-Einstellungen
+Allgemeine Konfigurationsoptionen für Text Styles:
+
+
+Name:: Der Name des Text Style.
+Dient zur Unterscheidung der Text Styles.
+Semantic:: Der semantische Zweck des Text Style.
+Mögliche Werte sind `Paragraph`, `Headline 1`, ..., `Headline 6`.
+Die Auswahl einer `Headline`-Semantik kennzeichnet die <<Text, Text>>-Elemente, die diesen Text Style verwenden, aus Gründen der Barrierefreiheit als Überschriften.
+
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Hinweis zur Barrierefreiheit*
+Für eine bessere Navigation und Lesbarkeit ist es wichtig, die korrekte semantische Struktur für Überschriften, Unterüberschriften und Absätze zu verwenden.
+
+Wenn Sie eine Überschrift erstellen möchten, wählen Sie die entsprechende `Headline`-Semantik basierend auf der Überschriftenebene. Sie können `Headline 2` nur als Unterüberschrift nach `Headline 1` verwenden, `Headline 3` nach `Headline 2` und so weiter.
+
+Wenn Sie einen neuen Standardabsatz-Text Style erstellen möchten, wählen Sie die `Paragraph`-Semantik.
+
+Das Verhältnis zwischen Schriftgröße und Zeilenhöhe ist entscheidend für die Lesbarkeit, insbesondere für Menschen mit Sehbeeinträchtigungen, Legasthenie oder kognitiven Einschränkungen.
+Wir empfehlen eine Zeilenhöhe von mindestens dem 1,5-Fachen der Schriftgröße bei einer empfohlenen Mindestschriftgröße für Fließtext von 12 pt.
+====
+
+=== Typografie-Einstellungen [[TypographySettings]]
+Optionen, die das Erscheinungsbild und Verhalten von Text beeinflussen:
+
+Typesetting Model:: Gibt das Typesetting Model an, das bei Verwendung dieses Text Style angewendet wird.
+Verfügbare Modelle werden über den <<SchemaTab, Schema Tab>> hinzugefügt.
+
+
+Static Hyphenation:: Wendet sprachspezifische Silbentrennungsregeln auf Text an.
+Verfügbare Optionen sind:
+* en_US: Englisch
+* de_1996: Deutsch (mit den Silbentrennungsregeln, die mit der Rechtschreibreform von 1996 eingeführt wurden)
+* fr: Französisch
+* cs: Tschechisch
+* pt: Portugiesisch
+* vi: Vietnamesisch
+
+Font:: Die Schriftfamilie des Text Style.
+Siehe <<DefaultFonts, Default Fonts>> für verfügbare Schriftarten. Zusätzliche Schriftarten können als Workspace-Ressourcen bereitgestellt werden.
+Font Size:: Die Schriftgröße des Text Style in `pt`.
+Line Height:: Die Zeilenhöhe des Text Style in `pt`.
+
+NOTE: Wenn ein Text Style eine Schrift verwendet, die nicht in der Print Engine konfiguriert ist, werden alle Elemente mit diesem Text Style mit der Standardschrift angezeigt und gedruckt.
+
+=== Verfügbare Standardschriftarten [[DefaultFonts]]
+
+Die Print Engine wird mit drei verfügbaren Standardschriften ausgeliefert:
+
+- Open Sans
+- Noto Sans Mono
+- Noto Sans Symbols
+
+Zusätzliche Schriftarten können als Workspace-Ressourcen bereitgestellt werden.
+
+==== Standardschriften überschreiben
+
+Um eine Standardschriftart zu überschreiben, fügen Sie eine benutzerdefinierte Schriftart mit demselben Namen wie die zu ersetzende Standardschriftart hinzu.
+Text Styles, die diesen Schriftartnamen verwenden, werden dann mit Ihrer benutzerdefinierten Schriftart gerendert.
+
+==== Schriftart-Unterstützung für DIN 91379
+
+DIN 91379 ist ein Standard, der sicherstellt, dass alle relevanten Zeichen für europäische Sprachen korrekt dargestellt werden.
+
+Die Standardschriftart _Noto Sans Mono_, die in der Print Engine enthalten ist, unterstützt alle Zeichen gemäß DIN 91379. Falls diese Schriftart nicht dem gewünschten Stil entspricht, können Sie in den Workspace-Ressourcen eine eigene Schriftart bereitstellen, die ebenfalls alle erforderlichen Zeichen unterstützt.
+
+=== Benutzerdefinierte Schriften [[ConfigureCustomFonts]]
+
+Benutzerdefinierte Schriftarten können hinzugefügt werden, indem Schriftdateien im Ressourcenordner des Workspace abgelegt werden.
+Nach dem Hinzufügen stehen sie im Print Model Editor zur Verfügung und können zur Definition von <<TextStylesTab, Text Styles>> verwendet werden.
+
+image::chapter02/02_utilize_custom_fonts.png[Text Style Tab mit benutzerdefinierten Schriften,title="Text Style Tab mit benutzerdefinierten Schriften"]
+
+NOTE: Falls Text Styles in Ihrem Print Model zuvor mit Schriftarten verknüpft waren, die nicht im Ressourcenordner vorhanden sind, weist Sie eine Benachrichtigung umgehend auf diese Inkonsistenzen hin.
+
+NOTE: Um die Konsistenz sicherzustellen, wählen Sie die Schriftarten für betroffene Text Styles erneut aus. Elemente, die diesen Styles zugeordnet sind, übernehmen andernfalls die Standardschriftart.
+
+image::chapter02/02_text_style_employ_unconfigured_font.png[Ein Text Style mit nicht konfigurierter Schrift,title="Ein Text Style mit nicht konfigurierter Schrift"]
+
+== Segment Tab [[SegmentTab]]
+
+Im Segment Tab können Segments erstellt, bearbeitet, umsortiert und gelöscht werden.
+
+Modell-Segments sind Container für Elemente, die jeweils eine oder mehrere DIN-A4-Seiten im PDF-Dokument erzeugen.
+Dem Print Model können mehrere Segments hinzugefügt werden. Jedes Segment beginnt auf einer neuen Seite und definiert die Seitenausrichtung dieser Seiten.
+
+Die Segments werden dem endgültigen Dokument in der Reihenfolge hinzugefügt, in der sie im Segment Tab angezeigt werden.
+Vorhandene Segments können über die folgenden Schaltflächen bearbeitet werden:
+
+Open Setting:: Name oder Wiederholbarkeitseinstellungen des ausgewählten Segments bearbeiten.
+Open Editor:: Die <<StageMode, Editor Stage>> öffnen, um den Inhalt des Segments zu bearbeiten.
+Open Menu::
+Duplicate::: Das ausgewählte Segment duplizieren.
+Delete::: Das ausgewählte Segment löschen.
+
+[NOTE]
+====
+Ein Klick auf das Segment in der Liste öffnet ebenfalls die <<StageMode, Editor Stage>>.
+====
+
+In den Segment-Einstellungen kann eine Document Model Group als Datenkontext ausgewählt werden.
+Wenn die ausgewählte Group wiederholbar ist, wird das Segment für jede Instanz der Repeatable Group im bereitgestellten Dokument wiederholt, wobei jede Instanz eine neue Seite erzeugt.
+[cols="a,a",frame=none,grid=none]
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter03/03_repeatable_segments_select_document_model.png[Wiederholbares Segment: Document Model auswählen,title="Wiederholbares Segment: Document Model auswählen",width=400]
+
+|
+image::chapter03/03_repeatable_segments_select_group.png[Wiederholbares Segment: Repeatable Group auswählen,title="Wiederholbares Segment: Repeatable Group auswählen",width=400]
+|===
+
+Neue Segments können am unteren Ende der Liste hinzugefügt werden.
+
+Name:: Der Name des neuen Segments.
+Orientation::
+* Portrait
+* Landscape
+
+Template Segment (optional):: Ein <<PrintModelTemplates, Template>> aus einem der referenzierten Print Models im <<SchemaTab, Schema Tab>>.
+
+Nachdem ein Name und eine Ausrichtung angegeben wurden, muss die Schaltfläche „Add" geklickt werden, um das neue Segment zur Liste der Segments hinzuzufügen.
+
+image::chapter02/02_segment_tab.png[Segment Tab,title="Segment Tab"]
+
+=== Print Model References (Templates) [[PrintModelTemplates]]
+
+Sie können Print Model References als Templates in anderen Print Models verwenden.
+Dies ermöglicht die Definition von Bereichen mit fester Höhe und statischem Layout und erlaubt die Erstellung von Print Models, die verschiedenen Normen entsprechen (z. B. DIN-Normen).
+
+==== Template erstellen [[CreateTemplate]]
+
+Um ein Template zu erstellen, müssen Sie ein Print Model mit einem <<SegmentTab, Segment>> anlegen.
+Dieses Segment kann verwendet werden, um das Layout Ihres Templates mithilfe von <<BoundingBox, Bounding Box>>-Elementen zu definieren.
+
+[CAUTION]
+====
+Ein Print Model Segment kann nur als Template Segment verwendet werden, wenn es ausschließlich Bounding-Box-Elemente oder verschachtelte Bounding-Box-Elemente enthält.
+====
+
+[NOTE]
+====
+Ein Template Print Model kann mehrere Template Segments enthalten.
+====
+
+==== Template verwenden
+
+Um ein Template zu verwenden, müssen Sie ein vorhandenes Template Print Model im <<SchemaTab, Schema Tab>> zu Ihrem aktuellen Print Model hinzufügen.
+Die Segments des Templates können dann als Template Segments in Ihrem aktuellen Print Model verwendet werden.
+
+image::chapter03/03_select_template_segment.png[Template Segment auswählen, title="Template Segment auswählen", width=400]
+
+[NOTE]
+====
+Wenn Änderungen am Template vorgenommen wurden, lädt der Print Model Editor das Template automatisch neu, sobald Sie ein Segment besuchen, das es verwendet. Dadurch entstehen Aktualisierungen, die <<CommittingChanges, committed>> werden müssen.
+====
+
+== Section Tab [[SectionTab]]
+
+Im Section Tab können Sections erstellt, bearbeitet und gelöscht werden.
+
+Sections sind optionale Container für Elemente, die Kopf- und Fußzeilen im resultierenden PDF-Dokument erzeugen.
+
+[TIP]
+====
+Wenn Sie Sections modellieren möchten, ist es häufig einfacher, zuerst die Section und dann die Segments zu modellieren.
+====
+
+Welche Section auf welche Seite angewendet wird, wird durch die zwei zentralen Eigenschaften der Section bestimmt:
+
+Page Orientation:: Eine Section wird nur auf Seiten mit der ausgewählten Seitenausrichtung angewendet.
+Section Usage:: Eine Section wird entweder nur auf die erste Seite des PDF-Dokuments oder auf alle übrigen Seiten angewendet.
+Dies ermöglicht die Definition spezifischer Kopf- und Fußzeilen für ein Deckblatt.
+Auf ersten Seiten haben Sections, die speziell für die erste Seite gekennzeichnet sind, Vorrang.
+
+Jede Kombination der Eigenschaften _Page Orientation_ und _Section Usage_ hat einen bestimmten Platz im Section Tab.
+Das Modellieren einer Section führt dazu, dass die modellierten Kopf- und Fußzeilenbereiche im jeweiligen <<SegmentTab, Segment>> ausgegraut werden.
+
+Sections können über die folgenden Schaltflächen hinzugefügt und bearbeitet werden:
+
+Add:: Eine Section für diese _Page Orientation_ und _Section Usage_ hinzufügen.
+Open Editor:: Die <<StageMode, Editor Stage>> öffnen, um den Inhalt der Section zu bearbeiten.
+Delete:: Die ausgewählte Section löschen.
+
+[NOTE]
+====
+Ein Klick auf die Section in der Liste öffnet ebenfalls die <<StageMode, Editor Stage>>.
+====
+
+image::chapter02/02_section_tab.png[Section Tab,title="Section Tab"]
+
+== Watermark Tab [[WatermarkTab]]
+
+Im Watermark Tab können Watermarks erstellt, bearbeitet und gelöscht werden.
+
+Watermarks sind optionale Container für Elemente, die als Overlays auf ihren jeweiligen Segments dargestellt werden.
+Es gibt zwei Watermarks, die je nach Segmentausrichtung festgelegt werden können: Portrait und Landscape.
+
+Watermarks können über die folgenden Schaltflächen hinzugefügt und bearbeitet werden:
+
+Add:: Ein Watermark für diese _Page Orientation_ hinzufügen.
+Open Setting:: Die Deckkraft oder die Bedingungen bearbeiten, unter denen das ausgewählte Watermark angezeigt wird.
+Opacity::: Definiert die Deckkraft der Elemente der Watermark-Seiten.
+Condition::: Mithilfe der link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language]
+können Bedingungen definiert werden. Wenn eine der Bedingungen als wahr ausgewertet wird oder keine Bedingung definiert ist, wird das Watermark gedruckt.
+Open Editor:: Die <<StageMode, Editor Stage>> öffnen, um den Inhalt des Watermarks zu bearbeiten.
+Delete:: Das ausgewählte Watermark löschen.
+
+NOTE: Die Anhänge des <<Listing, Listing Element>> werden nicht am Ende des Dokuments hinzugefügt, wenn sie innerhalb eines Watermarks verwendet werden.
+
+image::chapter02/02_watermark_tab.png[Watermark Tab,title="Watermark Tab"]
+
+== Commit change Tab [[CommitChangesTab]]
+
+Im Commit change Tab können die ausstehenden Änderungen des Print Model committed und somit finalisiert werden.
+Der obere Bereich dieses Tabs zeigt die Änderungshistorie – eine Liste der im Editor vorgenommenen Änderungen.
+Um die Änderungen zu committen, kann der Benutzer eine Auswahl in der Änderungsliste treffen und dann die Schaltfläche „COMMIT SELECTED CHANGES AND TRUNCATE HISTORY" klicken.
+
+
+Standardmäßig sind alle Änderungen ausgewählt.
+Um eine Änderung abzuwählen, klicken Sie auf den Status der Änderung, um diesen von „Commit" auf „Pending" umzuschalten.
+
+Auf der rechten Seite werden Validierungsfehler zu den ausgewählten Änderungen in einem Fehlerbaum angezeigt.
+Durch Klicken auf das „Go to"-Symbol eines Fehlers im Baum wird der Benutzer zur Stelle navigiert, an der der Fehler aufgetreten ist.
+
+Während des Commit-Prozesses wird die semantische Korrektheit der Berechnungen im Print Model überprüft.
+Die Fehlermeldungen werden oberhalb der Validierungsfehler angezeigt.
+
+image::chapter02/02_commit_changes_tab.png[Commit Changes,title="Commit change Tab"]
+
+== Vorschau [[Preview]]
+
+Wenn die Schaltfläche „Print" gedrückt wird, öffnet sich das Vorschaufenster für das aktuell geöffnete Print Model. Sie können für jedes Print Model in Ihrem Workspace gleichzeitig ein Vorschaufenster geöffnet haben.
+
+Dieser Bildschirm zeigt die resultierende PDF-Vorschau an. Das PDF wird automatisch neu geladen, wenn Änderungen am Print Model <<CommitChangesTab, committed>> oder die Vorschaueinstellungen geändert werden.
+
+=== Vorschaueinstellungen
+Am oberen Rand der Vorschau befindet sich eine Symbolleiste mit den folgenden Einstellungen für die resultierende PDF-Vorschau:
+
+Test Document:: Wählen Sie ein Dokument (aus den Workspace Data) basierend auf dem im Print Model referenzierten Document Model aus, das für den Druck verwendet werden soll.
+Reload Button:: Generieren Sie das PDF manuell mit den aktuellen Vorschau-Einstellungen neu.
+Localization Dropdown:: Ändern Sie die Locale des erzeugten PDFs. Die verfügbaren Locale-Optionen stammen aus dem referenzierten Document Model, das für den Druck verwendet wird.
+Time Zone Dropdown:: Ändern Sie die Zeitzone des erzeugten PDFs. Die aktuelle Zeitzone des Benutzers ist als Standard ausgewählt und erscheint an erster Stelle in der Dropdown-Liste.
+Fallback Font:: Wählen Sie die Schriftart aus, die verwendet werden soll, wenn eine referenzierte Schriftart nicht verfügbar ist. Die Standard-Fallback-Schriftart ist _Open Sans_. Alle in den Workspace-Ressourcen verfügbaren Schriftarten können als Fallback-Optionen ausgewählt werden.
+Using Print model with pending changes:: Wird verwendet, um die Vorschau mit ausstehenden Änderungen zu generieren. Dabei wird das PDF bei jeder im Editor vorgenommenen Änderung neu gerendert. Wenn diese Option deaktiviert ist, werden nur committete Änderungen angezeigt.
+
+image::chapter02/02_preview_window.png[Vorschaufenster,title="Vorschaufenster"]
+
+[NOTE]
+====
+Die PDF-Vorschau kann über die Standardschaltflächen in der oberen rechten Ecke der Vorschau heruntergeladen oder gedruckt werden.
+====
+
+[TIP]
+====
+Testdokumente können auf verschiedene Arten erstellt werden:
+
+* Über **Ad-hoc-Tests** im Document Model Editor
+* Mit der **Form Model Preview** im Form Model Editor
+* Aus den in **Workspace Data** verfügbaren Dokumenten
+
+Weitere Details finden Sie in der Dokumentation zur Document- oder Form-Modellierung.
+====
+
+== Validierung
+
+Das Print Model wird nach jeder Benutzerinteraktion automatisch validiert, um Konsistenz und Korrektheit sicherzustellen.
+Dies umfasst zwei Validierungsebenen:
+
+* *Interne Validierung*:
+Stellt sicher, dass die Struktur des Print Model gültig und vollständig ist.
+Dies umfasst Prüfungen auf Pflichtfelder, Wertebereiche und korrekte Formate.
+
+* *Referenz-Validierung*:
+Prüft, ob Referenzen auf Document Models gültig sind.
+Dies umfasst alle Field-Referenzen (z. B. Fields in Text Elements, Tabellen usw.) sowie Berechnungen (Formeln, die auf Fields im Document Model verweisen).
+
+CAUTION: Referenzen innerhalb von Expression Elements werden derzeit nicht validiert.
+
+Validierungsfehler werden direkt im Editor angezeigt, um unmittelbares Feedback zu geben.
+Der Modeler muss alle Validierungsfehler beheben, da andernfalls weder das Drucken noch das Committen der Änderungen möglich ist.

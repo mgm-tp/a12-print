@@ -1,0 +1,197 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Diagramme [[Charts]]
+
+Die Chart-Elemente fügen eine Diagrammdarstellung wiederholbarer A12-Field-Instanzen in das resultierende PDF-Dokument ein.
+Das Diagramm wird als Bild generiert und in das PDF-Dokument eingefügt.
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Barrierefreiheitshinweis*
+
+Dieses Element wird derzeit nicht empfohlen, da das Chart-Element keine aussagekräftige Beschreibung seines Inhalts für Barrierefreiheitssoftware wie Screenreader erzeugt.
+
+Falls Sie diese Anforderung in Ihrem Projekt haben, wenden Sie sich bitte an das Print Engine-Team.
+====
+
+Diagramme haben die folgenden gemeinsamen Modellierungseinstellungen:
+
+Height:: Die Höhe des Chart-Elements in Zentimetern. Eine Dezimalstelle kann verwendet werden, zum Beispiel 7,5 cm.
+Width:: Die Breite des Chart-Elements in Zentimetern. Eine Dezimalstelle kann verwendet werden, zum Beispiel 7,5 cm.
+[NOTE]
+====
+Die Höhe und Breite von Diagrammen können nur in der Detail View der Seite (<<DetailView, Detail View>>) bearbeitet werden.
+Sie lassen sich nicht durch Ziehen und Ablegen des Elements in der Editor Stage anpassen.
+====
+Document Model:: Wählen Sie ein Document Model aus, das im <<SchemaTab, Schema Tab>> referenziert wird.
+Group::
+Das Diagrammelement erfordert die Auswahl einer Group eines Document Models, aus der gelesen wird.
+Standardmäßig ist die Root-Group ausgewählt. Es ist jedoch möglich, über das Modellbaum-Widget eine innere Group auszuwählen. In diesem Fall enthält der resultierende Datensatz nur die Fields der ausgewählten Group.
+
+Data::
+Die vom Diagramm verwendeten Daten werden unterhalb der Group angegeben.
+Die Art der Datenspezifikation hängt vom Diagrammtyp ab.
+
+[%header, cols="1,1a,1a,1"]
+|===
+|Diagramm|Datentyp|Modellierungseinstellungen|Mehrere Datensätze erlaubt
+|Liniendiagramm|Series| Field with value|Ja
+.2+|Balkendiagramm|Series| Field with value|Ja
+|Categorized|
+
+* Field with value
+* Field for labels
+|Ja
+|Kreisdiagramm|Categorized|
+
+* Field with value
+* Field for labels
+|Nein
+
+|===
+
+== Liniendiagramm [[LineChart]]
+Zeigt mehrere kontinuierliche Linien in horizontaler oder vertikaler Ausrichtung an. Jede Linie entspricht einem separaten Wertesatz.
+Diese Wertesätze werden modelliert, indem ein oder mehrere Series-Datensätze hinzugefügt werden.
+
+Label X-Axis:: Die Beschriftung der X-Achse kann eingegeben oder auf „undefined" gesetzt werden.
+Label Y-Axis:: Die Beschriftung der Y-Achse kann eingegeben oder auf „undefined" gesetzt werden.
+Orientation:: Es stehen zwei Ausrichtungsoptionen zur Auswahl:
++
+* *Horizontal*: Der Wert wird auf der X-Achse dargestellt.
+* *Vertical*: Der Wert wird auf der Y-Achse dargestellt.
+
+image::chapter03/03_line_chart_detail_view.png[Detail View des Liniendiagramm-Elements,title="Detail View des Liniendiagramm-Elements"]
+
+=== Series Data [[SeriesData]]
+Series Data wird modelliert, indem ein wiederholbares Field ausgewählt wird.
+Der Wert dieses Fields wird auf der durch die Orientation definierten Achse dargestellt.
+Die andere Achse zählt die Wiederholungen des ausgewählten Fields durch.
+
+Field with value:: Geben Sie das Field aus dem ausgewählten Document Model an, das die Series Data enthält.
+Name of series:: Der Name dieser Series Data im Print Model.
+
+==== Beispiel [[SeriesExample]]
+
+Das Document Model enthält eine wiederholbare Group `Person` mit zwei Number-Fields: `income` und `tax`.
+Folgende Daten werden modelliert:
+
+.Beispiel für Series Data
+[%header]
+|===
+|Field with value|Name of series
+|`root/Person/income`|DataSet1
+|`root/Person/tax`|DataSet2
+|===
+
+Basierend auf folgenden Daten im Dokument:
+[source,,options="nowrap"]
+----
+Person[0]:
+  income: 10
+  tax: 1
+
+Person[1]:
+  income: 20
+  tax: 4
+
+Person[2]:
+  income: 15
+  tax: 6
+----
+
+Das Ergebnis sind zwei Datensätze:
+[source,,options="nowrap"]
+----
+DataSet1: [10,20,15]
+DataSet2: [1,4,6]
+----
+
+== Balkendiagramm [[BarChart]]
+Zeigt mehrere Balkensätze in horizontaler oder vertikaler Ausrichtung an. Jeder Balkensatz entspricht einem separaten Wertesatz.
+
+Label X-Axis:: Die Beschriftung der X-Achse kann eingegeben oder auf „undefined" gesetzt werden.
+Label Y-Axis:: Die Beschriftung der Y-Achse kann eingegeben oder auf „undefined" gesetzt werden.
+Orientation:: Es stehen zwei Ausrichtungsoptionen zur Auswahl:
++
+* *Horizontal*: Der Wert wird auf der X-Achse dargestellt.
+* *Vertical*: Der Wert wird auf der Y-Achse dargestellt.
+
+Balkendiagramme akzeptieren <<SeriesData, Series Data>> und <<CategorizedData, Categorized Data>>.
+Um Series Data zu modellieren, lassen Sie einfach das Feld „Field for labels" leer.
+
+image::chapter03/03_bar_chart_detail_view.png[Detail View des Balkendiagramm-Elements,title="Detail View des Balkendiagramm-Elements"]
+
+=== Categorized Data [[CategorizedData]]
+
+Der Category-Datensatz wird auf Basis zweier Fields aus dem Document Model erstellt, sodass jeder Wert eine Beschriftung erhält.
+
+Field with value:: Geben Sie das Field aus dem ausgewählten Document Model an, das die Kategoriewerte enthält.
+Field for labels:: Wählen Sie das Beschriftungs-Field aus, das für den Kategorisierungsprozess verwendet wird.
+
+Das Ergebnis ist ein Datensatz, der jeden eindeutigen Wert von Field for labels enthält.
+Die Field-with-value-Daten werden erstellt, indem die Wertfelder mit übereinstimmenden Beschriftungen summiert werden.
+
+==== Beispiel
+
+Das Document Model enthält eine wiederholbare Group `Person` mit einem Number-Field `income` und einem String-Field `occupation`.
+Folgende Daten werden modelliert:
+
+.Beispiel für Categorized Data
+[%header]
+|===
+|Field with value|Field for labels
+|`root/Person/income`|`root/Person/occupation`
+|===
+Basierend auf folgenden Daten im Dokument:
+[source,,options="nowrap"]
+----
+Person[0]:
+  occupation: "A"
+  income: 1
+
+Person[1]:
+  occupation: "A"
+  income: 2
+
+Person[2]:
+ occupation: "B"
+ income: 1
+----
+
+Der Datensatz besteht aus zwei Datenpunkten – einem für jeden eindeutigen Wert von `occupation`.
+Der Wert des Datenpunkts ist die Summe aller Field-Werte mit dieser Beschriftung:
+
+[source,,options="nowrap"]
+----
+A : 3
+B : 1
+----
+
+== Kreisdiagramm [[PieChart]]
+Zeigt ein Kreisdiagramm basierend auf einem einzelnen Satz von <<CategorizedData, Categorized Data>> an.
+
+Use numeration as label:: Wählen Sie „Use numeration as label", wenn die Daten nicht gruppiert werden sollen.
+Jeder Wert wird einzeln dargestellt, wobei eine eindeutige, fortlaufende Nummer als Beschriftung dient.
++
+[NOTE]
+====
+„Field for labels" kann leer gelassen werden, wenn „Use numeration as label" ausgewählt ist.
+====
+
+image::chapter03/03_pie_chart_detail_view.png[Detail View des Kreisdiagramm-Elements,title="Detail View des Kreisdiagramm-Elements"]

@@ -145,40 +145,40 @@ catalog:
 catalogs:
 
   a12:
-    "@com.mgmtp.a12.base/base-model-api": 30.0.1
-    "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core": 7.0.0
+    "@com.mgmtp.a12.base/base-model-api": 30.0.2
+    "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core": 7.0.1
     "@com.mgmtp.a12.devtools/tsconfig": ^2.0.1
     "@com.mgmtp.a12.devtools/codemod": ^2.2.2
     "@com.mgmtp.a12.devtools/eslint-config": ^3.1.2
     "@com.mgmtp.a12.devtools/prettier-config": ^1.1.1
-    "@com.mgmtp.a12.dml/dml": 6.0.2
-    "@com.mgmtp.a12.kernel/kernel-core-parser-web": 31.1.0
-    "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts": 31.1.0
-    "@com.mgmtp.a12.kernel/kernel-core-runtime-ts": 31.1.0
-    "@com.mgmtp.a12.kernel/kernel-md-facade": 31.1.0
-    "@com.mgmtp.a12.kernel-next/kernel-md-facade": npm:@com.mgmtp.a12.kernel/kernel-md-facade@31.1.0
-    "@com.mgmtp.a12.migrationtool/migrationtool-core": 3.0.0
-    "@com.mgmtp.a12.migrationtool/migrationtool-utils": 3.0.0
-    "@com.mgmtp.a12.utils/utils-connector": 9.0.1
+    "@com.mgmtp.a12.dml/dml": 6.1.0
+    "@com.mgmtp.a12.kernel/kernel-core-parser-web": 31.1.1
+    "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts": 31.1.1
+    "@com.mgmtp.a12.kernel/kernel-core-runtime-ts": 31.1.1
+    "@com.mgmtp.a12.kernel/kernel-md-facade": 31.1.1
+    "@com.mgmtp.a12.kernel-next/kernel-md-facade": npm:@com.mgmtp.a12.kernel/kernel-md-facade@31.1.1
+    "@com.mgmtp.a12.migrationtool/migrationtool-core": 3.0.1
+    "@com.mgmtp.a12.migrationtool/migrationtool-utils": 3.0.1
+    "@com.mgmtp.a12.utils/utils-connector": 9.0.3
     "@com.mgmtp.a12.utils/utils-collections": 7.0.1
-    "@com.mgmtp.a12.utils/utils-logging": 7.0.1
-    "@com.mgmtp.a12.utils/utils-localization": 8.0.1
-    "@com.mgmtp.a12.utils/utils-localization-react": 8.0.1
-    "@com.mgmtp.a12.widgets/widgets-core": 39.0.2
+    "@com.mgmtp.a12.utils/utils-logging": 7.0.2
+    "@com.mgmtp.a12.utils/utils-localization": 8.0.2
+    "@com.mgmtp.a12.utils/utils-localization-react": 8.0.2
+    "@com.mgmtp.a12.widgets/widgets-core": 39.0.3
 
   a12Ranges:
-    "@com.mgmtp.a12.base/base-model-api": ^30.0.1
-    "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core": ^7.0.0
-    "@com.mgmtp.a12.kernel/kernel-core-parser-web": ^31.1.0
-    "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts": ^31.1.0
-    "@com.mgmtp.a12.kernel/kernel-core-runtime-ts": ^31.1.0
-    "@com.mgmtp.a12.kernel/kernel-md-facade": ^31.1.0
-    "@com.mgmtp.a12.utils/utils-connector": ^9.0.1
+    "@com.mgmtp.a12.base/base-model-api": ^30.0.2
+    "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core": ^7.0.1
+    "@com.mgmtp.a12.kernel/kernel-core-parser-web": ^31.1.1
+    "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts": ^31.1.1
+    "@com.mgmtp.a12.kernel/kernel-core-runtime-ts": ^31.1.1
+    "@com.mgmtp.a12.kernel/kernel-md-facade": ^31.1.1
+    "@com.mgmtp.a12.utils/utils-connector": ^9.0.3
     "@com.mgmtp.a12.utils/utils-collections": ^7.0.1
-    "@com.mgmtp.a12.utils/utils-logging": ^7.0.1
-    "@com.mgmtp.a12.utils/utils-localization": ^8.0.1
-    "@com.mgmtp.a12.utils/utils-localization-react": ^8.0.1
-    "@com.mgmtp.a12.widgets/widgets-core": ^39.0.2
+    "@com.mgmtp.a12.utils/utils-logging": ^7.0.2
+    "@com.mgmtp.a12.utils/utils-localization": ^8.0.2
+    "@com.mgmtp.a12.utils/utils-localization-react": ^8.0.2
+    "@com.mgmtp.a12.widgets/widgets-core": ^39.0.3
 
 overrides:
     "framer-motion>motion-dom": "12.40.0"

@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.api.exception;
 
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import lombok.Getter;
 import com.mgmtp.a12.model.utils.OnlyForUsage;
 

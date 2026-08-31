@@ -131,8 +131,8 @@ describe("ChartCommonProperties", () => {
 			expect(queryByText("Title")).toBeInTheDocument();
 			expect(queryByText("Height")).toBeInTheDocument();
 			expect(queryByText("Width")).toBeInTheDocument();
-			expect(queryByText("Label X-Axis")).toBeInTheDocument();
-			expect(queryByText("Label Y-Axis")).toBeInTheDocument();
+			expect(queryByText("Label Category Axis")).toBeInTheDocument();
+			expect(queryByText("Label Value Axis")).toBeInTheDocument();
 			expect(queryByText("Orientation")).toBeInTheDocument();
 		});
 

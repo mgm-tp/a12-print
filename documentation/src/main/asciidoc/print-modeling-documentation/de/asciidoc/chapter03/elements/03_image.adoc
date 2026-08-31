@@ -1,0 +1,95 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Bild [[Image]]
+
+Das Image-Element fügt ein Bild in das resultierende PDF ein.
+
+Bildquellentyp:: Die Bilddaten können aus zwei verschiedenen Quellen eingefügt werden:
++
+* <<Static, Static>>
+* <<Dynamic, Dynamic>>
+
+Alternative Text:: Der Text, der von Screenreadern erfasst wird.
+Dieser ist aus Gründen der Barrierefreiheit erforderlich.
+Height:: Die Höhe in Millimetern, auf die das Bild skaliert wird.
+Wenn kein Wert angegeben ist, wird die Bildhöhe entsprechend dem Seitenverhältnis auf Basis der angegebenen Bildbreite skaliert.
+Width:: Die Breite in Millimetern, auf die das Bild skaliert wird.
+Dieser Wert ist für Bilder mit dem Quelltyp _Dynamic_ erforderlich.
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Hinweis zur Barrierefreiheit*
+
+Für Barrierefreiheitsstandards sollte der Alternativtext kurz, aber beschreibend für den Bildinhalt sein. Bei Infografiken kann die Beschreibung ausführlicher ausfallen.
+
+Verwenden Sie keine Bilder, die wichtige textuelle Informationen enthalten (Ausnahme: Logos). Nutzen Sie stattdessen das Text-Element.
+====
+
+== Statisch [[Static]]
+
+Das Bild wird als benannte Datei im Ressourcenordner des Workspace gespeichert und im Print Model über seinen Namen referenziert.
+Die ursprünglichen Bildabmessungen werden beim Hochladen bzw. bei der Auswahl aus der Datei abgeleitet und verwendet, sofern sie nicht vom Benutzer überschrieben werden.
+Wenn nur die Eigenschaft `width` angegeben wird (und `height` leer bleibt), wird das Bild unter Beibehaltung des ursprünglichen Seitenverhältnisses skaliert.
+
+NOTE: Die unterstützten Bildformate sind: `GIF`, `BMP`, `JPEG`, `JPG` und `PNG`. Bei `GIF`-Bildern wird nur das erste Frame im PDF angezeigt.
+
+I need the full AsciiDoc content to translate. The input provided is only a single heading line. I'll translate it accordingly:
+
+=== Auswahl einer vorhandenen Ressource
+
+Der Ressourcen-Selektor listet alle Bilddateien auf, die im Ordner `resources` des Workspace verfügbar sind.
+Durch Auswahl eines Eintrags wird die Bildreferenz auf diese Ressource gesetzt.
+
+=== Hochladen eines neuen Bildes
+
+Klicken Sie auf die Schaltfläche zum Hochladen neben dem Auswahlfeld, um eine lokale Datei auszuwählen.
+Die Datei wird im Ordner `resources/` des Workspace unter einem deduplizierten Namen gespeichert (`basename-sizeId.ext`, wobei `sizeId` die Dateigröße in Base-36 ist).
+Existiert bereits eine Datei mit diesem Namen, wird sie wiederverwendet, ohne erneut hochgeladen zu werden.
+Nach dem Hochladen wird die neue Ressource automatisch ausgewählt.
+
+
+image::chapter03/03_image_static_detail_view.png[Image element detail view using static image,title="Image element detail view using static image"]
+
+== Dynamisch [[Dynamic]]
+
+
+Der Bildinhalt wird während des Druckvorgangs aus einer A12-Field-Instanz eingefügt. Dadurch kann das Bild dynamisch aus Document Model-Daten bezogen werden.
+Der Inhalt der Field-Instanz muss ein gültiger Base64-kodierter String sein, damit er im resultierenden PDF korrekt gerendert wird.
+
+Document Model:: Wählen Sie ein Document Model aus, das im <<SchemaTab, Schema Tab>> referenziert ist.
+Field:: Navigieren Sie zum gewünschten Field, indem Sie Groups im ausgewählten Document Model aufklappen, und klicken Sie dann auf das Field.
++
+Die folgenden Fields aus der Attachment-Group sollten ausgewählt werden, wenn Anhänge aus dem Document Model referenziert werden:
++
+* `content`-Field bei Verwendung von Anhängen im Embedded-Modus.
+* `attachment_id`-Field bei Verwendung von Anhängen im Reference-Modus.
+
+
+[NOTE]
+====
+Jedes andere Field in einem Document Model, das einen gültigen Base64-kodierten Bild-String enthält, kann ebenfalls ausgewählt werden.
+====
+
+[CAUTION]
+====
+Bitte beachten Sie, dass die <<Preview, Print Preview>> nicht funktioniert, wenn `attachment_id` ausgewählt ist. Diese Funktionalität ist für den Einsatz in A12-Anwendungen vorgesehen, in denen ein _AttachmentProvider_ implementiert ist.
+====
+
+Da die Bildabmessungen während der Bearbeitung nicht verfügbar sind, muss die Breite explizit angegeben werden.
+
+image::chapter03/03_image_dynamic_detail_view.png.png[Image element detail view using dynamic image,title="Image element detail view using dynamic image"]

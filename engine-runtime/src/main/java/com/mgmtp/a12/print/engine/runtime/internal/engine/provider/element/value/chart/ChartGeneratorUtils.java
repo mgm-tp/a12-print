@@ -51,6 +51,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NonNull;
 import org.knowm.xchart.*;
+import org.knowm.xchart.internal.chartpart.AxesChart;
 import org.knowm.xchart.internal.chartpart.Chart;
 import org.knowm.xchart.internal.chartpart.PlotContent_Pie;
 import org.knowm.xchart.internal.chartpart.Plot_;
@@ -142,8 +143,10 @@ public class ChartGeneratorUtils {
 
 		// Customize Chart
 		chart.getStyler()
+			.setPlotGridLinesColor(ChartColor.WHITE.getColor());
+
+		chart.getStyler()
 			.setLocale(job.getLocale())
-			.setPlotGridLinesColor(ChartColor.WHITE.getColor())
 			.setChartTitleVisible(true)
 			.setPlotBorderVisible(false)
 			.setLegendBorderColor(null)
@@ -184,28 +187,45 @@ public class ChartGeneratorUtils {
 		return chart;
 	}
 
-	private static CategoryChart buildBarChart(
+	private static AxesChart<?, ?> buildBarChart(
 		BarChartProperties properties,
 		List<ChartDocumentData> dataList,
 		PrintJob job,
 		PdfBoxPrintEngineConfig printEngineConfig,
 		ReferenceResolver referenceInputSourceResolver) {
 
-		// Create Chart
-		CategoryChart chart =
-			new CategoryChartBuilder()
-				.title(InputValueSourceResolver.getInputValue(properties.getTitle(), referenceInputSourceResolver).orElse(""))
-				.xAxisTitle(InputValueSourceResolver.getInputValue(properties.getLabelX(), referenceInputSourceResolver).orElse(""))
-				.yAxisTitle(InputValueSourceResolver.getInputValue(properties.getLabelY(), referenceInputSourceResolver).orElse(""))
-				.width(convertToPixel(properties.getDimensions().getWidth().getValue()))
-				.height(convertToPixel(properties.getDimensions().getHeight().getValue()))
-				.build();
+		final AxesChart<?, ?> chart;
+		if (properties.getOrientation().equals(ChartOrientation.HORIZONTAL)) {
+			// Create Chart
+			chart =
+				new HorizontalBarChartBuilder()
+					.title(InputValueSourceResolver.getInputValue(properties.getTitle(), referenceInputSourceResolver).orElse(""))
+					.xAxisTitle(InputValueSourceResolver.getInputValue(properties.getLabelY(), referenceInputSourceResolver).orElse(""))
+					.yAxisTitle(InputValueSourceResolver.getInputValue(properties.getLabelX(), referenceInputSourceResolver).orElse(""))
+					.width(convertToPixel(properties.getDimensions().getWidth().getValue()))
+					.height(convertToPixel(properties.getDimensions().getHeight().getValue()))
+					.build();
+		} else {
+			// Create Chart
+			chart =
+				new CategoryChartBuilder()
+					.title(InputValueSourceResolver.getInputValue(properties.getTitle(), referenceInputSourceResolver).orElse(""))
+					.xAxisTitle(InputValueSourceResolver.getInputValue(properties.getLabelX(), referenceInputSourceResolver).orElse(""))
+					.yAxisTitle(InputValueSourceResolver.getInputValue(properties.getLabelY(), referenceInputSourceResolver).orElse(""))
+					.width(convertToPixel(properties.getDimensions().getWidth().getValue()))
+					.height(convertToPixel(properties.getDimensions().getHeight().getValue()))
+					.build();
+
+			((CategoryChart) chart).getStyler()
+				.setLabelsVisible(true);
+		}
 
 		// Customize Chart
 		chart.getStyler()
-			.setLabelsVisible(true)
+			.setPlotGridLinesColor(ChartColor.WHITE.getColor());
+
+		chart.getStyler()
 			.setLocale(job.getLocale())
-			.setPlotGridLinesColor(ChartColor.WHITE.getColor())
 			.setPlotBorderVisible(false)
 			.setLegendBorderColor(null)
 			.setPlotBackgroundColor(ChartColor.LIGHT_GREY.getColor())
@@ -227,7 +247,11 @@ public class ChartGeneratorUtils {
 		List<String> orderedXData = new ArrayList<>(orderedXDataSet);
 
 		if (dataList.isEmpty() || orderedXData.isEmpty()) {
-			chart.addSeries(SINGLE_BLANK_STRING, List.of(SINGLE_BLANK_STRING), List.of(0));
+			if (chart instanceof HorizontalBarChart barChart) {
+				barChart.addSeries(SINGLE_BLANK_STRING, List.of(0), List.of(SINGLE_BLANK_STRING));
+			} else {
+				((CategoryChart) chart).addSeries(SINGLE_BLANK_STRING, List.of(SINGLE_BLANK_STRING), List.of(0));
+			}
 			return chart;
 		}
 
@@ -243,11 +267,22 @@ public class ChartGeneratorUtils {
 
 			List<Number> orderedYData = new ArrayList<>();
 			for (String x : orderedXData) {
-				orderedYData.add(labelValueMap.getOrDefault(x, null));
+				orderedYData.add(labelValueMap.getOrDefault(
+					x, chart instanceof HorizontalBarChart ? 0 : null
+				));
 			}
 
-			chart.addSeries(seriesName, orderedXData, orderedYData);
+			if (chart instanceof HorizontalBarChart barChart) {
+				barChart.addSeries(seriesName, orderedYData, orderedXData);
+			} else {
+				((CategoryChart) chart).addSeries(seriesName, orderedXData, orderedYData);
+			}
 		}
+
+		if (orderedXData.size() >= 2) {
+			chart.getStyler().setXAxisMaxLabelCount(orderedXData.size());
+		}
+
 		return chart;
 	}
 
@@ -269,21 +304,22 @@ public class ChartGeneratorUtils {
 		for (int i = 0; i < data.length; i++) {
 			final var key = chartData.getLabels()[i];
 			final var value = data[i];
-			if (chart.getSeriesMap().containsKey(key)) {
-				final var existingValue = chart.getSeriesMap().get(key).getValue().floatValue();
+			if (chart.getSeries(key) != null) {
+				final var existingValue = chart.getSeries(key).getValue().floatValue();
 				final var newValue = existingValue + value;
 				chart.updatePieSeries(key, newValue);
 			} else {
 				chart.addSeries(key, value);
 			}
 		}
-		if (chart.getSeriesMap().isEmpty()) {
+		if (chart.getSeriesCollection().isEmpty()) {
 			chart.addSeries(SINGLE_BLANK_STRING, 0);
 		}
 
 		chart.getStyler()
 			.setLabelType(LabelType.Percentage)
 			.setPlotBorderVisible(false)
+			.setLocale(job.getLocale())
 			.setLegendBorderColor(null)
 			.setChartPadding(5)
 			.setLegendPadding(5)
@@ -340,6 +376,11 @@ public class ChartGeneratorUtils {
 				.setLabelsFont(defaultFont.deriveFont(categoryChart.getStyler().getLabelsFont().getStyle(), categoryChart.getStyler().getLabelsFont().getSize()))
 				.setAxisTitleFont(defaultFont.deriveFont(categoryChart.getStyler().getAxisTitleFont().getStyle(), categoryChart.getStyler().getAxisTitleFont().getSize()))
 				.setAxisTickLabelsFont(defaultFont.deriveFont(categoryChart.getStyler().getAxisTickLabelsFont().getStyle(), categoryChart.getStyler().getAxisTickLabelsFont().getSize()));
+		} else if (chart instanceof HorizontalBarChart horizontalBarChart) {
+			horizontalBarChart.getStyler()
+				.setLabelsFont(defaultFont.deriveFont(horizontalBarChart.getStyler().getLabelsFont().getStyle(), horizontalBarChart.getStyler().getLabelsFont().getSize()))
+				.setAxisTitleFont(defaultFont.deriveFont(horizontalBarChart.getStyler().getAxisTitleFont().getStyle(), horizontalBarChart.getStyler().getAxisTitleFont().getSize()))
+				.setAxisTickLabelsFont(defaultFont.deriveFont(horizontalBarChart.getStyler().getAxisTickLabelsFont().getStyle(), horizontalBarChart.getStyler().getAxisTickLabelsFont().getSize()));
 		}
 
 		chart.getStyler()

@@ -1,0 +1,166 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+// content start
+Diese Dokumentation richtet sich an Business-Analysten.
+
+= Einführung und Konzepte
+
+Der Print Model Editor ist Teil des Simple Model Editor und ermöglicht es Fachexperten und Analysten, Print Models zu erstellen und zu bearbeiten. Diese Modelle dienen als Vorlagen zur Erzeugung von PDF-Dokumenten aus Daten der A12 Platform.
+
+Print Models beschreiben Layout, Styling und Inhalt der resultierenden PDF-Dokumente.
+Der Print Model Editor unterscheidet sich von einem herkömmlichen Texteditor durch seine Ausrichtung auf das Einfügen _dynamischer Inhalte_ aus der A12 Platform.
+Print Models ermöglichen sowohl einfache Dateneinfügungen als auch komplexe dynamische Berechnungen auf Basis der eingefügten Daten.
+Die Bandbreite reicht von Inline-Texteinfügungen und Tabellen über Elementwiederholungen und regelbasiertes Ausblenden von Elementen bis hin zu Auflistungen mit vollständig anpassbaren Inhalten und Styles.
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Barrierefreiheitshinweis*
+Die Print Engine erzeugt PDF-Dokumente mit getaggten Elementen für Barrierefreiheitssoftware wie Screenreader. Diese entsprechen den Standards PDF/UA und PDF/A-3a.
+
+Um sicherzustellen, dass das resultierende PDF-Dokument vollständig mit diesen Standards konform ist, muss der Modellierer die in dieser Dokumentation enthaltenen Barrierefreiheitshinweise befolgen. Diese sind für die Konformität zwingend erforderlich. Werden sie nicht umgesetzt, erfüllt das PDF weder PDF/UA noch PDF/A-3a.
+====
+
+
+image::chapter01/01_print_editor_editing_view.png[Print Editor Bearbeitungsansicht,title="Der Print Model Editor"]
+
+== Installation
+Der Print Model Editor ist Teil des Simple Model Editor.
+Hinweise zur Installation des Simple Model Editor finden Sie im „Quick Start Guide" auf getA12 unter „Modeling".
+
+NOTE: Zum Erstellen oder Bearbeiten eines Print Model verwenden Sie den Simple Model Editor (SME) in Version `11.5.0` oder höher, der ab A12-Version `2024.06-ext4` bereitgestellt wird.
+
+== Migration bestehender Modelle
+
+Nach der Installation einer neuen Version des Simple Model Editor und damit des Print Model Editor kann es erforderlich sein, bestehende Print Models zu migrieren.
+
+In den meisten Fällen kann der Simple Model Editor die Versionsaktualisierung selbst durchführen.
+Weitere Informationen finden Sie in der Dokumentation des Simple Model Editor.
+
+[NOTE]
+====
+Seit Print-Model-Version `2.1.0` übernimmt der SME die Migration automatisch.
+Enthält ein Workspace im SME alte Modelle, die migriert werden müssen, erscheint eine Fehlermeldung mit entsprechenden Hinweisen.
+Klicken Sie auf die Schaltfläche `Resolve All Issues`, um die Modelle automatisch zu aktualisieren.
+====
+
+[NOTE]
+====
+Print Model-Dateien, die älter als Version `2.1.0` sind, müssen zunächst mit dem Java-basierten print-shell-Tool migriert werden.
+Folgen Sie den link:/docs/PRINT_ENGINE/print-technical-documentation/index.html#legacy_migration[Migrationsanweisungen für print-shell].
+====
+
+[WARNING]
+====
+Beim Migrieren eines Print Model auf eine neue Version im SME können nicht übernommene Änderungen, die in `.wal`-Dateien gespeichert sind, nach der Migration ungültig werden.
+Bitte übernehmen Sie alle ausstehenden Änderungen, *bevor* Sie das Modell in einer neueren SME-Version öffnen und migrieren, um Datenverlust zu vermeiden.
+====
+
+== Print Model [[PrintModelIntro]]
+Ein Print Model dient als Vorlage für PDF-Darstellungen eingefügter Documents.
+
+Die Struktur des resultierenden PDF-Dokuments wird durch die im <<SegmentTab>> modellierten Segments definiert.
+
+Das PDF kann durch die Modellierung von Sections und Watermarks im <<SectionTab>> und im <<WatermarkTab>> weiter angepasst werden.
+
+Im <<TextStylesTab>> definierte Text Styles beeinflussen ebenfalls das endgültige Erscheinungsbild des PDF-Dokuments.
+
+Beim Modellieren von <<SegmentTab, Segments>>, <<SectionTab, Sections>> und <<WatermarkTab, Watermarks>> werden Print Model Elements verwendet, um den Inhalt des PDF-Dokuments zu definieren.
+Diese Elemente werden der <<EditorStage>> hinzugefügt und im Millimeterraster positioniert. Die individuellen Einstellungen jedes Elements können wie in <<PrintModelElement>> beschrieben modelliert werden.
+
+[ACCESSIBILITY_HINT]
+====
+icon:universal-access[] *Barrierefreiheitshinweis*
+
+Bitte beachten Sie, dass es derzeit nicht möglich ist, die Lesereihenfolge von Elementen für Screenreader manuell festzulegen. Sollten Sie diese Funktion in Ihrem Projekt benötigen, wenden Sie sich bitte an das Print Engine-Team, damit es dies für zukünftige Updates berücksichtigen kann.
+====
+
+Print Model Elements können Referenzen auf Daten aus Document Models nutzen, um dynamische Inhalte im PDF anzuzeigen.
+Zu diesem Zweck können Sie im <<SchemaTab>> ein Document Model referenzieren.
+
+== Konzepte
+=== Positionierung & Layout [[PositioningLayout]]
+
+<<PrintModelElement, Print Model Elements>> werden auf einem Millimeterraster positioniert.
+Jedes Element hat eine benutzerdefinierte Breite und eine initiale Höhe basierend auf seinem vorbestimmten Inhalt.
+Enthält ein Element dynamische Inhalte, kann sich seine Höhe ändern. Dadurch werden darunterliegende Inhalte möglicherweise nach unten verschoben.
+
+NOTE: Das Millimeterraster des Print Model Editor weist auf Ihrem Bildschirm möglicherweise nicht die korrekten Maße auf. Die Anzeigemaße hängen vom Typ Ihres Bildschirms ab und haben keinen Einfluss auf das resultierende PDF-Dokument.
+
+Basierend auf ihren relativen Positionen definieren Elemente einen sogenannten _unteren Rand_ (Bottom Margin).
+Dieser Wert legt den Bereich unterhalb eines Elements fest, der bei Neupositionierungen und Elementkollisionen frei gehalten wird.
+In einigen Fällen ist auch ein _oberer Rand_ (Top Margin) erforderlich.
+
+==== Beispiel
+
+In den <<MarginLayoutFigures, folgenden Abbildungen>> wird ein Szenario dargestellt, in dem beide Ränder notwendig sind, um das erwartete Layout beim Einfügen dynamischer Inhalte stabil zu halten.
+Platziert der Benutzer die Elemente *A*, *B*, *C* und *D* wie in der linken Abbildung, werden die in der rechten Abbildung dargestellten Ränder automatisch vom Editor erzeugt.
+
+Jedes Element hat einen _unteren Rand_, der den Leerraum zwischen den Elementen stabil hält.
+Für Element *B* wird ein oberer Rand erzeugt, da der untere Rand von Element *A* nur bis zu Element *C* reicht.
+Dadurch bleibt der Leerraum zwischen Element *A* und Element *B* teilweise unabgedeckt.
+Daher wird für Element *B* ein _oberer Rand_ erstellt, der diesen Bereich abdeckt.
+[cols="a,a",frame=none,grid=none]
+[[MarginLayoutFigures]]
+|===
+|
+image::chapter01/01_margin_layout_without_margins.png[Beispiel für Rand-Layout,title="Beispiel für Rand-Layout ohne angezeigte Ränder.",width=500]
+
+|
+image::chapter01/01_margin_layout_with_margins.png[Beispiel für Rand-Layout mit Rändern,title="Beispiel für Rand-Layout mit angezeigten Rändern.",width=500]
+|===
+
+=== Vorlagen und Einstellungen
+Sie können Print-Model-Referenzen als <<PrintModelTemplates,Vorlagen>> in anderen Print Models verwenden.
+So lassen sich Bereiche mit fester Höhe und statischem Layout definieren, um Print Models zu erstellen, die verschiedenen Standards entsprechen (z. B. DIN-Normen).
+
+Die verfügbaren Schriftarten werden als Workspace-Ressourcen bereitgestellt und können im Print Model bei der Konfiguration von <<TextStylesTab, Text Styles>> ausgewählt werden.
+
+=== Dynamische Inhalte
+Print Model Elements können Referenzen auf Daten aus Document Models nutzen, um dynamische Inhalte im PDF anzuzeigen.
+Zu diesem Zweck können Sie in Ihrem Print Model ein Document Model referenzieren.
+Damit lassen sich Daten aus Documents, die auf diesem Document Model basieren, auf vielfältige Weise als dynamische Inhalte einfügen:
+
+* Field-Referenzen
+* Berechnungen (Computations)
+* Ausdrücke (Expressions)
+
+Print Model Elements wie Tabellen und Auflistungen können zur Anzeige wiederholbarer Daten verwendet werden.
+Beim Rendern der Preview werden auf Basis der vorgenommenen Modellierungseinstellungen automatisch Zeilen für die wiederholbaren Daten erzeugt.
+
+=== Preview [[PreviewIntro]]
+Die <<Preview>> kann verwendet werden, um eine PDF-Vorschau Ihres Modells zu erzeugen.
+Wenn im Modell dynamische Inhalte referenziert wurden, können Sie für die Preview ein Document auswählen, das als Quelle der dynamischen Inhalte dient.
+
+== Änderungen übernehmen [[CommittingChanges]]
+
+Der PME arbeitet *direkt* auf dem ausgewählten Workspace.
+Änderungen an den Workspace-Dateien werden vom PME automatisch neu geladen.
+Änderungen im PME werden in temporären `.wal`-Dateien gespeichert.
+Diese Dateien dienen als Änderungshistorie des Editors und werden von Funktionen wie _Undo_ und _Redo_ genutzt.
+
+Print Models mit gespeicherten Änderungen in einer `.wal`-Datei werden im Workspace Explorer des Simple Model Editor mit einem Symbol gekennzeichnet: „The model has uncommitted changes".
+
+Um vorgenommene Änderungen abzuschließen, kann der Benutzer diese im <<CommitChangesTab>> in das Print Model _committen_.
+Dabei werden die Änderungen auf das Print Model angewendet, das resultierende Modell validiert und bei Erfolg die `.wal`-Datei gelöscht sowie das Print Model im Workspace überschrieben.
+
+[NOTE]
+====
+Dieses Verfahren sichert auch temporäre Änderungen bei Systemabstürzen, Schließen des Editors oder Validierungsproblemen.
+Jede Änderung des Benutzers wird direkt im Workspace widergespiegelt, was bei Supportanfragen und Fehlerberichten hilfreich ist.
+Bitte fügen Sie bei solchen Anfragen stets Ihr Print Model und alle relevanten `.wal`-Dateien bei.
+====

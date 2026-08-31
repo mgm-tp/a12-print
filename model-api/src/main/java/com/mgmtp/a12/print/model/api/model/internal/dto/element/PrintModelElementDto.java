@@ -71,6 +71,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 @JsonTypeInfo(
 	use = JsonTypeInfo.Id.NAME,
+	include = JsonTypeInfo.As.EXISTING_PROPERTY,
 	property = "type",
 	defaultImpl = PrintModelElementDto.class,
 	visible = true

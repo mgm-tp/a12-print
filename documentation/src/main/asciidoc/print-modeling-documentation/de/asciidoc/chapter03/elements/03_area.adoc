@@ -1,0 +1,74 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Area [[Area]]
+
+Das Area-Element ermöglicht es, Elemente in einem bestimmten Bereich zu gruppieren.
+Nach der Erstellung kann der Area-Inhalt auf einer separaten Area-Bühne bearbeitet werden.
+
+Die Layoutberechnungen des Area-Inhalts erfolgen unabhängig von den Elementen außerhalb der Area.
+Dadurch verhält sich die Area mit ihrem Inhalt wie ein einzelnes Element.
+Wächst der Area-Inhalt über die Grenzen der Area hinaus, wird die Area entsprechend vergrößert.
+
+Wiederholbarkeitseinstellungen::
+Document Model::: Wählen Sie ein Document Model aus, das im <<SchemaTab, Schema Tab>> referenziert ist.
+Group::: In der Area-Konfiguration kann eine Group als Datenkontext ausgewählt werden.
+Ist die ausgewählte Group wiederholbar, wird die Area für jede Instanz der wiederholbaren Group im bereitgestellten A12-Dokument wiederholt.
+
+Das Area-Element ist außerdem über <<BorderProperties, Border Properties>> konfigurierbar.
+
+image::chapter03/03_area_detail_view.png[Area-Element-Detailansicht,title="Area-Element-Detailansicht"]
+
+Um die <<AreaStage, Area Stage View>> aufzurufen, bewegen Sie den Mauszeiger über die Area und klicken Sie auf die eingeblendete Schaltfläche „Edit" in der oberen rechten Ecke der Area.
+
+== Area Stage View [[AreaStage]]
+Die Area Stage funktioniert ähnlich wie die <<EditorStage, Editor Stage>>.
+
+Die Hauptunterschiede zwischen diesen Editor-Stage-Ansichten sind:
+
+* Die Area Stage hat die Abmessungen der zugehörigen Area.
+* Die Area Stage zeigt die Ränder der zugehörigen Area an.
+* Am unteren Rand der Area Stage befindet sich ein Erweiterungspunkt, der gezogen werden kann, um die <<AreaOverflowHeight, Overflow Height>> der Area zu definieren.
+
+Elemente innerhalb einer Area werden relativ zur oberen linken Ecke der Area positioniert.
+
+Verlassen Sie die Area Stage View, indem Sie in der Breadcrumb-Navigation oben links auf die gewünschte Ebene klicken.
+
+[NOTE]
+====
+* Die Positionierung der Elemente innerhalb einer Area wird durch den Area-Rand nicht beeinflusst. Daher können sich Elemente und Area-Rand überlappen.
+* Höhenberechnung und Positionierung der Elemente innerhalb der Area erfolgen unabhängig von Elementen außerhalb der Area.
+====
+
+.Area Stage View
+image::chapter03/03_area_EditorStage.png[Area Stage View, title="Area Stage View"]
+
+
+=== Overflow Height [[AreaOverflowHeight]]
+Die Höhe der <<AreaStage, Area Stage>> kann durch Definition einer Overflow Height vergrößert werden.
+Ziehen Sie den unteren Rand der Area per Drag-and-drop, um die Overflow Height zu bearbeiten.
+Die Overflow Height ermöglicht es, zusätzliche Elemente innerhalb der Area zu platzieren.
+
+[TIP]
+====
+Dies funktioniert besonders gut in Kombination mit <<HideConditions, Hide Conditions>>.
+====
+
+[NOTE]
+====
+Der Abstand zwischen dem untersten Element innerhalb der Area und dem unteren Rand bleibt stets gleich.
+====

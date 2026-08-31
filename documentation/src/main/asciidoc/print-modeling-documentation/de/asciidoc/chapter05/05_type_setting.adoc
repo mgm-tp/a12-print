@@ -1,0 +1,106 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+:Add: Test
+
+= Schriftsatz [[Typesetting]]
+
+Dieses Kapitel beschreibt, wie Sie den Schriftsatz von Text innerhalb der Print Engine anpassen können. Es richtet sich an Modeler, die mit der Print-Modellierung vertraut sind.
+Der Schriftsatz steuert die Komposition und den Fluss von Text beim Drucken eines Dokuments.
+
+== Konfiguration des Typesetting Model [[TypeSettingModel]]
+Die Print Engine verfügt über ein dediziertes Typesetting Model, mit dem Sie anpassbare Regeln für die Gestaltung Ihres Textes hinzufügen können.
+
+image::chapter05/TypeSetting_EditorScreenshot.png[Typesetting Editor,title="Typesetting Editor"]
+
+Sie können ein neues Typesetting Model im SME Workspace erstellen und es durch Auswahl bearbeiten.
+Pro Workspace können Sie mehrere Typesetting Models erstellen, bearbeiten und referenzieren.
+
+Um Ihren Text zu beeinflussen, gehen Sie wie folgt vor:
+
+1. Erstellen, bearbeiten und speichern Sie ein Typesetting Model.
+2. Referenzieren Sie das Typesetting Model im <<SchemaTab,Schema Tab>> Ihres Print Model.
++
+image::chapter05/Typesetting_ReferenceModel.png[Typesetting Model referenzieren,title="Typesetting Model referenzieren"]
++
+3. Erstellen Sie einen Text Style und <<TypographySettings,referenzieren>> Sie das Typesetting Model.
++
+image::chapter05/Typesetting_TextStyleReference.png[Text Style mit Typesetting Model,title="Text Style mit Typesetting Model"]
++
+4. Sie können nun den benutzerdefinierten Text Style, den Sie erstellt haben, auf Ihre Print Model Elements anwenden.
+
+=== Einstellungen für Zeilenumbruch-Verhinderung
+Diese Einstellungen ermöglichen es Ihnen, Ausnahmen für die Silbentrennung und den Zeilenumbruch beim Drucken von Text mit der Print Engine zu definieren.
+
+==== Zeichenfolgenregeln
+
+Mit dieser Option können Sie bestimmte Wörter oder Zeichenfolgen definieren, die nicht getrennt werden sollen.
+
+Um eine neue Zeichenfolge hinzuzufügen, klicken Sie auf die Schaltfläche btn:[Add]. Es wird eine neue Zeile in einer Tabelle hinzugefügt, in der Sie die gewünschte Zeichenfolge eingeben können.
+Beachten Sie, dass nur Bindestriche (-) und alphabetische Zeichen erlaubt sind. Andere Zeichen wie Zahlen erzeugen eine Fehlermeldung und verhindern das Speichern des Modells.
+
+Um eine Regel zu entfernen, klicken Sie auf die Schaltfläche rechts neben der Zeile und bestätigen Sie Ihre Auswahl im Dialog.
+
+image::chapter05/Typesetting_CharacterSequence.png[Zeichenfolgenregeln,title="Zeichenfolgenregeln"]
+
+==== Maßeinheitenregeln
+
+Mit dieser Option können Sie Zeichenketten definieren, die als Maßeinheiten behandelt werden.
+Wenn ihnen eine Zahl vorangestellt ist, wird kein Zeilenumbruch eingefügt. Das bedeutet, dass Zahl und Einheit zusammen auf derselben Zeile bleiben.
+
+Um eine neue Maßeinheitenregel hinzuzufügen, klicken Sie auf die Schaltfläche btn:[Add]. Es wird eine neue Zeile in einer Tabelle hinzugefügt, in der Sie die gewünschte Einheit eingeben können.
+
+Um eine Regel zu entfernen, klicken Sie auf die Schaltfläche rechts neben der Zeile und bestätigen Sie Ihre Auswahl im Dialog.
+
+image::chapter05/Typesetting_NumberUnitRule.png[Maßeinheitenregeln,title="Maßeinheitenregeln"]
+
+WARNING: Maßeinheitenregeln erlauben zwar eine breite Auswahl möglicher Symbole, diese werden jedoch möglicherweise von der Schriftart des gewählten Text Style nicht unterstützt. In diesem Fall kann das Print Model nicht gedruckt werden und zeigt einen Fehler in der Druckvorschau an.
+
+==== Spezielle Musterregeln
+
+Mit dieser Option können Sie einen Satz kuratierter Regeln anwenden, die für spezielle Anwendungsfälle entwickelt wurden.
+Derzeit sind zwei spezielle Muster verfügbar:
+
+* §{digit} Abs. {digit} – z. B. §3 Abs. 7 für Verweise auf deutsche Gesetzestexte
+* {digit}({digit})({letter}) – z. B. 219(1)(a) für Verweise auf Dokumentabschnitte
+
+Falls Sie andere spezielle Muster benötigen, die durch keine der vorhergehenden Optionen abgedeckt werden können, wenden Sie sich bitte an das Print Engine-Team, um eine neue spezielle Musterregel implementieren zu lassen.
+
+image::chapter05/Typesetting_SpecialPatternRule.png[Spezielle Musterregeln,title="Spezielle Musterregeln"]
+
+=== Einstellungen für Schusterjungen und Hurenkinder
+
+Im Schriftsatz sind „Schusterjunge" (Orphan) und „Hurenkind" (Widow) Begriffe, die definieren, wie Text am Anfang oder Ende einer Seite im Hinblick auf den visuellen Textfluss behandelt wird.
+Eine korrekte Handhabung von Schusterjungen und Hurenkindern ergibt professionell wirkende Dokumente und verhindert, dass isolierte Zeilen den Lesefluss stören.
+Da die Definitionen variieren, legt das Typesetting Model sie wie folgt fest:
+
+* Widows: Wie viele isolierte Zeilen am Anfang einer Seite erlaubt sind (Standard: 2)
+* Orphans: Wie viele isolierte Zeilen am Ende einer Seite erlaubt sind (Standard: 2)
+
+Diese Einstellungen ermöglichen es dem Modeler, benutzerdefinierte Grenzwerte für Orphans und Widows für seine Texte festzulegen.
+
+image::chapter05/Typesetting_OrphanWidowSetting.png[Widow- und Orphan-Einstellungen,title="Widow- und Orphan-Einstellungen."]
+
+image::chapter05/Typesetting_OrphanWidow2.png[Beispiel für Widow und Orphan (Standardgrenzwert),title="Beispiel für Widow und Orphan (Standardgrenzwert)."]
+
+image::chapter05/Typesetting_OrphanWidow5.png[Beispiel für Orphan und Widow mit Grenzwert 5,title="Beispiel für Orphan und Widow mit Grenzwert 5."]
+
+=== Roles
+
+Die Roles-Tabelle ermöglicht es Ihnen, die erlaubten Roles für das Typesetting Model zu definieren.
+
+Sie können Roles aus dem Workspace auswählen, indem Sie auf btn:[Add] klicken und eine Option aus dem Dropdown-Menü wählen. Roles können gelöscht werden, indem Sie auf die rote Schaltfläche in der Zeile klicken und Ihre Auswahl bestätigen.

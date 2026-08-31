@@ -43,7 +43,7 @@ configurations {
 	create("schemagen")
 }
 
-val schemagen by configurations.getting
+val schemagen = configurations.getByName("schemagen")
 dependencies {
 	implementation(project(":engine-api"))
 	implementation(project(":engine-runtime"))

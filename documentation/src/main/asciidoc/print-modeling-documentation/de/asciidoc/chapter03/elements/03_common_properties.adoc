@@ -1,0 +1,327 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Gemeinsame Eigenschaften von Print Model Elements [[CommonProperties]]
+
+== Detail View [[DetailView]]
+
+Die Detail View ermöglicht die Bearbeitung der Eigenschaften jedes einzelnen Elements.
+Die verfügbaren Modellierungsoptionen in der Detail View hängen vom Typ des ausgewählten Elements ab.
+
+Die Detail View besitzt keine Schaltfläche „Save", da jede Änderung automatisch in der <<CommitChangesTab, Commit-Historie>> gespeichert wird.
+Klicken Sie einfach auf „Close" in der oberen rechten Ecke der Detail View oder wählen Sie das nächste Element in der Editor Stage aus.
+
+image::chapter03/03_text_detail_view.png[Element Detail View,title="Element Detail View"]
+
+=== Input Source [[InputSource]]
+Diese Funktion ermöglicht es Benutzern, die Quelle von Werten explizit zu definieren. Dadurch werden Datenklarheit und Eingabekontrolle verbessert.
+
+Durch die Angabe der Wertequelle wird die Mehrdeutigkeit zwischen nicht gesetzten Werten und Standardwerten aufgelöst. Außerdem werden die Kontexte verdeutlicht, die den Wert beeinflussen. Benutzer können fundierte Entscheidungen treffen, indem sie den genauen Ursprung der Werte in ihren Ergebnissen verstehen. Verwechslungen oder fehlerhafte Annahmen werden so vermieden.
+
+Es gibt vier Arten von Quellen, die auf Fields angewendet werden:
+
+* *Default*: Der Standardwert wird für das Field verwendet
+* *Input*: Der Wert wird vom Benutzer bereitgestellt
+* *Unset*: Es wird kein Wert zugewiesen
+* *Inherited*: Der Wert wird vom übergeordneten Element geerbt
+[cols="a,a,a,a",frame=none,grid=none]
+|===
+|
+image::chapter03/03_input_source_default.png[Input Source Default,title="Input Source Default",width=210]
+|
+image::chapter03/03_input_source_input.png[Input Source Input,title="Input Source Input",width=210]
+|
+image::chapter03/03_input_source_unset.png[Input Source Unset,title="Input Source Unset",width=210]
+
+|
+image::chapter03/03_input_source_inherited.png[Input Source Inherited,title="Input Source Inherited",width=210]
+|===
+
+Sie können die Input Source ändern, indem Sie mit der Maus über das aktuell ausgewählte Input-Source-Symbol fahren. Die verfügbaren Optionen werden angezeigt, und Sie können eine andere Quelle auswählen.
+
+In der folgenden Tabelle finden Sie die Fields, für die die Input Source gilt, sowie die jeweiligen Quelltypen.
+.Input-Source-Fields
+[%header, cols="1,1,1,1,1"]
+|===
+
+|Element | Field  3+|Source
+2+| | *Default* | *Input* | *Unset*
+.4+| *Table* | Max row count | ✘ | ✔ | ✔
+| Sum row label | ✘ | ✔ | ✔
+| Column's label | ✔ (value: Column)  | ✔ | ✘
+
+| Column's width | ✘  | ✔ | ✔
+.2+| *Listing* | Column's label | ✔ (value: Column) | ✔ | ✔
+
+| Column's width | ✘ | ✔ | ✔
+.2+| *Table Layout* | Row options: minimum height | ✔ (value: 10mm) | ✔ | ✘
+
+| Column options: width | ✘ | ✔ | ✔
+.3+| *Line Chart* | Title | ✘ | ✔ | ✔
+| Label X-Axis | ✘ | ✔ | ✔
+
+| Label Y-Axis | ✘ | ✔ | ✔
+.3+| *Bar Chart* | Title | ✘ | ✔ | ✔
+| Label X-Axis | ✘ | ✔ | ✔
+
+| Label Y-Axis | ✘ | ✔ | ✔
+
+| *Pie Chart* | Title | ✘ | ✔ | ✔
+|===
+[[TextPropertiesInputSource]]
+.Source-Fields für Texteigenschaften
+[%header, cols="1,1,1,1"]
+|===
+| *Text Properties* | *Default* | *Input* | *Inherited*
+| Text Style | ✔ (value: Default Text Style) | ✔ | ✔
+| Bold | ✔ (value: true for header properties, otherwise false) | ✔ | ✔
+| Italic | ✔ (value: false) | ✔ | ✔
+| Underline | ✔ (value: false) | ✔ | ✔
+| Color | ✔ (value: #000000) | ✔ | ✔
+
+| Background Color | ✔ (value: #ffffff) | ✔  | ✔
+|===
+[[BorderPropertiesInputSource]]
+.Source-Fields für Rahmeneigenschaften
+[%header, cols="1,1,1,1,1"]
+|===
+| *Border Properties* | *Default* | *Input* | *Unset* | *Inherited*
+| Border Style | ✘ | ✔ | ✔ ^(2)^ | ✔ ^(1)^
+| Border Width | ✔ (value: 1pt) | ✔ | ✔ | ✔ ^(1)^
+
+| Border Color | ✔ (value: #000000) | ✔ | ✔ | ✔ ^(1)^
+|===
+^(1)^ Die Quelle *Inherited* ist nur für Elemente verfügbar, die Rahmeneigenschaften von einem übergeordneten Element erben: Listing-Spalten (erben vom Listing) und Text Elements innerhalb einer Table-Layout-Zelle (erben vom Table Layout).
+
+^(2)^ Die Quelle *Unset* ist für *Border Style* bei <<Line, Line>>-Elementen nicht verfügbar – hier ist immer ein Wert erforderlich. Neue Line-Elemente haben standardmäßig den Wert *Solid*.
+
+NOTE: Wird *Border Style* auf *Unset* gesetzt, werden *Border Width* und *Border Color* automatisch auf ihre *Default*-Quelle zurückgesetzt, da diese Eigenschaften ohne Border Style keine Wirkung haben.
+
+==== Inherited Source
+
+Die Quelle *Inherited* löst den Wert zur Laufzeit vom übergeordneten Element auf.
+Folgende Vererbungsbeziehungen können bestehen:
+[%header, cols="1,1,1"]
+|===
+| Element | Kann erben von | Eigenschaften
+| Listing-Spalte | Listing | Rahmeneigenschaften (Border Style, Width, Color)
+| Text (innerhalb einer Table-Layout-Zelle) | Table Layout | Rahmeneigenschaften (Border Style, Width, Color)
+| Expression (innerhalb einer Table) | Table | Texteigenschaften (alle Fields)
+
+| Alle Elemente (innerhalb von Container-Elementen) | Area, Bounding Box | Seitenumbruchverhalten
+|===
+
+== Text Properties [[TextProperties]]
+
+Ermöglicht die Definition von Eigenschaften, die die Textanteile des Elements betreffen.
+
+Text Style:: Auswahl eines <<TextStylesTab, Text Style>>.
+Bold, Italic, Underline:: Schaltet die jeweilige Eigenschaft um.
+Color:: Hexadezimaler Farbcode für die Textfarbe.
+Background Color:: Hexadezimaler Farbcode für die Hintergrundfarbe des Textes.
+Alignment:: Auswahl einer Textausrichtung.
++
+* Left
+* Center
+* Right
+* Justify
+
+image::chapter03/03_text_properties_detail_view.png[Text Properties Detail View,title="Text Properties Detail View"]
+
+Wenn die Quelle Default ist, werden die Standardwerte angewendet. Details finden Sie in der Tabelle unter <<TextPropertiesInputSource,Source-Fields für Texteigenschaften>>.
+
+== Border Properties [[BorderProperties]]
+
+Ermöglicht die Definition eines Rahmens um das Element.
+
+Border Width:: Legt die Breite des Rahmens in `pt` fest.
+Border Style:: Legt den Stil des Rahmens fest.
++
+* None
+* Solid
+* Dashed
+* Dotted
+
+Border Color:: Hexadezimaler Farbcode für die Rahmenfarbe.
+
+image::chapter03/03_border_properties_detail_view.png[Border Properties Detail View,title="Border Properties Detail View"]
+
+== Hide Conditions [[HideConditions]]
+
+Hide Conditions ermöglichen die Definition von Bedingungen, die Elemente im resultierenden PDF-Dokument ausblenden.
+Die Hide Conditions können bearbeitet werden, indem Sie mit der rechten Maustaste auf ein Element klicken und die Option „Hide Conditions" auswählen.
+Die Bedingungen werden als <<Computations>> in der Syntax der link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language] geschrieben.
+Es wird erwartet, dass die Bedingung einen booleschen Wert zurückgibt, wobei _True_ dazu führt, dass das Element ausgeblendet wird.
+
+Wenn ein Element im resultierenden PDF-Dokument ausgeblendet wird, rücken die darunterliegenden Elemente so weit wie möglich nach oben.
+
+image::chapter03/03_hide_conditions_detail_view.png[Hide Conditions Detail View,title="Hide Conditions Detail View"]
+
+=== Beispiel [[HideConditionsExample]]
+
+Betrachten Sie das unten dargestellte Beispiel, das im <<MarginLayoutFigures, Margin-Layout-Beispiel>> eingeführt wurde.
+
+* Wenn Element *A* durch eine Hide Condition ausgeblendet wird, verschieben sich alle darunterliegenden Elemente um eine Strecke nach oben, die der Höhe von Element *A* und dessen unterem Rand entspricht.
+* Wenn Element *B* ausgeblendet wird, wird kein anderes Element verschoben.
+Element *D* kann nicht nach oben verschoben werden, da es durch Element *C* und dessen unteren Rand blockiert wird.
+* Wenn Element *C* ausgeblendet wird, wird kein anderes Element verschoben.
+Element *D* kann nicht nach oben verschoben werden, da es durch Element *B* und dessen unteren Rand blockiert wird.
+* Wenn Element *B* und *C* ausgeblendet werden, verschiebt sich Element *D* um eine Strecke nach oben, die der Höhe und dem unteren Rand von Element *B* entspricht.
+* Wenn Element *A*, *B* und *C* ausgeblendet werden, verschiebt sich Element *D* nach oben an die ursprüngliche Position von Element *A*.
+[cols="a,a",frame=none,grid=none]
+|===
+|
+image::chapter01/01_margin_layout_without_margins.png[Margin-Layout-Beispiel,title="Margin-Layout-Beispiel ohne angezeigte Ränder.",width=500]
+
+|
+image::chapter01/01_margin_layout_with_margins.png[Margin-Layout-Beispiel mit Rändern,title="Margin-Layout-Beispiel mit angezeigten Rändern.",width=500]
+|===
+
+== Computations [[Computations]]
+
+Computations in Print Models verwenden die Syntax der link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language], um Werte dynamisch zu berechnen oder Bedingungen auszuwerten.
+Je nach Kontext dienen Computations im Print Model unterschiedlichen Zwecken:
+
+=== Bedingungen
+
+Werden verwendet, um Inhalte bedingt anzuzeigen oder auszublenden. Diese können eingesetzt werden in:
+
+* <<HideConditions, Hide Conditions>> – um Elemente bedingt auszublenden
+* <<Switch, Switch Cases>> – um bedingt unterschiedliche Inhalte anzuzeigen
+* <<WatermarkTab, Watermarks>> – um Wasserzeichen bedingt anzuzeigen
+
+=== Computation Alternatives
+
+Werden verwendet, um dynamische Werte zu berechnen. Diese können eingesetzt werden in:
+
+* <<Calculation, Calculation Elements>> – um dynamische Werte zu berechnen und anzuzeigen
+* <<Listing, Listing Elements>> – um Zellwerte und -eigenschaften zu berechnen
+
+Jede Computation Alternative besteht aus:
+
+Precondition:: Eine Bedingung, die zu _True_ ausgewertet werden muss, damit die Operation angewendet wird. Wenn keine Precondition angegeben ist, wird die Operation immer angewendet.
+Operation:: Der Ausdruck, der den Ergebniswert berechnet.
+
+Die Computation Alternatives werden der Reihe nach ausgewertet. Die erste mit einer zutreffenden Precondition (oder ohne Precondition) wird verwendet.
+
+=== Referenzierung von Document-Model-Daten
+
+In Computations können Sie Fields und Groups aus dem Document Model über deren Paths referenzieren:
+
+----
+[CustomerDM/customer/firstName]
+----
+
+=== Document-Model-Metadaten-Fields [[MetadataFieldsInComputations]]
+
+Neben der Referenzierung von Fields und Groups des Document Model können Sie auch auf Metadaten-Eigenschaften von Document-Model-Elementen zugreifen. Verwenden Sie dazu das Präfix `metadata/...`.
+
+----
+metadata/<element-path>/<metadata-field>
+----
+
+Um beispielsweise auf die `label`-Metadaten eines Fields unter `/customer/firstName` zuzugreifen:
+
+----
+[metadata/customer/firstName/label]
+----
+
+Dies gibt das lokalisierte Label des Fields zurück, z. B. „First Name".
+
+==== Verfügbare Metadaten-Fields
+
+Folgende Metadaten-Fields sind verfügbar:
+.Verfügbare Metadaten-Fields
+[%header, cols="1,1,2"]
+|===
+
+|Metadaten-Field |Gilt für |Beschreibung
+|`required`
+|Fields, Groups
+
+|Gibt an, ob das Element erforderlich ist. Gibt einen booleschen Wert zurück.
+|`externalDescription`
+|Fields, Groups
+
+|Die externe Beschreibung des Elements.
+|`path`
+|Fields, Groups
+
+|Der Path des Elements als Zeichenkette mit führendem und abschließendem Schrägstrich (z. B. `"/customer/addresses/"`).
+|`label`
+|Nur Fields
+
+|Das Label des Fields.
+|`repeatability`
+|Nur Groups
+
+|Die Wiederholbarkeitseinstellung der Group.
+|`errorMessage`
+|Nur Enumeration Fields
+
+|Die für das Enumeration Field definierte Fehlermeldung.
+|===
+
+=== Annotation Fields [[AnnotationFieldsInComputations]]
+
+Sie können auch auf Annotations von Document-Model-Elementen zugreifen. Verwenden Sie dazu das Präfix `annotations/...`:
+
+----
+annotations/<element-path>/<annotation-name>
+----
+
+Beispiel:
+
+----
+[annotations/customer/firstName/myCustomAnnotation]
+----
+
+=== Listing-spezifische Computation Fields
+
+Das <<Listing, Listing Element>> unterstützt zusätzliche Computation Fields für den Zugriff auf Informationen zur Entität der aktuellen Zeile.
+Details finden Sie unter <<ListingAdditionalFields, Zusätzliche Computation Fields>> in der Listing-Dokumentation.
+
+== Seitenumbruchverhalten [[PageBreakBehavior]]
+Das Seitenumbruchverhalten ermöglicht es Benutzern zu definieren, wie ein Element mit Seitenumbrüchen im resultierenden PDF-Dokument interagiert.
+Diese Einstellung ist nur auf dem <<SegmentTab, Segment Tab>> verfügbar. Um sie zu bearbeiten, doppelklicken Sie auf das Element im <<LayoutMode, Layout Mode>>, um die Detail View zu öffnen. Die Optionen für das Seitenumbruchverhalten befinden sich unter den Seitenumbruch-Einstellungen.
+
+image::chapter03/03_page_break_behavior_detail_view.png[Detail View für Seitenumbruchverhalten,title="Detail View für Seitenumbruchverhalten"]
+
+Die <<InputSource, Input Source>> wird verwendet, um die Quelle für den Wert des Seitenumbruchverhaltens festzulegen. Es stehen drei Quellen zur Verfügung:
+
+* *Default*: Der Standardwert wird angewendet. Der Standardwert ist *Allow*.
+* *Input*: Der Benutzer kann zwischen den beiden unten beschriebenen Verhaltensoptionen wählen.
+* *Inherited*: Der Wert wird vom übergeordneten Element geerbt. Dies gilt nur für Elemente innerhalb von Container-Elementen (Bounding Box/Area/Switch).
+
+Die Optionen für das Seitenumbruchverhalten sind:
+
+Allow:: Das Element kann über Seiten hinweg aufgeteilt werden.
+
+Avoid:: Das Element wird nicht über Seiten hinweg aufgeteilt.
++
+* *Für Container-Elemente* (Bounding Box/Area/Switch): Wenn das Element (einschließlich Abstände zwischen untergeordneten Elementen und untergeordneten Elementen, die ebenfalls auf „Avoid" gesetzt sind) auf einen Seitenumbruch fällt, wird das gesamte Element auf die nächste Seite verschoben – auch wenn es dort nicht vollständig Platz findet.
+* *Für eigenständige Elemente*: Wenn das Element auf einen Seitenumbruch fällt, wird es auf die nächste Seite verschoben, um eine Aufteilung zu vermeiden. Passt es auch auf die nächste Seite nicht, verbleibt es an seiner aktuellen Position.
+
+NOTE: Bei wiederholbaren Areas und Switch-Elementen wird das Seitenumbruchverhalten *nicht* auf das gesamte Element angewendet, sondern auf jede einzelne Wiederholung bzw. jeden Case. Das bedeutet: Wenn eine Area oder ein Switch auf *Avoid* gesetzt ist, versucht jede Wiederholung bzw. jeder Case, eine Aufteilung über Seiten hinweg zu vermeiden. Unterschiedliche Wiederholungen bzw. Cases können jedoch auf verschiedenen Seiten landen.
+
+Wenn ein Element auf *Avoid* gesetzt ist, wird dies durch ein kleines Symbol in der oberen rechten Ecke des Elements in der Layout Editor Stage angezeigt.
+
+image::chapter03/03_page_break_behavior_indicator.png[Indikator für Seitenumbruchverhalten,title="Indikator für Seitenumbruchverhalten"]
+
+=== Standard-Input-Source für neue Elemente
+* In der Segment-Stufe: Beim Erstellen eines neuen Elements wird die Quelle des Seitenumbruchverhaltens auf *Default* gesetzt.
+* In der Stufe von Container-Elementen (Bounding Box/Area/Switch): Beim Erstellen eines neuen Elements wird die Quelle des Seitenumbruchverhaltens auf *Inherited* gesetzt und referenziert das Seitenumbruchverhalten des umgebenden Container-Elements.

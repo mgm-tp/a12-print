@@ -71,7 +71,7 @@ configurations {
 	create("printModelValidationCodeGeneration")
 }
 
-val printModelValidationCodeGeneration by configurations.getting
+val printModelValidationCodeGeneration = configurations.getByName("printModelValidationCodeGeneration")
 
 dependencies {
 	implementation(project(":model-api"))

@@ -41,6 +41,7 @@ plugins {
 }
 
 
+
 allprojects {
 	apply(plugin = "base")
 
@@ -156,3 +157,4 @@ subprojects {
 		}
 	}
 }
+

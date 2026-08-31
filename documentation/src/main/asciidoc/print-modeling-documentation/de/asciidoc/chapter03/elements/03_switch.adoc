@@ -1,0 +1,55 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Switch [[Switch]]
+
+Das Switch-Element ist ein Container-Element, ähnlich wie <<Area, Area>> und <<BoundingBox, BoundingBox>>. Es bietet die Möglichkeit, Elemente in einem bestimmten Bereich zu gruppieren.
+
+Dieser erweiterte Container steuert dynamisch die Sichtbarkeit der enthaltenen <<Area, Area>>-Elemente auf Basis festgelegter Preconditions.
+
+Um auf die <<SwitchCases, Switch Cases>> zuzugreifen, bewegen Sie den Mauszeiger über die Area und klicken Sie auf die angezeigte Schaltfläche „Edit" in der oberen rechten Ecke der Area.
+
+[CAUTION]
+====
+Es ist nicht erlaubt, <<BorderProperties, Border Properties>> auf dem Switch und einen DataContext auf der <<Area, Area>> Case zu setzen.
+====
+
+image::chapter03/03_switch_properties.png[Switch-Element-Eigenschaften,title="Switch-Element-Eigenschaften"]
+
+== Switch Cases [[SwitchCases]]
+
+Preconditions und zugehörige <<Area, Area>>-Elemente werden durch Klicken auf „Add" hinzugefügt.
+Diese Preconditions werden als <<Computations>> in der Syntax der link:/docs/KERNEL/kernel-documentation-ba-en/index.html[Kernel Language] geschrieben.
+
+Verlassen Sie die Switch-Cases-Ansicht, indem Sie auf die gewünschte Ebene in der Breadcrumb-Navigation oben links klicken.
+
+Precondition:: Wenn eine Precondition zu _True_ ausgewertet wird, wird das zugehörige Area-Element an derselben Switch-Position sichtbar.
++
+Wenn die Precondition zu _False_ ausgewertet wird, wird das Area-Element ausgeblendet.
++
+Wenn alle Preconditions zu _False_ ausgewertet werden, wird auch der Switch ausgeblendet.
++
+[NOTE]
+====
+Es ist möglich, dass mehrere Cases gleichzeitig sichtbar sind.
+====
+
+Elements:: Für jede Precondition wird eine <<Area, Area>> mit den Abmessungen des Switch erstellt.
+Weitere Details zur Bearbeitung finden Sie beim <<Area, Area>>-Element.
+
+
+image::chapter03/03_switch_cases.png[Switch Cases Detail,title="Switch Cases Detail"]

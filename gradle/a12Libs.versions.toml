@@ -28,8 +28,8 @@
 # NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
 # LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
 [versions]
-a12Base = "30.0.1"
-a12Kernel = "31.1.0"
+a12Base = "30.0.2"
+a12Kernel = "31.1.1"
 
 [libraries]
 baseModelApi = { module = "com.mgmtp.a12.base:base-model-api", version.ref = "a12Base" }

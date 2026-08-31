@@ -37,7 +37,7 @@ import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-
 import { closeDetail } from "./editorActions";
 
 // Selector for the Lexical rich text editor's editable area
-export const RICHTEXT_EDITOR_SELECTOR = "#print-richtext-editor [contenteditable='true']";
+export const RICHTEXT_EDITOR_SELECTOR = "#print-richtext-editor";
 
 // Will timeout if the text element is not available
 export const writeToTextElement = async ({ page, text }: { page: Page; text: string }) => {
@@ -125,8 +125,10 @@ export async function setRichTextColor(page: Page, value: string) {
 	// Trigger the color input's onChange via evaluate to avoid stealing focus from the
 	// Lexical editor (fill() focuses the input, which clears the active selection).
 	await page.evaluate(colorValue => {
-		const input = document.querySelector("#print-richtext-editor input[type='color']") as HTMLInputElement;
-		const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value")?.set;
+		const input = document.querySelector(
+			'[data-role="rich-text-editor-toolbar"] input[type="color"]'
+		) as HTMLInputElement;
+		const nativeSetter = Object.getOwnPropertyDescriptor(globalThis.HTMLInputElement.prototype, "value")?.set;
 		nativeSetter?.call(input, colorValue);
 		input.dispatchEvent(new Event("change", { bubbles: true }));
 	}, value);
