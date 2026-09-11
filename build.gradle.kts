@@ -59,7 +59,7 @@ val pnpmInstallFrozen = tasks.register<PnpmTask>("pnpmInstallFrozen") {
 
 	onlyIf {
 		(!project.hasProperty("skipDependencies") || project.findProperty("skipDependencies") != "true") &&
-		(!gradle.taskGraph.hasTask(":setVersion") && !gradle.taskGraph.hasTask(":rollback"))
+		(!gradle.taskGraph.hasTask(":setVersion") && !gradle.taskGraph.hasTask(":rollback") && !gradle.taskGraph.hasTask(":updateA12Versions"))
 	}
 
 	args.set(listOf("recursive", "install", "--frozen-lockfile", "--prefer-offline") )

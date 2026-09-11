@@ -62,7 +62,7 @@ export const AnnotationCustomAdd = ({ data, setData }: AnnotationCustomAddProps)
 			setErrorMessage("");
 			return;
 		}
-		if (data.find(el => el.name === "roles")) {
+		if (trimmedName === "roles") {
 			setErrorMessage(RESOURCE_KEYS.sidebar.general.message.annotationNameProtected);
 			return;
 		}
