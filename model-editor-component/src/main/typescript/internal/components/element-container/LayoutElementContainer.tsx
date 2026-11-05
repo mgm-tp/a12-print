@@ -31,6 +31,7 @@
  */
 import * as React from "react";
 import { useSelector } from "react-redux";
+import { styled } from "styled-components";
 
 import type {
 	PartialAnyPrintModelElement,
@@ -57,17 +58,28 @@ import {
 } from "./FloatingButtonContainer.styled.js";
 import { ElementComponent } from "./ElementComponent.js";
 import { RepeatableAreaIconButton } from "./RepeatableAreaIconButton.js";
+import { FragmentReferenceIconButton } from "./FragmentReferenceIconButton.js";
 import { PageBreakAvoidIcon } from "./PageBreakAvoidIcon.js";
+
+const StyledLayoutContentWrapper = styled.div`
+	& * {
+		background-color: transparent !important;
+	}
+`;
 
 export const LayoutElementContainer = ({
 	reference,
 	isLayoutElement = false,
 	isNestedElement = false,
 }: ElementContainerProps) => {
-	const element: PartialAnyPrintModelElement & {
-		textProperties?: PartialTextProperties;
-		borderProperties?: PartialBorderProperties;
-	} = useSelector((state: PrintEngineState) => PrintEngineSelectors.printModelElement(state, reference.refId || ""));
+	const element:
+		| (PartialAnyPrintModelElement & {
+				textProperties?: PartialTextProperties;
+				borderProperties?: PartialBorderProperties;
+		  })
+		| undefined = useSelector((state: PrintEngineState) =>
+		PrintEngineSelectors.printModelElement(state, reference.refId || "")
+	);
 
 	const textStyle = useTextStyleSelector(element);
 	const fonts = useSelector(PrintEngineSelectors.fonts);
@@ -100,13 +112,15 @@ export const LayoutElementContainer = ({
 	}
 	return (
 		<>
-			<ElementComponent
-				reference={reference}
-				element={element}
-				styles={styles}
-				isNestedElement={isNestedElement}
-				ElementContainer={LayoutElementContainer}
-			/>
+			<StyledLayoutContentWrapper>
+				<ElementComponent
+					reference={reference}
+					element={element}
+					styles={styles}
+					isNestedElement={isNestedElement}
+					ElementContainer={LayoutElementContainer}
+				/>
+			</StyledLayoutContentWrapper>
 			<StyledHoverContainer>
 				<StyledFloatingButtonContainer offset={offset} element={element}>
 					{!isNestedElement && (
@@ -118,6 +132,7 @@ export const LayoutElementContainer = ({
 									)}
 							</StyledHoverDisplay>
 							<RepeatableAreaIconButton element={element} disabled />
+							<FragmentReferenceIconButton reference={reference} disabled />
 						</>
 					)}
 					{!isNestedElement && isPartialValidPlaceableReference(reference) && (

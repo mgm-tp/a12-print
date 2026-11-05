@@ -46,7 +46,9 @@ import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.Com
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.ComputeDocumentDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.provider.LogicContainerEvaluationDependencyValueProducer;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.DocumentModelIndex;
+import com.mgmtp.a12.print.model.api.model.PrintFragmentModel;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
+import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelDto;
 import lombok.Builder;
 import lombok.Data;
@@ -65,7 +67,7 @@ import java.util.concurrent.ExecutionException;
 @Data
 @Slf4j
 @Builder
-public class PrintModelCompilationContext implements PrintModel, IDocumentModelResolver {
+public class PrintModelCompilationContext implements PrintModel, PrintFragmentModel, IDocumentModelResolver {
 
 	@NonNull
 	private final PrintModelId id;
@@ -98,6 +100,9 @@ public class PrintModelCompilationContext implements PrintModel, IDocumentModelR
 
 	@EqualsAndHashCode.Exclude
 	private final Map<String, byte[]> staticImageMap = new ConcurrentHashMap<>();
+
+	@EqualsAndHashCode.Exclude
+	private final Map<String, PrintModelTreeTrace<PrintFragmentModel>> resolvedPrintModelFragments = new ConcurrentHashMap<>();
 
 	public ConcurrentHashMap<String, DocumentModelIndex> getDocumentModelIndexMap() {
 		return documentModelIndexMap;

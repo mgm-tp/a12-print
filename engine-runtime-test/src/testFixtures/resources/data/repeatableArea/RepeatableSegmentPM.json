@@ -2,7 +2,7 @@
   "header": {
     "id": "RepeatableSegmentPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -12,11 +12,11 @@
     "annotations": [
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -484,7 +484,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Table_efc96"
       },
       {
         "id": "ngI9CWt87kL4U6cBWp5cs",
@@ -511,7 +512,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_26f69"
       },
       {
         "id": "kzAlqP3x7hBhQ0_BtAyxa",
@@ -557,7 +559,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_fcab0"
       },
       {
         "id": "iyeVgYQldTjWzLL0v4ATZ",
@@ -584,7 +587,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_9b57c"
       },
       {
         "id": "b1mruaEH9BtdM0wYi6Nf6",
@@ -630,7 +634,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_6ec1e"
       },
       {
         "id": "f-OhyjzncrzGdqXp6eKIW",
@@ -657,7 +662,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_d38a5"
       },
       {
         "id": "qPWw2P0eSkpDmZan3Auku",
@@ -787,7 +793,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Table_a32b8"
       },
       {
         "id": "yQdKPpg02HmQ_6cyAvT7b",
@@ -814,7 +821,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_30457"
       },
       {
         "id": "IkEnSo2-scHlaN0cwpiXP",
@@ -864,15 +872,18 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_0d5a2"
       },
       {
         "id": "4AsH5__NCtk8tRZnWFlga",
-        "type": "PageNumber"
+        "type": "PageNumber",
+        "name": "PageNumber_85624"
       },
       {
         "id": "7mCV4Yem0bb_Tii1X6i-S",
-        "type": "PageNumberTotal"
+        "type": "PageNumberTotal",
+        "name": "PageNumberTotal_21e8a"
       }
     ]
   }

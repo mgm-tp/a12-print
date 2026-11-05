@@ -98,9 +98,7 @@ public class WorkspaceHandler implements IDocumentModelResolver {
 			.map(this::getFileElementContent)
 			.map(e -> {
 				try {
-					final var internDocumentModel = documentModelUtils.convertCustomTypeDefinitionsToStringType(
-						documentModelService.convertFromExternal(documentModelSerializer.deserialize(new StringReader(e)))
-					);
+					final var internDocumentModel = documentModelService.convertFromExternal(documentModelSerializer.deserialize(new StringReader(e)));
 
 					documentModelUtils.prefixTypeDefinitionWithModelName(internDocumentModel);
 

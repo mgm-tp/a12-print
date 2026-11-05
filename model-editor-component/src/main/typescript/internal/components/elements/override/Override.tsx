@@ -39,7 +39,7 @@ type OverrideProps = BaseElementProps;
 
 export const Override = ({ element, styles, ElementContainer }: OverrideProps) => {
 	if (!PartialOverride.isInstance(element)) {
-		throw Error(`Expected element of type Override but got ${element.type}`);
+		throw new Error(`Expected element of type Override but got ${element?.type}`);
 	}
 
 	return (

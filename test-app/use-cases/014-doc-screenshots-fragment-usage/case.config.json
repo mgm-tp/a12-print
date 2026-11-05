@@ -1,0 +1,16 @@
+{
+	"id": "014-doc-screenshots-fragment-usage",
+	"resource": {
+		"printModel": "/014-doc-screenshots-fragment-usage/ExampleLetterFragmentPM.json",
+		"documentModel": "/resources/ExampleDM.json",
+		"documents": "/resources/documents",
+		"fragmentPrintModels": [
+			"/013-doc-screenshots-fragment-model/ExampleFragmentPM.json"
+		],
+		"typesettingModels": "/resources/typesetting",
+		"fontMap": {
+			"Poppins": "../../build/assets/static/Poppins-Regular.ttf",
+			"Roboto": "../../build/assets/static/Roboto-Regular.ttf"
+		}
+	}
+}

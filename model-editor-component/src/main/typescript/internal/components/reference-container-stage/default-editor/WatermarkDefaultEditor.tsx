@@ -41,11 +41,13 @@ import { BasicDefaultEditor } from "./BasicDefaultEditor.js";
 
 export const WatermarkDefaultEditor = () => {
 	const { setElementReferences } = React.useContext(EditorContext);
-	const curWatermark = useSelector(PrintEngineSelectors.currentWatermark);
+	const currentWatermark = useSelector(PrintEngineSelectors.currentWatermark);
 
 	React.useEffect(() => {
-		setElementReferences((curWatermark?.elementReferences || []) as ReadonlyArray<PartialValidPlaceableReference>);
-	}, [curWatermark, setElementReferences]);
+		setElementReferences(
+			(currentWatermark?.elementReferences || []) as ReadonlyArray<PartialValidPlaceableReference>
+		);
+	}, [currentWatermark, setElementReferences]);
 
-	return <BasicDefaultEditor referenceContainer={curWatermark} isActive={!!curWatermark} />;
+	return <BasicDefaultEditor referenceContainer={currentWatermark} isActive={!!currentWatermark} />;
 };

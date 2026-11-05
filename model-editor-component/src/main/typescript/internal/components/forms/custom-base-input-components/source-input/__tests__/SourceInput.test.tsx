@@ -38,12 +38,14 @@ import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-
 
 import { renderWithProviders } from "../../../../../../../../test/typescript/test-utils/index.js";
 import { TEXT_PROPERTIES_PATH } from "../../../../../constant/element-property-path.js";
+import { FormContext } from "../../../FormContext.js";
 
 import { SourceInput } from "../SourceInput.js";
 
 describe("SourceInput", () => {
 	const mockElement: PartialTable = {
 		id: "test-element-id",
+		name: "mockTable",
 		type: ElementType.Table,
 	};
 
@@ -221,6 +223,44 @@ describe("SourceInput", () => {
 
 			const input = getByRole("textbox");
 			expect(input).toHaveAttribute("readonly");
+		});
+	});
+
+	describe("readonly mode", () => {
+		it("makes text input disabled when FormContext.isReadonly is true", () => {
+			const { getByRole } = renderWithProviders(
+				<FormContext.Provider value={{ isReadonly: true }}>
+					<SourceInput
+						label="Label"
+						id="source-text-input"
+						value="readonly value"
+						onChange={jest.fn()}
+						sourceProperties={makeSourceProps({
+							inputSource: { id: "source-id", source: PossibleInputSource.INPUT, path: property },
+						})}
+					/>
+				</FormContext.Provider>
+			);
+
+			expect(getByRole("textbox")).toBeDisabled();
+		});
+
+		it("disables source toggles when FormContext.isReadonly is true", () => {
+			const { getByTitle } = renderWithProviders(
+				<FormContext.Provider value={{ isReadonly: true }}>
+					<SourceInput
+						label="Label"
+						value="readonly value"
+						onChange={jest.fn()}
+						sourceProperties={makeSourceProps({
+							inputSource: { id: "source-id", source: PossibleInputSource.INPUT, path: property },
+						})}
+					/>
+				</FormContext.Provider>
+			);
+
+			expect(getByTitle("Enter User Input")).toBeDisabled();
+			expect(getByTitle("Default Value")).toBeDisabled();
 		});
 	});
 });

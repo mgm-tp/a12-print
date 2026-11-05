@@ -34,4 +34,6 @@ import { mergeTests } from "@playwright/test";
 import { useCaseTest } from "./useCase";
 import { coverageTest } from "./coverage";
 
+export type { EditorMode } from "./useCase";
+
 export const devAppTest = process.env.TEST_REPORT ? mergeTests(useCaseTest, coverageTest) : useCaseTest;

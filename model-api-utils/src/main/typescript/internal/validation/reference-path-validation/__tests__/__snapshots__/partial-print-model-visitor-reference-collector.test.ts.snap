@@ -1,5 +1,127 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
+exports[`PartialPrintModelVisitorReference - fragment references Start at PrintModel - resolve all fragment references 1`] = `[]`;
+
+exports[`PartialPrintModelVisitorReference - fragment references Start at PrintModel - resolve no fragment references 1`] = `
+[
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[1]",
+    "id": "FbEm_JhTNLntrGYHhigVB",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[2]",
+    "id": "zHue7T3DMCvwCX_jy1JdI",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[3]",
+    "id": "PRmYjK6-S1CLn9yD9N2-c",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[4]",
+    "id": "XQJlAVSmmP9fkoRMRSf3B",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[5]",
+    "id": "oCB8IOQoayXCSyvBxLpmB",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[6]",
+    "id": "zJ21L0Z-IDdTlHLL97wwZ",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[7]",
+    "id": "2O1nY86Tb0X7kkKg6LWbQ",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[8]",
+    "id": "RIInmvI4Pg3QEKvI60CQu",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[9]",
+    "id": "STkFV2hpwaVKMKQfFlwN2",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[10]",
+    "id": "jY83gVXzj4RuBBQcItlwF",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[11]",
+    "id": "V0kMMxvCAWFmA--LxSJ1r",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[12]",
+    "id": "IYKBGuGh906tdF6_eXAxd",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[13]",
+    "id": "mAjRGuqxfr7mTlU9OvxLe",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[1].elementReferences[14]",
+    "id": "SaVJhTNFWCRalGg0_YLqe",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].definitions[2].elementReferences[1]",
+    "id": "STkFV2hpwaVKMKQfFlwN2",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].elementDefinitions[2].area[1].elementReferences[1]",
+    "id": "STkFV2hpwaVKMKQfFlwN2",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].segments[1].fragmentReferences[1]",
+    "id": "IbAJW7rFCbe1-cFdmKvoW",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].sections[1].references[1]",
+    "id": "MK9xwezDmDvpRJKPNgh_c",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].sections[1].references[2]",
+    "id": "SIxRNb1lUuJRuSnbhinUO",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].watermarks[1].references[1]",
+    "id": "Y-0d5mSisS5KR6E5A307L",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].watermarks[1].references[2]",
+    "id": "UdO0AkXGF0xINc0MJew9Q",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].textStyles[1].references[1]",
+    "id": "AbpttoBg_E-qcIMw6thXH",
+    "model": "printFragment",
+  },
+  {
+    "entityPath": "content[1].textStyles[1].references[2]",
+    "id": "xYdWFiFBWC2uJDb9D4tvk",
+    "model": "printFragment",
+  },
+]
+`;
+
 exports[`PartialPrintModelVisitorReference Start at PrintModel 1`] = `
 [
   {

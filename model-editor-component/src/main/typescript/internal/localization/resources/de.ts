@@ -82,10 +82,17 @@ export const de: typeof RESOURCE_KEYS = {
 				documentModelReferenced: "Dokumentmodellreferenzen",
 				printModelReferenced: "Modellreferenzen drucken",
 				typesettingModelReferenced: "Referenzen zum Silbentrennungsmodell",
+				fragmentModelReferenced: "Referenzen zu Fragmentmodell",
 			},
 			tooltips: {
 				defaultTypesettingModel: "Standard-Silbentrennungsmodell",
 				printModelReferenceWithoutSegments: "Das ausgewählte Print Model besitzt keine DINTemplate-Segmente",
+			},
+			info: {
+				printModelReferenceDisabled:
+					"Dieses Print Model referenziert bereits Fragmentmodelle, daher kann nicht gleichzeitig ein DINTemplate referenziert werden.",
+				fragmentModelReferenceDisabled:
+					"Dieses Print Model referenziert bereits ein DINTemplate, daher können nicht gleichzeitig Fragmentmodelle referenziert werden.",
 			},
 		},
 		content: "Inhalt",
@@ -108,6 +115,10 @@ export const de: typeof RESOURCE_KEYS = {
 					selectPlaceHolder: "Wählen Sie DINTemplate-Segment aus",
 				},
 			},
+			reference: {
+				selectPlaceholder: "Segment-Fragment auswählen…",
+				referencedLabel: "Referenziertes Segment-Fragment",
+			},
 		},
 		section: {
 			name: "Abschnitt",
@@ -116,16 +127,34 @@ export const de: typeof RESOURCE_KEYS = {
 				first: "Zuerst",
 				remaining: "Verbleibend",
 			},
+			reference: {
+				selectPlaceholder: "Abschnittsfragment auswählen…",
+				referencedLabel: "Referenziertes Abschnittfragment",
+			},
 		},
 		watermark: {
 			name: "Wasserzeichen",
 			titlePlaceholder: "Wasserzeichen Überschrift",
 			setting: {
+				name: "Name",
+				headline: "Overlay-Einstellungen",
 				opacity: "Deckkraft",
 				conditions: "Bedingungen",
 				description:
 					"Folgend können A12 Regeln definiert werden, unter welchen das aktuelle Wasserzeichen angezeigt wird. Trifft mindestens eine der Bedingungen zu, wird das Wasserzeichen gedruckt. Dies gilt auch wenn keine Bedingung angegeben ist.",
 			},
+			reference: {
+				selectPlaceholder: "Wasserzeichenfragment auswählen…",
+				removeReference: "Referenz entfernen",
+				noFragmentWatermarks: "Keine passenden Wasserzeichenfragmente verfügbar",
+				referencedLabel: "Referenziertes Wasserzeichenfragment",
+			},
+		},
+		textStyleReference: {
+			selectPlaceholder: "Textstilfragment auswählen…",
+			referenceAllButton: "Alle referenzieren",
+			internalSectionLabel: "Interne Textstile",
+			referencedLabel: "Referenziertes Textstil-Fragment",
 		},
 		commitChanges: {
 			title: "Änderungen Speichern",
@@ -146,6 +175,27 @@ export const de: typeof RESOURCE_KEYS = {
 			discard: "Alle Änderungen verwerfen",
 			error: {
 				commitChangesFailed: "Die ausstehenden Änderungen konnten nicht in das Druckmodell geschrieben werden.",
+				propagateFragmentChangesFailed:
+					"Die Änderungen wurden übernommen, aber die neuen Maße konnten nicht in alle Druckmodelle übertragen werden, die diese Elemente referenzieren.",
+			},
+		},
+		fragment: {
+			name: "Fragmente",
+			search: {
+				label: "Fragmentsuche",
+				placeholder: "Suchen",
+			},
+			section: {
+				setting: {
+					name: "Titel",
+					namePlaceholder: "Abschnittstitel",
+				},
+			},
+			element: {
+				setting: {
+					name: "Name",
+					namePlaceholder: "Elementname",
+				},
 			},
 		},
 	},
@@ -158,13 +208,7 @@ export const de: typeof RESOURCE_KEYS = {
 		topMenu: {
 			elementLibrary: {
 				title: "Elementbibliothek öffnen/schließen",
-				headline: "Element hinzufügen",
-				floatLibrary: "Wechseln Sie zur schwebenden Elementbibliothek",
-				popupLibrary: "Wechseln Sie zur Popup-Elementbibliothek",
-				incomingDinTemplate:
-					"Dieses Modell wird derzeit als DINTemplate verwendet, daher kann nur BoundingBox hinzugefügt werden.",
-				dinTemplateSegmentEditor:
-					"Dies ist ein DINTemplate-Segment, daher dürfen keine Elemente hinzugefügt werden.",
+				label: "Elementbibliothek",
 			},
 			layout: "Layout",
 			tabOrder: "Lesereihenfolge",
@@ -174,6 +218,7 @@ export const de: typeof RESOURCE_KEYS = {
 			showMargins: "Ränder zeigen",
 			textStyles: "Text-Stile",
 			deleteElement: "Ausgewählte Elemente löschen",
+			setIsFragment: "Als Fragment markieren",
 			copyElement: "Ausgewählte Elemente kopieren",
 			groupElement: "Ausgewählte Elemente in einen Bereich gruppieren",
 			openElement: "Bearbeitung öffnen",
@@ -273,6 +318,7 @@ export const de: typeof RESOURCE_KEYS = {
 		open: "Offen",
 		back: "Zurück",
 		duplicate: "Duplikat",
+		unlink: "Verknüpfung aufheben",
 		openSetting: "Öffnen Sie die Einstellung",
 		closeSetting: "Einstellung schließen",
 		openEditor: "Editor öffnen",
@@ -283,10 +329,13 @@ export const de: typeof RESOURCE_KEYS = {
 		undo: "Rückgängig",
 		redo: "Wiederholen",
 		openMenu: "Menü öffnen",
+		navigateToSource: "Zur Quelle navigieren",
 	},
 	indicator: {
 		repeatable: "Wiederholbar",
 		pageBreakAvoid: "Seitenumbruch vermeiden",
+		fragmentReference: "Referenziertes Elementfragment",
+		missingFragmentElement: "Referenziertes Elementfragment wurde nicht gefunden",
 	},
 	elements: {
 		tableLayout: {
@@ -299,6 +348,7 @@ export const de: typeof RESOURCE_KEYS = {
 		},
 	},
 	elementForm: {
+		elementNameLabel: "Elementname",
 		switch: {
 			name: "Name",
 			precondition: "Vorbedingung",
@@ -322,6 +372,18 @@ export const de: typeof RESOURCE_KEYS = {
 				instanceRepeatableGroup: "Nur für wiederholbare Gruppen der ausgewählten Instanz verfügbar",
 				instanceAnyGroup: "Nur für Gruppen verfügbar",
 			},
+		},
+		elementLibrary: {
+			headline: "Elementbibliothek",
+			elementsPanel: "Elemente",
+			empty: "Hier können keine Elemente hinzugefügt werden.",
+			incomingDinTemplate:
+				"Dieses Modell wird derzeit als DINTemplate verwendet, daher kann nur BoundingBox hinzugefügt werden.",
+			dinTemplateSegmentEditor:
+				"Dies ist ein DINTemplate-Segment, daher dürfen keine Elemente hinzugefügt werden.",
+		},
+		fragmentLibrary: {
+			headline: "Elementfragmentbibliothek",
 		},
 		hideConditions: {
 			headline: "Ausblendungsregeln",
@@ -712,7 +774,6 @@ export const de: typeof RESOURCE_KEYS = {
 		warningMessage: {
 			fontIsNotConfigured:
 				"Diese Schriftart existiert nicht in den Workspace-Ressourcen. Elemente mit diesem Textstil werden mit der Standardschriftart gedruckt.",
-			typesettingModeNotFound: "Dieses Silbentrennungsmodell wurde im Arbeitsbereich nicht gefunden",
 		},
 		notification: {
 			preventDelete: {
@@ -733,8 +794,8 @@ export const de: typeof RESOURCE_KEYS = {
 				description: `"$font$" existiert nicht in den Workspace-Ressourcen. Prüfen Sie, ob der Ressource-Dateiname dem Namen der ausgewählten Schrift entspricht.`,
 			},
 			cannotLoadTypesetting: {
-				title: "Satz konnte nicht geladen werden",
-				description: "Der Satz $typesetting$ konnte nicht geladen werden",
+				title: "Typesetting Model konnte nicht geladen werden",
+				description: "Das Typesetting Model '$typesetting$' konnte nicht geladen werden",
 			},
 		},
 		tooltips: {
@@ -760,6 +821,43 @@ export const de: typeof RESOURCE_KEYS = {
 			title: "WARNUNG: Alle Änderungen verwerfen",
 			text: "Alle ausstehenden Änderungen werden verworfen und können nicht wiederhergestellt werden. Was möchten Sie tun?",
 		},
+		fragmentInUse: {
+			title: "Löschen nicht möglich",
+			text: "Dieses Fragment wird von den folgenden Print Models verwendet und kann daher nicht gelöscht werden:",
+		},
+		commitAffectsPrintModels: {
+			title: "Änderungen betreffen andere Print Models",
+			text: "Die ausgewählten Änderungen betreffen Fragmente, die von den folgenden Print Models verwendet werden:",
+			confirmButton: "Trotzdem übernehmen",
+		},
+		fragmentUnlink: {
+			title: "Verknüpfung des Fragments aufheben",
+			text: "Der Inhalt wird in dieses Print Model kopiert und nicht mehr aktualisiert, wenn er im Fragmentmodell geändert wird. Möchten Sie die Verknüpfung aufheben?",
+		},
+		fragmentUnlinkAddsDependencies: {
+			title: "Verknüpfung aufheben fügt Abhängigkeiten hinzu",
+			text: "Das Aufheben der Verknüpfung fügt diesem Print Model die folgenden Abhängigkeiten hinzu:",
+			documentModelItem: "Dokumentmodell:",
+			typesettingModelItem: "Typesetting-Modell:",
+		},
+	},
+	fragmentUsage: {
+		modalTitle: "Verwendungen",
+		description: "Dieses Fragment wird von den folgenden Print Models verwendet:",
+		navigateButton: "Navigieren",
+	},
+	fragmentUnlink: {
+		error: {
+			title: "Verknüpfung kann nicht aufgehoben werden",
+			fragmentNotLoaded: "Das Fragmentmodell konnte nicht geladen werden. Bitte versuchen Sie es erneut.",
+			definitionMissing: "Der referenzierte Fragment-Inhalt existiert nicht mehr.",
+			invalidSectionUsage: "Diese Abschnittsreferenz hat keine gültige Seitenverwendung.",
+			slotConflict: "Dieser Platz ist bereits belegt.",
+			cardinalityExceeded: "Ein Print Model darf nur 4 Abschnitte oder 2 Wasserzeichen enthalten.",
+			documentModelConflict: `Dieser Fragment-Inhalt verwendet das Dokumentmodell "$required$", dieses Print Model verwendet jedoch bereits "$existing$". Ein Print Model kann nur ein Dokumentmodell verwenden, daher kann diese Referenz nicht aufgehoben werden.`,
+			multipleDocumentModels:
+				"Dieser Fragment-Inhalt benötigt mehrere Dokumentmodelle, was nicht unterstützt wird.",
+		},
 	},
 	interaction: {
 		other: {
@@ -768,9 +866,11 @@ export const de: typeof RESOURCE_KEYS = {
 		},
 		editor: {
 			createNewElement: "Neues Element erstellt",
+			addFragmentReference: "Element-Fragment auf der Bühne referenziert",
 			deleteElementsOnStage: "Gelöschte Elemente auf der Bühne",
 			groupElementsOnStage: "Elemente auf der Arbeitsfläche in einen Bereich gruppiert",
 			moveElementByArrowKey: "Bewegte Elemente auf der Bühne",
+			unlinkFragmentElementReference: "Verknüpfung eines Elementfragments aufgehoben",
 		},
 		relativeLayout: {
 			changeMargin: "Geänderte Ränder von Elementen auf der Bühne",
@@ -920,6 +1020,7 @@ export const de: typeof RESOURCE_KEYS = {
 				},
 			},
 			sharedComponent: {
+				changeElementName: "Geänderter Namen des Elements",
 				calculationForm: {
 					changeCalculationForm: "Geändertes Berechnungsformular",
 				},
@@ -1025,7 +1126,7 @@ export const de: typeof RESOURCE_KEYS = {
 				addSchema: "Dokumentmodellreferenz hinzugefügt",
 			},
 			printModelReferences: {
-				addReferenceEntry: "Referenzeintrag hinzufügen",
+				addReferenceEntry: "Druckmodellreferenz hinzugefügt",
 			},
 		},
 		section: {
@@ -1033,6 +1134,9 @@ export const de: typeof RESOURCE_KEYS = {
 				addSection: "Abschnitt hinzugefügt",
 				changeTitle: "Abschnittstitel geändert",
 				deleteSection: "Abschnitt gelöscht",
+				addSectionReference: "Abschnittsfragment referenziert",
+				removeSectionReference: "Abschnittsfragment-Referenz entfernt",
+				unlinkSectionReference: "Verknüpfung eines Abschnittsfragments aufgehoben",
 			},
 			section: {
 				resizeSection: "Abschnitt in der Größe geändert",
@@ -1040,11 +1144,14 @@ export const de: typeof RESOURCE_KEYS = {
 		},
 		watermark: {
 			watermarkCard: {
-				addWatermark: "Wasserzeichen hinzufügen",
+				addWatermark: "Wasserzeichen hinzugefügt",
 				changeTitle: "Wasserzeichen Titel geändert",
 				changeOpacity: "Wasserzeichen Deckkraft geändert",
 				changePreconditions: "Wasserzeichen Bedingungen geändert",
 				deleteWatermark: "Wasserzeichen löschen",
+				addWatermarkReference: "Wasserzeichenfragment-Referenz hinzugefügt",
+				removeWatermarkReference: "Wasserzeichenfragment-Referenz entfernt",
+				unlinkWatermarkReference: "Verknüpfung eines Wasserzeichenfragments aufgehoben",
 			},
 		},
 		segment: {
@@ -1060,7 +1167,39 @@ export const de: typeof RESOURCE_KEYS = {
 			SegmentToolbar: {
 				addSegment: "Ein Segment hinzugefügt",
 				loadOverrideElements: "Geladene Override-Elemente",
-				addReferenceSegment: "Referenzsegment hinzugefügt",
+				addReferenceSegment: "DINTemplate-Segment hinzugefügt",
+			},
+			segmentReferenceSection: {
+				addSegmentReference: "Segmentfragment referenziert",
+				removeSegmentReference: "Segmentfragment-Referenz entfernt",
+				unlinkSegmentReference: "Verknüpfung eines Segmentfragments aufgehoben",
+			},
+		},
+		fragment: {
+			section: {
+				addSection: "Fügte ein Abschnittsfragment hinzu",
+				duplicateSection: "Duplizierte ein Abschnittsfragment",
+				deleteSection: "Löschte ein Abschnittsfragment",
+				updateSection: "Aktualisierte ein Abschnittsfragment",
+			},
+			watermark: {
+				addWatermark: "Fügte ein Wasserzeichenfragment hinzu",
+				duplicateWatermark: "Duplizierte ein Wasserzeichenfragment",
+				deleteWatermark: "Löschte ein Wasserzeichenfragment",
+				updateWatermark: "Aktualisierte ein Wasserzeichenfragment",
+			},
+			segment: {
+				addSegment: "Fügte ein Segmentfragment hinzu",
+				duplicateSegment: "Duplizierte ein Segmentfragment",
+				deleteSegment: "Löschte ein Segmentfragment",
+				updateSegment: "Aktualisierte ein Segmentfragment",
+			},
+			element: {
+				updateElement: "Ein Elementfragment aktualisiert.",
+				deleteElement: "Ein Elementfragment gelöscht.",
+				duplicateElement: "Ein Elementfragment dupliziert.",
+				updateElementReferenceDimensions:
+					"WARNUNG: Die Abmessungen einer Elementfragment-Referenz wurden automatisch an das Fragment angepasst. Das PrintModel könnte ungültige Daten enthalten.",
 			},
 		},
 		textStyle: {
@@ -1076,6 +1215,12 @@ export const de: typeof RESOURCE_KEYS = {
 			},
 			textStyleContent: {
 				reorderTextStyle: "Neu geordnete Textstile",
+			},
+			textStyleReferenceSection: {
+				addTextStyleReference: "Textstilfragment-Referenz hinzugefügt",
+				removeTextStyleReference: "Textstilfragment-Referenz entfernt",
+				referenceAllTextStyles: "Alle Textstilfragmente referenziert",
+				unlinkTextStyleReference: "Verknüpfung eines Textstilfragments aufgehoben",
 			},
 		},
 		utils: {

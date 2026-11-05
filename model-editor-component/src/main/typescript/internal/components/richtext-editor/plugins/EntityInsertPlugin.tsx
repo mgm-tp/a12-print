@@ -40,6 +40,7 @@ import {
 	PASTE_COMMAND,
 } from "lexical";
 import { useCallback, useEffect, useRef } from "react";
+import { nanoid } from "nanoid";
 
 import type {
 	PartialAnyPrintModelElement,
@@ -48,10 +49,12 @@ import type {
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import { clonePrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/utils";
 
+import { ElementsUtils } from "../../../utils/elements-utils.js";
+
 import type { PrintEntityNode } from "../nodes/print-entity-node.js";
 import { $createPrintEntityNode, $isPrintEntityNode, isEntityType } from "../nodes/print-entity-node.js";
 import { $extractHtmlAndEntities, extractHtmlAndEntities } from "../utils/html-export.js";
-import { createEntityElement, getEntityDisplayText } from "../utils/entity-utils.js";
+import { getEntityDisplayText } from "../utils/entity-utils.js";
 
 export interface EntityInsertPluginProps {
 	insertEntityType?: string;
@@ -112,7 +115,8 @@ export const EntityInsertPlugin: React.FC<EntityInsertPluginProps> = ({
 	useEffect(() => {
 		if (!insertEntityType || !isEntityType(insertEntityType)) return;
 
-		const newEntityElement = createEntityElement(insertEntityType);
+		const newEntityElement = ElementsUtils.createPrintModelElement(nanoid(), insertEntityType);
+
 		const displayText = getEntityDisplayText(newEntityElement);
 		pendingEntityRef.current = newEntityElement;
 
@@ -157,7 +161,7 @@ export const EntityInsertPlugin: React.FC<EntityInsertPluginProps> = ({
 					const originalEntity = entityDefinitions?.find(e => e.id === entityId);
 					const newEntity: PrintModelElement = originalEntity
 						? clonePrintModelEntity(originalEntity)
-						: createEntityElement(entityType);
+						: ElementsUtils.createPrintModelElement(nanoid(), entityType);
 
 					node.setEntityId(newEntity.id);
 					node.setTextContent(getEntityDisplayText(newEntity));

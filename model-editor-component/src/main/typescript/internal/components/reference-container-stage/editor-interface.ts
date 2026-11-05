@@ -111,7 +111,7 @@ export interface LayoutEditorProps extends BaseEditorProps {
 
 export interface DefaultPlaceableElementProps {
 	item: PartialValidPlaceableReference;
-	element: PartialAnyPrintModelElement;
+	element: PartialAnyPrintModelElement | undefined;
 	onClick: (event: React.MouseEvent<HTMLDivElement>, reference: PartialValidPlaceableReference) => void;
 	onDoubleClick: (reference: PartialValidPlaceableReference) => void;
 	isSelected: boolean;

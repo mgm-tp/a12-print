@@ -36,6 +36,9 @@ import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
 import { InternalPrintModelEditorLight } from "../internal/components/app/light/InternalPrintModelEditorLight.js";
 import type { StaticImageProvider } from "../api/StaticImageProvider.js";
 
+/**
+ * @experimental
+ */
 export interface PrintEditorComponentLightProps {
 	readonly printModel: PrintModel;
 	readonly documentModel: DocumentModel;
@@ -44,7 +47,7 @@ export interface PrintEditorComponentLightProps {
 	onChange(printModel: PrintModel, dirty?: boolean): void;
 }
 
-/*
+/**
  * @experimental
  */
 export const PrintModelEditorLight = ({

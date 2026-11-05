@@ -61,7 +61,7 @@ export const Diagram = ({ styles, element }: DiagramProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 
 	let displayText;
-	switch (element.type) {
+	switch (element?.type) {
 		case ElementType.LineChart:
 			displayText = element.lineChart?.title;
 			break;
@@ -72,14 +72,14 @@ export const Diagram = ({ styles, element }: DiagramProps) => {
 			displayText = element.pieChart?.title;
 			break;
 		default:
-			throw Error(`Expected element of type BarChart/LineChart/PieChart but got ${element.type}`);
+			throw new Error(`Expected element of type BarChart/LineChart/PieChart but got ${element?.type}`);
 	}
 	displayText = InputValueSourceResolver.getSourceStringValue(displayText, element, CHARTS_PROPERTY_PATH.title);
 
 	const { icon, labelKey } = DIAGRAM_ICON_MAP[element.type];
 
 	return (
-		<StyledDiagramWrapper style={styles}>
+		<StyledDiagramWrapper data-testid="element-diagram" style={styles}>
 			{icon}
 			<div className="-u-margin-l-sm">{displayText || localizer(labelKey)}</div>
 		</StyledDiagramWrapper>

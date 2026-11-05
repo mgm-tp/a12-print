@@ -31,7 +31,11 @@
  */
 import { useSelector } from "react-redux";
 
-import type { TableColumnReference, PartialBorderProperties } from "@com.mgmtp.a12.print/print-model-api/model";
+import type {
+	TableColumnReference,
+	PartialBorderProperties,
+	PartialAnyPrintModelElement,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import { PartialTable, PartialField } from "@com.mgmtp.a12.print/print-model-api/model";
 import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
@@ -51,10 +55,18 @@ import { StyledTableContainer, StyledTableHeader } from "./Table.styled.js";
 
 type TableProps = BaseElementProps;
 
+/** What a table column shows when it has no label of its own. */
+function resolveColumnFallbackLabel(element?: PartialAnyPrintModelElement): string {
+	if (PartialField.isInstance(element)) {
+		return element.field?.path?.split("/").pop() || element.type;
+	}
+	return element?.type || "Undefined Element";
+}
+
 export const Table = ({ element, styles }: TableProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	if (!PartialTable.isInstance(element)) {
-		throw Error(`Expected element of type Table but got ${element.type}`);
+		throw new Error(`Expected element of type Table but got ${element?.type}`);
 	}
 	const { table, borderProperties } = element;
 	const columns = table?.columns;
@@ -69,7 +81,7 @@ export const Table = ({ element, styles }: TableProps) => {
 
 	if (!columns || columns.length === 0) {
 		return (
-			<div style={styles}>
+			<div data-testid="element-table" style={styles}>
 				<TypeSettingApplier textStyleId={headerTextProperties?.textStyleId}>
 					{localizer(RESOURCE_KEYS.editor.element.Table)}
 				</TypeSettingApplier>
@@ -149,11 +161,7 @@ const TableHeader = ({
 		TABLE_PROPERTY_PATH.columnWidth
 	);
 
-	const text = labelValue
-		? labelValue
-		: PartialField.isInstance(element)
-			? element.field?.path?.split("/").pop() || element.type
-			: element.type;
+	const text = labelValue || resolveColumnFallbackLabel(element);
 
 	return (
 		<StyledTableHeader

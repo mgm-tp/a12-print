@@ -70,6 +70,7 @@ describe("collectStaticImageNames", () => {
 					{
 						id: "override-1",
 						type: ElementType.Override,
+						name: "override-1",
 						override: {
 							id: "override-props-1",
 							refId: "bounding-box-1",
@@ -88,6 +89,7 @@ describe("collectStaticImageNames", () => {
 					{
 						id: "image-1",
 						type: ElementType.Image,
+						name: "image-1",
 						image: {
 							id: "image-props-1",
 							imageSrcType: ImageSrcType.Static,

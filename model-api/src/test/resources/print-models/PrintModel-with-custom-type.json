@@ -2,7 +2,7 @@
   "header": {
     "id": "6sk_bIfHVmQNzKEMds44b",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -384,7 +384,8 @@
           "id": "10baada6-d878-11ed-afa1-0242ac120002",
           "text": "<div><p>TEST</p></div>",
           "entities": []
-        }
+        },
+        "name": "Text_14d46"
       },
       {
         "id": "Bh8Qr9ZG9283i87ZIPcY_",
@@ -395,7 +396,7 @@
           "path": "/general/StringField",
           "displayOptions": {
             "id": "10bab152-d878-11ed-afa1-0242ac120002",
-            "dateFormat": "<dateFormat>"
+            "dateFormat": "'<dateFormat>'"
           }
         },
         "borderProperties": {
@@ -415,7 +416,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_68d0b"
       },
       {
         "id": "vkMPtkFmNFedvHa3l7fOo",
@@ -430,7 +432,8 @@
               "operation": "[DomainText/general/StringField]"
             }
           ]
-        }
+        },
+        "name": "Calculation"
       },
       {
         "id": "aymJotzgBFBPVVufjeG56",
@@ -483,7 +486,8 @@
               "refId": "vkMPtkFmNFedvHa3l7fOo"
             }
           ]
-        }
+        },
+        "name": "Text_7017e"
       },
       {
         "id": "Bh8Qr9ZG9283i87ZIPcYC6",
@@ -510,7 +514,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_ad2f9"
       },
       {
         "id": "vkMPtkFmNFedvHa3l7f89",
@@ -525,7 +530,8 @@
               "operation": "[DomainText/general/EmptyField]"
             }
           ]
-        }
+        },
+        "name": "Calculation"
       },
       {
         "id": "aymJotzgBFBPVVufjeG4o",
@@ -579,11 +585,13 @@
               "refId": "vkMPtkFmNFedvHa3l7f89"
             }
           ]
-        }
+        },
+        "name": "Text_2c928"
       },
       {
         "id": "Px7ZwU9NlE75N71QQBIbk",
-        "type": "PageNumber"
+        "type": "PageNumber",
+        "name": "PageNumber_2fe71"
       },
       {
         "id": "aymJotzgBFBPVVufjeG45",
@@ -632,11 +640,13 @@
               "refId": "Px7ZwU9NlE75N71QQBIbk"
             }
           ]
-        }
+        },
+        "name": "Text_63719"
       },
       {
         "id": "kbIBQQ17N57ElN9UwZ7xP",
-        "type": "PageNumberTotal"
+        "type": "PageNumberTotal",
+        "name": "PageNumberTotal_43973"
       },
       {
         "id": "54GejfuVVPBFBgztoJmya",
@@ -685,7 +695,8 @@
               "refId": "kbIBQQ17N57ElN9UwZ7xP"
             }
           ]
-        }
+        },
+        "name": "Text_b7e2a"
       },
       {
         "id": "aymJotzgBFBPVVufje123",
@@ -729,7 +740,8 @@
           "id": "10bade48-d878-11ed-afa1-0242ac120002",
           "text": "<p>Create new page for total page number</p>",
           "entities": []
-        }
+        },
+        "name": "Text_095f1"
       }
     ],
     "textStyles": {

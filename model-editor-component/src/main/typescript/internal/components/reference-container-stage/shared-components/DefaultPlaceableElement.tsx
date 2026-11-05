@@ -35,11 +35,13 @@ import { useSelector } from "react-redux";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { DefaultElementBadgeWrapper } from "../../element-container/DefaultElementBadgeWrapper.js";
 import { ReadOnlyMarginWrapper } from "../../margin/ReadOnlyMarginWrapper.js";
+import { EditorContext } from "../../editor-stage/editor-context.js";
 
 import type { DefaultPlaceableElementProps } from "../editor-interface.js";
 
 import { HeightCalculationContainer } from "./HeightCalculationContainer.js";
 import { StyledDefaultPlaceableElement } from "./DefaultPlacableElement.styled.js";
+import { StyledPlacementRing } from "./Base.styled.js";
 
 export const DefaultPlaceableElement = React.forwardRef<
 	HTMLDivElement,
@@ -63,6 +65,7 @@ export const DefaultPlaceableElement = React.forwardRef<
 	const showBorders = useSelector(PrintEngineSelectors.showBordersEditor);
 	const isMarginVisible = useSelector(PrintEngineSelectors.isMarginVisible);
 	const zoomFactor = useSelector(PrintEngineSelectors.zoomFactor);
+	const { isReadonly } = React.useContext(EditorContext);
 
 	const onClickHandler = React.useCallback(
 		(event: React.MouseEvent<HTMLDivElement>) => {
@@ -74,13 +77,11 @@ export const DefaultPlaceableElement = React.forwardRef<
 	const onDoubleClickHandler = React.useCallback(() => {
 		onDoubleClick(item);
 	}, [item, onDoubleClick]);
-	const isHighlight = isSelected || hovered?.refId === item.refId || isColliding || isOutsideBox;
+	const isHighlight = isSelected || hovered?.id === item.id || isColliding || isOutsideBox;
 	return (
 		<StyledDefaultPlaceableElement
 			ref={ref}
 			{...restProps}
-			isOutsideBox={isOutsideBox}
-			isColliding={isColliding}
 			onMouseDown={e => e.stopPropagation()}
 			onMouseEnter={() => setHovered(item)}
 			onMouseLeave={() => setHovered(null)}
@@ -90,19 +91,29 @@ export const DefaultPlaceableElement = React.forwardRef<
 			reference={item}
 			zoomFactor={zoomFactor}
 			isSelected={isSelected}
+			isReadonly={isReadonly || !!item.model}
 			offsetTop={offsetTop}
-			hovered={hovered}
-			showBorders={Boolean(showBorders)}
 		>
 			<DefaultElementBadgeWrapper placeableRef={item} />
+			<StyledPlacementRing
+				hasElement={Boolean(element)}
+				highlight={isSelected || hovered?.id === item.id}
+				hasCollision={isColliding || isOutsideBox}
+				showBorders={showBorders}
+			/>
 			<ReadOnlyMarginWrapper
 				margins={item.margins}
 				hideMargins={!showBorders || !isMarginVisible}
 				highlight={isHighlight}
 			>
-				<HeightCalculationContainer item={item} itemElement={element} isResizing={isResizing}>
-					{children}
-				</HeightCalculationContainer>
+				{/* Without an element there is no height to calculate, but its placement still has its buttons. */}
+				{element ? (
+					<HeightCalculationContainer item={item} itemElement={element} isResizing={isResizing}>
+						{children}
+					</HeightCalculationContainer>
+				) : (
+					children
+				)}
 			</ReadOnlyMarginWrapper>
 		</StyledDefaultPlaceableElement>
 	);

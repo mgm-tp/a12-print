@@ -66,10 +66,11 @@ export interface EditorStates {
 }
 
 export interface PrintModelRefs {
-	currentRefType: SidebarItem.SEGMENT | SidebarItem.SECTION | SidebarItem.WATERMARK;
-	segmentId: string;
-	sectionId: string;
-	watermarkId: string;
+	currentRefType: SidebarItem.SEGMENT | SidebarItem.SECTION | SidebarItem.WATERMARK | SidebarItem.FRAGMENT;
+	segmentId?: string;
+	sectionId?: string;
+	watermarkId?: string;
+	fragmentId?: string;
 }
 
 export interface EditorSidebarState {

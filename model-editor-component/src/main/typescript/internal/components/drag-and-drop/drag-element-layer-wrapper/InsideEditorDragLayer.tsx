@@ -111,8 +111,8 @@ export const InsideEditorDragLayer = ({
 					el.position.y.value + EDITOR_OFFSET_TOP + el.dimensions.minHeight.value <
 						PX_TO_MM(bodyDiv.scrollTop) ||
 					el.position.y.value + EDITOR_OFFSET_TOP > PX_TO_MM(bodyDiv.scrollTop + bodyDiv.clientHeight) ||
-					el.refId === lMainTarget.refId ||
-					(selected.includes(lMainTarget.refId) && selected.includes(el.refId))
+					el.id === lMainTarget.id ||
+					(selected.includes(lMainTarget.id) && selected.includes(el.id))
 				) {
 					return;
 				}
@@ -199,8 +199,8 @@ export const InsideEditorDragLayer = ({
 
 	const mainTarget = React.useMemo(() => {
 		if (item && item.position && item.dimensions && item.refId) {
-			if (isOver && selected.length > 1 && selected.includes(item.refId)) {
-				const selectedEls = elementReferences.filter(el => selected.includes(el.refId));
+			if (isOver && selected.length > 1 && selected.includes(item.id)) {
+				const selectedEls = elementReferences.filter(el => selected.includes(el.id));
 				return selectedEls.reduce(
 					(res, next) => (EditorUtils.isCloserToTopLeft(res.position, next.position) ? res : next),
 					selectedEls[0]
@@ -257,10 +257,7 @@ export const InsideEditorDragLayer = ({
 	const isOverlapping = React.useMemo(() => {
 		if (mainTarget) {
 			return elementReferences.some(el => {
-				if (
-					el.refId === mainTarget.refId ||
-					(selected.includes(mainTarget.refId) && selected.includes(el.refId))
-				) {
+				if (el.id === mainTarget.id || (selected.includes(mainTarget.id) && selected.includes(el.id))) {
 					return false;
 				}
 				return EditorUtils.isElementOverlapping(

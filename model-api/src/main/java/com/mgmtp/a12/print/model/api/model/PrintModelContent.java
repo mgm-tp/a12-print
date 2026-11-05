@@ -32,6 +32,7 @@
 package com.mgmtp.a12.print.model.api.model;
 
 import com.mgmtp.a12.model.Content;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
 import com.mgmtp.a12.print.model.api.model.general.General;
 import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
@@ -42,7 +43,6 @@ import com.mgmtp.a12.print.model.api.model.watermark.WatermarkContainer;
 
 import java.util.List;
 import java.util.Optional;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 
 @OnlyForUsage
@@ -57,5 +57,8 @@ public interface PrintModelContent extends Content, PrintModelPathElement, Print
 
 	Optional<WatermarkContainer> getWatermarks();
 
+	/**
+	 * @apiNote Will become optional in the next major release and the return type will change to {@code Optional<ModelSegmentContainer>}.
+	 */
 	ModelSegmentContainer getSegments();
 }

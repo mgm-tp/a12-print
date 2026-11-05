@@ -49,11 +49,16 @@ import {
 	PrintModelListResolver,
 } from "@com.mgmtp.a12.print/print-model-api/walker";
 import type { PrintModel, PrintModelElement, Segment } from "@com.mgmtp.a12.print/print-model-api/model";
-import { BoundingBox, PageOrientation } from "@com.mgmtp.a12.print/print-model-api/model";
+import {
+	BoundingBox,
+	PageOrientation,
+	FRAGMENT_MODEL_REFERENCE_PURPOSE,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import type { Model } from "@com.mgmtp.a12.base/base-model-api";
 import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
 
 import type { DINTemplateSegment } from "../../../../api/index.js";
+import { FragmentUtils } from "../../../../utils/fragment-utils.js";
 
 class TemplateReferenceVisitor extends PrintModelVisitor {
 	templateReferences: Set<string> = new Set();
@@ -90,6 +95,14 @@ class TemplateReferenceVisitor extends PrintModelVisitor {
 const printModelMarshaller = new PrintModelMarshaller();
 
 export const getDinTemplateSegments = (printModel: Model): DINTemplateSegment[] => {
+	if (FragmentUtils.isFragmentModelHeader(printModel.header)) {
+		return [];
+	}
+
+	if (printModel.header.modelReferences?.some(ref => ref.purpose === FRAGMENT_MODEL_REFERENCE_PURPOSE)) {
+		return [];
+	}
+
 	const deserializedResult = printModelMarshaller.deserialize(printModel as unknown as Record<string, unknown>, {
 		html: false,
 	});

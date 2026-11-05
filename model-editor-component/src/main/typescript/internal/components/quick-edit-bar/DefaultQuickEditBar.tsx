@@ -33,7 +33,7 @@ import { type FocusEvent, useCallback, useMemo, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Button, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { SidebarItem, StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { PartialOverride, type PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../constant/editor.js";
@@ -47,11 +47,12 @@ import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState
 import { ElementsUtils } from "../../utils/elements-utils.js";
 import { changeMmMeasureValue } from "../../utils/measure-utils.js";
 import { EditorUtils } from "../../utils/editor-utils.js";
-import { useIsElementInsideStage, useUpdateDimensionsHandler } from "../../hooks/index.js";
+import { useCurrentEditorType, useIsElementInsideStage, useUpdateDimensionsHandler } from "../../hooks/index.js";
 
 import { EditorContext } from "../editor-stage/editor-context.js";
 
-import { StyledFlexGroupContainer, StyledOuterContainer } from "./shares/QuickEditBar.styled.js";
+import { StyledFlexGroupContainer, StyledGroupContainer, StyledOuterContainer } from "./shares/QuickEditBar.styled.js";
+import { ElementLibraryButton } from "./ElementLibraryButton.js";
 import { QuickNumberInput } from "./shares/QuickNumberInput.js";
 
 const { MM_TO_CM, CM_TO_MM } = EditorConst;
@@ -71,21 +72,26 @@ interface QuickEditBarProps {
 }
 
 export const DefaultQuickEditBar = ({ selected, deleteSelectedEls, groupSelectedEls }: QuickEditBarProps) => {
-	const { elementReferences, setCopyElements } = useContext(EditorContext);
+	const { elementReferences, setCopyElements, isReadonly } = useContext(EditorContext);
 
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
+	const selectedRefIds = useMemo(
+		() => elementReferences.filter(el => selected.includes(el.id)).map(el => el.refId),
+		[elementReferences, selected]
+	);
 	const isAnyOverrideSelected = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.isAnyOverrideSelected(state, selected)
+		PrintEngineSelectors.isAnyOverrideSelected(state, selectedRefIds)
 	);
 	const hasOnlyContainerElement = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.hasOnlyContainerElement(state, selected)
+		PrintEngineSelectors.hasOnlyContainerElement(state, selectedRefIds)
 	);
 	const editorDimensions = useSelector(PrintEngineSelectors.editorDimensions);
+	const fragmentElement = useSelector(PrintEngineSelectors.currentFragmentElement);
 
 	const mainTarget = useMemo<PartialValidPlaceableReference | null>(() => {
 		if (selected.length === 0) return null;
-		const selectedEls = elementReferences.filter(el => selected.includes(el.refId));
+		const selectedEls = elementReferences.filter(el => selected.includes(el.id));
 		if (selectedEls.length === 0) return null;
 		return selectedEls.reduce((res, next) =>
 			EditorUtils.isCloserToTopLeft(res.position, next.position) ? res : next
@@ -114,8 +120,38 @@ export const DefaultQuickEditBar = ({ selected, deleteSelectedEls, groupSelected
 				return;
 			}
 
+			if (
+				fragmentElement?.fragmentDimensions &&
+				fragmentElement.id === newMainTarget.refId &&
+				(type === "height" || type === "width")
+			) {
+				const fragmentDimensions = ElementsUtils.withFragmentDimensions(fragmentElement.fragmentDimensions, {
+					width:
+						type === "width"
+							? changeMmMeasureValue(newVal, fragmentElement.fragmentDimensions.width)
+							: undefined,
+					height:
+						type === "height"
+							? changeMmMeasureValue(newVal, fragmentElement.fragmentDimensions.height)
+							: undefined,
+				});
+				const updatedElement = isFixedHeightElement
+					? { ...ElementsUtils.withOwnDimensions(fragmentElement, { [type]: newVal }), fragmentDimensions }
+					: { ...fragmentElement, fragmentDimensions };
+				dispatch(
+					InteractionLogActions.start({
+						description: RESOURCE_KEYS.interaction.quickEditBar.changeDimension,
+						region: StageRegion.DEFAULT,
+						transactionLogActions: [
+							TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }),
+						],
+					})
+				);
+				return;
+			}
+
 			const newElementReferences = elementReferences
-				.filter(el => el.refId !== newMainTarget.refId)
+				.filter(el => el.id !== newMainTarget.id)
 				.concat([newMainTarget]);
 
 			if (isFixedHeightElement && (type === "height" || type === "width")) {
@@ -129,9 +165,7 @@ export const DefaultQuickEditBar = ({ selected, deleteSelectedEls, groupSelected
 			}
 
 			const actions: UpdateElementsTransactionLogAction[] = [
-				TransactionLogStateActions.updateReferenceElements({
-					data: elementReferences.filter(el => el.refId !== newMainTarget.refId).concat([newMainTarget]),
-				}),
+				TransactionLogStateActions.updateReferenceElements({ data: newElementReferences }),
 			];
 
 			dispatch(
@@ -142,7 +176,15 @@ export const DefaultQuickEditBar = ({ selected, deleteSelectedEls, groupSelected
 				})
 			);
 		},
-		[dispatch, elementReferences, isElementInsideStage, isFixedHeightElement, refElement, updateElementDimensions]
+		[
+			dispatch,
+			elementReferences,
+			fragmentElement,
+			isElementInsideStage,
+			isFixedHeightElement,
+			refElement,
+			updateElementDimensions,
+		]
 	);
 
 	const onValueChange = useCallback(
@@ -182,7 +224,11 @@ export const DefaultQuickEditBar = ({ selected, deleteSelectedEls, groupSelected
 	}, [dispatch, mainTarget]);
 
 	const isDisabled = mainTarget === null || (refElement && PartialOverride.isInstance(refElement));
-	const DimensionInputs = useDimensionInputs().map(({ icon, label, dimensionKey, placeholder }) => {
+	const currentEditorType = useCurrentEditorType();
+	const isFragmentTopLevelTarget = currentEditorType === SidebarItem.FRAGMENT;
+
+	const dimensionInputs = useDimensionInputs(isFragmentTopLevelTarget);
+	const DimensionInputs = dimensionInputs.map(({ icon, label, dimensionKey, placeholder }) => {
 		const editorHeight = editorDimensions.minHeight.value;
 		const editorWidth = editorDimensions.minWidth.value;
 		const verticalPageOffset = !mainTarget
@@ -240,80 +286,92 @@ export const DefaultQuickEditBar = ({ selected, deleteSelectedEls, groupSelected
 					max: dimensionKey === "x" ? editorWidth : undefined,
 				}}
 				placeholder={placeholder}
-				readonly={dimensionKey === "height" ? !isFixedHeightElement : false}
+				readonly={
+					isReadonly ||
+					(dimensionKey === "height" ? !isFixedHeightElement : false) ||
+					((dimensionKey === "width" || dimensionKey === "height") && !!mainTarget?.model)
+				}
 			/>
 		);
 	});
 
-	const isDisabledWithSelectionCheck = isAnyOverrideSelected || isDisabled;
+	const isDisabledWithSelectionCheck = isAnyOverrideSelected || isDisabled || isReadonly;
 	return (
 		<StyledOuterContainer>
-			{DimensionInputs}
-			<StyledFlexGroupContainer>
+			<StyledGroupContainer>{DimensionInputs}</StyledGroupContainer>
+			<StyledGroupContainer>
+				{!isFragmentTopLevelTarget && (
+					<StyledFlexGroupContainer>
+						<Button
+							secondary
+							destructive
+							title={localizer(RESOURCE_KEYS.editor.topMenu.deleteElement)}
+							icon={<Icon>delete</Icon>}
+							onClick={deleteSelectedEls}
+							disabled={isDisabledWithSelectionCheck}
+						/>
+						<Button
+							secondary
+							title={localizer(RESOURCE_KEYS.editor.topMenu.copyElement)}
+							icon={<Icon>content_copy</Icon>}
+							disabled={isDisabledWithSelectionCheck}
+							onClick={() =>
+								setCopyElements(elementReferences.filter(dragEl => selected.includes(dragEl.id)))
+							}
+						/>
+						<Button
+							secondary
+							title={localizer(RESOURCE_KEYS.editor.topMenu.groupElement)}
+							icon={<Icon>padding</Icon>}
+							disabled={isDisabledWithSelectionCheck || hasOnlyContainerElement}
+							onClick={groupSelectedEls}
+						/>
+					</StyledFlexGroupContainer>
+				)}
 				<Button
+					title={localizer(RESOURCE_KEYS.editor.topMenu.openElement)}
 					secondary
-					destructive
-					title={localizer(RESOURCE_KEYS.editor.topMenu.deleteElement)}
-					icon={<Icon>delete</Icon>}
-					onClick={deleteSelectedEls}
-					disabled={isDisabledWithSelectionCheck}
+					icon={<Icon>edit_note</Icon>}
+					onClick={openDetailEdit}
+					disabled={isDisabled}
 				/>
-				<Button
-					secondary
-					title={localizer(RESOURCE_KEYS.editor.topMenu.copyElement)}
-					icon={<Icon>content_copy</Icon>}
-					disabled={isDisabledWithSelectionCheck}
-					onClick={() => setCopyElements(elementReferences.filter(dragEl => selected.includes(dragEl.refId)))}
-				/>
-				<Button
-					secondary
-					title={localizer(RESOURCE_KEYS.editor.topMenu.groupElement)}
-					icon={<Icon>padding</Icon>}
-					disabled={isDisabledWithSelectionCheck || hasOnlyContainerElement}
-					onClick={groupSelectedEls}
-				/>
-			</StyledFlexGroupContainer>
-			<Button
-				title={localizer(RESOURCE_KEYS.editor.topMenu.openElement)}
-				secondary
-				icon={<Icon>edit_note</Icon>}
-				onClick={openDetailEdit}
-				disabled={isDisabled}
-			/>
+				{!isFragmentTopLevelTarget && <ElementLibraryButton />}
+			</StyledGroupContainer>
 		</StyledOuterContainer>
 	);
 };
 
-function useDimensionInputs(): DimensionInput[] {
+function useDimensionInputs(isElementFragment?: boolean): DimensionInput[] {
 	const localizer = PrintLocalizer.useLocalizer();
 
 	return useMemo(
-		() => [
-			{
-				icon: "north",
-				placeholder: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.y.placeholder),
-				label: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.y.label),
-				dimensionKey: "y",
-			},
-			{
-				icon: "west",
-				placeholder: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.x.placeholder),
-				label: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.x.label),
-				dimensionKey: "x",
-			},
-			{
-				icon: "settings_ethernet",
-				placeholder: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.width.placeholder),
-				label: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.width.label),
-				dimensionKey: "width",
-			},
-			{
-				icon: "height",
-				placeholder: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.height.placeholder),
-				label: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.height.label),
-				dimensionKey: "height",
-			},
-		],
-		[localizer]
+		() =>
+			[
+				{
+					icon: "north",
+					placeholder: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.y.placeholder),
+					label: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.y.label),
+					dimensionKey: "y",
+				},
+				{
+					icon: "west",
+					placeholder: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.x.placeholder),
+					label: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.x.label),
+					dimensionKey: "x",
+				},
+				{
+					icon: "settings_ethernet",
+					placeholder: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.width.placeholder),
+					label: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.width.label),
+					dimensionKey: "width",
+				},
+				{
+					icon: "height",
+					placeholder: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.height.placeholder),
+					label: localizer(RESOURCE_KEYS.editor.topMenu.quickEditBar.height.label),
+					dimensionKey: "height",
+				},
+			].filter(({ dimensionKey }) => !(isElementFragment && (dimensionKey === "x" || dimensionKey === "y"))),
+		[isElementFragment, localizer]
 	);
 }

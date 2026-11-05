@@ -37,13 +37,12 @@ import { Button, MessageBox, ProgressIndicator, Typography } from "@com.mgmtp.a1
 import { CommitViewSelectors } from "../../redux//commit-view/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { countErrorDataNodes } from "../../utils/error-tree-utils.js";
+import { IS_DEBUG_MODE } from "../../utils/dev-utils.js";
 
 import { ErrorBadge, WarningBadge } from "../badge/ValidationBadge.js";
 
 import { ValidationErrorTree } from "./ValidationErrorTree.js";
 import { StyledValidationErrorsHeadline } from "./ValidationErrorView.styled.js";
-
-const IS_DEBUG_MODE = typeof process !== "undefined" && process?.env?.DEBUG;
 
 export function ValidationErrorView() {
 	const [isDebugMode, setIsDebugMode] = React.useState(false);

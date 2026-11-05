@@ -32,18 +32,35 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { jest } from "@jest/globals";
 
-import type { PartialPrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { FragmentType, PartialPrintModel, PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
 import type { PartialPrintModelWalker } from "@com.mgmtp.a12.print/print-model-api/walker";
 import { TraversalCommand, createPartialPrintModelWalker } from "@com.mgmtp.a12.print/print-model-api/walker";
 
-import { PrintModelMarshaller } from "../../../../marshaller/model-marshaller.js";
 import testPartialPrintModel from "../../../../../../test/resources/print-models/Print-model-with-path-references.json" with { type: "json" };
-import { Log } from "../../../../a12internal/transaction-log/log.js";
-import { PrintModelCreator } from "../../../../a12internal/utils/print-model-creator.js";
+import type { CollectedPath } from "../../../types/reference-path.js";
+import {
+	createTestPrintModel,
+	createTestPrintModelWithLog,
+} from "../../../../../../test/typescript/test-utils/setup-test-model.js";
 
 import { PartialPrintModelVisitorReferenceCollector } from "../partial-print-model-visitor-reference-collector.js";
 
-const printModelMarshaller = new PrintModelMarshaller();
+import testPrintModelJson from "./__testdata__/useFragment.json" with { type: "json" };
+import fragmentPrintModelJson from "./__testdata__/printFragment.json" with { type: "json" };
+
+function filterFieldReferences(collected: CollectedPath) {
+	return collected.usedIn === "fieldPath";
+}
+function filterCalculationReferences(collected: CollectedPath) {
+	return collected.usedIn === "operation" || collected.usedIn === "precondition";
+}
+
+function getCalculationResult(visitor: PartialPrintModelVisitorReferenceCollector) {
+	return [...new Set(visitor.collectedPaths.filter(filterCalculationReferences).map(colected => colected.id))];
+}
+function getFieldResult(visitor: PartialPrintModelVisitorReferenceCollector) {
+	return visitor.collectedPaths.filter(filterFieldReferences).map(colected => colected.id);
+}
 
 describe("PartialPrintModelVisitorReference", () => {
 	let testPrintModel: PartialPrintModel;
@@ -51,13 +68,7 @@ describe("PartialPrintModelVisitorReference", () => {
 	let walker: PartialPrintModelWalker;
 
 	beforeEach(async () => {
-		const deserializeResult = printModelMarshaller.deserialize(testPartialPrintModel);
-		const printModel = deserializeResult.result;
-		if (!printModel) {
-			throw new Error("Cannot read test print model");
-		}
-		const { transactionLogStore } = Log.createStores([], printModel);
-		testPrintModel = PrintModelCreator.createStoreModel(transactionLogStore);
+		testPrintModel = createTestPrintModelWithLog(testPartialPrintModel);
 
 		visitor = new PartialPrintModelVisitorReferenceCollector();
 		walker = createPartialPrintModelWalker(testPrintModel, visitor);
@@ -70,11 +81,7 @@ describe("PartialPrintModelVisitorReference", () => {
 	it("Start at PrintModel", async () => {
 		walker.walkPrintModel(testPrintModel);
 
-		expect(visitor.computations.map(collected => collected.computation.id)).toEqual([
-			"TITLE_COMPUTATION_1",
-			"DESCRIPTION_COMPUTATION_1",
-			"AUTHOR_COMPUTATION_1",
-			"LANGUAGE_COMPUTATION_1",
+		expect(getCalculationResult(visitor)).toEqual([
 			// Element computations
 			"HIDE_CONDITION_COMPUTATION_1",
 			"CALCULATION_COMPUTATION_1",
@@ -99,7 +106,7 @@ describe("PartialPrintModelVisitorReference", () => {
 			"WATERMARK_PRECONDITION_2",
 		]);
 
-		expect(visitor.fieldReferences.map(collected => collected.field.id)).toEqual([
+		expect(getFieldResult(visitor)).toEqual([
 			"FIELD_2",
 			"FIELD_3",
 			"EXPRESSION_1",
@@ -129,14 +136,14 @@ describe("PartialPrintModelVisitorReference", () => {
 	it("Start at Watermark", async () => {
 		walker.walkWatermark(testPrintModel.content?.watermarks?.definitions?.at(0) as any);
 
-		expect(visitor.computations.map(collected => collected.computation.id)).toEqual(["WATERMARK_COMPUTATION_1"]);
+		expect(getCalculationResult(visitor)).toEqual(["WATERMARK_COMPUTATION_1"]);
 
-		expect(visitor.fieldReferences.map(collected => collected.field.id)).toEqual([]);
+		expect(getFieldResult(visitor)).toEqual([]);
 	});
 	it("Start at Segment", async () => {
 		walker.walkSegment(testPrintModel.content?.segments?.definitions?.at(0) as any, 0);
 
-		expect(visitor.computations.map(collected => collected.computation.id)).toEqual([
+		expect(getCalculationResult(visitor)).toEqual([
 			"HIDE_CONDITION_COMPUTATION_1",
 			"CALCULATION_COMPUTATION_1",
 			"HIDE_CONDITION_COMPUTATION_2",
@@ -157,7 +164,7 @@ describe("PartialPrintModelVisitorReference", () => {
 			"CALCULATION_COMPUTATION_3",
 		]);
 
-		expect(visitor.fieldReferences.map(collected => collected.field.id)).toEqual([
+		expect(getFieldResult(visitor)).toEqual([
 			"FIELD_2",
 			"FIELD_3",
 			"EXPRESSION_1",
@@ -186,17 +193,103 @@ describe("PartialPrintModelVisitorReference", () => {
 	it("Start at Repeatable Segment", async () => {
 		walker.walkSegment(testPrintModel.content?.segments?.definitions?.at(1) as any, 1);
 
-		expect(visitor.computations.map(collected => collected.computation.id)).toEqual(["CALCULATION_COMPUTATION_4"]);
+		expect(getCalculationResult(visitor)).toEqual(["CALCULATION_COMPUTATION_4"]);
 
-		expect(visitor.fieldReferences.map(collected => collected.field.id)).toEqual([
-			"FIELD_5",
-			"REPEATABLE_SEGMENT_1",
-		]);
+		expect(getFieldResult(visitor)).toEqual(["FIELD_5", "REPEATABLE_SEGMENT_1"]);
 
 		expect(
 			visitor.collectedPaths.map(e => ({
 				id: e.id,
 				path: e.documentModelPath,
+				entityPath: e.printModelPath?.toString(),
+			}))
+		).toMatchSnapshot();
+	});
+});
+
+function getFragmentReferencesResult(visitor: PartialPrintModelVisitorReferenceCollector, type: FragmentType) {
+	return visitor.missingFragmentReferences
+		.filter(collected => collected.type === type)
+		.map(colected => colected.refId);
+}
+
+describe("PartialPrintModelVisitorReference - fragment references", () => {
+	let testPrintModel: PartialPrintModel;
+	let fragmentPrintModel: PrintModel;
+	let visitor: PartialPrintModelVisitorReferenceCollector;
+	let walker: PartialPrintModelWalker;
+
+	beforeEach(async () => {
+		testPrintModel = createTestPrintModel(testPrintModelJson);
+		fragmentPrintModel = createTestPrintModel(fragmentPrintModelJson);
+
+		visitor = new PartialPrintModelVisitorReferenceCollector(testPrintModel);
+		walker = createPartialPrintModelWalker(testPrintModel, visitor);
+	});
+
+	it("Start at PrintModel - resolve all fragment references", async () => {
+		walker = createPartialPrintModelWalker(testPrintModel, visitor, [fragmentPrintModel]);
+
+		const result = walker.walkPrintModel(testPrintModel);
+		expect(result).toBe(TraversalCommand.CONTINUE);
+
+		expect(getFragmentReferencesResult(visitor, "element")).toHaveLength(0);
+		expect(getFragmentReferencesResult(visitor, "watermark")).toHaveLength(0);
+		expect(getFragmentReferencesResult(visitor, "section")).toHaveLength(0);
+		expect(getFragmentReferencesResult(visitor, "segment")).toHaveLength(0);
+		expect(getFragmentReferencesResult(visitor, "textStyle")).toHaveLength(0);
+
+		expect(
+			visitor.missingFragmentReferences.map(e => ({
+				id: e.refId,
+				model: e.model,
+				entityPath: e.printModelPath?.toString(),
+			}))
+		).toMatchSnapshot();
+	});
+
+	it("Start at PrintModel - resolve no fragment references", async () => {
+		walker = createPartialPrintModelWalker(testPrintModel, visitor);
+
+		const result = walker.walkPrintModel(testPrintModel);
+		expect(result).toBe(TraversalCommand.CONTINUE);
+
+		expect(getFragmentReferencesResult(visitor, "element")).toMatchObject([
+			"FbEm_JhTNLntrGYHhigVB",
+			"zHue7T3DMCvwCX_jy1JdI",
+			"PRmYjK6-S1CLn9yD9N2-c",
+			"XQJlAVSmmP9fkoRMRSf3B",
+			"oCB8IOQoayXCSyvBxLpmB",
+			"zJ21L0Z-IDdTlHLL97wwZ",
+			"2O1nY86Tb0X7kkKg6LWbQ",
+			"RIInmvI4Pg3QEKvI60CQu",
+			"STkFV2hpwaVKMKQfFlwN2",
+			"jY83gVXzj4RuBBQcItlwF",
+			"V0kMMxvCAWFmA--LxSJ1r",
+			"IYKBGuGh906tdF6_eXAxd",
+			"mAjRGuqxfr7mTlU9OvxLe",
+			"SaVJhTNFWCRalGg0_YLqe",
+			"STkFV2hpwaVKMKQfFlwN2",
+			"STkFV2hpwaVKMKQfFlwN2",
+		]);
+		expect(getFragmentReferencesResult(visitor, "watermark")).toMatchObject([
+			"Y-0d5mSisS5KR6E5A307L",
+			"UdO0AkXGF0xINc0MJew9Q",
+		]);
+		expect(getFragmentReferencesResult(visitor, "section")).toMatchObject([
+			"MK9xwezDmDvpRJKPNgh_c",
+			"SIxRNb1lUuJRuSnbhinUO",
+		]);
+		expect(getFragmentReferencesResult(visitor, "segment")).toMatchObject(["IbAJW7rFCbe1-cFdmKvoW"]);
+		expect(getFragmentReferencesResult(visitor, "textStyle")).toMatchObject([
+			"AbpttoBg_E-qcIMw6thXH",
+			"xYdWFiFBWC2uJDb9D4tvk",
+		]);
+
+		expect(
+			visitor.missingFragmentReferences.map(e => ({
+				id: e.refId,
+				model: e.model,
 				entityPath: e.printModelPath?.toString(),
 			}))
 		).toMatchSnapshot();

@@ -49,5 +49,11 @@ export interface CloneContext {
 	cloneObject: CloneFunction;
 	clonePageBreakSource?: ClonePageBreakSource;
 	elementIdMap: Map<string, string>;
+	/**
+	 * The clone of every element, by the id of the original. An element several references point at has to end
+	 * up as one element in the copy too, so it is cloned once and handed out again afterwards.
+	 */
+	clonedElements?: Map<string, PrintModelElement>;
 	textStyleIdMap?: Map<string, string>;
+	onUnresolved?: (kind: "element" | "textStyle", id: string) => void;
 }

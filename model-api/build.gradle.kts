@@ -164,8 +164,15 @@ val generateTypeScriptGrammar = tasks.register<AntlrTask>("generateTypeScriptGra
 		val lexerFile = file("$antlrPath/DateTimeFormatLexer.ts")
 		parserFile.writeText("// @ts-nocheck\n" + parserFile.readText()
 			.replace("type int = number;", "")
+			.replace("ATNDeserializer, DecisionState, DFA,", "ATNDeserializer, DFA,")
+			.replace("\tToken, TokenStream,", "\tToken,")
+			.replace("} from 'antlr4';", "} from 'antlr4';\nimport type { DecisionState, TokenStream } from 'antlr4';")
 		)
-		lexerFile.writeText(lexerFile.readText().replace("RuleContext,", ""))
+		lexerFile.writeText(lexerFile.readText()
+			.replace("RuleContext,", "")
+			.replace("DecisionState, DFA,", "DFA,")
+			.replace("} from \"antlr4\";", "} from \"antlr4\";\nimport type { DecisionState } from \"antlr4\";")
+		)
 	}
 
 	inputs.files("src/main/antlr/DateTimeFormat.g4", "gradle.lockfile")

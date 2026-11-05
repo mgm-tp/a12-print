@@ -34,22 +34,35 @@ import { test as base } from "@playwright/test";
 import { expect } from "..";
 
 import { TestTag } from "../tag";
+import { openUseCase } from "../userActions/appActions";
+import { migrationAnnotationValues } from "../userActions/editorActions";
+
+export type EditorMode = "sme" | "light";
 
 type UseCaseOptions = {
 	useCase: string;
+	editorMode: EditorMode;
 };
 
 export const useCaseTest = base.extend<UseCaseOptions & { forEachTest: void }>({
 	useCase: ["", { option: true }],
+	editorMode: ["sme", { option: true }],
 	forEachTest: [
-		async ({ page, useCase }, use, testInfo) => {
-			await page.goto("");
-			const printModel = page.getByText(useCase);
-			await printModel.click();
-			await page.getByLabel("Print Editorprint").locator("button").filter({ hasText: "close" }).click();
+		async ({ page, useCase, editorMode }, use, testInfo) => {
+			await openUseCase({ page, useCase });
+
+			if (editorMode === "light") {
+				// light editor does not navigate to segment tab automatically, so navigate explicitly
+				const toggleButton = page.getByRole("button", { name: "Full Editor" });
+				await toggleButton.click();
+				await page.getByRole("tab", { name: "Segment" }).click();
+			}
+
 			await use();
-			if (testInfo.tags.includes(TestTag.Screenshot)) {
-				await expect.soft(page.getByRole("main").first()).toHaveScreenshot();
+			if (testInfo.tags.includes(TestTag.Screenshot) && editorMode !== "light") {
+				await expect
+					.soft(page.getByRole("main").first())
+					.toHaveScreenshot({ mask: [migrationAnnotationValues(page)] });
 			}
 			if (testInfo.tags.includes(TestTag.Store)) {
 				await expect(page).toMatchStore();

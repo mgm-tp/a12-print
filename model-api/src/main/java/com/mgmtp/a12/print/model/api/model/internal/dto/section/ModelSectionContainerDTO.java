@@ -32,12 +32,13 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.section;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tools.jackson.databind.annotation.JsonDeserialize;
+import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelEntityDto;
 import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 import com.mgmtp.a12.print.model.api.model.section.ModelSectionContainer;
-import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelEntityDto;
+import com.mgmtp.a12.print.model.api.model.section.ModelSectionFragmentReference;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,4 +52,9 @@ public class ModelSectionContainerDTO extends PrintModelEntityDto implements Mod
 	@JsonDeserialize(contentAs = ModelSectionDto.class)
 	@Builder.Default
 	List<ModelSection> definitions = new ArrayList<>();
+
+	@JsonProperty("references")
+	@JsonDeserialize(contentAs = ModelSectionFragmentReferenceDto.class)
+	@Builder.Default
+	List<ModelSectionFragmentReference> references = new ArrayList<>();
 }

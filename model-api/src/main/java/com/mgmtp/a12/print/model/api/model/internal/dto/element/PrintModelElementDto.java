@@ -36,10 +36,13 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.ElementType;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
+import com.mgmtp.a12.print.model.api.model.element.base.Dimensions;
 import com.mgmtp.a12.print.model.api.model.internal.dto.JsonModel;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelEntityDto;
+import com.mgmtp.a12.print.model.api.model.internal.dto.element.base.DimensionsDto;
 import com.mgmtp.a12.print.model.api.model.internal.dto.element.type.area.AreaDTO;
 import com.mgmtp.a12.print.model.api.model.internal.dto.element.type.boundingBox.BoundingBoxDTO;
 import com.mgmtp.a12.print.model.api.model.internal.dto.element.type.calculation.CalculationDto;
@@ -63,6 +66,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Optional;
 
 @Data
 @SuperBuilder
@@ -100,8 +105,28 @@ public class PrintModelElementDto extends PrintModelEntityDto implements PrintMo
 	@JsonProperty(value = "type", required = true)
 	private final ElementType type;
 
+	@JsonProperty(value = "name")
+	private final String name;
+
 	@Override
-	public ElementType getType() {
-		return type;
+	public Optional<String> getName() {
+		return Optional.ofNullable(name);
+	}
+
+	@JsonProperty(value = "isFragment")
+	private final Boolean isFragment;
+
+	@JsonProperty(value = "fragmentDimensions")
+	@JsonDeserialize(as = DimensionsDto.class)
+	private final Dimensions fragmentDimensions;
+
+	@Override
+	public Optional<Boolean> isFragment() {
+		return Optional.ofNullable(isFragment);
+	}
+
+	@Override
+	public Optional<Dimensions> getFragmentDimensions() {
+		return Optional.ofNullable(fragmentDimensions);
 	}
 }

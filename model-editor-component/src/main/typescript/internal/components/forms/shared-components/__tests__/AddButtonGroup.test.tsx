@@ -32,6 +32,7 @@
 import { jest } from "@jest/globals";
 
 import { renderWithProviders } from "../../../../../../../test/typescript/test-utils/index.js";
+import { FormContext } from "../../FormContext.js";
 
 import { AddButtonGroup } from "../AddButtonGroup.js";
 
@@ -57,5 +58,29 @@ describe("AddButtonGroup", () => {
 		const { container } = renderWithProviders(<AddButtonGroup onClick={onClick} className="custom-class" />);
 
 		expect(container.querySelector(".custom-class")).toBeInTheDocument();
+	});
+
+	describe("readonly mode", () => {
+		it("disables the button when FormContext.isReadonly is true", () => {
+			const { getByRole } = renderWithProviders(
+				<FormContext.Provider value={{ isReadonly: true }}>
+					<AddButtonGroup onClick={jest.fn()} />
+				</FormContext.Provider>
+			);
+
+			expect(getByRole("button")).toBeDisabled();
+		});
+
+		it("does not call onClick when form is readonly", () => {
+			const onClick = jest.fn();
+			const { getByRole } = renderWithProviders(
+				<FormContext.Provider value={{ isReadonly: true }}>
+					<AddButtonGroup onClick={onClick} />
+				</FormContext.Provider>
+			);
+
+			getByRole("button").click();
+			expect(onClick).not.toHaveBeenCalled();
+		});
 	});
 });

@@ -71,6 +71,11 @@ export namespace InteractionLogActions {
 		affectedItems: AffectedItem[];
 	}
 
+	export const markPreventUndo = factory<MarkPreventUndoPayload>("MARK_PREVENT_UNDO");
+	export interface MarkPreventUndoPayload {
+		interactionIds: string[];
+	}
+
 	export const undo = factory("UNDO");
 	export const redo = factory("REDO");
 
@@ -83,5 +88,6 @@ export namespace InteractionLogActions {
 		sectionsMap: Record<string, NewElementHeight[]>;
 		watermarksMap: Record<string, NewElementHeight[]>;
 		wrapperMap: Record<string, NewElementHeight[]>;
+		fragmentsMap: Record<string, NewElementHeight[]>;
 	}
 }

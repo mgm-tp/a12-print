@@ -32,8 +32,9 @@
 import { nanoid } from "nanoid";
 import set from "lodash/set.js";
 
-import type { PageBreakBehavior, PrintModelElement } from "../../model/index.js";
 import {
+	type PageBreakBehavior,
+	type PrintModelElement,
 	type PartialAnyPrintModelElement,
 	PartialArea,
 	PartialBoundingBox,
@@ -45,18 +46,45 @@ import {
 	PartialTable,
 	PartialTableLayout,
 	PartialText,
+	type PartialTextProperties,
+	type PartialBorderProperties,
 	type PrintModelEntity,
 	type Reference,
 } from "../../model/index.js";
+import { isFragmentModelReference } from "../../model/reference/reference.js";
 
 import { type CloneContext } from "./type.js";
-import { cloneInputSource, cloneTextProperties } from "./base.js";
+import { cloneInputSource, cloneTextProperties, cloneBorderProperties, dropDuplicateElements } from "./base.js";
 import { CloneTreeTrace } from "./clone-tree-trace.js";
 
 export function clonePrintModelElement(
 	element: PrintModelElement,
 	context: CloneContext,
 	trace: CloneTreeTrace = new CloneTreeTrace([])
+): PrintModelElement[] {
+	const clonedElements = (context.clonedElements ??= new Map());
+	const existing = clonedElements.get(element.id);
+
+	if (existing) {
+		// its descendants came along when it was first cloned
+		return [existing];
+	}
+
+	const cloned = cloneElementByType(element, context, trace);
+
+	const reserved = context.elementIdMap.get(element.id);
+	const clonedElement = reserved ? { ...cloned[0], id: reserved } : cloned[0];
+
+	clonedElements.set(element.id, clonedElement);
+	context.elementIdMap.set(element.id, clonedElement.id);
+
+	return dropDuplicateElements([clonedElement, ...cloned.slice(1)]);
+}
+
+function cloneElementByType(
+	element: PrintModelElement,
+	context: CloneContext,
+	trace: CloneTreeTrace
 ): PrintModelElement[] {
 	if (PartialText.isInstance(element)) {
 		return cloneTextElement(element, context, trace);
@@ -93,7 +121,7 @@ function cloneTextElement(
 	context: CloneContext,
 	trace: CloneTreeTrace = new CloneTreeTrace([])
 ): PartialAnyPrintModelElement[] {
-	const { text, textProperties, ...restTextElementProperties } = textElement;
+	const { text, textProperties, borderProperties, ...restTextElementProperties } = textElement;
 	const { entities, ...restTextProperties } = text || {};
 
 	const cloneTextElement = {
@@ -105,6 +133,7 @@ function cloneTextElement(
 			entities: [],
 		},
 		textProperties: cloneTextProperties(context, textProperties),
+		borderProperties: cloneBorderProperties(context, borderProperties),
 	};
 
 	const { clonedElements, references } = cloneElementReferences(
@@ -137,13 +166,13 @@ function cloneTableElement(
 	context: CloneContext,
 	trace: CloneTreeTrace = new CloneTreeTrace([])
 ): PartialAnyPrintModelElement[] {
-	const { table, textProperties, ...restTableElementProperties } = tableElement;
+	const { table, textProperties, borderProperties, ...restTableElementProperties } = tableElement;
 	const { columns, headerTextProperties, ...restTablePropertied } = table || {};
 
 	const clonedRestTableProperties = context.cloneObject(restTableElementProperties);
 
 	const cloneTableElement = {
-		...context.cloneObject(restTableElementProperties),
+		...clonedRestTableProperties,
 		table: {
 			...context.cloneObject(restTablePropertied),
 			headerTextProperties: cloneTextProperties(context, headerTextProperties),
@@ -151,6 +180,7 @@ function cloneTableElement(
 			id: nanoid(),
 		},
 		textProperties: cloneTextProperties(context, textProperties),
+		borderProperties: cloneBorderProperties(context, borderProperties),
 	};
 
 	if (!context.elementIdMap.has(tableElement.id)) {
@@ -191,6 +221,10 @@ function cloneTableLayoutElement(
 			id: nanoid(),
 		},
 	};
+
+	if (!context.elementIdMap.has(tableLayoutElement.id)) {
+		context.elementIdMap.set(tableLayoutElement.id, clonedTableLayoutElement.id);
+	}
 
 	const { clonedElements, references } = cloneElementReferences(
 		cells || [],
@@ -376,24 +410,38 @@ function cloneListingElement(
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	trace: CloneTreeTrace = new CloneTreeTrace([])
 ): PartialAnyPrintModelElement[] {
-	const { listing, textProperties, ...restElementProperties } = listingElement;
+	const { listing, textProperties, borderProperties, ...restElementProperties } = listingElement;
 	const { headerTextProperties, columns, ...restListingProperties } = listing || {};
+
+	const clonedRestElementProperties = context.cloneObject(restElementProperties);
+
+	if (!context.elementIdMap.has(listingElement.id)) {
+		context.elementIdMap.set(listingElement.id, clonedRestElementProperties.id);
+	}
 
 	return [
 		{
-			...context.cloneObject(restElementProperties),
+			...clonedRestElementProperties,
 			listing: {
 				...context.cloneObject(restListingProperties),
 				headerTextProperties: cloneTextProperties(context, headerTextProperties),
-				columns: columns?.map(({ textProperties: colTextProperties, ...restColProperties }) => {
-					return {
-						...context.cloneObject(restColProperties),
-						textProperties: cloneTextProperties(context, colTextProperties),
-					};
-				}),
+				columns: columns?.map(
+					({
+						textProperties: colTextProperties,
+						borderProperties: colBorderProperties,
+						...restColProperties
+					}) => {
+						return {
+							...context.cloneObject(restColProperties),
+							textProperties: cloneTextProperties(context, colTextProperties),
+							borderProperties: cloneBorderProperties(context, colBorderProperties),
+						};
+					}
+				),
 				id: nanoid(),
 			},
 			textProperties: cloneTextProperties(context, textProperties),
+			borderProperties: cloneBorderProperties(context, borderProperties),
 		},
 	];
 }
@@ -408,20 +456,26 @@ function cloneReferencesGeneric<T extends Partial<Reference> & PrintModelEntity>
 	const clonedElements: PrintModelElement[] = [];
 
 	for (const reference of elementReferences) {
-		if (!reference.refId) {
-			references.push(context.cloneObject(reference));
+		if (!reference.refId || isFragmentModelReference(reference)) {
+			// the reference points outside this model - refId and model keep naming the same element
+			const clonedFragmentReference = transformReference(reference, context, trace);
+			if (reference.id) {
+				context.elementIdMap.set(reference.id, clonedFragmentReference.id);
+			}
+			references.push(clonedFragmentReference);
 			continue;
 		}
 
 		const targetElement = context.getElement(reference.refId);
 		if (!targetElement) {
+			context.onUnresolved?.("element", reference.refId);
 			continue;
 		}
 
 		let cloneReference: T = {
 			...transformReference(reference, context, trace),
 			refId: "", // to be replaced after cloning the target element
-		} as T;
+		};
 
 		if (reference.id) {
 			context.elementIdMap.set(reference.id, cloneReference.id);
@@ -430,7 +484,7 @@ function cloneReferencesGeneric<T extends Partial<Reference> & PrintModelEntity>
 		const clonedElement = clonePrintModelElement(targetElement, context, trace.with(cloneReference));
 
 		if (!clonedElement[0].id) {
-			throw Error(
+			throw new Error(
 				`Cloned element must have an id. Original reference id: ${reference.refId}, cloned element: ${JSON.stringify(clonedElement[0])}`
 			);
 		}
@@ -438,7 +492,7 @@ function cloneReferencesGeneric<T extends Partial<Reference> & PrintModelEntity>
 		cloneReference = {
 			...cloneReference,
 			refId: clonedElement[0].id,
-		} as T;
+		};
 
 		references.push(cloneReference);
 		clonedElements.push(...clonedElement);
@@ -475,16 +529,21 @@ function clonePlaceableElementReferences(
 			pageBreakBehavior: ctx.clonePageBreakSource
 				? ctx.clonePageBreakSource(pageBreakBehavior, ctx.elementIdMap, trace)
 				: cloneInputSource<PageBreakBehavior>(ctx, pageBreakBehavior, trace),
-		} as PartialPlaceableReference & PrintModelEntity;
+		};
 	});
 }
 
 function cloneElement(element: PartialAnyPrintModelElement, context: CloneContext): PartialAnyPrintModelElement {
-	if ("textProperties" in element) {
-		const { textProperties, ...restProperties } = element;
+	if ("textProperties" in element || "borderProperties" in element) {
+		const styleable = element as PartialAnyPrintModelElement &
+			Partial<{ textProperties: PartialTextProperties; borderProperties: PartialBorderProperties }>;
+		const { textProperties, borderProperties, ...restProperties } = styleable;
 		return {
 			...context.cloneObject(restProperties),
-			textProperties: cloneTextProperties(context, textProperties),
+			...(textProperties !== undefined && { textProperties: cloneTextProperties(context, textProperties) }),
+			...(borderProperties !== undefined && {
+				borderProperties: cloneBorderProperties(context, borderProperties),
+			}),
 		};
 	}
 	return context.cloneObject(element);

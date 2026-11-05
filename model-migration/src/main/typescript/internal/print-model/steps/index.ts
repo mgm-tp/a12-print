@@ -37,12 +37,14 @@ import Schema_3_0_0 from "./version-3.0.0/schema.json" with { type: "json" };
 import Schema_3_1_0 from "./version-3.1.0/schema.json" with { type: "json" };
 import Schema_3_2_0 from "./version-3.2.0/schema.json" with { type: "json" };
 import Schema_4_0_0 from "./version-4.0.0/schema.json" with { type: "json" };
+import Schema_4_1_0 from "./version-4.1.0-rc.1/schema.json" with { type: "json" };
 import Transform_3_0_0rc0 from "./version-3.0.0/transform.js";
 import Transform_3_0_0 from "./version-3.0.0/transform_3.0.0.js";
 import Transform_3_2_0rc0 from "./version-3.2.0/transform.js";
 import Transform_4_0_0rc1 from "./version-4.0.0/transform-rc.1.js";
 import Transform_4_0_0rc2 from "./version-4.0.0/transform-rc.2.js";
 import Transform_4_0_0rc3 from "./version-4.0.0/transform-rc.3.js";
+import Transform_4_1_0rc1 from "./version-4.1.0-rc.1/transform.js";
 
 export const MIGRATION_STEPS: MigrationStep[] = [
 	{ version: "2.1.0", schema: Schema_2_1_0 },
@@ -87,4 +89,6 @@ export const MIGRATION_STEPS: MigrationStep[] = [
 	{ version: "4.0.0-rc.2", schema: Schema_4_0_0, transform: Transform_4_0_0rc2 },
 	{ version: "4.0.0-rc.3", schema: Schema_4_0_0, transform: Transform_4_0_0rc3 },
 	{ version: "4.0.0", schema: Schema_4_0_0 },
+	{ version: "4.1.0-rc.1", schema: Schema_4_1_0, transform: Transform_4_1_0rc1 },
+	{ version: "4.1.0", schema: Schema_4_1_0 },
 ];

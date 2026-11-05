@@ -33,18 +33,22 @@ import { useDispatch, useSelector } from "react-redux";
 import * as React from "react";
 
 import { Toggle } from "@com.mgmtp.a12.widgets/widgets-core";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { EditorMode, NavigationActions, NavigationSelectors } from "../../../redux/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
 import { ErrorBadge } from "../../badge/ValidationBadge.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
+import { useCurrentEditorType } from "../../../hooks/index.js";
 
 export const EditorModeToggle = () => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 
 	const currentElementContainerId = useSelector(PrintEngineSelectors.currentElementContainerId);
+	// top-level fragment reference is a synthetic, never-persisted placement with no real pageBreakBehavior
+	const isFragmentTopLevel = useCurrentEditorType() === SidebarItem.FRAGMENT;
 	const activeCanvasTab = useSelector(NavigationSelectors.activeCanvasTab);
 
 	const editorMode = useSelector(NavigationSelectors.currentMode);
@@ -69,7 +73,7 @@ export const EditorModeToggle = () => {
 	);
 
 	return (
-		<Toggle value={editorMode} onValueChanged={onEditorModeChange} block>
+		<Toggle value={editorMode} onValueChanged={onEditorModeChange} block disabled={isFragmentTopLevel}>
 			<Toggle.Item value={EditorMode.Default} title={defaultTitle}>
 				{defaultTitle}{" "}
 				<ErrorBadge
@@ -79,15 +83,17 @@ export const EditorModeToggle = () => {
 					className="-u-margin-l-2xs"
 				/>
 			</Toggle.Item>
-			<Toggle.Item value={EditorMode.Layout} title={layoutTitle}>
-				{layoutTitle}
-				<ErrorBadge
-					count={allPlaceableRefLayoutCounter.error}
-					standalone
-					type={validationInteraction.error}
-					className="-u-margin-l-2xs"
-				/>
-			</Toggle.Item>
+			{!isFragmentTopLevel && (
+				<Toggle.Item value={EditorMode.Layout} title={layoutTitle}>
+					{layoutTitle}
+					<ErrorBadge
+						count={allPlaceableRefLayoutCounter.error}
+						standalone
+						type={validationInteraction.error}
+						className="-u-margin-l-2xs"
+					/>
+				</Toggle.Item>
+			)}
 		</Toggle>
 	);
 };

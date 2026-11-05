@@ -33,3 +33,5 @@ export { alwaysFalseCondition, alwaysTrueCondition } from "./base.js";
 export { RoleNotEmpty, RolesNotUnique } from "./roles.js";
 export { ElementReferenceOverlapped } from "./element-references.js";
 export { OnlyOneIsSortingColumn } from "./elements.js";
+export { isPrintModel } from "./isPrintModel.js";
+export { isFragmentModel } from "./isFragmentModel.js";

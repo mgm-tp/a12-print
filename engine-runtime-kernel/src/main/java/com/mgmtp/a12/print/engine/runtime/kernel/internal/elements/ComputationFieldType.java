@@ -63,18 +63,16 @@ public enum ComputationFieldType {
 	EMPTY;
 
 	public boolean isStringLike() {
-		switch (this) {
-			case STRING, ENUMERATION, CUSTOM, EMPTY:
-				return true;
-			default:
-		}
-		return false;
+		return switch (this) {
+			case STRING, ENUMERATION, CUSTOM, EMPTY -> true;
+			default -> false;
+		};
 	}
 
 	public Optional<FieldType> getFieldType() {
 		return switch (this) {
 			case ENUMERATION -> Optional.of(StringType.builder().lineBreaksPermitted(false).build());
-			case STRING -> Optional.of(StringType.builder().lineBreaksPermitted(true).build());
+			case STRING, CUSTOM -> Optional.of(StringType.builder().lineBreaksPermitted(true).build());
 			case NUMBER -> Optional.of(new NumberType());
 			case BOOLEAN -> Optional.of(new BooleanType());
 			case DATE -> Optional.of(new DateType());
@@ -87,12 +85,9 @@ public enum ComputationFieldType {
 	}
 
 	public boolean isComparableTo(ComputationFieldType computationFieldType) {
-		switch (this) {
-
-			case STRING, ENUMERATION:
-				return computationFieldType.isStringLike();
-			default:
-		}
-		return equals(computationFieldType);
+		return switch (this) {
+			case STRING, CUSTOM, ENUMERATION -> computationFieldType.isStringLike();
+			default -> equals(computationFieldType);
+		};
 	}
 }

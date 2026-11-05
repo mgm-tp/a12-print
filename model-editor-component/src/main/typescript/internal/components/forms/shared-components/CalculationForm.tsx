@@ -51,6 +51,7 @@ import type { OmitId } from "../../../utils/index.js";
 
 import type { ElementWithoutIdAndType } from "../type.js";
 import { DynamicSourceTextField } from "../custom-base-input-components/index.js";
+import { useFormReadonly } from "../FormContext.js";
 
 import type { ComputationRepeatRowType } from "./ComputationRepeat.js";
 import { ComputationRepeat } from "./ComputationRepeat.js";
@@ -64,16 +65,19 @@ interface CalculationFormProps {
 export const CalculationForm = ({ element }: CalculationFormProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
+	const isFormReadonly = useFormReadonly();
 
 	const updateCalculationElement = React.useCallback(
 		(partialCalculationProperties: OmitId<DeepPartial<CalculationProperties>>) => {
+			const updatedCalculationProps = {
+				id: nanoid(),
+				...element.calculation,
+				...partialCalculationProperties,
+			};
 			const updatedElement = {
 				...element,
-				calculation: {
-					id: nanoid(),
-					...element.calculation,
-					...partialCalculationProperties,
-				},
+				name: updatedCalculationProps.name,
+				calculation: updatedCalculationProps,
 			};
 			dispatch(
 				InteractionLogActions.start({
@@ -130,6 +134,7 @@ export const CalculationForm = ({ element }: CalculationFormProps) => {
 				value={model}
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getErrorMessage("model")}
+				disabled={isFormReadonly}
 			/>
 			<FieldTypeConfiguration
 				data-testid="field-type-configuration"

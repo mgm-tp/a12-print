@@ -46,13 +46,14 @@ interface DragListItemWrapperProps<T> extends BaseDragDrops {
 	type: string;
 	onMoveItem: (item: T, currentIndex: number, targetIndex: number) => void;
 	triggerPoint?: number;
+	disabled?: boolean;
 }
 
 export const DragListItemWrapper = <T extends { id: string }>(
 	props: React.PropsWithChildren<DragListItemWrapperProps<T>>
 ) => {
 	const refWrapper = React.useRef<HTMLDivElement | null>(null);
-	const { index, item, children, type, onMoveItem, triggerPoint = 0.5 } = props;
+	const { index, item, children, type, onMoveItem, triggerPoint = 0.5, disabled = false } = props;
 
 	const debounceMoveItem = React.useMemo(
 		() =>
@@ -70,11 +71,12 @@ export const DragListItemWrapper = <T extends { id: string }>(
 				index,
 				refWrapper,
 			},
+			canDrag: !disabled,
 			collect: monitor => {
 				return { isDragging: monitor.getItem()?.id === item?.id };
 			},
 		}),
-		[index, item, type]
+		[disabled, index, item, type]
 	);
 
 	const [, drop] = useDrop<T & BaseDragDrops>(

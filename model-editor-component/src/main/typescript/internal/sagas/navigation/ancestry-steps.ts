@@ -36,6 +36,7 @@ import type {
 	PartialSection,
 	PartialSegment,
 	PartialWatermark,
+	PrintModel,
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	PartialAnyTopLevelContainerElement,
@@ -52,7 +53,11 @@ import {
 import type { PartialPrintModelTrace, PartialPrintModelWalker } from "@com.mgmtp.a12.print/print-model-api/walker";
 import {
 	createPartialPrintModelWalker,
+	DefaultPartialSectionIdResolver,
+	DefaultPartialSegmentIdResolver,
+	DefaultPartialWatermarkIdResolver,
 	PartialPrintModelVisitor,
+	PrintModelListResolver,
 	TraversalCommand,
 } from "@com.mgmtp.a12.print/print-model-api/walker";
 
@@ -76,6 +81,14 @@ export class PartialPrintModelPathVisitor extends PartialPrintModelVisitor {
 	}
 	beforeVisitElement(): void {}
 	afterVisitElement(): void {}
+
+	/**
+	 * A reference that cannot be resolved - a placement pointing into a print fragment model that no longer holds the
+	 * element - says nothing about the ancestry, and stopping there would hide the ancestry of everything behind it.
+	 */
+	visitUnresolvedElement(): TraversalCommand {
+		return TraversalCommand.CONTINUE;
+	}
 
 	defaultVisitElement(element: PartialPrintModelElement, printModelTrace: PartialPrintModelTrace) {
 		if (element.id === this.targetElementId) {
@@ -103,45 +116,101 @@ export function filterTableLayoutAncestors(navigationSteps: NavigationStep[]): N
 	return navigationSteps;
 }
 
+/** @param fragmentModels Needed to look into the segments/sections/watermarks used from print fragment models. */
 export function buildAncestrySteps(
 	elementToken: ElementNavigationStep | WrapperElementNavigationStep,
 	model: PartialPrintModel,
-	targetContainer?: { type: SidebarItem; id: string }
+	targetContainer?: { type: SidebarItem; id: string },
+	fragmentModels: PrintModel[] = []
 ): NavigationStep[] {
 	const pathVistor = new PartialPrintModelPathVisitor(elementToken.elementId);
-	const walker = createPartialPrintModelWalker(model, pathVistor, []);
+	const walker = createPartialPrintModelWalker(model, pathVistor, fragmentModels);
+	const containers = resolveUsedContainers(model, fragmentModels);
 
 	if (targetContainer) {
-		return findAncestryInContainer(targetContainer, model, walker, pathVistor);
+		return findAncestryInContainer(targetContainer, model, containers, walker, pathVistor);
 	}
 
-	return findAncestryInAllContainers(model, walker, pathVistor);
+	return findAncestryInAllContainers(model, containers, walker, pathVistor);
+}
+
+interface UsedContainers {
+	segments: readonly PartialSegment[];
+	sections: readonly PartialSection[];
+	watermarks: readonly PartialWatermark[];
+}
+
+/** The containers defined in the model plus the ones it uses from print fragment models. */
+function resolveUsedContainers(model: PartialPrintModel, fragmentModels: PrintModel[]): UsedContainers {
+	const printModelResolver = PrintModelListResolver.fromModelList(fragmentModels);
+	const segmentIdResolver = DefaultPartialSegmentIdResolver.fromModel(model, printModelResolver);
+	const sectionIdResolver = DefaultPartialSectionIdResolver.fromModel(model, printModelResolver);
+	const watermarkIdResolver = DefaultPartialWatermarkIdResolver.fromModel(model, printModelResolver);
+
+	return {
+		segments: withReferencedContainers(
+			id => segmentIdResolver.resolveSegmentId(id),
+			model.content?.segments?.definitions,
+			model.content?.general?.structure
+		),
+		sections: withReferencedContainers(
+			id => sectionIdResolver.resolveSectionId(id),
+			model.content?.sections?.definitions,
+			model.content?.general?.sections
+		),
+		watermarks: withReferencedContainers(
+			id => watermarkIdResolver.resolveWatermarkId(id),
+			model.content?.watermarks?.definitions,
+			model.content?.general?.watermarks
+		),
+	};
+}
+
+function withReferencedContainers<T extends { id?: string }>(
+	resolve: (id: string) => T | undefined,
+	definitions: readonly T[] = [],
+	usedIds: readonly string[] = []
+): readonly T[] {
+	const referenced = usedIds
+		.filter(id => !definitions.some(definition => definition.id === id))
+		.map(resolve)
+		.filter((container): container is T => container !== undefined);
+
+	return referenced.length ? [...definitions, ...referenced] : definitions;
 }
 
 function findAncestryInContainer(
 	targetContainer: { type: SidebarItem; id: string },
 	model: PartialPrintModel,
+	containers: UsedContainers,
 	walker: PartialPrintModelWalker,
 	pathVistor: PartialPrintModelPathVisitor
 ): NavigationStep[] {
 	switch (targetContainer.type) {
 		case SidebarItem.SEGMENT: {
-			const segment = (model.content?.segments?.definitions || []).find(s => s.id === targetContainer.id);
+			const segment = containers.segments.find(s => s.id === targetContainer.id);
 			if (!segment) return [];
 			walker.walkSegment(segment);
 			break;
 		}
 		case SidebarItem.SECTION: {
-			const section = (model.content?.sections?.definitions || []).find(s => s.id === targetContainer.id);
+			const section = containers.sections.find(s => s.id === targetContainer.id);
 			if (!section) return [];
 			walker.walkSection(section);
 			break;
 		}
 		case SidebarItem.WATERMARK: {
-			const watermark = (model.content?.watermarks?.definitions || []).find(w => w.id === targetContainer.id);
+			const watermark = containers.watermarks.find(w => w.id === targetContainer.id);
 			if (!watermark) return [];
 			walker.walkWatermark(watermark);
 			break;
+		}
+		case SidebarItem.FRAGMENT: {
+			const fragmentElement = (model.content?.elementDefinitions || []).find(
+				el => el.id === targetContainer.id && el.isFragment
+			);
+			const nestedSteps = fragmentElement && findAncestryInFragmentElement(fragmentElement, walker, pathVistor);
+			return nestedSteps ?? [createCanvasRootStep(SidebarItem.FRAGMENT, targetContainer.id, [])];
 		}
 	}
 	return pathVistor.targetElementTrace ? getParentPathFromTrace(pathVistor.targetElementTrace) : [];
@@ -149,22 +218,48 @@ function findAncestryInContainer(
 
 function findAncestryInAllContainers(
 	model: PartialPrintModel,
+	containers: UsedContainers,
 	walker: PartialPrintModelWalker,
 	pathVistor: PartialPrintModelPathVisitor
 ): NavigationStep[] {
-	const segments: readonly PartialSegment[] = model.content?.segments?.definitions || [];
-	let trace = lookInSegments(segments, walker, pathVistor);
+	let trace = lookInSegments(containers.segments, walker, pathVistor);
 	if (trace) return getParentPathFromTrace(trace);
 
-	const sections: readonly PartialSection[] = model.content?.sections?.definitions || [];
-	trace = lookInSections(sections, walker, pathVistor);
+	trace = lookInSections(containers.sections, walker, pathVistor);
 	if (trace) return getParentPathFromTrace(trace);
 
-	const watermarks: readonly PartialWatermark[] = model.content?.watermarks?.definitions || [];
-	trace = lookInWatermark(watermarks, walker, pathVistor);
+	trace = lookInWatermark(containers.watermarks, walker, pathVistor);
 	if (trace) return getParentPathFromTrace(trace);
+
+	// Element fragments are standalone Fragment Tree entities, not referenced by any container's
+	// elementReferences within this model, so the walker never finds them above — mirrors the
+	// explicit SidebarItem.FRAGMENT case in findAncestryInContainer for when a hint is provided.
+	const fragmentElement = (model.content?.elementDefinitions || []).find(
+		el => el.id === pathVistor.targetElementId && el.isFragment
+	);
+	if (fragmentElement) {
+		return [createCanvasRootStep(SidebarItem.FRAGMENT, fragmentElement.id, [])];
+	}
+
+	for (const element of model.content?.elementDefinitions || []) {
+		const nestedSteps = element.isFragment && findAncestryInFragmentElement(element, walker, pathVistor);
+		if (nestedSteps) return nestedSteps;
+	}
 
 	return [];
+}
+
+function findAncestryInFragmentElement(
+	fragmentElement: PartialPrintModelElement,
+	walker: PartialPrintModelWalker,
+	pathVistor: PartialPrintModelPathVisitor
+): NavigationStep[] | undefined {
+	walker.walkElement(fragmentElement);
+	if (!pathVistor.targetElementTrace) return undefined;
+	return [
+		createCanvasRootStep(SidebarItem.FRAGMENT, fragmentElement.id, []),
+		...getParentPathFromTrace(pathVistor.targetElementTrace),
+	];
 }
 
 function getParentPathFromTrace(trace: PartialPrintModelTrace): NavigationStep[] {

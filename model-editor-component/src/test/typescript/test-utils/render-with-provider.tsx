@@ -49,6 +49,7 @@ import { DefaultLocalizerContextProvider, LocalizerContext } from "@com.mgmtp.a1
 import { EditorStateReducer } from "../../../main/typescript/internal/redux/editor-state/index.js";
 import {
 	ConfirmationDialogReducer,
+	FragmentUsageReducer,
 	GeneralViewReducer,
 	InteractionLogReducer,
 	NavigationReducer,
@@ -121,6 +122,7 @@ export const renderWithProviders = (
 			ValidationState: ValidationReducer,
 			ConfirmationDialogState: ConfirmationDialogReducer,
 			GeneralViewState: GeneralViewReducer,
+			FragmentUsageState: FragmentUsageReducer,
 			...reducers,
 		}),
 		applyMiddleware(sagaMiddleware)
@@ -163,12 +165,15 @@ export const renderWithProviders = (
 	const queryByDataType = queryHelpers.queryByAttribute.bind(null, "data-type");
 	const queryAllByDataType = queryHelpers.queryAllByAttribute.bind(null, "data-type");
 
-	return rtlRender(ui, {
-		wrapper: Wrapper,
-		queries: {
-			...queries,
-			queryByDataType,
-			queryAllByDataType,
-		},
-	});
+	return {
+		...rtlRender(ui, {
+			wrapper: Wrapper,
+			queries: {
+				...queries,
+				queryByDataType,
+				queryAllByDataType,
+			},
+		}),
+		store,
+	};
 };

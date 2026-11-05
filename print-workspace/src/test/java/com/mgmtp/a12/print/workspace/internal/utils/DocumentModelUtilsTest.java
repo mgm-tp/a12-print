@@ -31,10 +31,10 @@
  */
 package com.mgmtp.a12.print.workspace.internal.utils;
 
-import com.mgmtp.a12.kernel.md.model.a12internal.*;
-import com.mgmtp.a12.kernel.md.model.a12internal.fieldtypes.CustomFieldType;
+import com.mgmtp.a12.kernel.md.model.a12internal.DocumentModel;
+import com.mgmtp.a12.kernel.md.model.a12internal.DocumentModelContent;
+import com.mgmtp.a12.kernel.md.model.a12internal.FieldTypeDefinition;
 import com.mgmtp.a12.kernel.md.model.a12internal.fieldtypes.FieldType;
-import com.mgmtp.a12.kernel.md.model.a12internal.fieldtypes.StringType;
 import com.mgmtp.a12.model.header.Header;
 import com.mgmtp.a12.print.workspace.internal.event.EventService;
 import com.mgmtp.a12.print.workspace.internal.handler.ModelHandler;
@@ -109,28 +109,5 @@ class DocumentModelUtilsTest {
 		mockContent.getTypeDefinitions().forEach(fieldTypeDefinition -> {
 			assertThat(fieldTypeDefinition.getName()).isEqualTo(String.format("%s_%s", documentModelId, "typeDef" + atomicInteger.incrementAndGet()));
 		});
-    }
-
-    @Test
-    void convertCustomTypeDefinitionsToStringType() {
-		final var mockHeader = mock(Header.class);
-		final var customFieldType = CustomFieldType.builder().name("name").build();
-		final var fieldTypeDefinition = FieldTypeDefinition
-			.builder()
-			.id("id")
-			.name("name")
-			.fieldType(customFieldType)
-			.build();
-		final var mockDocumentModelContent = DocumentModelContent
-			.builder()
-			.typeDefinitions(List.of(fieldTypeDefinition))
-			.modelInfo(mock(DocumentModelInfo.class))
-			.modelConfig(mock(DocumentModelConfig.class))
-			.build();
-		final var documentModel = new DocumentModel(mockHeader, mockDocumentModelContent);
-
-		underTest.convertCustomTypeDefinitionsToStringType(documentModel);
-
-		assertThat(fieldTypeDefinition.getFieldType()).isInstanceOf(StringType.class);
     }
 }

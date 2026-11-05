@@ -89,7 +89,10 @@ Jedes Print Model Element wird mit einem eigenen Detail Editor bearbeitet, wie i
 
 image::chapter02/02_add_element_toolbar.png[Element Library hinzufügen,title="Element Library hinzufügen"]
 
-Neue Elemente können hinzugefügt werden, indem Sie im „Default"-Modus auf die „Element Library" oben links in der Editor Stage klicken und das gewünschte Element per Drag-and-Drop auf die Editor Stage ziehen.
+Neue Elemente können hinzugefügt werden, indem Sie im Modus „Default" auf die Schaltfläche „Element Library" am rechten Ende der Editor Stage-Werkzeugleiste klicken und das gewünschte Element aus dem Element Library-Panel per Drag-and-Drop auf die Editor Stage ziehen.
+Das Panel öffnet sich auf der rechten Seite der Editor Stage und listet die verfügbaren Elemente im Abschnitt „Elements" auf.
+Die einzelnen Elemente und ihre Einstellungen werden in <<PrintModelElement, Editoren für Modellelemente>> beschrieben.
+Falls das Print Model <<FragmentModels, Fragment Models>> referenziert, die Element Fragments enthalten, werden diese in einem zusätzlichen Abschnitt „Element Fragment Library" angeboten, wie in <<UsingFragments, Verwendung der Fragments>> beschrieben.
 
 Vorhandene Elemente können per Drag-and-Drop verschoben und in der Größe verändert werden.
 Alternativ lassen sich Position und Größe über die folgenden Einstellungen in der Kopfzeile der Element Stage präzise definieren:
@@ -122,7 +125,7 @@ Kopierte Elemente können eingefügt werden über:
 ====
 
 Um die Detailansicht eines Elements zu öffnen, können Sie auf das Element doppelklicken oder das Element auswählen und die Schaltfläche „Open Detail Edit" in der rechten Ecke der Stage-Kopfzeile anklicken.
-[cols="a,a",frame=none,grid=none]
+
 [cols="a,a",frame=none,grid=none]
 |===
 |
@@ -238,6 +241,14 @@ Diese Änderung erzeugt Aktualisierungen, die committed werden müssen.
 
 Typesetting Model References:: Die Liste der referenzierten Typesetting Models wird für die Text Styles verwendet. Typesetting Models können mit dem <<Typesetting,Typesetting Model Editor>> erstellt werden.
 
+Fragment Model References:: Die Liste der referenzierten <<FragmentModels, Print Fragment Models>>.
+Die in diesen Modellen definierten Fragments können in diesem Print Model wiederverwendet werden, wie unter <<FragmentReferencing, Referenzierung von Fragments in einem Print Model>> beschrieben.
+
+CAUTION: Ein Fragment Model kann derzeit nur referenziert werden, wenn es dasselbe Document Model wie dieses Print Model verwendet.
+
+CAUTION: Ein Print Model kann entweder <<FragmentModels, Print Fragment Models>> oder ein <<PrintModelTemplates, Print Model Template>> referenzieren, aber nicht beides gleichzeitig.
+Sobald eines von beiden referenziert wird, ist die jeweils andere Liste im Schema Tab deaktiviert.
+
 image::chapter02/02_schema_tab.png[Schema Tab,title="Schema Tab"]
 
 == Text Style Tab [[TextStylesTab]]
@@ -254,6 +265,10 @@ Dieser Text Style kann über die nachfolgend beschriebenen Modellierungseinstell
 image::chapter02/02_text_styles_tab.png[Text Style Tab,title="Text Style Tab"]
 
 Klicken Sie auf „Add New Text Style" in der unteren rechten Ecke, um einen neuen Text Style hinzuzufügen.
+
+Text Styles, die in einem <<FragmentModels, Print Fragment Model>> definiert sind, können zusätzlich zu den Text Styles dieses Print Models referenziert werden. Siehe <<FragmentReferencing, Referenzierung von Fragments in einem Print Model>>.
+
+image::chapter02/02_fragment_textstyles.png[Text Style Fragments,title="Referenced Text Style Fragments"]
 
 === Text-Style-Einstellungen
 Allgemeine Konfigurationsoptionen für Text Styles:
@@ -359,7 +374,7 @@ Ein Klick auf das Segment in der Liste öffnet ebenfalls die <<StageMode, Editor
 
 In den Segment-Einstellungen kann eine Document Model Group als Datenkontext ausgewählt werden.
 Wenn die ausgewählte Group wiederholbar ist, wird das Segment für jede Instanz der Repeatable Group im bereitgestellten Dokument wiederholt, wobei jede Instanz eine neue Seite erzeugt.
-[cols="a,a",frame=none,grid=none]
+
 [cols="a,a",frame=none,grid=none]
 |===
 |
@@ -379,6 +394,9 @@ Orientation::
 Template Segment (optional):: Ein <<PrintModelTemplates, Template>> aus einem der referenzierten Print Models im <<SchemaTab, Schema Tab>>.
 
 Nachdem ein Name und eine Ausrichtung angegeben wurden, muss die Schaltfläche „Add" geklickt werden, um das neue Segment zur Liste der Segments hinzuzufügen.
+
+Anstatt ein Segment lokal zu modellieren, kann ein Segment Fragment referenziert werden, das in einem <<FragmentModels, Print Fragment Model>> definiert ist.
+Siehe <<FragmentReferencing, Referenzierung von Fragments in einem Print Model>>.
 
 image::chapter02/02_segment_tab.png[Segment Tab,title="Segment Tab"]
 
@@ -446,6 +464,10 @@ Delete:: Die ausgewählte Section löschen.
 Ein Klick auf die Section in der Liste öffnet ebenfalls die <<StageMode, Editor Stage>>.
 ====
 
+Anstatt eine Section lokal zu modellieren, kann ein Section Fragment, das in einem <<FragmentModels, Print Fragment Model>> definiert ist, in einem Slot referenziert werden.
+Für einen Slot werden nur Section Fragments mit passender _Page Orientation_ angeboten.
+Siehe <<FragmentReferencing, Referenzierung von Fragments in einem Print Model>>.
+
 image::chapter02/02_section_tab.png[Section Tab,title="Section Tab"]
 
 == Watermark Tab [[WatermarkTab]]
@@ -466,6 +488,10 @@ Open Editor:: Die <<StageMode, Editor Stage>> öffnen, um den Inhalt des Waterma
 Delete:: Das ausgewählte Watermark löschen.
 
 NOTE: Die Anhänge des <<Listing, Listing Element>> werden nicht am Ende des Dokuments hinzugefügt, wenn sie innerhalb eines Watermarks verwendet werden.
+
+Anstatt ein Watermark lokal zu modellieren, kann in einem Slot ein Watermark Fragment referenziert werden, das in einem <<FragmentModels, Print Fragment Model>> definiert ist.
+Für einen Slot werden nur Watermark Fragments mit passender _Page Orientation_ angeboten.
+Siehe <<FragmentReferencing, Referenzierung von Fragments in einem Print Model>>.
 
 image::chapter02/02_watermark_tab.png[Watermark Tab,title="Watermark Tab"]
 
@@ -521,7 +547,7 @@ Testdokumente können auf verschiedene Arten erstellt werden:
 Weitere Details finden Sie in der Dokumentation zur Document- oder Form-Modellierung.
 ====
 
-== Validierung
+== Validierung [[Validation]]
 
 Das Print Model wird nach jeder Benutzerinteraktion automatisch validiert, um Konsistenz und Korrektheit sicherzustellen.
 Dies umfasst zwei Validierungsebenen:

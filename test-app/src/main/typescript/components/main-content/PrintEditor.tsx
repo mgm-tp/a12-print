@@ -46,6 +46,7 @@ interface PrintEditorProps {
 	documentModels?: Model[];
 	typesettingModels?: Model[];
 	templatePrintModels?: Model[];
+	fragmentPrintModels?: Model[];
 	logPersistentEntries: LogPersistentEntry[];
 	store?: PrintEngineState;
 	fontMap?: Record<string, string>;
@@ -54,6 +55,7 @@ interface PrintEditorProps {
 export function PrintEditor({
 	printModel,
 	templatePrintModels = [],
+	fragmentPrintModels = [],
 	documentModels = [],
 	typesettingModels = [],
 	logPersistentEntries,
@@ -68,7 +70,6 @@ export function PrintEditor({
 	if (isBasicEditor) {
 		return (
 			<PrintModelEditorLightWrapper
-				caseConfigId={caseId ?? ""}
 				printModel={printModel}
 				customFonts={customFonts}
 				documentModels={documentModels}
@@ -83,6 +84,7 @@ export function PrintEditor({
 				customFonts={customFonts}
 				store={store}
 				templatePrintModels={templatePrintModels}
+				fragmentPrintModels={fragmentPrintModels}
 				typesettingModels={typesettingModels}
 			/>
 		);

@@ -33,8 +33,6 @@ import * as React from "react";
 
 import { ToolbarItem } from "../../types/toolbar-item.js";
 
-import { ElementLibrary } from "../element-library/index.js";
-
 import { HideFrames, ZoomFactor } from "./toolbar-item/index.js";
 import { FlexChildContainer, ToolbarContainer } from "./Toolbar.styled.js";
 import { MarginToggle } from "./toolbar-item/MarginToggle.js";
@@ -70,7 +68,6 @@ export const Toolbar = (props: ToolbarProps) => {
 };
 
 const ToolbarItemMap: Record<ToolbarItem, React.ComponentType> = {
-	[ToolbarItem.ElementLibrary]: ElementLibrary,
 	[ToolbarItem.ZoomFactor]: ZoomFactor,
 	[ToolbarItem.HideFrames]: HideFrames,
 	[ToolbarItem.HideMargins]: MarginToggle,

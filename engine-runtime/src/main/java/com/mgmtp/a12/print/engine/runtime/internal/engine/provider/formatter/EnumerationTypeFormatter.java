@@ -32,18 +32,16 @@
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter;
 
 import com.mgmtp.a12.kernel.md.model.api.ILocalizedTextMap;
-import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.FormattingResult;
-import com.mgmtp.a12.print.model.api.model.element.base.DisplayOptions;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.Singular;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.TimeZone;
+
+import static com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter.LocalizedTextUtils.getLocalizedText;
 
 public class EnumerationTypeFormatter implements ValueFormatProvider {
 
@@ -56,8 +54,8 @@ public class EnumerationTypeFormatter implements ValueFormatProvider {
 		final var value = parameters.value();
 		assert value instanceof String;
 		final var details = (FormattingDetails) parameters.formattingDetails();
-		final var formattedValue =  Optional.ofNullable(details.getTranslations().get(value))
-			.flatMap(e -> Optional.ofNullable(e.get(parameters.locale())))
+		final var formattedValue = Optional.ofNullable(details.getTranslations().get(value))
+			.map(t -> getLocalizedText(t, parameters.locale()))
 			.orElse((String) value);
 		return new FormattingResult(formattedValue, parameters.isHtml());
 	}

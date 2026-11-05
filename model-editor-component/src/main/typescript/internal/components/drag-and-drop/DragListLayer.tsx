@@ -32,7 +32,7 @@
 import * as React from "react";
 import type { XYCoord } from "react-dnd";
 
-import type { PartialSegment, PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PartialReference, PartialSegment, PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { SEGMENT_CARD, SWITCH_CASE_CARD, TEXT_STYLE_CARD } from "../../constant/drag.js";
 
@@ -45,7 +45,7 @@ import { StyledDragListLayer } from "./DragListLayer.styled.js";
 import type { BasicDragLayerProps } from "./create-drag-layer-wrapper.js";
 import { createDragLayerWrapper } from "./create-drag-layer-wrapper.js";
 
-type DragItem = PartialTextStyle | PartialSegment | SwitchCaseItem;
+type DragItem = PartialTextStyle | PartialSegment | SwitchCaseItem | PartialReference;
 type DragLayerProps = BasicDragLayerProps<DragItem>;
 
 const DragLayer = (props: DragLayerProps) => {
@@ -65,7 +65,12 @@ const DragLayer = (props: DragLayerProps) => {
 	const viewElement = React.useMemo(() => {
 		switch (itemType) {
 			case SEGMENT_CARD:
-				return <SegmentCard segment={item} isOpenSetting={false} setOpenSetting={() => undefined} />;
+				// A dragged segment card can also carry a fragment reference whose segment is missing.
+				return "refId" in item ? (
+					<SegmentCard reference={item} />
+				) : (
+					<SegmentCard segment={item} isOpenSetting={false} setOpenSetting={() => undefined} />
+				);
 			case TEXT_STYLE_CARD:
 				return <TextStyleCard textStyle={item} />;
 			case SWITCH_CASE_CARD:

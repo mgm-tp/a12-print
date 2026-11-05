@@ -65,6 +65,7 @@ export interface BorderFormProps extends InheritedBorderResolver {
 	borderProperties?: PartialBorderProperties;
 	determineInheritedSource?: (element: PrintModelEntity, inheritedCondition: string) => boolean;
 	propertiesPath: BorderPropertiesPath;
+	inheritedFrom?: string;
 }
 
 export const BorderForm = ({
@@ -74,6 +75,7 @@ export const BorderForm = ({
 	getErrorMessage = () => undefined,
 	determineInheritedSource,
 	propertiesPath,
+	inheritedFrom,
 	resolveWidth,
 	resolveStyle,
 	resolveColor,
@@ -118,7 +120,7 @@ export const BorderForm = ({
 				).path;
 				setBorderProperties({
 					...borderProperties,
-					borderStyle: changeInputSource(source, path, borderProperties?.borderStyle),
+					borderStyle: changeInputSource(source, path, borderProperties?.borderStyle, inheritedFrom),
 					borderColor: changeInputSource(
 						PossibleInputSource.DEFAULT,
 						borderColorPath,
@@ -131,10 +133,13 @@ export const BorderForm = ({
 					),
 				});
 			} else {
-				updateBorderProperty(changeInputSource(source, path, borderProperties?.borderStyle), "borderStyle");
+				updateBorderProperty(
+					changeInputSource(source, path, borderProperties?.borderStyle, inheritedFrom),
+					"borderStyle"
+				);
 			}
 		},
-		[borderProperties, element, propertiesPath, setBorderProperties, updateBorderProperty]
+		[borderProperties, element, inheritedFrom, propertiesPath, setBorderProperties, updateBorderProperty]
 	);
 
 	return (
@@ -186,7 +191,7 @@ export const BorderForm = ({
 					inputSource: borderProperties?.borderWidth,
 					onSourceChange: (source: PossibleInputSource, path: string) => {
 						updateBorderProperty(
-							changeInputSource(source, path, borderProperties?.borderWidth),
+							changeInputSource(source, path, borderProperties?.borderWidth, inheritedFrom),
 							"borderWidth"
 						);
 					},
@@ -205,7 +210,7 @@ export const BorderForm = ({
 					property: propertiesPath.borderColor,
 					onSourceChange: (source: PossibleInputSource, path: string) => {
 						updateBorderProperty(
-							changeInputSource(source, path, borderProperties?.borderColor),
+							changeInputSource(source, path, borderProperties?.borderColor, inheritedFrom),
 							"borderColor"
 						);
 					},

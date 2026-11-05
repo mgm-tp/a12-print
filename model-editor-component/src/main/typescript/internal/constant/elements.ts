@@ -119,16 +119,26 @@ export const FIXED_DIMENSIONS_ELEMENTS: ElementType[] = [...CHART_ELEMENTS, Elem
 
 export const TOOLBOX_ELEMENTS = [
 	ElementType.Text,
-	ElementType.Line,
-	ElementType.Table,
 	ElementType.Image,
-	ElementType.Expression,
+	ElementType.Table,
 	ElementType.Listing,
-	ElementType.TableLayout,
+	ElementType.Expression,
 	ElementType.LineChart,
 	ElementType.BarChart,
 	ElementType.PieChart,
-	ElementType.BoundingBox,
+	ElementType.TableLayout,
+	ElementType.Line,
 	ElementType.Area,
 	ElementType.Switch,
+	ElementType.BoundingBox,
 ];
+
+const TOOLBOX_ELEMENT_RANK = new Map(TOOLBOX_ELEMENTS.map((type, index) => [type, index]));
+
+/**
+ * Orders elements the way {@link TOOLBOX_ELEMENTS} does. Element types the toolbox does not offer
+ * (Override, PageNumber, ...) sort last.
+ */
+export const byToolboxOrder = (a: string, b: string): number =>
+	(TOOLBOX_ELEMENT_RANK.get(a as ElementType) ?? TOOLBOX_ELEMENTS.length) -
+	(TOOLBOX_ELEMENT_RANK.get(b as ElementType) ?? TOOLBOX_ELEMENTS.length);

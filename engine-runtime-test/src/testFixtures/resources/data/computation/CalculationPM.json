@@ -2,7 +2,7 @@
   "header": {
     "id": "CalculationPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -309,7 +309,8 @@
               "refId": "computationElement"
             }
           ]
-        }
+        },
+        "name": "Text_6ec70"
       },
       {
         "id": "computationElement",
@@ -325,7 +326,8 @@
               "operation": "[CalculationDM/general/StringField]"
             }
           ]
-        }
+        },
+        "name": "StringFieldCalculation"
       },
       {
         "id": "dateRangeComputationElementID",
@@ -374,7 +376,8 @@
               "refId": "dateRangeComputationElement"
             }
           ]
-        }
+        },
+        "name": "Text_d5330"
       },
       {
         "id": "dateRangeComputationElement",
@@ -403,7 +406,8 @@
               "operation": "[CalculationDM/general/DateRangeField]"
             }
           ]
-        }
+        },
+        "name": "DateRangeCalculation"
       },
       {
         "id": "w-Ov5tAAAC1YqCU27Xo1R",
@@ -449,7 +453,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_4ee70"
       },
       {
         "id": "pgs5EQsyL5I45JbK4qxL1",
@@ -472,7 +477,8 @@
               "operation": "[CalculationDM/general/NumberField1] - [CalculationDM/general/NumberField2]"
             }
           ]
-        }
+        },
+        "name": "Arithmetics"
       },
       {
         "id": "N_fo5FqscnCmIjaQHVCL6",
@@ -518,7 +524,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_9450b"
       },
       {
         "id": "eueRjjX9cj5CPHxYrERJ4",
@@ -539,7 +546,8 @@
               "operation": "[CalculationDM/general/DateField]"
             }
           ]
-        }
+        },
+        "name": "DateFieldComputation"
       }
     ],
     "textStyles": {

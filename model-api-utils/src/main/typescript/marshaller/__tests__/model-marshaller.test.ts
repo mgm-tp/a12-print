@@ -33,10 +33,12 @@ import cloneDeep from "lodash/cloneDeep.js";
 
 import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 import type { PrintModelDTO } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import { FRAGMENT_MODEL_REFERENCE_PURPOSE } from "@com.mgmtp.a12.print/print-model-api/model";
 import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 import { DocumentServiceFactory } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
 import validPrintModelDTO from "../../../../test/resources/print-models/PrintModel-with-text.json" with { type: "json" };
+import printFragmentModelDTO from "../../../../test/resources/print-models/printFragment.json" with { type: "json" };
 import printModelWithRefsDTO from "../../../../test/resources/print-models/Print-model-with-path-references.json" with { type: "json" };
 import personDMJson from "../../../../test/resources/document-models/Person.json" with { type: "json" };
 
@@ -229,6 +231,51 @@ describe("PrintModelMarshaller — reference validation options", () => {
 	});
 });
 
+describe("PrintModelMarshaller — fragment model Document Model validation", () => {
+	const marshaller = new PrintModelMarshaller();
+
+	/** The fragment model test model, deserialized with its document model reference replaced by the given one. */
+	function createFragmentModel(documentModel: string) {
+		const dto = cloneDeep(printFragmentModelDTO as PrintModelDTO);
+		dto.header.modelReferences = dto.header.modelReferences?.map(modelReference =>
+			modelReference.modelType === "document" ? { ...modelReference, reference: documentModel } : modelReference
+		);
+		return marshaller.deserialize(dto).result!;
+	}
+
+	/** The print model test model (referencing "DomainText") with a reference to the fragment model test model. */
+	function createPrintModelDTOWithFragmentReference() {
+		const dto = cloneDeep(validPrintModelDTO as PrintModelDTO);
+		dto.header.modelReferences = [
+			...(dto.header.modelReferences ?? []),
+			{ modelType: "print", reference: "printFragment", purpose: FRAGMENT_MODEL_REFERENCE_PURPOSE },
+		];
+		return dto;
+	}
+
+	it("fragment model with the same DM — produces no errors", () => {
+		const result = marshaller.deserialize(createPrintModelDTOWithFragmentReference(), {
+			html: false,
+			references: { fragmentModels: [createFragmentModel("DomainText")] },
+		});
+
+		expect(result.result).toBeDefined();
+		expect(result.report.noErrorOccurred).toBe(true);
+		expect(result.report.errorMap[ErrorSeverity.ERROR]).toHaveLength(0);
+	});
+
+	it("fragment model with a different DM — produces an error, model is still returned", () => {
+		const result = marshaller.deserialize(createPrintModelDTOWithFragmentReference(), {
+			html: false,
+			references: { fragmentModels: [createFragmentModel("ExampleDM")] },
+		});
+
+		expect(result.result).toBeDefined();
+		expect(result.report.noErrorOccurred).toBe(false);
+		expect(result.report.errorMap[ErrorSeverity.ERROR]).toHaveLength(1);
+	});
+});
+
 describe("PrintModelMarshaller — partial validation options", () => {
 	const marshaller = new PrintModelMarshaller();
 
@@ -248,6 +295,225 @@ describe("PrintModelMarshaller — partial validation options", () => {
 
 		expect(result.result).toBeDefined();
 		expect(result.report.relevantPaths).toEqual(paths);
+	});
+});
+
+describe("PrintModelMarshaller — fragment model round-trip", () => {
+	const marshaller = new PrintModelMarshaller();
+
+	it("serializes and deserializes fragment model", () => {
+		const modelWithRef = cloneDeep(printFragmentModelDTO) as PrintModelDTO;
+
+		const deserResult = marshaller.deserialize(modelWithRef);
+		expect(deserResult.result).toBeDefined();
+		expect(deserResult.report.noErrorOccurred).toBe(true);
+
+		const serResult = marshaller.serialize(deserResult.result!);
+		expect(serResult.result).toBeDefined();
+		expect(serResult.report.noErrorOccurred).toBe(true);
+	});
+});
+
+describe("PrintModelMarshaller — watermarks.references round-trip", () => {
+	const marshaller = new PrintModelMarshaller();
+
+	it("serializes and deserializes watermarks.references without loss", () => {
+		const modelWithRef = cloneDeep(validPrintModelDTO) as PrintModelDTO;
+		(modelWithRef.content as unknown as Record<string, unknown>).watermarks = {
+			id: "wc-1",
+			definitions: [],
+			references: [{ id: "ref-1", refId: "wm-frag-1", model: "fragment-model-id" }],
+		};
+
+		const deserResult = marshaller.deserialize(modelWithRef);
+		if (!deserResult.result) {
+			throw new Error("Failed Deserialization.");
+		}
+		expect(deserResult.result?.content?.watermarks?.references).toHaveLength(1);
+		const ref = deserResult.result?.content?.watermarks?.references?.[0];
+		expect(ref?.id).toBe("ref-1");
+		expect(ref?.refId).toBe("wm-frag-1");
+		expect(ref?.model).toBe("fragment-model-id");
+
+		const serResult = marshaller.serialize(deserResult.result);
+		expect(serResult.result).toBeDefined();
+		const serializedRefs = (serResult.result?.content?.watermarks as Record<string, unknown>)
+			?.references as unknown[];
+		expect(serializedRefs).toHaveLength(1);
+		const serializedRef = serializedRefs[0] as Record<string, string>;
+		expect(serializedRef.id).toBe("ref-1");
+		expect(serializedRef.refId).toBe("wm-frag-1");
+		expect(serializedRef.model).toBe("fragment-model-id");
+	});
+});
+
+describe("PrintModelMarshaller — sections.references round-trip", () => {
+	const marshaller = new PrintModelMarshaller();
+
+	it("serializes and deserializes sections.references without loss", () => {
+		const modelWithRef = cloneDeep(validPrintModelDTO) as PrintModelDTO;
+		(modelWithRef.content as unknown as Record<string, unknown>).sections = {
+			id: "sc-1",
+			definitions: [],
+			references: [{ id: "ref-1", refId: "sec-frag-1", model: "fragment-model-id" }],
+		};
+
+		const deserResult = marshaller.deserialize(modelWithRef);
+		if (!deserResult.result) {
+			throw new Error("Failed Deserialization.");
+		}
+		expect(deserResult.result?.content?.sections?.references).toHaveLength(1);
+		const ref = deserResult.result?.content?.sections?.references?.[0];
+		expect(ref?.id).toBe("ref-1");
+		expect(ref?.refId).toBe("sec-frag-1");
+		expect(ref?.model).toBe("fragment-model-id");
+
+		const serResult = marshaller.serialize(deserResult.result);
+		expect(serResult.result).toBeDefined();
+		const serializedRefs = (serResult.result?.content?.sections as Record<string, unknown>)
+			?.references as unknown[];
+		expect(serializedRefs).toHaveLength(1);
+		const serializedRef = serializedRefs[0] as Record<string, string>;
+		expect(serializedRef.id).toBe("ref-1");
+		expect(serializedRef.refId).toBe("sec-frag-1");
+		expect(serializedRef.model).toBe("fragment-model-id");
+	});
+
+	it("serializes and deserializes sections.references.sectionUsage without loss", () => {
+		const modelWithRef = cloneDeep(validPrintModelDTO) as PrintModelDTO;
+		(modelWithRef.content as unknown as Record<string, unknown>).sections = {
+			id: "sc-1",
+			definitions: [],
+			references: [{ id: "ref-1", refId: "sec-frag-1", model: "fragment-model-id", sectionUsage: "First" }],
+		};
+
+		const deserResult = marshaller.deserialize(modelWithRef);
+		if (!deserResult.result) {
+			throw new Error("Failed Deserialization.");
+		}
+		const ref = deserResult.result?.content?.sections?.references?.[0];
+		expect(ref?.sectionUsage).toBe("First");
+
+		const serResult = marshaller.serialize(deserResult.result);
+		expect(serResult.result).toBeDefined();
+		const serializedRefs = (serResult.result?.content?.sections as Record<string, unknown>)
+			?.references as unknown[];
+		const serializedRef = serializedRefs[0] as Record<string, string>;
+		expect(serializedRef.sectionUsage).toBe("First");
+	});
+
+	it("leaves sectionUsage undefined when not provided on the reference", () => {
+		const modelWithRef = cloneDeep(validPrintModelDTO) as PrintModelDTO;
+		(modelWithRef.content as unknown as Record<string, unknown>).sections = {
+			id: "sc-1",
+			definitions: [],
+			references: [{ id: "ref-1", refId: "sec-frag-1", model: "fragment-model-id" }],
+		};
+
+		const deserResult = marshaller.deserialize(modelWithRef);
+		if (!deserResult.result) {
+			throw new Error("Failed Deserialization.");
+		}
+		const ref = deserResult.result?.content?.sections?.references?.[0];
+		expect(ref?.sectionUsage).toBeUndefined();
+	});
+});
+
+describe("PrintModelMarshaller — textStyles.references round-trip", () => {
+	const marshaller = new PrintModelMarshaller();
+
+	it("serializes and deserializes textStyles.references without loss", () => {
+		const modelWithRef = cloneDeep(validPrintModelDTO) as PrintModelDTO;
+		(modelWithRef.content as unknown as Record<string, unknown>).textStyles = {
+			id: "ts-1",
+			definitions: [],
+			references: [{ id: "ref-1", refId: "ts-frag-1", model: "fragment-model-id" }],
+		};
+
+		const deserResult = marshaller.deserialize(modelWithRef);
+		if (!deserResult.result) {
+			throw new Error("Failed Deserialization.");
+		}
+		expect(deserResult.result?.content?.textStyles?.references).toHaveLength(1);
+		const ref = deserResult.result?.content?.textStyles?.references?.[0];
+		expect(ref?.id).toBe("ref-1");
+		expect(ref?.refId).toBe("ts-frag-1");
+		expect(ref?.model).toBe("fragment-model-id");
+
+		const serResult = marshaller.serialize(deserResult.result);
+		expect(serResult.result).toBeDefined();
+		const serializedRefs = (serResult.result?.content?.textStyles as Record<string, unknown>)
+			?.references as unknown[];
+		expect(serializedRefs).toHaveLength(1);
+		const serializedRef = serializedRefs[0] as Record<string, string>;
+		expect(serializedRef.id).toBe("ref-1");
+		expect(serializedRef.refId).toBe("ts-frag-1");
+		expect(serializedRef.model).toBe("fragment-model-id");
+	});
+});
+
+describe("PrintModelMarshaller — segments.fragmentReferences round-trip", () => {
+	const marshaller = new PrintModelMarshaller();
+
+	it("serializes and deserializes segments.fragmentReferences without loss", () => {
+		const modelWithRef = cloneDeep(validPrintModelDTO) as PrintModelDTO;
+		(modelWithRef.content as unknown as Record<string, Record<string, unknown>>).segments.fragmentReferences = [
+			{ id: "ref-seg-1", refId: "seg-frag-1", model: "fragment-model-id" },
+		];
+
+		const deserResult = marshaller.deserialize(modelWithRef);
+		if (!deserResult.result) {
+			throw new Error("Failed Deserialization.");
+		}
+		expect(deserResult.result?.content?.segments?.fragmentReferences).toHaveLength(1);
+		const ref = deserResult.result?.content?.segments?.fragmentReferences?.[0];
+		expect(ref?.id).toBe("ref-seg-1");
+		expect(ref?.refId).toBe("seg-frag-1");
+		expect(ref?.model).toBe("fragment-model-id");
+
+		const serResult = marshaller.serialize(deserResult.result);
+		expect(serResult.result).toBeDefined();
+		const serializedRefs = (serResult.result?.content?.segments as unknown as Record<string, unknown>)
+			?.fragmentReferences as unknown[];
+		expect(serializedRefs).toHaveLength(1);
+		const serializedRef = serializedRefs[0] as Record<string, string>;
+		expect(serializedRef.id).toBe("ref-seg-1");
+		expect(serializedRef.refId).toBe("seg-frag-1");
+		expect(serializedRef.model).toBe("fragment-model-id");
+	});
+});
+
+describe("PrintModelMarshaller — fragment element placed inside a wrapper", () => {
+	const marshaller = new PrintModelMarshaller();
+	const AREA_ID = "sL2q81D6dhyWcOemGpkMB";
+
+	function findArea(elementDefinitions: unknown[]) {
+		const area = elementDefinitions.find(element => (element as Record<string, string>).id === AREA_ID) as Record<
+			string,
+			Record<string, Record<string, string>[]>
+		>;
+		if (!area?.area?.elementReferences?.length) {
+			throw new Error(`Area ${AREA_ID} with element references expected in the test model`);
+		}
+		return area.area.elementReferences;
+	}
+
+	it("keeps the model of a placement nested in an area", () => {
+		const modelWithRef = cloneDeep(printModelWithRefsDTO) as unknown as PrintModelDTO;
+		findArea(modelWithRef.content.elementDefinitions as unknown[])[0].model = "fragment-model-id";
+
+		const deserResult = marshaller.deserialize(modelWithRef);
+		if (!deserResult.result) {
+			throw new Error("Failed Deserialization.");
+		}
+		const deserializedArea = deserResult.result.content.elementDefinitions.find(
+			element => element.id === AREA_ID
+		) as unknown as { area: { elementReferences: { model?: string }[] } };
+		expect(deserializedArea.area.elementReferences[0].model).toBe("fragment-model-id");
+
+		const serResult = marshaller.serialize(deserResult.result);
+		expect(serResult.result).toBeDefined();
+		expect(findArea(serResult.result?.content.elementDefinitions as unknown[])[0].model).toBe("fragment-model-id");
 	});
 });
 

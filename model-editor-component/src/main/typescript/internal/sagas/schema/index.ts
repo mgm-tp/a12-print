@@ -30,3 +30,4 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 export * from "./add-model-reference-saga.js";
+export * from "./add-fragment-model-reference-saga.js";

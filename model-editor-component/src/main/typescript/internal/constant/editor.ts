@@ -41,6 +41,7 @@ export const EditorConst = (() => {
 	const zIndexList = {
 		NestedElement: 0,
 		ResizeMarginHandler: 1,
+		PlacementRing: 2,
 		BasicEditor: 10,
 		rsLinesRect: 11,
 		BrokenElement: 18,

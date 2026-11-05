@@ -68,6 +68,7 @@ export function useCaseConfigFromParams() {
 	}, [dispatch, urlParamsCaseId]);
 
 	useEffect(() => {
+		dispatch(EditorActions.setCaseResource(undefined));
 		if (caseConfig?.path) {
 			resolveResource(caseConfig.path).then(res => res && dispatch(EditorActions.setCaseResource(res)));
 		}

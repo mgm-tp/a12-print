@@ -1,6 +1,6 @@
 {
   "name": "@com.mgmtp.a12.print/print-model-api",
-  "version": "4.0.1",
+  "version": "4.1.1",
   "license": "(EUPL-1.2 OR LicenseRef-commercial)",
   "description": "Print Model API",
   "type": "module",
@@ -45,6 +45,7 @@
     "THIRD_PARTY_NOTICES"
   ],
   "exports": {
+    "./a12internal": "./lib/a12internal/index.js",
     "./constant": "./lib/constant/index.js",
     "./errors": "./lib/errors/index.js",
     "./generated": "./lib/generated/print-model-metadata-map.js",
@@ -58,6 +59,9 @@
   },
   "typesVersions": {
     "*": {
+      "a12internal": [
+        "./lib/a12internal/index.d.ts"
+      ],
       "constant": [
         "./lib/constant/index.d.ts"
       ],

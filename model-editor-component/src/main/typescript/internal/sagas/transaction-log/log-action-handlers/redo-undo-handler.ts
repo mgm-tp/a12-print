@@ -39,6 +39,10 @@ import type {
 	TransactionLogStore,
 	TransactionLogStoreEntry,
 	AffectedItemType,
+	WatermarkReferencesContainer,
+	SectionReferencesContainer,
+	TextStyleReferencesContainer,
+	SegmentFragmentReferencesContainer,
 } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { TransactionLog, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import type {
@@ -70,6 +74,7 @@ import {
 	type ValidAnyTransactionLogAction,
 } from "../../../redux/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
+import { RequestApiSelectors } from "../../../redux/request-api/selectors.js";
 
 const REDO_UNDO_ACTIONS = [TransactionLogStateActions.undo, TransactionLogStateActions.redo];
 
@@ -116,12 +121,14 @@ function* handleRedoUndoActions({
 			);
 			usedItems.push(item.id);
 		}
-		yield* call(resolveUiAfterUndo, copyTransactionLogState, printModelRefs);
+		yield* call(resolveUiAfterUndoRedo, copyTransactionLogState, printModelRefs);
 		yield* put(TransactionLogStateActions.setLogStore(copyTransactionLogState));
 		return;
 	}
 
 	if (TransactionLogStateActions.redo.match(action)) {
+		const printModelRefs = yield* select(NavigationSelectors.activeEntities);
+
 		const { interactionToRedo, interactionToRestore } = action.payload.data;
 		let copyTransactionLogState: TransactionLogStore = state;
 		const usedItems: string[] = [];
@@ -144,6 +151,7 @@ function* handleRedoUndoActions({
 			);
 			usedItems.push(item.id);
 		}
+		yield* call(resolveUiAfterUndoRedo, copyTransactionLogState, printModelRefs);
 		yield* put(TransactionLogStateActions.setLogStore(copyTransactionLogState));
 	}
 }
@@ -153,44 +161,69 @@ function getStoreEntryAndType(
 	affectedType: AffectedItemType,
 	transactionStore: TransactionLogStore
 ): { storeEntry: TransactionLogStoreEntry; entryType: EntryType } {
-	if (affectedType === "printModelHeader") {
-		return { storeEntry: transactionStore[PRINT_MODEL_HEADER_LOG_ID], entryType: "printModelHeader" };
-	}
-	if (affectedType === "printModelContentGeneral") {
-		return {
-			storeEntry: transactionStore[PRINT_MODEL_CONTENT_GENERAL_LOG_ID],
-			entryType: "printModelContentGeneral",
-		};
-	}
-	if (affectedType === "segment") {
-		return { storeEntry: transactionStore.segments.map[id], entryType: "segment" };
-	}
-	if (affectedType === "segmentReference") {
-		return { storeEntry: transactionStore.segments.references[id], entryType: "segmentReference" };
-	}
-	if (affectedType === "section") {
-		if (!transactionStore.sections) {
-			throw new Error(`No sections exist. Cannot undo section with id ${id}`);
+	switch (affectedType) {
+		case "printModelHeader":
+			return { storeEntry: transactionStore[PRINT_MODEL_HEADER_LOG_ID], entryType: "printModelHeader" };
+		case "printModelContentGeneral":
+			return {
+				storeEntry: transactionStore[PRINT_MODEL_CONTENT_GENERAL_LOG_ID],
+				entryType: "printModelContentGeneral",
+			};
+		case "segment":
+			if (!transactionStore.segments) {
+				throw new Error(`No segments exist. Cannot undo segment with id ${id}`);
+			}
+			return { storeEntry: transactionStore.segments.map[id], entryType: "segment" };
+		case "segmentReference":
+			if (!transactionStore.segments?.references) {
+				throw new Error(`No segment references exist. Cannot undo segment reference with id ${id}`);
+			}
+			return { storeEntry: transactionStore.segments.references[id], entryType: "segmentReference" };
+		case "segmentFragmentReferences":
+			if (!transactionStore.segments?.fragmentReferencesEntry) {
+				throw new Error(`No segment fragment references exist. Cannot undo segment fragment references`);
+			}
+			return {
+				storeEntry: transactionStore.segments.fragmentReferencesEntry,
+				entryType: "segmentFragmentReferences",
+			};
+		case "section":
+			if (!transactionStore.sections) {
+				throw new Error(`No sections exist. Cannot undo section with id ${id}`);
+			}
+			return { storeEntry: transactionStore.sections.map[id], entryType: "section" };
+		case "sectionReferences":
+			if (!transactionStore.sections?.referencesEntry) {
+				throw new Error(`No section references exist. Cannot undo section references`);
+			}
+			return { storeEntry: transactionStore.sections.referencesEntry, entryType: "sectionReferences" };
+		case "watermark":
+			if (!transactionStore.watermarks) {
+				throw new Error(`No watermarks exist. Cannot undo watermark with id ${id}`);
+			}
+			return { storeEntry: transactionStore.watermarks.map[id], entryType: "watermark" };
+		case "watermarkReferences":
+			if (!transactionStore.watermarks?.referencesEntry) {
+				throw new Error(`No watermark references exist. Cannot undo watermark references`);
+			}
+			return { storeEntry: transactionStore.watermarks.referencesEntry, entryType: "watermarkReferences" };
+		case "textStyle":
+			if (!transactionStore.textStyles) {
+				throw new Error(`No textstyles exist. Cannot undo textstyle with id ${id}`);
+			}
+			return { storeEntry: transactionStore.textStyles.map[id], entryType: "textStyle" };
+		case "textStyleReferences":
+			if (!transactionStore.textStyles?.referencesEntry) {
+				throw new Error(`No textstyle references exist. Cannot undo textstyle references`);
+			}
+			return { storeEntry: transactionStore.textStyles.referencesEntry, entryType: "textStyleReferences" };
+		case "printModelElement": {
+			const storeEntry = transactionStore.printModelElements[id];
+			return { storeEntry, entryType: storeEntry.memoizedObject.type };
 		}
-		return { storeEntry: transactionStore.sections.map[id], entryType: "section" };
+		default:
+			throw new Error("Got an interaction of type UNDO instead of an element type");
 	}
-	if (affectedType === "watermark") {
-		if (!transactionStore.watermarks) {
-			throw new Error(`No watermarks exist. Cannot undo watermark with id ${id}`);
-		}
-		return { storeEntry: transactionStore.watermarks.map[id], entryType: "watermark" };
-	}
-	if (affectedType === "textStyle") {
-		if (!transactionStore.textStyles) {
-			throw new Error(`No textstyles exist. Cannot undo textstyle with id ${id}`);
-		}
-		return { storeEntry: transactionStore.textStyles.map[id], entryType: "textStyle" };
-	}
-	if (affectedType === "printModelElement") {
-		const storeEntry = transactionStore.printModelElements[id];
-		return { storeEntry, entryType: storeEntry.memoizedObject.type };
-	}
-	throw new Error("Got an interaction of type UNDO instead of an element type");
 }
 
 function applyUpdateToTransactionLogState(
@@ -216,8 +249,10 @@ function applyUpdateToTransactionLogState(
 			...transactionLogState,
 			segments: {
 				...transactionLogState.segments,
+				id: transactionLogState.segments?.id || nanoid(),
+				references: transactionLogState.segments?.references ?? {},
 				map: {
-					...transactionLogState.segments.map,
+					...transactionLogState.segments?.map,
 					[storeEntry.id]: storeEntry as TransactionLogStoreEntry<PartialSegment>,
 				},
 			},
@@ -228,10 +263,24 @@ function applyUpdateToTransactionLogState(
 			...transactionLogState,
 			segments: {
 				...transactionLogState.segments,
+				id: transactionLogState.segments?.id || nanoid(),
+				map: transactionLogState.segments?.map ?? {},
 				references: {
-					...transactionLogState.segments.references,
+					...transactionLogState.segments?.references,
 					[storeEntry.id]: storeEntry as TransactionLogStoreEntry<PartialSegmentReference>,
 				},
+			},
+		};
+	}
+	if (entryType === "segmentFragmentReferences") {
+		return {
+			...transactionLogState,
+			segments: {
+				...transactionLogState.segments,
+				id: transactionLogState.segments?.id || nanoid(),
+				map: transactionLogState.segments?.map ?? {},
+				references: transactionLogState.segments?.references ?? {},
+				fragmentReferencesEntry: storeEntry as TransactionLogStoreEntry<SegmentFragmentReferencesContainer>,
 			},
 		};
 	}
@@ -248,6 +297,17 @@ function applyUpdateToTransactionLogState(
 			},
 		};
 	}
+	if (entryType === "sectionReferences") {
+		return {
+			...transactionLogState,
+			sections: {
+				...transactionLogState.sections,
+				id: transactionLogState.sections?.id || nanoid(),
+				map: transactionLogState.sections?.map ?? {},
+				referencesEntry: storeEntry as TransactionLogStoreEntry<SectionReferencesContainer>,
+			},
+		};
+	}
 	if (entryType === "watermark") {
 		return {
 			...transactionLogState,
@@ -258,6 +318,17 @@ function applyUpdateToTransactionLogState(
 					...transactionLogState.watermarks?.map,
 					[storeEntry.id]: storeEntry as TransactionLogStoreEntry<PartialWatermark>,
 				},
+			},
+		};
+	}
+	if (entryType === "watermarkReferences") {
+		return {
+			...transactionLogState,
+			watermarks: {
+				...transactionLogState.watermarks,
+				id: transactionLogState.watermarks?.id || nanoid(),
+				map: transactionLogState.watermarks?.map ?? {},
+				referencesEntry: storeEntry as TransactionLogStoreEntry<WatermarkReferencesContainer>,
 			},
 		};
 	}
@@ -274,6 +345,17 @@ function applyUpdateToTransactionLogState(
 			},
 		};
 	}
+	if (entryType === "textStyleReferences") {
+		return {
+			...transactionLogState,
+			textStyles: {
+				...transactionLogState.textStyles,
+				id: transactionLogState.textStyles?.id || nanoid(),
+				map: transactionLogState.textStyles?.map ?? {},
+				referencesEntry: storeEntry as TransactionLogStoreEntry<TextStyleReferencesContainer>,
+			},
+		};
+	}
 	return {
 		...transactionLogState,
 		printModelElements: {
@@ -284,10 +366,11 @@ function applyUpdateToTransactionLogState(
 }
 
 function* resolveRemovedPrintModelRefs(
-	general: PartialPrintModelContentGeneral,
+	newState: TransactionLogStore,
 	printModelRefs: PrintModelRefs
 ): SagaGenerator<boolean> {
-	const { currentRefType, sectionId, segmentId, watermarkId } = printModelRefs;
+	const { currentRefType, sectionId, segmentId, watermarkId, fragmentId } = printModelRefs;
+	const general = newState[PRINT_MODEL_CONTENT_GENERAL_LOG_ID].memoizedObject;
 
 	if (currentRefType === SidebarItem.SEGMENT && segmentId && !general.structure?.includes(segmentId)) {
 		yield* put(NavigationActions.clearActiveEntity({ tab: SidebarItem.SEGMENT }));
@@ -299,6 +382,16 @@ function* resolveRemovedPrintModelRefs(
 	}
 	if (currentRefType === SidebarItem.WATERMARK && watermarkId && !general.watermarks?.includes(watermarkId)) {
 		yield* put(NavigationActions.clearActiveEntity({ tab: SidebarItem.WATERMARK }));
+		return true;
+	}
+	// Element fragments live in printModelElements (flagged via isFragment). After undo-of-create or
+	// redo-of-delete the element is no longer a fragment, so clear the FRAGMENT tab.
+	if (
+		currentRefType === SidebarItem.FRAGMENT &&
+		fragmentId &&
+		!newState.printModelElements[fragmentId]?.memoizedObject?.isFragment
+	) {
+		yield* put(NavigationActions.clearActiveEntity({ tab: SidebarItem.FRAGMENT }));
 		return true;
 	}
 	return false;
@@ -327,6 +420,48 @@ function getContainerMapAndId(
 	}
 }
 
+/**
+ * A fragment reference (segment/section/watermark) only gets a `containerMap.map[id]` entry once
+ * some local edit materializes it - e.g. reordering its elements while it's open in the editor.
+ * Before that, or once undo removes its only materializing interaction, it still exists in the
+ * print model purely as a reference, resolvable from the fragment's own content (mirrors
+ * PrintEngineSelectors.orderedSegmentItems / orderedSectionItems and the watermark equivalent).
+ */
+function resolveContainer(
+	currentRefType: SidebarItem,
+	id: string,
+	containerMap: TransactionLogStore["segments"] | TransactionLogStore["sections"] | TransactionLogStore["watermarks"],
+	newState: TransactionLogStore,
+	printModelData: ReturnType<typeof RequestApiSelectors.printModelData>
+): PartialSegment | PartialSection | PartialWatermark | undefined {
+	const localEntry = containerMap?.map[id];
+	if (localEntry) {
+		return localEntry.memoizedObject;
+	}
+	if (currentRefType === SidebarItem.SEGMENT) {
+		const ref = TransactionLog.selectSegmentFragmentReferences(newState.segments?.fragmentReferencesEntry).find(
+			reference => reference.id === id
+		);
+		return ref
+			? printModelData?.[ref.model]?.content?.segments?.definitions?.find(segment => segment.id === ref.refId)
+			: undefined;
+	}
+	if (currentRefType === SidebarItem.SECTION) {
+		const ref = TransactionLog.selectSectionReferences(newState.sections?.referencesEntry).find(
+			reference => reference.id === id
+		);
+		return ref
+			? printModelData?.[ref.model]?.content?.sections?.definitions?.find(section => section.id === ref.refId)
+			: undefined;
+	}
+	const ref = TransactionLog.selectWatermarkReferences(newState.watermarks?.referencesEntry).find(
+		reference => reference.id === id
+	);
+	return ref
+		? printModelData?.[ref.model]?.content?.watermarks?.definitions?.find(watermark => watermark.id === ref.refId)
+		: undefined;
+}
+
 function getElementReferences(
 	container: PartialSegment | PartialSection | PartialWatermark,
 	wrapper: PartialAnyPrintModelElement | undefined
@@ -341,12 +476,13 @@ function getElementReferences(
 	return container.elementReferences || [];
 }
 
-function* resolveUiAfterUndo(newState: TransactionLogStore, printModelRefs: PrintModelRefs) {
+function* resolveUiAfterUndoRedo(newState: TransactionLogStore, printModelRefs: PrintModelRefs) {
 	const { currentRefType, sectionId, segmentId, watermarkId } = printModelRefs;
-	const general = newState[PRINT_MODEL_CONTENT_GENERAL_LOG_ID].memoizedObject;
 
-	const shouldExit = yield* call(resolveRemovedPrintModelRefs, general, printModelRefs);
-	if (shouldExit) {
+	const shouldExit = yield* call(resolveRemovedPrintModelRefs, newState, printModelRefs);
+	// The detail-form cleanup below is built for the top-level containers (segment/section/watermark).
+	// For element fragments the removed-ref check above is sufficient, so bail out here.
+	if (shouldExit || currentRefType === SidebarItem.FRAGMENT) {
 		return;
 	}
 
@@ -362,8 +498,12 @@ function* resolveUiAfterUndo(newState: TransactionLogStore, printModelRefs: Prin
 	if (!id || !containerMap) {
 		return;
 	}
-	const container = containerMap.map[id].memoizedObject;
-	const wrapper = wrapperId ? newState.printModelElements[wrapperId].memoizedObject : undefined;
+	const printModelData = yield* select(RequestApiSelectors.printModelData);
+	const container = resolveContainer(currentRefType, id, containerMap, newState, printModelData);
+	if (!container) {
+		return;
+	}
+	const wrapper = wrapperId ? newState.printModelElements[wrapperId]?.memoizedObject : undefined;
 
 	const elementReferences = getElementReferences(container, wrapper);
 

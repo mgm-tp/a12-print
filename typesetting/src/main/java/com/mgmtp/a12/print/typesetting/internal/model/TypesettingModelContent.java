@@ -31,10 +31,12 @@
  */
 package com.mgmtp.a12.print.typesetting.internal.model;
 
+import com.mgmtp.a12.model.Content;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface TypesettingModelContent {
+public interface TypesettingModelContent extends Content {
 
 	Internal getInternal();
 

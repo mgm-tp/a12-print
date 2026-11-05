@@ -254,7 +254,8 @@ function buildTemplateStructureMap(
 			referenceTemplateIds.add(templateSegmentId);
 		}
 	});
-	const templateSegments = printModel.content.segments.definitions.filter(seg => referenceTemplateIds.has(seg.id));
+	const templateSegments =
+		printModel.content.segments?.definitions.filter(seg => referenceTemplateIds.has(seg.id)) || [];
 
 	const templateStructureMap = new Map<string, TemplateStructure>();
 
@@ -695,6 +696,7 @@ function createOverride(boundingBox: PartialBoundingBox, segment: PartialSegment
 	return {
 		id: nanoid(),
 		type: ElementType.Override,
+		name: `Override for ${boundingBox.id}`,
 		override: {
 			id: nanoid(),
 			refId: boundingBox.id,

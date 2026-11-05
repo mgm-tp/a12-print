@@ -40,7 +40,7 @@ import type { ElementContainerProps } from "../element-container/base.js";
 
 export interface BaseElementProps {
 	reference: PartialPlaceableReference;
-	element: PartialAnyPrintModelElement;
+	element: PartialAnyPrintModelElement | undefined;
 	styles: React.CSSProperties;
 	hovered?: boolean;
 	isNestedElement?: boolean;

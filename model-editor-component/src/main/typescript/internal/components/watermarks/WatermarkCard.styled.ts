@@ -44,6 +44,7 @@ export const StyledWatermarkCard = styled.div<StyledWatermarkCardProps>`
 	font-size: 14px;
 	display: flex;
 	align-items: center;
+	gap: 8px;
 	cursor: pointer;
 	padding: 10px 12px;
 	background: ${props =>
@@ -67,26 +68,30 @@ export const StyledWatermarkAction = styled.div`
 	margin-left: 8px;
 `;
 
-export const StyledOpenCollapsibleWatermark = styled.div`
-	background: ${props => props.theme.colors.background.nonInteractiveBackground};
+export const StyledOpenCollapsibleWatermark = styled.div<{ isFragmentModel: boolean | undefined }>`
+	background: ${props => props.theme.colors.background.secondaryBackground};
 	display: flex;
+	flex-direction: column;
+	padding: 0.5rem 0.75rem;
+	row-gap: 3px;
 `;
 
 export const StyledFlexContainerCenter = styled.div`
 	display: flex;
-	align-items: center;
-	padding: 10px;
+	flex-direction: column;
+	row-gap: 2px;
 	font-size: 12px;
 `;
 
 export const StyledWatermarkInputColumn = styled.div`
-	width: 90%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	row-gap: 5px;
 `;
 
 export const StyledCollapsibleWatermarkTitle = styled.div`
-	width: 15%;
-	min-width: 90px;
-	padding-left: 16px;
+	font-size: 12px;
 `;
 
 export const StyledWatermarkActionColumn = styled.div`
@@ -97,5 +102,6 @@ export const StyledWatermarkActionColumn = styled.div`
 `;
 
 export const StyledConditionDescription = styled.p`
-	padding-left: 26px;
+	margin: 0;
+	font-size: 12px;
 `;

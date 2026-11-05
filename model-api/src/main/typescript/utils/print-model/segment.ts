@@ -29,10 +29,16 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import type { PrintModelElement } from "../../model/index.js";
-import { type PartialPlaceableReference, type PartialSegment } from "../../model/index.js";
+import {
+	type PrintModelElement,
+	type PrintModelEntity,
+	type PartialPlaceableReference,
+	type PartialSegment,
+} from "../../model/index.js";
+import { isFragmentModelReference } from "../../model/reference/reference.js";
 
 import { type CloneContext } from "./type.js";
+import { dropDuplicateElements } from "./base.js";
 import { clonePrintModelElement } from "./print-model-element.js";
 import { CloneTreeTrace } from "./clone-tree-trace.js";
 
@@ -51,9 +57,18 @@ export function cloneSegment(
 	const segmentTrace = trace.with(clonedSegment);
 
 	elementReferences.forEach(elementReference => {
+		if (isFragmentModelReference(elementReference)) {
+			// the reference points outside this model - only the reference itself becomes an entity of this one
+			const clonedFragmentReference = context.cloneObject(elementReference);
+			context.elementIdMap.set(elementReference.id, clonedFragmentReference.id);
+			clonedReferences.push(clonedFragmentReference);
+			return;
+		}
+
 		const targetElement = elementReference.refId ? context.getElement(elementReference.refId) : undefined;
 
 		if (!targetElement) {
+			context.onUnresolved?.("element", elementReference.refId ?? elementReference.id);
 			return;
 		}
 
@@ -80,34 +95,45 @@ export function cloneSegment(
 			...clonedSegment,
 			elementReferences: clonedReferences,
 		},
-		clonedSegmentElements,
+		clonedSegmentElements: dropDuplicateElements(clonedSegmentElements),
 	};
 }
 
-export function cloneSegments(
+export function cloneSegments<Reference extends PrintModelEntity>(
 	structure: readonly string[],
 	segmentDefinitions: readonly PartialSegment[],
 	context: CloneContext,
-	trace: CloneTreeTrace = new CloneTreeTrace([])
+	trace: CloneTreeTrace = new CloneTreeTrace([]),
+	fragmentReferences: readonly Reference[] = []
 ) {
 	const clonedSegments: PartialSegment[] = [];
 	const clonedElements: PrintModelElement[] = [];
 	const newStructure: string[] = [];
+	const clonedFragmentReferences: Reference[] = [];
 
 	structure.forEach(segmentId => {
 		const targetSegment = segmentDefinitions.find(segment => segment.id === segmentId);
-		if (!targetSegment) {
+		if (targetSegment) {
+			const { clonedSegment, clonedSegmentElements } = cloneSegment(targetSegment, context, trace);
+			clonedSegments.push(clonedSegment);
+			clonedElements.push(...clonedSegmentElements);
+			newStructure.push(clonedSegment.id);
 			return;
 		}
-		const { clonedSegment, clonedSegmentElements } = cloneSegment(targetSegment, context, trace);
-		clonedSegments.push(clonedSegment);
-		clonedElements.push(...clonedSegmentElements);
-		newStructure.push(clonedSegment.id);
+
+		// the structure also lists segments a fragment model provides - the reference is what this model owns
+		const fragmentReference = fragmentReferences.find(reference => reference.id === segmentId);
+		if (fragmentReference) {
+			const clonedReference = context.cloneObject(fragmentReference);
+			clonedFragmentReferences.push(clonedReference);
+			newStructure.push(clonedReference.id);
+		}
 	});
 
 	return {
 		clonedSegments,
-		clonedElements,
+		clonedElements: dropDuplicateElements(clonedElements),
 		newStructure,
+		clonedFragmentReferences,
 	};
 }

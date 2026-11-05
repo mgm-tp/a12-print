@@ -30,6 +30,7 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import React from "react";
 
 import { type BaseColumnType, type TableRenderPropsType, Table, Button } from "@com.mgmtp.a12.widgets/widgets-core";
@@ -58,11 +59,14 @@ interface PrintModelCaseListProps {
 
 export const PrintModelCaseList = ({ caseConfigs }: PrintModelCaseListProps) => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	const { caseId: activeCaseId } = useParams<{ caseId: string }>();
 
 	const setEditorState = ({ rowCase, hasExternalStore }: { rowCase: CaseConfig; hasExternalStore: boolean }) => {
 		dispatch(EditorActions.clearEditorState());
 		dispatch(EditorActions.setCaseConfig(rowCase));
 		dispatch(EditorActions.setHasExternalStore(hasExternalStore));
+		navigate(`/${rowCase.id}`);
 	};
 
 	const onRowClick = ({ row }: { row: CaseConfig; rowIndex: number }) => {
@@ -99,6 +103,7 @@ export const PrintModelCaseList = ({ caseConfigs }: PrintModelCaseListProps) => 
 				},
 			}}
 			rowEventHandlers={params => ({ onClick: () => onRowClick(params) })}
+			rowStyling={({ row }) => ({ selected: row.id === activeCaseId })}
 		></Table>
 	);
 };

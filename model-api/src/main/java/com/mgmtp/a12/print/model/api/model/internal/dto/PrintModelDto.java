@@ -34,25 +34,25 @@ package com.mgmtp.a12.print.model.api.model.internal.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.model.header.Header;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelContent;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 import lombok.experimental.SuperBuilder;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@Value
+@Data
 @JsonInclude(Include.NON_ABSENT)
 @SuperBuilder
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 public class PrintModelDto implements PrintModel, JsonModel {
 	@JsonProperty(value = "header", required = true)
 	@JsonDeserialize(as = PrintModelHeaderDto.class)
-	Header header;
+	private final Header header;
 
 	@JsonProperty(value = "content", required = true)
 	@JsonDeserialize(as = PrintModelContentDto.class)
-	PrintModelContent content;
+	private final PrintModelContent content;
 }

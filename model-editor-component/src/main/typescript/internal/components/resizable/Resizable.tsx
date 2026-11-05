@@ -33,7 +33,11 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import type { Measure, PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import type {
+	Measure,
+	PartialAnyPrintModelElement,
+	PartialValidPlaceableReference,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { EditorConst } from "../../constant/editor.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
@@ -45,6 +49,8 @@ import {
 	EditorUtils,
 	formatNumberToString,
 } from "../../utils/index.js";
+import { ElementsUtils } from "../../utils/elements-utils.js";
+import { assertExists } from "../../utils/type-utils.js";
 import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { TransactionLogStateActions } from "../../redux/index.js";
 import { InteractionLogActions } from "../../redux//interaction-log/index.js";
@@ -75,14 +81,24 @@ interface Props {
 	setOutOfBoxList: React.Dispatch<React.SetStateAction<string[]>>;
 	editorState: HTMLDivElement | null;
 	setIsResizing: React.Dispatch<React.SetStateAction<boolean>>;
+	disabled?: boolean;
 }
 
-export const Resizable = ({ selected, isDragging, setOutOfBoxList, editorState, setIsResizing }: Props) => {
+export const Resizable = ({
+	selected,
+	isDragging,
+	setOutOfBoxList,
+	editorState,
+	setIsResizing,
+	disabled = false,
+}: Props) => {
 	const { elementReferences, setElementReferences } = React.useContext(EditorContext);
 	const { editorOptions } = useSelector(PrintEngineSelectors.printEditorState);
+	const selectedRefId = elementReferences.find(el => el.id === selected[0])?.refId;
 	const wrapperContainerElement = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.wrapperContainerElement(state, selected[0])
+		PrintEngineSelectors.wrapperContainerElement(state, selectedRefId)
 	);
+	const fragmentElement = useSelector(PrintEngineSelectors.currentFragmentElement);
 	const { zoomFactor } = editorOptions;
 	const dispatch = useDispatch();
 	const getSectionOffset = useGetSectionOffset();
@@ -154,7 +170,7 @@ export const Resizable = ({ selected, isDragging, setOutOfBoxList, editorState, 
 			isHorizontal
 				? setStartPosX(createPlainMmMeasureFromPx(e.pageX / zoomFactor))
 				: setStartPosY(createPlainMmMeasureFromPx(e.pageY / zoomFactor));
-			setElementReferences(oldList => oldList.map(el => (el.refId !== curEl.refId ? el : newEl)));
+			setElementReferences(oldList => oldList.map(el => (el.id !== curEl.id ? el : newEl)));
 			setResizeInfo(prev =>
 				prev
 					? {
@@ -202,8 +218,29 @@ export const Resizable = ({ selected, isDragging, setOutOfBoxList, editorState, 
 			return;
 		}
 
-		if (wrapperContainerElement) {
-			const curEl = info.updatedElement;
+		const curEl = info.updatedElement;
+
+		if (fragmentElement?.id === curEl.refId) {
+			assertExists(fragmentElement.fragmentDimensions, "Fragment element must have fragmentDimensions set");
+			const liveHeight =
+				elementReferences.find(el => el.id === curEl.id)?.dimensions.minHeight ?? curEl.dimensions.minHeight;
+			const newWidth = changeMmMeasureValue(
+				curEl.dimensions.minWidth.value,
+				fragmentElement.fragmentDimensions.width
+			);
+			const newHeight = changeMmMeasureValue(liveHeight.value, fragmentElement.fragmentDimensions.height);
+			dispatch(
+				InteractionLogActions.start({
+					description: RESOURCE_KEYS.interaction.resizable.resizeElement,
+					region: StageRegion.DEFAULT,
+					transactionLogActions: [
+						TransactionLogStateActions.updatePrintModelElements({
+							data: [getSyncedFragmentElement(fragmentElement, newWidth, newHeight)],
+						}),
+					],
+				})
+			);
+		} else if (wrapperContainerElement) {
 			updateElementDimensions({
 				description: RESOURCE_KEYS.interaction.resizable.resizeElement,
 				dimensions: {
@@ -234,13 +271,14 @@ export const Resizable = ({ selected, isDragging, setOutOfBoxList, editorState, 
 				minWidth: createPlainMmMeasureFromPx(editorClientRect.width / zoomFactor),
 				minHeight: createPlainMmMeasureFromPx(editorClientRect.height / zoomFactor),
 			};
-			setOutOfBoxList(EditorUtils.checkAllElementsInBox(elementReferences, boxRect).map(el => el.refId));
+			setOutOfBoxList(EditorUtils.checkAllElementsInBox(elementReferences, boxRect).map(el => el.id));
 		}
 	}, [
 		resizeInfoRef,
 		setIsResizing,
 		clearRelationLines,
 		setResizeInfo,
+		fragmentElement,
 		wrapperContainerElement,
 		editorState,
 		updateElementDimensions,
@@ -274,16 +312,16 @@ export const Resizable = ({ selected, isDragging, setOutOfBoxList, editorState, 
 
 	useRegisterResizeMouseEvents({ resizeHandler, stopResize });
 
-	return selected.length !== 1 || isDragging ? null : (
+	return selected.length !== 1 || isDragging || disabled ? null : (
 		<>
 			{elementReferences
-				.filter(el => selected.includes(el.refId))
+				.filter(el => selected.includes(el.id))
 				.map(el => (
 					<ResizeableWrapper
 						zoomFactor={zoomFactor}
 						placeableRef={el}
 						startResize={startResize}
-						key={el.refId}
+						key={el.id}
 					/>
 				))}
 			{resizeInfo &&
@@ -362,3 +400,22 @@ const calculateNewDimensions = (
 
 	return { newWidth, newHeight, newX, newY };
 };
+
+function getSyncedFragmentElement(
+	fragmentElement: PartialAnyPrintModelElement,
+	width: Measure,
+	height: Measure
+): PartialAnyPrintModelElement {
+	assertExists(fragmentElement.fragmentDimensions, "Fragment element must have fragmentDimensions set");
+	const fragmentDimensions = ElementsUtils.withFragmentDimensions(fragmentElement.fragmentDimensions, {
+		width,
+		height,
+	});
+	if (!ElementsUtils.isFixedHeightElement(fragmentElement)) {
+		return { ...fragmentElement, fragmentDimensions };
+	}
+	return {
+		...ElementsUtils.withOwnDimensions(fragmentElement, { width: width.value, height: height.value }),
+		fragmentDimensions,
+	};
+}

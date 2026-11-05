@@ -32,9 +32,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { nanoid } from "nanoid";
 
-import { isPartialValidPlaceableReference, type PartialTextProperties } from "../../model/partial.js";
-import type { Alignment } from "../../model/index.js";
-import { type InputSource } from "../../model/index.js";
+import {
+	isPartialValidPlaceableReference,
+	type PartialTextProperties,
+	type PartialBorderProperties,
+} from "../../model/partial.js";
+import type { Alignment, BorderStyle, InputSource } from "../../model/index.js";
 import { TEXT_STYLE } from "../../model/constant.js";
 
 import { type DeepPartial } from "../type-utils.js";
@@ -115,6 +118,21 @@ export function deepCloneArray({
 	return newArray;
 }
 
+function parentPlaceableId(trace: CloneTreeTrace): string | undefined {
+	return trace.findParent(ref => isPartialValidPlaceableReference(ref))?.id;
+}
+
+/** An element reached through several references is collected once per reference, but belongs in a list once. */
+export function dropDuplicateElements<T extends { readonly id?: string }>(elements: readonly T[]): T[] {
+	const byId = new Map<string | undefined, T>();
+	for (const element of elements) {
+		if (!byId.has(element.id)) {
+			byId.set(element.id, element);
+		}
+	}
+	return [...byId.values()];
+}
+
 export function cloneInputSource<T>(
 	context: CloneContext,
 	input?: DeepPartial<InputSource<T>>,
@@ -126,8 +144,13 @@ export function cloneInputSource<T>(
 	let reference = input.reference;
 
 	if (reference) {
-		const parentPlaceable = trace.findParent(ref => isPartialValidPlaceableReference(ref));
-		const newReference = parentPlaceable?.id ?? context.elementIdMap.get(reference);
+		let newReference = parentPlaceableId(trace) ?? context.elementIdMap.get(reference);
+
+		if (!newReference && context.getElement(reference)) {
+			// the element this inherits from is cloned later - reserve the id it will pick up then
+			newReference = nanoid();
+			context.elementIdMap.set(reference, newReference);
+		}
 
 		if (!newReference) {
 			throw new Error(
@@ -158,11 +181,12 @@ export function cloneTextProperties(
 	if (textStyleId && context.textStyleIdMap) {
 		let textStyleValue = textStyleId.value;
 		if (textStyleValue && textStyleValue !== TEXT_STYLE.NO_TEXT_STYLE_FALLBACK_ID) {
-			textStyleValue = context.textStyleIdMap.get(textStyleValue);
+			const originalTextStyleValue = textStyleValue;
+			textStyleValue = context.textStyleIdMap.get(originalTextStyleValue);
 
 			if (!textStyleValue) {
-				throw Error(
-					`Cannot find a new id for text style id ${textStyleValue} while cloning text properties ${textProperties?.id}`
+				throw new Error(
+					`Cannot find a new id for text style id ${originalTextStyleValue} while cloning text properties ${textProperties?.id}`
 				);
 			}
 		}
@@ -171,6 +195,8 @@ export function cloneTextProperties(
 			value: textStyleValue,
 			id: nanoid(),
 		};
+	} else if (textStyleId) {
+		textStyleId = cloneInputSource<string>(context, textStyleId);
 	}
 
 	return {
@@ -182,5 +208,21 @@ export function cloneTextProperties(
 		backgroundColor: cloneInputSource<string>(context, textProperties.backgroundColor),
 		alignment: cloneInputSource<Alignment>(context, textProperties.alignment),
 		textStyleId,
+	};
+}
+
+export function cloneBorderProperties(
+	context: CloneContext,
+	borderProperties?: PartialBorderProperties
+): PartialBorderProperties | undefined {
+	if (!borderProperties) {
+		return undefined;
+	}
+
+	return {
+		id: nanoid(),
+		borderWidth: cloneInputSource<number>(context, borderProperties.borderWidth),
+		borderColor: cloneInputSource<string>(context, borderProperties.borderColor),
+		borderStyle: cloneInputSource<BorderStyle>(context, borderProperties.borderStyle),
 	};
 }

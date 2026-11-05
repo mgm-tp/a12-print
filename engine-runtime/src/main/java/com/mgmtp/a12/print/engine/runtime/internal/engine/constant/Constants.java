@@ -41,6 +41,7 @@ public class Constants {
 	public static final String DOCUMENT_MODEL_TYPE = "document";
 
 	public static final String PRINT_MODEL_TYPE = "print";
+	public static final String DIN_PURPOSE = "DINTemplate";
 	public static final String NO_SELECTED_DOCUMENT_ID = "_noSelectedDomainModel";
 	public static final String DEFAULT_THREAD_NAME = "print-pool";
 	public static final String HYPHEN = "-";

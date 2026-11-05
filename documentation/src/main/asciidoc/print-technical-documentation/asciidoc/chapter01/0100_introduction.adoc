@@ -16,10 +16,122 @@ Warranty Disclaimer (applies to either option)
 THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
 ////
 = Introduction
-The _Print Engine_ is a Java library used to generate fully functional PDF-documents from A12 Print Models, created with the A12 Print Model Editor.
 
-== Who Should Read This Document?
+[#functionality]
+== Functionality
 
-This document serves as a reference for integrating the _Print Engine_ into an existing Java application.
-It is therefore intended for developers who work with a Java application that handles data from the A12 Platform to generate PDF-documents.
-This document is not intended as a manual for the usage of the _Print Model Editor_.
+The Print Engine generates PDF documents from Print Models and the data of A12 documents.
+A Print Model is a template for the resulting PDF document that can integrate dynamic content by referencing a Document Model.
+Print Models are authored with the Print Model Editor, which is part of the Simple Model Editor.
+
+Every generated PDF carries tagged elements and metadata aligned with PDF/UA and PDF/A-3a.
+Conformance also depends on the model following the accessibility rules of the print modeling documentation.
+The Print Engine can also produce XML, standalone or embedded in the PDF, through integrating the <<xml_print_engine_usage, XML Print Engines>>.
+
+Content that several Print Models share can live once in an optional link:/docs/PRINT_ENGINE/print-modeling-documentation/index.html#FragmentModels[Print Fragment Model] that each of them references.
+An optional Typesetting Model refines the default text composition with hyphenation and line-break rules.
+
+The Print Engine does not store or manage Print Models, documents, or attachments; the application that prints supplies them, as <<configuration, Configuration>> describes.
+An A12 application that adds Print Integration can turn its documents into PDFs with a Print Model; see <<a12_fullstack_integration, A12 Full Stack Integration>>.
+The Print Engine does not render a Form or an Overview as it appears on screen; a PDF comes from a Print Model of its own, authored against the same Document Model.
+
+[#architecture]
+== Architecture
+
+The Print Engine is a set of libraries.
+The two that define the Print Model and evaluate its Computations are implemented in Java and in TypeScript, so a Print Model means the same on the server and in the browser.
+
+The Print Engine API declares the print job, the engine, the result, and the provider interfaces.
+The Print Engine Runtime holds the implementation: it compiles a Print Model once, then renders pages with Apache PDFBox.
+The Print Engine Runtime Kernel evaluates the Computations of a Print Model.
+The Print Model API defines the Print Model and validates it.
+
+The runtime sanitizes the HTML of Text elements, and it writes the structure tree and the document metadata that carry the accessibility of the result.
+Print Models, Print Fragment Models, Typesetting Models, Document Models, documents, attachments, and static images reach the engine through provider interfaces; the <<print_engine_api, Print Engine API>> names every one.
+
+A project either embeds the Print Engine itself and implements those interfaces, or it adds Print Integration.
+Print Integration satisfies them for an A12 Full Stack application, runs the print, and downloads the result in the browser.
+
+The printing libraries build on the Kernel for Document Model access and document values, and on Base for the model foundations they share with the platform.
+Print Integration builds on Data Services for the models, documents, and attachments it loads and stores.
+
+.Print Engine overview
+image::chapter01/print-engine-overview.svg[The Print Engine libraries used either by the project's own code or through Print Integration, and the models, documents, PDF, and XML they work on]
+
+[#artifacts]
+== Artifacts
+
+The entry points a project declares in its build, invokes on the command line, or embeds in its own frontend, not the full set of published modules:
+
+[cols="2,3"]
+|===
+| Artifact | Purpose
+
+| `print-engine-api` (Maven)
+| The print job, the engine, the result, and the provider interfaces.
+
+| `print-engine-runtime` (Maven)
+| The implementation that turns a print job into a PDF.
+
+| `print-engine-runtime-xml` (Maven)
+| The XML result formats, as a string or embedded in the PDF.
+
+| `print-integration` (Maven)
+| The server side of printing in an A12 Full Stack application.
+
+| `print-integration` (npm)
+| Turns a click on a print button in a Form or an Overview into a print request.
+
+| `print-shell` (Maven, executable JAR)
+| Printing and PDF comparison over a workspace, from the command line.
+
+| `print-model-editor-component` (npm)
+| The `PrintModelEditorLight` React component, experimental.
+
+| `print-model-api-utils` (npm)
+| Reading, writing, and validating Print Models in TypeScript.
+|===
+
+The Java artifacts are published to Maven under the group `com.mgmtp.a12.print`, the TypeScript packages to npm under the scope `@com.mgmtp.a12.print`, and every artifact of the component carries the same version.
+
+The npm packages declare their platform context as peer dependencies, which the consuming application provides.
+For `print-integration` these are the A12 libraries Base, Client, Data Services, the Form Engine, the Overview Engine, and Utils, with Redux and Redux Saga.
+For `print-model-editor-component` these are the A12 libraries Base, Kernel, Widgets, Utils, and the ANTLR code editor, the Print Engine packages `print-model-api`, `print-model-api-utils`, `print-typesetting`, and `print-fonts`, and the frontend libraries of <<technologies, Technologies>>; each package manifest carries the exact set with its version ranges.
+
+[#technologies]
+== Technologies
+
+* Java for the libraries and print-shell, TypeScript for the npm packages.
+* Apache PDFBox writes the PDF, with XmpBox for its XMP metadata.
+* ANTLR 4 generates the parsers of the Computation syntax and of the date and time formats, each from one grammar for Java and TypeScript.
+* Nashorn runs the JavaScript library that parses Expressions.
+* The OWASP Java HTML Sanitizer, jsoup, and commonmark handle the HTML and Markdown of Text elements, XChart draws Chart elements, and metadata-extractor reads image metadata.
+* `print-integration` is a Spring Boot auto-configuration on the server and Redux Saga in the browser; the print request travels as JSON-RPC.
+* Embedding `print-model-editor-component` needs a React application: Redux with React Redux, Redux Saga and typed-redux-saga, react-dnd, styled-components, Immutable.js, and Lodash.
+
+[#terminology]
+== Terminology
+
+[cols="1,3"]
+|===
+| Term | Meaning
+
+| Print Model
+| The template that defines the layout, styling, and content of a PDF document.
+
+| Print Fragment Model
+| A model holding content that several Print Models share and reference instead of defining it themselves.
+  A Print Fragment Model cannot be printed.
+
+| Typesetting Model
+| A model holding hyphenation and line-break rules that a Text Style references.
+
+| Print Job
+| The description of one print operation: the Print Model to print, the providers that supply its input, a locale and a time zone, and any restriction.
+
+| Computation
+| A value or condition calculated while printing, written in Kernel Language syntax.
+  Distinct from an Expression, which produces read-only display output and is written in the Expression Language.
+|===
+
+The vocabulary of the models themselves, from Segments and Text Styles to the elements they contain, is defined in the link:/docs/PRINT_ENGINE/print-modeling-documentation/index.html[print modeling documentation].

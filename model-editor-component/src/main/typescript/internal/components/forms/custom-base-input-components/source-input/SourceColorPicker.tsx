@@ -35,6 +35,7 @@ import type { TextFieldProps } from "@com.mgmtp.a12.widgets/widgets-core";
 import { PossibleInputSource, InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
 import { stringifyInputValue } from "../../../../utils/input-source-utils.js";
+import { useFormReadonly } from "../../FormContext.js";
 
 import type { SourceColorPickerProperties } from "../types.js";
 import { CustomTextField } from "../CustomTextField.js";
@@ -68,6 +69,9 @@ export const SourceColorPicker = (props: SourceColorPickerProps) => {
 		tooltips,
 		...restProps
 	} = props;
+
+	const isFormReadonly = useFormReadonly();
+	const isDisabled = disabled || isFormReadonly;
 
 	const [currentValue, setCurrentValue] = useState<string | undefined>(value);
 	const [prevInitialValue, setPrevInitialValue] = useState(value);
@@ -135,9 +139,15 @@ export const SourceColorPicker = (props: SourceColorPickerProps) => {
 			<CustomTextField
 				{...restProps}
 				id={id}
-				disabled={inputSource.source !== PossibleInputSource.INPUT || disabled}
+				disabled={inputSource.source !== PossibleInputSource.INPUT || isDisabled}
 				value={stringifyInputValue(displayValue)}
-				inputProps={{ type: "color", style: { opacity: isHidden ? 0 : 1 } }}
+				inputProps={{
+					type: "color",
+					style: {
+						opacity: isHidden ? 0 : 1,
+						...(isFirefox && { height: "inherit", padding: "4px" }),
+					},
+				}}
 				onChange={e => setCurrentValue(e.target.value)}
 				onFocus={() => {
 					if (isFirefox) {
@@ -153,7 +163,7 @@ export const SourceColorPicker = (props: SourceColorPickerProps) => {
 						source={inputSource.source}
 						onValueChanged={handleSourceChange}
 						showOnlySelectedOption
-						disabled={disabled}
+						disabled={isDisabled}
 					/>
 				}
 			/>
@@ -161,7 +171,7 @@ export const SourceColorPicker = (props: SourceColorPickerProps) => {
 	}, [
 		id,
 		currentValue,
-		disabled,
+		isDisabled,
 		handleSourceChange,
 		inputSource,
 		inputSourceValue,
@@ -181,7 +191,7 @@ export const SourceColorPicker = (props: SourceColorPickerProps) => {
 			labelGraphic={labelGraphic}
 			hideLabel={hideLabel}
 			labelRef={labelRef}
-			disabled={disabled}
+			disabled={isDisabled}
 			placeholder={placeholder}
 			errorMessage={errorMessage}
 			warningMessage={warningMessage}

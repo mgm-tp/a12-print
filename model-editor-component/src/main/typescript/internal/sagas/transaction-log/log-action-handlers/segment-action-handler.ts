@@ -41,9 +41,19 @@ import type {
 	TransactionLogStoreEntryMap,
 	AffectedItem,
 } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import { TransactionLog, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import { cloneSegment, clonePrintModelEntity } from "@com.mgmtp.a12.print/print-model-api/utils";
+import {
+	TransactionLog,
+	SidebarItem,
+	SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import {
+	cloneSegment,
+	clonePrintModelEntity,
+	collectUsedTextStyleIds,
+	createFragmentElementGetter,
+} from "@com.mgmtp.a12.print/print-model-api/utils";
 import type {
+	FragmentModelReference,
 	PartialAnyPrintModelElement,
 	PartialOverride,
 	PartialPrintModelContentGeneral,
@@ -56,6 +66,7 @@ import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID } from "@com.mgmtp.a12.print/print-m
 
 import { openConfirmationDialogSaga } from "../../confirmation-dialog/open-confirmation-dialog-saga.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
+import { FragmentUsageSelectors } from "../../../redux/fragment-usage/selectors.js";
 import {
 	type AnyTransactionLogAction,
 	ConfirmationDialogType,
@@ -68,6 +79,8 @@ import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineSt
 import { RequestApiSelectors } from "../../../redux/request-api/selectors.js";
 import { getBoundingOverrideElements } from "../../../utils/din-template-utils.js";
 
+import { appendTextStyleReferences, referenceFragmentTextStyles, replaceIdInPlace } from "./unlink-utils.js";
+
 const SEGMENT_ACTIONS = [
 	TransactionLogStateActions.addSegment,
 	TransactionLogStateActions.removeSegment,
@@ -76,6 +89,9 @@ const SEGMENT_ACTIONS = [
 	TransactionLogStateActions.updateSegments,
 	TransactionLogStateActions.addSegmentReference,
 	TransactionLogStateActions.addReferenceSegment,
+	TransactionLogStateActions.addSegmentFragmentReference,
+	TransactionLogStateActions.removeSegmentFragmentReference,
+	TransactionLogStateActions.unlinkSegmentFragmentReference,
 ];
 
 export const SegmentTransactionLogHandler = {
@@ -100,7 +116,7 @@ function* handleSegmentActions({
 
 	if (TransactionLogStateActions.addSegment.match(action)) {
 		const updatedSegment = TransactionLog.createStoreEntrySegment(
-			state.segments,
+			state.segments!,
 			action.payload.data,
 			interactionId
 		);
@@ -119,8 +135,10 @@ function* handleSegmentActions({
 				...state,
 				segments: {
 					...state.segments,
+					id: state.segments?.id || nanoid(),
+					references: state.segments?.references ?? {},
 					map: {
-						...state.segments.map,
+						...state.segments?.map,
 						[action.payload.data.id]: updatedSegment.storeEntry,
 					},
 				},
@@ -132,6 +150,15 @@ function* handleSegmentActions({
 	}
 
 	if (TransactionLogStateActions.removeSegment.match(action)) {
+		const usageMapLoading = yield* select(FragmentUsageSelectors.isUsageMapLoading);
+		const usages = yield* select((printEngineState: PrintEngineState) =>
+			FragmentUsageSelectors.usageForEntity(printEngineState, action.payload.data.id)
+		);
+		if (usageMapLoading || usages.length > 0) {
+			yield* call(openConfirmationDialogSaga, ConfirmationDialogType.FRAGMENT_IN_USE, { usages });
+			return newAffectedItems;
+		}
+
 		const isConfirmed = yield* call(openConfirmationDialogSaga, ConfirmationDialogType.DELETE);
 		if (!isConfirmed) {
 			return newAffectedItems;
@@ -153,7 +180,7 @@ function* handleSegmentActions({
 		newAffectedItems.push({ type: "printModelContentGeneral", id: updatedContentGeneral.storeEntry.id });
 
 		const updatedSegmentReferences = removeSegmentReferenceRef(
-			state.segments,
+			state.segments!,
 			contentGeneral,
 			segmentId,
 			interactionId
@@ -173,12 +200,14 @@ function* handleSegmentActions({
 				[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]: updatedContentGeneral.storeEntry,
 				segments: {
 					...state.segments,
+					id: state.segments?.id || nanoid(),
+					map: state.segments?.map ?? {},
 					references: updatedSegmentReferences
 						? {
-								...state.segments.references,
+								...state.segments?.references,
 								[updatedSegmentReferences.storeEntry.id]: updatedSegmentReferences.storeEntry,
 							}
-						: state.segments.references,
+						: (state.segments?.references ?? {}),
 				},
 			})
 		);
@@ -210,7 +239,7 @@ function* handleSegmentActions({
 		});
 		const clonePersistentEntries = creatStoreElementEntries.map(entry => entry.persistentEntries);
 		const cloneStoreEntries = creatStoreElementEntries.map(entry => entry.storeEntry);
-		const updatedSegment = TransactionLog.createStoreEntrySegment(state.segments, newSegment, interactionId);
+		const updatedSegment = TransactionLog.createStoreEntrySegment(state.segments!, newSegment, interactionId);
 		const updatedGeneral = addStructure(state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID], newSegment.id, interactionId);
 
 		persistentEntries.push(
@@ -231,8 +260,10 @@ function* handleSegmentActions({
 				...state,
 				segments: {
 					...state.segments,
+					id: state.segments?.id || nanoid(),
+					references: state.segments?.references ?? {},
 					map: {
-						...state.segments.map,
+						...state.segments?.map,
 						[updatedSegment.storeEntry.id]: updatedSegment.storeEntry,
 					},
 				},
@@ -255,7 +286,7 @@ function* handleSegmentActions({
 
 	if (TransactionLogStateActions.updateSegment.match(action)) {
 		const createStoreEntry = TransactionLog.createStoreEntrySegment(
-			state.segments,
+			state.segments!,
 			action.payload.data,
 			interactionId
 		);
@@ -266,8 +297,10 @@ function* handleSegmentActions({
 				...state,
 				segments: {
 					...state.segments,
+					id: state.segments?.id || nanoid(),
+					references: state.segments?.references ?? {},
 					map: {
-						...state.segments.map,
+						...state.segments?.map,
 						[action.payload.data.id]: createStoreEntry.storeEntry,
 					},
 				},
@@ -279,7 +312,7 @@ function* handleSegmentActions({
 	if (TransactionLogStateActions.updateSegments.match(action)) {
 		const newSegments: Record<string, TransactionLogStoreEntry<PartialSegment>> = {};
 		action.payload.data.forEach(segment => {
-			const createdStoreEntry = TransactionLog.createStoreEntrySegment(state.segments, segment, interactionId);
+			const createdStoreEntry = TransactionLog.createStoreEntrySegment(state.segments!, segment, interactionId);
 			newSegments[segment.id] = createdStoreEntry.storeEntry;
 			persistentEntries.push(...createdStoreEntry.persistentEntries);
 			newAffectedItems.push({ type: "segment", id: createdStoreEntry.storeEntry.id });
@@ -289,8 +322,10 @@ function* handleSegmentActions({
 				...state,
 				segments: {
 					...state.segments,
+					id: state.segments?.id || nanoid(),
+					references: state.segments?.references ?? {},
 					map: {
-						...state.segments.map,
+						...state.segments?.map,
 						...newSegments,
 					},
 				},
@@ -301,7 +336,7 @@ function* handleSegmentActions({
 
 	if (TransactionLogStateActions.addSegmentReference.match(action)) {
 		const createStoreEntry = TransactionLog.createStoreEntrySegmentReference(
-			state.segments.references,
+			state.segments!.references,
 			action.payload.data,
 			interactionId
 		);
@@ -312,8 +347,10 @@ function* handleSegmentActions({
 				...state,
 				segments: {
 					...state.segments,
+					id: state.segments?.id || nanoid(),
+					map: state.segments?.map ?? {},
 					references: {
-						...state.segments.references,
+						...state.segments?.references,
 						[action.payload.data.id]: createStoreEntry.storeEntry,
 					},
 				},
@@ -345,7 +382,7 @@ function* handleSegmentActions({
 			true
 		);
 		const newPrintModelElements = createNewPrintModelElements(
-			overrideElements as PartialAnyPrintModelElement[],
+			overrideElements,
 			state,
 			persistentEntries,
 			newAffectedItems,
@@ -358,14 +395,14 @@ function* handleSegmentActions({
 			referenceElementId
 		);
 
-		const updatedSegment = TransactionLog.createStoreEntrySegment(state.segments, referenceSegment, interactionId);
+		const updatedSegment = TransactionLog.createStoreEntrySegment(state.segments!, referenceSegment, interactionId);
 		const updatedGeneral = addStructure(
 			state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID],
 			referenceSegment.id,
 			interactionId
 		);
 		const updatedSegmentReference = TransactionLog.createStoreEntrySegmentReference(
-			state.segments.references,
+			state.segments!.references,
 			segmentReferenceWithRefId,
 			interactionId
 		);
@@ -385,12 +422,13 @@ function* handleSegmentActions({
 				...state,
 				segments: {
 					...state.segments,
+					id: state.segments?.id || nanoid(),
 					map: {
-						...state.segments.map,
+						...state.segments?.map,
 						[referenceSegment.id]: updatedSegment.storeEntry,
 					},
 					references: {
-						...state.segments.references,
+						...state.segments?.references,
 						[segmentReferenceWithRefId.id]: updatedSegmentReference.storeEntry,
 					},
 				},
@@ -403,7 +441,216 @@ function* handleSegmentActions({
 		);
 		return newAffectedItems;
 	}
+
+	if (TransactionLogStateActions.addSegmentFragmentReference.match(action)) {
+		const reference = action.payload.data;
+		const existingRefs = TransactionLog.selectSegmentFragmentReferences(state.segments?.fragmentReferencesEntry);
+		const newRefs = [...existingRefs.filter(r => r.id !== reference.id), reference];
+		const contentGeneral = TransactionLog.selectPrintModelContentGeneral(state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]);
+		const newStructure = [...(contentGeneral.structure || []), reference.id];
+		yield* call(
+			updateSegmentFragmentReferences,
+			state,
+			newRefs,
+			newStructure,
+			interactionId,
+			persistentEntries,
+			newAffectedItems
+		);
+		return newAffectedItems;
+	}
+
+	if (TransactionLogStateActions.removeSegmentFragmentReference.match(action)) {
+		const { id } = action.payload.data;
+		const printModelRefs = yield* select(NavigationSelectors.activeEntities);
+		const existingRefs = TransactionLog.selectSegmentFragmentReferences(state.segments?.fragmentReferencesEntry);
+		const removedRef = existingRefs.find(r => r.id === id);
+		const newRefs = existingRefs.filter(r => r.id !== id);
+		const contentGeneral = TransactionLog.selectPrintModelContentGeneral(state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]);
+		const newStructure = removedRef
+			? (contentGeneral.structure || []).filter(segmentId => segmentId !== removedRef.id)
+			: contentGeneral.structure;
+		if (printModelRefs?.segmentId === removedRef?.id) {
+			yield* put(NavigationActions.clearActiveEntity({ tab: SidebarItem.SEGMENT }));
+		}
+		yield* call(
+			updateSegmentFragmentReferences,
+			state,
+			newRefs,
+			newStructure,
+			interactionId,
+			persistentEntries,
+			newAffectedItems
+		);
+		return newAffectedItems;
+	}
+
+	if (TransactionLogStateActions.unlinkSegmentFragmentReference.match(action)) {
+		const { referenceId, fragmentContent } = action.payload.data;
+		const ref = TransactionLog.selectSegmentFragmentReferences(state.segments?.fragmentReferencesEntry).find(
+			r => r.id === referenceId
+		);
+		if (!ref) {
+			return newAffectedItems;
+		}
+
+		const resolved = fragmentContent.segments?.definitions?.find(segment => segment.id === ref.refId);
+		if (!resolved) {
+			return newAffectedItems;
+		}
+
+		let hasUnresolved = false;
+		const onUnresolved = () => {
+			hasUnresolved = true;
+		};
+
+		const usedTextStyleIds = collectUsedTextStyleIds(resolved, fragmentContent);
+		const { newReferences, newOrderIds, textStyleIdMap } = referenceFragmentTextStyles(
+			state,
+			fragmentContent,
+			ref.model,
+			usedTextStyleIds,
+			onUnresolved
+		);
+
+		const { clonedSegment, clonedSegmentElements } = cloneSegment(resolved, {
+			cloneObject: clonePrintModelEntity,
+			getElement: createFragmentElementGetter(fragmentContent),
+			elementIdMap: new Map(),
+			textStyleIdMap,
+			onUnresolved,
+		});
+
+		if (hasUnresolved) {
+			return newAffectedItems;
+		}
+
+		const newSegment: PartialSegment = clonedSegment;
+
+		const createStoreElementEntries = clonedSegmentElements.map(element =>
+			TransactionLog.createStoreEntryPrintModelElement(state.printModelElements, element, interactionId)
+		);
+		const clonePersistentEntries = createStoreElementEntries.map(entry => entry.persistentEntries);
+		const cloneStoreEntries = createStoreElementEntries.map(entry => entry.storeEntry);
+
+		const updatedSegment = TransactionLog.createStoreEntrySegment(state.segments!, newSegment, interactionId);
+
+		const existingSegmentFragmentRefs = TransactionLog.selectSegmentFragmentReferences(
+			state.segments?.fragmentReferencesEntry
+		);
+		const updatedSegmentFragmentRefsEntry = TransactionLog.createStoreEntrySegmentFragmentReferences(
+			state.segments?.fragmentReferencesEntry,
+			{
+				id: SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID,
+				references: existingSegmentFragmentRefs.filter(r => r.id !== referenceId),
+			},
+			interactionId
+		);
+
+		const textStyleRefsUpdate = appendTextStyleReferences(state, newReferences, interactionId);
+
+		const contentGeneral = TransactionLog.selectPrintModelContentGeneral(state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]);
+		const updatedGeneral = TransactionLog.createStoreEntryPrintModelContentGeneral(
+			state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID],
+			{
+				...contentGeneral,
+				structure: replaceIdInPlace(contentGeneral.structure, referenceId, newSegment.id),
+				textStyles: [...(contentGeneral.textStyles || []), ...newOrderIds],
+			},
+			interactionId
+		);
+
+		persistentEntries.push(
+			...updatedSegment.persistentEntries,
+			...updatedSegmentFragmentRefsEntry.persistentEntries,
+			...textStyleRefsUpdate.persistentEntries,
+			...updatedGeneral.persistentEntries,
+			...clonePersistentEntries.flat()
+		);
+		newAffectedItems.push(
+			{ type: "segment" as const, id: updatedSegment.storeEntry.id },
+			{ type: "segmentFragmentReferences" as const, id: updatedSegmentFragmentRefsEntry.storeEntry.id },
+			...textStyleRefsUpdate.affectedItems,
+			{ type: "printModelContentGeneral" as const, id: updatedGeneral.storeEntry.id },
+			...cloneStoreEntries.map(storeEntry => ({ type: "printModelElement" as const, id: storeEntry.id }))
+		);
+
+		yield* put(
+			TransactionLogStateActions.setLogStore({
+				...state,
+				segments: {
+					...state.segments,
+					id: state.segments?.id || nanoid(),
+					references: state.segments?.references ?? {},
+					map: {
+						...state.segments?.map,
+						[updatedSegment.storeEntry.id]: updatedSegment.storeEntry,
+					},
+					fragmentReferencesEntry: updatedSegmentFragmentRefsEntry.storeEntry,
+				},
+				textStyles: textStyleRefsUpdate.textStyles,
+				[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]: updatedGeneral.storeEntry,
+				printModelElements: {
+					...state.printModelElements,
+					...cloneStoreEntries.reduce(
+						(newStoredEntries: TransactionLogStoreEntryMap<PartialAnyPrintModelElement>, storeEntry) => {
+							newStoredEntries[storeEntry.id] = storeEntry;
+							return newStoredEntries;
+						},
+						{}
+					),
+				},
+			})
+		);
+
+		const activeEntitiesAfterUnlink = yield* select(NavigationSelectors.activeEntities);
+		if (activeEntitiesAfterUnlink.segmentId === referenceId) {
+			yield* put(NavigationActions.setActiveEntity({ tab: SidebarItem.SEGMENT, entityId: newSegment.id }));
+		}
+
+		return newAffectedItems;
+	}
+
 	return newAffectedItems;
+}
+
+function* updateSegmentFragmentReferences(
+	state: TransactionLogStore,
+	newRefs: FragmentModelReference[],
+	newStructure: ReadonlyArray<string> | undefined,
+	interactionId: string,
+	persistentEntries: PartialTransactionLogPersistentEntry[],
+	newAffectedItems: AffectedItem[]
+): SagaGenerator<void> {
+	const updatedRefsEntry = TransactionLog.createStoreEntrySegmentFragmentReferences(
+		state.segments?.fragmentReferencesEntry,
+		{ id: SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID, references: newRefs },
+		interactionId
+	);
+	const contentGeneral = TransactionLog.selectPrintModelContentGeneral(state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]);
+	const updatedGeneral = TransactionLog.createStoreEntryPrintModelContentGeneral(
+		state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID],
+		{ ...contentGeneral, structure: newStructure },
+		interactionId
+	);
+	persistentEntries.push(...updatedRefsEntry.persistentEntries, ...updatedGeneral.persistentEntries);
+	newAffectedItems.push(
+		{ type: "segmentFragmentReferences" as const, id: updatedRefsEntry.storeEntry.id },
+		{ type: "printModelContentGeneral" as const, id: updatedGeneral.storeEntry.id }
+	);
+	yield* put(
+		TransactionLogStateActions.setLogStore({
+			...state,
+			[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]: updatedGeneral.storeEntry,
+			segments: {
+				...state.segments,
+				id: state.segments?.id || nanoid(),
+				map: state.segments?.map ?? {},
+				references: state.segments?.references ?? {},
+				fragmentReferencesEntry: updatedRefsEntry.storeEntry,
+			},
+		})
+	);
 }
 
 function addStructure(

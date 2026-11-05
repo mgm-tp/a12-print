@@ -44,7 +44,6 @@ import lombok.Setter;
 import org.apache.commons.lang3.EnumUtils;
 
 import java.util.Map;
-import java.util.Optional;
 
 import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil.floatToLongPt;
 
@@ -181,7 +180,7 @@ public class BoxStyleParameters {
 		}
 		if (tp != null) {
 			tp.getBackgroundColor()
-				.flatMap(bg -> InputValueSourceResolver.getInputValue(bg, ref -> Optional.empty()))
+				.flatMap(bg -> InputValueSourceResolver.getInputValue(bg, referenceInputSourceResolver))
 				.ifPresent(colorStr -> builder.backgroundColor(HtmlAttributesUtils.parseColor(colorStr)));
 		}
 		return builder;

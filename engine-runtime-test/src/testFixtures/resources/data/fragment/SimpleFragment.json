@@ -1,0 +1,150 @@
+{
+  "header": {
+    "id": "SimpleFragment",
+    "modelType": "print",
+    "modelVersion": "4.1.0",
+    "description": "Description",
+    "annotations": [
+      {
+        "name": "modelSubType",
+        "value": "fragment"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "4.1.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "4.1.0-rc.1"
+      }
+    ],
+    "labels": [],
+    "locales": [],
+    "modelReferences": []
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "SmpFrgMetadata000001",
+        "titleComputation": [],
+        "descriptionComputation": [],
+        "authorComputation": [],
+        "languageComputation": []
+      },
+      "segmentDefaults": {
+        "id": "SmpFrgSegDefaults001",
+        "fontSize": 12
+      },
+      "structure": [],
+      "sections": [],
+      "watermarks": [],
+      "runtimeVariables": [],
+      "textStyles": []
+    },
+    "segments": {
+      "id": "SmpFrgSegments000001",
+      "definitions": [],
+      "references": [],
+      "fragmentReferences": []
+    },
+    "sections": {
+      "id": "SmpFrgSections000001",
+      "definitions": [],
+      "references": []
+    },
+    "watermarks": {
+      "id": "SmpFrgWatermarks0001",
+      "definitions": [],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "SmpFrgTextFragment01",
+        "type": "Text",
+        "name": "SimpleTextFragment",
+        "isFragment": true,
+        "fragmentDimensions": {
+          "id": "SmpFrgTextFragment01-fd",
+          "height": {
+            "id": "SmpFrgTextFragment01-fh",
+            "value": 8,
+            "unit": "Millimeter"
+          },
+          "width": {
+            "id": "SmpFrgTextFragment01-fw",
+            "value": 170,
+            "unit": "Millimeter"
+          }
+        },
+        "text": {
+          "id": "SmpFrgTextFragment01-tx",
+          "text": "<p><span style=\"\">Fragment of the second fragment model SimpleFragment, which references no document model at all.</span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "SmpFrgTextFragment01-tp",
+          "textStyleId": {
+            "id": "SmpFrgTextFragment01-tp0",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "DEFAULT"
+          },
+          "bold": {
+            "id": "SmpFrgTextFragment01-tp1",
+            "path": "/content/elementDefinitions/textProperties/bold/value/",
+            "source": "DEFAULT"
+          },
+          "italic": {
+            "id": "SmpFrgTextFragment01-tp2",
+            "path": "/content/elementDefinitions/textProperties/italic/value/",
+            "source": "DEFAULT"
+          },
+          "underlined": {
+            "id": "SmpFrgTextFragment01-tp3",
+            "path": "/content/elementDefinitions/textProperties/underlined/value/",
+            "source": "DEFAULT"
+          },
+          "alignment": {
+            "id": "SmpFrgTextFragment01-tp4",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          },
+          "color": {
+            "id": "SmpFrgTextFragment01-tp5",
+            "path": "/content/elementDefinitions/textProperties/color/value/",
+            "source": "DEFAULT"
+          },
+          "backgroundColor": {
+            "id": "SmpFrgTextFragment01-tp6",
+            "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "SmpFrgTextFragment01-bp",
+          "borderStyle": {
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
+            "source": "UNSET",
+            "id": "SmpFrgTextFragment01-bp0"
+          },
+          "borderWidth": {
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/",
+            "source": "DEFAULT",
+            "id": "SmpFrgTextFragment01-bp1"
+          },
+          "borderColor": {
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/",
+            "source": "DEFAULT",
+            "id": "SmpFrgTextFragment01-bp2"
+          }
+        }
+      }
+    ],
+    "textStyles": {
+      "id": "SmpFrgTextStyles0001",
+      "definitions": [],
+      "references": []
+    }
+  }
+}

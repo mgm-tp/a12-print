@@ -29,7 +29,11 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import type { PrintModel, PartialPrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import type {
+	PrintModel,
+	PartialPrintModel,
+	PartialAnyPrintModelElement,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 	PRINT_MODEL_CONTENT_LOG_ID,
@@ -65,10 +69,13 @@ export namespace PrintModelCreator {
 		const segments = {
 			id: transactionLogStore.segments.id,
 			definitions: Object.keys(transactionLogStore.segments.map).map(id =>
-				TransactionLog.selectSegment(transactionLogStore.segments.map, id)
+				TransactionLog.selectSegment(transactionLogStore.segments?.map, id)
 			),
 			references: Object.keys(transactionLogStore.segments.references).map(id =>
-				TransactionLog.selectSegmentReference(transactionLogStore.segments.references, id)
+				TransactionLog.selectSegmentReference(transactionLogStore.segments?.references, id)
+			),
+			fragmentReferences: TransactionLog.selectSegmentFragmentReferences(
+				transactionLogStore.segments?.fragmentReferencesEntry
 			),
 		};
 		const sections = transactionLogStore.sections
@@ -77,6 +84,7 @@ export namespace PrintModelCreator {
 					definitions: Object.keys(transactionLogStore.sections.map).map(id =>
 						TransactionLog.selectSection(transactionLogStore.sections?.map, id)
 					),
+					references: TransactionLog.selectSectionReferences(transactionLogStore.sections?.referencesEntry),
 				}
 			: undefined;
 		const watermarks = transactionLogStore.watermarks
@@ -85,16 +93,22 @@ export namespace PrintModelCreator {
 					definitions: Object.keys(transactionLogStore.watermarks.map).map(id =>
 						TransactionLog.selectWatermark(transactionLogStore.watermarks?.map, id)
 					),
+					references: TransactionLog.selectWatermarkReferences(
+						transactionLogStore.watermarks?.referencesEntry
+					),
 				}
 			: undefined;
-		const elementDefinitions = Object.keys(transactionLogStore.printModelElements).map(id =>
-			TransactionLog.selectPrintModelElement(transactionLogStore.printModelElements, id)
-		);
+		const elementDefinitions = Object.keys(transactionLogStore.printModelElements)
+			.map(id => TransactionLog.selectPrintModelElement(transactionLogStore.printModelElements, id))
+			.filter((element): element is PartialAnyPrintModelElement => element !== undefined);
 		const textStyles = transactionLogStore.textStyles
 			? {
 					id: transactionLogStore.textStyles.id,
 					definitions: Object.keys(transactionLogStore.textStyles.map).map(id =>
 						TransactionLog.selectTextStyle(transactionLogStore.textStyles?.map, id)
+					),
+					references: TransactionLog.selectTextStyleReferences(
+						transactionLogStore.textStyles?.referencesEntry
 					),
 				}
 			: undefined;

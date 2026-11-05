@@ -64,7 +64,7 @@ export const ResizeableWrapper = ({ placeableRef, zoomFactor, startResize }: Res
 		? { ...placeableRef.position, y: changeMmMeasureValue(placeableRef.position.y.value + endPositionOffset) }
 		: placeableRef.position;
 
-	return FIXED_DIMENSIONS_ELEMENTS.includes(element.type) ? null : (
+	return !element || FIXED_DIMENSIONS_ELEMENTS.includes(element.type) || placeableRef.model ? null : (
 		<>
 			<ResizeHandle
 				side="left"

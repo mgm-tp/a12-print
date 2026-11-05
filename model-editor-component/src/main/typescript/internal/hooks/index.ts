@@ -31,6 +31,7 @@
  */
 export * from "./use-click-outside.js";
 export * from "./use-error-title-element.js";
+export * from "./use-current-editor-type.js";
 export * from "./use-model-name-alias-getter.js";
 export * from "./use-model-name-alias-converter.js";
 export * from "./use-transaction-groups.js";

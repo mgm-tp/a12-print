@@ -31,6 +31,9 @@
  */
 import { type PrintModel, type Segment } from "../model/index.js";
 
+import { resolveFragmentDefinitions } from "./fragment-definition-resolver.js";
+import type { PrintModelResolver } from "./print-model-resolver.js";
+
 export interface SegmentMap {
 	[key: string]: Segment;
 }
@@ -40,20 +43,39 @@ export interface SegmentIdResolver {
 }
 
 export class DefaultSegmentIdResolver implements SegmentIdResolver {
-	constructor(private segmentList: ReadonlyArray<Segment>) {}
+	constructor(
+		private readonly segmentList: ReadonlyArray<Segment>,
+		private readonly fragmentSegments: ReadonlyMap<string, Segment> = new Map()
+	) {}
 
-	public static fromModel(printModel: PrintModel) {
-		return new this(printModel.content.segments.definitions);
+	/** @param fragmentModelResolver Without it only locally defined segments are resolvable.
+	 * @remarks
+	 * The signature will change in the next major release to `fromModel(printModel: PrintModel, fragmentModelResolver: PrintModelResolver)`.
+	 */
+	public static fromModel(printModel: PrintModel, fragmentModelResolver?: PrintModelResolver) {
+		const segments = printModel.content?.segments;
+		return new this(
+			segments?.definitions || [],
+			fragmentModelResolver
+				? resolveFragmentDefinitions(
+						segments?.fragmentReferences || [],
+						fragmentModelResolver,
+						fragmentModel => fragmentModel.content?.segments?.definitions || [],
+						// Each reference is an independent instance, keyed by its own id.
+						(segment, _reference, referenceId) => ({ ...segment, id: referenceId })
+					)
+				: undefined
+		);
 	}
 
 	resolveSegmentId(id: string): Segment | undefined {
-		return this.segmentList.find(el => el.id === id);
+		return this.segmentList.find(el => el.id === id) || this.fragmentSegments.get(id);
 	}
 }
 
 export class CachedSegmentIdResolver implements SegmentIdResolver {
-	private structureResolver: SegmentIdResolver;
-	private segmentMap: SegmentMap = {};
+	private readonly structureResolver: SegmentIdResolver;
+	private readonly segmentMap: SegmentMap = {};
 
 	constructor(referenceResolver: SegmentIdResolver) {
 		this.structureResolver = referenceResolver;

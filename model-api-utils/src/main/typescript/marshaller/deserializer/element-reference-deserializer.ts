@@ -52,6 +52,8 @@ export class ElementReferenceDeserializer extends Deserializer<
 				return dto.id;
 			case "refId":
 				return dto.refId;
+			case "model":
+				return dto.model;
 			case "dimensions":
 				return this.deserializeRequired(dto.dimensions, property, new DimensionDeserializer(this.path));
 			case "position":

@@ -31,5 +31,12 @@
  */
 import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 import type { AnnotationEntity } from "@com.mgmtp.a12.print/print-model-api/model";
+import { MODEL_SUB_TYPE_ANNOTATION_NAME } from "@com.mgmtp.a12.print/print-model-api/model";
 
 export type AnnotationData = DeepPartial<AnnotationEntity>;
+
+const PROTECTED_ANNOTATIONS = new Set(["roles", MODEL_SUB_TYPE_ANNOTATION_NAME]);
+
+export function isProtectedAnnotation(name: string): boolean {
+	return PROTECTED_ANNOTATIONS.has(name);
+}

@@ -30,6 +30,7 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import type { ReactElement } from "react";
+import { fireEvent } from "@testing-library/react";
 
 import type { Section, PartialSection } from "@com.mgmtp.a12.print/print-model-api/model";
 import { SectionUsage, PageOrientation } from "@com.mgmtp.a12.print/print-model-api/model";
@@ -159,6 +160,45 @@ describe("SectionCard", () => {
 
 			expect(openMenuIcon.getElementsByClassName("plasma-icon")).toHaveLength(1);
 			expect(deleteIcon.getElementsByClassName("plasma-icon")).toHaveLength(1);
+		});
+	});
+
+	describe("readonly mode", () => {
+		it("makes title input readonly when a reference is provided", () => {
+			const { getByDisplayValue } = setupTest(
+				<SectionCard
+					section={mockSection}
+					pageOrientation={mockSection.pageOrientation}
+					sectionUsage={mockSection.sectionUsage}
+					reference={{ id: "test-reference-id" }}
+				/>
+			);
+
+			expect(getByDisplayValue("First Portrait Section")).toHaveAttribute("readonly");
+		});
+
+		it("still shows Add, Delete and Open Editor buttons when readonly", () => {
+			const { getByText } = setupTest(
+				<SectionCard pageOrientation={PageOrientation.Portrait} sectionUsage={SectionUsage.First} />
+			);
+			const { getByLabelText } = setupTest(
+				<SectionCard
+					section={mockSection}
+					pageOrientation={mockSection.pageOrientation}
+					sectionUsage={mockSection.sectionUsage}
+					reference={{ id: "test-reference-id" }}
+				/>
+			);
+
+			expect(getByText("Add")).toBeInTheDocument();
+			expect(getByText("Add")).not.toBeDisabled();
+			expect(getByLabelText("Open Editor")).toBeInTheDocument();
+			expect(getByLabelText("Open Editor")).not.toBeDisabled();
+
+			fireEvent.click(getByLabelText("Open Menu"));
+
+			expect(getByLabelText("Delete")).toBeInTheDocument();
+			expect(getByLabelText("Delete")).not.toBeDisabled();
 		});
 	});
 });

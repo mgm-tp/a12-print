@@ -15,17 +15,16 @@ You must select and comply with exactly one of the above license options.
 Warranty Disclaimer (applies to either option)
 THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
 ////
-= Integration
+[#a12_fullstack_integration]
+= A12 Full Stack Integration
 
-This chapter describes the integration of the Print Engine into a Java application.
+This chapter describes the integration of the Print Engine into an A12 Full Stack application.
 
 :leveloffset: +1
 
 include::0301_dependency.adoc[]
 
 include::0302_configuration.adoc[]
-
-include::0303_usage.adoc[]
 
 :leveloffset: -1
 

@@ -2,7 +2,7 @@
   "header": {
     "id": "ExpressionPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -216,7 +216,8 @@
           "text": "kontext(general) {\n\"**\"[first]\"**\" \" \" \"*\"[last]\"*\" \n\ncase [first] = \"Hello World!\" { \n        \"Case Operator Success\" \n}\n\ncase [first] != \"Hello World!\" { \n        \"Case Operator Fail\" \n}  \n}",
           "basePath": "/",
           "hideIfEmpty": false
-        }
+        },
+        "name": "Expression_6ccbb"
       }
     ],
     "textStyles": {

@@ -39,7 +39,7 @@ type AreaProps = Omit<BaseElementProps, "reference">;
 
 export const Area = ({ element, styles, ElementContainer }: AreaProps) => {
 	if (!PartialArea.isInstance(element)) {
-		throw Error(`Expected element of type Area but got ${element.type}`);
+		throw new Error(`Expected element of type Area but got ${element?.type}`);
 	}
 
 	return (

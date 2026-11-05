@@ -55,6 +55,7 @@ import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
 import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
 import { changePartialMmMeasureValue, DEFAULT_ELEMENT_WIDTH, DEFAULT_IMAGE_HEIGHT } from "../../../utils/index.js";
+import { ElementsUtils } from "../../../utils/elements-utils.js";
 import { PositiveNumberInput } from "../../custom-input/PositiveNumberInput.js";
 
 import { DynamicSourceTextField } from "../custom-base-input-components/index.js";
@@ -114,6 +115,10 @@ export const ImageGeneralProperties = ({ element }: ImageGeneralPropertiesProps)
 				? scaleDimensionsToOriginalAspectRatio(baseDimensions)
 				: baseDimensions;
 
+			const widthMeasure = createNewMeasureForReferenceElement("width", scaledDimensions?.width, element);
+			const heightMeasure = createNewMeasureForReferenceElement("height", scaledDimensions?.height, element);
+			const newMeasure = key === "height" ? heightMeasure : widthMeasure;
+
 			const updatedElement: PartialImage = {
 				...element,
 				image: {
@@ -121,14 +126,14 @@ export const ImageGeneralProperties = ({ element }: ImageGeneralPropertiesProps)
 					...image,
 					dimensions: baseDimensions,
 				},
+				...ElementsUtils.getFragmentDimensionsUpdate(element, {
+					width: widthMeasure,
+					height: heightMeasure,
+				}),
 			};
 			const actions: UpdateElementsTransactionLogAction[] = [
 				TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }),
 			];
-			const newMeasure =
-				key === "height"
-					? createNewMeasureForReferenceElement(key, scaledDimensions?.height, element)
-					: createNewMeasureForReferenceElement(key, scaledDimensions?.width, element);
 			// container elements have different dimension properties than images so the key must be adapted when updating the references
 			const refKey = key === "height" ? "minHeight" : "minWidth";
 			if (elementReferences) {
@@ -142,11 +147,7 @@ export const ImageGeneralProperties = ({ element }: ImageGeneralPropertiesProps)
 										...el.dimensions,
 										[refKey]: newMeasure,
 										...(shouldScaleToAspectRatio && {
-											minHeight: createNewMeasureForReferenceElement(
-												"height",
-												scaledDimensions?.height,
-												element
-											),
+											minHeight: heightMeasure,
 										}),
 									},
 								};

@@ -35,6 +35,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useContext, useMemo } from "react";
 
 import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react";
+import { createPrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
 import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
@@ -62,10 +63,9 @@ interface InternalPrintModelEditorLightProps {
 
 export const InternalPrintModelEditorLight: React.ComponentType<InternalPrintModelEditorLightProps> =
 	function InternalPrintModelEditorLight({ printModel, documentModel, customFonts, staticImageProvider, onChange }) {
-		const { localizer, locale } = useContext(LocalizerContext);
+		const { locale } = useContext(LocalizerContext);
 
-		const contextApi = useContextApi({ customFonts, localizer });
-		const fontMap = contextApi.getFonts();
+		const fontMap = useMemo(() => createPrintFontMap(customFonts ?? {}), [customFonts]);
 
 		const store = useMemo(
 			() => setupStoreLight(printModel, [documentModel], fontMap, locale, staticImageProvider, onChange),
@@ -75,17 +75,27 @@ export const InternalPrintModelEditorLight: React.ComponentType<InternalPrintMod
 
 		return (
 			<Provider store={store}>
-				<EditorComponentContext.Provider value={contextApi}>
-					<DndProvider backend={HTML5Backend}>
-						<HiddenHeightContextWrapper>
-							<GlobalOverride />
-							<style>{createGlobalFontFaces(fontMap)}</style>
-							<ConfirmationDialog />
-							<DragListLayer />
-							<PrintEditorView />
-						</HiddenHeightContextWrapper>
-					</DndProvider>
-				</EditorComponentContext.Provider>
+				<PrintModelEditorLightInner customFonts={customFonts} />
 			</Provider>
 		);
 	};
+
+function PrintModelEditorLightInner({ customFonts }: Readonly<{ customFonts?: FontResourceMap }>) {
+	const { localizer } = useContext(LocalizerContext);
+	const contextApi = useContextApi({ customFonts, localizer });
+	const fontMap = contextApi.getFonts();
+
+	return (
+		<EditorComponentContext.Provider value={contextApi}>
+			<DndProvider backend={HTML5Backend}>
+				<HiddenHeightContextWrapper>
+					<GlobalOverride />
+					<style>{createGlobalFontFaces(fontMap)}</style>
+					<ConfirmationDialog />
+					<DragListLayer />
+					<PrintEditorView />
+				</HiddenHeightContextWrapper>
+			</DndProvider>
+		</EditorComponentContext.Provider>
+	);
+}

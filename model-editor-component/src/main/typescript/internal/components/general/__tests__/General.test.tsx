@@ -30,6 +30,7 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import type { Reducer } from "redux";
+import React from "react";
 import { fireEvent } from "@testing-library/react";
 
 import type { TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
@@ -46,8 +47,17 @@ import { PRINT_MODEL_VERSION } from "../../../constant/model.js";
 import { initialStateLogStore, TransactionLogStateReducer } from "../../../redux/transaction-log-state/reducer.js";
 import type { TransactionLogStateActions } from "../../../redux/transaction-log-state/actions.js";
 import { renderWithProviders } from "../../../../../../test/typescript/test-utils/index.js";
+import { EditorComponentContext } from "../../../api/index.js";
+import { PrintEngineSelectors } from "../../../store/selectors.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 
 import { General, ModelNameRegExp } from "../index.js";
+
+const FragmentContextWrapper = ({ children }: { children: React.ReactNode }) => {
+	const outerContext = React.useContext(EditorComponentContext);
+	const prop = React.useMemo(() => ({ ...outerContext, isFragmentModel: true }), [outerContext]);
+	return <EditorComponentContext.Provider value={prop}>{children}</EditorComponentContext.Provider>;
+};
 
 describe("General", () => {
 	const generalMock: TransactionLogStateActions.UpdatePrintContentGeneralPayload = {
@@ -67,6 +77,12 @@ describe("General", () => {
 		id: getEntityId(EntityKey.Annotations, "annotation-name"),
 		name: "annotation-name",
 		value: "annotation-value",
+	};
+
+	const rolesAnnotationMock = {
+		id: getEntityId(EntityKey.Annotations, "roles"),
+		name: "roles",
+		value: "admin,editor",
 	};
 
 	const printHeaderMock: PrintModelHeader = {
@@ -138,6 +154,41 @@ describe("General", () => {
 		expect(queryByText("new-value")).toBeInTheDocument();
 	});
 
+	it("should not clear protected annotations (e.g. roles) when a generic annotation is edited", () => {
+		const printHeaderWithRolesMock: PrintModelHeader = {
+			...printHeaderMock,
+			annotations: [rolesAnnotationMock, annotationMock],
+		};
+		const stateWithRolesMock: TransactionLogStore = {
+			...initialStateMock,
+			[PRINT_MODEL_HEADER_LOG_ID]: TransactionLog.createStoreEntryPrintModelHeader(
+				initialStateLogStore[PRINT_MODEL_HEADER_LOG_ID],
+				printHeaderWithRolesMock,
+				"3jm1t0o3jg0134gj42"
+			).storeEntry,
+		};
+		const ReducerWithRolesMock: Reducer = (state: TransactionLogStore = stateWithRolesMock, action) =>
+			TransactionLogStateReducer(state, action);
+
+		const { getAllByRole, getByDisplayValue, getByLabelText, store } = renderWithProviders(<General />, {
+			TransactionLogState: ReducerWithRolesMock,
+		});
+
+		const dataRow = getAllByRole("row").find(row => row.textContent?.includes("annotation-value"));
+		fireEvent.click(dataRow as HTMLElement);
+
+		const annotationValueInput = getByDisplayValue("annotation-value");
+		fireEvent.change(annotationValueInput, { target: { value: "new-value" } });
+		fireEvent.blur(annotationValueInput);
+		fireEvent.click(getByLabelText(/save/i));
+
+		const state = store.getState() as unknown as PrintEngineState;
+		const updatedAnnotations = PrintEngineSelectors.printHeader(state)?.annotations;
+		expect(updatedAnnotations).toEqual(
+			expect.arrayContaining([expect.objectContaining({ name: "roles", value: "admin,editor" })])
+		);
+	});
+
 	describe("ModelNameRegExp", () => {
 		it("should match the expected model name", () => {
 			expect(ModelNameRegExp.test("foo.bar-baz")).toBe(true);
@@ -150,6 +201,31 @@ describe("General", () => {
 			expect(ModelNameRegExp.test("xmlfoo")).toBe(false);
 			expect(ModelNameRegExp.test("foo@baz")).toBe(false);
 			expect(ModelNameRegExp.test("-foo_baz")).toBe(false);
+		});
+	});
+
+	describe("fragment model view", () => {
+		const setupFragmentTest = () =>
+			renderWithProviders(
+				<FragmentContextWrapper>
+					<General />
+				</FragmentContextWrapper>,
+				{
+					TransactionLogState: TransactionLogStateReducerMock,
+				}
+			);
+
+		it("should not render the MetadataSection when isFragmentModel is true", () => {
+			const { queryByText } = setupFragmentTest();
+
+			expect(queryByText("PDF Metadata")).not.toBeInTheDocument();
+		});
+
+		it("should still render model name and description fields", () => {
+			const { queryByDisplayValue } = setupFragmentTest();
+
+			expect(queryByDisplayValue("model-name")).toBeInTheDocument();
+			expect(queryByDisplayValue("Description")).toBeInTheDocument();
 		});
 	});
 });

@@ -31,7 +31,7 @@
  */
 import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
 
-import type { ConfirmationDialogType } from "./state.js";
+import type { ConfirmationDialogPayload, ConfirmationDialogType } from "./state.js";
 
 const factory = actionCreatorFactory("Print/Dialog");
 
@@ -40,6 +40,7 @@ export namespace ConfirmationDialogActions {
 
 	export interface OpenConfirmationDialogPayload {
 		type: ConfirmationDialogType;
+		payload?: ConfirmationDialogPayload;
 	}
 
 	export const confirm = factory("CONFIRM");

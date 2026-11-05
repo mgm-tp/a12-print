@@ -35,6 +35,8 @@ import type { SelectProps } from "@com.mgmtp.a12.widgets/widgets-core";
 import { Select } from "@com.mgmtp.a12.widgets/widgets-core";
 import { PossibleInputSource, InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
+import { useFormReadonly } from "../../FormContext.js";
+
 import { useCustomBaseInputProps } from "../use-custom-base-input-props.js";
 import type { SourceSelectProperties } from "../types.js";
 
@@ -63,6 +65,9 @@ export const SourceSelect = (props: SourceSelectProps) => {
 		placeholder = " ",
 		...restProps
 	} = props;
+
+	const isFormReadonly = useFormReadonly();
+	const isDisabled = disabled || isFormReadonly;
 
 	const { errorMessage, warningMessage, errorTooltip, warningTooltip } = useCustomBaseInputProps(
 		originalErrorMessage,
@@ -128,12 +133,13 @@ export const SourceSelect = (props: SourceSelectProps) => {
 					source={inputSource.source}
 					onValueChanged={handleSourceChange}
 					showOnlySelectedOption
-					disabled={disabled}
+					disabled={isDisabled}
 				/>
 				<Select
 					{...restProps}
 					id={id}
 					readonly={isReadOnly}
+					disabled={isDisabled}
 					value={displayValue}
 					placeholder={placeholder}
 					tooltips={tooltips}
@@ -151,7 +157,7 @@ export const SourceSelect = (props: SourceSelectProps) => {
 		tooltips,
 		inputSourceValue,
 		value,
-		disabled,
+		isDisabled,
 	]);
 
 	return (
@@ -166,7 +172,7 @@ export const SourceSelect = (props: SourceSelectProps) => {
 			label={label}
 			labelGraphic={labelGraphic}
 			hideLabel={hideLabel}
-			disabled={disabled}
+			disabled={isDisabled}
 			infoMessage={infoMessage}
 		>
 			{select}

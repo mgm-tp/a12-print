@@ -28,11 +28,16 @@
 # NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
 # LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
 [versions]
-a12Base = "30.0.2"
-a12Kernel = "31.1.1"
+a12Base = "30.1.1"
+a12Kernel = "31.3.1"
+# A12 Integration Dependencies
+a12DataServices = "39.1.1"
+a12UAA = "10.1.1"
 
 [libraries]
 baseModelApi = { module = "com.mgmtp.a12.base:base-model-api", version.ref = "a12Base" }
 baseModelConsistency = { module = "com.mgmtp.a12.base:base-model-consistency", version.ref = "a12Base" }
 baseModelUtils = { module = "com.mgmtp.a12.base:base-model-utils", version.ref = "a12Base" }
 kernelMdFacade = { module = "com.mgmtp.a12.kernel:kernel-md-facade", version.ref = "a12Kernel" }
+dataServicesCoreAutoconfigure = { module = "com.mgmtp.a12.dataservices:dataservices-core-spring-boot-autoconfigure", version.ref = "a12DataServices" }
+uaaBackend = { module = "com.mgmtp.a12.uaa:uaa-authentication-backend", version.ref = "a12UAA" }

@@ -131,6 +131,29 @@ export const useHandleDrop = () => {
 				return;
 			}
 
+			if (item.model && item.fragmentDimensions) {
+				const placeableReference = ElementsUtils.createFragmentReferencePlaceable(
+					item.refId,
+					item.model,
+					item.fragmentDimensions,
+					position,
+					currentContainer,
+					wrappers.at(-1)
+				);
+				const newElementReferences = [...elementReferences, placeableReference];
+				setElementReferences(newElementReferences);
+				dispatch(
+					InteractionLogActions.start({
+						description: RESOURCE_KEYS.interaction.editor.addFragmentReference,
+						region: StageRegion.DEFAULT,
+						transactionLogActions: [
+							TransactionLogStateActions.updateReferenceElements({ data: newElementReferences }),
+						],
+					})
+				);
+				return;
+			}
+
 			const { newEl, placeableReference } = ElementsUtils.createNewlyDroppedElement(
 				item.newType,
 				position,
@@ -143,10 +166,12 @@ export const useHandleDrop = () => {
 		[
 			calculateNewElementHeight,
 			currentContainer,
+			dispatch,
 			editorDimensions.minHeight.value,
 			elementReferences,
 			getSection,
 			segmentSection,
+			setElementReferences,
 			wrappers,
 			zoomFactor,
 		]
@@ -170,13 +195,13 @@ export const useHandleDrop = () => {
 				return;
 			}
 
-			const curEl = elementReferences.find(el => el.refId === item.refId);
+			const curEl = elementReferences.find(el => el.id === item.id);
 			if (!curEl) {
 				return;
 			}
 			const newElementRefList: PartialValidPlaceableReference[] = [];
 			for (const ref of elementReferences) {
-				if (ref.refId === curEl.refId) {
+				if (ref.id === curEl.id) {
 					const movedElement = {
 						...ref,
 						position: {
@@ -187,7 +212,7 @@ export const useHandleDrop = () => {
 					};
 					newElementRefList.push(movedElement);
 					setHovered(movedElement);
-				} else if (isMultiDrag && selected.includes(ref.refId)) {
+				} else if (isMultiDrag && selected.includes(ref.id)) {
 					newElementRefList.push({
 						...ref,
 						position: {

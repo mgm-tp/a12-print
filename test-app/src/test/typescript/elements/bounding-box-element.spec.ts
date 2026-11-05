@@ -36,6 +36,7 @@ import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-
 import {
 	closeDetail,
 	commitChanges,
+	testCopyElement,
 	dragAndDrop,
 	dragElementToEditor,
 	openEditorStage,
@@ -47,6 +48,7 @@ import {
 	setBorderWidth,
 	waitForInteractionSagasSettled,
 	writeToTextElement,
+	openWrapperStage,
 } from "../utils/index.js";
 
 devAppTest.use({ useCase: "003-automated-tests" });
@@ -74,8 +76,7 @@ test.describe("Bounding Box Element", () => {
 		});
 
 		await test.step("Open Wrapper Stage and Add Text Element", async () => {
-			await boundingBox.hover();
-			await page.getByRole("button", { name: "Edit", exact: true }).click();
+			await openWrapperStage({ page, element: boundingBox });
 
 			await dragElementToEditor({ page, elementName: "Text", isWrapperStage: true });
 			await expect(page).toHaveEditorStageErrors(2);
@@ -101,6 +102,10 @@ test.describe("Bounding Box Element", () => {
 
 		await test.step("Commit changes", async () => {
 			await commitChanges({ page });
+		});
+
+		await test.step("Copy Element", async () => {
+			await testCopyElement({ page, testId: "element-bounding-box" });
 		});
 	});
 });

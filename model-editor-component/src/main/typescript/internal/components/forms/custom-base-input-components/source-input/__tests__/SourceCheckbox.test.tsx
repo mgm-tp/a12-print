@@ -38,12 +38,14 @@ import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-
 
 import { renderWithProviders } from "../../../../../../../../test/typescript/test-utils/index.js";
 import { TEXT_PROPERTIES_PATH } from "../../../../../constant/element-property-path.js";
+import { FormContext } from "../../../FormContext.js";
 
 import { SourceCheckbox } from "../SourceCheckbox.js";
 
 describe("SourceCheckbox", () => {
 	const mockElement: PartialTable = {
 		id: "test-element-id",
+		name: "mockTable",
 		type: ElementType.Table,
 	};
 
@@ -225,6 +227,43 @@ describe("SourceCheckbox", () => {
 			// The Checkbox widget renders readonly as disabled on the <input> element
 			const checkbox = getByRole("checkbox");
 			expect(checkbox).toBeDisabled();
+		});
+	});
+
+	describe("readonly mode", () => {
+		it("disables checkbox when FormContext.isReadonly is true", () => {
+			const { getByRole } = renderWithProviders(
+				<FormContext.Provider value={{ isReadonly: true }}>
+					<SourceCheckbox
+						label="Bold"
+						checked={false}
+						onChange={mockOnChange}
+						sourceProperties={makeSourceProps({
+							inputSource: { id: "source-id", source: PossibleInputSource.INPUT, path: property },
+						})}
+					/>
+				</FormContext.Provider>
+			);
+
+			expect(getByRole("checkbox")).toBeDisabled();
+		});
+
+		it("disables source toggles when FormContext.isReadonly is true", () => {
+			const { getByTitle } = renderWithProviders(
+				<FormContext.Provider value={{ isReadonly: true }}>
+					<SourceCheckbox
+						label="Bold"
+						checked={false}
+						onChange={mockOnChange}
+						sourceProperties={makeSourceProps({
+							inputSource: { id: "source-id", source: PossibleInputSource.INPUT, path: property },
+						})}
+					/>
+				</FormContext.Provider>
+			);
+
+			expect(getByTitle("Enter User Input")).toBeDisabled();
+			expect(getByTitle("Default Value")).toBeDisabled();
 		});
 	});
 });

@@ -31,13 +31,13 @@
  */
 package com.mgmtp.a12.print.engine.runtime;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.api.PrintResult;
 import com.mgmtp.a12.print.engine.api.exception.PrintException;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 @OnlyForUsage
 public abstract class PrintEngine<Result extends PrintResult> implements com.mgmtp.a12.print.engine.api.PrintEngine<Result> {

@@ -38,10 +38,12 @@ import type {
 	AffectedItem,
 } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import type {
+	FragmentModelReference,
 	PartialArea,
 	PartialBoundingBox,
 	PartialOverride,
 	PartialSwitch,
+	PartialPrintModelContent,
 	PartialPrintModelContentGeneral,
 	PartialPrintModelHeader,
 	PartialSection,
@@ -55,6 +57,7 @@ import type {
 	PrintModelContentGeneral,
 	PrintModelHeader,
 	Section,
+	SectionFragmentReference,
 	Segment,
 	SegmentReference,
 	TextStyle,
@@ -83,8 +86,37 @@ export namespace TransactionLogStateActions {
 		factory<WithInteractionData<AddReferenceSegmentPayload>>("ADD_REFERENCE_SEGMENT");
 	export const addSection = factory<WithInteractionData<AddSectionPayload>>("ADD_SECTION");
 	export const addWatermark = factory<WithInteractionData<AddWatermarkPayload>>("ADD_WATERMARK");
+	export const addSectionReference =
+		factory<WithInteractionData<AddSectionReferencePayload>>("ADD_SECTION_REFERENCE");
+	export const removeSectionReference =
+		factory<WithInteractionData<RemoveSectionReferencePayload>>("REMOVE_SECTION_REFERENCE");
+	export const addWatermarkReference =
+		factory<WithInteractionData<AddWatermarkReferencePayload>>("ADD_WATERMARK_REFERENCE");
+	export const removeWatermarkReference =
+		factory<WithInteractionData<RemoveWatermarkReferencePayload>>("REMOVE_WATERMARK_REFERENCE");
 	export const addSegmentReference =
 		factory<WithInteractionData<AddSegmentReferencePayload>>("ADD_SEGMENT_REFERENCE");
+	export const addSegmentFragmentReference = factory<WithInteractionData<AddSegmentFragmentReferencePayload>>(
+		"ADD_SEGMENT_FRAGMENT_REFERENCE"
+	);
+	export const removeSegmentFragmentReference = factory<WithInteractionData<RemoveSegmentFragmentReferencePayload>>(
+		"REMOVE_SEGMENT_FRAGMENT_REFERENCE"
+	);
+	export const addTextStyleReference =
+		factory<WithInteractionData<AddTextStyleReferencePayload>>("ADD_TEXT_STYLE_REFERENCE");
+	export const removeTextStyleReference =
+		factory<WithInteractionData<RemoveTextStyleReferencePayload>>("REMOVE_TEXT_STYLE_REFERENCE");
+	export const unlinkSectionReference =
+		factory<WithInteractionData<UnlinkSectionReferencePayload>>("UNLINK_SECTION_REFERENCE");
+	export const unlinkSegmentFragmentReference = factory<WithInteractionData<UnlinkSegmentFragmentReferencePayload>>(
+		"UNLINK_SEGMENT_FRAGMENT_REFERENCE"
+	);
+	export const unlinkWatermarkReference =
+		factory<WithInteractionData<UnlinkWatermarkReferencePayload>>("UNLINK_WATERMARK_REFERENCE");
+	export const unlinkTextStyleReference =
+		factory<WithInteractionData<UnlinkTextStyleReferencePayload>>("UNLINK_TEXT_STYLE_REFERENCE");
+	export const unlinkElementReference =
+		factory<WithInteractionData<UnlinkElementReferencePayload>>("UNLINK_ELEMENT_REFERENCE");
 	export const addTextStyle = factory<WithInteractionData<AddTextStylePayload>>("ADD_TEXT_STYLE");
 	export const updatePrintHeader = factory<WithInteractionData<UpdatePrintHeaderPayload>>("UPDATE_PRINT_HEADER");
 	export const updatePrintContentGeneral =
@@ -105,10 +137,17 @@ export namespace TransactionLogStateActions {
 	export const updateArea = factory<WithInteractionData<PartialArea>>("UPDATE_PRINT_MODEL_AREA");
 	export const updateSwitch = factory<WithInteractionData<PartialSwitch>>("UPDATE_PRINT_MODEL_SWITCH");
 	export const duplicateSegment = factory<WithInteractionData<PartialSegment>>("DUPLICATE_SEGMENT");
+	export const duplicateSection = factory<WithInteractionData<PartialSection>>("DUPLICATE_SECTION");
+	export const duplicateWatermark = factory<WithInteractionData<PartialWatermark>>("DUPLICATE_WATERMARK");
+	export const duplicatePrintModelElement = factory<WithInteractionData<PartialAnyPrintModelElement>>(
+		"DUPLICATE_PRINT_MODEL_ELEMENT"
+	);
 	export const removeTextStyle = factory<WithInteractionData<RemoveEntryPayload>>("REMOVE_TEXT_STYLE");
 	export const removeSegment = factory<WithInteractionData<RemoveEntryPayload>>("REMOVE_SEGMENT");
 	export const removeSection = factory<WithInteractionData<RemoveEntryPayload>>("REMOVE_SECTION");
 	export const removeWatermark = factory<WithInteractionData<RemoveEntryPayload>>("REMOVE_WATERMARK");
+	export const removeFragmentModelElement =
+		factory<WithInteractionData<RemoveEntryPayload>>("REMOVE_PRINT_MODEL_ELEMENT");
 	export const copyPrintModelElements =
 		factory<WithInteractionData<CopyPrintModelElementsPayload>>("COPY_PRINT_MODEL_ELEMENTS");
 	export const updateReferenceContainer =
@@ -141,9 +180,34 @@ export namespace TransactionLogStateActions {
 		dinTemplateSegmentItem: DinTemplateSegmentItem;
 	};
 	export type AddSegmentReferencePayload = SegmentReference | PartialSegmentReference;
+	export type AddSegmentFragmentReferencePayload = FragmentModelReference;
+	export interface RemoveSegmentFragmentReferencePayload {
+		id: string;
+	}
 	export type AddSectionPayload = Section | PartialSection;
 	export type AddWatermarkPayload = Watermark | PartialWatermark;
+	export type AddSectionReferencePayload = SectionFragmentReference;
+	export interface RemoveSectionReferencePayload {
+		id: string;
+	}
+	export type AddWatermarkReferencePayload = FragmentModelReference;
+	export interface RemoveWatermarkReferencePayload {
+		id: string;
+	}
+	export type AddTextStyleReferencePayload = FragmentModelReference;
+	export interface RemoveTextStyleReferencePayload {
+		id: string;
+	}
 	export type AddTextStylePayload = TextStyle | PartialTextStyle;
+	export interface UnlinkReferencePayloadBase {
+		referenceId: string;
+		fragmentContent: PartialPrintModelContent;
+	}
+	export type UnlinkSectionReferencePayload = UnlinkReferencePayloadBase;
+	export type UnlinkSegmentFragmentReferencePayload = UnlinkReferencePayloadBase;
+	export type UnlinkWatermarkReferencePayload = UnlinkReferencePayloadBase;
+	export type UnlinkTextStyleReferencePayload = UnlinkReferencePayloadBase;
+	export type UnlinkElementReferencePayload = UnlinkReferencePayloadBase;
 	export type UpdatePrintHeaderPayload = PrintModelHeader | PartialPrintModelHeader;
 	export type UpdatePrintContentGeneralPayload = PrintModelContentGeneral | PartialPrintModelContentGeneral;
 	export type UpdateSegmentPayload = Segment | PartialSegment;

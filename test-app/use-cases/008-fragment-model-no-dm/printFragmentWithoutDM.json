@@ -1,0 +1,263 @@
+{
+  "header": {
+    "id": "printFragmentWithoutDM",
+    "modelType": "print",
+    "modelVersion": "4.1.0",
+    "description": "Description",
+    "annotations": [
+      {
+        "name": "modelSubType",
+        "value": "fragment"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "4.1.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "4.1.0-rc.1"
+      }
+    ],
+    "labels": [],
+    "locales": [],
+    "modelReferences": []
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "emptyMetaData",
+        "titleComputation": [],
+        "descriptionComputation": [],
+        "authorComputation": [],
+        "languageComputation": []
+      },
+      "segmentDefaults": {
+        "id": "GuXCsLchEFNNTDEQVimgl",
+        "fontSize": 12
+      },
+      "structure": [],
+      "sections": [
+        {
+          "id": "5b3bw5vVr5m4RtTYAecej"
+        }
+      ],
+      "watermarks": [
+        {
+          "id": "WBbcwJ1F_Vmwy9zLyNgiM"
+        }
+      ],
+      "runtimeVariables": [],
+      "textStyles": []
+    },
+    "segments": {
+      "id": "zAu4sPNTA5y7YJoHfDynt",
+      "definitions": [],
+      "references": [],
+      "fragmentReferences": []
+    },
+    "sections": {
+      "id": "y2YWn8uP0iWyN_6ELNNF0",
+      "definitions": [
+        {
+          "id": "5b3bw5vVr5m4RtTYAecej",
+          "pageOrientation": "Portrait",
+          "sectionUsage": "First",
+          "title": "WithoutDM",
+          "footerHeight": {
+            "id": "uukrjJz3-8hrkHMIfpI8B",
+            "value": 20,
+            "unit": "Millimeter"
+          },
+          "headerHeight": {
+            "id": "1mTm2xfF0fwYrMQT3_ufc",
+            "value": 20,
+            "unit": "Millimeter"
+          },
+          "elementReferences": [
+            {
+              "id": "Omi9IGrFkBQ3G9UUB8pRg",
+              "refId": "em5ZilTHck9IS65_So3QA",
+              "position": {
+                "id": "u82S9arjcUJ0Yy4rElD2x",
+                "x": {
+                  "id": "G-sAfC6WozU4ZGEAfythG",
+                  "value": 75,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "bhZu6sL32-9DzZlFTq2hI",
+                  "value": 4,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "YXlmxdMPT2J5eSqOFUWg3",
+                "minHeight": {
+                  "id": "0CofU0kLJW9yxYb0RZMFU",
+                  "value": 12,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "gSmaZjvsAoiSyRc1NTmXn",
+                  "value": 71,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "id": "2ZWH-Hg_TooGT4TTLjZJE",
+                "screenReadingOrderWeight": 0
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "KAI2XPBPrvBDl_hsxSHKS",
+                "path": "/content/sections/definitions/elementReferences/pageBreakBehavior/value/",
+                "source": "DEFAULT"
+              }
+            }
+          ]
+        }
+      ],
+      "references": []
+    },
+    "watermarks": {
+      "id": "AGGePi--ZQqxGJ9WAufso",
+      "definitions": [
+        {
+          "id": "WBbcwJ1F_Vmwy9zLyNgiM",
+          "title": "WithoutDM",
+          "pageOrientation": "Portrait",
+          "conditions": [],
+          "elementReferences": [
+            {
+              "id": "aUhTXHW4v3_K6OMfwVH7p",
+              "refId": "SmlnVDhdGUQIvvI_s-v3u",
+              "position": {
+                "id": "6tesFxp4rAgkuA-mf2oEg",
+                "x": {
+                  "id": "aoWCChogxEpWn2nCD9EVh",
+                  "value": 76,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "YoCW4x-0bJ-UvnX8i32oa",
+                  "value": 18,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "Mq-zraU-EZhilI7-4QcEI",
+                "minHeight": {
+                  "id": "LDg3yghd_GSVg15hoh6u7",
+                  "value": 12,
+                  "unit": "Millimeter"
+                },
+                "minWidth": {
+                  "id": "rkOUjBOxdm9CGEgNK4jKh",
+                  "value": 71,
+                  "unit": "Millimeter"
+                }
+              },
+              "screenReadingOrder": {
+                "screenReadingOrderWeight": 0,
+                "id": "k_sDPA-cQTle0kKquA4O4"
+              },
+              "hideConditions": [],
+              "pageBreakBehavior": {
+                "id": "V587zlfQxBjmmRwzXrJpr",
+                "path": "/content/watermarks/definitions/elementReferences/pageBreakBehavior/value/",
+                "source": "DEFAULT"
+              }
+            }
+          ]
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "SmlnVDhdGUQIvvI_s-v3u",
+        "type": "Text",
+        "name": "Text_97cff",
+        "text": {
+          "id": "r49oyunWiJd4hopRrdb07",
+          "text": "<p><span style=\"\"><strong>This Watermark was made without referencing a Document Model.</strong></span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "HPBvbQppLH_UEsXe4sxPf",
+          "textStyleId": {
+            "id": "vyAQgv_kqVBquACeIvWNy",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "DEFAULT"
+          },
+          "alignment": {
+            "id": "R6A24hkSH572ONKFcJELX",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "41SWmroijbHJZEPbGFN-B",
+          "borderStyle": {
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
+            "source": "UNSET",
+            "id": "5bpzoYfV5cmAMXUhox93l"
+          },
+          "borderWidth": {
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/",
+            "source": "DEFAULT",
+            "id": "VW2wlr_DEj0q3I7UXTyXo"
+          },
+          "borderColor": {
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/",
+            "source": "DEFAULT",
+            "id": "lLi-MSbifyAYxR_5VyYx-"
+          }
+        }
+      },
+      {
+        "id": "em5ZilTHck9IS65_So3QA",
+        "type": "Text",
+        "name": "Text_97cff",
+        "text": {
+          "id": "PSsM08P-yhS-NogcQGoOf",
+          "text": "<p><span style=\"\"><strong>This Section was made without referencing a Document Model.</strong></span></p>",
+          "entities": []
+        },
+        "textProperties": {
+          "id": "aJSKf3AXzvp3ULJAxVjr4",
+          "textStyleId": {
+            "id": "vyAQgv_kqVBquACeIvWNy",
+            "path": "/content/elementDefinitions/textProperties/textStyleId/value/",
+            "source": "DEFAULT"
+          },
+          "alignment": {
+            "id": "eKHm3FW2Ss5xHCG7OSdcc",
+            "path": "/content/elementDefinitions/textProperties/alignment/value/",
+            "source": "DEFAULT"
+          }
+        },
+        "borderProperties": {
+          "id": "hVTA2BX_dpumIa_mlaifM",
+          "borderStyle": {
+            "id": "lhnGfvFFPE7x9bI_r3kgg",
+            "source": "UNSET",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          },
+          "borderWidth": {
+            "id": "zDpUj6vftuHYW2Ih4ciZg",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "u4WStmbv752pFd5pg_-5J",
+            "source": "DEFAULT",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          }
+        }
+      }
+    ]
+  }
+}

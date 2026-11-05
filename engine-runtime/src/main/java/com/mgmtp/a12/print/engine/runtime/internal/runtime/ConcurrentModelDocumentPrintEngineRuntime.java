@@ -97,10 +97,10 @@ import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
 import com.mgmtp.a12.print.model.api.model.reference.PrintModelReference;
-import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 import com.mgmtp.a12.print.model.api.model.segment.ModelSegment;
 import com.mgmtp.a12.print.model.api.model.textStyle.TextStyle;
 import com.mgmtp.a12.print.model.api.model.watermark.Watermark;
+import com.mgmtp.a12.print.model.api.walker.model.resolver.SectionWithUsage;
 import com.mgmtp.a12.print.model.document.internal.base.IPrintElement;
 import lombok.NonNull;
 import org.jsoup.nodes.Element;
@@ -251,7 +251,7 @@ public class ConcurrentModelDocumentPrintEngineRuntime extends ConcurrentPrintEn
 	}
 
 	@Override
-	public ValueFactory<Optional<PrintModelTreeTrace<ModelSection>>> provide(SectionDependency dependency) {
+	public ValueFactory<Optional<SectionWithUsage>> provide(SectionDependency dependency) {
 		return awaitTask(() -> delegate.provide(dependency));
 	}
 
@@ -364,7 +364,7 @@ public class ConcurrentModelDocumentPrintEngineRuntime extends ConcurrentPrintEn
 	}
 
 	@Override
-	public Stream<Optional<PrintModelTreeTrace<ModelSection>>> streamSectionDependency(Stream<SectionDependency> dependency) {
+	public Stream<Optional<SectionWithUsage>> streamSectionDependency(Stream<SectionDependency> dependency) {
 		try {
 			return super.getExecutorService().submit(() -> delegate.streamSectionDependency(dependency.parallel())).get();
 		} catch (PrintException e) {

@@ -61,12 +61,17 @@ export namespace ValidationCounter {
 		errorMap?: DeepPartialErrorMap<unknown> | DeepPartialErrorMap<unknown>[],
 		counterGetter: (error: DeepPartialErrorMap<unknown>) => ValidationCounter = defaultCounterGetter
 	): ValidationCounter => {
+		// Always return a fresh object (never the shared EMPTY_VALIDATION_COUNTER reference),
+		// so callers that mutate the result cannot pollute the shared singleton.
 		if (!errorMap) {
-			return EMPTY_VALIDATION_COUNTER;
+			return { error: 0, warning: 0 };
 		}
 
 		return Array.isArray(errorMap)
-			? errorMap.reduce((result, currentErrorMap) => add(result, from(currentErrorMap)), EMPTY_VALIDATION_COUNTER)
+			? errorMap.reduce((result, currentErrorMap) => add(result, from(currentErrorMap)), {
+					error: 0,
+					warning: 0,
+				})
 			: counterGetter(errorMap);
 	};
 }

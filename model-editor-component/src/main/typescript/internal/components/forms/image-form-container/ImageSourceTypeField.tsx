@@ -49,6 +49,7 @@ import { AllowedElementType, DataContextSelection } from "../shared-components/i
 import { DocumentModelSelect } from "../shared-components/DocumentModelSelect.js";
 import type { ElementWithoutIdAndType } from "../type.js";
 import { CustomTextField } from "../custom-base-input-components/index.js";
+import { useFormReadonly } from "../FormContext.js";
 
 interface ImageSourceTypeFieldProps {
 	element: PartialImage;
@@ -58,6 +59,7 @@ export const ImageSourceTypeField = ({ element }: ImageSourceTypeFieldProps) => 
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const wrapperDataContext = useSelector(PrintEngineSelectors.wrapperDataContext);
+	const isFormReadonly = useFormReadonly();
 
 	const image = element.image;
 	const model = image?.fieldSource?.model;
@@ -125,6 +127,7 @@ export const ImageSourceTypeField = ({ element }: ImageSourceTypeFieldProps) => 
 				value={model}
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getFieldSourceErrorMessage("model")}
+				disabled={isFormReadonly}
 			/>
 			<CustomTextField
 				readonly
@@ -137,6 +140,7 @@ export const ImageSourceTypeField = ({ element }: ImageSourceTypeFieldProps) => 
 				elementMapEntries={processedElementMap}
 				selectedPath={selectedPath}
 				setSelectedPath={setSelectedPath}
+				disabled={isFormReadonly}
 				maxRepeatLevel={0}
 			/>
 		</>

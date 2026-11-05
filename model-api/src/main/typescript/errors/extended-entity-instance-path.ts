@@ -65,11 +65,16 @@ export class ExtendedEntityInstancePathBuilder {
 
 	private segments: ExtendedEntityInstancePath;
 
+	private frozen = false;
+
 	constructor(initial?: ExtendedEntityInstancePath) {
 		this.segments = initial ? [...initial] : [];
 	}
 
 	public with(elementName: string, index?: number): ExtendedEntityInstancePathBuilder {
+		if (this.frozen) {
+			return this;
+		}
 		return new ExtendedEntityInstancePathBuilder([
 			...this.segments,
 			ExtendedEntityInstancePathBuilder.createPathElement(elementName, index),
@@ -77,8 +82,25 @@ export class ExtendedEntityInstancePathBuilder {
 	}
 
 	public append(elementName: string, index?: number): this {
+		if (this.frozen) {
+			return this;
+		}
 		this.segments.push(ExtendedEntityInstancePathBuilder.createPathElement(elementName, index));
 		return this;
+	}
+
+	/**
+	 * A copy that ignores any further {@link with} and {@link append}. Used where a path may not go any deeper because
+	 * what follows lives in another print model, so everything below it is reported at this path.
+	 */
+	public freeze(): ExtendedEntityInstancePathBuilder {
+		const frozen = new ExtendedEntityInstancePathBuilder(this.toArray());
+		frozen.frozen = true;
+		return frozen;
+	}
+
+	public isFrozen(): boolean {
+		return this.frozen;
 	}
 
 	public toArray(): ExtendedEntityInstancePath {

@@ -32,6 +32,7 @@
 import type { ReactNode } from "react";
 
 export interface BaseTextStylePropertyProps {
-	isDefaultTextStyle?: boolean;
+	isReadonly?: boolean;
 	errorMessage?: ReactNode;
+	warningMessage?: ReactNode;
 }

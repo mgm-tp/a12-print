@@ -38,12 +38,14 @@ import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-
 
 import { renderWithProviders } from "../../../../../../../../test/typescript/test-utils/index.js";
 import { TEXT_PROPERTIES_PATH } from "../../../../../constant/element-property-path.js";
+import { FormContext } from "../../../FormContext.js";
 
 import { SourceColorPicker } from "../SourceColorPicker.js";
 
 describe("SourceColorPicker", () => {
 	const mockElement: PartialTable = {
 		id: "test-element-id",
+		name: "mockTable",
 		type: ElementType.Table,
 	};
 
@@ -258,6 +260,43 @@ describe("SourceColorPicker", () => {
 			fireEvent.blur(colorInput);
 
 			expect(mockOnColorChange).not.toHaveBeenCalled();
+		});
+	});
+
+	describe("readonly mode", () => {
+		it("disables color input when FormContext.isReadonly is true", () => {
+			const { container } = renderWithProviders(
+				<FormContext.Provider value={{ isReadonly: true }}>
+					<SourceColorPicker
+						label="Color"
+						value="#ff0000"
+						onColorChange={mockOnColorChange}
+						sourceProperties={makeSourceProps({
+							inputSource: { id: "source-id", source: PossibleInputSource.INPUT, path: property },
+						})}
+					/>
+				</FormContext.Provider>
+			);
+
+			expect(container.querySelector<HTMLInputElement>("input[type='color']")).toBeDisabled();
+		});
+
+		it("disables source toggles when FormContext.isReadonly is true", () => {
+			const { getByTitle } = renderWithProviders(
+				<FormContext.Provider value={{ isReadonly: true }}>
+					<SourceColorPicker
+						label="Color"
+						value="#ff0000"
+						onColorChange={mockOnColorChange}
+						sourceProperties={makeSourceProps({
+							inputSource: { id: "source-id", source: PossibleInputSource.INPUT, path: property },
+						})}
+					/>
+				</FormContext.Provider>
+			);
+
+			expect(getByTitle("Enter User Input")).toBeDisabled();
+			expect(getByTitle("Default Value")).toBeDisabled();
 		});
 	});
 });

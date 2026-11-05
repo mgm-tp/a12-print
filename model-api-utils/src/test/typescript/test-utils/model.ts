@@ -231,6 +231,7 @@ export const segments: ReadonlyArray<Segment> = [segment1, segment2];
 export const field: Field = {
 	id: "Z41gKWNeSEqk0zmQkueXh",
 	type: ElementType.Field,
+	name: "fieldName123",
 	field: {
 		id: "fk530ghk530h",
 		model: "DomainPerson",
@@ -241,6 +242,7 @@ export const field: Field = {
 export const textWithField: Text = {
 	id: "textWithField123",
 	type: ElementType.Text,
+	name: "textWithFieldName123",
 	text: {
 		id: "gk530hk530kh35",
 		text: `<p>Have a nice day, <span entity-id="Z41gKWNeSEqk0zmQkueXh" entity-type="field">DomainPerson/general/name</span>.</p>`,
@@ -256,6 +258,7 @@ export const textWithField: Text = {
 export const textWithoutRefs: Text = {
 	id: "textWithoutRefs123",
 	type: ElementType.Text,
+	name: "textWithoutRefsName123",
 	text: {
 		id: "pwdlq0w3dk201",
 		text: "Hello World. This is just a plain text element.",
@@ -266,6 +269,7 @@ export const textWithoutRefs: Text = {
 export const tableLayout: TableLayout = {
 	id: "someTableLayoutId123",
 	type: ElementType.TableLayout,
+	name: "tableLayoutName123",
 	tableLayout: {
 		id: "kb0tkn0tp,n64",
 		columnCount: 2,
@@ -284,6 +288,7 @@ export const tableLayout: TableLayout = {
 export const table: Table = {
 	id: "someTableId123",
 	type: ElementType.Table,
+	name: "tableName123",
 	table: {
 		id: "lkbg5ß0l4j6ß04jl64",
 		model: "DomainPerson",
@@ -333,6 +338,7 @@ export const table: Table = {
 export const pieChart: PieChart = {
 	id: "somePieChart123",
 	type: ElementType.PieChart,
+	name: "pieChartName123",
 	pieChart: {
 		id: "kbg05g3kh503h",
 		model: "DomainPerson",
@@ -353,6 +359,7 @@ export const pieChart: PieChart = {
 export const area: Area = {
 	id: "someArea123",
 	type: ElementType.Area,
+	name: "areaName123",
 	area: {
 		id: "kbg05g3k203h",
 		dimensions: {
@@ -388,6 +395,7 @@ export const area: Area = {
 export const boundingBox: BoundingBox = {
 	id: "someArea123",
 	type: ElementType.BoundingBox,
+	name: "boundingBoxName123",
 	boundingBox: {
 		id: "kbg05g3k203h",
 		dimensions: {
@@ -422,6 +430,7 @@ export const boundingBox: BoundingBox = {
 export const override: Override = {
 	id: "someArea123",
 	type: ElementType.Override,
+	name: "overrideName123",
 	override: {
 		id: "kbg05g3k203h",
 		refId: "referenceId",

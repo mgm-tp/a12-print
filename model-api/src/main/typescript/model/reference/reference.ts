@@ -39,12 +39,30 @@ import type {
 	RelativeLayout,
 	SwitchCase,
 } from "../elements/index.js";
+import type { SectionUsage } from "../print-model.js";
 
 /**
  * @param refId - The id of a referenced print model element.
  */
 export interface Reference extends PrintModelEntity {
 	readonly refId: string;
+	readonly model?: string;
+}
+
+/**
+ * @param model - The id of a referenced fragment model.
+ */
+export interface FragmentModelReference extends PrintModelEntity, Reference {
+	readonly model: string;
+}
+
+/**
+ * @param sectionUsage - Assigns the referenced fragment section a usage role for this print
+ * model, independent of the `sectionUsage` on the fragment's own section definition (a fragment
+ * section is reusable content and may not carry a fixed usage of its own).
+ */
+export interface SectionFragmentReference extends FragmentModelReference {
+	readonly sectionUsage: SectionUsage;
 }
 
 export interface PlaceableReference extends Reference, Placeable, Hideable, RelativeLayout, ScreenReadingOrderable {}
@@ -58,6 +76,10 @@ export type SwitchCaseReference = Reference & SwitchCase;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isReference(value: any): value is Reference {
 	return "refId" in value && typeof value.refId === "string";
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isFragmentModelReference(value: any): value is FragmentModelReference {
+	return value && isReference(value) && "model" in value && typeof value.model === "string";
 }
 
 export function isPlaceableReference(reference: Reference): reference is PlaceableReference {

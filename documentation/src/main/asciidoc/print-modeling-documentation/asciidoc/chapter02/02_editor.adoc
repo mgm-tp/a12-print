@@ -89,7 +89,10 @@ Each Print Model Element is edited with a dedicated Detail Editor as described i
 
 image::chapter02/02_add_element_toolbar.png[Add element library,title="Add element library"]
 
-New Elements can be added by clicking on the "Element Library" in the top-left of the Editor Stage and dragging and dropping the desired Element onto the Editor Stage whilst in "Default" mode.
+New Elements can be added by clicking on the "Element Library" button at the right-hand end of the Editor Stage toolbar and dragging and dropping the desired Element from the Element Library panel onto the Editor Stage whilst in "Default" mode.
+The panel opens on the right-hand side of the Editor Stage and lists the available Elements in the "Elements" section.
+The individual Elements and their settings are described in <<PrintModelElement, Editors for Model Elements>>.
+If the Print Model references <<FragmentModels, Fragment Models>> that contain Element Fragments, these are offered in an additional "Element Fragment Library" section, as described in <<UsingFragments, Using the Fragments>>.
 
 Existing elements can be moved and resized by drag and drop.
 Alternatively, the position or size may be precisely defined using the following settings in the Element Stage header:
@@ -239,6 +242,14 @@ This change will create updates that need to be committed.
 
 Typesetting Model References:: The list of referenced Typesetting Models will be used for the Text Styles. Typesetting Models can be created using the <<Typesetting,Typesetting Model Editor>>.
 
+Fragment Model References:: The list of referenced <<FragmentModels, Print Fragment Models>>.
+The Fragments defined in these models can be reused in this Print Model, as described in <<FragmentReferencing, Referencing Fragments in a Print Model>>.
+
+CAUTION: A Fragment Model can currently only be referenced if it uses the same Document Model as this Print Model.
+
+CAUTION: A Print Model can reference either <<FragmentModels, Print Fragment Models>> or a <<PrintModelTemplates, Print Model Template>>, but not both at the same time.
+As soon as one of the two is referenced, the other list is disabled in the Schema Tab.
+
 image::chapter02/02_schema_tab.png[Schema tab,title="Schema tab"]
 
 == Text Styles Tab [[TextStylesTab]]
@@ -255,6 +266,10 @@ This Text Style can be edited using the modeling settings described below.
 image::chapter02/02_text_styles_tab.png[Text Styles tab,title="Text Styles tab"]
 
 Click "Add New Text Style" in the bottom right-hand corner to add a new Text Style.
+
+Text Styles defined in a <<FragmentModels, Print Fragment Model>> can be referenced in addition to the Text Styles of this Print Model. See <<FragmentReferencing, Referencing Fragments in a Print Model>>.
+
+image::chapter02/02_fragment_textstyles.png[Text Style Fragments,title="Referenced Text Style Fragments"]
 
 === Text Style Settings
 General configuration options for Text Styles:
@@ -381,6 +396,9 @@ Template Segment (optional):: A <<PrintModelTemplates, Template>> from one of th
 
 Once a Name and Orientation have been given the "Add" button must be clicked to add the new Segment to the list of Segments.
 
+Instead of modeling a Segment locally, a Segment Fragment defined in a <<FragmentModels, Print Fragment Model>> can be referenced.
+See <<FragmentReferencing, Referencing Fragments in a Print Model>>.
+
 image::chapter02/02_segment_tab.png[Segment tab,title="Segment tab"]
 
 === Print Model References (Templates) [[PrintModelTemplates]]
@@ -447,6 +465,10 @@ Delete:: Delete the selected Section.
 Clicking on the Section in the List will also cause the <<StageMode, Editor Stage>> to open.
 ====
 
+Instead of modeling a Section locally, a Section Fragment defined in a <<FragmentModels, Print Fragment Model>> can be referenced in a slot.
+Only Section Fragments with a matching _Page Orientation_ are offered for a slot.
+See <<FragmentReferencing, Referencing Fragments in a Print Model>>.
+
 image::chapter02/02_section_tab.png[Section tab,title="Section tab"]
 
 == Watermark Tab [[WatermarkTab]]
@@ -467,6 +489,10 @@ Open Editor:: Open the <<StageMode, Editor Stage>> to edit the Watermark's conte
 Delete:: Delete the selected Watermark.
 
 NOTE: The attachments of <<Listing, Listing Element>> are not added to the end of the document when used inside a Watermark.
+
+Instead of modeling a Watermark locally, a Watermark Fragment defined in a <<FragmentModels, Print Fragment Model>> can be referenced in a slot.
+Only Watermark Fragments with a matching _Page Orientation_ are offered for a slot.
+See <<FragmentReferencing, Referencing Fragments in a Print Model>>.
 
 image::chapter02/02_watermark_tab.png[Watermark tab,title="Watermark tab"]
 
@@ -522,7 +548,7 @@ You can create Test Documents in several ways:
 Please refer to the Document or Form Modeling Documentation for more details.
 ====
 
-== Validation
+== Validation [[Validation]]
 
 The Print Model is automatically validated after every user interaction to ensure consistency and correctness.
 This includes two layers of validation:

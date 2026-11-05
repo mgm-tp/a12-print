@@ -54,6 +54,8 @@ import type {
 import { TransactionLog } from "../../../../../main/typescript/a12internal/transaction-log/transaction-log.js";
 import { IGLabels, InteractionGraph } from "../../../a12internal/transaction-log/interaction-graph.js";
 
+const { name: _calculationElementName, ...calculationElementWithoutName } = calculationElement;
+
 function makeSegmentRefEntry(
 	interactionId: string,
 	segId: string,
@@ -101,7 +103,7 @@ describe("Interaction graph", () => {
 	it("should add printModelElement", () => {
 		const storeEntry = TransactionLog.createStoreEntryPrintModelElement(
 			{},
-			{ ...calculationElement, calculation: undefined },
+			{ ...calculationElementWithoutName, calculation: undefined },
 			"AAAA"
 		);
 		graph.addTransactions(storeEntry.persistentEntries);
@@ -167,7 +169,7 @@ describe("Interaction graph", () => {
 		segmentMap.map[segmentMockId] = entrySegment.storeEntry;
 		const entryElement = TransactionLog.createStoreEntryPrintModelElement(
 			{},
-			{ ...calculationElement, calculation: undefined },
+			{ ...calculationElementWithoutName, calculation: undefined },
 			"BBBB"
 		);
 		graph.addTransactions(entrySegment.persistentEntries);
@@ -241,7 +243,7 @@ describe("Interaction graph", () => {
 				],
 				references: [],
 			},
-			elementDefinitions: [{ id: "elem1", type: ElementType.Text }],
+			elementDefinitions: [{ id: "elem1", type: ElementType.Text, name: "elem1" }],
 		},
 	};
 
@@ -316,7 +318,7 @@ describe("Interaction graph", () => {
 			// First add some transactions
 			const storeEntry = TransactionLog.createStoreEntryPrintModelElement(
 				{},
-				{ ...calculationElement, calculation: undefined },
+				{ ...calculationElementWithoutName, calculation: undefined },
 				"AAAA"
 			);
 			graph.addTransactions(storeEntry.persistentEntries);
@@ -366,7 +368,7 @@ describe("Interaction graph", () => {
 			// Create an element first
 			const storeEntry = TransactionLog.createStoreEntryPrintModelElement(
 				{},
-				{ ...calculationElement, calculation: undefined },
+				{ ...calculationElementWithoutName, calculation: undefined },
 				"AAAA"
 			);
 			graph.addTransactions(storeEntry.persistentEntries);
@@ -564,7 +566,7 @@ describe("Interaction graph", () => {
 			// AAAA creates the element, BBBB depends on it
 			const storeEntry = TransactionLog.createStoreEntryPrintModelElement(
 				{},
-				{ ...calculationElement, calculation: undefined },
+				{ ...calculationElementWithoutName, calculation: undefined },
 				"AAAA"
 			);
 			graph.addTransactions(storeEntry.persistentEntries);
@@ -619,7 +621,7 @@ describe("Interaction graph", () => {
 		it("should return dependencies via requires and isRequiredBy", () => {
 			const storeEntry = TransactionLog.createStoreEntryPrintModelElement(
 				{},
-				{ ...calculationElement, calculation: undefined },
+				{ ...calculationElementWithoutName, calculation: undefined },
 				"PTC_AAAA"
 			);
 			graph.addTransactions(storeEntry.persistentEntries);
@@ -674,7 +676,7 @@ describe("Interaction graph", () => {
 			// Create element
 			const storeEntry = TransactionLog.createStoreEntryPrintModelElement(
 				{},
-				{ ...calculationElement, calculation: undefined },
+				{ ...calculationElementWithoutName, calculation: undefined },
 				"UNDO_AAAA"
 			);
 			graph.addTransactions(storeEntry.persistentEntries);

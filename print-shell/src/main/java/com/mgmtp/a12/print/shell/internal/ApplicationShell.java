@@ -36,6 +36,7 @@ import com.mgmtp.a12.print.engine.api.exception.PrintException;
 import com.mgmtp.a12.print.engine.runtime.ExecutorServiceFactory;
 import com.mgmtp.a12.print.engine.runtime.PrintJobManager;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
+import com.mgmtp.a12.print.model.api.model.ModelSubTypeAccessor;
 import com.mgmtp.a12.print.shell.internal.commands.*;
 import com.mgmtp.a12.print.shell.internal.commands.jmh.JmhCommand;
 import com.mgmtp.a12.print.shell.internal.service.PdfComparisonService;
@@ -92,8 +93,13 @@ public class ApplicationShell {
 			}
 
 			@Override
+			public String loadPrintFragmentModel(String id) {
+				return findPrintFragmentModelContent(id); // <2>
+			}
+
+			@Override
 			public IDocumentModel loadDocumentModel(String id) {
-				return findDocumentModelById(id); // <2>
+				return findDocumentModelById(id); // <3>
 			}
 		};
 		// end::PrintJobManagerApi[]
@@ -155,6 +161,17 @@ public class ApplicationShell {
 			.findFirst()
 			.map(workspaceHandler::getFileElementContent)
 			.orElseThrow(() -> new PrintException(String.format("Unable to locate PrintModel %s", id)));
+	}
+
+	private static String findPrintFragmentModelContent(String id) {
+		return workspaceHandler
+			.getModelFileElementsByType(Constants.PRINT_MODEL_TYPE).stream()
+			.filter(e ->
+				e.getModelHeader().getId().equals(id) && ModelSubTypeAccessor.isFragmentModel(e.getModelHeader())
+			)
+			.findFirst()
+			.map(workspaceHandler::getFileElementContent)
+			.orElseThrow(() -> new PrintException(String.format("Unable to locate PrintFragmentModel %s", id)));
 	}
 
 	private static IDocumentModel findDocumentModelById(String id) {

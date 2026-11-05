@@ -31,55 +31,74 @@
  */
 package com.mgmtp.a12.print.model.api.walker.model.resolver;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+import com.mgmtp.a12.print.model.api.model.PrintFragmentModel;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
-import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
-import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 import com.mgmtp.a12.print.model.api.model.segment.ModelSegment;
-import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Resolves {@link ModelSegment} IDs from a given list of {@link ModelSegment}s.
  */
 @OnlyForUsage
 public class SegmentIdListResolver implements SegmentIdResolver {
-		private final List<PrintModelTreeTrace<ModelSegment>> segmentList;
+		private final Map<String, PrintModelTreeTrace<ModelSegment>> segmentMap;
 
+		/**
+		 * @deprecated Use {@link #SegmentIdListResolver(Map)} instead. This constructor will be removed in the next major release.
+		 */
+		@Deprecated(since = "4.1.0", forRemoval = true)
 		public SegmentIdListResolver(List<PrintModelTreeTrace<ModelSegment>> segmentList) {
-			this.segmentList = segmentList;
+			this.segmentMap = segmentList.stream()
+				.collect(Collectors.toMap(seg -> seg.getTracedElement().getId(), Function.identity()));
+		}
+
+		public SegmentIdListResolver(Map<String, PrintModelTreeTrace<ModelSegment>> segmentMap) {
+			this.segmentMap = segmentMap;
 		}
 
 		/**
 		 * Creates a new {@link SegmentIdListResolver} from the {@link PrintModel}s {@link ModelSegment} list.
+		 * @deprecated Use {@link #fromModel(PrintModel, PrintFragmentModelResolver)} instead. This overload will be removed in the next major release.
 		 */
+		@Deprecated(since = "4.1.0", forRemoval = true)
 		public static SegmentIdListResolver fromModel(PrintModel printModel) {
+			return new SegmentIdListResolver(getSegmentsOfPrintModel(printModel));
+		}
 
-			var path = PrintModelPath
-				.create(printModel)
-				.with(printModel.getContent(), 0)
-				.with(new PrintModelPathElement.ObjectProperty("segments"),0);
-			var segments = new ArrayList<PrintModelTreeTrace<ModelSegment>>();
-			var i = 0;
-			for (var e : printModel.getContent().getSegments().getDefinitions()) {
-				segments.add(new PrintModelTreeTrace<>(
-					path.with(new PrintModelPathElement.ObjectProperty("definitions"), i),
-					e
-				));
-				i++;
-			}
-			return new SegmentIdListResolver(segments);
+		/**
+		 * Creates a new {@link SegmentIdListResolver} from the {@link PrintModel}s + {@link PrintFragmentModel}s {@link ModelSegment} list.
+		 */
+		public static SegmentIdListResolver fromModel(
+			PrintModel printModel,
+			PrintFragmentModelResolver printFragmentModelResolver
+		) {
+			return new SegmentIdListResolver(FragmentModelDefinitionResolver.resolveWithFragmentModels(
+				getSegmentsOfPrintModel(printModel),
+				printModel.getContent().getSegments().getFragmentReferences(),
+				SegmentIdListResolver::getSegmentsOfPrintModel,
+				printFragmentModelResolver,
+				"Segment"
+			));
+		}
+
+		private static Map<String, PrintModelTreeTrace<ModelSegment>> getSegmentsOfPrintModel(PrintModel printModel) {
+			return FragmentModelDefinitionResolver.loadDefinitions(
+				printModel,
+				"segments",
+				printModel.getContent().getSegments()
+			);
 		}
 
 		@Override
 		public Optional<PrintModelTreeTrace<ModelSegment>> resolveSegmentId(String id) {
-			return segmentList.stream().filter(
-				segment -> segment.getTracedElement().getId().equals(id)
-			).findFirst();
+			return Optional.ofNullable(segmentMap.get(id));
 		}
 
 }

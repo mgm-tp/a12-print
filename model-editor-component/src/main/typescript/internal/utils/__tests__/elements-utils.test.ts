@@ -32,6 +32,8 @@
 import { nanoid } from "nanoid";
 
 import type {
+	FragmentDimensions,
+	Measure,
 	PartialAnyPrintModelElement,
 	PartialImage,
 	PartialLine,
@@ -66,9 +68,11 @@ import { TEXT_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 import {
 	DEFAULT_CHART_HEIGHT,
 	DEFAULT_ELEMENT_CONTAINER_HEIGHT,
+	DEFAULT_ELEMENT_HEIGHT,
 	DEFAULT_ELEMENT_WIDTH,
 	ElementsUtils,
 } from "../elements-utils.js";
+import { createMmMeasure } from "../measure-utils.js";
 import type { OmitId } from "../type-utils.js";
 
 describe("element utils", () => {
@@ -1037,6 +1041,238 @@ describe("element utils", () => {
 			const minHeight = 10;
 			const reference = createPartialValidReference(0, y, minHeight, 20);
 			expect(ElementsUtils.getActualBottomPosition(reference)).toEqual(y + minHeight);
+		});
+	});
+
+	describe("createFragmentReferencePlaceable", () => {
+		const fragmentDimensions: FragmentDimensions = {
+			id: "fd-1",
+			width: { id: "fd-w", value: 80, unit: MeasureUnit.Millimeter },
+			height: { id: "fd-h", value: 45, unit: MeasureUnit.Millimeter },
+		};
+		const position: OmitId<Position> = {
+			x: { id: nanoid(), value: 10, unit: MeasureUnit.Millimeter },
+			y: { id: nanoid(), value: 20, unit: MeasureUnit.Millimeter },
+		};
+		const segment: PartialSegment = {
+			id: nanoid(),
+			type: SegmentType.Default,
+			elementReferences: [],
+			dataContexts: [],
+			title: "Segment",
+		};
+
+		test("should take its dimensions from the referenced fragment element, not from the element type defaults", () => {
+			const placeable = ElementsUtils.createFragmentReferencePlaceable(
+				"frag-el-1",
+				"fragment-model-1",
+				fragmentDimensions,
+				position,
+				segment
+			);
+
+			expect(placeable.dimensions.minWidth.value).toEqual(80);
+			expect(placeable.dimensions.minHeight.value).toEqual(45);
+			expect(placeable.dimensions.minWidth.unit).toEqual(MeasureUnit.Millimeter);
+		});
+
+		test("should record refId and model so the placement resolves against the fragment model", () => {
+			const placeable = ElementsUtils.createFragmentReferencePlaceable(
+				"frag-el-1",
+				"fragment-model-1",
+				fragmentDimensions,
+				position,
+				segment
+			);
+
+			expect(placeable.refId).toEqual("frag-el-1");
+			expect(placeable.model).toEqual("fragment-model-1");
+			expect(placeable.position.x.value).toEqual(10);
+			expect(placeable.position.y.value).toEqual(20);
+			expect(placeable.screenReadingOrder?.screenReadingOrderWeight).toEqual(0);
+			expect(placeable.pageBreakBehavior).toBeDefined();
+		});
+
+		test("should generate fresh ids so the same fragment element can be placed more than once", () => {
+			const first = ElementsUtils.createFragmentReferencePlaceable(
+				"frag-el-1",
+				"fragment-model-1",
+				fragmentDimensions,
+				position,
+				segment
+			);
+			const second = ElementsUtils.createFragmentReferencePlaceable(
+				"frag-el-1",
+				"fragment-model-1",
+				fragmentDimensions,
+				position,
+				segment
+			);
+
+			expect(first.id).not.toEqual(second.id);
+			expect(first.dimensions.id).not.toEqual(second.dimensions.id);
+			expect(first.refId).toEqual(second.refId);
+			// the fragment's own dimension ids must not leak into the placement
+			expect(first.dimensions.minWidth.id).not.toEqual(fragmentDimensions.width.id);
+		});
+	});
+
+	describe("withFragmentDimensions", () => {
+		const fragmentDimensions: FragmentDimensions = {
+			id: "fd-1",
+			width: { id: "fd-w", value: 80, unit: MeasureUnit.Millimeter },
+			height: { id: "fd-h", value: 45, unit: MeasureUnit.Millimeter },
+		};
+
+		test("should replace only the given side and keep the entity id stable", () => {
+			const newWidth = { id: "new-w", value: 120, unit: MeasureUnit.Millimeter };
+
+			const result = ElementsUtils.withFragmentDimensions(fragmentDimensions, { width: newWidth });
+
+			expect(result).toEqual({ id: "fd-1", width: newWidth, height: fragmentDimensions.height });
+		});
+
+		test("should replace both sides when both are given", () => {
+			const newWidth = { id: "new-w", value: 120, unit: MeasureUnit.Millimeter };
+			const newHeight = { id: "new-h", value: 60, unit: MeasureUnit.Millimeter };
+
+			const result = ElementsUtils.withFragmentDimensions(fragmentDimensions, {
+				width: newWidth,
+				height: newHeight,
+			});
+
+			expect(result).toEqual({ id: "fd-1", width: newWidth, height: newHeight });
+		});
+
+		test("should keep both sides when nothing is given", () => {
+			expect(ElementsUtils.withFragmentDimensions(fragmentDimensions, {})).toEqual(fragmentDimensions);
+		});
+	});
+
+	describe("getFragmentDimensionsUpdate", () => {
+		const newHeight = { id: "new-h", value: 60, unit: MeasureUnit.Millimeter };
+
+		test("should return an empty patch for an element without fragmentDimensions", () => {
+			const element: PartialAnyPrintModelElement = { id: "el-1", type: ElementType.Text };
+
+			expect(ElementsUtils.getFragmentDimensionsUpdate(element, { height: newHeight })).toEqual({});
+		});
+
+		test("should return a spreadable fragmentDimensions patch for a fragment element", () => {
+			const element: PartialAnyPrintModelElement = {
+				id: "el-1",
+				type: ElementType.Text,
+				isFragment: true,
+				fragmentDimensions: {
+					id: "fd-1",
+					width: { id: "fd-w", value: 80, unit: MeasureUnit.Millimeter },
+					height: { id: "fd-h", value: 45, unit: MeasureUnit.Millimeter },
+				},
+			};
+
+			const update = ElementsUtils.getFragmentDimensionsUpdate(element, { height: newHeight });
+
+			expect({ ...element, ...update }).toMatchObject({
+				fragmentDimensions: { id: "fd-1", height: newHeight, width: element.fragmentDimensions?.width },
+			});
+		});
+	});
+
+	describe("withOwnDimensions", () => {
+		const dimensions = { id: "dim-1", width: createMmMeasure(50), height: createMmMeasure(30) };
+
+		test.each([
+			["pieChart", ElementType.PieChart],
+			["barChart", ElementType.BarChart],
+			["lineChart", ElementType.LineChart],
+			["image", ElementType.Image],
+			["boundingBox", ElementType.BoundingBox],
+			["area", ElementType.Area],
+			["switch", ElementType.Switch],
+		])("should update the %s's own dimensions", (property, type) => {
+			const element = { id: "el-1", type, [property]: { id: `${property}-1`, dimensions } };
+
+			const result = ElementsUtils.withOwnDimensions(element as PartialAnyPrintModelElement, {
+				width: 120,
+				height: 60,
+			});
+
+			const updated = (result as Record<string, { dimensions: { width: Measure; height: Measure } }>)[property];
+			expect(updated.dimensions.width.value).toEqual(120);
+			expect(updated.dimensions.height.value).toEqual(60);
+		});
+
+		test("should keep the existing dimensions entity id", () => {
+			const element = {
+				id: "el-1",
+				type: ElementType.Image,
+				image: { id: "image-1", dimensions },
+			} as PartialImage;
+
+			const result = ElementsUtils.withOwnDimensions(element, { height: 60 }) as PartialImage;
+
+			expect(result.image?.dimensions?.id).toEqual("dim-1");
+		});
+
+		test("should only touch the given side", () => {
+			const element = {
+				id: "el-1",
+				type: ElementType.Image,
+				image: { id: "image-1", dimensions },
+			} as PartialImage;
+
+			const result = ElementsUtils.withOwnDimensions(element, { height: 60 }) as PartialImage;
+
+			expect(result.image?.dimensions?.height?.value).toEqual(60);
+			expect(result.image?.dimensions?.width?.value).toEqual(50);
+		});
+
+		test("should return the element untouched for a type that has no own dimensions", () => {
+			const element: PartialAnyPrintModelElement = {
+				id: "el-1",
+				type: ElementType.Text,
+				text: { id: "text-1", text: "foo" },
+			};
+
+			expect(ElementsUtils.withOwnDimensions(element, { width: 120, height: 60 })).toBe(element);
+		});
+	});
+
+	describe("createPrintModelElement — fragment elements", () => {
+		const placeableReference = createPartialValidReference(0, 0, 20, 40);
+
+		test("should seed fragmentDimensions from the type defaults for a fragment element", () => {
+			const element = ElementsUtils.createPrintModelElement(
+				"el-1",
+				ElementType.Text,
+				placeableReference,
+				true
+			) as PartialText;
+
+			expect(element.isFragment).toBe(true);
+			expect(element.fragmentDimensions?.width.value).toEqual(DEFAULT_ELEMENT_WIDTH);
+			// Text has no intrinsic height (getInitialHeight returns -1), so the placeholder default is used
+			// until the real height is measured off-screen
+			expect(element.fragmentDimensions?.height.value).toEqual(DEFAULT_ELEMENT_HEIGHT);
+			expect(element.fragmentDimensions?.id).toBeDefined();
+		});
+
+		test("should use the container default height for a box type element", () => {
+			const element = ElementsUtils.createPrintModelElement(
+				"el-1",
+				ElementType.Area,
+				placeableReference,
+				true
+			) as PartialArea;
+
+			expect(element.fragmentDimensions?.height.value).toEqual(DEFAULT_ELEMENT_CONTAINER_HEIGHT);
+		});
+
+		test("should not set fragmentDimensions for a regular element", () => {
+			const element = ElementsUtils.createPrintModelElement("el-1", ElementType.Text, placeableReference);
+
+			expect(element.fragmentDimensions).toBeUndefined();
+			expect(element.isFragment).toBeUndefined();
 		});
 	});
 });

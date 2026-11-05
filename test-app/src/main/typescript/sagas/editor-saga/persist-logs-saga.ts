@@ -39,7 +39,7 @@ import { LogHandler } from "@com.mgmtp.a12.print/print-model-api-utils/a12intern
 import type { PersistLogsPayload } from "../../store/editor";
 import { EditorActions, EditorSelector } from "../../store/editor";
 import { FileService } from "../../services/files-service";
-import { CaseConfig } from "../../components/case-config/CaseConfig";
+import { caseConfigResources, caseConfigs, CaseConfig } from "../../components/case-config/CaseConfig";
 
 export function* persistLogsSaga(): SagaGenerator<void> {
 	yield* handlePersistLogsSaga(EditorActions.persistLogs);
@@ -49,7 +49,8 @@ const handlePersistLogsSaga = (pattern: ActionPattern<PayloadAction<PersistLogsP
 	fork(function* () {
 		while (true) {
 			const action = yield* take(pattern);
-			const actionPayloads: PersistLogsPayload[] = [action.payload];
+			const payloadsByPrintModelId = new Map<string, PersistLogsPayload[]>();
+			addPayload(payloadsByPrintModelId, action.payload);
 
 			while (true) {
 				const { debounced, latestAction } = yield* race({
@@ -58,16 +59,27 @@ const handlePersistLogsSaga = (pattern: ActionPattern<PayloadAction<PersistLogsP
 				});
 
 				if (debounced) {
-					yield* put(EditorActions.batchPersistLogs(actionPayloads));
+					for (const payloads of payloadsByPrintModelId.values()) {
+						yield* put(EditorActions.batchPersistLogs(payloads));
+					}
 					break;
 				}
 
 				if (latestAction) {
-					actionPayloads.push(latestAction.payload);
+					addPayload(payloadsByPrintModelId, latestAction.payload);
 				}
 			}
 		}
 	});
+
+function addPayload(payloadsByPrintModelId: Map<string, PersistLogsPayload[]>, payload: PersistLogsPayload) {
+	const existing = payloadsByPrintModelId.get(payload.printModelId);
+	if (existing) {
+		existing.push(payload);
+	} else {
+		payloadsByPrintModelId.set(payload.printModelId, [payload]);
+	}
+}
 
 export function* batchPersistLogsSaga(): SagaGenerator<void> {
 	const channel = yield* actionChannel(EditorActions.batchPersistLogs);
@@ -78,17 +90,19 @@ export function* batchPersistLogsSaga(): SagaGenerator<void> {
 }
 
 function* batchPersistLogs(action: PayloadAction<PersistLogsPayload[]>): SagaGenerator<void> {
-	const caseConfig = yield* select(EditorSelector.selectCaseConfig);
-
+	const entries = action.payload;
+	const printModelId = entries[0]?.printModelId;
+	if (!printModelId) {
+		return;
+	}
+	const caseConfig = caseConfigs.find(cc => caseConfigResources[cc.path]?.printModel.header.id === printModelId);
 	if (!caseConfig) {
-		console.error("Case config is undefined");
+		console.error(`No case config found for print model ${printModelId} to persist logs to`);
 		return;
 	}
 
-	const logPayloads = action.payload;
 	const newLogs: string[] = [];
-
-	logPayloads.forEach(entry => {
+	entries.forEach(entry => {
 		const { transactionLogs, interactionLog } = entry;
 		if (transactionLogs) {
 			newLogs.push(LogHandler.generateTransactionLogOutput(transactionLogs));
@@ -99,6 +113,11 @@ function* batchPersistLogs(action: PayloadAction<PersistLogsPayload[]>): SagaGen
 
 	const walFilePath = CaseConfig.getWalFilePath(caseConfig.resource);
 	const response = yield* call(FileService.writeWalFile, walFilePath, newLogs.join(""));
+
+	const currentPrintModel = yield* select(EditorSelector.selectPrintModel);
+	if (printModelId !== currentPrintModel?.header.id) {
+		return;
+	}
 
 	if (FileService.isWalResponse(response)) {
 		yield* put(EditorActions.setLogPersistentEntries(LogHandler.readLogInput(response.content)));

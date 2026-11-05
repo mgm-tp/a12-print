@@ -43,7 +43,7 @@ import { useInheritedPageBreakResolver } from "../../hooks/use-inherited-page-br
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 
 interface PageBreakAvoidIconProps {
-	element: PartialAnyPrintModelElement;
+	element: PartialAnyPrintModelElement | undefined;
 	reference: PartialValidPlaceableReference;
 }
 
@@ -52,11 +52,14 @@ export const PageBreakAvoidIcon = ({ reference, element }: PageBreakAvoidIconPro
 	const localizer = PrintLocalizer.useLocalizer();
 
 	const value = useMemo(() => {
-		return InputValueSourceResolver.getSourceStringValue(
-			reference.pageBreakBehavior,
-			element,
-			"elementReferences.pageBreakBehavior",
-			resolveInheritedValue
+		return (
+			element &&
+			InputValueSourceResolver.getSourceStringValue(
+				reference.pageBreakBehavior,
+				element,
+				"elementReferences.pageBreakBehavior",
+				resolveInheritedValue
+			)
 		);
 	}, [element, reference.pageBreakBehavior, resolveInheritedValue]);
 

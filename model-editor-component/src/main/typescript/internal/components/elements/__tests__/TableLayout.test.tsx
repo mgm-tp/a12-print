@@ -89,6 +89,7 @@ describe("TableLayout", () => {
 		const textElementMock: PartialText = {
 			id: "textElId123",
 			type: ElementType.Text,
+			name: "mockText",
 			text: { id: "onjmgoq23g3q", text: "foo" },
 			textProperties: {
 				id: "textPropertiesId",
@@ -103,6 +104,7 @@ describe("TableLayout", () => {
 		const tableLayoutMock: PartialTableLayout = {
 			id: "foo-id",
 			type: ElementType.TableLayout,
+			name: "mockTableLayout",
 			tableLayout: {
 				id: "mgo4e2mh4ohqgepoeqkgoqe4",
 				rowCount: 1,
@@ -127,6 +129,7 @@ describe("TableLayout", () => {
 					segmentId: "",
 					sectionId: "",
 					watermarkId: "",
+					fragmentId: "",
 					currentRefType: SidebarItem.SEGMENT,
 				},
 			},

@@ -54,7 +54,10 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
+
+import static com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter.LocalizedTextUtils.resolveLocale;
 
 @Data
 public class DocumentRtServiceComputeDocumentDependencyValueProducer implements ComputeDocumentDependencyValueProducer {
@@ -107,7 +110,9 @@ public class DocumentRtServiceComputeDocumentDependencyValueProducer implements 
 		final var documentToCompute = evaluationDocument.getDocumentToCompute();
 		final var documentComputationResult = this.documentRtService.compute(
 			documentToCompute,
-			DocumentProcessingConfig.builder(model.getHeader().getLocales().stream().findAny().orElseGet(job::getLocale))
+			DocumentProcessingConfig.builder(resolveLocale(model.getHeader().getLocales(), job.getLocale()))
+				// No Custom Field Type Validation needed during Print compute
+				.customFieldTypeFactory(customFieldTypeName -> Optional.of((value, validationParameter, isDisplayValue) -> Optional.empty()))
 				.build()
 		);
 

@@ -1,0 +1,76 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= 2026.06-ext-2
+
+== Deprecations
+
+=== Java
+
+* The `com.mgmtp.a12.print.model.api.model.element.type.calculation.CalculationProperties.getName()` method is deprecated and will be removed in the next major release. Use `PrintModelElement.getName()` instead.
+* The `com.mgmtp.a12.print.model.api.model.element.type.switchCase.SwitchProperties.getName()` method is deprecated and will be removed in the next major release. Use `PrintModelElement.getName()` instead.
+* The `com.mgmtp.a12.print.model.api.walker.model.PrintModelWalker.walkPrintModelWithDefaultResolver(PrintModel, PrintModelResolver, PrintModelVisitor)` overload is deprecated and will be removed in the next major release. Use the overload that also takes a `PrintFragmentModelResolver` instead.
+* The `com.mgmtp.a12.print.model.api.walker.model.PrintModelWalker.walkPrintModelContentWithDefaultResolver(PrintModel, PrintModelPath, PrintModelResolver, PrintModelVisitor)` overload is deprecated and will be removed in the next major release. Use the overload that also takes a `PrintFragmentModelResolver` instead.
+* The `com.mgmtp.a12.print.model.api.walker.model.PrintModelWalker.walkElementWithDefaultResolver(PrintModel, PrintModelElement, PrintModelPath, PrintModelResolver, PrintModelVisitor)` overload is deprecated and will be removed in the next major release. Use the overload that also takes a `PrintFragmentModelResolver` instead.
+* The `com.mgmtp.a12.print.model.api.walker.model.resolver.ReferenceMultiModelResolver(PrintModel...)` constructor is deprecated and will be removed in the next major release. Use `ReferenceMultiModelResolver(PrintFragmentModelResolver, PrintModel...)` instead.
+* The list based constructors of `SectionIdListResolver`, `SegmentIdListResolver`, `TextStyleIdListResolver` and `WatermarkIdListResolver` in `com.mgmtp.a12.print.model.api.walker.model.resolver` are deprecated and will be removed in the next major release. Use their map based constructors instead.
+* The `fromModel(PrintModel)` overloads of `ReferenceMultiModelResolver`, `SectionIdListResolver`, `SegmentIdListResolver`, `TextStyleIdListResolver` and `WatermarkIdListResolver` in `com.mgmtp.a12.print.model.api.walker.model.resolver` are deprecated and will be removed in the next major release. Use `fromModel(PrintModel, PrintFragmentModelResolver)` instead.
+
+=== TypeScript
+
+* The `CalculationProperties.name` property is deprecated and will be removed in the next major release. Use `PrintModelElement.name` instead.
+* The `SwitchProperties.name` property is deprecated and will be removed in the next major release. Use `PrintModelElement.name` instead.
+
+== Changes
+
+=== Engine Runtime
+
+Print Models can now reference Print Fragment Models, which hold reusable content such as Segments, Sections, Watermarks, Text Styles and single Elements.
+To print such a Print Model, the new method `PrintJobManager.PrintJobManagerApi.loadPrintFragmentModel(String id)` must be implemented.
+Print Models that do not reference a Print Fragment Model are not affected.
+See <<load_print_fragment_model, Loading Print Fragment Models>> for details.
+
+*Migration:* Not needed
+
+=== Print Model Api Utils
+
+==== TypeScript
+
+`PrintModelValidatorOptions.references` accepts three new catalogs next to `documentModels`, each optional and each switching on the reference validation that needs it:
+
+[source,typescript]
+----
+const { result, report } = marshaller.deserialize(rawJson, {
+    references: {
+        documentModels: [myDocumentModel],
+        fragmentModels: [myPrintFragmentModel],
+        typesettingModelIds: ["my-typesetting"],
+        printModelIds: ["my-din-template"],
+    }
+});
+----
+
+* `fragmentModels`: the Print Fragment Models used by the Print Model. Fragments that cannot be resolved are reported as errors, and the field paths of the used Fragments are validated against `documentModels`.
+* `typesettingModelIds`: the ids of the available Typesetting Models. A Text Style naming an unknown one is reported as a warning.
+* `printModelIds`: the ids of the available Print Models, for example DIN templates.
+
+The Model References declared in `header.modelReferences` are now validated against these catalogs.
+This also affects callers that only pass `documentModels`: a Document Model Reference naming a Document Model outside the supplied catalog now produces an error that did not occur before.
+
+See <<print_model_marshaller>> for details.
+
+*Migration:* Not needed

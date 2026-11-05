@@ -31,11 +31,12 @@
  */
 package com.mgmtp.a12.print.model.api.model.segment;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.container.DefinitionsContainer;
+import com.mgmtp.a12.print.model.api.model.reference.FragmentReference;
 import com.mgmtp.a12.print.model.api.model.reference.PrintModelReference;
 
 import java.util.List;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 @OnlyForUsage
 public interface ModelSegmentContainer extends DefinitionsContainer {
@@ -45,4 +46,9 @@ public interface ModelSegmentContainer extends DefinitionsContainer {
 	 *  This is used for the DinTemplate feature to link segments.
 	 */
 	List<PrintModelReference> getReferences();
+
+	/**
+	 *  This is used for the print fragment model to link segments.
+	 */
+	List<FragmentReference> getFragmentReferences();
 }

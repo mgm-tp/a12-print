@@ -50,7 +50,7 @@ import { Switch } from "../elements/Switch.js";
 export const ElementComponent: React.ComponentType<BaseElementProps> = props => {
 	const { element } = props;
 
-	switch (element.type) {
+	switch (element?.type) {
 		case ElementType.Text:
 			return <Text {...props} />;
 		case ElementType.Line:
@@ -78,7 +78,6 @@ export const ElementComponent: React.ComponentType<BaseElementProps> = props => 
 		case ElementType.Switch:
 			return <Switch {...props} />;
 		default:
-			console.error("Unknown element type:", element.type);
 			return null;
 	}
 };

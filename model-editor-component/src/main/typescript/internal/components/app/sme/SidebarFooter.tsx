@@ -34,7 +34,7 @@ import React from "react";
 import { styled } from "styled-components";
 
 import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import { Button, ButtonGroup, Icon, Badge } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, ButtonGroup, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { useTransactionGroups } from "../../../hooks/index.js";
 import { NavigationActions } from "../../../redux/index.js";
@@ -77,11 +77,6 @@ export const SidebarFooter = ({ onClose, onDeploy, isConnectedToServer }: Sideba
 				icon={<Icon>cloud_upload</Icon>}
 				title="Deploy"
 				disabled={!isConnectedToServer}
-				badge={
-					!hasNoLogs && isConnectedToServer ? (
-						<Badge variant="warning" tiny title="Uncommitted changes are not deployed" />
-					) : null
-				}
 			/>
 			<Button
 				id="pmEditor-cancel"

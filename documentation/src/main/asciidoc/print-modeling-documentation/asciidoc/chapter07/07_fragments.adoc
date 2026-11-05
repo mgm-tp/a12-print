@@ -1,0 +1,304 @@
+////
+SPDX-License-Identifier: EUPL-1.2 OR LicenseRef-commercial
+Copyright (c) 2012-2026 mgm technology partners GmbH
+Dual License
+This source file is part of the mgm A12 Platform and available under a choice of two different licenses:
+1. Open-Source License - EUPL v1.2
+You may redistribute and/or modify this file under the terms of the European Union Public License, version 1.2 - see https://eupl.eu/.
+2. Commercial License
+Alternatively, you may obtain a commercial license from mgm technology partners GmbH, that permits use of this software under different terms (including support and maintenance services).
+
+Please contact a12-license@mgm-tp.com for more information.
+
+You must select and comply with exactly one of the above license options.
+
+Warranty Disclaimer (applies to either option)
+THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
+////
+= Print Fragment Models [[FragmentModels]]
+
+This chapter describes Print Fragment Models, which allow the definition of reusable content that can be referenced by several Print Models
+and is recommended for modelers familiar with Print Modeling.
+
+== Overview
+
+A Print Fragment Model allows Modelers to define reusable entities such as Segments, Sections, Watermarks, Text Styles and single Print Model Elements.
+These definitions are called _Fragments_.
+
+Fragment Models cannot be printed themselves.
+They are intended to be used in conjunction with regular Print Models, which reference the Fragments defined in them.
+
+Fragment Models allow you to build a library of reusable content that is maintained from one central definition.
+This makes them useful whenever several Print Models share the same content, for example a standardized letterhead, a legal notice or a company watermark.
+A change in the Fragment Model is applied to every Print Model that references the changed Fragment.
+
+[NOTE]
+====
+Printing a Print Model that references Fragments requires no special treatment in the Print Model itself, but the application that runs the Print Engine must be able to load the referenced Fragment Models.
+The <<PrintShell, print-shell>> provides this loading mechanism out of the box.
+For the integration into your own application, refer to the link:/docs/PRINT_ENGINE/print-technical-documentation/index.html#load_print_fragment_model[Print Engine technical documentation].
+====
+
+== Creating a Fragment Model [[CreateFragmentModel]]
+
+Fragment Models are created in the Simple Model Editor like regular Print Models.
+
+Fragment Models behave very similarly to regular Print Models and share most of their modeling concepts.
+The significant difference between the two is the way the content is organized:
+Where a Print Model provides separate tabs for Segments, Sections and Watermarks, a Fragment Model provides only the <<FragmentTab, Fragment Tab>>.
+
+Because a Fragment Model is not printable and defines content instead of a document, the following parts of the editor are not available:
+
+* The "Print" button and the <<Preview, Preview>> in the <<EditorHeader, Editor Header>>
+* The PDF Metadata of the <<GeneralTab, General Tab>>
+* The Print Model References of the <<SchemaTab, Schema Tab>>
+
+NOTE: A Fragment Model cannot reference other Fragment Models, and it is limited to a single Document Model Reference.
+Typesetting Model References are available as in a regular Print Model.
+
+=== Copying a Print Model as a Fragment Model [[CopyPrintModelAsFragment]]
+
+An existing Print Model can be turned into a Fragment Model without rebuilding its content by hand.
+Next to the action that creates a copy of a Print Model, the Simple Model Editor offers an action that creates the copy as a Fragment Model.
+The source Print Model is not modified, and its content is not replaced by references to the new Fragment Model.
+
+The copy contains:
+
+* A Segment Fragment, Section Fragment or Watermark Fragment for every Segment, Section and Watermark of the source Print Model, including all Elements placed on them and the Text Styles these Elements use
+* The Document Model Reference and all Typesetting Model References of the source Print Model
+
+No Element Fragments are created.
+
+[NOTE]
+====
+The Fragments of the copy carry the titles and Element Names of the source Print Model.
+As for every Fragment, these names are what identifies the Fragments in the referencing Print Models later, so review them after the copy.
+====
+
+==== When the Action Is Not Available
+
+For a Print Model, the action is shown but disabled when the model has at least one of the following properties, because the result would not be a valid Fragment Model:
+
+Fragment Model References:: The Print Model references Fragments of another Fragment Model. A Fragment Model cannot reference other Fragment Models.
+DIN Template References:: The Print Model references a DIN Template.
+Print Model References are not available in a Fragment Model.
+More than one Document Model Reference:: The Print Model has several Document Model References.
+
+== Fragment Tab [[FragmentTab]]
+
+In the Fragment Tab, all Fragments of the Fragment Model are created and edited.
+The Fragment Tab shows a tree in the <<SidebarPME, Sidebar>>, in which the Fragments are grouped by their type:
+
+* Sections
+* Watermarks
+* Segments
+* Elements
+
+image::chapter06/06_fragment_tree.png[Fragment Tree,title="Tree view of Fragments in the Fragment Tab."]
+
+An unlimited number of Fragments may be added to each group.
+
+=== Adding a Fragment
+
+Each group of the tree provides the controls to add a new Fragment of the respective type:
+
+Section, Watermark, Segment:: Select the Page Orientation (Portrait or Landscape) with the orientation toggle and click the "Add" button.
+Element:: Select the desired Element type in the dropdown and click the "Add" button.
+The available types are the same as in the <<StageMode, Element Library>> of a regular Print Model.
+
+Every new Fragment is created with an automatically generated name, composed of its type and a random suffix:
+Section, Watermark and Segment Fragments receive a generated title such as `Segment_1b7de`, Element Fragments a generated <<ElementName, Element Name>> such as `Text_a3f9c`.
+
+[NOTE]
+====
+This name is the only thing that identifies a Fragment later.
+It is shown in the tree of the Fragment Tab, in the selection lists of the referencing Print Models and, for Element Fragments, in the "Fragment Element Library" from which they are placed.
+
+Generated names are unique but not descriptive.
+Replace them with meaningful names in the settings of the Fragment, otherwise the Fragments are difficult to identify when they are reused.
+====
+
+=== Editing a Fragment
+
+Clicking a Fragment in the tree opens it in the <<EditorStage, Editor Stage>>, where it is modeled exactly as its counterpart in a regular Print Model.
+
+Segment, Section and Watermark Fragments are edited on a full page stage, and <<PrintModelElement, Print Model Elements>> are placed on them as usual.
+
+Element Fragments are edited on an individual Element stage, comparable to the editing of an <<Area, Area>> in a regular Print Model.
+The bounds of this stage are defined by the width and the height of the Element itself.
+
+NOTE: On the stage of an Element Fragment, only the <<StageMode, Stage Mode>> is available. For elements that can contain
+other elements (like <<Area, Area>>, <<Switch, Switch>> etc.) the <<LayoutMode, Layout Mode>> is available when editing
+on their respective nested element stages.
+
+The following buttons are available for every Fragment in the tree:
+
+Open Setting:: Edit the settings of the Fragment.
+These are the same settings as for the corresponding entity of a regular Print Model, for example the title of a Section or the Opacity and Conditions of a Watermark.
+For Element Fragments, the name of the Element can also be edited here.
+Duplicate:: Create a copy of the Fragment within the Fragment Model.
+Usages:: Show a list of the Print Models that reference this Fragment. The "Navigate" button opens the respective Print Model.
+Delete:: Delete the Fragment.
+
+image::chapter06/06_tree_menu.png[Tree Menu,title="Pop up menu and settings for a Segment Fragment"]
+
+[NOTE]
+====
+A Fragment that is referenced by at least one Print Model cannot be deleted.
+Use the "Usages" action to find the Print Models that still reference it.
+====
+
+[CAUTION]
+====
+Elements that are placed inside a Segment, Section or Watermark Fragment are part of that Fragment.
+They do not become Element Fragments of their own and cannot be referenced individually.
+
+Conversely, Element Fragments cannot be used inside Segment, Section or Watermark Fragments.
+====
+
+== Referencing Fragments in a Print Model [[FragmentReferencing]]
+
+Fragments that have been defined in a Fragment Model can be referenced in a regular Print Model.
+
+=== Adding a Fragment Model Reference
+
+Fragment Models are referenced in the <<SchemaTab, Schema Tab>> of the Print Model:
+
+Fragment Model References:: The list of referenced Fragment Models of this Print Model.
+
+Multiple Fragment Models may be referenced in one Print Model.
+
+A Print Model that references Fragment Models cannot reference a <<PrintModelTemplates, Print Model Template>> at the same time, and vice versa.
+As soon as one of the two is referenced, the other list is disabled in the Schema Tab.
+
+[CAUTION]
+====
+A Fragment Model can currently only be referenced by a Print Model if both use the same Document Model.
+
+If a Fragment Model references a Document Model, it is only selectable in Print Models that reference the same Document Model.
+A Fragment Model without a Document Model Reference may be referenced by any Print Model.
+
+If a Fragment Model cannot be selected in the Print Model, check the Document Model Reference of both models for compatibility.
+====
+
+=== Using the Fragments [[UsingFragments]]
+
+Once a Fragment Model is referenced, its Fragments become available in the respective tabs of the Print Model.
+
+Segment:: A Segment Fragment can be selected in the <<SegmentTab, Segment Tab>> instead of modeling a Segment locally.
++
+image::chapter06/06_reference_segment.png[Reference Segment,title="Referencing a Segment Fragment"]
+Section:: A Section Fragment can be selected in the respective slot of the <<SectionTab, Section Tab>>.
+Only Section Fragments with a matching Page Orientation are offered for a slot.
++
+image::chapter06/06_reference_section.png[Reference Section,title="Referencing a Section Fragment"]
+Watermark:: A Watermark Fragment can be selected in the respective slot of the <<WatermarkTab, Watermark Tab>>.
+Only Watermark Fragments with a matching Page Orientation are offered for a slot.
+Text Style:: Text Style Fragments can be selected in the <<TextStylesTab, Text Styles Tab>>.
+The "Reference All" button references all Text Styles of the selected Fragment Model at once.
+Text Styles that are modeled in the Print Model itself are listed separately under "Internal Text Styles".
+Element:: Element Fragments are added to the <<EditorStage, Editor Stage>> from the "Element Fragment Library" section of the Element Library panel, which is opened as described in <<StageMode, Stage Mode>>.
+The Element Fragments are listed there by their <<ElementName, name>>.
+The Element Fragment is placed by drag and drop, like a regular Element.
+The section is only shown if at least one referenced Fragment Model provides Element Fragments.
++
+image::chapter06/06_fragment_library.png[Fragment Library,title="Fragment Library"]
+
+[NOTE]
+====
+The limits of a regular Print Model still apply to referenced Fragments.
+A Print Model may contain at most four Sections (one per combination of _Page Orientation_ and _Section Usage_) and two Watermarks (one per _Page Orientation_), regardless of whether they are modeled locally or referenced.
+
+Each slot holds either a local definition or a reference, never both.
+====
+
+=== Working With Referenced Fragments [[FragmentReadOnly]]
+
+Referenced Fragments are added in read-only mode.
+Their settings and their content can be viewed but not edited: all input fields of the referenced entity are disabled, and the Editor Stage of a referenced Section, Watermark or Segment cannot be modified.
+
+A referenced entity is marked with a link icon and shows the name of the referenced Fragment in a read-only field.
+Elements that reference an Element Fragment are marked with an indicator.
+
+To change a referenced Fragment, it must be edited in the Fragment Model it originates from or <<UnlinkFragment, unlinked>> from its Fragment Model.
+The "Navigate to source" entry in the action menu of a referenced Fragment - or in the context menu of a referenced Element - opens the Fragment Model the Fragment is defined in.
+
+==== Committing a Fragment Model
+
+Pending changes in a Fragment Model do not affect the Print Models that reference it.
+The changes are applied to the referencing Print Models only after they have been <<CommittingChanges, committed>>.
+
+When changes to a Fragment are committed, a warning lists the Print Models that are affected by these changes.
+The changes can be committed regardless by confirming with "Commit anyway".
+
+[CAUTION]
+====
+Certain changes to a Fragment - for example adding text to an Element - change the dimensions of the Fragment.
+The referencing Print Models are updated accordingly, which may lead to visual and modeling changes in these Print Models.
+====
+
+==== Layout of a Referenced Element Fragment [[FragmentElementLayout]]
+
+An Element Fragment brings its own dimensions with it.
+Width and height are defined in the Fragment Model and cannot be changed where the Element Fragment is placed:
+a referenced Element provides no resize handles on the <<EditorStage, Editor Stage>>.
+The dimensions are changed in the Fragment Model only, and the change is applied to every Print Model that places the Element Fragment.
+
+The layout of a single placement, in contrast, belongs to the Print Model.
+The following properties are therefore modeled individually for each placement of an Element Fragment, exactly as for a locally modeled Element:
+
+* The position on the Editor Stage
+* The margins in the <<LayoutMode, Layout Mode>>
+* The <<PageBreakBehavior, Page Break Behavior>>
+* The <<HideConditions, Hide Conditions>>
+
+The same Element Fragment may therefore be placed in one Print Model with a top margin and a Hide Condition, and in another Print Model without them.
+
+[NOTE]
+====
+If the same layout is required in every Print Model, define an Element Fragment of type <<Area, Area>> and place the Element inside this Area.
+Page Break Behavior, margins and Hide Conditions of the inner Element are part of the Area Fragment and are reused together with it.
+====
+
+== Unlinking a Fragment [[UnlinkFragment]]
+
+Sometimes a Fragment that has been added to a Print Model needs to be adjusted for this Print Model only.
+Editing the Fragment in its Fragment Model is not an option in this case, because the change would affect every other Print Model that references it.
+
+For these cases the "Unlink" action is available.
+Unlinking copies the referenced content into the Print Model as a local definition and removes the reference to the Fragment Model.
+The copy is no longer read-only and is modeled like any other content of the Print Model.
+It is also no longer updated when the Fragment is changed in the Fragment Model.
+The original Fragment Model is never modified by unlinking.
+
+Unlinking is available for every kind of reference:
+
+* Sections, Segments, Watermarks and Text Styles via the "Unlink" entry in the action menu of the referenced entity
+* Elements via the "Unlink" entry in the context menu of the referenced Element on the <<EditorStage, Editor Stage>>
+
+image::chapter06/06_unlink_fragment.png[Unlinking Fragment,title="Unlinking an Element Fragment"]
+
+It is possible for a Fragment to be dependent on a reference that itself has not yet been referenced by the current Print Model.
+Unlinking such a Fragment requires the reference to be added to the current Print Model, which requires authorization from the user.
+
+[WARNING]
+====
+A dialog will appear to prompt a confirmation from the user.
+Unlinking cannot be reverted with _Undo_, and all previous changes that were made to the affected reference can no longer be undone after unlinking.
+As long as the changes are not <<CommittingChanges, committed>>, unlinking can still be reverted by discarding all changes.
+====
+
+== Fragment Validation [[FragmentValidation]]
+
+Fragment Models are validated like regular Print Models, with checks for overlapping Elements, modeling errors and invalid references.
+The validation is described in <<Validation, Validation>>.
+
+Because a Fragment Model cannot be printed on its own, the rules that only apply to a printable document are suspended.
+This concerns in particular the PDF Metadata, which is not required in a Fragment Model.
+
+References to Fragments are validated in the referencing Print Model.
+A reference is reported as an error if the Fragment Model is no longer referenced in the <<SchemaTab, Schema Tab>>, or if the referenced content no longer exists in the Fragment Model.
+
+== Migration [[FragmentMigration]]
+
+A Fragment Model can be migrated with the Print Model migration, as described in <<MigratingModels, Migrating Existing Models>>.

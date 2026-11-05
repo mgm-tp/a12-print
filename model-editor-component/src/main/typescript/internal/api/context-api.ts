@@ -41,6 +41,7 @@ export interface ContextApi {
 	localizer: ILocalizer;
 	getFonts: IGetFonts;
 	discardAllChangesPossible?: boolean;
+	isFragmentModel?: boolean;
 }
 
 export const defaultContextApi: ContextApi = {

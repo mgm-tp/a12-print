@@ -30,38 +30,54 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type {
-	ListingColumn,
-	ListingColumnField,
-	PartialArea,
-	PartialBarChart,
-	PartialCalculation,
-	PartialExpression,
-	PartialField,
-	PartialImage,
-	PartialLineChart,
-	PartialListing,
-	PartialMetadata,
-	PartialPieChart,
-	PartialPlaceableReference,
-	PartialPrintModel,
-	PartialPrintModelElement,
-	PartialSegment,
-	PartialSwitchCaseReference,
-	PartialTable,
-	PartialWatermark,
-	PrintModelEntity,
+import {
+	FRAGMENT_SUB_TYPE,
+	isFragmentModelReference,
+	PrintModelElement,
+	type FragmentModelReference,
+	type FragmentType,
+	type ListingColumn,
+	type ListingColumnField,
+	type PartialArea,
+	type PartialBarChart,
+	type PartialCalculation,
+	type PartialExpression,
+	type PartialField,
+	type PartialImage,
+	type PartialLineChart,
+	type PartialListing,
+	type PartialMetadata,
+	type PartialPieChart,
+	type PartialPlaceableReference,
+	type PartialPrintModel,
+	type PartialPrintModelElement,
+	type PartialReference,
+	type PartialSegment,
+	type PartialSwitchCaseReference,
+	type PartialTable,
+	type PartialTextStyle,
+	type PartialWatermark,
+	type PrintModel,
+	type PrintModelEntity,
 } from "@com.mgmtp.a12.print/print-model-api/model";
-import type { ExtendedEntityInstancePathBuilder } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { ExtendedEntityInstancePathBuilder } from "@com.mgmtp.a12.print/print-model-api/errors";
 import type { PartialPrintModelTrace } from "@com.mgmtp.a12.print/print-model-api/walker";
 import {
 	TraversalCommand,
 	createPartialPrintModelWalker,
+	getElementDefinitionBasePath,
 	PartialPrintModelVisitor,
 } from "@com.mgmtp.a12.print/print-model-api/walker";
 import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import type { CollectedComputation, CollectedFieldReference, CollectedPath } from "../../types/reference-path.js";
+import type {
+	CollectedComputation,
+	CollectedFieldReference,
+	CollectedTypesettingUsage,
+	MissingFragmentReference,
+	CollectedPath,
+	ReferenceCollectorResult,
+} from "../../types/reference-path.js";
 
 import { extractFieldReferencePath, extractComputationPaths } from "./reference-path-extraction.js";
 
@@ -79,10 +95,20 @@ import { extractFieldReferencePath, extractComputationPaths } from "./reference-
  * walker.walkPrintModel(printModel);
  * console.log(visitor.computations, visitor.fieldReferences);
  */
-export class PartialPrintModelVisitorReferenceCollector extends PartialPrintModelVisitor {
-	computations: { computation: CollectedComputation; printModelPath: ExtendedEntityInstancePathBuilder }[] = [];
-	fieldReferences: { field: CollectedFieldReference; printModelPath: ExtendedEntityInstancePathBuilder }[] = [];
+export class PartialPrintModelVisitorReferenceCollector
+	extends PartialPrintModelVisitor
+	implements ReferenceCollectorResult
+{
+	// document model references
 	collectedPaths: CollectedPath[] = [];
+	// fragment model references
+	missingFragmentReferences: MissingFragmentReference[] = [];
+	// typesetting models used by a text style, be it a local one or one of a fragment model
+	typesettingUsages: CollectedTypesettingUsage[] = [];
+
+	constructor(private readonly printModel?: PartialPrintModel) {
+		super();
+	}
 
 	addComputation(computation: CollectedComputation | undefined, printModelPath: ExtendedEntityInstancePathBuilder) {
 		if (!computation) {
@@ -90,7 +116,6 @@ export class PartialPrintModelVisitorReferenceCollector extends PartialPrintMode
 		}
 		extractComputationPaths(this.collectedPaths, computation, printModelPath, "precondition");
 		extractComputationPaths(this.collectedPaths, computation, printModelPath, "operation");
-		this.computations.push({ computation, printModelPath });
 	}
 
 	addFieldReference(field: CollectedFieldReference | undefined, printModelPath: ExtendedEntityInstancePathBuilder) {
@@ -98,7 +123,6 @@ export class PartialPrintModelVisitorReferenceCollector extends PartialPrintMode
 			return;
 		}
 		extractFieldReferencePath(this.collectedPaths, field, printModelPath);
-		this.fieldReferences.push({ field, printModelPath });
 	}
 
 	beforeVisitElement(element: PartialPrintModelElement, printModelTrace: PartialPrintModelTrace): void {
@@ -339,6 +363,151 @@ export class PartialPrintModelVisitorReferenceCollector extends PartialPrintMode
 			this.addComputation(valueComputation, groupPath?.with("valueComputationAlternatives", compIndex));
 		});
 	}
+
+	// --- Fragment Related Handling ---
+
+	addMissingFragmentReference(
+		type: FragmentType,
+		unresolvedFragment: Pick<FragmentModelReference, "model" | "refId">,
+		index: number = 0,
+		path?: ExtendedEntityInstancePathBuilder
+	) {
+		let printModelPath = path ?? ExtendedEntityInstancePathBuilder.ROOT_PATH;
+		if (type !== "element") {
+			printModelPath = getTopLevelFragmentReferenceContainerBasePath(type, index);
+		}
+		this.missingFragmentReferences.push({
+			type,
+			model: unresolvedFragment.model,
+			refId: unresolvedFragment.refId,
+			index,
+			printModelPath,
+		});
+	}
+
+	getUnresolvedReference(key: "textStyles" | "segments" | "watermarks" | "sections", id: string) {
+		const content = this.printModel?.content;
+		// Segments are the only ones not keeping their fragment references in `references`.
+		const references = key === "segments" ? content?.segments?.fragmentReferences : content?.[key]?.references;
+		const referenceIndex = references?.findIndex(reference => reference.id === id) ?? -1;
+		const unresolvedFragment = referenceIndex < 0 ? undefined : references?.[referenceIndex];
+		return { referenceIndex, unresolvedFragment };
+	}
+
+	visitUnresolvedElement(
+		reference: PartialReference,
+		printModelTrace: PartialPrintModelTrace,
+		index?: number,
+		path?: ExtendedEntityInstancePathBuilder
+	): TraversalCommand {
+		if (isFragmentModelReference(reference)) {
+			this.addMissingFragmentReference("element", reference, index, path);
+			return TraversalCommand.CONTINUE;
+		}
+		/*
+		 * Placements inside a fragment element name no model of their own - they are local to their fragment model - so
+		 * the model is taken from the reference that led into the fragment.
+		 */
+		const fragmentReference = findParentFragmentModelReference(printModelTrace);
+		if (fragmentReference && reference.refId) {
+			this.addMissingFragmentReference(
+				"element",
+				{ model: fragmentReference.model, refId: reference.refId },
+				index,
+				path
+			);
+			return TraversalCommand.CONTINUE;
+		}
+		return TraversalCommand.HALT;
+	}
+
+	/*
+	 * The walker reports the position within `general.*`, but the error path points into the reference list, so the
+	 * index has to be looked up there instead of being taken from the visit.
+	 */
+	visitUnresolvedSegment(id: string): TraversalCommand {
+		const { referenceIndex, unresolvedFragment } = this.getUnresolvedReference("segments", id);
+		if (isFragmentModelReference(unresolvedFragment)) {
+			this.addMissingFragmentReference("segment", unresolvedFragment, referenceIndex);
+			return TraversalCommand.CONTINUE;
+		}
+		return TraversalCommand.HALT;
+	}
+
+	visitUnresolvedSection(id: string): TraversalCommand {
+		const { referenceIndex, unresolvedFragment } = this.getUnresolvedReference("sections", id);
+		if (isFragmentModelReference(unresolvedFragment)) {
+			this.addMissingFragmentReference("section", unresolvedFragment, referenceIndex);
+			return TraversalCommand.CONTINUE;
+		}
+		return TraversalCommand.HALT;
+	}
+
+	visitUnresolvedWatermark(id: string): TraversalCommand {
+		const { referenceIndex, unresolvedFragment } = this.getUnresolvedReference("watermarks", id);
+		if (isFragmentModelReference(unresolvedFragment)) {
+			this.addMissingFragmentReference("watermark", unresolvedFragment, referenceIndex);
+			return TraversalCommand.CONTINUE;
+		}
+		return TraversalCommand.HALT;
+	}
+
+	visitUnresolvedTextStyle(id: string): TraversalCommand {
+		const { referenceIndex, unresolvedFragment } = this.getUnresolvedReference("textStyles", id);
+		if (isFragmentModelReference(unresolvedFragment)) {
+			this.addMissingFragmentReference("textStyle", unresolvedFragment, referenceIndex);
+			return TraversalCommand.CONTINUE;
+		}
+		return TraversalCommand.CONTINUE;
+	}
+
+	/*
+	 * Reached for a local text style as well as for one of a fragment model, with a path that already points at the
+	 * definition or at the reference that pulled it in.
+	 */
+	visitTextStyle(textStyle: PartialTextStyle, printModelPath: ExtendedEntityInstancePathBuilder): TraversalCommand {
+		if (textStyle.typesettingModelName) {
+			this.typesettingUsages.push({
+				typesettingModelName: textStyle.typesettingModelName,
+				textStyleId: textStyle.id,
+				printModelPath,
+			});
+		}
+		return TraversalCommand.CONTINUE;
+	}
+}
+
+/** The reference that led into a print fragment model, looked up from the innermost trace element outwards. */
+function findParentFragmentModelReference(
+	printModelTrace: PartialPrintModelTrace
+): Pick<FragmentModelReference, "model" | "refId"> | undefined {
+	for (let index = printModelTrace.parents.length - 1; index >= 0; index--) {
+		const { parent } = printModelTrace.parents[index];
+		if (isFragmentModelReference(parent)) {
+			return parent;
+		}
+	}
+	return undefined;
+}
+
+function getTopLevelFragmentReferenceContainerBasePath(
+	element: Exclude<FragmentType, "element">,
+	index: number
+): ExtendedEntityInstancePathBuilder {
+	const path = new ExtendedEntityInstancePathBuilder().append("content");
+	if (element === "segment") {
+		return path.append("segments").append("fragmentReferences", index);
+	}
+	if (element === "section") {
+		return path.append("sections").append("references", index);
+	}
+	if (element === "watermark") {
+		return path.append("watermarks").append("references", index);
+	}
+	if (element === "textStyle") {
+		return path.append("textStyles").append("references", index);
+	}
+	throw new Error("Element is not a top level fragment");
 }
 
 /**
@@ -347,14 +516,37 @@ export class PartialPrintModelVisitorReferenceCollector extends PartialPrintMode
  * @param printModel The PartialPrintModel to traverse.
  * @returns An array of all referenced paths, including their path string and the path in the print model structure.
  */
-export function getAllReferencedPaths(printModel: PartialPrintModel) {
-	const visitor = new PartialPrintModelVisitorReferenceCollector();
-	const walker = createPartialPrintModelWalker(printModel, visitor);
+export function getAllReferencedLocations(
+	printModel: PartialPrintModel,
+	fragmentModels?: PrintModel[]
+): ReferenceCollectorResult {
+	const visitor = new PartialPrintModelVisitorReferenceCollector(printModel);
+	const walker = createPartialPrintModelWalker(printModel, visitor, fragmentModels);
 
 	if (!printModel.content) {
-		return [];
+		return {
+			collectedPaths: [],
+			missingFragmentReferences: [],
+			typesettingUsages: [],
+		};
 	}
 	walker.walkPrintModelContent(printModel.content);
 
-	return visitor.collectedPaths;
+	/*
+	 * A fragment model does not place its own element fragments, so walking its content does not reach them. They are
+	 * walked on their own to still validate their references.
+	 */
+	if (printModel.header?.modelSubType === FRAGMENT_SUB_TYPE) {
+		printModel.content.elementDefinitions?.forEach((element, index) => {
+			if (PrintModelElement.isInstance(element) && PrintModelElement.isFragmentElement(element)) {
+				walker.walkElement(element, undefined, getElementDefinitionBasePath(element, index), index);
+			}
+		});
+	}
+
+	return {
+		collectedPaths: visitor.collectedPaths,
+		missingFragmentReferences: visitor.missingFragmentReferences,
+		typesettingUsages: visitor.typesettingUsages,
+	};
 }

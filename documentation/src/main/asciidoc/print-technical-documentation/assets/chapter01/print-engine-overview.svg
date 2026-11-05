@@ -1,0 +1,173 @@
+<!--
+  Print Engine overview — container-level diagram of the Print Engine introduction.
+
+  FILE PATH:  documentation/src/main/asciidoc/print-technical-documentation/assets/chapter01/print-engine-overview.svg
+  EMBEDDED AS (the bundle sets :imagesdir: assets/ in index.adoc):
+      .Print Engine overview
+      image::chapter01/print-engine-overview.svg[alt]
+  Update this header if the file moves or a tool re-saves it.
+
+  Composition and context only. The frame is the Print Engine and the context it needs: the four
+  printing libraries under the title, the two ways a project uses them, and what they build on.
+  The legend carries the four categories. Fill and stroke colour group the boxes; a dashed outline
+  carries one meaning only — needed on just one of the two integration options — so never dash a box
+  to mark its category.
+  Every fact here is also stated in the Introduction prose.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1190 606" width="1190" height="606" role="img" aria-labelledby="t d" font-family="'Segoe UI', Inter, system-ui, sans-serif">
+  <title id="t">Print Engine overview</title>
+  <desc id="d">Four Print Engine libraries carry the printing: the Print Engine API declares the print job, the engine, the result, and the provider interfaces; the Print Engine Runtime compiles the model and renders the PDF; the Print Engine Runtime Kernel evaluates Computations; and the Print Model API defines and validates the Print Model. Print Models, Print Fragment Models, Typesetting Models, Document Models, documents, attachments, and static images reach them through provider interfaces. A project uses them one of two ways, and picks one. In the first, it embeds the Print Engine itself and its own code implements the provider interfaces. In the second, the A12 Full Stack path, two parts come together: the A12 Full Stack application, whose Forms and Overviews hold the print button, and Print Integration, which runs the print for the application; and Print Integration is what the project adds instead of writing that code itself. What these depend on: the A12 libraries Kernel, for Document Model access and document values, and Base, for the model foundations; the third-party library Apache PDFBox, which writes and tags the PDF; and, drawn with a dashed outline because it is the one part needed on only the second way, Data Services, for the models, documents, and attachments Print Integration loads and stores. The input is a Print Model, the template for the PDF; the Document Model that Print Model references for its dynamic content, with A12 documents and their attachments supplying the actual values; and, optionally, Print Fragment Models, which hold content that several Print Models share, and Typesetting Models. It produces a PDF tagged for PDF/UA and PDF/A-3a, whose conformance also depends on the model following the accessibility rules of the print modeling documentation, and optionally XML, standalone or embedded in the PDF.</desc>
+
+  <defs>
+    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,1 L9,5 L0,9 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .zone   { font-size:11px; font-weight:600; letter-spacing:.09em; fill:#94a3b8 }
+      .card   { fill:#f8fafc; stroke:#cbd5e1; stroke-width:1 }
+      .block  { fill:#ffffff; stroke:#cbd5e1; stroke-width:1 }
+      .lib    { fill:#eef4ff; stroke:#93b4e8; stroke-width:1 }
+      .libopt { fill:#eef4ff; stroke:#93b4e8; stroke-width:1; stroke-dasharray:4 3 }
+      .tp     { fill:#f1f2f4; stroke:#a9b1bd; stroke-width:1 }
+      .own    { fill:#fffdf5; stroke:#d6b877; stroke-width:1 }
+      .route  { fill:#f8fafc; stroke:#e2e8f0; stroke-width:1 }
+      .name   { font-size:14px; fill:#0f172a }
+      .libnm  { font-size:14px; fill:#1e3a8a }
+      .tpnm   { font-size:14px; fill:#334155 }
+      .lead   { font-size:15px; font-weight:600; fill:#0f172a }
+      .cap    { font-size:11px; fill:#64748b; font-style:italic }
+      .libcp  { font-size:11px; fill:#3b6bb5; font-style:italic }
+      .band   { font-size:11px; font-weight:600; letter-spacing:.06em; fill:#94a3b8 }
+      .rlbl   { font-size:11px; font-weight:600; letter-spacing:.06em; fill:#64748b }
+      .orlbl  { font-size:12px; font-weight:600; fill:#94a3b8 }
+      .edge   { stroke:#64748b; stroke-width:1.4; fill:none; marker-end:url(#arw) }
+      .tie    { stroke:#94a3b8; stroke-width:1.2; fill:none }
+    </style>
+  </defs>
+
+  <!-- ── the input: the template, the data it is filled with, and the optional models ── -->
+  <text class="zone" x="24" y="126">PDF TEMPLATE</text>
+
+  <g class="card"><rect x="24" y="140" width="210" height="50" rx="8"/></g>
+  <text class="name" x="42" y="163">Print Model</text>
+  <text class="cap"  x="42" y="180">layout, styling, and content</text>
+
+  <text class="zone" x="24" y="220">DATA</text>
+
+  <g class="card"><rect x="24" y="234" width="210" height="50" rx="8"/></g>
+  <text class="name" x="42" y="257">Document Model</text>
+  <text class="cap"  x="42" y="274">the fields the model uses</text>
+
+  <g class="card"><rect x="24" y="292" width="210" height="50" rx="8"/></g>
+  <text class="name" x="42" y="315">A12 documents</text>
+  <text class="cap"  x="42" y="332">the values and attachments</text>
+
+  <text class="zone" x="24" y="372">OPTIONAL MODELS</text>
+
+  <g class="card"><rect x="24" y="386" width="210" height="50" rx="8"/></g>
+  <text class="name" x="42" y="409">Print Fragment Model</text>
+  <text class="cap"  x="42" y="426">shared content</text>
+
+  <g class="card"><rect x="24" y="444" width="210" height="50" rx="8"/></g>
+  <text class="name" x="42" y="467">Typesetting Model</text>
+  <text class="cap"  x="42" y="484">hyphenation and line breaks</text>
+
+  <path class="tie" d="M234 165 H 248"/>
+  <path class="tie" d="M234 259 H 248"/>
+  <path class="tie" d="M234 317 H 248"/>
+  <path class="tie" d="M234 411 H 248"/>
+  <path class="tie" d="M234 469 H 248"/>
+  <path class="tie" d="M248 165 V 469"/>
+  <path class="edge" d="M248 317 H 268"/>
+
+  <!-- ── the component and the context it needs ── -->
+  <rect x="270" y="64" width="648" height="482" rx="14" fill="#fcfdfe" stroke="#94a3b8" stroke-width="1.5"/>
+  <text class="lead" x="288" y="96">Print Engine</text>
+
+  <g class="block"><rect x="288" y="114" width="300" height="58" rx="8"/></g>
+  <text class="name" x="306" y="139">Print Engine API</text>
+  <text class="cap"  x="306" y="157">job, engine, result, and providers</text>
+
+  <g class="block"><rect x="600" y="114" width="300" height="58" rx="8"/></g>
+  <text class="name" x="618" y="139">Print Engine Runtime</text>
+  <text class="cap"  x="618" y="157">compiles the model, renders the PDF</text>
+
+  <g class="block"><rect x="288" y="180" width="300" height="58" rx="8"/></g>
+  <text class="name" x="306" y="205">Print Engine Runtime Kernel</text>
+  <text class="cap"  x="306" y="223">evaluates Computations</text>
+
+  <g class="block"><rect x="600" y="180" width="300" height="58" rx="8"/></g>
+  <text class="name" x="618" y="205">Print Model API</text>
+  <text class="cap"  x="618" y="223">defines and validates the Print Model</text>
+
+  <!-- ── the two ways a project uses them — alternatives, not part of the group above ── -->
+  <text class="band" x="288" y="260">INTEGRATION OPTIONS</text>
+
+  <rect class="route" x="288" y="268" width="290" height="90" rx="10"/>
+  <text class="rlbl" x="302" y="287">A · EMBEDDED ENGINE</text>
+  <g class="own"><rect x="302" y="296" width="262" height="48" rx="8"/></g>
+  <text class="name" x="320" y="318">Your project code</text>
+  <text class="cap"  x="320" y="336">implements the provider interfaces</text>
+
+  <text class="orlbl" x="594" y="321" text-anchor="middle">or</text>
+
+  <rect class="route" x="610" y="268" width="290" height="146" rx="10"/>
+  <text class="rlbl" x="624" y="287">B · A12 FULL STACK</text>
+
+  <g class="lib"><rect x="624" y="296" width="262" height="48" rx="8"/></g>
+  <text class="libnm" x="642" y="318">A12 Full Stack application</text>
+  <text class="libcp" x="642" y="336">a Form or Overview holds the button</text>
+
+  <g class="block"><rect x="624" y="352" width="262" height="48" rx="8"/></g>
+  <text class="name" x="642" y="374">Print Integration</text>
+  <text class="cap"  x="642" y="392">runs the print for the application</text>
+
+  <!-- ── what they build on; a dashed outline = needed on only one of the two ways ── -->
+  <text class="band" x="288" y="436">A12 AND EXTERNAL DEPENDENCIES</text>
+
+  <g class="lib"><rect x="288" y="444" width="147" height="78" rx="8"/></g>
+  <text class="libnm" x="306" y="468">Kernel</text>
+  <text class="libcp" x="306" y="485">Document Models</text>
+  <text class="libcp" x="306" y="499">and values</text>
+
+  <g class="lib"><rect x="443" y="444" width="147" height="78" rx="8"/></g>
+  <text class="libnm" x="461" y="468">Base</text>
+  <text class="libcp" x="461" y="485">model foundations</text>
+
+  <g class="tp"><rect x="598" y="444" width="147" height="78" rx="8"/></g>
+  <text class="tpnm" x="616" y="468">Apache PDFBox</text>
+  <text class="cap"  x="616" y="485">writes and tags</text>
+  <text class="cap"  x="616" y="499">the PDF</text>
+
+  <g class="libopt"><rect x="753" y="444" width="147" height="78" rx="8"/></g>
+  <text class="libnm" x="771" y="468">Data Services</text>
+  <text class="libcp" x="771" y="485">models, documents,</text>
+  <text class="libcp" x="771" y="499">attachments</text>
+  <text class="libcp" x="771" y="513">for Print Integration</text>
+
+  <!-- ── what a consumer gets back ── -->
+  <text class="zone" x="944" y="226">OUTPUT</text>
+
+  <g class="card"><rect x="944" y="240" width="216" height="70" rx="8"/></g>
+  <text class="name" x="962" y="265">PDF</text>
+  <text class="cap"  x="962" y="283">tagged for PDF/UA</text>
+  <text class="cap"  x="962" y="297">and PDF/A-3a</text>
+
+  <g class="card"><rect x="944" y="322" width="216" height="70" rx="8"/></g>
+  <text class="name" x="962" y="347">XML</text>
+  <text class="cap"  x="962" y="365">optional, standalone</text>
+  <text class="cap"  x="962" y="379">or embedded in the PDF</text>
+
+  <path class="edge" d="M918 275 H 942"/>
+  <path class="edge" d="M918 357 H 942"/>
+
+  <!-- ── legend: the four categories the checklist requires ── -->
+  <g class="block"><rect x="270" y="572" width="14" height="14" rx="3"/></g>
+  <text class="cap" x="292" y="583">Print Engine</text>
+  <g class="lib"><rect x="416" y="572" width="14" height="14" rx="3"/></g>
+  <text class="cap" x="438" y="583">A12 libraries</text>
+  <g class="tp"><rect x="568" y="572" width="14" height="14" rx="3"/></g>
+  <text class="cap" x="590" y="583">third-party libraries</text>
+  <g class="own"><rect x="764" y="572" width="14" height="14" rx="3"/></g>
+  <text class="cap" x="786" y="583">the project's own code</text>
+</svg>

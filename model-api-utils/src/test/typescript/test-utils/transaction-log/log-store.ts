@@ -29,7 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import type { Segment } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PartialCalculation, Segment } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	DisplayType,
 	ElementType,
@@ -47,8 +47,9 @@ export const emptyTextElementId = "emptyTextElementId123";
 export const calculationElementId = "someCalculation2020";
 export const calculationPropertiesId = "ogm4o3hm53";
 
-export const calculationElement = {
+export const calculationElement: PartialCalculation = {
 	id: "someCalculation2020",
+	name: "myCalculation",
 	type: ElementType.Calculation,
 	calculation: {
 		id: calculationPropertiesId,
@@ -79,7 +80,7 @@ export const calcStoreEntry = TransactionLog.createStoreEntryPrintModelElement(
 
 export const emptyTextStoreEntry = TransactionLog.createStoreEntryPrintModelElement(
 	{},
-	{ id: emptyTextElementId, type: ElementType.Text },
+	{ id: emptyTextElementId, name: "myEmptyText", type: ElementType.Text },
 	"iwqfw124"
 ).storeEntry;
 

@@ -98,7 +98,7 @@ export const BrokenElement = (props: BreakPageRenderProps) => {
 			{pages.map(([pageNumber, offset]) => {
 				const pageRef = pageRefs[pageNumber - 1];
 				return (
-					<Fragment key={`${reference.refId}-${pageNumber}`}>
+					<Fragment key={`${reference.id}-${pageNumber}`}>
 						{pageRef && createPortal(renderElement(offset), pageRef)}
 					</Fragment>
 				);

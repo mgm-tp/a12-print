@@ -2,7 +2,7 @@
   "header": {
     "id": "ExamplePM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "description": "Description",
     "annotations": [
       {
@@ -11,11 +11,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "labels": [],
@@ -785,7 +785,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_031fc"
       },
       {
         "id": "BX0hXp_gwyli3IRV1EfL9",
@@ -812,7 +813,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_26d52"
       },
       {
         "id": "UsT4dhJtfd06vJw4n_dPG",
@@ -827,7 +829,8 @@
               "operation": "[ExampleDM/example/repeatable/numberField]"
             }
           ]
-        }
+        },
+        "name": "Calculation"
       },
       {
         "id": "-Ulut4pvO9IS5G3h-exCt",
@@ -868,7 +871,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_32902"
       },
       {
         "id": "mkC_2EVhoWIpXB3wVh_H4",
@@ -909,7 +913,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_2e984"
       },
       {
         "id": "IkII1pjO76A4iIuVg8kwT",
@@ -950,7 +955,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_1374c"
       },
       {
         "id": "weFGblwjbIRbJ9NOS_a9T",
@@ -990,7 +996,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_b697e"
       },
       {
         "id": "PU0JMRJCOEbzNh4RLSJIS",
@@ -1031,7 +1038,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_35a9e"
       },
       {
         "id": "wpZh289lkUyRfq1VJ4m-H",
@@ -1072,7 +1080,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_f50df"
       },
       {
         "id": "SvCw-DJQBSLsvua8yu4jp",
@@ -1282,7 +1291,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_90dfc"
       },
       {
         "id": "huoc9JSP-7yB10U2Frm1o",
@@ -1407,7 +1417,8 @@
             "value": "Solid",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "BoundingBox_9ec01"
       },
       {
         "id": "lsaVs_mvOHFfILpnZ8xMv",
@@ -1448,7 +1459,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_e5c86"
       },
       {
         "id": "pz64CoYFzrCHoGstbqcd0",
@@ -1593,7 +1605,8 @@
             "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
             "source": "DEFAULT"
           }
-        }
+        },
+        "name": "Table_7cbc4"
       },
       {
         "id": "-LRSCZiUX4SMmaK6jtzOp",
@@ -1620,7 +1633,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_a1fe8"
       },
       {
         "id": "MHm9nfU7NvjzE-2wQIKHd",
@@ -1693,7 +1707,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Expression_84442"
       },
       {
         "id": "D30cKo58UIKNokMm_89AD",
@@ -1742,7 +1757,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_5f419"
       },
       {
         "id": "BhqdqRgPgWu2UeE2qASHs",
@@ -1769,7 +1785,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_225db"
       },
       {
         "id": "73VbD0tC0_yp7mLi7GKlV",
@@ -1784,7 +1801,8 @@
               "operation": "[ExampleDM/example/numberField]"
             }
           ]
-        }
+        },
+        "name": "Calculation"
       },
       {
         "id": "ZwjdO_qAsqbHDVEDt52hS",
@@ -1850,7 +1868,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Expression_2c4e2"
       },
       {
         "id": "iSeplYMKaX5UVTojvezCj",
@@ -1978,7 +1997,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_12e01"
       },
       {
         "id": "vcTmb94xaknclPTghb412",
@@ -2059,7 +2079,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "BoundingBox_10e60"
       },
       {
         "id": "ikh0WGnQ7Fja6ZSI8sLnp",
@@ -2099,7 +2120,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_67679"
       },
       {
         "id": "hAwLgFz8CBdrRwIyBGyg6",
@@ -2180,7 +2202,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "BoundingBox_3a4b6"
       },
       {
         "id": "JSa9ncb2UsO3LiXJ-zZv_",
@@ -2220,7 +2243,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_d5c8c"
       },
       {
         "id": "mEBVQYjOcQZFEuwoIItae",
@@ -2412,7 +2436,8 @@
             "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
             "source": "DEFAULT"
           }
-        }
+        },
+        "name": "Listing_5f3d0"
       },
       {
         "id": "DF1g7QkMX1UVUnI-_8O83",
@@ -2446,7 +2471,8 @@
               "refId": "CPaMV8_eGAVsx6FVKAqCN"
             }
           ]
-        }
+        },
+        "name": "Switch"
       },
       {
         "id": "q7wX5pKul-lu-EkRRFCu5",
@@ -2574,7 +2600,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_eaf15"
       },
       {
         "id": "pKKSioPgn-LPwxG-JH_E8",
@@ -2661,7 +2688,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_a3b6d"
       },
       {
         "id": "cERLQKuP092gdnliwDzeu",
@@ -2701,7 +2729,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_4d656"
       },
       {
         "id": "VB5GHijCVmz2iQwJhgKVd",
@@ -2741,7 +2770,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_ba89c"
       },
       {
         "id": "CPaMV8_eGAVsx6FVKAqCN",
@@ -2869,7 +2899,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_391df"
       },
       {
         "id": "P_OGODQD4Eq1IQDB9RABC",
@@ -2909,7 +2940,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_b7e1d"
       },
       {
         "id": "HzlpDlhgDIOFn9wOenrlE",
@@ -2936,7 +2968,8 @@
             "model": "ExampleDM",
             "path": "/example/imageField/content"
           }
-        }
+        },
+        "name": "Image_dd1af"
       },
       {
         "id": "gabk17Zv2sM4hq4zC6u4B",
@@ -2976,7 +3009,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_d3365"
       },
       {
         "id": "GgSD44nHkVW7MnRl8mn_n",
@@ -3026,15 +3060,18 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_80270"
       },
       {
         "id": "JjjQgpJgLixNKYBPK1GVr",
-        "type": "PageNumber"
+        "type": "PageNumber",
+        "name": "PageNumber_c8478"
       },
       {
         "id": "QkT2I7F4hI0gT66cct8yK",
-        "type": "PageNumberTotal"
+        "type": "PageNumberTotal",
+        "name": "PageNumberTotal_ddfa0"
       },
       {
         "id": "PTyLG-GIYgUoybEMdgERZ",
@@ -3075,7 +3112,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_80dba"
       }
     ],
     "textStyles": {

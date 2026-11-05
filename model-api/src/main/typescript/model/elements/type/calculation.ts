@@ -41,6 +41,9 @@ export interface Calculation extends PrintModelElement {
 }
 
 export interface CalculationProperties extends PrintModelEntity {
+	/**
+	 * @deprecated Use {@link PrintModelElement.name} instead. This property will be removed in the next major release.
+	 */
 	readonly name: string;
 	readonly model: string;
 	readonly fieldType?: FieldType;

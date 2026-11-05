@@ -1,0 +1,238 @@
+{
+  "header": {
+    "id": "ChartBarPM",
+    "modelType": "print",
+    "modelVersion": "4.1.0",
+    "locales": [
+      {
+        "code": "de"
+      }
+    ],
+    "labels": [],
+    "annotations": [
+      {
+        "name": "roles",
+        "value": "admin,guest"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "4.1.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "4.1.0-rc.1"
+      }
+    ],
+    "modelReferences": [
+      {
+        "alias": "ChartDM",
+        "modelType": "document",
+        "purpose": "data binding",
+        "reference": "ChartDM"
+      }
+    ],
+    "description": "Test Beschreibung"
+  },
+  "content": {
+    "id": "ChartBarPM",
+    "general": {
+      "id": "ID_171b1295-8899-4138-aed0-74c5e72de1c6",
+      "metadata": {
+        "id": "ID_0df0e08a-fec0-4d5b-8d4a-bc5fdf0dfacb",
+        "titleComputation": [
+          {
+            "id": "pFsrC6Pk8whd5Rgt43RqP",
+            "operation": "\"Test Titel\""
+          }
+        ],
+        "descriptionComputation": [
+          {
+            "id": "9GMIGeShI32Ia-VbGQ9dJ",
+            "operation": "\"Test Beschreibung\""
+          }
+        ],
+        "languageComputation": [
+          {
+            "id": "Kx4THFAXnEM0GTYL83cIS",
+            "operation": "\"DE\""
+          }
+        ],
+        "authorComputation": [
+          {
+            "id": "pN5wCfuzcgAF_cMWtltOV",
+            "operation": "\"Test Autor\""
+          }
+        ]
+      },
+      "segmentDefaults": {
+        "id": "ID_86c9ec7b-ef77-4970-8a46-356343c82058",
+        "fontSize": 12,
+        "model": "ChartDM"
+      },
+      "runtimeVariables": [],
+      "textStyles": [
+        {
+          "id": "ID_b5e97301-3067-4399-9432-6826a5bbf616"
+        }
+      ],
+      "structure": [
+        {
+          "id": "ID_1d4dd3ec-5125-4b0d-96ef-80a665739e8b"
+        }
+      ],
+      "sections": [],
+      "watermarks": []
+    },
+    "segments": {
+      "id": "ID_858042c7-ab46-47ac-80fb-a0b2fc0a8d14",
+      "definitions": [
+        {
+          "id": "ID_1d4dd3ec-5125-4b0d-96ef-80a665739e8b",
+          "title": "Erste Seite",
+          "type": "Default",
+          "defaultSegment": {
+            "id": "ID_529d5de5-dd2e-45eb-a345-315f3f4e177e",
+            "pageOrientation": "Portrait"
+          },
+          "elementReferences": [
+            {
+              "id": "ID_a4136398-d28f-4652-8549-3604796b7b4d",
+              "refId": "aymJotzgBFBPVVuf7079",
+              "position": {
+                "id": "ID_f25b9c58-cb28-471d-9fdc-b0c050cc1a37",
+                "x": {
+                  "id": "ID_2663ec41-e7b7-424e-8afb-6267c5ba7444",
+                  "value": 2,
+                  "unit": "Millimeter"
+                },
+                "y": {
+                  "id": "ID_52b73503-755b-47e7-929e-46841a71eeab",
+                  "value": 15,
+                  "unit": "Millimeter"
+                }
+              },
+              "dimensions": {
+                "id": "ID_5056327e-3071-4ac7-9d0a-c4a643d63924",
+                "minWidth": {
+                  "id": "ID_384cc788-8da1-43b4-9aad-8b2963d9aa9e",
+                  "value": 5,
+                  "unit": "Millimeter"
+                },
+                "minHeight": {
+                  "id": "ID_113733a8-b189-4535-893a-565ef4e2add4",
+                  "value": 10,
+                  "unit": "Millimeter"
+                }
+              },
+              "hideConditions": [],
+              "screenReadingOrder": {
+                "id": "ID_d63ce144-5471-4a68-ae5e-43c2ccf2e794",
+                "screenReadingOrderWeight": 0
+              },
+              "pageBreakBehavior": {
+                "id": "l7R4-WH9XfjSXOcLc-yzB",
+                "source": "DEFAULT",
+                "path": "/content/segments/definitions/elementReferences/pageBreakBehavior/value/"
+              }
+            }
+          ],
+          "dataContexts": []
+        }
+      ],
+      "references": []
+    },
+    "elementDefinitions": [
+      {
+        "id": "aymJotzgBFBPVVuf7079",
+        "type": "BarChart",
+        "borderProperties": {
+          "id": "ID_750481b7-31bf-462a-9bc6-6636d4f0896d",
+          "borderWidth": {
+            "id": "cZoCW9LNMR8zOROjVosmC",
+            "source": "INPUT",
+            "value": 3.75,
+            "path": "/content/elementDefinitions/borderProperties/borderWidth/value/"
+          },
+          "borderColor": {
+            "id": "SkcvkoFRKiNWUxN0-S8_Z",
+            "source": "INPUT",
+            "value": "#0000ff",
+            "path": "/content/elementDefinitions/borderProperties/borderColor/value/"
+          },
+          "borderStyle": {
+            "id": "s9ygrlxwlsn9-gxcyes53",
+            "source": "INPUT",
+            "value": "Dashed",
+            "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
+          }
+        },
+        "barChart": {
+          "id": "ID_709c51ab-cce0-4a82-82dd-e6bc96e421d4",
+          "model": "ChartDM",
+          "basePath": "/general/repeatable",
+          "title": {
+            "id": "ID_bf1fd9e5-06f6-47fa-a646-691ccf5ae81a",
+            "path": "/content/elementDefinitions/barChart/title/value/",
+            "source": "UNSET"
+          },
+          "dimensions": {
+            "id": "ID_478ff922-74ca-4abf-b7a6-ca65d8b4c991",
+            "width": {
+              "id": "ID_81e49384-b25a-4df9-a6b8-e818fa48965e",
+              "value": 175,
+              "unit": "Millimeter"
+            },
+            "height": {
+              "id": "ID_a77049a1-3d2c-4b60-a624-32a97f42da18",
+              "value": 100,
+              "unit": "Millimeter"
+            }
+          },
+          "labelX": {
+            "id": "ID_cc778cf3-ffaa-455d-893b-43144a1b3b39",
+            "value": "X",
+            "path": "/content/elementDefinitions/barChart/labelX/value/",
+            "source": "INPUT"
+          },
+          "labelY": {
+            "id": "ID_c46ee59f-f1b8-469a-bfc1-6544867f03a9",
+            "value": "Y",
+            "path": "/content/elementDefinitions/barChart/labelY/value/",
+            "source": "INPUT"
+          },
+          "orientation": "Vertical",
+          "data": [
+            {
+              "id": "ID_9fb1689b-b27a-4f1f-8d13-c7da93b1bb24",
+              "valueField": "/general/repeatable/integer_field",
+              "keyField": "/general/repeatable/string_field",
+              "seriesName": "series1",
+              "color": "#ff0000"
+            },
+            {
+              "id": "ID_50c372b8-b86e-4f5e-9217-26ac57c0cf5b",
+              "valueField": "/general/repeatable/integer_field",
+              "labelIsNumeration": true,
+              "seriesName": "series2",
+              "color": "#0000FF"
+            }
+          ]
+        },
+        "name": "BarChart_7dff4"
+      }
+    ],
+    "textStyles": {
+      "id": "ID_e72d1c74-8170-4f25-9825-6db37e0545b0",
+      "definitions": [
+        {
+          "id": "ID_b5e97301-3067-4399-9432-6826a5bbf616",
+          "name": "Open Sans@4.0 within 18.0",
+          "font": "Open Sans",
+          "fontSize": 4,
+          "lineHeight": 18,
+          "semantic": "P"
+        }
+      ]
+    }
+  }
+}

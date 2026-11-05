@@ -53,7 +53,7 @@ export const Image = ({ element, styles }: ImageProps) => {
 	const dispatch = useDispatch();
 
 	if (!PartialImage.isInstance(element)) {
-		throw new Error(`Expected element of type Image but got ${element.type}`);
+		throw new Error(`Expected element of type Image but got ${element?.type}`);
 	}
 	const image = element.image;
 	const type = image?.imageSrcType;

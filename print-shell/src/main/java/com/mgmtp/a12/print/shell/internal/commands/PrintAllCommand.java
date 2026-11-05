@@ -34,6 +34,7 @@ package com.mgmtp.a12.print.shell.internal.commands;
 import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.runtime.pdfBox.PdfBoxPrintEngine;
+import com.mgmtp.a12.print.model.api.model.ModelSubTypeAccessor;
 import com.mgmtp.a12.print.shell.internal.service.PrintService;
 import com.mgmtp.a12.print.shell.internal.workspace.WorkspaceBuilder;
 import com.mgmtp.a12.print.workspace.internal.handler.WorkspaceHandler;
@@ -49,7 +50,6 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-
 
 @Slf4j
 @CommandLine.Command(
@@ -116,20 +116,23 @@ public class PrintAllCommand implements Runnable {
 		);
 
 		final var modelFileElements = workspaceHandler.getModelFileElementsByType("print");
-		modelFileElements.forEach(modelFileElement -> {
-			if (filter.isEmpty() || Pattern.compile(filter).asMatchPredicate().test(modelFileElement.getModelHeader().getId())) {
-				Map<String, List<String>> possibleDocuments = workspaceHandler.getPossibleDocuments(modelFileElement.getModelHeader().getId());
-				Stream<DocumentV2> documents = possibleDocuments.isEmpty()
-					? Stream.of((DocumentV2) null)
-					: possibleDocuments.values().stream()
-					.flatMap(Collection::stream)
-					.map(workspaceHandler::getDocument)
-					.flatMap(Optional::stream);
+		modelFileElements
+			.stream().filter(modelFileElement -> !ModelSubTypeAccessor.isFragmentModel(modelFileElement.getModelHeader()))
+			.forEach(modelFileElement -> {
+				if (filter.isEmpty() || Pattern.compile(filter).asMatchPredicate().test(modelFileElement.getModelHeader().getId())) {
+					Map<String, List<String>> possibleDocuments = workspaceHandler.getPossibleDocuments(modelFileElement.getModelHeader().getId());
+					Stream<DocumentV2> documents = possibleDocuments.isEmpty()
+						? Stream.of((DocumentV2) null)
+						: possibleDocuments.values().stream()
+						.flatMap(Collection::stream)
+						.map(workspaceHandler::getDocument)
+						.flatMap(Optional::stream);
 
-				documents.forEach(doc -> printService.print(printEngine, modelFileElement, doc, logLevel, createLogFile, timeZone, locale, suffix));
-			} else {
-				log.info("The print model {} is skipped because the filter is not matching", modelFileElement.getModelHeader().getId());
+					documents.forEach(doc -> printService.print(printEngine, modelFileElement, doc, logLevel, createLogFile, timeZone, locale, suffix));
+				} else {
+					log.info("The print model {} is skipped because the filter is not matching", modelFileElement.getModelHeader().getId());
+				}
 			}
-		});
+		);
 	}
 }

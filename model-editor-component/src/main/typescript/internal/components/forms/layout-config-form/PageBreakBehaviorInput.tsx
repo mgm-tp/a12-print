@@ -50,6 +50,7 @@ import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 import { changeInputSource, changeInputValue } from "../../../utils/input-source-utils.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
+import { ElementsUtils } from "../../../utils/index.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../../redux/index.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
 import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
@@ -110,19 +111,20 @@ export const PageBreakBehaviorInput = ({ reference, infoMessage }: PageBreakBeha
 
 	const onSourceChange = React.useCallback(
 		(source: PossibleInputSource, path: string) => {
-			const inputSource = changeInputSource(source, path, reference.pageBreakBehavior);
+			let inheritedFrom: string | undefined;
 
 			if (source === PossibleInputSource.INHERITED) {
-				const referenceId = currentWrapperContext?.placeableReference?.id;
-				if (!referenceId) {
+				const wrapperPlaceable = currentWrapperContext?.placeableReference;
+				if (!wrapperPlaceable?.id) {
 					throw new Error("PageBreakBehaviorInput: No placeable reference selected for INHERITED source.");
 				}
-				inputSource.reference = referenceId;
-			} else {
-				inputSource.reference = undefined;
+				// synthetic fragment stage placement has no pageBreakBehavior, resolved via the trace instead
+				inheritedFrom = ElementsUtils.hasResolvablePageBreakBehavior(wrapperPlaceable)
+					? wrapperPlaceable.id
+					: undefined;
 			}
 
-			updatePageBreakBehavior(inputSource);
+			updatePageBreakBehavior(changeInputSource(source, path, reference.pageBreakBehavior, inheritedFrom));
 		},
 		[reference.pageBreakBehavior, updatePageBreakBehavior, currentWrapperContext]
 	);

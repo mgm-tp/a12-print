@@ -2,7 +2,7 @@
   "header": {
     "id": "ImagePM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -527,7 +527,8 @@
             "id": "ID_65608ef2-9a74-4a49-a7ea-5271d3eb2965",
             "resourceName": "Image1_orig_9d15a0c8.jpg"
           }
-        }
+        },
+        "name": "Image_99180"
       },
       {
         "id": "aymJsdadBFBPVVufjeG4o",
@@ -564,7 +565,8 @@
             "model": "ImageDM",
             "path": "/general/img_string"
           }
-        }
+        },
+        "name": "Image_efbf7"
       },
       {
         "id": "aymJsdsadsadafgfjeG4o",
@@ -601,7 +603,8 @@
             "model": "ImageDM",
             "path": "/general/img_attachment"
           }
-        }
+        },
+        "name": "Image_4fc1d"
       },
       {
         "id": "5nBOjLH2uykqMULmYfiwb",
@@ -638,7 +641,8 @@
             "model": "ImageDM",
             "path": "/general/img_attachment_2/attachment_id"
           }
-        }
+        },
+        "name": "Image_8575b"
       },
       {
         "id": "qPS2amL9JuID0Ptd9nXm9",
@@ -678,7 +682,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_d59b7"
       },
       {
         "id": "89gMCw7F3uCTOmZZohPPj",
@@ -700,7 +705,8 @@
             "model": "ImageDM",
             "path": "/general/empty_img_attachment/content"
           }
-        }
+        },
+        "name": "Image_e6e97"
       },
       {
         "id": "PSiLTd5ZJinPJu9ig52vw",
@@ -740,7 +746,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_c3fb6"
       },
       {
         "id": "J8NUX7OayvhzYjlVzfjEK",
@@ -762,7 +769,8 @@
             "model": "ImageDM",
             "path": "/general/empty_img_attachment/content"
           }
-        }
+        },
+        "name": "Image_a9020"
       },
       {
         "id": "kjzMVeyyqsz_2QPJfx0-x",
@@ -788,7 +796,8 @@
             "id": "gQJ1O4WwX9fRDReT24bjT",
             "resourceName": "referenceImage_36309588.jpg"
           }
-        }
+        },
+        "name": "Image_7818c"
       }
     ],
     "textStyles": {

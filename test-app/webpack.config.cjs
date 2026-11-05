@@ -42,6 +42,8 @@ const { DefinePlugin } = require("webpack");
 
 const context = Path.join(__dirname);
 
+process.env.WEBPACK_DEV_SERVER_BASE_PORT ??= "9012";
+
 module.exports = env => {
 	return {
 		mode: "development",

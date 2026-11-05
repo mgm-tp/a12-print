@@ -66,6 +66,7 @@ import type {
 	SegmentReference,
 	TextStyle,
 	Watermark,
+	Fragment,
 } from "./print-model.js";
 import { SegmentType } from "./print-model.js";
 import type { AnyContainerElement, AnyTopLevelContainerElement } from "./reference/reference-container.js";
@@ -88,6 +89,7 @@ export type PartialSegment = DeepPartial<Segment>;
 export type PartialSegmentReference = DeepPartial<SegmentReference>;
 export type PartialSection = DeepPartial<Section>;
 export type PartialWatermark = DeepPartial<Watermark>;
+export type PartialFragment = DeepPartial<Fragment>;
 export type PartialTextStyle = DeepPartial<TextStyle>;
 
 export function isPartialSegment(entry: PrintModelEntity): entry is PartialSegment {
@@ -99,11 +101,11 @@ export function isPartialSegment(entry: PrintModelEntity): entry is PartialSegme
 }
 
 export function isPartialSection(entry: PrintModelEntity): entry is PartialSection {
-	return "pageOrientation" in entry && "sectionUsage" in entry;
+	return "pageOrientation" in entry && "headerHeight" in entry;
 }
 
 export function isPartialWatermark(entry: PrintModelEntity): entry is PartialWatermark {
-	return "pageOrientation" in entry && !("sectionUsage" in entry);
+	return "pageOrientation" in entry && !("headerHeight" in entry);
 }
 
 // Element partial type
@@ -153,117 +155,120 @@ export function isPartialValidPlaceableReference(
 }
 
 export namespace PartialText {
-	export function isInstance(element: PrintModelElement): element is PartialText {
-		return element.type === ElementType.Text;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialText {
+		return !!element && element.type === ElementType.Text;
 	}
 }
 
 export namespace PartialTable {
-	export function isInstance(element: PrintModelElement): element is PartialTable {
-		return element.type === ElementType.Table;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialTable {
+		return !!element && element.type === ElementType.Table;
 	}
 }
 
 export namespace PartialTableLayout {
-	export function isInstance(element: PrintModelElement): element is PartialTableLayout {
-		return element.type === ElementType.TableLayout;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialTableLayout {
+		return !!element && element.type === ElementType.TableLayout;
 	}
 }
 
 export namespace PartialPieChart {
-	export function isInstance(element: PrintModelElement): element is PartialPieChart {
-		return element.type === ElementType.PieChart;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialPieChart {
+		return !!element && element.type === ElementType.PieChart;
 	}
 }
 
 export namespace PartialPageNumber {
-	export function isInstance(element: PrintModelElement): element is PartialPageNumber {
-		return element.type === ElementType.PageNumber;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialPageNumber {
+		return !!element && element.type === ElementType.PageNumber;
 	}
 }
 
 export namespace PartialPageNumberTotal {
-	export function isInstance(element: PrintModelElement): element is PartialPageNumberTotal {
-		return element.type === ElementType.PageNumberTotal;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialPageNumberTotal {
+		return !!element && element.type === ElementType.PageNumberTotal;
 	}
 }
 
 export namespace PartialListing {
-	export function isInstance(element: PrintModelElement): element is PartialListing {
-		return element.type === ElementType.Listing;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialListing {
+		return !!element && element.type === ElementType.Listing;
 	}
 }
 
 export namespace PartialLine {
-	export function isInstance(element: PrintModelElement): element is PartialLine {
-		return element.type === ElementType.Line;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialLine {
+		return !!element && element.type === ElementType.Line;
 	}
 }
 
 export namespace PartialLineChart {
-	export function isInstance(element: PrintModelElement): element is PartialLineChart {
-		return element.type === ElementType.LineChart;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialLineChart {
+		return !!element && element.type === ElementType.LineChart;
 	}
 }
 
 export namespace PartialImage {
-	export function isInstance(element: PrintModelElement): element is PartialImage {
-		return element.type === ElementType.Image;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialImage {
+		return !!element && element.type === ElementType.Image;
 	}
 }
 
 export namespace PartialField {
-	export function isInstance(element: PrintModelElement): element is PartialField {
-		return element.type === ElementType.Field;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialField {
+		return !!element && element.type === ElementType.Field;
 	}
 }
 
 export namespace PartialExpression {
-	export function isInstance(element: PrintModelElement): element is PartialExpression {
-		return element.type === ElementType.Expression;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialExpression {
+		return !!element && element.type === ElementType.Expression;
 	}
 }
 
 export namespace PartialCalculation {
-	export function isInstance(element: PrintModelElement): element is PartialCalculation {
-		return element.type === ElementType.Calculation;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialCalculation {
+		return !!element && element.type === ElementType.Calculation;
 	}
 }
 
 export namespace PartialBarChart {
-	export function isInstance(element: PrintModelElement): element is PartialBarChart {
-		return element.type === ElementType.BarChart;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialBarChart {
+		return !!element && element.type === ElementType.BarChart;
 	}
 }
 
 export namespace PartialBoundingBox {
-	export function isInstance(element: PrintModelElement): element is PartialBoundingBox {
-		return element.type === ElementType.BoundingBox;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialBoundingBox {
+		return !!element && element.type === ElementType.BoundingBox;
 	}
 }
 
 export namespace PartialOverride {
-	export function isInstance(element: PrintModelElement): element is PartialOverride {
-		return element.type === ElementType.Override;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialOverride {
+		return !!element && element.type === ElementType.Override;
 	}
 }
 
 export namespace PartialArea {
-	export function isInstance(element: PrintModelElement): element is PartialArea {
-		return element.type === ElementType.Area;
+	export function isInstance(element: PrintModelElement | undefined): element is PartialArea {
+		return !!element && element.type === ElementType.Area;
 	}
 }
 
 export namespace PartialSwitch {
-	export function isInstance(element: PartialAnyPrintModelElement): element is PartialSwitch {
-		return element.type === ElementType.Switch;
+	export function isInstance(element: PartialAnyPrintModelElement | undefined): element is PartialSwitch {
+		return !!element && element.type === ElementType.Switch;
 	}
 }
 
 export namespace PartialAnyTopLevelContainerElement {
 	export function isInstance(
-		element: PartialAnyPrintModelElement | PartialAnyTopLevelContainerElement
+		element: PartialAnyPrintModelElement | PartialAnyTopLevelContainerElement | undefined
 	): element is PartialAnyTopLevelContainerElement {
+		if (!element) {
+			return false;
+		}
 		if (isPartialSegment(element) || isPartialSection(element) || isPartialWatermark(element)) {
 			return true;
 		}

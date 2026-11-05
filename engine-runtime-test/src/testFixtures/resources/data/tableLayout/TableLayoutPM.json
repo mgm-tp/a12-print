@@ -2,7 +2,7 @@
   "header": {
     "id": "TableLayoutPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -163,7 +163,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_31093"
       },
       {
         "id": "text1",
@@ -212,7 +213,8 @@
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
             "reference": "tableLayout1"
           }
-        }
+        },
+        "name": "Text_3a952"
       },
       {
         "id": "Bh8Qr9ZG9283i87Z75976",
@@ -231,7 +233,8 @@
               "operation": "[TableLayoutDM/general/StringField2]"
             }
           ]
-        }
+        },
+        "name": "Bh8Qr9ZG9283i87Z75976"
       },
       {
         "id": "text2",
@@ -280,7 +283,8 @@
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
             "reference": "tableLayout1"
           }
-        }
+        },
+        "name": "Text_6cbc4"
       },
       {
         "id": "text3",
@@ -336,7 +340,8 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
-        }
+        },
+        "name": "Text_e7aa1"
       },
       {
         "id": "tableLayout1",
@@ -422,7 +427,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "TableLayout_ec6e0"
       },
       {
         "id": "cEgCQVzGu7vZQUekRFSjG",
@@ -449,7 +455,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_6909f"
       },
       {
         "id": "XLZj_gEvnx5s3DqouFs1z",
@@ -473,7 +480,8 @@
               "precondition": "FieldFilled(TableLayoutDM/general/StringField3)"
             }
           ]
-        }
+        },
+        "name": "Calculation"
       }
     ],
     "textStyles": {

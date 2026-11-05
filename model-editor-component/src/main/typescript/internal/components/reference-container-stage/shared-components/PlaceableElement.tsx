@@ -39,6 +39,7 @@ import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { LayoutElementBadgeWrapper } from "../../element-container/LayoutElementBadgeWrapper.js";
 
 import { StylePlaceableElement } from "./PlaceableElement.styled.js";
+import { StyledPlacementRing } from "./Base.styled.js";
 
 interface PlaceableElementProps extends Omit<React.DOMAttributes<HTMLDivElement>, "onClick" | "onDoubleClick"> {
 	reference: PartialValidPlaceableReference;
@@ -88,6 +89,13 @@ export const PlaceableElement: React.FunctionComponent<PlaceableElementProps> = 
 			onDoubleClick={onDoubleClickReference}
 		>
 			<LayoutElementBadgeWrapper placeableRef={reference} />
+			{/* The layout stage knows no collisions and always draws a border. */}
+			<StyledPlacementRing
+				hasElement={Boolean(element)}
+				highlight={Boolean(highlight)}
+				hasCollision={false}
+				showBorders
+			/>
 			{children}
 		</StylePlaceableElement>
 	);

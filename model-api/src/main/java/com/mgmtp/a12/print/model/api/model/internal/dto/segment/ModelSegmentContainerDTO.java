@@ -32,14 +32,16 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.segment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tools.jackson.databind.annotation.JsonDeserialize;
-import com.mgmtp.a12.print.model.api.model.reference.PrintModelReference;
-import com.mgmtp.a12.print.model.api.model.segment.ModelSegmentContainer;
-import com.mgmtp.a12.print.model.api.model.segment.ModelSegment;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelEntityDto;
+import com.mgmtp.a12.print.model.api.model.internal.dto.reference.FragmentReferenceDTO;
 import com.mgmtp.a12.print.model.api.model.internal.dto.reference.PrintModelReferenceDto;
+import com.mgmtp.a12.print.model.api.model.reference.FragmentReference;
+import com.mgmtp.a12.print.model.api.model.reference.PrintModelReference;
+import com.mgmtp.a12.print.model.api.model.segment.ModelSegment;
+import com.mgmtp.a12.print.model.api.model.segment.ModelSegmentContainer;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,4 +60,9 @@ public class ModelSegmentContainerDTO extends PrintModelEntityDto implements Mod
 	@JsonDeserialize(contentAs = PrintModelReferenceDto.class)
 	@Builder.Default
 	List<PrintModelReference> references = new ArrayList<>();
+
+	@JsonProperty("fragmentReferences")
+	@JsonDeserialize(contentAs = FragmentReferenceDTO.class)
+	@Builder.Default
+	List<FragmentReference> fragmentReferences = new ArrayList<>();
 }

@@ -30,6 +30,16 @@ exports[`SchemaContent should render correctly 1`] = `
   max-width: unset;
 }
 
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c5 {
+  color: inherit;
+}
+
+.c7 {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
 .c6 {
   display: inline;
 }
@@ -103,6 +113,11 @@ exports[`SchemaContent should render correctly 1`] = `
   min-height: 36px;
 }
 
+.c8 {
+  display: flex;
+  gap: 2px;
+}
+
 @media (pointer: coarse) {
   .c1:active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -146,6 +161,8 @@ exports[`SchemaContent should render correctly 1`] = `
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               keyboard_arrow_right
             </span>
@@ -158,6 +175,15 @@ exports[`SchemaContent should render correctly 1`] = `
           Document Model References
         </div>
       </div>
+      <div
+        class="c7 collapsiblePanel__add-ons"
+        data-role="collapsiblePanel__add-ons"
+      >
+        <div
+          class="c8"
+          contenteditable="false"
+        />
+      </div>
     </div>
   </div>
   <div
@@ -185,6 +211,8 @@ exports[`SchemaContent should render correctly 1`] = `
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               keyboard_arrow_right
             </span>
@@ -197,6 +225,15 @@ exports[`SchemaContent should render correctly 1`] = `
           Print Model References
         </div>
       </div>
+      <div
+        class="c7 collapsiblePanel__add-ons"
+        data-role="collapsiblePanel__add-ons"
+      >
+        <div
+          class="c8"
+          contenteditable="false"
+        />
+      </div>
     </div>
   </div>
   <div
@@ -224,6 +261,58 @@ exports[`SchemaContent should render correctly 1`] = `
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
+            >
+              keyboard_arrow_right
+            </span>
+          </i>
+        </div>
+        <div
+          class="c6 collapsiblePanel__label--text"
+          data-role="collapsible-panel-title"
+        >
+          Fragment Model References
+        </div>
+      </div>
+      <div
+        class="c7 collapsiblePanel__add-ons"
+        data-role="collapsiblePanel__add-ons"
+      >
+        <div
+          class="c8"
+          contenteditable="false"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="c0 collapsiblePanel"
+    data-role="collapsible-panel"
+  >
+    <div
+      class="c1 collapsiblePanel__title"
+      data-role="collapsible-panel-header"
+    >
+      <div
+        aria-expanded="false"
+        class="c2 collapsiblePanel__label"
+        data-role="collapsible-panel-title-wrapper"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="c3 collapsiblePanel__indicator"
+          data-role="collapsible-panel-indicator"
+        >
+          <i
+            class="c4 c5 plasma-icon"
+            data-role="plasma-icon"
+          >
+            <span
+              aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               keyboard_arrow_right
             </span>
@@ -236,13 +325,22 @@ exports[`SchemaContent should render correctly 1`] = `
           Typesetting Model References
         </div>
       </div>
+      <div
+        class="c7 collapsiblePanel__add-ons"
+        data-role="collapsiblePanel__add-ons"
+      >
+        <div
+          class="c8"
+          contenteditable="false"
+        />
+      </div>
     </div>
   </div>
 </div>
 `;
 
 exports[`SchemaContent should render correctly 2`] = `
-.c33 {
+.c36 {
   display: inline-block;
   font-size: 0;
   vertical-align: middle;
@@ -278,11 +376,11 @@ exports[`SchemaContent should render correctly 2`] = `
   max-width: unset;
 }
 
-.c32 .c5 {
+:where(.c35) .c5 {
   color: inherit;
 }
 
-.c17 {
+.c19 {
   align-items: center;
   border: 2px solid transparent;
   cursor: pointer;
@@ -308,45 +406,45 @@ exports[`SchemaContent should render correctly 2`] = `
   cursor: default;
 }
 
-.c17 .c4 {
+.c19 .c4 {
   user-select: none;
   -webkit-user-select: none;
 }
 
-.c17 .c4 {
+.c19 .c4 {
   color: inherit;
 }
 
-.c17.c17.c17:-moz-focusring {
+.c19.c19.c19:-moz-focusring {
   outline: none;
 }
 
-.c17.c17 .c4 {
+.c19.c19 .c4 {
   color: inherit;
 }
 
-.c32 .c17 .c4 {
+.c35 .c19 .c4 {
   font-size: 1.25rem;
 }
 
-.c32 .c17.c17 {
+:where(.c35 .c19.c19 ) {
   color: #a9b3bc;
   width: auto;
   height: auto;
   min-height: 0;
 }
 
-.h_inlineBlock.h_middleAlign .c17.c17 {
+.h_inlineBlock.h_middleAlign .c19.c19 {
   display: block;
   height: auto;
   min-height: 0;
 }
 
-.h_inlineBlock.h_middleAlign .c17.c17 >.c4 {
+.h_inlineBlock.h_middleAlign .c19.c19 >.c4 {
   display: block;
 }
 
-.c29 {
+.c32 {
   align-items: center;
   border: 2px solid transparent;
   cursor: pointer;
@@ -372,20 +470,20 @@ exports[`SchemaContent should render correctly 2`] = `
   color: #0568ae;
 }
 
-.c29 .c4 {
+.c32 .c4 {
   user-select: none;
   -webkit-user-select: none;
 }
 
-.c29 .c4 {
+.c32 .c4 {
   color: inherit;
 }
 
-.c29 .c4 {
+.c32 .c4 {
   font-size: inherit;
 }
 
-.c29:not(:disabled):focus {
+.c32:not(:disabled):focus {
   outline: 1px dotted #333;
   background-color: transparent;
   box-shadow: none;
@@ -393,7 +491,7 @@ exports[`SchemaContent should render correctly 2`] = `
   border: 2px solid #d50075;
 }
 
-.c32 .c29.c29 {
+.c35 .c32.c32 {
   font-size: 1.25rem;
   height: fit-content;
   min-height: 0;
@@ -401,30 +499,32 @@ exports[`SchemaContent should render correctly 2`] = `
   width: fit-content;
 }
 
-.c32 .c29.c29:not(:active):not(:hover):not(:focus) {
+.c35 .c32.c32:focus .c4 {
   color: inherit;
 }
 
-.c32 .c29.c29:not(:active):not(:hover):not(:focus) .c4:not(.StyledVariantIconWrapper-sc-aKNbV) {
+:where(.c35) .c32:where(:not(:active):not(:hover):not(:focus)) {
   color: inherit;
 }
 
-.c32 .c29.c29:focus .c4 {
-  color: inherit;
-}
-
-.h_inlineBlock.h_middleAlign .c29.c29 {
+.h_inlineBlock.h_middleAlign .c32.c32 {
   display: block;
   height: auto;
   min-height: 0;
 }
 
-.h_inlineBlock.h_middleAlign .c29.c29 >.c4 {
+.h_inlineBlock.h_middleAlign .c32.c32 >.c4 {
   display: block;
 }
 
-.c7 {
+.c9 {
   color: #4d4d4d;
+}
+
+.c7 {
+  align-items: center;
+  display: flex;
+  gap: 8px;
 }
 
 .c6 {
@@ -500,7 +600,7 @@ exports[`SchemaContent should render correctly 2`] = `
   min-height: 36px;
 }
 
-.c27 {
+.c30 {
   background-color: transparent;
   border: none;
   box-sizing: border-box;
@@ -520,13 +620,13 @@ exports[`SchemaContent should render correctly 2`] = `
   width: 100%;
 }
 
-.c27::placeholder {
+.c30::placeholder {
   font-style: italic;
   color: #596673;
   opacity: 1;
 }
 
-.c25 {
+.c28 {
   background-color: #f1f2f4;
   border: none;
   border-radius: 0;
@@ -542,11 +642,11 @@ exports[`SchemaContent should render correctly 2`] = `
   box-shadow: none;
 }
 
-.c25 .c16 {
+.c28 .c18 {
   border-radius: 0;
 }
 
-.c20 {
+.c23 {
   display: inline-flex;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -555,58 +655,58 @@ exports[`SchemaContent should render correctly 2`] = `
   width: 100%;
 }
 
-.c20 .c22 {
+.c23 .c25 {
   display: flex;
   width: 100%;
 }
 
-.c20 * {
+.c23 * {
   max-width: 100%;
 }
 
-.c10 {
+.c12 {
   box-sizing: border-box;
   display: inline-block;
 }
 
-.c10 .c32 {
+.c12 .c35 {
   align-self: center;
   flex-shrink: 0;
   text-align: right;
   width: 28px;
 }
 
-.c24 {
+.c27 {
   box-sizing: border-box;
   flex-grow: 1;
   width: 100%;
 }
 
-.c24 >.c32 {
+.c27 >.c35 {
   margin: 0 4px 4px 0;
 }
 
-.c31 {
+.c34 {
   box-sizing: border-box;
   display: inline-block;
 }
 
-.c31 >.c32 {
+.c34 >.c35 {
   margin: 0 4px 4px 0;
 }
 
-.c23 {
+.c26 {
   display: inline-flex;
 }
 
-.c23 .c9 {
+.c26 .c11 {
   flex-basis: 160px;
   flex-grow: 1;
   flex-shrink: 1;
   max-width: 100%;
 }
 
-.c26 {
+.c29 {
   border: 0;
   clip: rect(0 0 0 0);
   clip-path: inset(100%);
@@ -617,7 +717,7 @@ exports[`SchemaContent should render correctly 2`] = `
   width: 0;
 }
 
-.c13 {
+.c15 {
   appearance: none;
   background-color: inherit;
   -moz-appearance: none;
@@ -639,21 +739,21 @@ exports[`SchemaContent should render correctly 2`] = `
   cursor: pointer;
 }
 
-.c13.c13.c13 {
+.c15.c15.c15 {
   outline: 1px solid transparent;
 }
 
-.c13::selection {
+.c15::selection {
   background-color: transparent;
 }
 
-.c13::placeholder {
+.c15::placeholder {
   font-style: italic;
   color: #596673;
   opacity: 1;
 }
 
-.c11 {
+.c13 {
   background-color: transparent;
   box-shadow: none;
   border: none;
@@ -666,11 +766,11 @@ exports[`SchemaContent should render correctly 2`] = `
   height: 32px;
 }
 
-.c11:focus {
+.c13:focus {
   outline: none;
 }
 
-.c12 {
+.c14 {
   background-color: #f1f2f4;
   border-radius: inherit;
   box-shadow: 0 1px 0 0 #596673;
@@ -679,18 +779,18 @@ exports[`SchemaContent should render correctly 2`] = `
   position: relative;
 }
 
-.c12:focus-within {
+.c14:focus-within {
   box-shadow: 0 2px 0 0 #d50075;
   outline-offset: 0;
   outline: 1px dotted #333;
 }
 
-.c12 .StyledFieldPrefixWrapper-sc-gvObj>.c4 {
+.c14 .StyledFieldPrefixWrapper-sc-hkShpX>.c4 {
   color: inherit;
   cursor: default;
 }
 
-.c15:after {
+.c17:after {
   align-items: center;
   color: #7F8C9B;
   content: "\\e313";
@@ -712,18 +812,18 @@ exports[`SchemaContent should render correctly 2`] = `
   word-wrap: normal;
 }
 
-.c14 {
+.c16 {
   appearance: none;
   font-style: normal;
   color: #4d4d4d;
   font-size: inherit;
 }
 
-.c14:focus {
+.c16:focus {
   border: none;
 }
 
-.c8 {
+.c10 {
   border-bottom: 1px solid #fff;
   background: #fff;
   display: flex;
@@ -734,11 +834,11 @@ exports[`SchemaContent should render correctly 2`] = `
   z-index: 1;
 }
 
-.c18 {
+.c20 {
   border-bottom: 1px solid #fff;
 }
 
-.c19 {
+.c21 {
   display: flex;
   gap: 5px;
   padding: 10px;
@@ -746,23 +846,38 @@ exports[`SchemaContent should render correctly 2`] = `
   justify-content: space-between;
 }
 
-.c21 {
-  min-width: 40%;
-  max-width: 40%;
+.c22 {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
 }
 
-.c28 {
+.c24 {
+  min-width: 40%;
+  max-width: 40%;
+  flex: 0 1 auto;
+}
+
+.c31 {
   max-width: 45%;
   min-width: 45%;
   word-wrap: break-word;
 }
 
-.c30 {
+.c33 {
   visibility: visibility;
 }
 
+.c8 {
+  display: flex;
+  gap: 2px;
+}
+
 @media (pointer: coarse) {
-  .c29:not(:disabled):active {
+  .c32:not(:disabled):active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     background-color: transparent;
     box-shadow: none;
@@ -772,7 +887,7 @@ exports[`SchemaContent should render correctly 2`] = `
 }
 
 @media (pointer: fine) {
-  .c29:not(:disabled):hover {
+  .c32:not(:disabled):hover {
     background-color: transparent;
     box-shadow: none;
     color: #d50075;
@@ -781,23 +896,23 @@ exports[`SchemaContent should render correctly 2`] = `
 }
 
 @media (pointer: fine) {
-  .c29:hover {
+  .c32:hover {
     outline: 1px solid transparent;
   }
 }
 
 @media (pointer: coarse) {
-  .c32 .c29.c29:active {
+  .c35 .c32.c32:active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
 
-  .c32 .c29.c29:active .c4 {
+  .c35 .c32.c32:active .c4 {
     color: inherit;
   }
 }
 
 @media (pointer: fine) {
-  .c32 .c29.c29:hover .c4 {
+  .c35 .c32.c32:hover .c4 {
     color: inherit;
   }
 }
@@ -820,20 +935,20 @@ exports[`SchemaContent should render correctly 2`] = `
 }
 
 @media (pointer: coarse) {
-  .c12:active {
+  .c14:active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     box-shadow: 0 2px 0 0 #d50075;
   }
 }
 
 @media (pointer: fine) {
-  .c12:hover {
+  .c14:hover {
     box-shadow: 0 2px 0 0 #d50075;
   }
 }
 
 @media (pointer: coarse) {
-  .c14:active {
+  .c16:active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     background-color: #d50075;
     color: #fff;
@@ -841,7 +956,7 @@ exports[`SchemaContent should render correctly 2`] = `
 }
 
 @media (pointer: fine) {
-  .c14:hover {
+  .c16:hover {
     background-color: #d50075;
     color: #fff;
   }
@@ -873,6 +988,8 @@ exports[`SchemaContent should render correctly 2`] = `
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               keyboard_arrow_down
             </span>
@@ -885,29 +1002,40 @@ exports[`SchemaContent should render correctly 2`] = `
           Document Model References
         </div>
       </div>
+      <div
+        class="c7 collapsiblePanel__add-ons"
+        data-role="collapsiblePanel__add-ons"
+      >
+        <div
+          class="c8"
+          contenteditable="false"
+        />
+      </div>
     </div>
     <div
-      class="c7 collapsiblePanel__content"
+      class="c9 collapsiblePanel__content"
       data-role="collapsible-panel-content"
       role="document"
     >
       <div
-        class="c8"
+        class="c10"
       >
         <div
-          class="c9 c10 field field--tooltips field--tooltips-2 -u-flex-1"
+          class="c11 c12 field field--tooltips field--tooltips-2 -u-flex-1"
           data-role="select"
         >
           <div
-            class="c11 field__select"
+            class="c13 field__select"
+            data-disabled="false"
             data-role="select-control"
           >
             <div
-              class="c12 field__select-wrapper"
+              class="c14 field__select-wrapper"
+              data-disabled="false"
               data-role="select-wrapper"
             >
               <select
-                class="c13 field__selectTitle"
+                class="c15 field__selectTitle"
                 data-role="select-input"
               >
                 <option
@@ -916,7 +1044,7 @@ exports[`SchemaContent should render correctly 2`] = `
                   value=""
                 />
                 <option
-                  class="c14 field__selectOption"
+                  class="c16 field__selectOption"
                   data-role="select-option"
                   value="DomainAddress"
                 >
@@ -925,14 +1053,14 @@ exports[`SchemaContent should render correctly 2`] = `
               </select>
               <span
                 aria-hidden="true"
-                class="c15 field__select-arrow"
+                class="c17 field__select-arrow"
               />
             </div>
           </div>
         </div>
         <button
           aria-label="Add"
-          class="c16 c17 button button--secondary"
+          class="c18 c19 button button--secondary"
           data-role="button"
           disabled=""
           title="Add"
@@ -944,6 +1072,8 @@ exports[`SchemaContent should render correctly 2`] = `
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               add
             </span>
@@ -956,53 +1086,58 @@ exports[`SchemaContent should render correctly 2`] = `
         </button>
       </div>
       <div
-        class="c18"
+        class="c20"
         data-testid="document-model-reference-card"
       >
         <div
-          class="c19"
+          class="c21"
         >
           <div
-            class="c20 field-wrapper field-wrapper--block c21"
-            data-role="text-field"
+            class="c22"
           >
             <div
-              class="c22 c23 field__main"
+              class="c23 field-wrapper field-wrapper--block c24"
+              data-role="text-field"
             >
               <div
-                class="c9 c24 field"
-                data-role="text-field-control"
+                class="c25 c26 field__main"
               >
                 <div
-                  class="c25 field__input field__input--readonly"
-                  data-readonly="true"
-                  data-role="text-field-input-wrapper"
+                  class="c11 c27 field"
+                  data-role="text-field-control"
                 >
-                  <span
-                    class="c26 supported-unseen-span"
-                  />
-                  <input
-                    class="c27 field__text"
-                    data-role="text-field-input"
-                    readonly=""
-                    type="text"
-                    value="DomainPerson"
-                  />
-                  <span
-                    class="c26 supported-unseen-span"
-                  />
+                  <div
+                    class="c28 field__input field__input--readonly"
+                    data-disabled="false"
+                    data-readonly="true"
+                    data-role="text-field-input-wrapper"
+                  >
+                    <span
+                      class="c29 supported-unseen-span"
+                    />
+                    <input
+                      class="c30 field__text"
+                      data-role="text-field-input"
+                      readonly=""
+                      type="text"
+                      value="DomainPerson"
+                    />
+                    <span
+                      class="c29 supported-unseen-span"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="c28"
-          >
-            Person
+            <div
+              class="c31"
+            >
+              Person
+            </div>
           </div>
           <button
             aria-label="Open Setting"
-            class="c16 c29 button button--icon c30"
+            class="c18 c32 button button--icon c33"
             data-role="button"
             data-type="icon"
             title="Open Setting"
@@ -1014,6 +1149,8 @@ exports[`SchemaContent should render correctly 2`] = `
             >
               <span
                 aria-hidden="true"
+                class="notranslate"
+                translate="no"
               >
                 settings
               </span>
@@ -1022,53 +1159,58 @@ exports[`SchemaContent should render correctly 2`] = `
         </div>
       </div>
       <div
-        class="c18"
+        class="c20"
         data-testid="document-model-reference-card"
       >
         <div
-          class="c19"
+          class="c21"
         >
           <div
-            class="c20 field-wrapper field-wrapper--block c21"
-            data-role="text-field"
+            class="c22"
           >
             <div
-              class="c22 c23 field__main"
+              class="c23 field-wrapper field-wrapper--block c24"
+              data-role="text-field"
             >
               <div
-                class="c9 c24 field"
-                data-role="text-field-control"
+                class="c25 c26 field__main"
               >
                 <div
-                  class="c25 field__input field__input--readonly"
-                  data-readonly="true"
-                  data-role="text-field-input-wrapper"
+                  class="c11 c27 field"
+                  data-role="text-field-control"
                 >
-                  <span
-                    class="c26 supported-unseen-span"
-                  />
-                  <input
-                    class="c27 field__text"
-                    data-role="text-field-input"
-                    readonly=""
-                    type="text"
-                    value="DomainText"
-                  />
-                  <span
-                    class="c26 supported-unseen-span"
-                  />
+                  <div
+                    class="c28 field__input field__input--readonly"
+                    data-disabled="false"
+                    data-readonly="true"
+                    data-role="text-field-input-wrapper"
+                  >
+                    <span
+                      class="c29 supported-unseen-span"
+                    />
+                    <input
+                      class="c30 field__text"
+                      data-role="text-field-input"
+                      readonly=""
+                      type="text"
+                      value="DomainText"
+                    />
+                    <span
+                      class="c29 supported-unseen-span"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="c28"
-          >
-            Text
+            <div
+              class="c31"
+            >
+              Text
+            </div>
           </div>
           <button
             aria-label="Open Setting"
-            class="c16 c29 button button--icon c30"
+            class="c18 c32 button button--icon c33"
             data-role="button"
             data-type="icon"
             title="Open Setting"
@@ -1080,6 +1222,8 @@ exports[`SchemaContent should render correctly 2`] = `
             >
               <span
                 aria-hidden="true"
+                class="notranslate"
+                translate="no"
               >
                 settings
               </span>
@@ -1114,6 +1258,8 @@ exports[`SchemaContent should render correctly 2`] = `
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               keyboard_arrow_down
             </span>
@@ -1126,29 +1272,40 @@ exports[`SchemaContent should render correctly 2`] = `
           Print Model References
         </div>
       </div>
+      <div
+        class="c7 collapsiblePanel__add-ons"
+        data-role="collapsiblePanel__add-ons"
+      >
+        <div
+          class="c8"
+          contenteditable="false"
+        />
+      </div>
     </div>
     <div
-      class="c7 collapsiblePanel__content"
+      class="c9 collapsiblePanel__content"
       data-role="collapsible-panel-content"
       role="document"
     >
       <div
-        class="c8"
+        class="c10"
       >
         <div
-          class="c9 c31 field -u-flex-1"
+          class="c11 c34 field -u-flex-1"
           data-role="select"
         >
           <div
-            class="c11 field__select"
+            class="c13 field__select"
+            data-disabled="false"
             data-role="select-control"
           >
             <div
-              class="c12 field__select-wrapper"
+              class="c14 field__select-wrapper"
+              data-disabled="false"
               data-role="select-wrapper"
             >
               <select
-                class="c13 field__selectTitle"
+                class="c15 field__selectTitle"
                 data-role="select-input"
               >
                 <option
@@ -1159,20 +1316,20 @@ exports[`SchemaContent should render correctly 2`] = `
               </select>
               <span
                 aria-hidden="true"
-                class="c15 field__select-arrow"
+                class="c17 field__select-arrow"
               />
             </div>
           </div>
         </div>
         <span
-          class="c32 c33 tooltip tooltip--hint"
+          class="c35 c36 tooltip tooltip--hint"
           data-role="tooltip-trigger-wrapper"
           role="tooltip"
           title=""
         >
           <button
             aria-label="Add"
-            class="c16 c17 button button--secondary"
+            class="c18 c19 button button--secondary"
             data-role="button"
             disabled=""
             title="Add"
@@ -1184,6 +1341,8 @@ exports[`SchemaContent should render correctly 2`] = `
             >
               <span
                 aria-hidden="true"
+                class="notranslate"
+                translate="no"
               >
                 add
               </span>
@@ -1223,6 +1382,58 @@ exports[`SchemaContent should render correctly 2`] = `
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
+            >
+              keyboard_arrow_right
+            </span>
+          </i>
+        </div>
+        <div
+          class="c6 collapsiblePanel__label--text"
+          data-role="collapsible-panel-title"
+        >
+          Fragment Model References
+        </div>
+      </div>
+      <div
+        class="c7 collapsiblePanel__add-ons"
+        data-role="collapsiblePanel__add-ons"
+      >
+        <div
+          class="c8"
+          contenteditable="false"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="c0 collapsiblePanel"
+    data-role="collapsible-panel"
+  >
+    <div
+      class="c1 collapsiblePanel__title"
+      data-role="collapsible-panel-header"
+    >
+      <div
+        aria-expanded="false"
+        class="c2 collapsiblePanel__label"
+        data-role="collapsible-panel-title-wrapper"
+        role="button"
+        tabindex="0"
+      >
+        <div
+          class="c3 collapsiblePanel__indicator"
+          data-role="collapsible-panel-indicator"
+        >
+          <i
+            class="c4 c5 plasma-icon"
+            data-role="plasma-icon"
+          >
+            <span
+              aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               keyboard_arrow_right
             </span>
@@ -1234,6 +1445,15 @@ exports[`SchemaContent should render correctly 2`] = `
         >
           Typesetting Model References
         </div>
+      </div>
+      <div
+        class="c7 collapsiblePanel__add-ons"
+        data-role="collapsiblePanel__add-ons"
+      >
+        <div
+          class="c8"
+          contenteditable="false"
+        />
       </div>
     </div>
   </div>

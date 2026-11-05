@@ -48,6 +48,8 @@ import {
 } from "../../redux/index.js";
 import { RESOURCE_KEYS } from "../../localization/index.js";
 
+import { EditorContext } from "../editor-stage/editor-context.js";
+
 import { ResizeHandle } from "./ResizeHandle.js";
 import { StyledAreaDivider } from "./AreaResizeHandle.styled.js";
 
@@ -62,6 +64,7 @@ export const AreaResizeHandle = ({ areaElement }: AreaResizeHandleProps) => {
 	const editorDimensions = useSelector(PrintEngineSelectors.editorDimensions);
 	const activeCanvasTab = useSelector(NavigationSelectors.activeCanvasTab);
 	const currentElementContainerId = useSelector(PrintEngineSelectors.currentElementContainerId);
+	const { isReadonly } = React.useContext(EditorContext);
 
 	const [startPos, setStartPos] = React.useState<OmitId<Measure> | null>(null);
 	const dispatch = useDispatch();
@@ -85,7 +88,7 @@ export const AreaResizeHandle = ({ areaElement }: AreaResizeHandleProps) => {
 
 	const startResizeArea = React.useCallback(
 		(e: MouseEvent) => {
-			if (!startPos) {
+			if (!startPos || isReadonly) {
 				return;
 			}
 			const minHeight = MM_TO_PX(areaHeight);
@@ -111,6 +114,7 @@ export const AreaResizeHandle = ({ areaElement }: AreaResizeHandleProps) => {
 		},
 		[
 			startPos,
+			isReadonly,
 			areaHeight,
 			dimensions?.overflowHeight?.value,
 			zoomFactor,
@@ -124,6 +128,10 @@ export const AreaResizeHandle = ({ areaElement }: AreaResizeHandleProps) => {
 	);
 
 	const stopResizeArea = React.useCallback(() => {
+		if (isReadonly) {
+			setStartPos(null);
+			return;
+		}
 		const newOverflowHeight = editorHeight - areaHeight;
 		if (newOverflowHeight === areaElement.area?.dimensions?.overflowHeight?.value) {
 			return;
@@ -169,6 +177,7 @@ export const AreaResizeHandle = ({ areaElement }: AreaResizeHandleProps) => {
 		dispatch,
 		editorDimensions.minWidth,
 		editorHeight,
+		isReadonly,
 	]);
 
 	React.useEffect(() => {
@@ -186,19 +195,21 @@ export const AreaResizeHandle = ({ areaElement }: AreaResizeHandleProps) => {
 	return (
 		<>
 			{editorHeight > areaHeight && <StyledAreaDivider zoomFactor={zoomFactor} top={MM_TO_PX(areaHeight)} />}
-			<ResizeHandle
-				side="bottom"
-				dimensions={{
-					minWidth: createMmMeasure(editorDimensions?.minWidth?.value || 0),
-					minHeight: createMmMeasure(editorHeight),
-				}}
-				position={{
-					x: createMmMeasure(0),
-					y: createMmMeasure(0),
-				}}
-				startResize={setStartPos}
-				zoomFactor={zoomFactor}
-			/>
+			{!isReadonly && (
+				<ResizeHandle
+					side="bottom"
+					dimensions={{
+						minWidth: createMmMeasure(editorDimensions?.minWidth?.value || 0),
+						minHeight: createMmMeasure(editorHeight),
+					}}
+					position={{
+						x: createMmMeasure(0),
+						y: createMmMeasure(0),
+					}}
+					startResize={setStartPos}
+					zoomFactor={zoomFactor}
+				/>
+			)}
 		</>
 	);
 };

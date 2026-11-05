@@ -29,13 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { nanoid } from "nanoid";
-
-import type {
-	ElementType,
-	PartialAnyPrintModelElement,
-	PrintModelElement,
-} from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PartialAnyPrintModelElement } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	PartialCalculation,
 	PartialField,
@@ -60,19 +54,4 @@ export const getEntityDisplayText = (element: PartialAnyPrintModelElement): stri
 	}
 
 	return "unknown-entity";
-};
-
-export const createEntityElement = (insertEntityType: string): PrintModelElement => {
-	let newEntityElement: PartialAnyPrintModelElement = { id: nanoid(), type: insertEntityType as ElementType };
-
-	if (PartialField.isInstance(newEntityElement) || PartialCalculation.isInstance(newEntityElement)) {
-		newEntityElement = {
-			...newEntityElement,
-			[String(insertEntityType).toLowerCase()]: {
-				id: nanoid(),
-			},
-		};
-	}
-
-	return newEntityElement;
 };

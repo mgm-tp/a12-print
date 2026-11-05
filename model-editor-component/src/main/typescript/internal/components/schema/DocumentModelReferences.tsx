@@ -32,37 +32,50 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { CollapsiblePanel } from "@com.mgmtp.a12.widgets/widgets-core";
-
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
+import { EditorComponentContext } from "../../api/context-api.js";
+import { ValidationSelectors } from "../../redux/validation/selectors.js";
 
-import { DocumentModelReferencesCard } from "./DocumentModelReferencesCard.js";
 import { DocumentModelReferencesToolbar } from "./DocumentModelReferencesToolbar.js";
+import { ModelReferenceAliasSetting } from "./ModelReferenceAliasSetting.js";
+import { ModelReferenceCard } from "./ModelReferenceCard.js";
+import { ModelReferencesPanel } from "./ModelReferencesPanel.js";
 
 export const DocumentModelReferences = () => {
 	const localizer = PrintLocalizer.useLocalizer();
-	const documentModelReferences = useSelector(PrintEngineSelectors.documentModelReferences);
+	const { isFragmentModel } = React.useContext(EditorComponentContext);
+	let documentModelReferences = useSelector(PrintEngineSelectors.documentModelReferences);
+	const validationCounter = useSelector(ValidationSelectors.documentModelReferencesValidationCounter);
+
+	if (isFragmentModel && documentModelReferences.length > 1) {
+		const firstDocumentModelReference = documentModelReferences[0];
+		documentModelReferences = [firstDocumentModelReference];
+	}
+
 	const [newModelReference, setNewModelReference] = React.useState("");
-	const [isOpenDocumentManagement, toggleDocumentManagement] = React.useReducer(state => !state, false);
+	const canAddReference = !isFragmentModel || documentModelReferences.length === 0;
 
 	return (
-		<CollapsiblePanel
-			onClick={toggleDocumentManagement}
+		<ModelReferencesPanel
+			section="document"
 			title={localizer(RESOURCE_KEYS.sidebar.schema.tab.documentModelReferenced)}
+			validationCounter={validationCounter}
 		>
-			{isOpenDocumentManagement && (
-				<>
-					<DocumentModelReferencesToolbar setNewModelReference={setNewModelReference} />
-					{documentModelReferences.map(modelReference => (
-						<DocumentModelReferencesCard
-							modelReference={modelReference}
-							key={modelReference.reference}
-							isNewReference={modelReference.reference === newModelReference}
-						/>
-					))}
-				</>
-			)}
-		</CollapsiblePanel>
+			{canAddReference && <DocumentModelReferencesToolbar setNewModelReference={setNewModelReference} />}
+			{documentModelReferences.map(modelReference => (
+				<ModelReferenceCard
+					key={modelReference.reference}
+					modelReference={modelReference}
+					dataTestId="document-model-reference-card"
+					// An alias that is not set yet still gets its column, so the reference names all line up.
+					alias={modelReference.alias ?? ""}
+					renderSettings={collapse => (
+						<ModelReferenceAliasSetting modelReference={modelReference} onCollapse={collapse} />
+					)}
+					isNewReference={modelReference.reference === newModelReference}
+				/>
+			))}
+		</ModelReferencesPanel>
 	);
 };

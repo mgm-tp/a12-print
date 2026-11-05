@@ -47,6 +47,7 @@ describe("BorderForm", () => {
 	const mockElement: PartialTable = {
 		id: "tableId",
 		type: ElementType.Table,
+		name: "mockTable",
 		borderProperties: {
 			id: "k0FFvYRpIj2vM_3z-UAYe",
 			borderWidth: {

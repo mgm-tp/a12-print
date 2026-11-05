@@ -38,7 +38,6 @@ import { DocumentServiceFactory } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
 import type { CollectedPath } from "../../types/reference-path.js";
 
-import { getAllReferencedPaths } from "./partial-print-model-visitor-reference-collector.js";
 import { ReferencePathValidationService } from "./reference-path-validation-service.js";
 
 export const documentService = new DocumentServiceFactory();
@@ -50,7 +49,8 @@ function isComputationStatement(collectedPath: CollectedPath) {
 export namespace ReferencePathValidation {
 	export function validateDocumentModelReferences(
 		printModel: PartialPrintModel,
-		documentModels: readonly DocumentModel[]
+		documentModels: readonly DocumentModel[],
+		referencedPaths: CollectedPath[]
 	) {
 		let errorMap = DeepPartialErrorMap.getEmptyMap();
 
@@ -58,8 +58,6 @@ export namespace ReferencePathValidation {
 			printModel,
 			documentModels
 		);
-
-		const referencedPaths = getAllReferencedPaths(printModel);
 
 		for (const collectedPath of referencedPaths) {
 			if (collectedPath.error) {

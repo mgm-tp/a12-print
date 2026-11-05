@@ -2,7 +2,7 @@
   "header": {
     "id": "TextPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -466,7 +466,8 @@
           "id": "ID_fae3c616-4e75-4fc0-a0a8-a26083ebd888",
           "text": "<p>Create new page for total page number</p>",
           "entities": []
-        }
+        },
+        "name": "Text_7ddab"
       },
       {
         "id": "aymJotzgBFBPVVufjeG4o",
@@ -520,7 +521,8 @@
               "refId": "vkMPtkFmNFedvHa3l7f89"
             }
           ]
-        }
+        },
+        "name": "Text_69ebf"
       },
       {
         "id": "Bh8Qr9ZG9283i87ZIPcYC6",
@@ -547,7 +549,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_4d634"
       },
       {
         "id": "vkMPtkFmNFedvHa3l7f89",
@@ -562,7 +565,8 @@
               "operation": "[TextDM/general/EmptyField]"
             }
           ]
-        }
+        },
+        "name": "Calculation"
       },
       {
         "id": "aymJotzgBFBPVVufjeG56",
@@ -615,7 +619,8 @@
               "refId": "vkMPtkFmNFedvHa3l7fOo"
             }
           ]
-        }
+        },
+        "name": "Text_f1f2a"
       },
       {
         "id": "Bh8Qr9ZG9283i87ZIPcY_",
@@ -642,7 +647,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_65b7e"
       },
       {
         "id": "vkMPtkFmNFedvHa3l7fOo",
@@ -657,7 +663,8 @@
               "operation": "[TextDM/general/StringField]"
             }
           ]
-        }
+        },
+        "name": "Calculation"
       },
       {
         "id": "aymJotzgBFBPVVufjeG89",
@@ -700,7 +707,8 @@
           "id": "ID_a9be69b4-ec02-4319-aab1-9bf78a08ecba",
           "text": "<div><p>TEST</p></div>",
           "entities": []
-        }
+        },
+        "name": "Text_1f1ab"
       },
       {
         "id": "aymJotzgBFBPVVufje124",
@@ -744,7 +752,8 @@
           "id": "ID_fae3c616-4e75-4fc0-a0a8-a26083ebd888B2",
           "text": "<p>Create new page for total page number</p>",
           "entities": []
-        }
+        },
+        "name": "Text_5a25d"
       },
       {
         "id": "iV3JRjEBwkoqni5IoeVrk",
@@ -790,11 +799,13 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
-        }
+        },
+        "name": "Text_e253c"
       },
       {
         "id": "MZYIOzPW2pkdvUidefgxo",
-        "type": "PageNumber"
+        "type": "PageNumber",
+        "name": "PageNumber_bfa77"
       },
       {
         "id": "2x5sgFHy5ZGp28sH4N-QW",
@@ -840,11 +851,13 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
-        }
+        },
+        "name": "Text_24126"
       },
       {
         "id": "P2NDrLzLL5IP1Y27bWdxa",
-        "type": "PageNumberTotal"
+        "type": "PageNumberTotal",
+        "name": "PageNumberTotal_5c479"
       }
     ],
     "textStyles": {

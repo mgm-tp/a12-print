@@ -32,13 +32,15 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.textStyle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tools.jackson.databind.annotation.JsonDeserialize;
-import com.mgmtp.a12.print.model.api.model.textStyle.TextStyle;
-import com.mgmtp.a12.print.model.api.model.textStyle.TextStylesContainer;
 import com.mgmtp.a12.print.model.api.model.internal.dto.JsonModel;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelEntityDto;
+import com.mgmtp.a12.print.model.api.model.reference.FragmentReference;
+import com.mgmtp.a12.print.model.api.model.internal.dto.reference.FragmentReferenceDTO;
+import com.mgmtp.a12.print.model.api.model.textStyle.TextStyle;
+import com.mgmtp.a12.print.model.api.model.textStyle.TextStylesContainer;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,4 +54,9 @@ public class TextStylesContainerDto extends PrintModelEntityDto implements TextS
 	@JsonDeserialize(contentAs = TextStyleDto.class)
 	@Builder.Default
 	List<TextStyle> definitions = new ArrayList<>();
+
+	@JsonProperty(value = "references")
+	@JsonDeserialize(contentAs = FragmentReferenceDTO.class)
+	@Builder.Default
+	List<FragmentReference> references = new ArrayList<>();
 }

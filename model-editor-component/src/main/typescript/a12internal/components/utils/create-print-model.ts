@@ -34,11 +34,80 @@ import { nanoid } from "nanoid";
 import {
 	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 	PRINT_MODEL_CONTENT_LOG_ID,
+	type PrintModelSubType,
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import { PRINT_MODEL_VERSION } from "@com.mgmtp.a12.print/print-model-api/constant";
-import type { PrintModelDTO } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import { MODEL_SUB_TYPE_ANNOTATION_NAME } from "@com.mgmtp.a12.print/print-model-api/model";
+import type {
+	AnnotationsDTO,
+	MetadataDTO,
+	PrintModelDTO,
+} from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
 
-export const createPrintModel = (modelName: string, roles: Array<{ roleName: string }>): PrintModelDTO => {
+const createAnnotations = (
+	roles: Array<{ roleName: string }>,
+	modelSubType: PrintModelSubType | undefined
+): AnnotationsDTO[] => {
+	const annotations: AnnotationsDTO[] = [];
+	if (roles.length) {
+		annotations.push({ name: "roles", value: roles.map(role => role.roleName).join(",") });
+	}
+	if (modelSubType) {
+		annotations.push({ name: MODEL_SUB_TYPE_ANNOTATION_NAME, value: modelSubType });
+	}
+	return annotations;
+};
+
+const createEmptyMetadata = (): MetadataDTO => ({
+	id: nanoid(),
+	titleComputation: [],
+	descriptionComputation: [],
+	languageComputation: [],
+	authorComputation: [],
+});
+
+const createDefaultMetadata = (modelName: string): MetadataDTO => ({
+	id: nanoid(),
+	titleComputation: [
+		{
+			id: nanoid(),
+			operation: `"${modelName}"`,
+		},
+	],
+	descriptionComputation: [
+		{
+			id: nanoid(),
+			operation: '"Description"',
+		},
+	],
+	languageComputation: [
+		{
+			id: nanoid(),
+			operation: '"DE"',
+		},
+	],
+	authorComputation: [
+		{
+			id: nanoid(),
+			operation: '"Print Model Editor"',
+		},
+	],
+});
+
+/**
+ * Creates an empty print model.
+ *
+ * @param modelName Id of the new model.
+ * @param roles Roles the new model is annotated with.
+ * @param modelSubType Sub type of the new model.
+ * @see createEmptyMetadata
+ */
+export const createPrintModel = (
+	modelName: string,
+	roles: Array<{ roleName: string }>,
+	modelSubType?: PrintModelSubType
+): PrintModelDTO => {
+	const isFragmentModel = modelSubType === "fragment";
 	return {
 		header: {
 			id: modelName,
@@ -46,46 +115,13 @@ export const createPrintModel = (modelName: string, roles: Array<{ roleName: str
 			modelVersion: PRINT_MODEL_VERSION,
 			description: "Description",
 			locales: [],
-			annotations: roles.length
-				? [
-						{
-							name: "roles",
-							value: roles.map(role => role.roleName).join(","),
-						},
-					]
-				: [],
+			annotations: createAnnotations(roles, modelSubType),
 		},
 		content: {
 			id: PRINT_MODEL_CONTENT_LOG_ID,
 			general: {
 				id: PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
-				metadata: {
-					id: nanoid(),
-					titleComputation: [
-						{
-							id: nanoid(),
-							operation: `"${modelName}"`,
-						},
-					],
-					descriptionComputation: [
-						{
-							id: nanoid(),
-							operation: '"Description"',
-						},
-					],
-					languageComputation: [
-						{
-							id: nanoid(),
-							operation: '"DE"',
-						},
-					],
-					authorComputation: [
-						{
-							id: nanoid(),
-							operation: '"Print Model Editor"',
-						},
-					],
-				},
+				metadata: isFragmentModel ? createEmptyMetadata() : createDefaultMetadata(modelName),
 				structure: [],
 				segmentDefaults: {
 					id: nanoid(),

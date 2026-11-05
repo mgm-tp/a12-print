@@ -60,6 +60,7 @@ import com.mgmtp.a12.print.engine.runtime.internal.message.PrintMessageReportImp
 import com.mgmtp.a12.print.engine.runtime.internal.runtime.ModelDocumentPrintEngineRuntimeFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.runtime.RuntimeWalker;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.Variable;
+import com.mgmtp.a12.print.model.api.model.ModelSubTypeAccessor;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.container.BaseReferenceContainer;
@@ -146,6 +147,10 @@ public class ModelDocumentPrintEngine extends PrintEngine<ModelDocumentPrintResu
 		final PrintModel printModel = runtime.provide(
 			new PrintModelDependency(job.getPrintModelId())
 		).get();
+
+		if (ModelSubTypeAccessor.isFragmentModel(printModel.getHeader())) {
+			throw new PrintException("Print Fragment Models can not be printed.");
+		}
 
 		final var header = printModel.getHeader();
 		final var documentModelReferences = header.getModelReferences().stream().filter(
@@ -240,12 +245,13 @@ public class ModelDocumentPrintEngine extends PrintEngine<ModelDocumentPrintResu
 		List<PrintSection> footerSections
 	) {
 		sectionResults.stream().filter(sectionResult ->
-			sectionResult.getModelSection().getSectionUsage().equals(sectionUsage) &&
+			sectionResult.getSectionUsage().equals(sectionUsage) &&
 				sectionResult.getModelSection().getPageOrientation().equals(segmentResult.getPageOrientation())
 		).findAny().ifPresent(section -> {
 			final var modelSection = section.getModelSection();
-			headerSections.add(new PrintSection(modelSection.getId(), section.getHeaderElements(), modelSection.getSectionUsage()));
-			footerSections.add(new PrintSection(modelSection.getId(), section.getFooterElements(), modelSection.getSectionUsage()));
+			final var currrentSectionUsage = section.getSectionUsage();
+			headerSections.add(new PrintSection(modelSection.getId(), section.getHeaderElements(), currrentSectionUsage));
+			footerSections.add(new PrintSection(modelSection.getId(), section.getFooterElements(), currrentSectionUsage));
 		});
 	}
 
@@ -431,12 +437,13 @@ public class ModelDocumentPrintEngine extends PrintEngine<ModelDocumentPrintResu
 		}
 
 		@Override
-		public TraversalCommand visitSection(ModelSection section, PrintModelPath path) {
+		public TraversalCommand preVisitSectionWithUsage(ModelSection section, ModelSection.SectionUsage sectionUsage, PrintModelPath path) {
 			containerDependencies.add(new ModelDocumentSectionDependency(
 				new PrintModelTreeTrace<>(
 					path,
 					section
 				),
+				sectionUsage,
 				documentContext
 			));
 			return TraversalCommand.CONTINUE;

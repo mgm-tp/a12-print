@@ -45,21 +45,24 @@ import { ValidationSelectors } from "../../redux//validation/selectors.js";
 
 import { DynamicSourceTextField } from "./custom-base-input-components/index.js";
 import { DocumentModelSelect } from "./shared-components/DocumentModelSelect.js";
+import { useFormReadonly } from "./FormContext.js";
 
 export const SwitchFormContainer = () => {
 	const element = useSelector(PrintEngineSelectors.currentFormElement);
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const getErrorMessage = useSwitchPropertiesErrorMessage(element?.id);
+	const isFormReadonly = useFormReadonly();
 
 	if (!element || !PartialSwitch.isInstance(element)) {
-		throw Error("Expected element of type Switch");
+		throw new Error("Expected element of type Switch");
 	}
 
 	const onNameBlur = React.useCallback(
 		(event: React.FocusEvent<HTMLInputElement>) => {
 			const updatedElement = {
 				...element,
+				name: event.target.value,
 				switch: { id: nanoid(), ...element.switch, name: event.target.value },
 			};
 			dispatch(
@@ -103,6 +106,7 @@ export const SwitchFormContainer = () => {
 				value={element.switch?.model}
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getErrorMessage("model")}
+				disabled={isFormReadonly}
 			/>
 		</>
 	);

@@ -40,7 +40,7 @@ import { EditorConst } from "../../../constant/editor.js";
 import { ElementsUtils } from "../../../utils/index.js";
 
 interface StylePlaceableElementProps {
-	element: PartialAnyPrintModelElement;
+	element: PartialAnyPrintModelElement | undefined;
 	reference: PartialValidPlaceableReference;
 	zoomFactor: number;
 	highlight?: boolean;
@@ -62,6 +62,5 @@ export const StylePlaceableElement = styled.div<StylePlaceableElementProps>`
 	width: ${({ reference }) => MM_TO_PX(reference.dimensions.minWidth.value)}px;
 	min-height: ${({ reference, element }) =>
 		MM_TO_PX(ElementsUtils.getFixedElementHeight(element, reference) || reference.dimensions.minHeight.value)}px;
-	outline: ${({ highlight }) => `1px solid ${highlight ? "#d51079" : "#cbd7e8"}`};
 	z-index: ${({ highlight, zIndex }) => zIndex || EditorConst.getZIndexList().PlaceableElement + (highlight ? 1 : 0)};
 `;

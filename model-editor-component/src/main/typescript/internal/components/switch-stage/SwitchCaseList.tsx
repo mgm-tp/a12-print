@@ -55,11 +55,12 @@ import { SwitchCaseCard } from "./SwitchCaseCard.js";
 
 interface SwitchCaseProps {
 	switchElement: PartialSwitch;
+	isReadonly?: boolean;
 }
 
 const { MM_TO_PX } = EditorConst;
 
-export const SwitchCaseList = ({ switchElement }: SwitchCaseProps) => {
+export const SwitchCaseList = ({ switchElement, isReadonly }: SwitchCaseProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const dispatch = useDispatch();
 
@@ -151,7 +152,7 @@ export const SwitchCaseList = ({ switchElement }: SwitchCaseProps) => {
 
 	const handleReorderSwitchCase = React.useCallback(
 		(_: PartialSwitchCase, currentIndex: number, targetIndex: number) => {
-			if (!switchElementCases) {
+			if (!switchElementCases || isReadonly) {
 				return;
 			}
 			const clonedCases = [...switchElementCases];
@@ -161,7 +162,7 @@ export const SwitchCaseList = ({ switchElement }: SwitchCaseProps) => {
 
 			setTableData(clonedCases, RESOURCE_KEYS.interaction.form.switchFormContainer.reorderCase);
 		},
-		[setTableData, switchElementCases]
+		[isReadonly, setTableData, switchElementCases]
 	);
 
 	if (!switchElementCases?.length) {
@@ -186,6 +187,7 @@ export const SwitchCaseList = ({ switchElement }: SwitchCaseProps) => {
 						}}
 						type={SWITCH_CASE_CARD}
 						triggerPoint={0.2}
+						disabled={isReadonly}
 					>
 						<SwitchCaseCard
 							row={row}
@@ -194,6 +196,7 @@ export const SwitchCaseList = ({ switchElement }: SwitchCaseProps) => {
 							scale={scale}
 							documentModel={switchElement.switch?.model}
 							validationErrors={getPreconditionError(index)}
+							isReadonly={isReadonly}
 						/>
 					</DragListItemWrapper>
 				);

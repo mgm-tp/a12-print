@@ -31,6 +31,9 @@
  */
 import type { PartialPrintModel, PartialPrintModelElement, PartialReference } from "../../model/index.js";
 
+import { collectFragmentModels } from "../fragment-definition-resolver.js";
+import type { PrintModelResolver } from "../print-model-resolver.js";
+
 interface PartialPrintModelElementMap {
 	[key: string]: PartialPrintModelElement;
 }
@@ -49,18 +52,39 @@ export interface PartialReferenceResolver {
 }
 
 export class PartialReferenceListResolver implements PartialReferenceResolver {
-	constructor(private elementList: ReadonlyArray<PartialPrintModelElement>) {}
+	constructor(
+		private readonly elementList: ReadonlyArray<PartialPrintModelElement>,
+		private readonly fragmentModelResolver?: PrintModelResolver
+	) {}
 
-	public static fromModel(printModel: PartialPrintModel) {
+	/** @param fragmentModelResolver Makes the elements of referenced print fragment models resolvable. */
+	public static fromModel(printModel: PartialPrintModel, fragmentModelResolver?: PrintModelResolver) {
 		const elementDefinitions = printModel.content?.elementDefinitions || [];
-		return new this(elementDefinitions);
+		const fragmentModels = fragmentModelResolver ? collectFragmentModels(printModel, fragmentModelResolver) : [];
+		return new this(
+			[
+				...elementDefinitions,
+				...fragmentModels.flatMap(fragmentModel => fragmentModel.content.elementDefinitions),
+			],
+			fragmentModelResolver
+		);
 	}
 
 	resolveReference(reference: PartialReference): PartialPrintModelElement | undefined {
-		return this.elementList.find(el => el.id === reference.refId);
+		return this.resolveReferenceWithIndex(reference)?.element;
 	}
 
 	resolveReferenceWithIndex(reference: PartialReference): ResolvedReference | undefined {
+		// A placement that names a model is resolved in that fragment model; otherwise by id alone.
+		if (reference.model) {
+			const fragmentElements = this.fragmentModelResolver?.resolvePrintModel(reference.model)?.content
+				.elementDefinitions;
+			const fragmentIndex = fragmentElements?.findIndex(el => el.id === reference.refId) ?? -1;
+			if (fragmentElements && fragmentIndex !== -1) {
+				return { element: fragmentElements[fragmentIndex], index: fragmentIndex };
+			}
+		}
+
 		const index = this.elementList.findIndex(el => el.id === reference.refId);
 		if (index === -1) {
 			return undefined;
@@ -74,9 +98,9 @@ export class PartialReferenceListResolver implements PartialReferenceResolver {
 }
 
 export class PartialCachedReferenceResolver implements PartialReferenceResolver {
-	private referenceResolver: PartialReferenceResolver;
-	private printModelElementMap: PartialPrintModelElementMap = {};
-	private indexMap: IndexMap = {};
+	private readonly referenceResolver: PartialReferenceResolver;
+	private readonly printModelElementMap: PartialPrintModelElementMap = {};
+	private readonly indexMap: IndexMap = {};
 
 	constructor(referenceResolver: PartialReferenceResolver) {
 		this.referenceResolver = referenceResolver;

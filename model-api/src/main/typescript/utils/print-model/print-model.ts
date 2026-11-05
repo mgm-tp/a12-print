@@ -31,7 +31,6 @@
  */
 import { nanoid } from "nanoid";
 
-import type { PrintModelElement } from "../../model/index.js";
 import {
 	isSection,
 	isSegment,
@@ -43,17 +42,22 @@ import {
 	SegmentReferencePurpose,
 	type TextStyle,
 	type Watermark,
+	type PrintModelElement,
 } from "../../model/index.js";
 import { PRINT_MODEL_CONTENT_GENERAL_LOG_ID, PRINT_MODEL_CONTENT_LOG_ID } from "../../model/constant.js";
 
 import { type CloneContext } from "./type.js";
-import { clonePrintModelEntity, deepCloneObject } from "./base.js";
+import { clonePrintModelEntity, deepCloneObject, dropDuplicateElements } from "./base.js";
 import { cloneTextStyles } from "./text-style.js";
 import { cloneSegments } from "./segment.js";
 import { cloneSections } from "./section.js";
 import { cloneWatermarks } from "./watermark.js";
+import { cloneFragmentElements } from "./fragment.js";
 
 export const ERROR_FORBID_COPY_DIN_REFERENCE = "FORBID_COPY_DIN_REFERENCE";
+export const ERROR_FORBID_COPY_FRAGMENT_MODEL = "FORBID_COPY_FRAGMENT_MODEL";
+export const ERROR_FORBID_COPY_FRAGMENT_REFERENCE = "FORBID_COPY_FRAGMENT_REFERENCE";
+export const ERROR_FORBID_COPY_MULTIPLE_DOCUMENT_REFERENCES = "FORBID_COPY_MULTIPLE_DOCUMENT_REFERENCES";
 
 /**
  * Creates a deep copy of a print model. Note that all ids and references will be newly generated. DinTemplate print models are not allowed to be copied.
@@ -73,9 +77,10 @@ export function clonePrintModel(printModel: PrintModel, printModelId?: string): 
 	});
 	const clonedElementDefinitions: PrintModelElement[] = [];
 
-	const { newTextStyles, clonedTextStyles, textStyleIdMap } = cloneTextStyles(
+	const { newTextStyles, clonedTextStyles, clonedTextStyleReferences, textStyleIdMap } = cloneTextStyles(
 		general.textStyles || [],
-		textStyles?.definitions || []
+		textStyles?.definitions || [],
+		textStyles?.references || []
 	);
 
 	assertArrayType<TextStyle>(clonedTextStyles, isTextStyle, "The textstyles are not invalid");
@@ -84,14 +89,23 @@ export function clonePrintModel(printModel: PrintModel, printModelId?: string): 
 		getElement: elementId => elementDefinitionMap.get(elementId),
 		cloneObject: clonePrintModelEntity,
 		textStyleIdMap,
-		elementIdMap: new Map(),
+		// an element can inherit from one that is cloned later, so every element gets its new id up front
+		elementIdMap: new Map(elementDefinitions.map(element => [element.id, nanoid()])),
+		clonedElements: new Map(),
 	};
 
 	const {
 		clonedElements: clonedSegmentElements,
 		newStructure,
 		clonedSegments,
-	} = cloneSegments(general.structure || [], segments.definitions, cloneContext);
+		clonedFragmentReferences,
+	} = cloneSegments(
+		general.structure || [],
+		segments?.definitions || [],
+		cloneContext,
+		undefined,
+		segments?.fragmentReferences || []
+	);
 
 	assertArrayType<Segment>(clonedSegments, isSegment, "The segments are not invalid");
 
@@ -99,7 +113,14 @@ export function clonePrintModel(printModel: PrintModel, printModelId?: string): 
 		clonedElements: clonedSectionElements,
 		clonedSections,
 		newSections,
-	} = cloneSections(general.sections || [], sections?.definitions || [], cloneContext);
+		clonedSectionReferences,
+	} = cloneSections(
+		general.sections || [],
+		sections?.definitions || [],
+		cloneContext,
+		undefined,
+		sections?.references || []
+	);
 
 	assertArrayType<Section>(clonedSections, isSection, "The sections are not invalid");
 
@@ -107,11 +128,25 @@ export function clonePrintModel(printModel: PrintModel, printModelId?: string): 
 		clonedElements: clonedWatermarkElements,
 		clonedWatermarks,
 		newWatermarks,
-	} = cloneWatermarks(general.watermarks || [], watermarks?.definitions || [], cloneContext);
+		clonedWatermarkReferences,
+	} = cloneWatermarks(
+		general.watermarks || [],
+		watermarks?.definitions || [],
+		cloneContext,
+		undefined,
+		watermarks?.references || []
+	);
 
 	assertArrayType<Watermark>(clonedWatermarks, isWatermark, "The watermarks are not invalid");
 
-	clonedElementDefinitions.push(...clonedSegmentElements, ...clonedSectionElements, ...clonedWatermarkElements);
+	const { clonedElements: clonedFragmentElements } = cloneFragmentElements(elementDefinitions, cloneContext);
+
+	clonedElementDefinitions.push(
+		...clonedSegmentElements,
+		...clonedSectionElements,
+		...clonedWatermarkElements,
+		...clonedFragmentElements
+	);
 
 	return {
 		header: {
@@ -130,22 +165,26 @@ export function clonePrintModel(printModel: PrintModel, printModelId?: string): 
 			},
 			segments: {
 				references: [],
+				fragmentReferences: clonedFragmentReferences,
 				definitions: clonedSegments,
 				id: nanoid(),
 			},
 			sections: {
 				definitions: clonedSections,
+				references: clonedSectionReferences,
 				id: nanoid(),
 			},
 			watermarks: {
 				definitions: clonedWatermarks,
+				references: clonedWatermarkReferences,
 				id: nanoid(),
 			},
 			textStyles: {
 				definitions: clonedTextStyles,
+				references: clonedTextStyleReferences,
 				id: nanoid(),
 			},
-			elementDefinitions: clonedElementDefinitions,
+			elementDefinitions: dropDuplicateElements(clonedElementDefinitions),
 		},
 	};
 }

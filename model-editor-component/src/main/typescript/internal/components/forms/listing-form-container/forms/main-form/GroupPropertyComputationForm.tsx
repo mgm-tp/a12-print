@@ -68,6 +68,7 @@ import { ElementMapUtils } from "../../../../../utils/element-map-utils.js";
 import { CustomTextField } from "../../../custom-base-input-components/CustomTextField.js";
 import { StyledMessageBox } from "../../../shared-components/DataContextSelection.styled.js";
 import { DocumentModelDataSelectors } from "../../../../../redux/document-model-data/selectors.js";
+import { useFormReadonly } from "../../../FormContext.js";
 
 interface GroupPropertyComputationFormProps extends BaseListingFormProps {
 	formState: ListingGroupPropertyCompFormState;
@@ -78,6 +79,7 @@ export const GroupPropertyComputationForm = ({ element, formState }: GroupProper
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
 	const localizer = PrintLocalizer.useLocalizer();
 	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
+	const isFormReadonly = useFormReadonly();
 	const elementMap = useSelector(
 		(state: PrintEngineState) =>
 			DocumentModelDataSelectors.documentModelData(state, element.listing?.model)?.elementMap
@@ -206,6 +208,7 @@ export const GroupPropertyComputationForm = ({ element, formState }: GroupProper
 					elementMapEntries={processedElementMap}
 					selectedPath={currentPropertyComputation?.groupPath}
 					setSelectedPath={onChangeGroupComputation}
+					disabled={isFormReadonly}
 					maxRepeatLevel={MAX_REPEAT_LEVEL}
 				/>
 			) : (

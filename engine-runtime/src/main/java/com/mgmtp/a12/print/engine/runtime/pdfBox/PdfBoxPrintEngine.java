@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.pdfBox;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
 import com.mgmtp.a12.print.engine.api.PdfPrintResult;
 import com.mgmtp.a12.print.engine.api.PrintJob;
@@ -57,6 +58,7 @@ import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.segment
 import com.mgmtp.a12.print.engine.runtime.internal.runtime.PdfBoxPrintEngineRuntimeFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.runtime.RuntimeWalker;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.Variable;
+import com.mgmtp.a12.print.model.api.model.ModelSubTypeAccessor;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.container.BaseReferenceContainer;
@@ -65,7 +67,6 @@ import com.mgmtp.a12.print.model.api.model.element.base.DataContext;
 import com.mgmtp.a12.print.model.api.model.element.properties.PageOrientation;
 import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
 import com.mgmtp.a12.print.model.api.model.section.ModelSection;
-import com.mgmtp.a12.print.model.api.model.section.ModelSectionContainer;
 import com.mgmtp.a12.print.model.api.model.segment.ModelSegment;
 import com.mgmtp.a12.print.model.api.model.watermark.Watermark;
 import com.mgmtp.a12.print.model.api.walker.DescendCommand;
@@ -86,7 +87,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Provides the ability to execute {@link PrintJob}s.
@@ -129,6 +129,11 @@ public class PdfBoxPrintEngine extends PrintEngine<PdfPrintResult> implements co
 		InternalPdfBoxPrintEngineRuntime runtime
 	) {
 		final PrintModel printModel = runtime.provide(new PrintModelDependency(job.getPrintModelId())).get();
+
+		if (ModelSubTypeAccessor.isFragmentModel(printModel.getHeader())) {
+			throw new PrintException("Print Fragment Models can not be printed.");
+		}
+
 		final var documentModelReferences = printModel.getHeader().getModelReferences().stream().filter(
 			e -> e.getModelType().equals(Constants.DOCUMENT_MODEL_TYPE)
 		).toList();
@@ -152,7 +157,7 @@ public class PdfBoxPrintEngine extends PrintEngine<PdfPrintResult> implements co
 			accessibilityMetadata,
 			job.getTimeZone()
 		);
-		final var sections = getSections(printModel);
+		final var sections = getSections(runtime, printModel);
 		final var segmentHandles = getSegmentHandles(runtime, printModel, printDocumentContext, pdDocument, sections);
 
 		final var overallContentStreams = new ArrayList<ContentStreamAdapter>();
@@ -190,16 +195,17 @@ public class PdfBoxPrintEngine extends PrintEngine<PdfPrintResult> implements co
 		};
 	}
 
-	private Map<ImmutablePair<PageOrientation, Boolean>, ModelSection> getSections(PrintModel printModel) {
-		final var sectionMap = new HashMap<ImmutablePair<PageOrientation, Boolean>, ModelSection>();
-		final var sections = printModel.getContent().getSections().map(ModelSectionContainer::getDefinitions).orElse(List.of());
-		for (final var section : sections) {
-			sectionMap.put(
-				new ImmutablePair<>(section.getPageOrientation(), section.getSectionUsage().equals(ModelSection.SectionUsage.FIRST)),
-				section
+	private Map<ImmutablePair<PageOrientation, Boolean>, ModelSection> getSections(
+		@NonNull InternalPdfBoxPrintEngineRuntime runtime,
+		@NonNull PrintModel printModel
+	) {
+		return new RuntimeWalker<>(runtime)
+			.walkSections(
+				PrintModelPath.create(printModel),
+				new SectionsCollector(),
+				printModel.getContent().getGeneral().getSections(),
+				SectionsCollector::getSectionMap
 			);
-		}
-		return sectionMap;
 	}
 
 	private List<PrintModelTreeTrace<Watermark>> getWatermarks(
@@ -235,6 +241,33 @@ public class PdfBoxPrintEngine extends PrintEngine<PdfPrintResult> implements co
 					.stream()
 			)
 			.collect(Collectors.toList());
+	}
+
+	@Data
+	private static class SectionsCollector implements ExhaustivePrintModelVisitor {
+		private final Map<ImmutablePair<PageOrientation, Boolean>, ModelSection> sectionMap = new HashMap<>();
+
+		@Override
+		public TraversalCommand preVisitSectionWithUsage(
+			final ModelSection section, final ModelSection.SectionUsage sectionUsage, final PrintModelPath path
+		) {
+			sectionMap.put(
+				new ImmutablePair<>(section.getPageOrientation(), sectionUsage.equals(ModelSection.SectionUsage.FIRST)),
+				section
+			);
+			return TraversalCommand.CONTINUE;
+		}
+
+		@Override
+		public TraversalCommand defaultVisitElement(PrintModelElement element, PrintModelPath path) {
+			return TraversalCommand.CONTINUE;
+		}
+
+		@Override
+		public DescendCommand descendContainer(BaseReferenceContainer<? extends ElementReference> container,
+		                                       PrintModelPath path, int index) {
+			return DescendCommand.NO_DESCEND;
+		}
 	}
 
 	@Data

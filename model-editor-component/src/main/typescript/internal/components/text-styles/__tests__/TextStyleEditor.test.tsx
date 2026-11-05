@@ -29,12 +29,24 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import { jest } from "@jest/globals";
+
 import { renderWithProviders, testTextStyle } from "../../../../../../test/typescript/test-utils/index.js";
+import { PrintEngineSelectors } from "../../../store/selectors.js";
 
 import { TextStyleEditor } from "../TextStyleEditor.js";
 
 describe("TextStyleEditor", () => {
 	const setupTest = () => renderWithProviders(<TextStyleEditor textStyle={testTextStyle} />);
+
+	const setupReadonlyTest = () => {
+		jest.spyOn(PrintEngineSelectors, "isCurrentTextStyleReferenced").mockImplementation((() => true) as never);
+		return renderWithProviders(<TextStyleEditor textStyle={testTextStyle} />);
+	};
+
+	afterEach(() => {
+		jest.restoreAllMocks();
+	});
 
 	it("should render correctly", () => {
 		const { container, queryByText, queryByDisplayValue } = setupTest();
@@ -51,5 +63,18 @@ describe("TextStyleEditor", () => {
 		expect(queryByDisplayValue("" + testTextStyle.font)).toBeInTheDocument();
 		expect(queryByDisplayValue("" + testTextStyle.fontSize)).toBeInTheDocument();
 		expect(queryByDisplayValue("" + testTextStyle.lineHeight)).toBeInTheDocument();
+	});
+
+	describe("readonly mode", () => {
+		it("disables all inputs when isCurrentTextStyleReferenced is true", () => {
+			const { getByDisplayValue, getAllByRole } = setupReadonlyTest();
+
+			expect(getByDisplayValue("" + testTextStyle.name)).toBeDisabled();
+			expect(getByDisplayValue("Paragraph")).toBeDisabled();
+			expect(getByDisplayValue("" + testTextStyle.font)).toBeDisabled();
+			expect(getByDisplayValue("" + testTextStyle.fontSize)).toBeDisabled();
+			expect(getByDisplayValue("" + testTextStyle.lineHeight)).toBeDisabled();
+			getAllByRole("combobox").forEach(input => expect(input).toBeDisabled());
+		});
 	});
 });

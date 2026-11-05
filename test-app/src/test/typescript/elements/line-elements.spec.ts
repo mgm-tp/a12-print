@@ -32,7 +32,13 @@
 import { expect, test } from "@playwright/test";
 
 import { devAppTest, setBorderColor, setBorderStyle, setBorderWidth } from "../utils/index.js";
-import { closeDetail, commitChanges, dragElementToEditor, openEditorStage } from "../utils/userActions/editorActions";
+import {
+	closeDetail,
+	commitChanges,
+	dragElementToEditor,
+	openEditorStage,
+	testCopyElement,
+} from "../utils/userActions/editorActions";
 
 devAppTest.use({ useCase: "003-automated-tests" });
 
@@ -100,6 +106,10 @@ test.describe("Line Element", () => {
 
 		await test.step("Commit changes", async () => {
 			await commitChanges({ page });
+		});
+
+		await test.step("Copy Element", async () => {
+			await testCopyElement({ page, testId: "element-line" });
 		});
 	});
 });

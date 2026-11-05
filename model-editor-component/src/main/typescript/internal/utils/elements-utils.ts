@@ -31,37 +31,40 @@
  */
 import { nanoid } from "nanoid";
 
-import type {
-	ChartDimensions,
-	InputSource,
-	PageBreakBehavior,
-	Position,
-	Area,
-	BarChart,
-	BoundingBox,
-	Expression,
-	Line,
-	LineChart,
-	PartialAnyPrintModelElement,
-	PieChart,
-	Switch,
-	PartialPlaceableReference,
-	PartialTextStyle,
-	PartialValidPlaceableReference,
-	Text,
-	Table,
-	TableLayout,
-	Listing,
-	PartialPrintModel,
-	PartialLine,
-	PartialExpression,
-	PartialAnyTopLevelContainerElement,
-	OverflowDimensions,
-	BoundingBoxDimensions,
-	SwitchDimensions,
-} from "@com.mgmtp.a12.print/print-model-api/model";
-import { BorderStyle } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
+	type Calculation,
+	type ChartDimensions,
+	type FragmentDimensions,
+	type InputSource,
+	type Measure,
+	type PageBreakBehavior,
+	type Position,
+	type PrintModelEntity,
+	type Area,
+	type BarChart,
+	type BoundingBox,
+	type Expression,
+	type Line,
+	type LineChart,
+	type PartialAnyPrintModelElement,
+	type PieChart,
+	type Switch,
+	type PartialPlaceableReference,
+	type PartialTextStyle,
+	type PartialValidPlaceableReference,
+	type Text,
+	type Table,
+	type TableLayout,
+	type Listing,
+	type PartialPrintModel,
+	type PartialLine,
+	type PartialExpression,
+	type PartialAnyTopLevelContainerElement,
+	type OverflowDimensions,
+	type BoundingBoxDimensions,
+	type SwitchDimensions,
+	BorderStyle,
+	MeasureUnit,
 	ElementType,
 	PartialArea,
 	PartialBarChart,
@@ -80,7 +83,9 @@ import {
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import { PRINT_MODEL_METADATA_MAP } from "@com.mgmtp.a12.print/print-model-api/generated";
 import { InputSourceGenerator, PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 import type { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
+import { generatePrintModelEntityName } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import type { Wrapper } from "../redux/navigation/types/index.js";
 import { CHART_ELEMENTS } from "../constant/elements.js";
@@ -88,7 +93,7 @@ import { EditorConst } from "../constant/editor.js";
 import type { TextPropertiesPath } from "../types/input-source.js";
 
 import type { OmitId } from "./type-utils.js";
-import { createMmMeasure } from "./measure-utils.js";
+import { changePartialMmMeasureValue, createMmMeasure } from "./measure-utils.js";
 import { CssUtils, getTextPropertiesStyles, optionalValueToString } from "./css-utils.js";
 
 const { MM_TO_PX } = EditorConst;
@@ -100,6 +105,11 @@ export const DEFAULT_ELEMENT_CONTAINER_HEIGHT = 50;
 export const DEFAULT_CHART_HEIGHT = 50;
 
 export namespace ElementsUtils {
+	// the fragment stage's synthetic root placement is the only placement without its own pageBreakBehavior
+	export function hasResolvablePageBreakBehavior(placeableReference?: PartialValidPlaceableReference): boolean {
+		return !!placeableReference?.pageBreakBehavior;
+	}
+
 	export function createPageBreakBehavior(
 		topLevelContainer: PartialAnyTopLevelContainerElement,
 		currentWrapper?: Wrapper
@@ -120,7 +130,8 @@ export namespace ElementsUtils {
 					PRINT_MODEL_METADATA_MAP.RootGroup.content.elementDefinitions.override.boundingBox.elementReferences
 						.pageBreakBehavior.value.path;
 			}
-			const referenceId = currentWrapper.wrapperContext?.placeableReference?.id;
+			const wrapperPlaceable = currentWrapper.wrapperContext?.placeableReference;
+			const referenceId = wrapperPlaceable?.id;
 
 			if (!referenceId) {
 				throw new Error("Current wrapper does not have a selected placeable reference ID.");
@@ -130,7 +141,7 @@ export namespace ElementsUtils {
 				id: nanoid(),
 				path,
 				source: PossibleInputSource.INHERITED,
-				reference: referenceId,
+				reference: hasResolvablePageBreakBehavior(wrapperPlaceable) ? referenceId : undefined,
 			};
 		}
 
@@ -178,14 +189,38 @@ export namespace ElementsUtils {
 		return { newEl, placeableReference };
 	}
 
+	export function createFragmentReferencePlaceable(
+		refId: string,
+		model: string,
+		fragmentDimensions: FragmentDimensions,
+		position: OmitId<Position>,
+		topLevelContainer: PartialAnyTopLevelContainerElement,
+		currentWrapper?: Wrapper
+	): PartialValidPlaceableReference {
+		return {
+			id: nanoid(),
+			refId,
+			model,
+			dimensions: {
+				id: nanoid(),
+				minWidth: createMmMeasure(fragmentDimensions.width.value),
+				minHeight: createMmMeasure(fragmentDimensions.height.value),
+			},
+			position: { id: nanoid(), ...position },
+			screenReadingOrder: { id: nanoid(), screenReadingOrderWeight: 0 },
+			pageBreakBehavior: createPageBreakBehavior(topLevelContainer, currentWrapper),
+		};
+	}
+
 	export function isWrapperElement(
-		element: PartialAnyPrintModelElement
+		element: PartialAnyPrintModelElement | undefined
 	): element is PartialBoundingBox | PartialArea | PartialOverride | PartialSwitch {
 		return (
-			PartialBoundingBox.isInstance(element) ||
-			PartialOverride.isInstance(element) ||
-			PartialArea.isInstance(element) ||
-			PartialSwitch.isInstance(element)
+			!!element &&
+			(PartialBoundingBox.isInstance(element) ||
+				PartialOverride.isInstance(element) ||
+				PartialArea.isInstance(element) ||
+				PartialSwitch.isInstance(element))
 		);
 	}
 
@@ -205,11 +240,137 @@ export namespace ElementsUtils {
 		return CHART_ELEMENTS.includes(element.type);
 	}
 
-	export function getFixedElementHeight(
+	export function withFragmentDimensions(
+		fragmentDimensions: FragmentDimensions,
+		changed: { width?: Measure; height?: Measure }
+	): FragmentDimensions {
+		return {
+			id: fragmentDimensions.id,
+			width: changed.width ?? fragmentDimensions.width,
+			height: changed.height ?? fragmentDimensions.height,
+		};
+	}
+
+	export function getFragmentDimensionsUpdate(
 		element: PartialAnyPrintModelElement,
+		changed: { width?: Measure; height?: Measure }
+	): { fragmentDimensions: FragmentDimensions } | Record<string, never> {
+		if (!element.fragmentDimensions) {
+			return {};
+		}
+		return { fragmentDimensions: withFragmentDimensions(element.fragmentDimensions, changed) };
+	}
+
+	export function withOwnDimensions(
+		element: PartialAnyPrintModelElement,
+		dimensions: { height?: number; width?: number }
+	): PartialAnyPrintModelElement {
+		if (PartialPieChart.isInstance(element)) {
+			return {
+				...element,
+				pieChart: {
+					id: nanoid(),
+					...element.pieChart,
+					dimensions: {
+						...element.pieChart?.dimensions,
+						id: element.pieChart?.dimensions?.id || nanoid(),
+						...updateFixedDimensions(dimensions, element.pieChart?.dimensions),
+					},
+				},
+			};
+		}
+		if (PartialBarChart.isInstance(element)) {
+			return {
+				...element,
+				barChart: {
+					id: nanoid(),
+					...element.barChart,
+					dimensions: {
+						...element.barChart?.dimensions,
+						id: element.barChart?.dimensions?.id || nanoid(),
+						...updateFixedDimensions(dimensions, element.barChart?.dimensions),
+					},
+				},
+			};
+		}
+		if (PartialLineChart.isInstance(element)) {
+			return {
+				...element,
+				lineChart: {
+					id: nanoid(),
+					...element.lineChart,
+					dimensions: {
+						...element.lineChart?.dimensions,
+						id: element.lineChart?.dimensions?.id || nanoid(),
+						...updateFixedDimensions(dimensions, element.lineChart?.dimensions),
+					},
+				},
+			};
+		}
+		if (PartialImage.isInstance(element)) {
+			return {
+				...element,
+				image: {
+					id: nanoid(),
+					...element.image,
+					dimensions: {
+						...element.image?.dimensions,
+						id: element.image?.dimensions?.id || nanoid(),
+						...updateFixedDimensions(dimensions, element.image?.dimensions),
+					},
+				},
+			};
+		}
+		if (PartialBoundingBox.isInstance(element)) {
+			return {
+				...element,
+				boundingBox: {
+					id: nanoid(),
+					...element.boundingBox,
+					dimensions: {
+						...element.boundingBox?.dimensions,
+						id: element.boundingBox?.dimensions?.id || nanoid(),
+						...updateFixedDimensions(dimensions, element.boundingBox?.dimensions),
+					},
+				},
+			};
+		}
+		if (PartialArea.isInstance(element)) {
+			return {
+				...element,
+				area: {
+					id: nanoid(),
+					...element.area,
+					dimensions: {
+						...element.area?.dimensions,
+						id: element.area?.dimensions?.id || nanoid(),
+						...updateFixedDimensions(dimensions, element.area?.dimensions),
+					},
+				},
+			};
+		}
+		if (PartialSwitch.isInstance(element)) {
+			return {
+				...element,
+				switch: {
+					id: nanoid(),
+					...element.switch,
+					dimensions: {
+						...element.switch?.dimensions,
+						id: element.switch?.dimensions?.id || nanoid(),
+						...updateFixedDimensions(dimensions, element.switch?.dimensions),
+					},
+				},
+			};
+		}
+		return element;
+	}
+
+	export function getFixedElementHeight(
+		element: PartialAnyPrintModelElement | undefined,
 		placeable: PartialValidPlaceableReference
 	) {
-		switch (element.type) {
+		switch (element?.type) {
 			case ElementType.BarChart:
 				return element.barChart?.dimensions?.height?.value;
 			case ElementType.LineChart:
@@ -279,7 +440,7 @@ export namespace ElementsUtils {
 	}
 
 	export function getElementStyles(
-		element: PartialAnyPrintModelElement,
+		element: PartialAnyPrintModelElement | undefined,
 		propertiesPaths: TextPropertiesPath,
 		reference?: PartialPlaceableReference,
 		isLayoutElement?: boolean,
@@ -288,7 +449,7 @@ export namespace ElementsUtils {
 	): React.CSSProperties {
 		let result: React.CSSProperties = {};
 
-		switch (element.type) {
+		switch (element?.type) {
 			case ElementType.Expression:
 			case ElementType.Text:
 				result = getTextElementStyles(element, propertiesPaths, !!isLayoutElement, textStyle, fonts);
@@ -309,7 +470,7 @@ export namespace ElementsUtils {
 				break;
 		}
 
-		if (isLayoutElement && element.type !== ElementType.Text) {
+		if (isLayoutElement && element?.type !== ElementType.Text) {
 			result["whiteSpace"] = "pre-line";
 		}
 
@@ -362,7 +523,7 @@ export namespace ElementsUtils {
 			const refs = getElementReferences(reference);
 
 			refs.forEach(ref => {
-				if (ref && ref.refId) {
+				if (ref?.refId) {
 					collectedReferences.push(ref.refId);
 					const nestedRef = partialPrintModel.content?.elementDefinitions?.find(el => el.id === ref.refId);
 					getNestedReference(
@@ -375,6 +536,217 @@ export namespace ElementsUtils {
 		}
 		return collectedReferences;
 	}
+
+	export function createPrintModelElement(
+		id: string,
+		type: ElementType,
+		placeableReference?: PartialValidPlaceableReference,
+		isFragment?: boolean
+	): PartialAnyPrintModelElement {
+		const baseValues: PartialAnyPrintModelElement = {
+			id,
+			type,
+			isFragment,
+			fragmentDimensions: isFragment ? createFragmentDimensions(type) : undefined,
+			name: generatePrintModelEntityName(type),
+		};
+
+		if (CHART_ELEMENTS.includes(type)) {
+			if (!placeableReference) {
+				throw new Error(`placeable reference is required to create element ${type}`);
+			}
+			return createChartPrintModelElement(type, baseValues, placeableReference);
+		}
+		if (type === ElementType.Text) {
+			const defaultTextProperties =
+				InputSourceGenerator.generateInputSource<Required<Text>>("textProperties").textProperties;
+			const defaultBorderProperties =
+				InputSourceGenerator.generateInputSource<Text>("borderProperties").borderProperties;
+			return {
+				...baseValues,
+				borderProperties: defaultBorderProperties,
+				textProperties: {
+					id: defaultTextProperties.id,
+					textStyleId: defaultTextProperties.textStyleId,
+					alignment: defaultTextProperties.alignment,
+				},
+			} as Text;
+		}
+		if (type === ElementType.Table) {
+			const { columns, ...restProperties } = InputSourceGenerator.generateInputSource<Table>("table", [
+				"columns",
+			]).table;
+
+			const defaultTextProperties =
+				InputSourceGenerator.generateInputSource<Table>("textProperties").textProperties;
+			const defaultBorderProperties =
+				InputSourceGenerator.generateInputSource<Table>("borderProperties").borderProperties;
+			return {
+				...baseValues,
+				borderProperties: defaultBorderProperties,
+				table: {
+					...restProperties,
+				},
+				textProperties: defaultTextProperties,
+			} as Table;
+		}
+		if (type === ElementType.Listing) {
+			const listingInputSources = InputSourceGenerator.generateInputSource<Listing>("listing", [
+				"columns",
+			]).listing;
+			const defaultTextProperties =
+				InputSourceGenerator.generateInputSource<Listing>("textProperties").textProperties;
+			const defaultBorderProperties =
+				InputSourceGenerator.generateInputSource<Listing>("borderProperties").borderProperties;
+			return {
+				...baseValues,
+				borderProperties: defaultBorderProperties,
+				listing: {
+					...listingInputSources,
+				},
+				textProperties: defaultTextProperties,
+			} as Listing;
+		}
+		if (type === ElementType.BoundingBox) {
+			if (!placeableReference) {
+				throw new Error(`placeable reference is required to create element ${type}`);
+			}
+			const defaultBorderProperties =
+				InputSourceGenerator.generateInputSource<BoundingBox>("borderProperties").borderProperties;
+			return {
+				...baseValues,
+				borderProperties: defaultBorderProperties,
+				boundingBox: {
+					id: nanoid(),
+					dimensions: createDimensions(placeableReference),
+					elementReferences: [],
+				},
+			} as BoundingBox;
+		}
+		if (type === ElementType.Area) {
+			if (!placeableReference) {
+				throw new Error(`placeable reference is required to create element ${type}`);
+			}
+			const defaultBorderProperties =
+				InputSourceGenerator.generateInputSource<Area>("borderProperties").borderProperties;
+			return {
+				...baseValues,
+				borderProperties: defaultBorderProperties,
+				area: {
+					id: nanoid(),
+					dimensions: {
+						...createDimensions(placeableReference),
+						overflowHeight: createMmMeasure(0),
+					},
+					elementReferences: [],
+				},
+			} as Area;
+		}
+		if (type === ElementType.Switch) {
+			if (!placeableReference) {
+				throw new Error(`placeable reference is required to create element ${type}`);
+			}
+			return {
+				...baseValues,
+				switch: {
+					id: nanoid(),
+					name: baseValues.name,
+					dimensions: createDimensions(placeableReference),
+				},
+			} as Switch;
+		}
+		if (type === ElementType.Expression) {
+			const defaultTextProperties =
+				InputSourceGenerator.generateInputSource<Expression>("textProperties").textProperties;
+			const defaultBorderProperties =
+				InputSourceGenerator.generateInputSource<Expression>("borderProperties").borderProperties;
+			return {
+				...baseValues,
+				borderProperties: defaultBorderProperties,
+				textProperties: defaultTextProperties,
+				expression: {
+					id: nanoid(),
+					basePath: "/",
+				},
+			} as Expression;
+		}
+		if (type === ElementType.Line) {
+			const defaultBorderProperties =
+				InputSourceGenerator.generateInputSource<Line>("borderProperties").borderProperties;
+			return {
+				...baseValues,
+				borderProperties: {
+					...defaultBorderProperties,
+					borderStyle: {
+						...defaultBorderProperties!.borderStyle,
+						source: PossibleInputSource.INPUT,
+						value: BorderStyle.Solid,
+					},
+				},
+			} as Line;
+		}
+		if (type === ElementType.TableLayout) {
+			const defaultBorderProperties =
+				InputSourceGenerator.generateInputSource<TableLayout>("borderProperties").borderProperties;
+			return {
+				...baseValues,
+				borderProperties: defaultBorderProperties,
+			} as TableLayout;
+		}
+		if (type === ElementType.Calculation) {
+			return {
+				...baseValues,
+				calculation: {
+					id: nanoid(),
+					name: baseValues.name,
+				},
+			} as Calculation;
+		}
+
+		return baseValues;
+	}
+
+	export function createDefaultPlaceableReference(refId: string, type: ElementType): PartialValidPlaceableReference {
+		return {
+			id: nanoid(),
+			refId,
+			dimensions: {
+				id: nanoid(),
+				minWidth: {
+					id: nanoid(),
+					value: getInitialWidth(type),
+					unit: MeasureUnit.Millimeter,
+				},
+				minHeight: {
+					id: nanoid(),
+					value: getInitialHeight(type),
+					unit: MeasureUnit.Millimeter,
+				},
+			},
+			position: {
+				id: nanoid(),
+				x: {
+					id: nanoid(),
+					value: 0,
+					unit: MeasureUnit.Millimeter,
+				},
+				y: {
+					id: nanoid(),
+					value: 0,
+					unit: MeasureUnit.Millimeter,
+				},
+			},
+		};
+	}
+}
+
+function createFragmentDimensions(type: ElementType) {
+	const height = getInitialHeight(type);
+	return {
+		id: nanoid(),
+		width: createMmMeasure(getInitialWidth(type)),
+		height: createMmMeasure(height > 0 ? height : DEFAULT_ELEMENT_HEIGHT),
+	};
 }
 
 function createDimensions(
@@ -388,143 +760,6 @@ function createDimensions(
 		width: createMmMeasure(placeableReference.dimensions.minWidth.value),
 		height: createMmMeasure(placeableReference.dimensions.minHeight.value),
 	};
-}
-
-function createPrintModelElement(
-	id: string,
-	type: ElementType,
-	placeableReference: PartialValidPlaceableReference
-): PartialAnyPrintModelElement {
-	const baseValues: PartialAnyPrintModelElement = { id, type, borderProperties: { id: nanoid() } };
-
-	if (CHART_ELEMENTS.includes(type)) {
-		return createChartPrintModelElement(type, baseValues, placeableReference);
-	}
-	if (type === ElementType.Text) {
-		const defaultTextProperties =
-			InputSourceGenerator.generateInputSource<Required<Text>>("textProperties").textProperties;
-		const defaultBorderProperties =
-			InputSourceGenerator.generateInputSource<Text>("borderProperties").borderProperties;
-		return {
-			...baseValues,
-			borderProperties: defaultBorderProperties,
-			textProperties: {
-				id: defaultTextProperties.id,
-				textStyleId: defaultTextProperties.textStyleId,
-				alignment: defaultTextProperties.alignment,
-			},
-		} as Text;
-	}
-	if (type === ElementType.Table) {
-		const { columns, ...restProperties } = InputSourceGenerator.generateInputSource<Table>("table", [
-			"columns",
-		]).table;
-
-		const defaultTextProperties = InputSourceGenerator.generateInputSource<Table>("textProperties").textProperties;
-		const defaultBorderProperties =
-			InputSourceGenerator.generateInputSource<Table>("borderProperties").borderProperties;
-		return {
-			...baseValues,
-			borderProperties: defaultBorderProperties,
-			table: {
-				...restProperties,
-			},
-			textProperties: defaultTextProperties,
-		} as Table;
-	}
-	if (type === ElementType.Listing) {
-		const listingInputSources = InputSourceGenerator.generateInputSource<Listing>("listing", ["columns"]).listing;
-		const defaultTextProperties =
-			InputSourceGenerator.generateInputSource<Listing>("textProperties").textProperties;
-		const defaultBorderProperties =
-			InputSourceGenerator.generateInputSource<Listing>("borderProperties").borderProperties;
-		return {
-			...baseValues,
-			borderProperties: defaultBorderProperties,
-			listing: {
-				...listingInputSources,
-			},
-			textProperties: defaultTextProperties,
-		} as Listing;
-	}
-	if (type === ElementType.BoundingBox) {
-		const defaultBorderProperties =
-			InputSourceGenerator.generateInputSource<BoundingBox>("borderProperties").borderProperties;
-		return {
-			...baseValues,
-			borderProperties: defaultBorderProperties,
-			boundingBox: {
-				id: nanoid(),
-				dimensions: createDimensions(placeableReference),
-				elementReferences: [],
-			},
-		} as BoundingBox;
-	}
-	if (type === ElementType.Area) {
-		const defaultBorderProperties =
-			InputSourceGenerator.generateInputSource<Area>("borderProperties").borderProperties;
-		return {
-			...baseValues,
-			borderProperties: defaultBorderProperties,
-			area: {
-				id: nanoid(),
-				dimensions: {
-					...createDimensions(placeableReference),
-					overflowHeight: createMmMeasure(0),
-				},
-				elementReferences: [],
-			},
-		} as Area;
-	}
-	if (type === ElementType.Switch) {
-		return {
-			...baseValues,
-			switch: {
-				id: nanoid(),
-				dimensions: createDimensions(placeableReference),
-			},
-		} as Switch;
-	}
-	if (type === ElementType.Expression) {
-		const defaultTextProperties =
-			InputSourceGenerator.generateInputSource<Expression>("textProperties").textProperties;
-		const defaultBorderProperties =
-			InputSourceGenerator.generateInputSource<Expression>("borderProperties").borderProperties;
-		return {
-			...baseValues,
-			borderProperties: defaultBorderProperties,
-			textProperties: defaultTextProperties,
-			expression: {
-				id: nanoid(),
-				basePath: "/",
-			},
-		} as Expression;
-	}
-	if (type === ElementType.Line) {
-		const defaultBorderProperties =
-			InputSourceGenerator.generateInputSource<Line>("borderProperties").borderProperties;
-		return {
-			...baseValues,
-			borderProperties: {
-				...defaultBorderProperties,
-				borderStyle: {
-					...defaultBorderProperties!.borderStyle,
-					source: PossibleInputSource.INPUT,
-					value: BorderStyle.Solid,
-				},
-			},
-		} as Line;
-	}
-	if (type === ElementType.TableLayout) {
-		const defaultBorderProperties =
-			InputSourceGenerator.generateInputSource<TableLayout>("borderProperties").borderProperties;
-		return {
-			...baseValues,
-			borderProperties: defaultBorderProperties,
-		} as TableLayout;
-	}
-
-	return baseValues;
 }
 
 function createChartPrintModelElement(
@@ -570,14 +805,14 @@ function createChartPrintModelElement(
 	}
 }
 
-function getInitialWidth(type: ElementType): number {
+export function getInitialWidth(type: ElementType): number {
 	if (isBoxType(type)) {
 		return DEFAULT_ELEMENT_CONTAINER_HEIGHT;
 	}
 	return DEFAULT_ELEMENT_WIDTH;
 }
 
-function getInitialHeight(type: ElementType): number {
+export function getInitialHeight(type: ElementType): number {
 	if (isChartType(type)) {
 		return DEFAULT_CHART_HEIGHT;
 	}
@@ -594,4 +829,29 @@ function isChartType(type: ElementType) {
 
 function isBoxType(type: string): boolean {
 	return type === ElementType.BoundingBox || type === ElementType.Area || type === ElementType.Switch;
+}
+
+function updateFixedDimensions(
+	change: { height?: number; width?: number },
+	origin?: {
+		width?: DeepPartialRecursive<Measure> & PrintModelEntity;
+		height?: DeepPartialRecursive<Measure> & PrintModelEntity;
+	}
+) {
+	let newDimensions = { ...origin };
+
+	if ("height" in change) {
+		newDimensions = {
+			...newDimensions,
+			height: change.height ? changePartialMmMeasureValue(change.height, origin?.height) : undefined,
+		};
+	}
+
+	if ("width" in change) {
+		newDimensions = {
+			...newDimensions,
+			width: change.width ? changePartialMmMeasureValue(change.width, origin?.width) : undefined,
+		};
+	}
+	return newDimensions;
 }

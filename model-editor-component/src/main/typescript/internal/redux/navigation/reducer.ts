@@ -41,7 +41,14 @@ import { PrintEngineActions } from "../../store/actions.js";
 import { EditorMode } from "../editor-state/state.js";
 
 import { NavigationActions } from "./actions.js";
-import type { CanvasTabState, EntityNavStack, EntityStackEntry, NavigationState, WrapperStackEntry } from "./state.js";
+import type {
+	CanvasTabState,
+	EntityNavStack,
+	EntityStackEntry,
+	ModelReferenceSection,
+	NavigationState,
+	WrapperStackEntry,
+} from "./state.js";
 import { FULLSCREEN_TABS, isCanvasTab, tabToEntityType } from "./state.js";
 
 const initialCanvasTabState: CanvasTabState = { entities: {} };
@@ -56,7 +63,9 @@ const initialState: NavigationState = {
 	[SidebarItem.SEGMENT]: initialCanvasTabState,
 	[SidebarItem.SECTION]: initialCanvasTabState,
 	[SidebarItem.WATERMARK]: initialCanvasTabState,
+	[SidebarItem.FRAGMENT]: initialCanvasTabState,
 	[SidebarItem.TEXT_STYLES]: {},
+	[SidebarItem.SCHEMA]: { expandedSections: [] },
 };
 
 export const NavigationReducer: Reducer<NavigationState> = (
@@ -75,6 +84,9 @@ export const NavigationReducer: Reducer<NavigationState> = (
 		}
 		if (NavigationActions.setExpandedState.match(action)) {
 			return handleSetExpandedState(draft, action.payload);
+		}
+		if (NavigationActions.toggleSchemaSection.match(action)) {
+			return handleToggleSchemaSection(draft, action.payload);
 		}
 		if (NavigationActions.setActiveEntity.match(action)) {
 			return handleSetActiveEntity(draft, action.payload);
@@ -110,7 +122,14 @@ export const NavigationReducer: Reducer<NavigationState> = (
 			return handleResetEntity(draft, action.payload);
 		}
 		if (NavigationActions.clearActiveEntity.match(action)) {
+			if (action.payload.tab === SidebarItem.SECTION) {
+				draft[SidebarItem.SECTION].activeSectionSlot = undefined;
+			}
 			return handleClearActiveEntity(draft, action.payload);
+		}
+		if (NavigationActions.setActiveSectionSlot.match(action)) {
+			draft[SidebarItem.SECTION].activeSectionSlot = action.payload;
+			return;
 		}
 		if (NavigationActions.updateWrapperEntry.match(action)) {
 			return handleUpdateWrapperEntry(draft, action.payload);
@@ -126,9 +145,16 @@ export const NavigationReducer: Reducer<NavigationState> = (
 // ---------------------------------------------------------------------------
 
 function handleSetInvalidState(draft: NavigationState, logStore: TransactionLogStore): void {
-	filterCanvasTab(draft[SidebarItem.SEGMENT], logStore.segments.map, logStore.printModelElements);
+	filterCanvasTab(draft[SidebarItem.SEGMENT], logStore.segments?.map ?? {}, logStore.printModelElements);
 	filterCanvasTab(draft[SidebarItem.SECTION], logStore.sections?.map ?? {}, logStore.printModelElements);
 	filterCanvasTab(draft[SidebarItem.WATERMARK], logStore.watermarks?.map ?? {}, logStore.printModelElements);
+	const fragmentElementIds: Record<string, unknown> = {};
+	for (const [id, entry] of Object.entries(logStore.printModelElements)) {
+		if (entry.memoizedObject?.isFragment) {
+			fragmentElementIds[id] = entry;
+		}
+	}
+	filterCanvasTab(draft[SidebarItem.FRAGMENT], fragmentElementIds, logStore.printModelElements);
 
 	const selectedTextStyleId = draft[SidebarItem.TEXT_STYLES].selectedTextStyleId;
 	if (selectedTextStyleId && !(selectedTextStyleId in (logStore.textStyles?.map ?? {}))) {
@@ -181,9 +207,15 @@ function filterFormStackElements(stack: EntityNavStack, validElementIds: Record<
 function handleSetActiveTab(draft: NavigationState, tab: SidebarItem): void {
 	draft.sidebarState.activeTab = tab;
 	draft.sidebarState.isFullscreen = FULLSCREEN_TABS.includes(tab);
-	if (isCanvasTab(tab)) {
-		draft.sidebarState.activeCanvasTab = tab;
+	if (!isCanvasTab(tab)) {
+		return;
 	}
+	// Re-selecting the FRAGMENT tree tab must not reset the stage: keep the open canvas (e.g. a watermark fragment).
+	const currentCanvasTab = draft.sidebarState.activeCanvasTab;
+	if (tab === SidebarItem.FRAGMENT && draft[currentCanvasTab].activeEntityId) {
+		return;
+	}
+	draft.sidebarState.activeCanvasTab = tab;
 }
 
 function handleSetExpandedState(
@@ -321,7 +353,12 @@ function handleJumpTo(draft: NavigationState, payload: DeepPartial<NavigationSta
 		Object.assign(draft.sidebarState, payload.sidebarState);
 	}
 
-	for (const tab of [SidebarItem.SEGMENT, SidebarItem.SECTION, SidebarItem.WATERMARK] as const) {
+	for (const tab of [
+		SidebarItem.SEGMENT,
+		SidebarItem.SECTION,
+		SidebarItem.WATERMARK,
+		SidebarItem.FRAGMENT,
+	] as const) {
 		const update = payload[tab];
 		if (!update) {
 			continue;
@@ -338,6 +375,20 @@ function handleJumpTo(draft: NavigationState, payload: DeepPartial<NavigationSta
 	if (textStylesUpdate) {
 		Object.assign(draft[SidebarItem.TEXT_STYLES], textStylesUpdate);
 	}
+
+	const { expandedSections } = draft[SidebarItem.SCHEMA];
+	for (const section of payload[SidebarItem.SCHEMA]?.expandedSections ?? []) {
+		if (section && !expandedSections.includes(section)) {
+			expandedSections.push(section);
+		}
+	}
+}
+
+function handleToggleSchemaSection(draft: NavigationState, section: ModelReferenceSection): void {
+	const { expandedSections } = draft[SidebarItem.SCHEMA];
+	draft[SidebarItem.SCHEMA].expandedSections = expandedSections.includes(section)
+		? expandedSections.filter(expandedSection => expandedSection !== section)
+		: [...expandedSections, section];
 }
 
 function handleResetEntity(draft: NavigationState, { tab, entityId }: NavigationActions.ResetEntityPayload): void {
@@ -365,7 +416,9 @@ function handleUpdateWrapperEntry(
 	if (!stack) {
 		return;
 	}
-	const entry = stack.find(e => e.id === id) as WrapperStackEntry | undefined;
+	// Skip the auto-created root entry at stack[0]: if the root entity is itself a wrapper its id equals the
+	// wrapper's own id, and the match would silently update the root entry instead.
+	const entry = stack.slice(1).find(e => e.id === id) as WrapperStackEntry | undefined;
 	if (!entry) {
 		return;
 	}

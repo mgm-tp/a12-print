@@ -38,7 +38,7 @@ import type { Locale } from "@com.mgmtp.a12.utils/utils-localization";
 import type { PrintValidator } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { DocumentModelUtils } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils/marshaller";
-import type { Model } from "@com.mgmtp.a12.base/base-model-api";
+import type { Header, Model } from "@com.mgmtp.a12.base/base-model-api";
 import type { TypesettingModel } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
 import { TypesettingModelMarshaller } from "@com.mgmtp.a12.print/print-typesetting/a12internal/api";
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
@@ -60,6 +60,7 @@ import type {
 import { resolveImagesDataOfPrintModel } from "../../../../a12internal/components/utils/static-image.js";
 import { RequestApiSelectors } from "../../../redux/request-api/selectors.js";
 import { DocumentModelDataActions } from "../../../redux/document-model-data/actions.js";
+import { PrintEngineSelectors } from "../../../store/selectors.js";
 
 import type { PrintEditorSMEProps } from "./types.js";
 import { setSegmentReferences } from "./utils/set-segment-references.js";
@@ -86,6 +87,7 @@ export type RequestApiContext = Pick<
 	| "setPrintModels"
 	| "showNotification"
 	| "precompilePrintModel"
+	| "onNavigateToPrintModel"
 >;
 
 function getDeserializeTypesettingModels(models: Model[]): TypesettingModel[] {
@@ -101,6 +103,26 @@ function getDeserializeTypesettingModels(models: Model[]): TypesettingModel[] {
 		.filter(Boolean) as TypesettingModel[];
 }
 
+/**
+ * The print fragment models for validating the references pointing into them. Undefined while a model that exists is
+ * still on its way, because until it arrived every reference into it looks unresolvable. A model that is not among the
+ * available print models will never arrive, so it is not waited for - the validation then reports it as not given.
+ */
+function getFragmentModelsFromStore(state: PrintEngineState, availablePrintModels: Model[]): PrintModel[] | undefined {
+	const referencedModelIds = PrintEngineSelectors.fragmentModelReferences(state).map(
+		reference => reference.reference
+	);
+	if (!referencedModelIds.length) {
+		return undefined;
+	}
+
+	const fragmentModels = PrintEngineSelectors.fragmentModels(state);
+	const isLoaded = (modelId?: string) => fragmentModels.some(model => model.header.id === modelId);
+	const exists = (modelId?: string) => availablePrintModels.some(model => model.header.id === modelId);
+
+	return referencedModelIds.every(modelId => isLoaded(modelId) || !exists(modelId)) ? fragmentModels : undefined;
+}
+
 export function setupStore(
 	requestApiContext: RequestApiContext,
 	showNotification: (notification: EditorComponentApiActions.AddNotificationPayload) => void,
@@ -108,6 +130,8 @@ export function setupStore(
 	staticImageProvider: StaticImageProvider
 ) {
 	const typesettingModelsInstances = getDeserializeTypesettingModels(requestApiContext.typesettingModels);
+	const typesettingModelIds = requestApiContext.typesettingModels.map(model => model.header.id);
+	const printModelIds = requestApiContext.printModels.map(model => model.header.id);
 
 	const requestApi: RequestApi = {
 		loadPrintModel: (printModelId: string) => {
@@ -139,12 +163,62 @@ export function setupStore(
 
 			const deserializedResult = printModelMarshaller.deserialize(
 				printModel as unknown as Record<string, unknown>,
-				{ html: false, references: { documentModels } }
+				{
+					html: false,
+					references: {
+						documentModels,
+						fragmentModels: getFragmentModelsFromStore(store.getState(), requestApiContext.printModels),
+						printModelIds,
+						typesettingModelIds,
+					},
+				}
 			);
 
 			return Promise.resolve({
 				printModel: deserializedResult.result,
 				logPersistentEntries,
+				errorMap: deserializedResult.report.noErrorOccurred ? undefined : deserializedResult.report.errorMap,
+			});
+		},
+		loadFragmentModel: (fragmentModelId: string) => {
+			const fragmentModel = requestApiContext.printModels.find(pm => pm.header.id === fragmentModelId);
+			if (!fragmentModel) {
+				return Promise.resolve({
+					printModel: undefined,
+				});
+			}
+
+			const requiredDocumentModelIds =
+				fragmentModel.header.modelReferences
+					?.filter(ref => ref.reference && ref.modelType === "document")
+					.map(ref => ref.reference) ?? [];
+
+			const rawDocumentModels = requestApiContext.loadReferencedDocumentModels(requiredDocumentModelIds);
+			const documentModels = DocumentModelUtils.getDeserializedDocumentModels(rawDocumentModels);
+			store.dispatch(
+				DocumentModelDataActions.setDocumentModelData(
+					documentModels.map(dm => ({
+						id: dm.header.id,
+						documentModelData: DocumentModelUtils.getDocumentModelData(dm, locale),
+					}))
+				)
+			);
+
+			const deserializedResult = printModelMarshaller.deserialize(
+				fragmentModel as unknown as Record<string, unknown>,
+				{
+					html: false,
+					references: {
+						documentModels,
+						fragmentModels: getFragmentModelsFromStore(store.getState(), requestApiContext.printModels),
+						printModelIds,
+						typesettingModelIds,
+					},
+				}
+			);
+
+			return Promise.resolve({
+				printModel: deserializedResult.result,
 				errorMap: deserializedResult.report.noErrorOccurred ? undefined : deserializedResult.report.errorMap,
 			});
 		},
@@ -165,7 +239,12 @@ export function setupStore(
 			const documentModels = getDocumentModelsFromStore(store.getState());
 			const serializedResult = printModelMarshaller.serialize(printModel, {
 				html: false,
-				references: { documentModels },
+				references: {
+					documentModels,
+					fragmentModels: getFragmentModelsFromStore(store.getState(), requestApiContext.printModels),
+					printModelIds,
+					typesettingModelIds,
+				},
 			});
 			if (!serializedResult.result) {
 				return { errorMap: serializedResult.report.errorMap };
@@ -211,8 +290,8 @@ export function setupStore(
 		onValidationStateChange: (validationState: ValidationState) => {
 			requestApiContext.onValidationStateChange?.(validationState);
 		},
-		loadPrintModelIds(): Promise<string[]> {
-			return Promise.resolve(requestApiContext.printModels.map(model => model.header.id));
+		loadPrintModelHeaders(): Promise<Header[]> {
+			return Promise.resolve(requestApiContext.printModels.map(model => model.header));
 		},
 		loadDINTemplateSegments(id: string): Promise<DINTemplateSegment[]> {
 			const selectedModel = requestApiContext.printModels.find(model => model.header.id === id);
@@ -250,7 +329,12 @@ export function setupStore(
 			const documentModels = getDocumentModelsFromStore(store.getState());
 			const result = printModelMarshaller.serialize(apiObject, {
 				html: false,
-				references: { documentModels },
+				references: {
+					documentModels,
+					fragmentModels: getFragmentModelsFromStore(store.getState(), requestApiContext.printModels),
+					printModelIds,
+					typesettingModelIds,
+				},
 				partial: { relevantPaths },
 			});
 			store.dispatch(EditorComponentApiActions.setSerializePrintModelResult(result));
@@ -259,13 +343,21 @@ export function setupStore(
 			const documentModels = getDocumentModelsFromStore(store.getState());
 			const result = printModelMarshaller.deserialize(_validatorInput, {
 				html: false,
-				references: { documentModels },
+				references: {
+					documentModels,
+					fragmentModels: getFragmentModelsFromStore(store.getState(), requestApiContext.printModels),
+					printModelIds,
+					typesettingModelIds,
+				},
 				partial: { relevantPaths },
 			});
 			store.dispatch(EditorComponentApiActions.setDeserializePrintModelResult(result));
 		},
 		discardAllLogs() {
 			requestApiContext.discardAllLogs?.();
+		},
+		onNavigateToPrintModel(printModelId: string, navigationPath?: EntityInstancePath) {
+			requestApiContext.onNavigateToPrintModel?.(printModelId, navigationPath);
 		},
 		listStaticImages: function (): Promise<string[]> {
 			return staticImageProvider.listStaticImages();

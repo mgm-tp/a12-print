@@ -27,6 +27,13 @@ Simply click on "Close" in the top right-hand corner of the Detail View or selec
 
 image::chapter03/03_text_detail_view.png[Element Detail View,title="Element Detail View"]
 
+=== Element Name [[ElementName]]
+
+Every Print Model Element has a name, which is edited in the "Element Name" field at the top of the Detail View.
+The name identifies the Element in the editor, for example in the <<FragmentTab, Fragment Tab>> of a <<FragmentModels, Print Fragment Model>>.
+
+When a new Element is added, a name is generated automatically from the Element type and a random suffix, for example `Text_a3f9c`.
+
 === Input Source [[InputSource]]
 This feature allows users to explicitly define the source of values, enhancing data clarity and input control.
 

@@ -49,6 +49,7 @@ import { DocumentModelDataSelectors } from "../../../redux/document-model-data/s
 
 import { CustomTextField } from "../custom-base-input-components/index.js";
 import type { ElementWithoutIdAndType } from "../type.js";
+import { useFormReadonly } from "../FormContext.js";
 
 import { FieldFormattingInputForm } from "./FieldFormattingInputForm.js";
 import { DocumentModelSelect } from "./DocumentModelSelect.js";
@@ -61,6 +62,7 @@ interface FieldFormProps {
 export const FieldForm = ({ element }: FieldFormProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const wrapperDataContext = useSelector(PrintEngineSelectors.wrapperDataContext);
+	const isFormReadonly = useFormReadonly();
 
 	const model = element.field?.model;
 
@@ -123,6 +125,7 @@ export const FieldForm = ({ element }: FieldFormProps) => {
 				value={model}
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getErrorMessage("model")}
+				disabled={isFormReadonly}
 			/>
 			<CustomTextField
 				readonly
@@ -135,6 +138,7 @@ export const FieldForm = ({ element }: FieldFormProps) => {
 				elementMapEntries={processedElementMap}
 				selectedPath={fieldPath}
 				setSelectedPath={setSelectedPath}
+				disabled={isFormReadonly}
 				maxRepeatLevel={0}
 			/>
 			<FieldFormattingInputForm

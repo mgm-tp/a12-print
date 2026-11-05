@@ -34,7 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
 import type { DropDownItem } from "@com.mgmtp.a12.widgets/widgets-core";
-import { Icon, Button, Toggle, addPrefix, Autocomplete } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Icon, Button, addPrefix, Autocomplete } from "@com.mgmtp.a12.widgets/widgets-core";
 import { PageOrientation, SegmentType } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { InteractionLogActions, RequestApiActions, TransactionLogStateActions } from "../../redux/index.js";
@@ -43,9 +43,14 @@ import { RequestApiSelectors } from "../../redux//request-api/selectors.js";
 
 import { FlexContainer } from "../sidebar/Sidebar.styled.js";
 import { CustomTextField } from "../forms/custom-base-input-components/index.js";
+import { PageOrientationToggle } from "../sidebar/PageOrientationToggle.js";
 
 import { StyledFlexGapContainer, StyledSegmentToolbar } from "./SegmentToolbar.styled.js";
 import { DinTemplateSegmentItem } from "./din-template-segment-item.js";
+
+const DIN_VALUE_PREFIX = "din::";
+const FRAGMENT_VALUE_PREFIX = "frag::";
+const GROUP_VALUE_PREFIX = "group::";
 
 export const SegmentToolbar = () => {
 	const dispatch = useDispatch();
@@ -53,27 +58,91 @@ export const SegmentToolbar = () => {
 
 	const [title, setTitle] = React.useState<string>("");
 	const [pageOrientation, setPageOrientation] = React.useState<PageOrientation>(PageOrientation.Portrait);
-	const [selectedTemplateSegment, setSelectedTemplateSegment] = React.useState<DropDownItem | undefined>(undefined);
+	const [selectedItem, setSelectedItem] = React.useState<DropDownItem | undefined>(undefined);
+	const [filterText, setFilterText] = React.useState<string>("");
 	const dinTemplateSegmentItems: DinTemplateSegmentItem[] = useSelector(RequestApiSelectors.dinTemplateSegmentItems);
+	const availableFragmentSegments = useSelector(RequestApiSelectors.availableFragmentSegments);
 
 	React.useEffect(() => {
 		dispatch(RequestApiActions.loadReferencedPrintModels());
 	}, [dispatch]);
 
-	const templateSegmentSelectItems = React.useMemo(
-		() =>
-			dinTemplateSegmentItems
-				.filter(
-					({ pageOrientation: dinSegmentPageOrientation }) => dinSegmentPageOrientation === pageOrientation
-				)
-				.map(dinTemplateSegmentItem => ({
-					label: DinTemplateSegmentItem.stringify(dinTemplateSegmentItem),
-					value: JSON.stringify(dinTemplateSegmentItem),
-				})),
-		[dinTemplateSegmentItems, pageOrientation]
+	// A single grouped source: one group for DIN template segments (filtered by orientation),
+	// and one group per fragment model. The origin of a leaf is encoded in its value.
+	const baseItems: DropDownItem[] = React.useMemo(() => {
+		const groups: DropDownItem[] = [];
+
+		const dinLeaves = dinTemplateSegmentItems
+			.filter(({ pageOrientation: dinOrientation }) => dinOrientation === pageOrientation)
+			.map<DropDownItem>(dinTemplateSegmentItem => ({
+				label: DinTemplateSegmentItem.stringify(dinTemplateSegmentItem),
+				value: `${DIN_VALUE_PREFIX}${JSON.stringify(dinTemplateSegmentItem)}`,
+			}));
+		if (dinLeaves.length > 0) {
+			groups.push({
+				label: localizer(RESOURCE_KEYS.sidebar.segment.setting.segmentTemplate),
+				value: `${GROUP_VALUE_PREFIX}din`,
+				children: dinLeaves,
+			});
+		}
+
+		const fragmentGroupsByModel = new Map<string, DropDownItem[]>();
+		availableFragmentSegments.forEach(({ modelId, segment }, index) => {
+			const leaves = fragmentGroupsByModel.get(modelId) ?? [];
+			leaves.push({ label: segment.title ?? segment.id, value: `${FRAGMENT_VALUE_PREFIX}${index}` });
+			fragmentGroupsByModel.set(modelId, leaves);
+		});
+		for (const [modelId, children] of fragmentGroupsByModel) {
+			groups.push({ label: modelId, value: `${GROUP_VALUE_PREFIX}${modelId}`, children });
+		}
+
+		return groups;
+	}, [availableFragmentSegments, dinTemplateSegmentItems, localizer, pageOrientation]);
+
+	const displayedItems: DropDownItem[] = React.useMemo(
+		() => (filterText ? filterGroupedItems(baseItems, filterText.toLocaleLowerCase()) : baseItems),
+		[baseItems, filterText]
 	);
 
+	const onValueChange = React.useCallback((value: string | DropDownItem) => {
+		if (typeof value === "string" || value.value?.startsWith(GROUP_VALUE_PREFIX)) {
+			return;
+		}
+		setSelectedItem(value);
+	}, []);
+
+	const onSearch = React.useCallback((value: string) => {
+		setFilterText(value);
+	}, []);
+
+	const resetDinSelection = React.useCallback(() => {
+		setSelectedItem(prev => (prev?.value?.startsWith(DIN_VALUE_PREFIX) ? undefined : prev));
+	}, []);
+
+	const selectedValue = selectedItem?.value;
+	const isFragmentSelected = Boolean(selectedValue?.startsWith(FRAGMENT_VALUE_PREFIX));
+
 	const onClickAddNewPage = React.useCallback(() => {
+		if (selectedValue?.startsWith(FRAGMENT_VALUE_PREFIX)) {
+			const index = Number.parseInt(selectedValue.slice(FRAGMENT_VALUE_PREFIX.length), 10);
+			const item = availableFragmentSegments[index];
+			if (item) {
+				dispatch(
+					InteractionLogActions.start({
+						description: RESOURCE_KEYS.interaction.segment.segmentReferenceSection.addSegmentReference,
+						region: "sidebar",
+						transactionLogActions: [
+							TransactionLogStateActions.addSegmentFragmentReference({
+								data: { id: nanoid(), refId: item.segment.id, model: item.modelId },
+							}),
+						],
+					})
+				);
+			}
+			setSelectedItem(undefined);
+			return;
+		}
+
 		const segment = {
 			id: nanoid(),
 			title,
@@ -85,7 +154,7 @@ export const SegmentToolbar = () => {
 			elementReferences: [],
 		};
 
-		if (selectedTemplateSegment?.value) {
+		if (selectedValue?.startsWith(DIN_VALUE_PREFIX)) {
 			dispatch(
 				InteractionLogActions.start({
 					description: RESOURCE_KEYS.interaction.segment.SegmentToolbar.addReferenceSegment,
@@ -95,7 +164,7 @@ export const SegmentToolbar = () => {
 							data: {
 								segment,
 								dinTemplateSegmentItem: JSON.parse(
-									selectedTemplateSegment.value
+									selectedValue.slice(DIN_VALUE_PREFIX.length)
 								) as DinTemplateSegmentItem,
 							},
 						}),
@@ -116,29 +185,10 @@ export const SegmentToolbar = () => {
 			);
 		}
 		setTitle("");
-		setSelectedTemplateSegment(undefined);
-	}, [dispatch, pageOrientation, selectedTemplateSegment, title]);
-
-	const onDinTemplateSegmentItemChanged = React.useCallback((value: string | DropDownItem) => {
-		if (typeof value === "string") {
-			return;
-		}
-		setSelectedTemplateSegment(value);
-	}, []);
-
-	const onPageOrientationChanged = React.useCallback(
-		(value: string) => {
-			const newPageOrientation = value as PageOrientation;
-			if (pageOrientation !== newPageOrientation) {
-				setPageOrientation(newPageOrientation);
-				setSelectedTemplateSegment(undefined);
-			}
-		},
-		[pageOrientation]
-	);
+		setSelectedItem(undefined);
+	}, [availableFragmentSegments, dispatch, pageOrientation, selectedValue, title]);
 
 	const addButtonLabel = localizer(RESOURCE_KEYS.button.add);
-	const pageOrientations = usePageOrientation();
 
 	return (
 		<StyledSegmentToolbar data-testid="segment-toolbar">
@@ -151,29 +201,21 @@ export const SegmentToolbar = () => {
 						placeholder={localizer(RESOURCE_KEYS.sidebar.segment.toolbar.namePlaceholder)}
 						fitToParent={false}
 					/>
-					<Toggle value={pageOrientation} onValueChanged={onPageOrientationChanged}>
-						{pageOrientations.map(item => (
-							<Toggle.Item
-								key={item.value}
-								style={{ ...item.styles }}
-								value={item.value}
-								data-testid={`toggle-${item.value}`}
-							>
-								<Icon title={localizer(item.title)}>{item.icon}</Icon>
-							</Toggle.Item>
-						))}
-					</Toggle>
+					<PageOrientationToggle
+						pageOrientation={pageOrientation}
+						setPageOrientation={setPageOrientation}
+						setSelectedTemplateSegment={resetDinSelection}
+					/>
 				</StyledFlexGapContainer>
-				{templateSegmentSelectItems.length > 0 && (
+				{baseItems.length > 0 && (
 					<StyledFlexGapContainer>
 						<Autocomplete
 							hintTemplate={""}
-							items={templateSegmentSelectItems}
-							value={selectedTemplateSegment}
-							onValueChange={onDinTemplateSegmentItemChanged}
-							inputPlaceHolder={localizer(
-								RESOURCE_KEYS.sidebar.segment.toolbar.dinTemplate.selectPlaceHolder
-							)}
+							items={displayedItems}
+							value={selectedItem}
+							onValueChange={onValueChange}
+							onSearch={onSearch}
+							inputPlaceHolder={localizer(RESOURCE_KEYS.sidebar.segment.reference.selectPlaceholder)}
 						/>
 					</StyledFlexGapContainer>
 				)}
@@ -183,7 +225,7 @@ export const SegmentToolbar = () => {
 					label={addButtonLabel}
 					title={addButtonLabel}
 					icon={<Icon>add</Icon>}
-					disabled={!title?.trim()}
+					disabled={!title?.trim() && !isFragmentSelected}
 					onClick={onClickAddNewPage}
 				/>
 			</FlexContainer>
@@ -191,26 +233,21 @@ export const SegmentToolbar = () => {
 	);
 };
 
-const usePageOrientation = (): {
-	icon: string;
-	title: string;
-	value: PageOrientation;
-	styles: React.CSSProperties;
-}[] => {
-	const localizer = PrintLocalizer.useLocalizer();
-
-	return [
-		{
-			icon: "description",
-			title: localizer(RESOURCE_KEYS.editor.pageOrientation.portrait),
-			value: PageOrientation.Portrait,
-			styles: { borderTopLeftRadius: 4, borderBottomLeftRadius: 4 },
-		},
-		{
-			icon: "topic",
-			title: localizer(RESOURCE_KEYS.editor.pageOrientation.landscape),
-			value: PageOrientation.Landscape,
-			styles: { borderTopRightRadius: 4, borderBottomRightRadius: 4 },
-		},
-	];
-};
+/**
+ * Recursively filters grouped {@link DropDownItem}s by the given (lower-cased) text.
+ * A group is kept when any of its children match; leaves match on a label substring.
+ */
+function filterGroupedItems(items: DropDownItem[], filterText: string): DropDownItem[] {
+	const result: DropDownItem[] = [];
+	for (const item of items) {
+		if (item.children && item.children.length > 0) {
+			const childResult = filterGroupedItems(item.children, filterText);
+			if (childResult.length > 0) {
+				result.push({ ...item, children: childResult });
+			}
+		} else if (item.label.toLocaleLowerCase().includes(filterText)) {
+			result.push(item);
+		}
+	}
+	return result;
+}

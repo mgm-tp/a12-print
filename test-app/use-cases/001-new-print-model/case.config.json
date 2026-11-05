@@ -1,10 +1,14 @@
 {
 	"id": "001-new-print-model",
 	"resource": {
-		"printModel": "/001-new-print-model/ExamplePM.json",
-		"documentModel": "/001-new-print-model/ExampleDM.json",
+		"printModel": "/001-new-print-model/NewPM.json",
+		"documentModel": "/resources/ExampleDM.json",
 		"templatePrintModels": "/001-new-print-model/templates",
-    "documents": "/001-new-print-model",
+    "fragmentPrintModels": [
+      "/007-fragment-model/printFragment.json",
+      "/008-fragment-model-no-dm/printFragmentWithoutDM.json"
+    ],
+    "documents": "/resources/documents",
 		"store": "/001-new-print-model/store.json",
     "fontMap": {
       "Poppins": "../../build/assets/static/Poppins-Regular.ttf",

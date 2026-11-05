@@ -42,6 +42,7 @@ import { SectionContent } from "../sections/index.js";
 import { SchemaContent } from "../schema/SchemaContent.js";
 import { CommitChanges } from "../commit-changes/index.js";
 import { WatermarkContent } from "../watermarks/index.js";
+import { FragmentTree } from "../fragment/FragmentTree.js";
 
 export const SidebarContent = () => {
 	const selectedItem = useSelector(NavigationSelectors.activeTab);
@@ -55,6 +56,8 @@ export const SidebarContent = () => {
 			return <SectionContent />;
 		case SidebarItem.WATERMARK:
 			return <WatermarkContent />;
+		case SidebarItem.FRAGMENT:
+			return <FragmentTree />;
 		case SidebarItem.TEXT_STYLES:
 			return <TextStyles />;
 		case SidebarItem.SCHEMA:

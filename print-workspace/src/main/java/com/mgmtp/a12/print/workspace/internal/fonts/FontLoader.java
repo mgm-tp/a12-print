@@ -59,7 +59,7 @@ public class FontLoader {
 		Workspace.getInstance().getFileMap().get(FileElementType.UNKNOWN)
 			.forEach(property -> {
 				final var extension = FileUtils.getFileExtension(property.getPath());
-				if (extension.equals(FONT_EXTENSION)) {
+				if (extension.equalsIgnoreCase(FONT_EXTENSION)) {
 					final var fontFileName = FilenameUtils.getBaseName(property.getPath().toString());
 					final var fontPath = ConfigConstants.FILEPATH_SUFFIX + property.getPath().toString();
 					if (TRIMMED_DEFAULT_FONTS.containsKey(fontFileName)) {

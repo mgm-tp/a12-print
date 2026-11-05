@@ -34,7 +34,9 @@ import cloneDeep from "lodash/cloneDeep.js";
 import isEmpty from "lodash/isEmpty.js";
 
 import type {
+	FragmentModelReference,
 	PartialAnyPrintModelElement,
+	PartialFragment,
 	PartialPrintModelContentGeneral,
 	PartialPrintModelHeader,
 	PartialSection,
@@ -45,6 +47,7 @@ import type {
 	PrintModel,
 	PrintModelEntity,
 	Reference,
+	SectionFragmentReference,
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	Area,
@@ -62,6 +65,11 @@ import {
 import type { DeepMutable } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import type { AffectedItem, InteractionLogEntry } from "./interaction-log.js";
+
+export const WATERMARKS_REFERENCES_ENTRY_ID = "watermarks-references";
+export const SECTIONS_REFERENCES_ENTRY_ID = "sections-references";
+export const TEXT_STYLES_REFERENCES_ENTRY_ID = "text-styles-references";
+export const SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID = "segments-fragment-references";
 
 /**
  * This corresponds to the id of the group in the print model. Null if it is not a group.
@@ -111,6 +119,35 @@ export interface TransactionLogEntry {
 }
 
 /**
+ * Container for all watermark fragment model references, stored as a single transaction log entry.
+ */
+export interface WatermarkReferencesContainer extends PrintModelEntity {
+	readonly references: ReadonlyArray<FragmentModelReference>;
+}
+
+/**
+ * Container for all section fragment model references, stored as a single transaction log entry.
+ */
+export interface SectionReferencesContainer extends PrintModelEntity {
+	readonly references: ReadonlyArray<SectionFragmentReference>;
+}
+
+/**
+ * Container for all text style fragment model references, stored as a single transaction log entry.
+ */
+export interface TextStyleReferencesContainer extends PrintModelEntity {
+	readonly references: ReadonlyArray<FragmentModelReference>;
+}
+
+/**
+ * Container for all segment fragment model references, stored as a single transaction log entry.
+ * Note: this is distinct from the DINTemplate {@link PartialSegmentReference} references.
+ */
+export interface SegmentFragmentReferencesContainer extends PrintModelEntity {
+	readonly references: ReadonlyArray<FragmentModelReference>;
+}
+
+/**
  * Instance of parts of the print model after transaction log entries have been resolved. Partial state is needed because
  * is might be in an invalid state.
  */
@@ -119,8 +156,13 @@ export type TransactionLogObject =
 	| PartialPrintModelContentGeneral
 	| PartialSegment
 	| PartialSegmentReference
+	| SegmentFragmentReferencesContainer
+	| PartialWatermark
+	| WatermarkReferencesContainer
 	| PartialSection
+	| SectionReferencesContainer
 	| PartialTextStyle
+	| TextStyleReferencesContainer
 	| PartialAnyPrintModelElement;
 
 /**
@@ -146,6 +188,25 @@ export interface SegmentsStoreEntryMapWithId<
 	T extends TransactionLogObject = TransactionLogObject,
 > extends StoreEntryMapWithId<T> {
 	readonly references: TransactionLogStoreEntryMap<PartialSegmentReference>;
+	readonly fragmentReferencesEntry?: TransactionLogStoreEntry<SegmentFragmentReferencesContainer>;
+}
+
+export interface WatermarksStoreEntryMapWithId<
+	T extends TransactionLogObject = TransactionLogObject,
+> extends StoreEntryMapWithId<T> {
+	readonly referencesEntry?: TransactionLogStoreEntry<WatermarkReferencesContainer>;
+}
+
+export interface SectionsStoreEntryMapWithId<
+	T extends TransactionLogObject = TransactionLogObject,
+> extends StoreEntryMapWithId<T> {
+	readonly referencesEntry?: TransactionLogStoreEntry<SectionReferencesContainer>;
+}
+
+export interface TextStylesStoreEntryMapWithId<
+	T extends TransactionLogObject = TransactionLogObject,
+> extends StoreEntryMapWithId<T> {
+	readonly referencesEntry?: TransactionLogStoreEntry<TextStyleReferencesContainer>;
 }
 
 /**
@@ -155,10 +216,11 @@ export interface TransactionLogStore {
 	readonly [PRINT_MODEL_HEADER_LOG_ID]: TransactionLogStoreEntry<PartialPrintModelHeader>;
 	readonly [PRINT_MODEL_CONTENT_GENERAL_LOG_ID]: TransactionLogStoreEntry<PartialPrintModelContentGeneral>;
 	readonly segments: SegmentsStoreEntryMapWithId<PartialSegment>;
-	readonly sections?: StoreEntryMapWithId<PartialSection>;
-	readonly watermarks?: StoreEntryMapWithId<PartialWatermark>;
+	readonly sections?: SectionsStoreEntryMapWithId<PartialSection>;
+	readonly watermarks?: WatermarksStoreEntryMapWithId<PartialWatermark>;
+	readonly fragments?: StoreEntryMapWithId<PartialFragment>;
 	readonly printModelElements: TransactionLogStoreEntryMap<PartialAnyPrintModelElement>;
-	readonly textStyles?: StoreEntryMapWithId<PartialTextStyle>;
+	readonly textStyles?: TextStylesStoreEntryMapWithId<PartialTextStyle>;
 }
 
 export type AnyObject = Record<string, any>;
@@ -170,11 +232,15 @@ export type AnyObject = Record<string, any>;
 export type EntryType =
 	| "segment"
 	| "segmentReference"
+	| "segmentFragmentReferences"
 	| "section"
+	| "sectionReferences"
 	| "watermark"
+	| "watermarkReferences"
 	| "printModelHeader"
 	| "printModelContentGeneral"
 	| "textStyle"
+	| "textStyleReferences"
 	| ElementType;
 
 export namespace EntryType {
@@ -182,11 +248,15 @@ export namespace EntryType {
 		const entryTypes: EntryType[] = [
 			"segment",
 			"segmentReference",
+			"segmentFragmentReferences",
 			"section",
+			"sectionReferences",
 			"watermark",
+			"watermarkReferences",
 			"printModelHeader",
 			"printModelContentGeneral",
 			"textStyle",
+			"textStyleReferences",
 			...(Object.values(ElementType) as ElementType[]),
 		];
 		return entryTypes.includes(entryType as EntryType);
@@ -197,11 +267,20 @@ export namespace EntryType {
 	export function isSegmentReference(entryType: EntryType) {
 		return entryType === "segmentReference";
 	}
+	export function isSegmentFragmentReferences(entryType: EntryType) {
+		return entryType === "segmentFragmentReferences";
+	}
 	export function isSection(entryType: EntryType) {
 		return entryType === "section";
 	}
 	export function isWatermark(entryType: EntryType) {
 		return entryType === "watermark";
+	}
+	export function isSectionReferences(entryType: EntryType) {
+		return entryType === "sectionReferences";
+	}
+	export function isWatermarkReferences(entryType: EntryType) {
+		return entryType === "watermarkReferences";
 	}
 	export function isPrintModelHeader(entryType: EntryType) {
 		return entryType === "printModelHeader";
@@ -214,6 +293,9 @@ export namespace EntryType {
 	}
 	export function isTextStyle(entryType: EntryType) {
 		return entryType === "textStyle";
+	}
+	export function isTextStyleReferences(entryType: EntryType) {
+		return entryType === "textStyleReferences";
 	}
 }
 
@@ -264,12 +346,12 @@ export namespace TransactionLog {
 	}
 
 	export function selectSegment(
-		segmentEntries: TransactionLogStoreEntryMap<PartialSegment>,
+		segmentEntries: TransactionLogStoreEntryMap<PartialSegment> | undefined,
 		id: string
 	): PartialSegment {
-		const segment = segmentEntries[id]?.memoizedObject;
+		const segment = segmentEntries?.[id]?.memoizedObject;
 		if (!segment) {
-			throw Error(`Segment with id ${id} does not exist in TransactionLogStore`);
+			throw new Error(`Segment with id ${id} does not exist in TransactionLogStore`);
 		}
 		return segment;
 	}
@@ -284,12 +366,12 @@ export namespace TransactionLog {
 	}
 
 	export function selectSegmentReference(
-		segmentReferenceEntries: TransactionLogStoreEntryMap<PartialSegmentReference>,
+		segmentReferenceEntries: TransactionLogStoreEntryMap<PartialSegmentReference> | undefined,
 		id: string
 	): PartialSegmentReference {
-		const segmentReference = segmentReferenceEntries[id]?.memoizedObject;
+		const segmentReference = segmentReferenceEntries?.[id]?.memoizedObject;
 		if (!segmentReference) {
-			throw Error(`SegmentReference with id ${id} does not exist in TransactionLogStore`);
+			throw new Error(`SegmentReference with id ${id} does not exist in TransactionLogStore`);
 		}
 		return segmentReference;
 	}
@@ -300,7 +382,7 @@ export namespace TransactionLog {
 	): PartialSection {
 		const section = sectionEntries?.[id]?.memoizedObject;
 		if (!section) {
-			throw Error(`Section with id ${id} does not exist in TransactionLogStore`);
+			throw new Error(`Section with id ${id} does not exist in TransactionLogStore`);
 		}
 		return section;
 	}
@@ -311,9 +393,33 @@ export namespace TransactionLog {
 	): PartialWatermark {
 		const watermark = watermarkEntries?.[id]?.memoizedObject;
 		if (!watermark) {
-			throw Error(`Watermark with id ${id} does not exist in TransactionLogStore`);
+			throw new Error(`Watermark with id ${id} does not exist in TransactionLogStore`);
 		}
 		return watermark;
+	}
+
+	export function selectWatermarkReferences(
+		referencesEntry: TransactionLogStoreEntry<WatermarkReferencesContainer> | undefined
+	): FragmentModelReference[] {
+		return [...(referencesEntry?.memoizedObject?.references || [])];
+	}
+
+	export function selectSectionReferences(
+		referencesEntry: TransactionLogStoreEntry<SectionReferencesContainer> | undefined
+	): SectionFragmentReference[] {
+		return [...(referencesEntry?.memoizedObject?.references || [])];
+	}
+
+	export function selectTextStyleReferences(
+		referencesEntry: TransactionLogStoreEntry<TextStyleReferencesContainer> | undefined
+	): FragmentModelReference[] {
+		return [...(referencesEntry?.memoizedObject?.references || [])];
+	}
+
+	export function selectSegmentFragmentReferences(
+		referencesEntry: TransactionLogStoreEntry<SegmentFragmentReferencesContainer> | undefined
+	): FragmentModelReference[] {
+		return [...(referencesEntry?.memoizedObject?.references || [])];
 	}
 
 	export function selectTextStyle(
@@ -322,7 +428,7 @@ export namespace TransactionLog {
 	): PartialTextStyle {
 		const textStyle = textStyleEntries?.[id]?.memoizedObject;
 		if (!textStyle) {
-			throw Error(`TextStyle with id ${id} does not exist in TransactionLogStore`);
+			throw new Error(`TextStyle with id ${id} does not exist in TransactionLogStore`);
 		}
 		return textStyle;
 	}
@@ -330,12 +436,8 @@ export namespace TransactionLog {
 	export function selectPrintModelElement(
 		printModelElements: TransactionLogStoreEntryMap<PartialAnyPrintModelElement>,
 		id: string
-	): PartialAnyPrintModelElement {
-		const element = printModelElements[id]?.memoizedObject;
-		if (!element) {
-			throw Error(`PrintModelElement with id ${id} does not exist in TransactionLogStore`);
-		}
-		return element;
+	): PartialAnyPrintModelElement | undefined {
+		return printModelElements[id]?.memoizedObject;
 	}
 
 	export function selectEntityElementIds(
@@ -343,6 +445,7 @@ export namespace TransactionLog {
 		id: string
 	): string[] {
 		const element = selectPrintModelElement(printModelElements, id);
+		if (!element) return [];
 
 		if (Text.isInstance(element)) {
 			return selectElementRefIds(element.text.entities);
@@ -375,9 +478,9 @@ export namespace TransactionLog {
 		printModelElements: TransactionLogStoreEntryMap<PartialAnyPrintModelElement>,
 		id: string
 	): PartialAnyPrintModelElement[] {
-		return selectEntityElementIds(printModelElements, id).map(id =>
-			selectPrintModelElement(printModelElements, id)
-		);
+		return selectEntityElementIds(printModelElements, id)
+			.map(id => selectPrintModelElement(printModelElements, id))
+			.filter((element): element is PartialAnyPrintModelElement => element !== undefined);
 	}
 
 	/**
@@ -462,6 +565,74 @@ export namespace TransactionLog {
 		interactionId: string
 	): CreateStoreEntryObject<PartialWatermark> {
 		return createStoreEntryInternal(value, value.id, watermarkMap?.map[value.id], "watermark", interactionId);
+	}
+
+	/**
+	 * Creates updated store entry and persistent logs for the watermark references container
+	 */
+	export function createStoreEntryWatermarkReferences(
+		referencesEntry: TransactionLogStoreEntry<WatermarkReferencesContainer> | undefined,
+		value: WatermarkReferencesContainer,
+		interactionId: string
+	): CreateStoreEntryObject<WatermarkReferencesContainer> {
+		return createStoreEntryInternal(
+			value,
+			WATERMARKS_REFERENCES_ENTRY_ID,
+			referencesEntry,
+			"watermarkReferences",
+			interactionId
+		);
+	}
+
+	/**
+	 * Creates updated store entry and persistent logs for the section references container
+	 */
+	export function createStoreEntrySectionReferences(
+		referencesEntry: TransactionLogStoreEntry<SectionReferencesContainer> | undefined,
+		value: SectionReferencesContainer,
+		interactionId: string
+	): CreateStoreEntryObject<SectionReferencesContainer> {
+		return createStoreEntryInternal(
+			value,
+			SECTIONS_REFERENCES_ENTRY_ID,
+			referencesEntry,
+			"sectionReferences",
+			interactionId
+		);
+	}
+
+	/**
+	 * Creates updated store entry and persistent logs for the segment fragment references container
+	 */
+	export function createStoreEntrySegmentFragmentReferences(
+		referencesEntry: TransactionLogStoreEntry<SegmentFragmentReferencesContainer> | undefined,
+		value: SegmentFragmentReferencesContainer,
+		interactionId: string
+	): CreateStoreEntryObject<SegmentFragmentReferencesContainer> {
+		return createStoreEntryInternal(
+			value,
+			SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID,
+			referencesEntry,
+			"segmentFragmentReferences",
+			interactionId
+		);
+	}
+
+	/**
+	 * Creates updated store entry and persistent logs for the text style references container
+	 */
+	export function createStoreEntryTextStyleReferences(
+		referencesEntry: TransactionLogStoreEntry<TextStyleReferencesContainer> | undefined,
+		value: TextStyleReferencesContainer,
+		interactionId: string
+	): CreateStoreEntryObject<TextStyleReferencesContainer> {
+		return createStoreEntryInternal(
+			value,
+			TEXT_STYLES_REFERENCES_ENTRY_ID,
+			referencesEntry,
+			"textStyleReferences",
+			interactionId
+		);
 	}
 
 	/**
@@ -575,7 +746,7 @@ export function createNewTransactionLogStore(printModel: PrintModel): DeepMutabl
 		},
 		segments: {
 			id: content.segments.id,
-			map: content.segments.definitions.reduce<TransactionLogStoreEntryMap<PartialSegment>>((res, next) => {
+			map: content.segments.definitions?.reduce<TransactionLogStoreEntryMap<PartialSegment>>((res, next) => {
 				res[next.id] = {
 					id: next.id,
 					log: [],
@@ -584,7 +755,7 @@ export function createNewTransactionLogStore(printModel: PrintModel): DeepMutabl
 				};
 				return res;
 			}, {}),
-			references: content.segments.references.reduce<TransactionLogStoreEntryMap<PartialSegmentReference>>(
+			references: content.segments.references?.reduce<TransactionLogStoreEntryMap<PartialSegmentReference>>(
 				(res, next) => {
 					res[next.id] = {
 						id: next.id,
@@ -596,6 +767,20 @@ export function createNewTransactionLogStore(printModel: PrintModel): DeepMutabl
 				},
 				{}
 			),
+			fragmentReferencesEntry: content.segments.fragmentReferences?.length
+				? {
+						id: SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID,
+						log: [],
+						memoizedObject: {
+							id: SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID,
+							references: content.segments.fragmentReferences ?? [],
+						},
+						initialObject: {
+							id: SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID,
+							references: content.segments.fragmentReferences ?? [],
+						},
+					}
+				: undefined,
 		},
 		sections: content.sections
 			? {
@@ -612,6 +797,20 @@ export function createNewTransactionLogStore(printModel: PrintModel): DeepMutabl
 						},
 						{}
 					),
+					referencesEntry: content.sections.references?.length
+						? {
+								id: SECTIONS_REFERENCES_ENTRY_ID,
+								log: [],
+								memoizedObject: {
+									id: SECTIONS_REFERENCES_ENTRY_ID,
+									references: content.sections.references ?? [],
+								},
+								initialObject: {
+									id: SECTIONS_REFERENCES_ENTRY_ID,
+									references: content.sections.references ?? [],
+								},
+							}
+						: undefined,
 				}
 			: undefined,
 		watermarks: content.watermarks
@@ -629,6 +828,20 @@ export function createNewTransactionLogStore(printModel: PrintModel): DeepMutabl
 						},
 						{}
 					),
+					referencesEntry: content.watermarks.references?.length
+						? {
+								id: WATERMARKS_REFERENCES_ENTRY_ID,
+								log: [],
+								memoizedObject: {
+									id: WATERMARKS_REFERENCES_ENTRY_ID,
+									references: content.watermarks.references ?? [],
+								},
+								initialObject: {
+									id: WATERMARKS_REFERENCES_ENTRY_ID,
+									references: content.watermarks.references ?? [],
+								},
+							}
+						: undefined,
 				}
 			: undefined,
 		textStyles: content.textStyles
@@ -646,6 +859,20 @@ export function createNewTransactionLogStore(printModel: PrintModel): DeepMutabl
 						},
 						{}
 					),
+					referencesEntry: content.textStyles.references?.length
+						? {
+								id: TEXT_STYLES_REFERENCES_ENTRY_ID,
+								log: [],
+								memoizedObject: {
+									id: TEXT_STYLES_REFERENCES_ENTRY_ID,
+									references: content.textStyles.references ?? [],
+								},
+								initialObject: {
+									id: TEXT_STYLES_REFERENCES_ENTRY_ID,
+									references: content.textStyles.references ?? [],
+								},
+							}
+						: undefined,
 				}
 			: undefined,
 		printModelElements: content.elementDefinitions.reduce<TransactionLogStoreEntryMap<PartialAnyPrintModelElement>>(
@@ -686,15 +913,23 @@ function getLogByAffectedType(item: AffectedItem, store: TransactionLogStore) {
 		case "printModelHeader":
 			return store[PRINT_MODEL_HEADER_LOG_ID].log;
 		case "segment":
-			return store.segments.map[item.id].log;
+			return store.segments?.map[item.id].log;
 		case "segmentReference":
-			return store.segments.references[item.id].log;
+			return store.segments?.references[item.id].log;
+		case "segmentFragmentReferences":
+			return store.segments?.fragmentReferencesEntry?.log;
 		case "section":
 			return store.sections?.map[item.id].log;
+		case "sectionReferences":
+			return store.sections?.referencesEntry?.log;
 		case "watermark":
 			return store.watermarks?.map[item.id].log;
+		case "watermarkReferences":
+			return store.watermarks?.referencesEntry?.log;
 		case "textStyle":
 			return store.textStyles?.map[item.id].log;
+		case "textStyleReferences":
+			return store.textStyles?.referencesEntry?.log;
 		case "printModelElement":
 			return store.printModelElements[item.id].log;
 		default:
@@ -926,7 +1161,7 @@ function createStoreEntryInternal<T extends TransactionLogObject = TransactionLo
 		? getDifferencesAsLogEntries(storeEntry.memoizedObject, newObject, id, [...storeEntry.log], interactionId)
 		: createTransactionLogFromScratch(newObject, id, interactionId);
 	const log = [...(storeEntry?.log || []), ...logDiff];
-	const persistentEntries =
+	const persistentEntries: PartialTransactionLogPersistentEntry[] =
 		log.length === 0
 			? [{ id, entryType, interactionId }]
 			: logDiff.map(logEntry => {
@@ -944,8 +1179,9 @@ function createStoreEntryInternal<T extends TransactionLogObject = TransactionLo
 
 function createTransactionLogFromScratch(obj: AnyObject, rootId: string, interactionId: string) {
 	const log: TransactionLogEntry[] = [];
+	const isPrintModelElement = PrintModelElement.isInstance(obj);
 	const keys = Object.keys(obj).filter(
-		key => !((key === "id" && !isPrintModelHeader(obj)) || (key === "type" && PrintModelElement.isInstance(obj)))
+		key => !((key === "id" && !isPrintModelHeader(obj)) || (key === "type" && isPrintModelElement))
 	);
 	keys.forEach(key => log.push(...convertToTransactionLogEntries(key, rootId, obj[key], interactionId)));
 

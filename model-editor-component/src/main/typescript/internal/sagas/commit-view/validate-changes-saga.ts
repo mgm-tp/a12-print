@@ -42,6 +42,7 @@ import { PrintEngineSelectors } from "../../store/selectors.js";
 import { CommitViewActions } from "../../redux/commit-view/index.js";
 import { CommitViewSelectors } from "../../redux/commit-view/selectors.js";
 import { DocumentModelDataSelectors } from "../../redux/document-model-data/selectors.js";
+import { RequestApiSelectors } from "../../redux/request-api/selectors.js";
 
 const log = LoggerFactory.getLogger("ValidateChangesSaga");
 
@@ -80,11 +81,32 @@ function* handleValidateChangesSaga() {
 		}
 		documentModels.push(documentModelData.model);
 	}
+	/*
+	 * A model that exists but has not arrived yet would make every reference into it look unresolvable, so fragment
+	 * references stay unvalidated until it is there. One that is not among the known print models never arrives, so it
+	 * is not waited for - the validation then reports it as not given.
+	 */
+	const referencedModelIds = (yield* select(PrintEngineSelectors.fragmentModelReferences)).map(
+		reference => reference.reference
+	);
+	const fragmentModels = yield* select(PrintEngineSelectors.fragmentModels);
+	const printModelHeaders = yield* select(RequestApiSelectors.printModelHeaders);
+	const isSettled = (modelId?: string) =>
+		fragmentModels.some(model => model.header.id === modelId) ||
+		Boolean(printModelHeaders && !printModelHeaders.some((header: { id: string }) => header.id === modelId));
+
+	const typesettingModelHeaders = yield* select(RequestApiSelectors.typesettingModelHeaders);
 
 	// validate new printmodel
 	const marshallerResult = new PrintModelMarshaller().serialize(newPrintModel, {
 		html: false,
-		references: { documentModels },
+		references: {
+			documentModels,
+			fragmentModels:
+				referencedModelIds.length && referencedModelIds.every(isSettled) ? fragmentModels : undefined,
+			printModelIds: printModelHeaders?.map(header => header.id),
+			typesettingModelIds: typesettingModelHeaders?.map(header => header.id),
+		},
 	});
 	yield* put(CommitViewActions.setCommitViewErrorMap(marshallerResult.report.errorMap));
 }

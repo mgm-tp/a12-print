@@ -31,43 +31,98 @@
  */
 package com.mgmtp.a12.print.model.api.walker.model.resolver;
 
+import com.mgmtp.a12.print.model.api.exceptions.PrintWalkerException;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
-import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
 import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
-import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
+
 import com.mgmtp.a12.model.utils.OnlyForUsage;
+import com.mgmtp.a12.print.model.api.model.reference.PlaceableReference;
 
 /**
  * Resolves {@link ElementReference}s in multiple {@link PrintModel}s.
  */
 @OnlyForUsage
 public class ReferenceMultiModelResolver implements ReferenceResolver {
-	private final HashMap<String, ReferenceResolver> elementListByPrintModelId = new HashMap<>();
+	// concurrent, because a single instance is shared by the parallel value producers of a Print Job
+	private final Map<String, ReferenceResolver> elementListByPrintModelId = new ConcurrentHashMap<>();
+	private final PrintFragmentModelResolver printFragmentModelResolver;
 
+	/**
+	 * @deprecated Use {@link #ReferenceMultiModelResolver(PrintFragmentModelResolver, PrintModel...)} instead. This constructor will be removed in the next major release.
+	 */
+	@Deprecated(since = "4.1.0", forRemoval = true)
 	public ReferenceMultiModelResolver(PrintModel... printModels) {
+		this.printFragmentModelResolver = null;
 		for (PrintModel printModel : printModels) {
 			this.elementListByPrintModelId.put(printModel.getHeader().getId(), ReferenceListResolver.fromModel(printModel));
 		}
 	}
 
+	public ReferenceMultiModelResolver(PrintFragmentModelResolver printFragmentModelResolver, PrintModel... printModels) {
+		this.printFragmentModelResolver = printFragmentModelResolver;
+		for (PrintModel printModel : printModels) {
+			this.elementListByPrintModelId.put(printModel.getHeader().getId(), ReferenceListResolver.fromModel(printModel));
+		}
+	}
+
+	/**
+	 * @deprecated Use {@link #fromModel(PrintModel, PrintFragmentModelResolver)} instead. This overload will be removed in the next major release.
+	 */
+	@Deprecated(since = "4.1.0", forRemoval = true)
 	public static ReferenceMultiModelResolver fromModel(PrintModel printModel) {
 		return new ReferenceMultiModelResolver(printModel);
 	}
 
+	public static ReferenceMultiModelResolver fromModel(
+		PrintModel printModel,
+		PrintFragmentModelResolver printFragmentModelResolver
+	) {
+		return new ReferenceMultiModelResolver(printFragmentModelResolver, printModel);
+	}
+
 	@Override
 	public Optional<PrintModelTreeTrace<PrintModelElement>> resolveReference(PrintModelTreeTrace<? extends ElementReference> elementReference) {
+		if (elementReference.getTracedElement() instanceof PlaceableReference placeableReference && placeableReference.getModel().isPresent()) {
+			final var printFragmentModelId = placeableReference.getModel().get();
+			return resolveReference(
+				elementReference,
+				printFragmentModelId,
+				() -> Optional.ofNullable(printFragmentModelResolver)
+					.orElseThrow(() -> new PrintWalkerException(String.format(
+						"The Print Fragment Model %s cannot be resolved because the Resolver is not defined",
+						printFragmentModelId)))
+					.resolvePrintFragmentModel(printFragmentModelId)
+					.orElseThrow(() -> new PrintWalkerException(String.format(
+						"The Print Fragment Model %s cannot be resolved",
+						printFragmentModelId)))
+					.getTracedElement()
+			);
+		}
+
 		return elementReference.getPath().findPrintModel().flatMap(printModelTrace -> {
 			PrintModel printModel = printModelTrace.getTracedElement();
 			String printModelId = printModel.getHeader().getId();
-			if (!elementListByPrintModelId.containsKey(printModelId)) {
-				elementListByPrintModelId.put(printModelId, ReferenceListResolver.fromModel(printModel));
-			}
-
-			return elementListByPrintModelId.get(printModelId).resolveReference(elementReference);
+			return resolveReference(
+				elementReference,
+				printModelId,
+				() -> printModel
+			);
 		});
+	}
+
+	private Optional<PrintModelTreeTrace<PrintModelElement>> resolveReference(
+		PrintModelTreeTrace<? extends ElementReference> elementReference,
+		String printModelId,
+		Supplier<PrintModel> printModelLoader
+	) {
+		return elementListByPrintModelId
+			.computeIfAbsent(printModelId, id -> ReferenceListResolver.fromModel(printModelLoader.get()))
+			.resolveReference(elementReference);
 	}
 }

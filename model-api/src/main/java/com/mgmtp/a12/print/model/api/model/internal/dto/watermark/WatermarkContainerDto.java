@@ -32,6 +32,8 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto.watermark;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mgmtp.a12.print.model.api.model.internal.dto.reference.FragmentReferenceDTO;
+import com.mgmtp.a12.print.model.api.model.reference.FragmentReference;
 import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.watermark.Watermark;
 import com.mgmtp.a12.print.model.api.model.watermark.WatermarkContainer;
@@ -51,4 +53,9 @@ public class WatermarkContainerDto extends PrintModelEntityDto implements Waterm
 	@JsonDeserialize(contentAs = WatermarkDto.class)
 	@Builder.Default
 	List<Watermark> definitions = new ArrayList<>();
+
+	@JsonProperty("references")
+	@JsonDeserialize(contentAs = FragmentReferenceDTO.class)
+	@Builder.Default
+	List<FragmentReference> references = new ArrayList<>();
 }

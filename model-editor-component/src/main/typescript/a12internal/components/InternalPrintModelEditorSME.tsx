@@ -34,20 +34,15 @@ import type { Store } from "redux";
 import { Provider } from "react-redux";
 
 import { DefaultLocalizerContextProvider } from "@com.mgmtp.a12.utils/utils-localization-react";
-import type { PrintModelDTO } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
 import type { Locale } from "@com.mgmtp.a12.utils/utils-localization";
 import { defaultLocalizerFactory } from "@com.mgmtp.a12.utils/utils-localization";
-import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { EditorUtils } from "../../internal/utils/index.js";
-import { GeneralViewActions, NavigationActions } from "../../internal/redux/index.js";
+import { GeneralViewActions } from "../../internal/redux/index.js";
 import { useGetPrintComponentMessage } from "../../internal/components/app/hooks/use-get-print-component-message.js";
 import type { RequestApiContext } from "../../internal/components/app/sme/setup-store.js";
 import { setInitialState, setupStore } from "../../internal/components/app/sme/setup-store.js";
 import { PrintModelEditorSMEView } from "../../internal/components/app/sme/PrintModelEditorSMEView.js";
 import type { PrintEditorSMEProps } from "../../internal/components/app/sme/types.js";
-import { createGeneralPath } from "../../internal/utils/navigation-utils.js";
 
 import type { PrintEngineState } from "../api/PrintEngineState.js";
 import type { EditorComponentApiActions } from "../api/index.js";
@@ -80,7 +75,7 @@ export const InternalPrintModelEditorSME = ({
 	precompilePrintModel,
 	locale = DEFAULT_LOCALE,
 	customFonts,
-	modelIconPath,
+	modelIconPaths,
 	isConnectedToServer,
 	initialState,
 	onSetStore,
@@ -88,6 +83,7 @@ export const InternalPrintModelEditorSME = ({
 	availableRoles,
 	staticImageProvider,
 	navigationPath,
+	onNavigateToPrintModel,
 }: InternalPrintEditorSMEProps) => {
 	const defaultLocalizer = useMemo(
 		() =>
@@ -112,6 +108,7 @@ export const InternalPrintModelEditorSME = ({
 		discardAllLogs,
 		showNotification,
 		precompilePrintModel,
+		onNavigateToPrintModel,
 	});
 
 	useLayoutEffect(() => {
@@ -129,6 +126,7 @@ export const InternalPrintModelEditorSME = ({
 			discardAllLogs,
 			showNotification,
 			precompilePrintModel,
+			onNavigateToPrintModel,
 		};
 	});
 
@@ -181,6 +179,9 @@ export const InternalPrintModelEditorSME = ({
 					})
 				);
 			},
+			get onNavigateToPrintModel() {
+				return propsRef.current.onNavigateToPrintModel;
+			},
 		}),
 		// propsRef is a stable ref — intentionally omitted from deps
 		[]
@@ -225,25 +226,6 @@ export const InternalPrintModelEditorSME = ({
 		}
 	}, [hasExternalStore, initialState, store]);
 
-	const computatedNavigationPath: EntityInstancePath = useMemo(() => {
-		if (navigationPath) {
-			return navigationPath;
-		}
-
-		if (!logPersistentEntries.length && EditorUtils.isNewPrintModel(printModel as PrintModelDTO)) {
-			return createGeneralPath();
-		}
-
-		return [];
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [navigationPath]);
-
-	useEffect(() => {
-		if (!navigationPath) {
-			store.dispatch(NavigationActions.setActiveTab(SidebarItem.SEGMENT));
-		}
-	}, [navigationPath, store]);
-
 	useEffect(() => {
 		store.dispatch(GeneralViewActions.setAvailableRoles(availableRoles || []));
 	}, [availableRoles, store]);
@@ -258,8 +240,8 @@ export const InternalPrintModelEditorSME = ({
 					onDeploy={onDeploy}
 					onPreview={onPreview}
 					isConnectedToServer={isConnectedToServer}
-					navigationPath={computatedNavigationPath}
-					modelIconPath={modelIconPath}
+					navigationPath={navigationPath}
+					modelIconPaths={modelIconPaths}
 				/>
 			</DefaultLocalizerContextProvider>
 		</Provider>

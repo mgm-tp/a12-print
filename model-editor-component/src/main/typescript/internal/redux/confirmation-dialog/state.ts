@@ -29,10 +29,16 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+
 export enum ConfirmationDialogType {
 	DELETE = "delete",
 	CANNOT_BE_UNDONE = "cannotBeUndone",
 	DISCARD_CHANGES = "discardChanges",
+	FRAGMENT_IN_USE = "fragmentInUse",
+	COMMIT_AFFECTS_PRINT_MODELS = "commitAffectsPrintModels",
+	FRAGMENT_UNLINK = "fragmentUnlink",
+	FRAGMENT_UNLINK_ADDS_DEPENDENCIES = "fragmentUnlinkAddsDependencies",
 }
 
 export enum LastActionType {
@@ -40,7 +46,31 @@ export enum LastActionType {
 	cancel,
 }
 
+/** Entity types that can hold a reference to a fragment definition in another print model. */
+export type FragmentReferenceEntityType = "segment" | "section" | "watermark" | "textStyle" | "element";
+
+export interface FragmentUsagePrintModelInfo {
+	printModelId: string;
+	/** Type of the fragment reference in the referencing print model. */
+	referenceEntityType?: FragmentReferenceEntityType;
+	/** Position of the reference within its container's reference array in the referencing print model. */
+	referenceIndex?: number;
+	/** Full navigation path for an "element" usage - placements can be nested, so a flat index won't locate them. */
+	elementPath?: EntityInstancePath;
+}
+
+export interface RequiredModelDependency {
+	modelType: "document" | "typesetting";
+	reference: string;
+}
+
+export interface ConfirmationDialogPayload {
+	usages?: FragmentUsagePrintModelInfo[];
+	dependencies?: RequiredModelDependency[];
+}
+
 export type ConfirmationDialogState = {
 	type: ConfirmationDialogType | null;
+	payload?: ConfirmationDialogPayload;
 	lastAction?: LastActionType;
 } | null;

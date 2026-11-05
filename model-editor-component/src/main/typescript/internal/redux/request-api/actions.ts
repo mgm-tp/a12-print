@@ -46,7 +46,7 @@ export namespace RequestApiActions {
 	export const loadReferencedPrintModels = factory<void>("LOAD_REFERENCED_PRINT_MODELS");
 	export const loadDocumentModelIds = factory<void>("LOAD_DOCUMENT_MODEL_IDS");
 	export const loadDINTemplatePrintModel = factory<string>("LOAD_DIN_TEMPLATE_PRINT_MODEL");
-	export const loadPrintModelIds = factory<void>("LOAD_PRINT_MODEL_IDS");
+	export const loadPrintModelHeaders = factory<void>("LOAD_PRINT_HEADERS_IDS");
 	export const loadTypesettingModelHeaders = factory<void>("LOAD_TYPE_SETTING_MODEL_HEADERS");
 	export const loadTypesettingModel = factory<string>("LOAD_TYPE_SETTING_MODEL");
 	export const loadTypesettingModels = factory<void>("LOAD_TYPE_SETTING_MODELS");
@@ -57,9 +57,12 @@ export namespace RequestApiActions {
 	export const setDINTemplatePrintModel = factory<{ id: string; templateSegments: DINTemplateSegment[] }>(
 		"SET_DIN_TEMPLATE_PRINT_MODEL"
 	);
-	export const setPrintModelIds = factory<string[]>("SET_PRINT_MODEL_IDS");
+	export const setPrintModelHeaders = factory<Header[]>("SET_PRINT_MODEL_HEADERS");
 	export const setTypesettingModelHeaders = factory<Header[]>("SET_TYPE_SETTING_MODEL_HEADERS");
 	export const setTypesettingModel = factory<TypesettingModel>("SET_TYPE_SETTING_MODEL");
+	export const setFragmentModel = factory<PrintModel>("SET_FRAGMENT_MODEL");
+	/** Payload: the id of the fragment model that failed to load. */
+	export const setFragmentModelError = factory<string>("SET_FRAGMENT_MODEL_ERROR");
 	export const setTypesettingModels = factory<TypesettingModel[]>("SET_TYPE_SETTING_MODELS");
 
 	export const initializePrintModel = factory<string>("INITIALIZE_PRINT_MODEL");

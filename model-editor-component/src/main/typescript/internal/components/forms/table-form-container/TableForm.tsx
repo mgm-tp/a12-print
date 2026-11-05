@@ -63,6 +63,7 @@ import {
 import { DocumentModelSelect } from "../shared-components/DocumentModelSelect.js";
 import type { ElementWithoutIdAndType } from "../type.js";
 import { CustomTextField } from "../custom-base-input-components/index.js";
+import { useFormReadonly } from "../FormContext.js";
 
 import { TableColumns } from "./TableColumns.js";
 import { GeneralProperties } from "./GeneralProperties.js";
@@ -78,6 +79,7 @@ export const TableForm = ({ element }: TableFormProps) => {
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
 	const errorMap = useSelector((state: PrintEngineState) => ValidationSelectors.table(state, element.id));
 	const wrapperDataContext = useSelector(PrintEngineSelectors.wrapperDataContext);
+	const isFormReadonly = useFormReadonly();
 
 	const model = element.table?.model;
 
@@ -176,6 +178,7 @@ export const TableForm = ({ element }: TableFormProps) => {
 				value={model}
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getPropertyError("model")}
+				disabled={isFormReadonly}
 			/>
 			<CustomTextField
 				readonly
@@ -188,6 +191,7 @@ export const TableForm = ({ element }: TableFormProps) => {
 				elementMapEntries={processedElementMap}
 				selectedPath={group}
 				setSelectedPath={setSelectedPath}
+				disabled={isFormReadonly}
 				maxRepeatLevel={0}
 			/>
 			<TableColumns element={element} />

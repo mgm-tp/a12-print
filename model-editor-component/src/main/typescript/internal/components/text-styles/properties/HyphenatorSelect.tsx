@@ -60,7 +60,7 @@ export const HyphenatorSelect = (props: HyphenatorSelectProps) => {
 			label={localizer(RESOURCE_KEYS.textStyles.properties.hyphenator)}
 			items={hyphenatorOptions}
 			onValueChanged={props.onValueChanged}
-			disabled={props.isDefaultTextStyle}
+			disabled={props.isReadonly}
 			errorMessage={props.errorMessage}
 		/>
 	);

@@ -50,12 +50,14 @@ import { assertType } from "../../../utils/type-utils.js";
 
 import type { PreconditionRepeatRowType } from "../shared-components/index.js";
 import { PreconditionsRepeat } from "../shared-components/index.js";
+import { useFormReadonly } from "../FormContext.js";
 
 export const HideConditionsConfig = () => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const dispatch = useDispatch();
 	const currentReferenceForm = useSelector(NavigationSelectors.currentReferenceForm);
 	const elementReferences = useSelector(PrintEngineSelectors.elementReferences);
+	const isReadonly = useFormReadonly();
 
 	assertType(currentReferenceForm, isVisibilityConfigFormState);
 
@@ -95,6 +97,7 @@ export const HideConditionsConfig = () => {
 				tableData={hideConditions}
 				setTableData={setTableData}
 				preconditionErrorMap={useHideConditionsErrorMap(placeabeRefId)}
+				isReadonly={isReadonly}
 			/>
 		</>
 	);

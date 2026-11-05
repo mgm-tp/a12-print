@@ -54,6 +54,7 @@ function transformElementDefinition(element: OldModel.ElementDefinitionsDTO): Ne
 			return {
 				...element,
 				borderProperties: {
+					...element.borderProperties,
 					borderStyle: {
 						...element.borderProperties.borderStyle,
 						source: PossibleInputSource.INPUT,

@@ -40,6 +40,7 @@ function getPartialField(suffix?: string): PartialField {
 	return {
 		id: "FIELD",
 		type: ElementType.Field,
+		name: "myField",
 		field: {
 			id: "FIELD",
 			displayOptions: {

@@ -36,6 +36,7 @@ import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-
 import {
 	closeDetail,
 	commitChanges,
+	testCopyElement,
 	deleteTextByBackspace,
 	devAppTest,
 	dragElementToEditor,
@@ -198,7 +199,7 @@ test.describe("Text-Element", () => {
 		await page.locator("#sidebar-panel").getByLabel("Close").click({ force: true });
 	});
 
-	devAppTest("Calculation with Code Suggestion in Text Element", async ({ page }) => {
+	devAppTest("Calculation with Code Suggestion in Text Element", async ({ page, editorMode }) => {
 		await test.step("Open calculation form and verify required field errors", async () => {
 			await page.getByTestId("element-text").dblclick();
 			await writeToTextElement({ page, text: "Hello " });
@@ -207,6 +208,8 @@ test.describe("Text-Element", () => {
 
 			await page.getByRole("button", { name: "Calculation" }).click();
 
+			await page.getByTestId("name-input").fill("");
+			await page.keyboard.press("Tab");
 			await expect(page.getByText("Please specify a name.")).toBeVisible();
 			await expect(page.getByText("Please select a model.")).toBeVisible();
 		});
@@ -241,7 +244,9 @@ test.describe("Text-Element", () => {
 			await page.addStyleTag({
 				content: ".monaco-editor .cursors-layer .cursor { opacity: 1 !important; animation: none !important; }",
 			});
-			await expect.soft(page).toHaveScreenshot({ animations: "disabled" });
+			if (editorMode !== "light") {
+				await expect.soft(page).toHaveScreenshot({ animations: "disabled" });
+			}
 		});
 
 		await test.step("Select suggestion, blur and verify no operation errors", async () => {
@@ -261,7 +266,9 @@ test.describe("Text-Element", () => {
 			await closeDetail({ page });
 
 			await expect(page.getByTestId("element-text")).toContainText("Hello Calculation");
-			await expect.soft(page.getByTestId("element-text")).toHaveScreenshot();
+			if (editorMode !== "light") {
+				await expect.soft(page.getByTestId("element-text")).toHaveScreenshot();
+			}
 		});
 
 		await test.step("Commit changes", async () => {
@@ -311,7 +318,7 @@ test.describe("Text-Element", () => {
 		});
 	});
 
-	devAppTest("Format text in Text Element", async ({ page }) => {
+	devAppTest("Format text in Text Element", async ({ page, editorMode }) => {
 		await test.step("Open editor and write text", async () => {
 			await page.getByTestId("element-text").dblclick();
 			const editor = page.locator(RICHTEXT_EDITOR_SELECTOR);
@@ -338,16 +345,26 @@ test.describe("Text-Element", () => {
 			await page.keyboard.press("Control+A");
 			await setRichTextColor(page, "#e63946");
 			await page.locator(RICHTEXT_EDITOR_SELECTOR).blur();
+			// The pointer still rests on the "Bold" button; move it away so its hover state is not captured
+			await page.mouse.move(0, 0);
 
 			await waitForInteractionSagasSettled(page);
-			await expect.soft(page.locator('[data-role="rich-text-editor-wrapper"]')).toHaveScreenshot();
+			if (editorMode !== "light") {
+				await expect.soft(page.locator('[data-role="rich-text-editor-wrapper"]')).toHaveScreenshot();
+			}
 			await closeDetail({ page });
 			await page.getByTestId("element-text").click();
-			await expect.soft(page.getByTestId("element-text")).toHaveScreenshot();
+			if (editorMode !== "light") {
+				await expect.soft(page.getByTestId("element-text")).toHaveScreenshot();
+			}
 		});
 
 		await test.step("Commit changes", async () => {
 			await commitChanges({ page });
+		});
+
+		await test.step("Copy Element", async () => {
+			await testCopyElement({ page, testId: "element-text" });
 		});
 	});
 });

@@ -15,9 +15,34 @@ You must select and comply with exactly one of the above license options.
 Warranty Disclaimer (applies to either option)
 THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
 ////
-= Dependency
+[#integration_dependencies]
+= Dependencies
 
-This section covers the dependencies necessary for integrating the Print Engine into a Maven or Gradle application.
+This section covers the dependencies necessary for integrating the Print Integration into an A12 Full Stack application.
+
+== Prerequisite
+
+[#prerequisite/client]
+=== Client
+
+Basic knowledge of using Client is necessary because the Print Integration heavily depends on Client.
+See link:/docs/OVERALL/dev_tutorial_frontend_intro/index.html[Frontend tutorial] for further details.
+
+For technical requirements, Print Integration shares the same configuration as Client.
+If your application is capable of running with Client, then Print Integration can be used as well.
+
+Please refer to the full-stack-project-template repository for an up-to-date template.
+
+[#prerequisite/data-services]
+=== Data Services
+
+Basic knowledge of using Data Services is necessary because the Print Integration heavily depends on Data Services.
+
+If your application is capable of running with Data Services, then Print Integration can be used as well.
+
+Please refer to the full-stack-project-template repository for an up-to-date template.
+
+== Backend Dependencies
 
 For the usage with Maven, the following dependencies need to be added in the applications POM-file:
 
@@ -27,13 +52,7 @@ Maven plugin::
 ----
 <dependency>
     <groupId>com.mgmtp.a12.print</groupId>
-    <artifactId>print-engine-api</artifactId>
-    <version>{printEngineVersion}</version>
-</dependency>
-
-<dependency>
-    <groupId>com.mgmtp.a12.print</groupId>
-    <artifactId>print-engine-runtime</artifactId>
+    <artifactId>print-integration</artifactId>
     <version>{printEngineVersion}</version>
 </dependency>
 ----
@@ -47,8 +66,20 @@ Gradle plugin::
 ...
 dependencies {
 	...
-	implementation("com.mgmtp.a12.print:print-engine-api:${printEngineVersion}")
-	implementation("com.mgmtp.a12.print:print-engine-runtime:${printEngineVersion}")
+	implementation("com.mgmtp.a12.print:print-integration:${printEngineVersion}")
 	...
 }
 ----
+
+WARNING: It is assumed that the project is bootstrapped with <<prerequisite/data-services, Data Services>>.
+
+== Frontend Dependencies
+
+The necessary frontend dependency can be installed by the following command:
+
+[source]
+----
+npm install @com.mgmtp.a12.print/print-integration
+----
+
+WARNING: It is assumed that the project is bootstrapped with <<prerequisite/client, Client>>.

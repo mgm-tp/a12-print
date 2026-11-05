@@ -31,56 +31,74 @@
  */
 package com.mgmtp.a12.print.model.api.walker.model.resolver;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+import com.mgmtp.a12.print.model.api.model.PrintFragmentModel;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
-import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
 import com.mgmtp.a12.print.model.api.model.watermark.Watermark;
-import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Resolves {@link com.mgmtp.a12.print.model.api.model.watermark.Watermark} IDs from a given list of {@link com.mgmtp.a12.print.model.api.model.watermark.Watermark}s.
  */
 @OnlyForUsage
 public class WatermarkIdListResolver implements WatermarkIdResolver {
-	private final List<PrintModelTreeTrace<Watermark>> watermarkList;
+	private final Map<String, PrintModelTreeTrace<Watermark>> watermarkMap;
 
+	/**
+	 * @deprecated Use {@link #WatermarkIdListResolver(Map)} instead. This constructor will be removed in the next major release.
+	 */
+	@Deprecated(since = "4.1.0", forRemoval = true)
 	public WatermarkIdListResolver(List<PrintModelTreeTrace<Watermark>> watermarkList) {
-		this.watermarkList = watermarkList;
+		this.watermarkMap = watermarkList.stream()
+			.collect(Collectors.toMap(w -> w.getTracedElement().getId(), Function.identity()));
+	}
+
+	public WatermarkIdListResolver(Map<String, PrintModelTreeTrace<Watermark>> watermarkMap) {
+		this.watermarkMap = watermarkMap;
 	}
 
 	/**
 	 * Creates a new {@link WatermarkIdListResolver} from the {@link PrintModel}s {@link Watermark} list.
+	 * @deprecated Use {@link #fromModel(PrintModel, PrintFragmentModelResolver)} instead. This overload will be removed in the next major release.
 	 */
+	@Deprecated(since = "4.1.0", forRemoval = true)
 	public static WatermarkIdListResolver fromModel(PrintModel printModel) {
-		if (printModel.getContent().getWatermarks().isPresent()) {
+		return new WatermarkIdListResolver(getWatermarksOfPrintModel(printModel));
+	}
 
-			var path = PrintModelPath
-				.create(printModel)
-				.with(printModel.getContent(), 0)
-				.with(new PrintModelPathElement.ObjectProperty("watermarks"),0);
-			var watermarks = new ArrayList<PrintModelTreeTrace<Watermark>>();
-			var i = 0;
-			for (var e : printModel.getContent().getWatermarks().get().getDefinitions()) {
-				watermarks.add(new PrintModelTreeTrace<>(
-					path.with(new PrintModelPathElement.ObjectProperty("definitions"), i),
-					e
-				));
-				i++;
-			}
-			return new WatermarkIdListResolver(watermarks);
-		}
-		return new WatermarkIdListResolver(new ArrayList<>());
+	/**
+	 * Creates a new {@link WatermarkIdListResolver} from the {@link PrintModel}s + {@link PrintFragmentModel}s {@link Watermark} list.
+	 */
+	public static WatermarkIdListResolver fromModel(PrintModel printModel, PrintFragmentModelResolver printFragmentModelResolver) {
+		return printModel.getContent().getWatermarks().map(watermarkContainer ->
+			new WatermarkIdListResolver(
+				FragmentModelDefinitionResolver.resolveWithFragmentModels(
+					getWatermarksOfPrintModel(printModel),
+					watermarkContainer.getReferences(),
+					WatermarkIdListResolver::getWatermarksOfPrintModel,
+					printFragmentModelResolver,
+					"Watermark"
+				)
+			)
+		).orElseGet(() -> new WatermarkIdListResolver(Collections.emptyMap()));
+	}
+
+	private static Map<String, PrintModelTreeTrace<Watermark>> getWatermarksOfPrintModel(PrintModel printModel) {
+		return printModel.getContent().getWatermarks().<Map<String, PrintModelTreeTrace<Watermark>>>map(watermarkContainer ->
+			FragmentModelDefinitionResolver.loadDefinitions(
+				printModel,
+				"watermarks",
+				watermarkContainer
+			)
+		).orElseGet(HashMap::new);
 	}
 
 	@Override
 	public Optional<PrintModelTreeTrace<Watermark>> resolveWatermarkId(String id) {
-		return watermarkList.stream().filter(
-			watermark -> watermark.getTracedElement().getId().equals(id)
-		).findFirst();
+		return Optional.ofNullable(watermarkMap.get(id));
 	}
 }

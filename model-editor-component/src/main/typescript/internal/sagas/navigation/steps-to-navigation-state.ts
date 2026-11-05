@@ -29,7 +29,12 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import {
+	ListingRegion,
+	SidebarItem,
+	TableRegion,
+	TextRegion,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import {
 	ElementType,
 	PartialArea,
@@ -39,8 +44,7 @@ import {
 	PartialSwitch,
 	PartialTable,
 } from "@com.mgmtp.a12.print/print-model-api/model";
-import type { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import { ListingRegion, TableRegion, TextRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { EditorMode } from "../../redux/editor-state/state.js";
 import type { CanvasTab, EntityNavStack, NavigationState } from "../../redux/navigation/state.js";
@@ -122,11 +126,11 @@ function handleWrapper(
 	steps: NavigationStep[]
 ): EntityNavStack[number] | undefined {
 	const stepIndex = steps.findIndex(t => t === step);
-	let lastPlaceableRefernece: ReferenceNavigationStep | undefined = undefined;
+	let lastPlaceableReference: ReferenceNavigationStep | undefined = undefined;
 
 	for (let i = stepIndex; i >= 0; i--) {
 		if (steps[i].kind === "reference") {
-			lastPlaceableRefernece = steps[i] as ReferenceNavigationStep;
+			lastPlaceableReference = steps[i] as ReferenceNavigationStep;
 			break;
 		}
 	}
@@ -147,7 +151,7 @@ function handleWrapper(
 				width: createPlainMmMeasure(elementDefinition.boundingBox?.dimensions?.width?.value || 0),
 			},
 			wrapperContext: {
-				placeableReference: lastPlaceableRefernece?.referemce,
+				placeableReference: lastPlaceableReference?.reference,
 			},
 			modes: {},
 		} satisfies BoundingBoxStackEntry;
@@ -166,7 +170,7 @@ function handleWrapper(
 				width: createPlainMmMeasure(elementDefinition.area?.dimensions?.width?.value || 0),
 			},
 			wrapperContext: {
-				placeableReference: lastPlaceableRefernece?.referemce,
+				placeableReference: lastPlaceableReference?.reference,
 			},
 			dataContexts: elementDefinition.area?.dataContexts ? [...elementDefinition.area.dataContexts] : [],
 			modes: {},
@@ -179,11 +183,11 @@ function handleWrapper(
 			type: elementDefinition.type,
 			currentMode,
 			wrapperContext: {
-				placeableReference: lastPlaceableRefernece?.referemce,
+				placeableReference: lastPlaceableReference?.reference,
 			},
 			dimensions: {
-				height: createPlainMmMeasure(lastPlaceableRefernece?.referemce.dimensions?.minHeight?.value || 0),
-				width: createPlainMmMeasure(lastPlaceableRefernece?.referemce.dimensions?.minWidth?.value || 0),
+				height: createPlainMmMeasure(lastPlaceableReference?.reference.dimensions?.minHeight?.value || 0),
+				width: createPlainMmMeasure(lastPlaceableReference?.reference.dimensions?.minWidth?.value || 0),
 			},
 			modes: {},
 		} satisfies OverrideStackEntry;
@@ -195,7 +199,7 @@ function handleWrapper(
 			type: elementDefinition.type,
 			currentMode: EditorMode.Default,
 			wrapperContext: {
-				placeableReference: lastPlaceableRefernece?.referemce,
+				placeableReference: lastPlaceableReference?.reference,
 			},
 			dimensions: {
 				height: createPlainMmMeasure(elementDefinition.switch?.dimensions?.height?.value || 0),
@@ -459,7 +463,7 @@ function buildListingFieldForms(
 
 // ─── Level 4: Reference form ──────────────────────────────────────────────────
 
-function handleReference(step: ReferenceNavigationStep): DetailFormState["formStack"] {
+function handleReference(step: ReferenceNavigationStep): DetailFormState["formStack"] | undefined {
 	const target = step.jsonPath.find(
 		el => el.elementName === "pageBreakBehavior" || el.elementName === "hideConditions"
 	);
@@ -473,7 +477,9 @@ function handleReference(step: ReferenceNavigationStep): DetailFormState["formSt
 		const formState: VisibilityConfigFormState = { type: "VisibilityConfig", referenceId: step.referenceId };
 		return [formState];
 	}
-	throw new Error("Invalid navigation step");
+
+	// No sub-property targeted: its default form needs the element type, so navigateFromPathSaga opens it.
+	return undefined;
 }
 
 // ─── Orchestrator ─────────────────────────────────────────────────────────────
@@ -522,10 +528,18 @@ export function stepsToNavigationState(steps: NavigationStep[]): DeepPartial<Nav
 				// Only create reference form if the reference is the last on stack
 				if (i === steps.length - 1) {
 					const newFormStack = handleReference(step);
-					formLevel = { formStack: newFormStack };
+					if (newFormStack) {
+						formLevel = { formStack: newFormStack };
+					}
 				}
 				break;
 			}
+			case "textStyle":
+				// Text styles have no canvas/stack of their own; selection is handled directly by the saga.
+				break;
+			case "modelReference":
+				result[SidebarItem.SCHEMA] = { expandedSections: [step.section] };
+				break;
 		}
 	}
 

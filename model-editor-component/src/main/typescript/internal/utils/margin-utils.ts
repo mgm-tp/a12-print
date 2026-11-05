@@ -121,7 +121,7 @@ export function getLimitElement(
 	let topElement: PartialValidPlaceableReference | undefined = undefined;
 	let bottomElement: PartialValidPlaceableReference | undefined = undefined;
 	elementReferences.forEach(otherReference => {
-		if (otherReference.refId === reference.refId || !EditorUtils.isHorizontallyOverlap(reference, otherReference)) {
+		if (otherReference.id === reference.id || !EditorUtils.isHorizontallyOverlap(reference, otherReference)) {
 			return;
 		}
 

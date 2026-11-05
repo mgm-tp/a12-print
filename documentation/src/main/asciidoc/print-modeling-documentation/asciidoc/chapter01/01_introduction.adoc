@@ -44,7 +44,7 @@ For advice on the installation of the Simple Model Editor, refer to the "Quick S
 
 NOTE: To create or edit a Print Model, use the Simple Model Editor (SME) version `11.5.0` or higher, which is provided with the A12 version `2024.06-ext4` or higher.
 
-== Migrating Existing Models
+== Migrating Existing Models [[MigratingModels]]
 
 It might be necessary to migrate existing Print Models in case a new version of the Simple Model Editor and thus Print Model Editor has been installed.
 
@@ -130,6 +130,10 @@ You can use Print Model References as <<PrintModelTemplates,Templates>> in other
 This allows you to define regions with a set height and static layout, enabling the creation of Print Models that conform to various standards (e.g. DIN standards).
 
 The available Fonts are provided as workspace resources and can be selected in the Print Model when configuring <<TextStylesTab, Text Styles>>.
+
+=== Fragment Models
+Content that is used by more than one Print Model can be defined once in a <<FragmentModels, Print Fragment Model>> and referenced from every Print Model that needs it.
+Segments, Sections, Watermarks, Text Styles and single Print Model Elements can be defined as such reusable Fragments.
 
 === Dynamic Content
 Print Model elements can utilize references to data from Document Models, allowing dynamic content to be displayed in the PDF.

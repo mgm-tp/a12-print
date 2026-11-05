@@ -35,13 +35,18 @@ import { Button, Icon, ButtonGroup, generateUid, noop } from "@com.mgmtp.a12.wid
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 
+import { useFormReadonly } from "../FormContext.js";
+
 interface ActionColumnButtonGroupProps {
 	onEdit?: (event: React.MouseEvent<HTMLElement>) => void;
 	onDelete?: (event: React.MouseEvent<HTMLElement>) => void;
+	isReadonly?: boolean;
 }
 
-export const ActionColumnButtonGroup = ({ onEdit, onDelete }: ActionColumnButtonGroupProps) => {
+export const ActionColumnButtonGroup = ({ onEdit, onDelete, isReadonly }: ActionColumnButtonGroupProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
+	const formReadonly = useFormReadonly();
+	const isDisabled = isReadonly ?? formReadonly;
 
 	return (
 		<ButtonGroup key={`ActionColumnButtonGroup-${generateUid()}`}>
@@ -50,6 +55,7 @@ export const ActionColumnButtonGroup = ({ onEdit, onDelete }: ActionColumnButton
 				icon={<Icon>edit</Icon>}
 				title={localizer(RESOURCE_KEYS.button.edit)}
 				onClick={onEdit || noop}
+				disabled={isDisabled}
 			/>
 			<Button
 				key={`delete-button-${generateUid()}`}
@@ -57,6 +63,7 @@ export const ActionColumnButtonGroup = ({ onEdit, onDelete }: ActionColumnButton
 				icon={<Icon>delete</Icon>}
 				title={localizer(RESOURCE_KEYS.button.delete)}
 				onClick={onDelete || noop}
+				disabled={isDisabled}
 			/>
 		</ButtonGroup>
 	);

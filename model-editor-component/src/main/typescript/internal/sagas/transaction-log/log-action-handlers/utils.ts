@@ -34,6 +34,7 @@ import { nanoid } from "nanoid";
 import type { AffectedItemType, TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import type {
+	PartialAnyPrintModelElement,
 	PartialSection,
 	PartialSegment,
 	PartialValidPlaceableReference,
@@ -50,7 +51,7 @@ import {
 
 type TopLevelContainer = PartialSegment | PartialSection | PartialWatermark;
 type ElementContainer = PartialBoundingBox | PartialOverride | PartialArea;
-type RenfereceContainer = TopLevelContainer | ElementContainer | PartialArea;
+type ReferenceContainer = TopLevelContainer | ElementContainer | PartialArea;
 
 function createTopContainerStore({
 	state,
@@ -123,7 +124,7 @@ function createTopContainerStore({
 	throw new Error("Stored entry does not existed");
 }
 
-function createElemntContainerStore({
+function createElementContainerStore({
 	state,
 	currentElementContainer,
 	elementReferences,
@@ -172,6 +173,8 @@ function createElemntContainerStore({
 					elementReferences,
 				},
 			};
+		} else if ((currentElementContainer as PartialAnyPrintModelElement).isFragment) {
+			updatedContainer = currentElementContainer;
 		} else {
 			throw new Error("Stored entry does not existed");
 		}
@@ -194,7 +197,7 @@ export function createReferenceStore({
 	interactionId,
 }: {
 	state: TransactionLogStore;
-	currentElementContainer: RenfereceContainer;
+	currentElementContainer: ReferenceContainer;
 	elementReferences: readonly PartialValidPlaceableReference[];
 	interactionId: string;
 }) {
@@ -212,7 +215,7 @@ export function createReferenceStore({
 		});
 	}
 
-	return createElemntContainerStore({
+	return createElementContainerStore({
 		state,
 		currentElementContainer: currentElementContainer as ElementContainer,
 		interactionId,

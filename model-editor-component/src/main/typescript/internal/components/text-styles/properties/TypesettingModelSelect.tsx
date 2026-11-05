@@ -38,7 +38,6 @@ import { Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { CustomA12Select } from "../../forms/custom-base-input-components/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
-import { useTypesettingModelData } from "../../../hooks/use-typesetting-model-data.js";
 
 import type { BaseTextStylePropertyProps } from "./base-type.js";
 
@@ -50,13 +49,12 @@ interface TypesettingModelSelectProps extends BaseTextStylePropertyProps {
 export const TypesettingModelSelect = ({
 	value,
 	onChange,
-	isDefaultTextStyle,
+	isReadonly,
 	errorMessage,
+	warningMessage,
 }: TypesettingModelSelectProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const typesettingModelReferences = useSelector(PrintEngineSelectors.typesettingModelReferences);
-
-	const typesettingModel = useTypesettingModelData(value);
 
 	const referenceSelectItems: SelectItem[] = useMemo(() => {
 		const items: SelectItem[] = [{ label: "", value: "", graphic: <Icon></Icon> }];
@@ -68,11 +66,6 @@ export const TypesettingModelSelect = ({
 		);
 	}, [typesettingModelReferences]);
 
-	const typesettingNotLoadedMsg =
-		value && !typesettingModel
-			? localizer(RESOURCE_KEYS.textStyles.warningMessage.typesettingModeNotFound)
-			: undefined;
-
 	return (
 		<CustomA12Select
 			label={localizer(RESOURCE_KEYS.textStyles.properties.typesettingModel)}
@@ -80,8 +73,8 @@ export const TypesettingModelSelect = ({
 			value={value}
 			onSelect={onChange}
 			errorMessage={errorMessage}
-			warningMessage={typesettingNotLoadedMsg}
-			disabled={isDefaultTextStyle}
+			warningMessage={warningMessage}
+			disabled={isReadonly}
 			inputProps={{ "data-testid": "typesetting-model-select" } as React.HTMLProps<HTMLInputElement>}
 		/>
 	);

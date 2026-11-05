@@ -46,6 +46,7 @@ import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { getItemsFromElementMap } from "../../utils/index.js";
+import { ElementsUtils } from "../../utils/elements-utils.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import type { UpdateElementsTransactionLogAction } from "../../redux/index.js";
 import { TransactionLogStateActions } from "../../redux/index.js";
@@ -66,6 +67,7 @@ import { DocumentModelSelect } from "./shared-components/DocumentModelSelect.js"
 import { CustomTextField } from "./custom-base-input-components/index.js";
 import type { ElementWithoutIdAndType } from "./type.js";
 import type { RepeatColumnType } from "./shared-components/types.js";
+import { useFormReadonly } from "./FormContext.js";
 
 type BarDiagramData = DeepPartial<BarChartData>;
 
@@ -77,6 +79,7 @@ export const BarChartFormContainer = () => {
 	const errorMap = useSelector((state: PrintEngineState) => ValidationSelectors.barChart(state, element?.id));
 	const elementReferences = useSelector(PrintEngineSelectors.elementReferences);
 	const wrapperDataContext = useSelector(PrintEngineSelectors.wrapperDataContext);
+	const isFormReadonly = useFormReadonly();
 
 	if (!element || !PartialBarChart.isInstance(element)) {
 		throw Error("Expected element of type BarChart");
@@ -131,6 +134,7 @@ export const BarChartFormContainer = () => {
 					...barChart,
 					...newProps,
 				},
+				...ElementsUtils.getFragmentDimensionsUpdate(element, { width, height }),
 			};
 			const actions: UpdateElementsTransactionLogAction[] = [
 				TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }),
@@ -259,6 +263,7 @@ export const BarChartFormContainer = () => {
 				value={model}
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getBasePropertiesErrorMessage("model")}
+				disabled={isFormReadonly}
 			/>
 			<CustomTextField
 				label={localizer(RESOURCE_KEYS.elementForm.model.group)}
@@ -271,6 +276,7 @@ export const BarChartFormContainer = () => {
 				elementMapEntries={processedElementMap}
 				selectedPath={group}
 				setSelectedPath={setSelectedPath}
+				disabled={isFormReadonly}
 				maxRepeatLevel={0}
 			/>
 			<RepeatTable<BarDiagramData>

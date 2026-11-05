@@ -52,9 +52,15 @@ import {
 	loadStaticImageSaga,
 	selectResourceSaga,
 	uploadStaticImageSaga,
-	loadPrintModelIdsSaga,
+	loadPrintModelHeadersSaga,
+	loadFragmentSaga,
 } from "./request-api/index.js";
-import { openDetailViewSaga, openVisibilityConfigSaga, updateVisibilityConfigSaga } from "./detail-view/index.js";
+import {
+	openDetailViewSaga,
+	openVisibilityConfigSaga,
+	toggleElementLibrarySaga,
+	updateVisibilityConfigSaga,
+} from "./detail-view/index.js";
 import {
 	processAllLogActionsSaga,
 	setDeserializePrintModelResultSaga,
@@ -71,15 +77,18 @@ import {
 import { addReferenceEntrySaga } from "./din-template/index.js";
 import { validateTextStylesSaga } from "./text-style/index.js";
 import { openEditorView } from "./editor/index.js";
-import { addModelReferenceSaga } from "./schema/index.js";
+import { addFragmentModelReferenceSaga, addModelReferenceSaga } from "./schema/index.js";
 import { loadDocumentModelDataSaga } from "./document-model-data/load-document-model-data-saga.js";
-import { navigateFromPathSaga } from "./navigation/index.js";
+import { navigateFromPathSaga, navigateToFragmentSourceSaga, navigateToPrintModelSaga } from "./navigation/index.js";
 import { onEditorPropsChangedSaga } from "./print-engine/index.js";
 import { loadDinTemplatePrintModelSaga } from "./request-api/load-din-template-print-model-saga.js";
+import { loadFragmentUsageMapSaga } from "./fragment-usage/load-fragment-usage-map-saga.js";
+import { unlinkFragmentReferenceSaga } from "./fragment/index.js";
 
 export namespace PrintEditorComponentSagas {
 	export const sagas = {
 		openDetailViewSaga,
+		toggleElementLibrarySaga,
 		loadDocumentModelDataSaga,
 		loadDocumentModelIdsSaga,
 		loadPrintModelSaga,
@@ -105,19 +114,25 @@ export namespace PrintEditorComponentSagas {
 		updateElementHeightDomNodeSaga,
 		addReferenceEntrySaga,
 		loadDinTemplatePrintModelSaga,
-		loadPrintModelIdsSaga,
+		loadPrintModelHeadersSaga,
+		loadFragmentSaga,
 		openVisibilityConfigSaga,
 		updateVisibilityConfigSaga,
 		validateTextStylesSaga,
 		openEditorView,
 		onEditorPropsChangedSaga,
 		addModelReferenceSaga,
+		addFragmentModelReferenceSaga,
 		initializePrintModelSaga,
 		listStaticImagesSaga,
 		loadStaticImageSaga,
 		selectResourceSaga,
 		uploadStaticImageSaga,
 		navigateFromPathSaga,
+		navigateToFragmentSourceSaga,
+		navigateToPrintModelSaga,
+		loadFragmentUsageMapSaga,
+		unlinkFragmentReferenceSaga,
 	};
 
 	export function* rootSaga() {

@@ -49,5 +49,6 @@ import lombok.Data;
 @PrintEngineRuntimeStreamDependency(type = RuntimeType.MODEL_DOCUMENT)
 public class ModelDocumentSectionDependency implements ValueDependency<AttachmentWrapper<ModelDocumentSectionResult>>, ContainerProviderDependency {
 	private final PrintModelTreeTrace<ModelSection> section;
+	private final ModelSection.SectionUsage sectionUsage;
 	private final PrintDocumentContext documentContext;
 }

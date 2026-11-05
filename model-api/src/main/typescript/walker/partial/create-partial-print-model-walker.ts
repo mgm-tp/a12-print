@@ -44,26 +44,37 @@ import {
 	CachedPartialWatermarkIdResolver,
 } from "./partial-watermark-id-resolver.js";
 import {
+	DefaultPartialTextStyleIdResolver,
+	CachedPartialTextStyleIdResolver,
+} from "./partial-text-style-id-resolver.js";
+import {
 	PartialReferenceElementListResolver,
 	CachedPartialReferenceElementListResolver,
 } from "./parital-reference-element-resolver.js";
 
+/**
+ * @param printModelList Other print models the given one refers to - print fragment models make what is
+ * referenced from them walkable, DIN template models are resolved from it as well.
+ */
 export function createPartialPrintModelWalker(
 	printModel: PartialPrintModel,
 	visitor: PartialPrintModelVisitor,
 	printModelList: PrintModel[] = []
 ) {
-	const refResolver = PartialReferenceListResolver.fromModel(printModel);
-	const segmentIdResolver = DefaultPartialSegmentIdResolver.fromModel(printModel);
-	const sectionIdResolver = DefaultPartialSectionIdResolver.fromModel(printModel);
-	const watermarkIdResolver = DefaultPartialWatermarkIdResolver.fromModel(printModel);
-	const referenceElementListResolver = PartialReferenceElementListResolver.fromModel(printModel);
 	const printModelListResolver = PrintModelListResolver.fromModelList(printModelList);
+
+	const refResolver = PartialReferenceListResolver.fromModel(printModel, printModelListResolver);
+	const segmentIdResolver = DefaultPartialSegmentIdResolver.fromModel(printModel, printModelListResolver);
+	const sectionIdResolver = DefaultPartialSectionIdResolver.fromModel(printModel, printModelListResolver);
+	const watermarkIdResolver = DefaultPartialWatermarkIdResolver.fromModel(printModel, printModelListResolver);
+	const textStyleIdResolver = DefaultPartialTextStyleIdResolver.fromModel(printModel, printModelListResolver);
+	const referenceElementListResolver = PartialReferenceElementListResolver.fromModel(printModel);
 
 	const cachedRefResolver = new PartialCachedReferenceResolver(refResolver);
 	const cachedSegmentIdResolver = new CachedPartialSegmentIdResolver(segmentIdResolver);
 	const cachedSectionIdResolver = new CachedPartialSectionIdResolver(sectionIdResolver);
 	const cachedWatermarkIdResolver = new CachedPartialWatermarkIdResolver(watermarkIdResolver);
+	const cachedTextStyleIdResolver = new CachedPartialTextStyleIdResolver(textStyleIdResolver);
 	const cachedReferenceElementListResolver = new CachedPartialReferenceElementListResolver(
 		referenceElementListResolver
 	);
@@ -76,6 +87,7 @@ export function createPartialPrintModelWalker(
 		cachedSectionIdResolver,
 		cachedWatermarkIdResolver,
 		cachedReferenceElementListResolver,
-		cachedPrintModelListResolver
+		cachedPrintModelListResolver,
+		cachedTextStyleIdResolver
 	);
 }

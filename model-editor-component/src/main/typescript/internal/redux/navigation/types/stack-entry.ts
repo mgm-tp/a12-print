@@ -58,7 +58,7 @@ export interface BaseStackEntry {
 
 /** Root level -- no canvas geometry */
 export interface EntityStackEntry extends BaseStackEntry {
-	type: "Segment" | "Section" | "Watermark";
+	type: "Segment" | "Section" | "Watermark" | "Fragment";
 }
 
 /**
@@ -118,7 +118,9 @@ export function isWrapperStackEntry(entry: StackEntry): entry is WrapperStackEnt
 }
 
 export function isEntityStackEntry(entry: StackEntry): entry is EntityStackEntry {
-	return entry.type === "Segment" || entry.type === "Section" || entry.type === "Watermark";
+	return (
+		entry.type === "Segment" || entry.type === "Section" || entry.type === "Watermark" || entry.type === "Fragment"
+	);
 }
 
 /**

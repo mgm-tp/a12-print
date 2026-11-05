@@ -35,6 +35,7 @@ import type { Header, ModelReference } from "@com.mgmtp.a12.base/base-model-api"
 import type { LocalizedText } from "@com.mgmtp.a12.utils/utils-localization";
 
 import type {
+	AnyPrintModelElement,
 	ComputationAlternative,
 	DataContext,
 	Measure,
@@ -43,6 +44,7 @@ import type {
 	PrintModelEntity,
 } from "./elements/index.js";
 import type { PlaceableReference, ReferenceContainer, ReferenceContainerLabels } from "./reference/index.js";
+import type { FragmentModelReference, SectionFragmentReference } from "./reference/reference.js";
 
 /**
  * Almost all groups in PrintModel extend PrintModelEntity and can therefore be uniquely identified.
@@ -72,10 +74,14 @@ export interface PrintModelHeader extends Header {
 	readonly labels?: ReadonlyArray<LabelEntity>;
 	readonly annotations?: AnnotationEntity[];
 	readonly modelReferences?: ModelReferenceEntity[];
+	readonly modelSubType?: PrintModelSubType;
 }
+
+export type PrintModelSubType = "fragment";
 
 export interface PrintModelContent extends PrintModelEntity {
 	readonly general: PrintModelContentGeneral;
+	/** @remarks Will become optional in the next major release. */
 	readonly segments: SegmentsContainer;
 	readonly elementDefinitions: ReadonlyArray<PrintModelElement>;
 	readonly sections?: SectionsContainer;
@@ -90,6 +96,7 @@ export interface PrintModelContent extends PrintModelEntity {
  * @param textStyles - List of {@link TextStyle} ids that are in use in this print model. Therefore it can also be empty even with available text styles.
  */
 export interface PrintModelContentGeneral extends PrintModelEntity {
+	/** @remarks Will become optional in the next major release. */
 	readonly metadata: Metadata;
 	readonly structure: ReadonlyArray<string>;
 	readonly segmentDefaults: SegmentDefaults;
@@ -125,6 +132,7 @@ export enum RuntimeVariableType {
 
 export interface TextStylesContainer extends PrintModelEntity {
 	definitions: ReadonlyArray<TextStyle>;
+	references?: ReadonlyArray<FragmentModelReference>;
 }
 
 export interface TextStyle extends PrintModelEntity {
@@ -158,18 +166,22 @@ export enum Semantic {
 
 /**
  * @param references - This is used for the DinTemplate feature to link segments.
+ * @param fragmentReferences - References to segments defined in fragment print models.
  */
 export interface SegmentsContainer extends PrintModelEntity {
 	definitions: ReadonlyArray<Segment>;
 	references: ReadonlyArray<SegmentReference>;
+	fragmentReferences?: ReadonlyArray<FragmentModelReference>;
 }
 
 export interface SectionsContainer extends PrintModelEntity {
 	definitions: ReadonlyArray<Section>;
+	references?: ReadonlyArray<SectionFragmentReference>;
 }
 
 export interface WatermarksContainer extends PrintModelEntity {
 	definitions: ReadonlyArray<Watermark>;
+	references?: ReadonlyArray<FragmentModelReference>;
 }
 
 export interface Segment
@@ -229,6 +241,7 @@ export interface SegmentReferenceRefIdContainer extends PrintModelEntity {
 export interface Section
 	extends ReferenceContainer<ReferenceContainerLabels.elementReferences, PlaceableReference>, PrintModelEntity {
 	readonly title: string;
+	/** @remarks Will become optional in the next major release. */
 	readonly sectionUsage: SectionUsage;
 	readonly pageOrientation: PageOrientation;
 	readonly footerHeight: Measure;
@@ -247,6 +260,16 @@ export enum SectionUsage {
 	First = "First",
 	Remaining = "Remaining",
 }
+
+export interface Fragment
+	extends ReferenceContainer<ReferenceContainerLabels.elementReferences, PlaceableReference>, PrintModelEntity {
+	readonly fragment: FragmentEntity;
+	readonly fragmentType: FragmentType;
+}
+
+export type FragmentEntity = AnyPrintModelElement | Section | Watermark | Segment;
+
+export type FragmentType = "section" | "watermark" | "segment" | "element" | "textStyle";
 
 export function isObject(value: unknown): value is Record<string, unknown> {
 	return value instanceof Object;
@@ -291,7 +314,7 @@ export function isSection(value: unknown): value is Section {
 		"id" in value &&
 		"title" in value &&
 		"pageOrientation" in value &&
-		"sectionUsage" in value &&
+		"headerHeight" in value &&
 		"elementReferences" in value
 	);
 }
@@ -302,7 +325,7 @@ export function isWatermark(value: unknown): value is Watermark {
 		"id" in value &&
 		"title" in value &&
 		"pageOrientation" in value &&
-		!("sectionUsage" in value) &&
+		!("headerHeight" in value) &&
 		"elementReferences" in value
 	);
 }

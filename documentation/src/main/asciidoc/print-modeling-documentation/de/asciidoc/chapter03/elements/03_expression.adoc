@@ -19,12 +19,53 @@ THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPR
 
 Das Expression-Element fügt das Ergebnis eines Form-Engine-Ausdrucks in das resultierende PDF ein.
 
+[WARNING]
+====
+Das Expression-Element unterstützt nur eine Teilmenge der Ausdruckssprache, die von der Form Engine verwendet wird.
+Die meisten Anwendungsfälle lassen sich besser durch die Kombination anderer Print Model-Elemente abbilden, da diese sowohl Semantik als auch Layout klarer darstellen.
+Siehe <<ExpressionLimitations, Limitations>> für Details.
+====
+
 Document Model:: Wählen Sie ein Document Model aus, das im <<SchemaTab, Schema Tab>> referenziert ist.
-Content:: Der Inhalt des Expression-Elements wird aus dem Expression-_content_ erzeugt.
-Weitere Informationen zur erwarteten Syntax finden Sie in der link:/docs/SME/sme-dm-ba-docs/index.html[Expression-Dokumentation].
+Content:: Der Inhalt des Expression-Elements wird aus dem Expression-_content_ generiert.
+Weitere Informationen zur erwarteten Syntax finden Sie in der link:/docs/EXPRESSION/expression-docs/index.html[Expression-Dokumentation].
++
+[WARNING]
+====
+Der Expression-Inhalt wird im Editor nicht validiert. Fehler treten daher erst beim Drucken auf.
+====
 
-Das Expression-Element kann automatisch ausgeblendet werden, wenn alle referenzierten Fields einen leeren Wert oder String ergeben. Um dieses Verhalten zu aktivieren, wählen Sie die Option `Hide this element if all nested entities are empty`.
+Das Expression Element kann automatisch ausgeblendet werden, wenn alle referenzierten Fields als leerer Wert oder leere Zeichenkette ausgewertet werden. Um dieses Verhalten zu aktivieren, wählen Sie die Option `Hide this element if all nested entities are empty`.
 
-Darüber hinaus lässt sich das Expression-Element über <<BorderProperties, Border Properties>> und <<TextProperties, Text Properties>> konfigurieren.
+Darüber hinaus kann das Expression-Element über <<BorderProperties, Border Properties>> und <<TextProperties, Text Properties>> konfiguriert werden.
 
-image::chapter03/03_expression_detail_view.png[Expression element detail view,title="Detailansicht des Expression-Elements"]
+image::chapter03/03_expression_detail_view.png[Expression element detail view,title="Expression element detail view"]
+
+== Einschränkungen [[ExpressionLimitations]]
+
+Das Expression-Element unterstützt nur eine Teilmenge der Expression-Sprache.
+
+Die folgenden Funktionen werden nicht unterstützt:
+
+[cols="1,2",options="header"]
+|===
+| Nicht unterstützt | Alternative
+
+| `case`-Operationen für andere Field-Typen als String und Enumeration
+| Verwenden Sie ein <<Text, Text>>-Element mit <<Calculation, Calculation>>-Elementen und nutzen Sie eine Precondition, um zu bestimmen, ob ein Wert angezeigt werden soll.
+
+| Wiederholbare Groups und Mehrfachauswahlfelder
+| Verwenden Sie Print-Elemente, die die Wiederholung steuern, wie z. B. <<Table, Table>>, <<Listing, Listing>> oder eine wiederholbare <<Area, Area>> mit einem verschachtelten <<Text, Text>>-Element.
+
+| Mehrsprachige Texte
+| Erstellen Sie Hilfs-Enumerations-Fields im Document Model und zeigen Sie diese mit <<Field, Field>> in einem <<Text, Text>>-Element an.
+
+| Escapte Anführungszeichen (`\"`) innerhalb von Zeichenketten
+| Verwenden Sie ein <<Text, Text>>-Element, um beliebige Zeichen darzustellen.
+
+| Markdown, mit Ausnahme von fettem und kursivem Text außerhalb von `case`-Operationen
+| Verwenden Sie ein <<Text, Text>>-Element und dessen Formatierungsoptionen.
+
+| Zeilenumbrüche und Absätze können sich anders verhalten als in der Form Engine
+| Verwenden Sie ein <<Text, Text>>-Element.
+|===

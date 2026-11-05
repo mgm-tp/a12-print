@@ -30,7 +30,8 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import type { Locator, Page } from "@playwright/test";
-import { expect } from "@playwright/test";
+
+import { expect } from "../devAppExpect";
 
 const ELEMENT_TEST_IDS: Record<string, string> = {
 	Text: "element-text",
@@ -41,6 +42,9 @@ const ELEMENT_TEST_IDS: Record<string, string> = {
 	Switch: "element-switch",
 	Listing: "element-listing",
 	Table: "element-table",
+	TableLayout: "element-table-layout",
+	Expression: "element-expression",
+	Chart: "element-diagram",
 	ResizeHandle: "resize-handle",
 };
 
@@ -52,8 +56,85 @@ export const elementLocator = (page: Page, componentName: string): Locator => {
 	return page.getByTestId(testId);
 };
 
+export const editorMain = (page: Page): Locator => page.getByRole("main").first();
+
+/** The bar above the editor with the model icon, the model id and the undo, error and print buttons. */
+export const globalToolbar = (page: Page): Locator => page.getByTestId("global-toolbar");
+
+/** The icon that tells a Print Model from a Print Fragment Model, in the top left corner. */
+export const modelIcon = (page: Page): Locator => globalToolbar(page).locator("img");
+
+/** The panel on the right-hand side of the Editor Stage that holds the form of the selected entity. */
+export const detailForm = (page: Page): Locator => page.getByTestId("detail-form-container");
+
+/** The values of the migration annotations, which change with every model version bump. */
+export const migrationAnnotationValues = (page: Page): Locator => page.getByRole("cell", { name: /^\d+\.\d+\.\d+/ });
+
+export const textStyleCard = (page: Page, name: string): Locator =>
+	page
+		.getByTestId("text-style-card")
+		.filter({ has: page.getByTestId("text-style-card-name").getByText(name, { exact: true }) });
+
+export const selectByLabel = (page: Page, label: string): Locator =>
+	page.locator(`[data-role="select"]:has([data-role="select-label"]:text-is("${label}"))`);
+
+export const openSelectDropdown = async ({ page, select }: { page: Page; select: Locator }) => {
+	await select.locator('[data-role="select-input"]').click();
+	await expect(page.getByRole("listbox")).toBeVisible();
+};
+
+export const collapsiblePanelToggle = (page: Page, title: string): Locator =>
+	page.getByRole("button", { name: title, exact: true });
+
+export const textFieldByLabel = (page: Page, label: string): Locator =>
+	page
+		.locator('[data-role="text-field"]')
+		.filter({ has: page.locator('[data-role="text-field-label"]', { hasText: label }) });
+
+export const collapsiblePanel = (page: Page, title: string): Locator =>
+	page.locator('[data-role="collapsible-panel"]').filter({ has: collapsiblePanelToggle(page, title) });
+
+export const collapsePanel = async ({ page, title }: { page: Page; title: string }) => {
+	const toggle = collapsiblePanelToggle(page, title);
+	if ((await toggle.getAttribute("aria-expanded")) !== "false") {
+		await toggle.click();
+	}
+	await expect(toggle).toHaveAttribute("aria-expanded", "false");
+};
+
+export const closeSidebar = async (page: Page) => {
+	const panel = sidebarPanel(page);
+	if (await panel.isVisible()) {
+		await page.locator("#sidebar-panel").getByLabel("Close").click({ force: true });
+		await expect(panel).toBeHidden();
+	}
+};
+
+/** The Editor Stage column: the toolbar above the page and the page itself. */
+export const editorStage = (page: Page): Locator => page.getByTestId("editor-stage");
+
+export const editorToolbar = (page: Page): Locator => editorStage(page).locator("> div").first();
+
+export const editorModeToggle = (page: Page): Locator =>
+	page.locator('[data-role="toggle"]').filter({ has: page.locator('[data-role="toggle-item"][title="Default"]') });
+
+export const wrapperStage = (page: Page): Locator => page.getByTestId("editor-drop-target");
+
+export const sidebarPanel = (page: Page): Locator => editorMain(page).getByRole("tabpanel");
+
+export const textElementByContent = (page: Page, text: string): Locator =>
+	page.getByTestId("element-text").filter({ hasText: text }).first();
+
+export const cardByTitle = (page: Page, testId: string, title: string): Locator =>
+	page.getByTestId(testId).filter({ has: page.locator(`input[value="${title}"]`) });
+
 export const selectTab = async ({ page, tab }: { page: Page; tab: string }) => {
-	await page.getByRole("tab", { name: tab }).click();
+	const trigger = page.getByRole("tab", { name: tab });
+	const isSelected = async () => (await trigger.getAttribute("aria-selected")) === "true";
+	if (!(await sidebarPanel(page).isVisible()) || !(await isSelected())) {
+		await trigger.click();
+	}
+	await expect(sidebarPanel(page)).toBeVisible();
 };
 
 // Will timeout if no Tab is selected
@@ -61,6 +142,7 @@ export const openEditorStage = async ({ page, tab, cardName }: { page: Page; tab
 	switch (tab) {
 		case "Segment":
 			await page.getByTestId("segment-card").filter({ hasText: cardName }).click();
+			await expect(page.getByTestId("editor-container")).toBeVisible();
 			break;
 		case "Section":
 			await page.getByTestId("section-card").filter({ hasText: cardName }).click();
@@ -71,6 +153,74 @@ export const openEditorStage = async ({ page, tab, cardName }: { page: Page; tab
 		default:
 			throw new Error("No valid tab specified - test fails!");
 	}
+};
+
+/**
+ * Opens the Element Library, which occupies the detail form panel on the right-hand side of the
+ * Editor Stage. Does nothing if it is already open, since the toolbar button toggles.
+ */
+export const openElementLibrary = async (page: Page) => {
+	const elementLibrary = page.getByTestId("element-library-form");
+	if (await elementLibrary.isVisible()) {
+		return elementLibrary;
+	}
+	await page.getByLabel("Element Library").click();
+	await expect(elementLibrary).toBeVisible();
+	return elementLibrary;
+};
+
+/**
+ * Closes the Element Library through the form header. Dropping an element opens that element's
+ * detail form in the same panel, so by then there is nothing left to close.
+ */
+export const closeElementLibrary = async (page: Page) => {
+	const elementLibrary = page.getByTestId("element-library-form");
+	if (await elementLibrary.isVisible()) {
+		await elementLibrary.getByLabel("Close").click();
+		await expect(elementLibrary).toBeHidden();
+	}
+};
+
+export const openCardEditor = async ({ page, card }: { page: Page; card: Locator }) => {
+	await card.getByRole("button", { name: "Open Editor" }).click();
+	await expect(page.getByTestId("editor-container")).toBeVisible();
+};
+
+export const openCardSettings = async ({ page, card, headline }: { page: Page; card: Locator; headline: string }) => {
+	await card.getByRole("button", { name: "Open Setting" }).click();
+	await expect(page.getByRole("heading", { name: headline })).toBeVisible();
+};
+
+export const openElementDetail = async ({
+	page,
+	element,
+	headline,
+}: {
+	page: Page;
+	element: Locator;
+	headline: string;
+}) => {
+	await element.dblclick();
+	await expect(page.getByRole("heading", { name: headline })).toBeVisible();
+};
+
+export const openElementDetailForm = async ({
+	page,
+	element,
+	headline,
+}: {
+	page: Page;
+	element: Locator;
+	headline: string;
+}) => {
+	await element.click();
+	await page.getByTitle("Open Detail Edit").click();
+	await expect(page.getByRole("heading", { name: headline })).toBeVisible();
+};
+
+export const openWrapperStage = async ({ page, element }: { page: Page; element: Locator }) => {
+	await element.hover();
+	await page.getByRole("button", { name: "Edit", exact: true }).click();
 };
 
 // If editor is opened: add an element to the editor stage
@@ -92,15 +242,14 @@ export const dragElementToEditor = async ({
 	};
 	normalizePosition?: { x?: number; y?: number };
 }) => {
-	const elementLibraryButton = page.getByLabel("Open/Close Element Library");
-	await elementLibraryButton.click();
+	await openElementLibrary(page);
 
-	const elementLibrary = page.getByRole("dialog");
+	const elementLibrary = page.getByTestId("element-library-form");
 	await elementLibrary
 		.getByTestId("element-library-item")
 		.filter({ has: page.getByText(elementName, { exact: true }) })
 		.dragTo(page.getByTestId(isWrapperStage ? "editor-drop-target" : "editor-container"), { targetPosition });
-	await elementLibrary.getByLabel("Close").click();
+	await closeElementLibrary(page);
 	// force to close the popup tooltip
 	await elementLocator(page, componentName).first().click();
 	if (!isWrapperStage) {
@@ -160,6 +309,11 @@ export const waitForInteractionSagasSettled = async (page: Page): Promise<void> 
 };
 
 export const commitChanges = async ({ page, hasErrors = false }: { page: Page; hasErrors?: boolean }) => {
+	const modeToggle = page.getByRole("button", { name: "Light Editor" });
+	if (await modeToggle.isVisible()) {
+		// commit tab not available in light editor
+		return;
+	}
 	await page.getByRole("tab", { name: "Commit changes" }).click();
 	const commitButton = page.getByRole("button", { name: "Commit selected changes and truncate history" });
 	const commitRows = page.getByRole("row", { name: /Open Commit/ });
@@ -173,6 +327,30 @@ export const commitChanges = async ({ page, hasErrors = false }: { page: Page; h
 		await waitForInteractionSagasSettled(page);
 		await expect(commitRows).toHaveCount(0);
 	}
+};
+
+/**
+ * Confirms the "Unlink fragment" dialog that follows every fragment/element unlink action.
+ * If unlinking would pull in a Typesetting/Document Model dependency, an "Unlinking adds dependencies"
+ * dialog is shown first - this confirms that one too before the unlink dialog appears.
+ * Both dialogs share the same "Apply" confirm button, so they are told apart by their title text.
+ */
+export const confirmUnlinkDialog = async (page: Page): Promise<void> => {
+	const applyButton = page.getByRole("button", { name: "Apply", exact: true });
+	await expect(applyButton).toBeVisible();
+
+	if (await page.getByText("Unlinking adds dependencies").isVisible()) {
+		await applyButton.click();
+		await expect(page.getByRole("heading", { name: "Unlink fragment" })).toBeVisible();
+	}
+
+	await applyButton.click();
+};
+
+export const closeDetailForm = async ({ page }: { page: Page }) => {
+	const closeButton = page.getByTestId("detail-form-container").getByRole("heading").getByLabel("Close");
+	await closeButton.click({ force: true });
+	await expect(closeButton).toBeHidden();
 };
 
 // Will timeout if Element Form Container is not open
@@ -276,6 +454,57 @@ export const pasteAtPosition = async ({ page, clickX, clickY }: { page: Page; cl
 };
 
 /**
+ * Copies an element and pastes it back onto the stage, below what is there. Meant to be hung onto an element
+ * test once it built its element: whatever the element carries has to survive being copied.
+ */
+const copyPasteElement = async ({
+	page,
+	element,
+	offset = { x: 60, y: 400 },
+}: {
+	page: Page;
+	element: Locator;
+	offset?: { x: number; y: number };
+}) => {
+	await element.click();
+	await page.keyboard.press("Control+c");
+
+	const editorStage = page.getByTestId("editor-stage");
+	const stageBox = await editorStage.boundingBox();
+	if (!stageBox) {
+		throw new Error("Editor stage not found");
+	}
+
+	await pasteAtPosition({ page, clickX: stageBox.x + offset.x, clickY: stageBox.y + offset.y });
+	await waitForInteractionSagasSettled(page);
+};
+
+/**
+ * Copies the element a test has built and checks the copy is as sound as the original: whatever an element
+ * carries has to survive being copied. Meant as the last step of an element test.
+ */
+export const testCopyElement = async ({
+	page,
+	testId,
+	cardName = "First Segment",
+}: {
+	page: Page;
+	testId: string;
+	cardName?: string;
+}) => {
+	// a test leaves the editor in the commit tab
+	await selectTab({ page, tab: "Segment" });
+	await openEditorStage({ page, tab: "Segment", cardName });
+
+	await copyPasteElement({ page, element: page.getByTestId(testId).first() });
+
+	await expect(page.getByTestId(testId)).toHaveCount(2);
+	await expect(page).toHaveEditorStageErrors(0);
+
+	await commitChanges({ page });
+};
+
+/**
  * Set zoom factor in the editor
  * @param page - Playwright Page object
  * @param zoomValue - Zoom factor value (e.g., "0.2" for 20%, "0.5" for 50%, "1" for 100%)
@@ -290,19 +519,54 @@ export const setZoomFactor = async ({ page, zoomValue }: { page: Page; zoomValue
  * Normalises the selected element's position via the QuickEditBar inputs.
  * Use after drag-and-drop to guarantee a deterministic position for screenshots.
  */
-export const setElementPosition = async ({ page, x, y }: { page: Page; x?: number; y?: number }) => {
-	if (x) {
-		const xInput = page.getByPlaceholder("Left");
-		await xInput.fill(String(x));
-		await xInput.blur();
-	}
-	if (y) {
-		const yInput = page.getByPlaceholder("Top");
-		await yInput.fill(String(y));
-		await yInput.blur();
+export const setElementPosition = async ({
+	page,
+	x,
+	y,
+	width,
+}: {
+	page: Page;
+	x?: number;
+	y?: number;
+	width?: number;
+}) => {
+	const geometry: [string, number | undefined][] = [
+		["Left", x],
+		["Top", y],
+		["Width", width],
+	];
+	for (const [placeholder, value] of geometry) {
+		if (value === undefined) {
+			continue;
+		}
+		const input = page.getByPlaceholder(placeholder);
+		await input.fill(String(value));
+		await input.blur();
 	}
 
 	await waitForInteractionSagasSettled(page);
+};
+
+// Selector for the Lexical rich text editor's editable area
+export const RICHTEXT_EDITOR_SELECTOR = "#print-richtext-editor";
+
+// Will timeout if the text element is not available
+export const writeToTextElement = async ({ page, text }: { page: Page; text: string }) => {
+	const textBoxInput = page.locator(RICHTEXT_EDITOR_SELECTOR);
+	await textBoxInput.clear();
+	await textBoxInput.click();
+
+	// Split text by newlines and type each segment, pressing Enter between them
+	const segments = text.split("\n");
+	for (let i = 0; i < segments.length; i++) {
+		if (segments[i]) {
+			await textBoxInput.pressSequentially(segments[i], { delay: 0 });
+		}
+		if (i < segments.length - 1) {
+			await page.keyboard.press("Enter");
+		}
+	}
+	await textBoxInput.blur();
 };
 
 export async function scrollEditorStage(page: Page, position = 0) {

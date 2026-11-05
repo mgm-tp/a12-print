@@ -33,21 +33,20 @@ package com.mgmtp.a12.print.model.api.model.internal.dto.section;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.base.Measure;
 import com.mgmtp.a12.print.model.api.model.element.properties.PageOrientation;
-import com.mgmtp.a12.print.model.api.model.reference.PlaceableReference;
-import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 import com.mgmtp.a12.print.model.api.model.internal.dto.JsonModel;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelEntityDto;
 import com.mgmtp.a12.print.model.api.model.internal.dto.element.base.MeasureDto;
 import com.mgmtp.a12.print.model.api.model.internal.dto.reference.PlaceableReferenceDto;
+import com.mgmtp.a12.print.model.api.model.reference.PlaceableReference;
+import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 
 @Value
 @SuperBuilder
@@ -58,9 +57,10 @@ public class ModelSectionDto extends PrintModelEntityDto implements ModelSection
 	String title;
 
 	@JsonProperty(value = "pageOrientation", required = true)
+	@Builder.Default
 	PageOrientation pageOrientation = PageOrientation.PORTRAIT;
 
-	@JsonProperty(value = "sectionUsage", required = true)
+	@JsonProperty(value = "sectionUsage")
 	SectionUsage sectionUsage;
 
 	@JsonProperty("headerHeight")

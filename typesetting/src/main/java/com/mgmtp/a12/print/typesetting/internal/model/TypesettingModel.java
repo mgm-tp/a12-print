@@ -31,9 +31,10 @@
  */
 package com.mgmtp.a12.print.typesetting.internal.model;
 
+import com.mgmtp.a12.model.Model;
 import com.mgmtp.a12.model.header.Header;
 
-public interface TypesettingModel {
+public interface TypesettingModel extends Model {
 
 	Header getHeader();
 

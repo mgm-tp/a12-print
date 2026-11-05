@@ -35,10 +35,19 @@ import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
 import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
 import com.mgmtp.a12.model.utils.OnlyForUsage;
 
+import java.util.Optional;
+
 @OnlyForUsage
 public interface ElementReference extends PrintModelPathElement, PrintModelEntity {
 	/**
 	 * @return The id of a referenced print model element.
 	 */
 	String getRefId();
+
+	/**
+	 * @return The id of the print fragment model the referenced element is defined in. Empty if the element is defined in the current model.
+	 */
+	default Optional<String> getModel() {
+		return Optional.empty();
+	}
 }

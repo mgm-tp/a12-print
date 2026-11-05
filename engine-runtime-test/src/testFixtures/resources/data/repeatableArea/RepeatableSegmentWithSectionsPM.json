@@ -2,7 +2,7 @@
   "header": {
     "id": "RepeatableSegmentWithSectionsPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -12,11 +12,11 @@
     "annotations": [
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -265,7 +265,8 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
-        }
+        },
+        "name": "Text_1bbd1"
       },
       {
         "id": "Qj7mzSUSc72V2p86URu19",
@@ -306,7 +307,8 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
-        }
+        },
+        "name": "Text_ddfc7"
       }
     ]
   }

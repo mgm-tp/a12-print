@@ -42,6 +42,7 @@ import type {
 	CommitViewState,
 	ConfirmationDialogState,
 	GeneralViewState,
+	FragmentUsageState,
 } from "../../internal/redux/index.js";
 
 import type { ValidationState } from "./ValidationState.js";
@@ -57,4 +58,5 @@ export interface PrintEngineState {
 	ConfirmationDialogState: ConfirmationDialogState;
 	GeneralViewState: GeneralViewState;
 	Navigation: NavigationState;
+	FragmentUsageState: FragmentUsageState;
 }

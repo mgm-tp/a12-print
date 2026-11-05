@@ -34,12 +34,30 @@ include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/ru
 [#print_job_manager_api]
 == PrintJobManagerApi
 
-The `PrintJobManagerApi` provides interfaces for the loading of Print Models and Document Models by given their IDs.
+The `PrintJobManagerApi` provides interfaces for the loading of Print Models, Print Fragment Models and Document Models by their IDs.
 
 [source,java,title="PrintJobManagerApi interface"]
 ----
 include::../../sourceCode/engine-runtime/main/java/com/mgmtp/a12/print/engine/runtime/PrintJobManager.java[tag=PrintJobManagerApi,indent=0]
 ----
+
+[#load_print_fragment_model]
+=== Loading Print Fragment Models
+
+A Print Fragment Model holds reusable content that other Print Models reference instead of defining it themselves.
+See link:/docs/PRINT_ENGINE/print-modeling-documentation/index.html#FragmentModels[Print Fragment Models] for the modeling side.
+
+IMPORTANT: `loadPrintFragmentModel` must be overridden in order to print any Print Model that references a Print Fragment Model.
+Print Models that do not reference any Print Fragment Model are unaffected, so the method can be left unimplemented if the feature is not used.
+
+[NOTE]
+====
+Print Fragment Models are referenced in the header of a Print Model.
+Among the header's Print Model references, in other words those with the model type `print`, the `purpose` of the reference decides which method loads it:
+
+* `DINTemplate` marks a DIN template, which is loaded with `loadPrintModel`.
+* `print-fragment` marks a Print Fragment Model, which is loaded with `loadPrintFragmentModel`.
+====
 
 [#pdf_box_print_engine_runtime]
 == PdfBoxPrintEngine

@@ -71,6 +71,7 @@ describe("ChartCommonProperties", () => {
 				element={{
 					id: "diagram-id",
 					type: ElementType.BarChart,
+					name: "mockDiagram",
 					barChart,
 				}}
 				properties={{

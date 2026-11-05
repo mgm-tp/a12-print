@@ -2,7 +2,7 @@
   "header": {
     "id": "RepeatableBoundingBoxMigratedPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -231,7 +231,8 @@
             "value": "Solid",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "BoundingBox_53215"
       },
       {
         "id": "t3lTSVoeV7QfHUo4fIQ-O",
@@ -382,7 +383,8 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/backgroundColor/value/"
           }
-        }
+        },
+        "name": "Table_a178e"
       },
       {
         "id": "xzu6aSbfuYJ7Ka64WeDbZ",
@@ -409,7 +411,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_fa869"
       },
       {
         "id": "0edMDFqQgllmtlpltqQB_",
@@ -436,7 +439,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_2761f"
       }
     ],
     "textStyles": {

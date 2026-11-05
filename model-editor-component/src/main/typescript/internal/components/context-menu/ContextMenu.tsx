@@ -34,6 +34,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
 import { PartialOverride } from "@com.mgmtp.a12.print/print-model-api/model";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { List, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
@@ -45,6 +46,7 @@ import { DetailViewActions, ValidationCounter } from "../../redux/index.js";
 import type { ContextMenuItem } from "../../types/index.js";
 import { ContextMenuOption } from "../../types/index.js";
 import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { useCurrentEditorType } from "../../hooks/index.js";
 
 import { ErrorBadge } from "../badge/ValidationBadge.js";
 import { EditorContext } from "../editor-stage/editor-context.js";
@@ -83,6 +85,16 @@ const CONTEXT_MENU_ITEMS: ContextMenuItem[] = [
 		label: RESOURCE_KEYS.editor.contextMenu.hideConditions,
 		icon: <Icon>visibility_off</Icon>,
 	},
+	{
+		id: ContextMenuOption.NavigateToFragmentSource,
+		label: RESOURCE_KEYS.button.navigateToSource,
+		icon: <Icon>open_in_new</Icon>,
+	},
+	{
+		id: ContextMenuOption.Unlink,
+		label: RESOURCE_KEYS.button.unlink,
+		icon: <Icon>link_off</Icon>,
+	},
 ];
 
 interface ContextMenuProps {
@@ -111,20 +123,27 @@ export const ContextMenu: React.FunctionComponent<ContextMenuProps> = ({
 	const dispatch = useDispatch();
 	const { outerContextMenu, setOuterContextMenu, showContextMenu, setShowContextMenu } =
 		React.useContext(ContextMenuContext);
-	const { copyElements } = React.useContext(EditorContext);
+	const { copyElements, isReadonly } = React.useContext(EditorContext);
+	const currentEditorType = useCurrentEditorType();
+	const isFragmentTopLevelStage = currentEditorType === SidebarItem.FRAGMENT;
 	const [additionalItems, setAdditionalItems] = React.useState<React.ReactElement[]>([]);
 
+	const selectedElementReferences = React.useMemo(
+		() => elementReferences.filter(el => selected.includes(el.id)),
+		[elementReferences, selected]
+	);
+	const selectedRefIds = React.useMemo(
+		() => selectedElementReferences.map(el => el.refId),
+		[selectedElementReferences]
+	);
 	const printModelElements = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.multiplePrintModelElements(state, selected)
+		PrintEngineSelectors.multiplePrintModelElements(state, selectedRefIds)
 	);
 	const placeableRefErrorMap = useSelector((state: PrintEngineState) =>
-		ValidationSelectors.currentPlaceableReference(
-			state,
-			elementReferences.find(ref => ref.refId === selected[0])?.id
-		)
+		ValidationSelectors.currentPlaceableReference(state, selected[0])
 	);
 	const hasOnlyContainerElement = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.hasOnlyContainerElement(state, selected)
+		PrintEngineSelectors.hasOnlyContainerElement(state, selectedRefIds)
 	);
 	const [position, setPosition] = React.useState<PlainMeasurePosition & { clientX: number; clientY: number }>({
 		x: createPlainMmMeasure(0),
@@ -141,13 +160,22 @@ export const ContextMenu: React.FunctionComponent<ContextMenuProps> = ({
 		() => printModelElements.some(el => PartialOverride.isInstance(el)),
 		[printModelElements]
 	);
+	const isMissingElementSelected = printModelElements.length !== selectedRefIds.length;
+
+	const isFragmentReferenceSelected = React.useMemo(
+		() => selectedElementReferences.length === 1 && !!selectedElementReferences[0].model,
+		[selectedElementReferences]
+	);
 
 	const onContextMenu = React.useCallback(
 		(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 			event.preventDefault();
+			if (isFragmentTopLevelStage) {
+				return;
+			}
 			if (editorState) {
-				if (hovered && !selected.includes(hovered.refId)) {
-					const newSelected = [hovered.refId];
+				if (hovered && !selected.includes(hovered.id)) {
+					const newSelected = [hovered.id];
 					setSelected(newSelected);
 					dispatch(DetailViewActions.updateVisibilityConfig({ selected: newSelected }));
 				} else if (!hovered) {
@@ -166,7 +194,16 @@ export const ContextMenu: React.FunctionComponent<ContextMenuProps> = ({
 				setShowContextMenu(true);
 			}
 		},
-		[dispatch, editorState, hovered, outerContextMenu, selected, setSelected, setShowContextMenu]
+		[
+			dispatch,
+			editorState,
+			hovered,
+			isFragmentTopLevelStage,
+			outerContextMenu,
+			selected,
+			setSelected,
+			setShowContextMenu,
+		]
 	);
 
 	React.useEffect(() => {
@@ -181,16 +218,25 @@ export const ContextMenu: React.FunctionComponent<ContextMenuProps> = ({
 	}, [setShowContextMenu]);
 
 	const ConditionalMenuList = React.useMemo(() => {
-		const contentItems = items
+		const visibleItems = items.filter(
+			contentItem =>
+				(contentItem.id !== ContextMenuOption.NavigateToFragmentSource &&
+					contentItem.id !== ContextMenuOption.Unlink) ||
+				isFragmentReferenceSelected
+		);
+		const contentItems = visibleItems
 			.map((contentItem, index) => {
 				const disabled = isContextMenuItemDisabled(
 					contentItem.id,
 					isOverrideElementSelected,
 					selected.length,
 					copyElements,
-					hasOnlyContainerElement
+					hasOnlyContainerElement,
+					isReadonly,
+					isMissingElementSelected
 				);
-				const isDivider = contentItem.isDivider || (index === items.length - 1 && additionalItems.length > 0);
+				const isDivider =
+					contentItem.isDivider || (index === visibleItems.length - 1 && additionalItems.length > 0);
 				let meta = contentItem.meta;
 				if (contentItem.id === ContextMenuOption.HideConditions && selected.length === 1) {
 					const errorCount = ValidationCounter.from(placeableRefErrorMap?.hideConditions).error;
@@ -246,10 +292,13 @@ export const ContextMenu: React.FunctionComponent<ContextMenuProps> = ({
 		selected.length,
 		copyElements,
 		hasOnlyContainerElement,
+		isReadonly,
+		isFragmentReferenceSelected,
 		localizer,
 		placeableRefErrorMap?.hideConditions,
 		getErrorTitle,
 		onContextItemClick,
+		isMissingElementSelected,
 	]);
 
 	return (
@@ -265,8 +314,26 @@ function isContextMenuItemDisabled(
 	isOverrideElementSelected: boolean,
 	selectedItemsLength: number,
 	copyElements: readonly PartialValidPlaceableReference[],
-	hasOnlyContainerElement: boolean
+	hasOnlyContainerElement: boolean,
+	isReadonly: boolean,
+	isMissingElementSelected: boolean
 ): boolean {
+	if (itemId === ContextMenuOption.NavigateToFragmentSource) {
+		return false;
+	}
+
+	if (itemId === ContextMenuOption.Unlink) {
+		return isReadonly;
+	}
+
+	if (isMissingElementSelected && itemId !== ContextMenuOption.Delete) {
+		return true;
+	}
+
+	if (isReadonly) {
+		return itemId !== ContextMenuOption.HideConditions;
+	}
+
 	if (itemId === ContextMenuOption.Group && hasOnlyContainerElement) {
 		return true;
 	}

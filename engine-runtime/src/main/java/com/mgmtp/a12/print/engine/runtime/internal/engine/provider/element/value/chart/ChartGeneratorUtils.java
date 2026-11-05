@@ -72,6 +72,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import static com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.PDFUnitUtil.MM_PER_INCH;
@@ -87,9 +88,10 @@ public class ChartGeneratorUtils {
 		PdfBoxPrintEngineConfig printEngineConfig,
 		InputValueSourceResolver.ReferenceResolver referenceInputSourceResolver
 	) {
-		final ChartDocumentData data = getValues(properties.getBasePath(), properties.getData(), printDocumentContext);
-		final PieChart chart = buildPieChart(properties, data, printEngineConfig, referenceInputSourceResolver, job);
-		return convertChartToBase64String(chart);
+		return withChartErrorHandling(() -> {
+			final ChartDocumentData data = getValues(properties.getBasePath(), properties.getData(), printDocumentContext);
+			return buildPieChart(properties, data, printEngineConfig, referenceInputSourceResolver, job);
+		});
 	}
 
 	public static String generateMultipleSeriesChart(
@@ -99,18 +101,29 @@ public class ChartGeneratorUtils {
 		PdfBoxPrintEngineConfig printEngineConfig,
 		InputValueSourceResolver.ReferenceResolver referenceInputSourceResolver
 	) {
-		final List<ChartDocumentData> dataList = properties.getData()
-			.stream()
-			.map(data -> getValues(properties.getBasePath(), data, printDocumentContext))
-			.toList();
+		return withChartErrorHandling(() -> {
+			final List<ChartDocumentData> dataList = properties.getData()
+				.stream()
+				.map(data -> getValues(properties.getBasePath(), data, printDocumentContext))
+				.toList();
 
-		Chart<?,?> chart = null;
-		if (properties instanceof LineChartProperties lineChartProperties) {
-			chart = buildLineChart(lineChartProperties, dataList, job, printEngineConfig, referenceInputSourceResolver);
-		} else if (properties instanceof BarChartProperties barChartProperties) {
-			chart = buildBarChart(barChartProperties, dataList, job, printEngineConfig, referenceInputSourceResolver);
+			if (properties instanceof LineChartProperties lineChartProperties) {
+				return buildLineChart(lineChartProperties, dataList, job, printEngineConfig, referenceInputSourceResolver);
+			} else if (properties instanceof BarChartProperties barChartProperties) {
+				return buildBarChart(barChartProperties, dataList, job, printEngineConfig, referenceInputSourceResolver);
+			}
+			return null;
+		});
+	}
+
+	private static String withChartErrorHandling(Supplier<Chart<?, ?>> chartBuilder) {
+		try {
+			return convertChartToBase64String(chartBuilder.get());
+		} catch (IllegalArgumentException | IllegalStateException e) {
+			throw new PrintDomainException(
+				"A chart from the given Print Model and data could not be generated.", e, true
+			);
 		}
-		return convertChartToBase64String(chart);
 	}
 
 	public static String convertChartToBase64String(Chart<?,?> chart) {
@@ -123,9 +136,8 @@ public class ChartGeneratorUtils {
 			byte[] image = outputStream.toByteArray();
 			return Base64.getEncoder().encodeToString(image);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new PrintException("The generated Chart image could not be encoded.", e);
 		}
-		return null;
 	}
 
 	private static Chart<?, ?> buildLineChart(
@@ -162,7 +174,8 @@ public class ChartGeneratorUtils {
 			chart.setYAxisTitle(InputValueSourceResolver.getInputValue(properties.getLabelY(), referenceInputSourceResolver).orElse(""));
 
 			for (int i = 0; i < dataList.size(); i++) {
-				String seriesName = properties.getData().get(i).getSeriesName().orElse(String.valueOf(i));
+				String seriesName = resolveSeriesName(properties, i, chart);
+				requireFiniteSeriesValues(seriesName, dataList.get(i).getData());
 				List<Number> yData = convertToNonEmptyNumberList(dataList.get(i).getData());
 				chart.addSeries(seriesName, null, yData);
 			}
@@ -171,7 +184,8 @@ public class ChartGeneratorUtils {
 			chart.setYAxisTitle(InputValueSourceResolver.getInputValue(properties.getLabelX(), referenceInputSourceResolver).orElse(""));
 
 			for (int i = 0; i < dataList.size(); i++) {
-				String seriesName = properties.getData().get(i).getSeriesName().orElse(String.valueOf(i));
+				String seriesName = resolveSeriesName(properties, i, chart);
+				requireFiniteSeriesValues(seriesName, dataList.get(i).getData());
 				List<Number> xData = convertToNonEmptyNumberList(dataList.get(i).getData());
 				List<Number> yData = convertToNonEmptyNumberList(IntStream.rangeClosed(1, dataList.get(i).getData().length).boxed().map(Integer::floatValue).toArray(Float[]::new));
 				chart.addSeries(seriesName, xData, yData);
@@ -256,7 +270,8 @@ public class ChartGeneratorUtils {
 		}
 
 		for (int i = 0; i < dataList.size(); i++) {
-			String seriesName = properties.getData().get(i).getSeriesName().orElse(String.valueOf(i));
+			String seriesName = resolveSeriesName(properties, i, chart);
+			requireFiniteSeriesValues(seriesName, dataList.get(i).getData());
 			String[] xData = dataList.get(i).getLabels();
 			Float[] yData = dataList.get(i).getData();
 
@@ -286,6 +301,33 @@ public class ChartGeneratorUtils {
 		return chart;
 	}
 
+	private static String resolveSeriesName(MultipleSeriesProperties properties, int index, Chart<?, ?> chart) {
+		final var seriesName = properties.getData().get(index).getSeriesName().orElse(String.valueOf(index));
+		if (chart.getSeries(seriesName) != null) {
+			throw new PrintDomainException(
+				"The Chart series name '{}' is used more than once. Every series of a Chart needs a unique name.",
+				seriesName
+			);
+		}
+		return seriesName;
+	}
+
+	/**
+	 * Rejects values that XChart cannot place on an axis. Document values are converted to {@code float}, so a number
+	 * that exceeds the {@code float} range ends up as an infinity, which XChart only rejects when the chart is
+	 * painted.
+	 */
+	private static void requireFiniteSeriesValues(String seriesName, Float[] data) {
+		for (final var value : data) {
+			if (value.isNaN() || value.isInfinite()) {
+				throw new PrintDomainException(
+					"The values of the Chart series '{}' must be finite numbers.",
+					seriesName
+				);
+			}
+		}
+	}
+
 	private static PieChart buildPieChart(
 		PieChartProperties properties,
 		ChartDocumentData chartData,
@@ -301,17 +343,15 @@ public class ChartGeneratorUtils {
 			.build();
 
 		final Float[] data = chartData.getData();
+		// repeated labels are merged into a single slice, so it is only their sum that has to be a usable value: a
+		// negative value is fine as long as the slice it belongs to does not end up negative
+		final Map<String, Float> valuesByLabel = new LinkedHashMap<>();
 		for (int i = 0; i < data.length; i++) {
-			final var key = chartData.getLabels()[i];
-			final var value = data[i];
-			if (chart.getSeries(key) != null) {
-				final var existingValue = chart.getSeries(key).getValue().floatValue();
-				final var newValue = existingValue + value;
-				chart.updatePieSeries(key, newValue);
-			} else {
-				chart.addSeries(key, value);
-			}
+			valuesByLabel.merge(chartData.getLabels()[i], data[i], Float::sum);
 		}
+		valuesByLabel.forEach(ChartGeneratorUtils::requireUsablePieChartValue);
+		valuesByLabel.forEach(chart::addSeries);
+
 		if (chart.getSeriesCollection().isEmpty()) {
 			chart.addSeries(SINGLE_BLANK_STRING, 0);
 		}
@@ -335,6 +375,15 @@ public class ChartGeneratorUtils {
 		return chart;
 	}
 
+	private static void requireUsablePieChartValue(String seriesName, float value) {
+		if (Float.isNaN(value) || Float.isInfinite(value)) {
+			throw new PrintDomainException("The value for the Pie Chart series '{}' must be a finite number.", seriesName);
+		}
+		if (value < 0) {
+			throw new PrintDomainException("The value for the Pie Chart series '{}' must not be negative.", seriesName);
+		}
+	}
+
 	private static void setDecimalPatternOnPieChartWithReflection(@NonNull PieChart chart, @NonNull DecimalFormat decimalFormat) {
 		try {
 			final var plotfield = Chart.class.getDeclaredField("plot");
@@ -353,14 +402,25 @@ public class ChartGeneratorUtils {
 		}
 	}
 
+	private static String getDefaultFontPath(PdfBoxPrintEngineConfig printEngineConfig) {
+		final var availableFonts = printEngineConfig.getAvailableFonts();
+		final var defaultFontPath = availableFonts == null
+			? null
+			: availableFonts.get(PdfBoxPrintEngineConfig.DEFAULT_FONT_KEY);
+		if (defaultFontPath == null) {
+			throw new PrintException("The default font key needs to be provided.");
+		}
+		return defaultFontPath;
+	}
+
 	private static void applyChartFont(Chart<?,?> chart, PdfBoxPrintEngineConfig printEngineConfig) {
-		byte[] fontFile = FontUtils.getFontFile(printEngineConfig.getAvailableFonts().get(PdfBoxPrintEngineConfig.DEFAULT_FONT_KEY));
+		byte[] fontFile = FontUtils.getFontFile(getDefaultFontPath(printEngineConfig));
 		InputStream inputStream = new ByteArrayInputStream(fontFile);
 		Font defaultFont;
 		try {
 			defaultFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
 		} catch (FontFormatException | IOException e) {
-			throw new PrintDomainException("The default font cannot be used for the chart generation", e);
+			throw new PrintDomainException("The default font cannot be used for the chart generation", e, true);
 		}
 		if (chart instanceof PieChart pieChart) {
 			pieChart.getStyler()

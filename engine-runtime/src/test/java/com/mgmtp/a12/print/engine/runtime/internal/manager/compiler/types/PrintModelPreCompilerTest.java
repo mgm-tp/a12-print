@@ -77,7 +77,7 @@ public class PrintModelPreCompilerTest {
 		underTest = getInstance(context, managerApi);
 
 		var printModelCompiler = new PrintModelCompiler(runtime);
-		printModelCompiler.visitElementDefinitionsAndPlaceableReferences(printModelDto, underTest);
+		printModelCompiler.visitElementDefinitionsAndPlaceableReferences(printModelDto, null, underTest);
 
 		var containers = underTest.getContainers();
 		var switchCaseLogicContainerIds= containers

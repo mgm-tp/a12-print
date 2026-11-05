@@ -29,7 +29,9 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+export * from "./appActions";
 export * from "./editorActions";
 export * from "./textElementActions";
 export * from "./treeActions";
 export * from "./formActions";
+export * from "./schemaActions";

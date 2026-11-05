@@ -43,8 +43,9 @@ export interface RequestApiState {
 	typesettingModelHeaders?: Header[];
 	typesettingModelData?: Record<string, TypesettingModel | undefined>;
 	dinTemplatePrintModels?: Record<string, DINTemplateSegment[]>;
-	printModelIds?: string[];
+	printModelHeaders?: Header[];
 	resources: Record<string, StaticImageData>;
 	availableResources?: string[];
 	lastUploadedResource?: string;
+	fragmentModelIds?: string[];
 }

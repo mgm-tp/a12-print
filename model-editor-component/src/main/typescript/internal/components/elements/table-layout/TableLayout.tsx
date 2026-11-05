@@ -104,7 +104,7 @@ export const TableLayout = ({
 	disabled,
 }: TableLayoutProps) => {
 	if (!PartialTableLayout.isInstance(element)) {
-		throw Error(`Expected element of type TableLayout but got ${element.type}`);
+		throw new Error(`Expected element of type TableLayout but got ${element?.type}`);
 	}
 	const { tableLayout, borderProperties } = element;
 
@@ -179,7 +179,7 @@ export const TableLayout = ({
 
 	const showTable = tableLayout?.rowCount && tableLayout.columnCount;
 	return (
-		<div style={styles}>
+		<div data-testid="element-table-layout" style={styles}>
 			{showTable ? (
 				<StyledTable width={MM_TO_PX(reference.dimensions.minWidth.value || 0)}>
 					<tbody>{tableRows}</tbody>
@@ -236,6 +236,7 @@ const EmptyCell = (props: EmptyCellProps) => {
 				let newTextElement: PartialText = {
 					id: newId,
 					type,
+					name: "newText",
 					textProperties: {
 						id: defaultTextProperties.id,
 						textStyleId: defaultTextProperties.textStyleId,
@@ -327,11 +328,12 @@ const EmptyCell = (props: EmptyCellProps) => {
 interface FilledCellActionsWrapperProps {
 	onEditClick: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 	onDeleteClick: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+	disabled?: boolean;
 }
 
 export const FilledCellActionsWrapper = (props: FilledCellActionsWrapperProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
-	const { onEditClick, onDeleteClick } = props;
+	const { onEditClick, onDeleteClick, disabled } = props;
 
 	return (
 		<>
@@ -341,12 +343,14 @@ export const FilledCellActionsWrapper = (props: FilledCellActionsWrapperProps) =
 				icon={<Icon>edit</Icon>}
 				title={localizer(RESOURCE_KEYS.button.edit)}
 			/>
-			<Button
-				id="delete-button"
-				onClick={onDeleteClick}
-				icon={<Icon variant="error">disabled_by_default</Icon>}
-				title={localizer(RESOURCE_KEYS.button.delete)}
-			/>
+			{!disabled && (
+				<Button
+					id="delete-button"
+					onClick={onDeleteClick}
+					icon={<Icon variant="error">disabled_by_default</Icon>}
+					title={localizer(RESOURCE_KEYS.button.delete)}
+				/>
+			)}
 		</>
 	);
 };
@@ -388,7 +392,7 @@ export const FilledCell = (props: FilledCellProps) => {
 	const [actionsWrapperCoordinate, setActionsWrapperCoordinate] = React.useState<CellCoordinate | undefined>();
 
 	const onCellEditClick = React.useCallback(() => {
-		dispatch(DetailViewActions.openElementForm(cellElement.id));
+		cellElement && dispatch(DetailViewActions.openElementForm(cellElement.id));
 	}, [cellElement, dispatch]);
 
 	const removeCell = React.useCallback(() => {
@@ -440,21 +444,22 @@ export const FilledCell = (props: FilledCellProps) => {
 	]);
 
 	const tableLayoutContextMenu = React.useMemo(
-		() => [
-			<List.Item
-				key="edit-cell"
-				text={localizer(RESOURCE_KEYS.elements.tableLayout.editCell)}
-				onClick={onCellEditClick}
-				graphic={<Icon>edit</Icon>}
-			/>,
-			<List.Item
-				key="delete-cell"
-				text={localizer(RESOURCE_KEYS.elements.tableLayout.deleteCell)}
-				onClick={removeCell}
-				graphic={<Icon variant="error">delete_sweep</Icon>}
-			/>,
-		],
-		[localizer, onCellEditClick, removeCell]
+		() =>
+			[
+				<List.Item
+					key="edit-cell"
+					text={localizer(RESOURCE_KEYS.elements.tableLayout.editCell)}
+					onClick={onCellEditClick}
+					graphic={<Icon>edit</Icon>}
+				/>,
+				<List.Item
+					key="delete-cell"
+					text={localizer(RESOURCE_KEYS.elements.tableLayout.deleteCell)}
+					onClick={removeCell}
+					graphic={<Icon variant="error">delete_sweep</Icon>}
+				/>,
+			].filter(item => !(disabled && item.key === "delete-cell")),
+		[disabled, localizer, onCellEditClick, removeCell]
 	);
 
 	const handleMouseEnter = React.useCallback(() => {
@@ -490,10 +495,14 @@ export const FilledCell = (props: FilledCellProps) => {
 			tableBorderProps={borderProperties}
 		>
 			<LayoutElementContainer reference={cellRef} isLayoutElement={true} />
-			{!isNestedElement && !disabled && (
+			{!isNestedElement && (
 				<StyledActionsWrapper>
 					{showActionsWrapper ? (
-						<FilledCellActionsWrapper onEditClick={onCellEditClick} onDeleteClick={removeCell} />
+						<FilledCellActionsWrapper
+							onEditClick={onCellEditClick}
+							onDeleteClick={removeCell}
+							disabled={disabled}
+						/>
 					) : (
 						<BadgeErrorCell validationCounter={validationCounter} />
 					)}

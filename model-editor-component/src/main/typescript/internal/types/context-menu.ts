@@ -37,6 +37,8 @@ export enum ContextMenuOption {
 	HideConditions = "hideConditions",
 	Delete = "delete",
 	Group = "group",
+	NavigateToFragmentSource = "navigateToFragmentSource",
+	Unlink = "unlink",
 }
 
 export interface ContextMenuItem {

@@ -48,13 +48,18 @@ import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.Arithmetic;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.ComputationFieldType;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.SyntaxTreeElementType;
 import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.visitor.SyntaxTreeRenderer;
+import com.mgmtp.a12.print.model.api.model.PrintFragmentModel;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
+import com.mgmtp.a12.print.model.api.model.ModelSubTypeAccessor;
+import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.container.DefinitionsContainer;
+import com.mgmtp.a12.print.model.api.model.internal.dto.PrintFragmentModelDto;
 import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
 import com.mgmtp.a12.print.model.api.model.watermark.Watermark;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelVisitor;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelWalker;
+import com.mgmtp.a12.print.model.api.walker.model.resolver.PrintFragmentModelResolver;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +69,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants.DIN_PURPOSE;
+import static com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants.PRINT_MODEL_TYPE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -93,6 +101,7 @@ public class PrintModelCompiler {
 
 	public static void visitElementDefinitionsAndPlaceableReferences(
 		PrintModel printModel,
+		PrintFragmentModelResolver printFragmentModelResolver,
 		PrintModelVisitor visitor
 	) {
 		final var basePath = PrintModelPath.create(printModel)
@@ -106,6 +115,7 @@ public class PrintModelCompiler {
 					.with(new PrintModelPathElement.ObjectProperty("elementDefinitions"), 0)
 					.with(new PrintModelPathElement.ObjectProperty("element"), i),
 				id -> Optional.empty(),
+				printFragmentModelResolver,
 				visitor
 			);
 		}
@@ -118,7 +128,9 @@ public class PrintModelCompiler {
 		printModel.getContent().getSections().ifPresent(sectionContainer ->
 			visitPlaceableReferences(sectionContainer, basePath, "sections", visitor));
 
-		visitor.visitMetadata(printModel.getContent().getGeneral().getMetadata(), basePath);
+		if (!ModelSubTypeAccessor.isFragmentModel(printModel.getHeader())) {
+			visitor.visitMetadata(printModel.getContent().getGeneral().getMetadata(), basePath);
+		}
 	}
 
 	private static void visitPlaceableReferences(
@@ -182,7 +194,6 @@ public class PrintModelCompiler {
 
 		log.debug("runCompilation started for {}", context.getId().getModelHeaderId());
 
-
 		final var printModelCompilerGraph = new PrintModelCompilerGraph(context);
 
 		final var preCompiler = new PrintModelPreCompiler(
@@ -191,10 +202,29 @@ public class PrintModelCompiler {
 			printModelCompilerRuntime.getA12TypeComparisonMapping(),
 			printModelCompilerRuntime.getStaticImageProvider()
 		);
+		final var resolvedPrintModelFragments = new HashMap<String, PrintModelTreeTrace<PrintFragmentModel>>();
+		final PrintFragmentModelResolver printFragmentModelResolver =
+			id -> resolvePrintFragmentModel(id, resolvedPrintModelFragments);
+
 		visitElementDefinitionsAndPlaceableReferences(
 			context,
+			printFragmentModelResolver,
 			preCompiler
 		);
+
+		context.getHeader().getModelReferences().stream().filter(
+			ref -> ref.getModelType().equals(PRINT_MODEL_TYPE) && !ref.getPurpose().equals(DIN_PURPOSE)
+		).forEach(ref -> {
+			final var fragmentModel = resolvePrintFragmentModel(ref.getReference(), resolvedPrintModelFragments).orElseThrow(() -> new PrintCompilerException(
+				"The Print Fragment Model {} could not be loaded", ref.getReference()
+			));
+			visitElementDefinitionsAndPlaceableReferences(
+				fragmentModel.getTracedElement(),
+				printFragmentModelResolver,
+				preCompiler
+			);
+		});
+		context.getResolvedPrintModelFragments().putAll(resolvedPrintModelFragments);
 
 		final var preCompilationResult = preCompiler.build();
 
@@ -289,14 +319,39 @@ public class PrintModelCompiler {
 			evaluationDocumentModelCompiler.compileDocumentModels()
 		);
 
-		log.debug("setComputeDocumentDependencyValueProducer done for {}", context.getId().getModelHeaderId());
+		if (!ModelSubTypeAccessor.isFragmentModel(context.getHeader())) {
+			log.debug("setComputeDocumentDependencyValueProducer done for {}", context.getId().getModelHeaderId());
 
-		// prepare component tree layout
-		final var componentTreeDependencyValueProducerFactory = ComponentTreeDependencyValueProducerFactory.builder()
-			.printModel(context.getModel())
-			.printModelCompilerRuntime(printModelCompilerRuntime)
-			.build();
-		componentTreeDependencyValueProducerFactory.setDependencyValueProducer(context);
+			// prepare component tree layout
+			final var componentTreeDependencyValueProducerFactory = ComponentTreeDependencyValueProducerFactory.builder()
+				.printModel(context.getModel())
+				.printModelCompilerRuntime(printModelCompilerRuntime)
+				.resolvedPrintModelFragments(resolvedPrintModelFragments)
+				.build();
+			componentTreeDependencyValueProducerFactory.setDependencyValueProducer(context);
+		}
+	}
+
+	private Optional<PrintModelTreeTrace<PrintFragmentModel>> resolvePrintFragmentModel(
+		String id,
+		Map<String, PrintModelTreeTrace<PrintFragmentModel>> resolvedPrintModelFragments
+	) {
+		if (resolvedPrintModelFragments.containsKey(id)) {
+			return Optional.of(resolvedPrintModelFragments.get(id));
+		}
+
+		final var printFragmentModel = (PrintFragmentModel) printModelCompilerRuntime.validateAndMarshallDto(
+			printModelCompilerRuntime.getManagerApi().loadPrintFragmentModel(id), PrintFragmentModelDto.class
+		);
+
+		if (!ModelSubTypeAccessor.isFragmentModel(printFragmentModel.getHeader())) {
+			throw new PrintCompilerException("The Print Model {} is not a Print Fragment Model", id);
+		}
+
+		final var newTrace = new PrintModelTreeTrace<>(PrintModelPath.create(printFragmentModel), printFragmentModel);
+		resolvedPrintModelFragments.putIfAbsent(id, newTrace);
+
+		return Optional.of(newTrace);
 	}
 
 	private void optimizeAdvices(List<LogicComponentStatementSyntaxTreeAnalysis> syntaxTreeAnalyses) {

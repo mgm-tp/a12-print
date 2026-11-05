@@ -81,10 +81,17 @@ export const en: typeof RESOURCE_KEYS = {
 				documentModelReferenced: "Document Model References",
 				printModelReferenced: "Print Model References",
 				typesettingModelReferenced: "Typesetting Model References",
+				fragmentModelReferenced: "Fragment Model References",
 			},
 			tooltips: {
 				defaultTypesettingModel: "Default typesetting model",
 				printModelReferenceWithoutSegments: "The selected print model does not have a DINTemplate segment",
+			},
+			info: {
+				printModelReferenceDisabled:
+					"This Print Model already references Fragment Models, therefore a DINTemplate cannot be referenced at the same time.",
+				fragmentModelReferenceDisabled:
+					"This Print Model already references a DINTemplate, therefore Fragment Models cannot be referenced at the same time.",
 			},
 		},
 		content: "Content",
@@ -107,6 +114,10 @@ export const en: typeof RESOURCE_KEYS = {
 					selectPlaceHolder: "Select DINTemplate Segment",
 				},
 			},
+			reference: {
+				selectPlaceholder: "Select segment fragment…",
+				referencedLabel: "Referenced segment fragment",
+			},
 		},
 		section: {
 			name: "Section",
@@ -115,16 +126,34 @@ export const en: typeof RESOURCE_KEYS = {
 				first: "First",
 				remaining: "Remaining",
 			},
+			reference: {
+				selectPlaceholder: "Select section fragment…",
+				referencedLabel: "Referenced section fragment",
+			},
 		},
 		watermark: {
 			name: "Watermark",
 			titlePlaceholder: "Watermark title",
 			setting: {
+				name: "Name",
+				headline: "Overlay Settings",
 				opacity: "Opacity",
 				conditions: "Conditions",
 				description:
 					"Below you can provide a set of A12 rules, under which the current watermark will be shown in print. If any of the rules holds true, then the watermark will be printed. When there are no conditions, the watermark is visible too",
 			},
+			reference: {
+				selectPlaceholder: "Select watermark fragment…",
+				removeReference: "Remove reference",
+				noFragmentWatermarks: "No matching watermark fragments available",
+				referencedLabel: "Referenced watermark fragment",
+			},
+		},
+		textStyleReference: {
+			selectPlaceholder: "Select text style fragment…",
+			referenceAllButton: "Reference All",
+			internalSectionLabel: "Internal Text Styles",
+			referencedLabel: "Referenced text style fragment",
 		},
 		commitChanges: {
 			title: "Commit changes",
@@ -145,6 +174,27 @@ export const en: typeof RESOURCE_KEYS = {
 			discard: "Discard all changes",
 			error: {
 				commitChangesFailed: "The pending changes could not be commited to the print model",
+				propagateFragmentChangesFailed:
+					"The changes were committed, but the new dimensions could not be propagated to every print model referencing these elements.",
+			},
+		},
+		fragment: {
+			name: "Fragment",
+			search: {
+				label: "Fragment Search",
+				placeholder: "Search",
+			},
+			section: {
+				setting: {
+					name: "Title",
+					namePlaceholder: "Section title",
+				},
+			},
+			element: {
+				setting: {
+					name: "Name",
+					namePlaceholder: "Element Name",
+				},
 			},
 		},
 	},
@@ -157,12 +207,7 @@ export const en: typeof RESOURCE_KEYS = {
 		topMenu: {
 			elementLibrary: {
 				title: "Open/Close Element Library",
-				headline: "Add Element",
-				floatLibrary: "Change to floating Element Library",
-				popupLibrary: "Change to pop-up Element Library",
-				incomingDinTemplate:
-					"This model is currently being used as a DINTemplate, therefore only BoundingBox is addable.",
-				dinTemplateSegmentEditor: "This is a DINTemplate Segment, therefore no elements are allowed to add.",
+				label: "Element Library",
 			},
 			layout: "Layout",
 			tabOrder: "Tab-Order",
@@ -172,6 +217,7 @@ export const en: typeof RESOURCE_KEYS = {
 			showMargins: "Show Margins",
 			textStyles: "TextStyle",
 			deleteElement: "Delete selected elements",
+			setIsFragment: "Set/Clear as Fragment",
 			copyElement: "Copy selected elements",
 			groupElement: "Group selected elements into Area",
 			openElement: "Open Detail Edit",
@@ -269,6 +315,7 @@ export const en: typeof RESOURCE_KEYS = {
 		close: "Close",
 		open: "Open",
 		duplicate: "Duplicate",
+		unlink: "Unlink",
 		back: "Back",
 		openSetting: "Open Setting",
 		closeSetting: "Close Setting",
@@ -280,10 +327,13 @@ export const en: typeof RESOURCE_KEYS = {
 		undo: "Undo",
 		redo: "Redo",
 		openMenu: "Open Menu",
+		navigateToSource: "Navigate to source",
 	},
 	indicator: {
 		repeatable: "Repeatable",
 		pageBreakAvoid: "Page break avoid",
+		fragmentReference: "Referenced element fragment",
+		missingFragmentElement: "Referenced element fragment could not be found",
 	},
 	elements: {
 		tableLayout: {
@@ -296,6 +346,7 @@ export const en: typeof RESOURCE_KEYS = {
 		},
 	},
 	elementForm: {
+		elementNameLabel: "Element Name",
 		switch: {
 			name: "Name",
 			precondition: "Precondition",
@@ -318,6 +369,17 @@ export const en: typeof RESOURCE_KEYS = {
 				instanceRepeatableGroup: "Available only for repeatable groups of the selected instance",
 				instanceAnyGroup: "Available only for groups",
 			},
+		},
+		elementLibrary: {
+			headline: "Element Library",
+			elementsPanel: "Elements",
+			empty: "No elements can be added here.",
+			incomingDinTemplate:
+				"This model is currently being used as a DINTemplate, therefore only BoundingBox is addable.",
+			dinTemplateSegmentEditor: "This is a DINTemplate Segment, therefore no elements are allowed to add.",
+		},
+		fragmentLibrary: {
+			headline: "Element Fragment Library",
 		},
 		hideConditions: {
 			headline: "Hide conditions",
@@ -706,7 +768,6 @@ export const en: typeof RESOURCE_KEYS = {
 		warningMessage: {
 			fontIsNotConfigured:
 				"Font does not exist in the workspace resources. Elements using this text style will be printed with the default font.",
-			typesettingModeNotFound: "This typesetting model not found in the workspace",
 		},
 		notification: {
 			preventDelete: {
@@ -726,8 +787,8 @@ export const en: typeof RESOURCE_KEYS = {
 				description: `"$font$" does not exist in the workspace resources. Check that the resource file name matches the selected font name.`,
 			},
 			cannotLoadTypesetting: {
-				title: "Cannot load typesetting",
-				description: "The typesetting $typesetting$ cannot be loaded",
+				title: "Cannot load Typesetting Model",
+				description: "The Typesetting Model '$typesetting$' cannot be loaded",
 			},
 		},
 		tooltips: {
@@ -753,6 +814,42 @@ export const en: typeof RESOURCE_KEYS = {
 			title: "Warning: Discard all changes",
 			text: "All pending changes will be discarded and cannot be restored. What do you want to do?",
 		},
+		fragmentInUse: {
+			title: "Cannot delete",
+			text: "This fragment is used by the following print models and cannot be deleted:",
+		},
+		commitAffectsPrintModels: {
+			title: "Changes affect other print models",
+			text: "The selected changes affect fragments that are used by the following print models:",
+			confirmButton: "Commit anyway",
+		},
+		fragmentUnlink: {
+			title: "Unlink fragment",
+			text: "The content will be copied into this Print Model and will no longer be updated when it changes in the Fragment Model. Do you want to unlink it?",
+		},
+		fragmentUnlinkAddsDependencies: {
+			title: "Unlinking adds dependencies",
+			text: "Unlinking this fragment content will add the following dependencies to this Print Model:",
+			documentModelItem: "Document model:",
+			typesettingModelItem: "Typesetting model:",
+		},
+	},
+	fragmentUsage: {
+		modalTitle: "Usages",
+		description: "This fragment is used by the following print models:",
+		navigateButton: "Navigate",
+	},
+	fragmentUnlink: {
+		error: {
+			title: "Cannot unlink",
+			fragmentNotLoaded: "The fragment model could not be loaded. Please try again.",
+			definitionMissing: "The referenced fragment content no longer exists.",
+			invalidSectionUsage: "This section reference has no valid page usage.",
+			slotConflict: "This slot is already occupied.",
+			cardinalityExceeded: "A Print Model may only have 4 Sections or 2 Watermarks.",
+			documentModelConflict: `This fragment content uses the Document Model "$required$", but this Print Model already uses "$existing$". A Print Model can only use one Document Model, so this reference cannot be unlinked.`,
+			multipleDocumentModels: "This fragment content requires multiple Document Models, which is not supported.",
+		},
 	},
 	interaction: {
 		other: {
@@ -761,9 +858,11 @@ export const en: typeof RESOURCE_KEYS = {
 		},
 		editor: {
 			createNewElement: "Created new element on stage",
+			addFragmentReference: "Referenced an Element Fragment on stage",
 			deleteElementsOnStage: "Deleted elements on stage",
 			groupElementsOnStage: "Grouped elements on stage into Area",
 			moveElementByArrowKey: "Moved elements on stage",
+			unlinkFragmentElementReference: "Unlinked an Element Fragment",
 		},
 		relativeLayout: {
 			changeMargin: "Changed margins of elements on stage",
@@ -910,6 +1009,7 @@ export const en: typeof RESOURCE_KEYS = {
 				},
 			},
 			sharedComponent: {
+				changeElementName: "Changed element name",
 				calculationForm: {
 					changeCalculationForm: "Changed Calculation Form",
 				},
@@ -1014,7 +1114,7 @@ export const en: typeof RESOURCE_KEYS = {
 				addSchema: "Added a Document Model Reference",
 			},
 			printModelReferences: {
-				addReferenceEntry: "Add Reference Entry",
+				addReferenceEntry: "Added a Print Model Reference",
 			},
 		},
 		section: {
@@ -1022,6 +1122,9 @@ export const en: typeof RESOURCE_KEYS = {
 				addSection: "Added a Section",
 				changeTitle: "Changed Title of Section",
 				deleteSection: "Deleted a Section",
+				addSectionReference: "Referenced a Section Fragment",
+				removeSectionReference: "Removed a Section Fragment Reference",
+				unlinkSectionReference: "Unlinked a Section Fragment",
 			},
 			section: {
 				resizeSection: "Resized a Section",
@@ -1034,6 +1137,9 @@ export const en: typeof RESOURCE_KEYS = {
 				changeOpacity: "Change Opacity of Watermark",
 				changePreconditions: "Changed pre conditions of watermark",
 				deleteWatermark: "Deleted a Watermark",
+				addWatermarkReference: "Referenced a Watermark Fragment",
+				removeWatermarkReference: "Removed a Watermark Fragment Reference",
+				unlinkWatermarkReference: "Unlinked a Watermark Fragment",
 			},
 		},
 		segment: {
@@ -1049,7 +1155,39 @@ export const en: typeof RESOURCE_KEYS = {
 			SegmentToolbar: {
 				addSegment: "Added a Segment",
 				loadOverrideElements: "Loaded Override Elements",
-				addReferenceSegment: "Added Reference Segment",
+				addReferenceSegment: "Added a DINTemplate Segment",
+			},
+			segmentReferenceSection: {
+				addSegmentReference: "Referenced a Segment Fragment",
+				removeSegmentReference: "Removed a Segment Fragment Reference",
+				unlinkSegmentReference: "Unlinked a Segment Fragment",
+			},
+		},
+		fragment: {
+			section: {
+				addSection: "Added a Section Fragment",
+				duplicateSection: "Duplicated a Section Fragment",
+				deleteSection: "Deleted a Section Fragment",
+				updateSection: "Updated a Section Fragment",
+			},
+			watermark: {
+				addWatermark: "Added a Watermark Fragment",
+				duplicateWatermark: "Duplicated a Watermark Fragment",
+				deleteWatermark: "Deleted a Watermark Fragment",
+				updateWatermark: "Updated a Watermark Fragment",
+			},
+			segment: {
+				addSegment: "Added a Segment Fragment",
+				duplicateSegment: "Duplicated a Segment Fragment",
+				deleteSegment: "Deleted a Segment Fragment",
+				updateSegment: "Updated a Segment Fragment",
+			},
+			element: {
+				updateElement: "Updated an Element Fragment",
+				deleteElement: "Deleted an Element Fragment",
+				duplicateElement: "Duplicated an Element Fragment",
+				updateElementReferenceDimensions:
+					"WARNING: The dimensions of an element fragment reference were automatically updated to match the fragment. The PrintModel might contain some invalid data",
 			},
 		},
 		textStyle: {
@@ -1065,6 +1203,12 @@ export const en: typeof RESOURCE_KEYS = {
 			},
 			textStyleContent: {
 				reorderTextStyle: "Reordered Text Styles",
+			},
+			textStyleReferenceSection: {
+				addTextStyleReference: "Referenced a Text Style Fragment",
+				removeTextStyleReference: "Removed a Text Style Fragment Reference",
+				referenceAllTextStyles: "Referenced All Text Style Fragments",
+				unlinkTextStyleReference: "Unlinked a Text Style Fragment",
 			},
 		},
 		utils: {

@@ -1,0 +1,17 @@
+{
+  "person": {
+    "enum_field": "first",
+    "name1": "Max Mustermann",
+    "date": "1990-01-15T00:00:00",
+    "repeat": [
+      {
+        "repeat_enum_field": "first",
+        "name": "Entry 1"
+      },
+      {
+        "repeat_enum_field": "second",
+        "name": "Entry 2"
+      }
+    ]
+  }
+}

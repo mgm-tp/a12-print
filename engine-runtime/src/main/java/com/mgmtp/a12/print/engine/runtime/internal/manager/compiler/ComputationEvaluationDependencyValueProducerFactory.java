@@ -60,6 +60,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter.LocalizedTextUtils.getLocalizedText;
 import static com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.Logic.Operator.AND;
 import static com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.Logic.Operator.OR;
 import static com.mgmtp.a12.print.model.api.model.element.base.internal.LogicComponent.EvaluationSemantic.BOOLEAN_OR;
@@ -330,7 +331,9 @@ class ComputationEvaluationDependencyValueProducerFactory implements ExhaustiveP
 	private TypedComputationExpression handleLocalizedText(String providerId, ComputationFieldType computationFieldType, final ILocalizedTextMap iLocalizedTextMap) {
 		return new FunctionalExpression(
 			providerId,
-			(p, job, r) -> Optional.ofNullable(iLocalizedTextMap.get(job.getLocale())),
+			(p, job, r) -> Optional.ofNullable(getLocalizedText(
+				iLocalizedTextMap, job.getLocale()
+			)),
 			computationFieldType
 		);
 	}

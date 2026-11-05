@@ -127,7 +127,7 @@ export const useSelectRect = (
 							}
 						);
 					})
-					.map(el => el.refId);
+					.map(el => el.id);
 				setSelected(newSelected);
 
 				if (newSelected.length === 1) {

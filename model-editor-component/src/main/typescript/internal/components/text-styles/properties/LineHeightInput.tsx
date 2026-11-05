@@ -76,7 +76,7 @@ export const LineHeightInput = (props: LineHeightInputProps) => {
 				/>
 			}
 			formatOnChange={formatOnChange}
-			disabled={props.isDefaultTextStyle}
+			disabled={props.isReadonly}
 			errorMessage={props.errorMessage}
 		/>
 	);

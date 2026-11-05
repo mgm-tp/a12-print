@@ -238,6 +238,7 @@ describe("din template utils", () => {
 						},
 					},
 					type: ElementType.Override,
+					name: "Override for BlueBox",
 				},
 				{
 					id: expect.any(String),
@@ -257,6 +258,7 @@ describe("din template utils", () => {
 						},
 					},
 					type: ElementType.Override,
+					name: "Override for GreenBox",
 				},
 				{
 					id: expect.any(String),
@@ -276,6 +278,7 @@ describe("din template utils", () => {
 						},
 					},
 					type: ElementType.Override,
+					name: "Override for YellowBox",
 				},
 			]);
 
@@ -345,6 +348,7 @@ describe("din template utils", () => {
 							sourceType: "Reference",
 						},
 					},
+					name: "Override for ExampleBox",
 				},
 			]);
 		});

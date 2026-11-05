@@ -54,6 +54,19 @@ tasks.named("assemble") {
 	dependsOn(pnpmBuild)
 }
 
+tasks.register<PnpmTask>("documentationScreenshots") {
+	group = "documentation"
+	description = "Takes the screenshots of the Print Model Editor and overwrites the figures checked in here."
+
+	workingDir.set(rootProject.file("test-app"))
+	dependsOn(":test-app:frontendBuild")
+
+	args.set(listOf("run", "screenshots", "--", "--update-documentation"))
+
+	outputs.dir(rootProject.file("test-app/doc-screenshots"))
+	outputs.upToDateWhen { false }
+}
+
 val sourceCodeDir = "./src/main/asciidoc/print-technical-documentation/sourceCode/"
 
 val pnpmTouchSourceCode = tasks.register<PnpmTask>("pnpmTouchSourceCode") {

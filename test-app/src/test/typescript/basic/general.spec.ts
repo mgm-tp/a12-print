@@ -32,7 +32,7 @@
 import { test } from "@playwright/test";
 
 import { TestTag } from "../utils/tag.js";
-import { expect, devAppTest } from "../utils/index.js";
+import { expect, devAppTest, migrationAnnotationValues, screenshotName } from "../utils/index.js";
 
 devAppTest.use({ useCase: "001-new-print-model" });
 
@@ -62,12 +62,18 @@ test.describe("Example tests for snapshots of the entire app", () => {
 	devAppTest("Tab Screenshots", async ({ page }) => {
 		await test.step("General tab matches screenshot", async () => {
 			await page.getByRole("tab", { name: "General" }).click();
-			await expect.soft(page.getByRole("main").first()).toHaveScreenshot();
+			await expect
+				.soft(page.getByRole("main").first())
+				.toHaveScreenshot(screenshotName("Tab-Screenshots-General"), {
+					mask: [migrationAnnotationValues(page)],
+				});
 		});
 
 		await test.step("Textstyle tab matches screenshots", async () => {
 			await page.getByRole("tab", { name: "Text Styles" }).click();
-			await expect.soft(page.getByRole("main").first()).toHaveScreenshot();
+			await expect
+				.soft(page.getByRole("main").first())
+				.toHaveScreenshot(screenshotName("Tab-Screenshots-TextStyles"));
 		});
 	});
 });

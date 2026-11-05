@@ -43,7 +43,7 @@ export class ReferenceElementListResolver implements ReferenceElementResolver {
 	constructor(private elementList: ReadonlyArray<SegmentReference>) {}
 
 	public static fromModel(printModel: PrintModel) {
-		return new this(printModel.content.segments.references);
+		return new this(printModel.content?.segments?.references || []);
 	}
 
 	resolveReferenceElement(referenceElementId: string): SegmentReference | undefined {

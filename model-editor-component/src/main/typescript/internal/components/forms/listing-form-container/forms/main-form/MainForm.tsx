@@ -68,6 +68,7 @@ import type { BaseListingFormProps } from "../../base-listing-form.js";
 import { RowTablePropertyComputation } from "../../shared-components/RowTablePropertyComputation.js";
 import { BORDER_PROPERTIES_PATH } from "../../../../../constant/element-property-path.js";
 import { DocumentModelDataSelectors } from "../../../../../redux/document-model-data/selectors.js";
+import { useFormReadonly } from "../../../FormContext.js";
 
 import { GroupTablePropertyComputation } from "./GroupTablePropertyComputation.js";
 import { TableColumn } from "./TableColumn.js";
@@ -78,6 +79,7 @@ export const MainForm = ({ element }: BaseListingFormProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
 	const basePath = useSelector(PrintEngineSelectors.repeatableBasePath);
+	const isFormReadonly = useFormReadonly();
 
 	const listing = element.listing;
 	const model = element.listing?.model;
@@ -254,6 +256,7 @@ export const MainForm = ({ element }: BaseListingFormProps) => {
 				value={model}
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getPropertyErrorMessage("model")}
+				disabled={isFormReadonly}
 			/>
 			<CustomTextField
 				readonly
@@ -266,6 +269,7 @@ export const MainForm = ({ element }: BaseListingFormProps) => {
 				elementMapEntries={processedElementMap}
 				selectedPath={listing?.basePath}
 				setSelectedPath={setSelectedPath}
+				disabled={isFormReadonly}
 				maxRepeatLevel={MAX_REPEAT_LEVEL}
 			/>
 			<TableColumn element={element} />

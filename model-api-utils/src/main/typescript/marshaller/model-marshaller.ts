@@ -39,6 +39,10 @@ import { PrintModelValidator } from "../internal/validation/print-model-validato
 import type { PrintValidator } from "../a12internal/validation/print-validator.js";
 import { collectHtmlErrors } from "../internal/validation/html/html-field-collector.js";
 import { ReferencePathValidation } from "../internal/validation/reference-path-validation/reference-path-validation.js";
+import { FragmentDocumentModelValidation } from "../internal/validation/reference-path-validation/fragment-document-model-validation.js";
+import { getAllReferencedLocations } from "../internal/validation/reference-path-validation/partial-print-model-visitor-reference-collector.js";
+import { ReferenceFragmentValidation } from "../internal/validation/reference-path-validation/reference-fragment-validation.js";
+import { ReferenceDeclarationValidation } from "../internal/validation/reference-path-validation/reference-declaration-validation.js";
 
 import { PrintModelSerializer } from "./serializer/model-serializer.js";
 import { PrintModelDeserializer } from "./deserializer/model-api-deserializer.js";
@@ -56,6 +60,9 @@ export interface PrintModelValidatorOptions extends PrintValidator.Options {
 	 */
 	references?: {
 		documentModels?: readonly DocumentModel[];
+		fragmentModels?: PrintModel[];
+		typesettingModelIds?: readonly string[];
+		printModelIds?: readonly string[];
 	};
 }
 
@@ -103,12 +110,47 @@ export class PrintModelMarshaller extends Marshaller<PrintModelDTO, PrintModel, 
 			DeepPartialErrorMap.mergeErrorMaps(errorMap, htmlErrorMap);
 		}
 
-		if (options?.references?.documentModels) {
+		const missingReferenceLocations =
+			options?.references?.documentModels ||
+			options?.references?.fragmentModels ||
+			options?.references?.typesettingModelIds
+				? getAllReferencedLocations(apiObject, options.references.fragmentModels)
+				: undefined;
+		if (missingReferenceLocations && options?.references?.documentModels) {
 			const refErrorMap = ReferencePathValidation.validateDocumentModelReferences(
-				apiObject as unknown as PartialPrintModel,
-				options.references.documentModels
+				apiObject,
+				options.references.documentModels,
+				missingReferenceLocations.collectedPaths
 			);
 			DeepPartialErrorMap.mergeErrorMaps(errorMap, refErrorMap);
+		}
+		if (missingReferenceLocations && options?.references?.fragmentModels) {
+			const refErrorMap = ReferenceFragmentValidation.validateFragmentReferences(
+				missingReferenceLocations,
+				options.references.fragmentModels
+			);
+			DeepPartialErrorMap.mergeErrorMaps(errorMap, refErrorMap);
+		}
+		if (options?.references?.fragmentModels) {
+			const fragmentModelErrorMap = FragmentDocumentModelValidation.validateDocumentModelCompatibility(
+				apiObject,
+				options.references.fragmentModels
+			);
+			DeepPartialErrorMap.mergeErrorMaps(errorMap, fragmentModelErrorMap);
+		}
+		if (options?.references) {
+			const declarationErrorMap = ReferenceDeclarationValidation.validateModelReferenceDeclarations(
+				apiObject,
+				options.references
+			);
+			DeepPartialErrorMap.mergeErrorMaps(errorMap, declarationErrorMap);
+		}
+		if (missingReferenceLocations) {
+			const typesettingErrorMap = ReferenceDeclarationValidation.validateTypesettingUsages(
+				missingReferenceLocations.typesettingUsages,
+				options?.references?.typesettingModelIds
+			);
+			DeepPartialErrorMap.mergeErrorMaps(errorMap, typesettingErrorMap);
 		}
 
 		return errorMap;

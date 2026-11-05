@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.model.api.walker.model;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelContent;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
@@ -40,6 +41,7 @@ import com.mgmtp.a12.print.model.api.model.element.type.boundingBox.BoundingBox;
 import com.mgmtp.a12.print.model.api.model.element.type.override.OverrideElement;
 import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
 import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
+import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 import com.mgmtp.a12.print.model.api.model.segment.ModelSegment;
 import com.mgmtp.a12.print.model.api.model.segment.ModelSegmentReference;
 import com.mgmtp.a12.print.model.api.walker.DescendCommand;
@@ -47,14 +49,8 @@ import com.mgmtp.a12.print.model.api.walker.TraversalCommand;
 import com.mgmtp.a12.print.model.api.walker.model.resolver.*;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Provides functionality to traverse a given {@link com.mgmtp.a12.print.model.api.model.PrintModel} in a structured way.
@@ -92,7 +88,9 @@ public class PrintModelWalker {
 	 * Uses the given print model to automatically create as many of the needed resolvers as possible.
 	 * @param printModelResolver This resolver is used to find other referenced print models, thus cannot be built from the given print model itself.
 	 * @param visitor a {@link PrintModelVisitor} that is applied to each walked entity.
+	 * @deprecated Use {@link #walkPrintModelWithDefaultResolver(PrintModel, PrintModelResolver, PrintFragmentModelResolver, PrintModelVisitor)} instead. This overload will be removed in the next major release.
 	 */
+	@Deprecated(since = "4.1.0", forRemoval = true)
 	public static <V extends PrintModelVisitor> V walkPrintModelWithDefaultResolver(
 		PrintModel printModel,
 		PrintModelResolver printModelResolver,
@@ -104,6 +102,31 @@ public class PrintModelWalker {
 			SegmentIdListResolver.fromModel(printModel),
 			SectionIdListResolver.fromModel(printModel),
 			WatermarkIdListResolver.fromModel(printModel),
+			ReferenceElementListResolver.fromModel(printModel),
+			printModelResolver
+		);
+		walker.walkPrintModel(printModel);
+		return visitor;
+	}
+
+	/**
+	 * Uses the given print model to automatically create as many of the needed resolvers as possible.
+	 * @param printModelResolver This resolver is used to find other referenced print models, thus cannot be built from the given print model itself.
+	 * @param printFragmentModelResolver This resolver is used to find other referenced print fragment models, thus cannot be built from the given print model itself.
+	 * @param visitor a {@link PrintModelVisitor} that is applied to each walked entity.
+	 */
+	public static <V extends PrintModelVisitor> V walkPrintModelWithDefaultResolver(
+		PrintModel printModel,
+		PrintModelResolver printModelResolver,
+		PrintFragmentModelResolver printFragmentModelResolver,
+		V visitor
+	) {
+		var walker = new PrintModelWalker(
+			visitor,
+			ReferenceMultiModelResolver.fromModel(printModel, printFragmentModelResolver),
+			SegmentIdListResolver.fromModel(printModel, printFragmentModelResolver),
+			SectionIdListResolver.fromModel(printModel, printFragmentModelResolver),
+			WatermarkIdListResolver.fromModel(printModel, printFragmentModelResolver),
 			ReferenceElementListResolver.fromModel(printModel),
 			printModelResolver
 		);
@@ -161,6 +184,10 @@ public class PrintModelWalker {
 		return resultExtractor.apply(visitor);
 	}
 
+	/**
+	 * @deprecated Use {@link #walkPrintModelContentWithDefaultResolver(PrintModel, PrintModelPath, PrintModelResolver, PrintFragmentModelResolver, PrintModelVisitor)} instead. This overload will be removed in the next major release.
+	 */
+	@Deprecated(since = "4.1.0", forRemoval = true)
 	public static <V extends PrintModelVisitor> V walkPrintModelContentWithDefaultResolver(
 		PrintModel printModel,
 		PrintModelPath path,
@@ -173,6 +200,26 @@ public class PrintModelWalker {
 			SegmentIdListResolver.fromModel(printModel),
 			SectionIdListResolver.fromModel(printModel),
 			WatermarkIdListResolver.fromModel(printModel),
+			ReferenceElementListResolver.fromModel(printModel),
+			printModelResolver
+		);
+		walker.walkPrintModelContent(path, printModel.getContent());
+		return visitor;
+	}
+
+	public static <V extends PrintModelVisitor> V walkPrintModelContentWithDefaultResolver(
+		PrintModel printModel,
+		PrintModelPath path,
+		PrintModelResolver printModelResolver,
+		PrintFragmentModelResolver printFragmentModelResolver,
+		V visitor
+	) {
+		var walker = new PrintModelWalker(
+			visitor,
+			ReferenceMultiModelResolver.fromModel(printModel, printFragmentModelResolver),
+			SegmentIdListResolver.fromModel(printModel, printFragmentModelResolver),
+			SectionIdListResolver.fromModel(printModel, printFragmentModelResolver),
+			WatermarkIdListResolver.fromModel(printModel, printFragmentModelResolver),
 			ReferenceElementListResolver.fromModel(printModel),
 			printModelResolver
 		);
@@ -285,7 +332,9 @@ public class PrintModelWalker {
 	 * Uses the given print model to automatically create as many of the needed resolvers as possible.
 	 * @param printModelResolver This resolver is used to find other referenced print models, thus cannot be built from the given print model itself.
 	 * @param visitor a {@link PrintModelVisitor} that is applied to each walked entity.
+	 * @deprecated Use {@link #walkElementWithDefaultResolver(PrintModel, PrintModelElement, PrintModelPath, PrintModelResolver, PrintFragmentModelResolver, PrintModelVisitor)} instead. This overload will be removed in the next major release.
 	 */
+	@Deprecated(since = "4.1.0", forRemoval = true)
 	public static <V extends PrintModelVisitor> V walkElementWithDefaultResolver(
 		PrintModel printModel,
 		PrintModelElement element,
@@ -293,12 +342,29 @@ public class PrintModelWalker {
 		PrintModelResolver printModelResolver,
 		V visitor
 	) {
+		return walkElementWithDefaultResolver(printModel, element, path, printModelResolver, null, visitor);
+	}
+
+	/**
+	 * Uses the given print model to automatically create as many of the needed resolvers as possible.
+	 * @param printModelResolver This resolver is used to find other referenced print models, thus cannot be built from the given print model itself.
+	 * @param printFragmentModelResolver This resolver is used to find other referenced print fragment models, thus cannot be built from the given print model itself.
+	 * @param visitor a {@link PrintModelVisitor} that is applied to each walked entity.
+	 */
+	public static <V extends PrintModelVisitor> V walkElementWithDefaultResolver(
+		PrintModel printModel,
+		PrintModelElement element,
+		PrintModelPath path,
+		PrintModelResolver printModelResolver,
+		PrintFragmentModelResolver printFragmentModelResolver,
+		V visitor
+	) {
 		var walker = new PrintModelWalker(
 			visitor,
-			ReferenceMultiModelResolver.fromModel(printModel),
-			SegmentIdListResolver.fromModel(printModel),
-			SectionIdListResolver.fromModel(printModel),
-			WatermarkIdListResolver.fromModel(printModel),
+			ReferenceMultiModelResolver.fromModel(printModel, printFragmentModelResolver),
+			SegmentIdListResolver.fromModel(printModel, printFragmentModelResolver),
+			SectionIdListResolver.fromModel(printModel, printFragmentModelResolver),
+			WatermarkIdListResolver.fromModel(printModel, printFragmentModelResolver),
 			ReferenceElementListResolver.fromModel(printModel),
 			printModelResolver
 		);
@@ -383,13 +449,27 @@ public class PrintModelWalker {
 	public TraversalCommand walkSections(PrintModelPath path, final List<String> sections) {
 		for (int containerIndex = 0; containerIndex < sections.size(); containerIndex++) {
 			var sectionId = sections.get(containerIndex);
-			var section = sectionIdResolver.resolveSectionId(sectionId);
-			final TraversalCommand traversalCommand;
+			var section = sectionIdResolver.resolveSectionIdWithUsage(sectionId);
+			TraversalCommand traversalCommand;
 			if (section.isEmpty()) {
 				traversalCommand = visitor.visitUnresolvedSection(sectionId, containerIndex);
 			} else {
-				final var sectionPath = section.get();
-				traversalCommand = walkContainer(section.get().getTracedElement(), path.with(sectionPath.getPath(), 0), containerIndex);
+				final var sectionPath = section.get().getSection();
+				final var newPath = path.with(sectionPath.getPath(), 0);
+				final var modelSection = section.get().getSection().getTracedElement();
+
+				traversalCommand = visitor.preVisitSectionWithUsage(
+					modelSection,
+					section.get().getSectionUsage(),
+					newPath.with(modelSection, containerIndex)
+				);
+				if (traversalCommand == TraversalCommand.STOP) {
+					break;
+				} else if (traversalCommand == TraversalCommand.HALT) {
+					return traversalCommand;
+				}
+
+				traversalCommand = walkContainer(modelSection, newPath, containerIndex);
 			}
 			if (traversalCommand == TraversalCommand.STOP) {
 				break;
@@ -502,7 +582,6 @@ public class PrintModelWalker {
 		TraversalCommand traversalCommand = visitor.visitReference(elementReference, path, index);
 
 		if (traversalCommand == TraversalCommand.CONTINUE) {
-
 			var element = referenceResolver.resolveReference(new PrintModelTreeTrace<>(
 				path,
 				elementReference
@@ -676,7 +755,17 @@ public class PrintModelWalker {
 			boundingBoxListVisitor,
 			referenceResolver,
 			(segmentId) -> Optional.empty(),
-			(sectionId) -> Optional.empty(),
+			new SectionIdResolver() {
+				@Override
+				public Optional<PrintModelTreeTrace<ModelSection>> resolveSectionId(String id) {
+					return Optional.empty();
+				}
+
+				@Override
+				public Optional<SectionWithUsage> resolveSectionIdWithUsage(String id) {
+					return Optional.empty();
+				}
+			},
 			(watermarkId) -> Optional.empty(),
 			(templateId) -> Optional.empty(),
 			printModelResolver

@@ -57,6 +57,7 @@ import { CustomCheckbox } from "../../../custom-base-input-components/index.js";
 import type { BaseListingFormProps } from "../../base-listing-form.js";
 import { stringifyMeasureInputValue } from "../../../../../utils/input-source-utils.js";
 import { LISTING_PROPERTY_PATH } from "../../../../../constant/element-property-path.js";
+import { useFormReadonly } from "../../../FormContext.js";
 
 type RowType = DeepPartial<ListingColumn>;
 
@@ -70,6 +71,7 @@ enum ColumnFieldKey {
 export const TableColumn = ({ element }: BaseListingFormProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
+	const isFormReadonly = useFormReadonly();
 	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 	const errorMap = useSelector(
 		(state: PrintEngineState) => ValidationSelectors.listing(state, element.id)?.listing?.columns
@@ -80,37 +82,27 @@ export const TableColumn = ({ element }: BaseListingFormProps) => {
 	const columns = React.useMemo(() => listing?.columns?.slice() || [], [listing?.columns]);
 	const isSorted = React.useMemo(() => columns.some(column => Boolean(column.isSortingIndex)), [columns]);
 
-	const columnCreation = React.useCallback(
-		(id: string) => {
-			const listingsLifetimeInputSources = InputSourceGenerator.generateInputSource<Listing>("listing.columns");
-			const generatedColumns = listingsLifetimeInputSources.listing.columns as unknown as ListingColumn;
-			const widthInputSource = InputSourceGenerator.upgradeToMeasureInputSource(
-				generatedColumns.width,
-				MeasureUnit.Percent
-			);
-			const borderProperties =
-				generatedColumns.borderProperties &&
-				InputSourceGenerator.upgradeBorderPropertiesWithReference(
-					generatedColumns.borderProperties,
-					element.id
-				);
-			const listingColumnInputSources = {
-				...listingsLifetimeInputSources,
-				listing: {
-					columns: {
-						...listingsLifetimeInputSources.listing.columns,
-						width: widthInputSource,
-						borderProperties,
-					},
+	const columnCreation = React.useCallback((id: string) => {
+		const listingsLifetimeInputSources = InputSourceGenerator.generateInputSource<Listing>("listing.columns");
+		const generatedColumns = listingsLifetimeInputSources.listing.columns as unknown as ListingColumn;
+		const widthInputSource = InputSourceGenerator.upgradeToMeasureInputSource(
+			generatedColumns.width,
+			MeasureUnit.Percent
+		);
+		const listingColumnInputSources = {
+			...listingsLifetimeInputSources,
+			listing: {
+				columns: {
+					...listingsLifetimeInputSources.listing.columns,
+					width: widthInputSource,
 				},
-			};
-			return {
-				id,
-				...listingColumnInputSources.listing.columns,
-			} as ListingColumn;
-		},
-		[element.id]
-	);
+			},
+		};
+		return {
+			id,
+			...listingColumnInputSources.listing.columns,
+		} as ListingColumn;
+	}, []);
 
 	const setTableData = React.useCallback(
 		(newTableData: RowType[], interactionDescription: string) => {
@@ -238,6 +230,7 @@ export const TableColumn = ({ element }: BaseListingFormProps) => {
 								icon={<Icon>delete</Icon>}
 								title={localizer(RESOURCE_KEYS.button.delete)}
 								onClick={() => onConfirmDialog(props.rowIndex)}
+								disabled={isFormReadonly}
 							/>
 						</ButtonGroup>
 					);
@@ -292,6 +285,7 @@ export const TableColumn = ({ element }: BaseListingFormProps) => {
 		handleMoveUp,
 		handleOnClickEdit,
 		handleSortingIndex,
+		isFormReadonly,
 		isSorted,
 		localizer,
 		onConfirmDialog,

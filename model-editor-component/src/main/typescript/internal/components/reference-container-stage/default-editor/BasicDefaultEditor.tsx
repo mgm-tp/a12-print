@@ -35,7 +35,7 @@ import { useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import debounce from "lodash/debounce.js";
 
-import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { SidebarItem, StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import type {
 	Measure,
 	PartialSection,
@@ -52,6 +52,7 @@ import {
 } from "../../../utils/index.js";
 import {
 	DetailViewActions,
+	FragmentActions,
 	InteractionLogActions,
 	NavigationActions,
 	NavigationSelectors,
@@ -73,6 +74,7 @@ import type { ContextMenuItem, DragItem } from "../../../types/index.js";
 import { ContextMenuOption } from "../../../types/index.js";
 import { EDITOR_DIMENSIONS, EditorContext } from "../../editor-stage/editor-context.js";
 import { DefaultElementContainer } from "../../element-container/DefaultElementContainer.js";
+import { useCurrentEditorType } from "../../../hooks/use-current-editor-type.js";
 
 import type { DefaultEditorProps } from "../editor-interface.js";
 import { StyledBasicEditor, StyledDropContainer, StyledEditorWrapper } from "../shared-components/Base.styled.js";
@@ -92,7 +94,7 @@ export const BasicDefaultEditor = ({
 	renderTopSlots,
 	renderElementReferences,
 }: DefaultEditorProps) => {
-	const { elementReferences, setCopyElements } = React.useContext(EditorContext);
+	const { elementReferences, setCopyElements, isReadonly } = React.useContext(EditorContext);
 	const editorDimensions = useSelector(PrintEngineSelectors.editorDimensions);
 	//
 	// Refs, states, dispatch, selects
@@ -116,6 +118,9 @@ export const BasicDefaultEditor = ({
 	const selectedElementIdForDetailData = useSelector(NavigationSelectors.selectedElementId);
 	const { tab, entityId, mode } = useSelector(NavigationSelectors.canvasNavigationContext);
 
+	const currentEditorType = useCurrentEditorType();
+	const isFragmentTopLevelTarget = currentEditorType === SidebarItem.FRAGMENT;
+
 	const debouncedFn = React.useMemo(
 		() =>
 			debounce((fn, ...args) => fn(...args), 400, {
@@ -138,14 +143,25 @@ export const BasicDefaultEditor = ({
 	const [isDraggingGL, setIsDraggingGL] = React.useState(false);
 	const [isResizing, setIsResizing] = React.useState(false);
 
-	const selectedElementIds = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.elementIdsWithoutOverrides(state, selected)
+	const selectedRefIds = React.useMemo(
+		() => elementReferences.filter(el => selected.includes(el.id)).map(el => el.refId),
+		[elementReferences, selected]
 	);
 	const isAnyOverrideSelected = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.isAnyOverrideSelected(state, selected)
+		PrintEngineSelectors.isAnyOverrideSelected(state, selectedRefIds)
 	);
 	const selectedElements = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.multiplePrintModelElements(state, selected)
+		PrintEngineSelectors.multiplePrintModelElements(state, selectedRefIds)
+	);
+	const selectedElementIdsWithoutOverrides = useSelector((state: PrintEngineState) =>
+		PrintEngineSelectors.elementIdsWithoutOverrides(state, selectedRefIds)
+	);
+	const selectedIdsWithoutOverrides = React.useMemo(
+		() =>
+			elementReferences
+				.filter(ref => selected.includes(ref.id) && selectedElementIdsWithoutOverrides.includes(ref.refId))
+				.map(ref => ref.id),
+		[elementReferences, selected, selectedElementIdsWithoutOverrides]
 	);
 	const handleDrop = useHandleDrop();
 	const setHoveredRef = React.useRef<React.Dispatch<
@@ -158,26 +174,29 @@ export const BasicDefaultEditor = ({
 	const [{ isOver, draggingItem }, drop] = useDrop(
 		() => ({
 			accept: Object.keys(ElementTypes),
+			canDrop: () => !isReadonly,
 			drop: (item: DragItem, monitor) =>
 				handleDrop({
 					item,
 					monitor,
 					editorState,
 					snapOffset,
-					isMultiDrag: monitor.isOver() && selected.length > 1 && selected.includes(item.refId),
+					isMultiDrag: monitor.isOver() && selected.length > 1 && selected.includes(item.id),
 					selected,
 					referenceContainer,
 					setHovered: value => setHoveredRef.current?.(value),
 				}),
 			collect: monitor => ({ isOver: monitor.isOver(), draggingItem: monitor.getItem() }),
 		}),
-		[referenceContainer, snapOffset, handleDrop, selected]
+		[referenceContainer, snapOffset, handleDrop, selected, isReadonly]
 	);
 
 	const isMultiDrag = useMemo(
-		() => isOver && selected.length > 1 && selected.includes(draggingItem?.refId),
-		[draggingItem?.refId, isOver, selected]
+		() => isOver && selected.length > 1 && selected.includes(draggingItem?.id),
+		[draggingItem?.id, isOver, selected]
 	);
+
+	const canDrag = !isAnyOverrideSelected && !isReadonly && !isFragmentTopLevelTarget;
 
 	//
 	// custom hooks
@@ -207,14 +226,14 @@ export const BasicDefaultEditor = ({
 			event.stopPropagation();
 			let newSelected = [...selected];
 			if (event.ctrlKey) {
-				const curElIndex = selected.findIndex(selectedElId => selectedElId === element.refId);
+				const curElIndex = selected.findIndex(selectedElId => selectedElId === element.id);
 				if (curElIndex > -1) {
 					newSelected.splice(curElIndex, 1);
 				} else {
-					newSelected.push(element.refId);
+					newSelected.push(element.id);
 				}
 			} else {
-				newSelected = [element.refId];
+				newSelected = [element.id];
 			}
 			setSelected(newSelected);
 			dispatch(DetailViewActions.updateVisibilityConfig({ selected: newSelected }));
@@ -233,21 +252,23 @@ export const BasicDefaultEditor = ({
 				return [...res, el.id];
 			}, []);
 
-			const placeableIds = elementReferences.filter(ref => selected.includes(ref.refId)).map(ref => ref.id);
+			const placeableIds = elementReferences.filter(ref => selected.includes(ref.id)).map(ref => ref.id);
 
 			dispatch(
 				InteractionLogActions.start({
 					description: RESOURCE_KEYS.interaction.editor.deleteElementsOnStage,
 					region: StageRegion.DEFAULT,
-					affectedItems: selectedElements.flatMap(el => {
-						return {
-							type: "printModelElement",
-							id: el.id,
-						};
-					}),
+					affectedItems: selectedElements
+						.filter(el => !el.isFragment)
+						.flatMap(el => {
+							return {
+								type: "printModelElement",
+								id: el.id,
+							};
+						}),
 					transactionLogActions: [
 						TransactionLogStateActions.updateReferenceElements({
-							data: elementReferences.filter(el => !selected.includes(el.refId)),
+							data: elementReferences.filter(el => !selected.includes(el.id)),
 						}),
 					],
 				})
@@ -277,7 +298,7 @@ export const BasicDefaultEditor = ({
 			const editorClientRect = editorState.getBoundingClientRect();
 
 			const newDragElements = elementReferences.reduce((res: PartialValidPlaceableReference[], nextEl) => {
-				if (selectedElementIds.includes(nextEl.refId)) {
+				if (selectedIdsWithoutOverrides.includes(nextEl.id)) {
 					const { x, y, id } = nextEl.position;
 
 					const newPosition = {
@@ -292,7 +313,7 @@ export const BasicDefaultEditor = ({
 				}
 				return res;
 			}, []);
-			const unchangedElements = elementReferences.filter(el => !selectedElementIds.includes(el.refId));
+			const unchangedElements = elementReferences.filter(el => !selectedIdsWithoutOverrides.includes(el.id));
 
 			const editorClientRectX = PX_TO_MM(editorClientRect.x);
 			const editorClientRectY = PX_TO_MM(editorClientRect.y);
@@ -347,12 +368,12 @@ export const BasicDefaultEditor = ({
 				})
 			);
 		},
-		[dispatch, elementReferences, editorState, referenceContainer, selectedElementIds, zoomFactor]
+		[dispatch, elementReferences, editorState, referenceContainer, selectedIdsWithoutOverrides, zoomFactor]
 	);
 
 	const onEditorKeyDown = React.useCallback(
 		(e: React.KeyboardEvent<HTMLDivElement>) => {
-			if (selectedElementIds.length > 0) {
+			if (selected.length > 0 && !isReadonly) {
 				if (e.key === "Delete" || e.key === "Del") {
 					if (!isAnyOverrideSelected) {
 						deleteSelectedEls();
@@ -367,9 +388,11 @@ export const BasicDefaultEditor = ({
 					debouncedFn(moveByArrowKey, e.key);
 				}
 			}
-			if (e.metaKey || e.ctrlKey) {
+			if ((e.metaKey || e.ctrlKey) && !isReadonly) {
 				if (e.key === "c") {
-					setCopyElements(elementReferences.filter(dragEl => selectedElementIds.includes(dragEl.refId)));
+					setCopyElements(
+						elementReferences.filter(dragEl => selectedIdsWithoutOverrides.includes(dragEl.id))
+					);
 				} else if (e.key === "v") {
 					pasteCopyElements();
 				} else if (e.key === "g") {
@@ -384,9 +407,11 @@ export const BasicDefaultEditor = ({
 			elementReferences,
 			groupSelectedEls,
 			isAnyOverrideSelected,
+			isReadonly,
 			moveByArrowKey,
 			pasteCopyElements,
-			selectedElementIds,
+			selected,
+			selectedIdsWithoutOverrides,
 			setCopyElements,
 		]
 	);
@@ -395,7 +420,7 @@ export const BasicDefaultEditor = ({
 		(event: React.MouseEvent<HTMLElement>, contextItem: ContextMenuItem, clickPos: PlainMeasurePosition) => {
 			switch (contextItem.id) {
 				case ContextMenuOption.Copy:
-					setCopyElements(elementReferences.filter(dragEl => selected.includes(dragEl.refId)));
+					setCopyElements(elementReferences.filter(dragEl => selected.includes(dragEl.id)));
 					editorStageRef?.current?.focus();
 					break;
 				case ContextMenuOption.Paste:
@@ -403,11 +428,7 @@ export const BasicDefaultEditor = ({
 					break;
 				case ContextMenuOption.HideConditions:
 					if (selected.length === 1) {
-						dispatch(
-							DetailViewActions.openVisibilityConfig(
-								elementReferences.find(ref => ref.refId === selected[0])?.id || ""
-							)
-						);
+						dispatch(DetailViewActions.openVisibilityConfig(selected[0] || ""));
 					}
 					break;
 				case ContextMenuOption.Delete:
@@ -420,6 +441,34 @@ export const BasicDefaultEditor = ({
 						groupSelectedEls();
 					}
 					break;
+				case ContextMenuOption.NavigateToFragmentSource: {
+					const reference =
+						selected.length === 1 ? elementReferences.find(el => el.id === selected[0]) : undefined;
+					if (reference?.model) {
+						dispatch(
+							NavigationActions.navigateToFragmentSource({
+								referenceId: reference.id,
+								entityType: "element",
+								fragmentReference: { model: reference.model, refId: reference.refId },
+							})
+						);
+					}
+					break;
+				}
+				case ContextMenuOption.Unlink: {
+					const reference =
+						selected.length === 1 ? elementReferences.find(el => el.id === selected[0]) : undefined;
+					if (reference?.model) {
+						dispatch(
+							FragmentActions.unlinkReference({
+								referenceId: reference.id,
+								entityType: "element",
+								fragmentReference: { model: reference.model, refId: reference.refId },
+							})
+						);
+					}
+					break;
+				}
 				default:
 					return;
 			}
@@ -438,11 +487,15 @@ export const BasicDefaultEditor = ({
 
 	if (prevSelectedElementId !== selectedElementIdForDetailData) {
 		setPrevSelectedElementId(selectedElementIdForDetailData);
-		setSelected(selectedElementIdForDetailData ? [selectedElementIdForDetailData] : []);
+		setSelected(
+			selectedElementIdForDetailData
+				? elementReferences.filter(el => el.refId === selectedElementIdForDetailData).map(el => el.id)
+				: []
+		);
 	}
 
 	const collisionsList = React.useMemo(
-		() => EditorUtils.checkCollisionsAll(elementReferences).map(element => element.refId),
+		() => EditorUtils.checkCollisionsAll(elementReferences).map(element => element.id),
 		[elementReferences]
 	);
 
@@ -459,19 +512,20 @@ export const BasicDefaultEditor = ({
 				minHeight: createPlainMmMeasureFromPx(editorPosition.height / zoomFactor),
 			};
 			// eslint-disable-next-line react-hooks/set-state-in-effect
-			setOutOfBoxList(EditorUtils.checkAllElementsInBox(elementReferences, boxRect).map(el => el.refId));
+			setOutOfBoxList(EditorUtils.checkAllElementsInBox(elementReferences, boxRect).map(el => el.id));
 		}
 	}, [elementReferences, editorState, zoomFactor, numberOfPages]);
+
+	const leftToolbarItems = React.useMemo(() => {
+		return [ToolbarItem.ZoomFactor, ToolbarItem.HideFrames, ToolbarItem.HideMargins].filter(
+			item => !(isFragmentTopLevelTarget && (item === ToolbarItem.HideFrames || item === ToolbarItem.HideMargins))
+		);
+	}, [isFragmentTopLevelTarget]);
 
 	return (
 		<StyledEditorWrapper data-testid="editor-stage">
 			<Toolbar
-				leftItems={[
-					ToolbarItem.ElementLibrary,
-					ToolbarItem.ZoomFactor,
-					ToolbarItem.HideFrames,
-					ToolbarItem.HideMargins,
-				]}
+				leftItems={leftToolbarItems}
 				rightItems={[
 					<DefaultQuickEditBar
 						key="default-quick-edit-bar"
@@ -538,25 +592,25 @@ export const BasicDefaultEditor = ({
 											isMultiDrag,
 											hovered,
 											isResizing,
-											canDrag: !isAnyOverrideSelected,
+											canDrag,
 											setIsDraggingGL,
 											setHovered,
 										})
 									: elementReferences.map(ref => (
 											<DragSourceWrapper
 												item={ref}
-												key={ref.refId}
+												key={ref.id}
 												onClick={selectElement}
 												onDoubleClick={() => onElementDoubleClick(ref)}
 												setIsDraggingGL={setIsDraggingGL}
-												isSelected={selected.includes(ref.refId)}
-												isColliding={collisionsList.includes(ref.refId)}
-												isOutsideBox={outOfBoxList.includes(ref.refId)}
+												isSelected={selected.includes(ref.id)}
+												isColliding={collisionsList.includes(ref.id)}
+												isOutsideBox={outOfBoxList.includes(ref.id)}
 												isMultiDrag={isMultiDrag}
 												hovered={hovered}
 												setHovered={setHovered}
 												isResizing={isResizing}
-												canDrag={!isAnyOverrideSelected}
+												canDrag={canDrag}
 											>
 												<DefaultElementContainer
 													reference={ref}
@@ -572,6 +626,7 @@ export const BasicDefaultEditor = ({
 								setOutOfBoxList={setOutOfBoxList}
 								editorState={editorState}
 								setIsResizing={setIsResizing}
+								disabled={isReadonly}
 							/>
 						</StyledDropContainer>
 					</ContextMenu>

@@ -2,7 +2,7 @@
   "header": {
     "id": "ListingPM-OneSortingColumn",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "description": "Complex Listing Showcase",
     "annotations": [
       {
@@ -15,11 +15,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "labels": [],
@@ -285,6 +285,7 @@
                 "unit": "Percent"
               },
               "field": [],
+              "isSortingIndex": false,
               "textProperties": {
                 "id": "WPn_esE7SeYkC2BMyo0Dv",
                 "textStyleId": {
@@ -403,7 +404,8 @@
             "path": "/content/elementDefinitions/textProperties/backgroundColor/value/",
             "source": "DEFAULT"
           }
-        }
+        },
+        "name": "Listing_c06fb"
       }
     ],
     "textStyles": {

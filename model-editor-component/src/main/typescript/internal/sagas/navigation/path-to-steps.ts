@@ -38,20 +38,26 @@ import type {
 	PartialSegment,
 	PartialValidPlaceableReference,
 	PartialWatermark,
+	PrintModelContent,
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
+	FRAGMENT_MODEL_REFERENCE_PURPOSE,
 	PartialArea,
 	PartialBoundingBox,
 	PartialOverride,
 	PartialSwitch,
 } from "@com.mgmtp.a12.print/print-model-api/model";
 
+import type { ModelReferenceSection } from "../../redux/navigation/state.js";
+
 import type { NavigationStep, ReferenceNavigationStep } from "./navigation-steps.js";
 import {
 	createCanvasRootStep,
 	createElementStep,
+	createModelReferenceStep,
 	createReferenceStep,
 	createRootStep,
+	createTextStyleStep,
 	createWrapperStep,
 } from "./navigation-steps.js";
 
@@ -64,13 +70,15 @@ export type {
 	WrapperElementNavigationStep as WrapperElementNavigationToken,
 } from "./navigation-steps.js";
 
+type CanvasType = Extract<keyof PrintModelContent, "segments" | "sections" | "watermarks">;
+
 export function parsePath(path: EntityInstancePath, model: PartialPrintModel): NavigationStep[] {
 	if (!path.length) return [];
 
 	const root = path.at(0);
 
 	if (root?.elementName === "header") {
-		if (path.at(1)?.elementName === "modelReferences") return [createRootStep(SidebarItem.SCHEMA, path)];
+		if (path.at(1)?.elementName === "modelReferences") return parseModelReferencePath(path, model);
 		return [createRootStep(SidebarItem.GENERAL, path)];
 	}
 	if (root?.elementName !== "content") return [];
@@ -78,10 +86,22 @@ export function parsePath(path: EntityInstancePath, model: PartialPrintModel): N
 	const child = path.at(1);
 
 	if (child?.elementName === "general") return [createRootStep(SidebarItem.GENERAL, path)];
-	if (child?.elementName === "textStyles") return [createRootStep(SidebarItem.TEXT_STYLES, path)];
-	if (child?.elementName === "segments") return parseCanvasPath(path, "segments", SidebarItem.SEGMENT, model);
-	if (child?.elementName === "sections") return parseCanvasPath(path, "sections", SidebarItem.SECTION, model);
-	if (child?.elementName === "watermarks") return parseCanvasPath(path, "watermarks", SidebarItem.WATERMARK, model);
+	if (child?.elementName === "textStyles") return parseTextStylesPath(path, model);
+	if (child?.elementName === "segments") return parseCanvasEntryPath(path, "segments", SidebarItem.SEGMENT, model);
+	if (child?.elementName === "sections") return parseCanvasEntryPath(path, "sections", SidebarItem.SECTION, model);
+	if (child?.elementName === "watermarks") {
+		return parseCanvasEntryPath(path, "watermarks", SidebarItem.WATERMARK, model);
+	}
+	if (child?.elementName === "textStyleReferences") return parseTextStyleReferencePath(path, model);
+	if (child?.elementName === "segmentReferences") {
+		return parseCanvasReferencePath(path, "segments", SidebarItem.SEGMENT, model);
+	}
+	if (child?.elementName === "sectionReferences") {
+		return parseCanvasReferencePath(path, "sections", SidebarItem.SECTION, model);
+	}
+	if (child?.elementName === "watermarkReferences") {
+		return parseCanvasReferencePath(path, "watermarks", SidebarItem.WATERMARK, model);
+	}
 	if (child?.elementName === "elementDefinitions") {
 		return parseElementDefinitionPath(path, adjustIndex(child.index), model);
 	}
@@ -89,15 +109,52 @@ export function parsePath(path: EntityInstancePath, model: PartialPrintModel): N
 	return [];
 }
 
-function parseCanvasPath(
+/**
+ * Opens the Schema tab, additionally expanding the section that lists the Model Reference the index resolves to.
+ */
+function parseModelReferencePath(path: EntityInstancePath, model: PartialPrintModel): NavigationStep[] {
+	const rootStep = createRootStep(SidebarItem.SCHEMA, path);
+	const entry = path.at(1);
+	const namesModelReference = path.length > 2 || (!!entry && "isRepeatable" in entry && entry.isRepeatable === true);
+	if (!namesModelReference) return [rootStep];
+	const modelReference = entry && model.header?.modelReferences?.[adjustIndex(entry.index)];
+	const section = modelReference && getModelReferenceSection(modelReference.modelType, modelReference.purpose);
+	return section ? [rootStep, createModelReferenceStep(section, path)] : [rootStep];
+}
+
+/**
+ * A canvas entry either addresses a definition of this print model or a reference pulling a container in from a print
+ * fragment model, both of which carry the index in their own list: `content.segments.definitions[i]` versus
+ * `content.segments.fragmentReferences[i]`. A path that stops at the canvas itself keeps the index there.
+ */
+function parseCanvasEntryPath(
 	path: EntityInstancePath,
-	canvasType: "segments" | "sections" | "watermarks",
+	canvasType: CanvasType,
 	tab: SidebarItem,
 	model: PartialPrintModel
 ): NavigationStep[] {
 	const canvasEntry = path.at(1);
 	if (!canvasEntry) return [];
-	const entity = resolveCanvasEntity(canvasType, adjustIndex(canvasEntry.index), model);
+
+	const listEntry = path.at(2);
+	const fragmentReferenceList = canvasType === "segments" ? "fragmentReferences" : "references";
+	if (listEntry?.elementName === fragmentReferenceList) {
+		return parseCanvasReferencePath(path, canvasType, tab, model, adjustIndex(listEntry.index));
+	}
+
+	const definitionIndex =
+		listEntry?.elementName === "definitions" ? adjustIndex(listEntry.index) : adjustIndex(canvasEntry.index);
+	return parseCanvasPath(path, canvasType, tab, model, definitionIndex);
+}
+
+function parseCanvasPath(
+	path: EntityInstancePath,
+	canvasType: CanvasType,
+	tab: SidebarItem,
+	model: PartialPrintModel,
+	definitionIndex: number
+): NavigationStep[] {
+	const entity = resolveCanvasEntity(canvasType, definitionIndex, model);
 	if (!entity) return [];
 	const steps: NavigationStep[] = [createCanvasRootStep(tab, entity.id, path)];
 	const refStep = parseReferencePath(
@@ -107,6 +164,50 @@ function parseCanvasPath(
 	);
 	if (refStep) steps.push(refStep);
 	return steps;
+}
+
+/** Points at a fragment reference entry (not a native definition) in a canvas container. */
+function parseCanvasReferencePath(
+	path: EntityInstancePath,
+	canvasType: CanvasType,
+	tab: SidebarItem,
+	model: PartialPrintModel,
+	referenceIndex?: number
+): NavigationStep[] {
+	const canvasEntry = path.at(1);
+	const index = referenceIndex ?? (canvasEntry && adjustIndex(canvasEntry.index));
+	if (index === undefined) return [];
+	const reference = resolveCanvasReference(canvasType, index, model);
+	if (!reference?.id) return [];
+	// The reference id is what the navigation state uses for a referenced container - see PrintEngineSelectors.segment.
+	return [createCanvasRootStep(tab, reference.id, path)];
+}
+
+/** Opens the Text Styles tab, additionally focusing the specific definition or reference the index resolves to. */
+function parseTextStylesPath(path: EntityInstancePath, model: PartialPrintModel): NavigationStep[] {
+	const rootStep = createRootStep(SidebarItem.TEXT_STYLES, path);
+	const textStyles = model.content?.textStyles;
+	const listEntry = path.at(2);
+
+	if (listEntry?.elementName === "references") {
+		const reference = textStyles?.references?.[adjustIndex(listEntry.index)];
+		return reference?.id ? [rootStep, createTextStyleStep(reference.id, path)] : [rootStep];
+	}
+
+	const entry = listEntry?.elementName === "definitions" ? listEntry : path.at(1);
+	const textStyle = entry && textStyles?.definitions?.[adjustIndex(entry.index)];
+	if (!textStyle?.id) return [rootStep];
+	return [rootStep, createTextStyleStep(textStyle.id, path)];
+}
+
+function parseTextStyleReferencePath(path: EntityInstancePath, model: PartialPrintModel): NavigationStep[] {
+	const entry = path.at(1);
+	if (!entry) return [createRootStep(SidebarItem.TEXT_STYLES, path)];
+	const reference = model.content?.textStyles?.references?.[adjustIndex(entry.index)];
+	// PrintEngineSelectors.textStyle resolves a reference by its own id (not refId, the fragment's
+	// definition id) — TextStyleCard's selectionId for a reference card must match that convention.
+	if (!reference?.id) return [createRootStep(SidebarItem.TEXT_STYLES, path)];
+	return [createRootStep(SidebarItem.TEXT_STYLES, path), createTextStyleStep(reference.id, path)];
 }
 
 function parseElementDefinitionPath(
@@ -150,7 +251,10 @@ function parseWrapperElementSteps(
 	return steps;
 }
 
-/** If path contains elementReferences followed by pageBreakBehavior or hideConditions, return a ReferenceNavigationToken */
+/**
+ * Points at a placement's sub-property (pageBreakBehavior/hideConditions), or at a fragment placement itself.
+ * A local placement without sub-path isn't navigable this way.
+ */
 function parseReferencePath(
 	path: EntityInstancePath,
 	containerId: string,
@@ -158,10 +262,12 @@ function parseReferencePath(
 ): ReferenceNavigationStep | null {
 	const elemRefIdx = path.findIndex(e => e.elementName === "elementReferences");
 	if (elemRefIdx === -1) return null;
-	if (!hasNavigableRefSubPath(path, elemRefIdx)) return null;
 
 	const elemRefPath = path[elemRefIdx];
 	const elementReference = elementReferences[adjustIndex(elemRefPath.index)];
+	if (!elementReference) return null;
+
+	if (!elementReference.model && !hasNavigableRefSubPath(path, elemRefIdx)) return null;
 
 	return createReferenceStep(containerId, elementReference.id, elementReference, path.slice(elemRefIdx));
 }
@@ -177,6 +283,20 @@ function hasNavigableRefSubPath(path: EntityInstancePath, elemRefIdx: number): b
 	return path
 		.slice(elemRefIdx + 1)
 		.some(e => e.elementName === "pageBreakBehavior" || e.elementName === "hideConditions");
+}
+
+/** Mirrors how the Schema tab sorts the Model References into its sections - see PrintEngineSelectors. */
+function getModelReferenceSection(modelType: unknown, purpose: unknown): ModelReferenceSection | undefined {
+	switch (modelType) {
+		case "document":
+			return "document";
+		case "typesetting":
+			return "typesetting";
+		case "print":
+			return purpose === FRAGMENT_MODEL_REFERENCE_PURPOSE ? "fragment" : "print";
+		default:
+			return undefined;
+	}
 }
 
 function isWrapperElement(el: PartialAnyPrintModelElement) {
@@ -203,7 +323,7 @@ function getWrapperElementReferences(el: PartialAnyPrintModelElement): readonly 
 
 /** Resolve entity ID from 0-based definition index in the model */
 function resolveCanvasEntity(
-	canvasType: "segments" | "sections" | "watermarks",
+	canvasType: CanvasType,
 	definitionIndex: number,
 	model: PartialPrintModel
 ): PartialSegment | PartialSection | PartialWatermark | undefined {
@@ -214,5 +334,21 @@ function resolveCanvasEntity(
 			return model.content?.sections?.definitions?.[definitionIndex];
 		case "watermarks":
 			return model.content?.watermarks?.definitions?.[definitionIndex];
+	}
+}
+
+/** Resolve a fragment reference (not a native definition) from its 0-based index in the model */
+function resolveCanvasReference(
+	canvasType: CanvasType,
+	referenceIndex: number,
+	model: PartialPrintModel
+): { id?: string } | undefined {
+	switch (canvasType) {
+		case "segments":
+			return model.content?.segments?.fragmentReferences?.[referenceIndex];
+		case "sections":
+			return model.content?.sections?.references?.[referenceIndex];
+		case "watermarks":
+			return model.content?.watermarks?.references?.[referenceIndex];
 	}
 }

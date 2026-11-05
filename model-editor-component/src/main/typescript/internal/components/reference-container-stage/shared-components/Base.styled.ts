@@ -55,7 +55,9 @@ export const StyledOuterEditorContainer = styled.div`
 	border: 1px solid ${props => props.theme.colors.divider.colorLight};
 `;
 
-type StyledEditorContainerProps = StyledGeneralPageProps;
+interface StyledEditorContainerProps extends StyledGeneralPageProps {
+	isReadonly?: boolean;
+}
 
 export const StyledEditorContainer = styled.div<StyledEditorContainerProps>`
 	margin: ${getEditorOffset().top}px auto;
@@ -66,6 +68,7 @@ export const StyledEditorContainer = styled.div<StyledEditorContainerProps>`
 		`${zoomFactor * MM_TO_PX(editorDimensions.minHeight.value) * numberOfPages}px`};
 	box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
 	position: relative;
+	opacity: ${({ isReadonly }) => (isReadonly ? 0.75 : 1)};
 `;
 
 type StyledEditorPageProps = Omit<StyledGeneralPageProps, "numberOfPages">;
@@ -169,4 +172,42 @@ export const StyledSelectRect = styled.div.attrs<StyledSelectRectProps>(
 	pointer-events: none;
 	transform-origin: 0 0;
 	z-index: ${getZIndexList().SelectRect};
+`;
+
+interface StyledPlacementRingProps {
+	hasElement: boolean;
+	highlight: boolean;
+	hasCollision: boolean;
+	showBorders?: boolean;
+}
+
+const HIGHLIGHT_OUTLINE = "1px solid #d51079";
+const ERROR_OUTLINE = "2px solid red";
+const PLAIN_OUTLINE = "1px solid #cbd7e8";
+
+function resolvePlacementRingOutline({
+	hasElement,
+	highlight,
+	hasCollision,
+	showBorders,
+}: StyledPlacementRingProps): string {
+	if (highlight) {
+		return HIGHLIGHT_OUTLINE;
+	}
+	// A placement without an element is broken whether or not borders are shown.
+	if (!hasElement) {
+		return ERROR_OUTLINE;
+	}
+	if (!showBorders) {
+		return "none";
+	}
+	return hasCollision ? ERROR_OUTLINE : PLAIN_OUTLINE;
+}
+
+export const StyledPlacementRing = styled.div<StyledPlacementRingProps>`
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	z-index: ${getZIndexList().PlacementRing};
+	outline: ${resolvePlacementRingOutline};
 `;

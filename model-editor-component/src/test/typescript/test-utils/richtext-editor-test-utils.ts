@@ -69,6 +69,7 @@ export const defaultReducers = {
 
 export const createMockTextElement = (html: string): PartialText => ({
 	id: "test-text-element-id",
+	name: "mockTest",
 	type: ElementType.Text,
 	text: {
 		id: "test-text-id",
@@ -159,15 +160,17 @@ export const selectTextInEditor = async (
 		throw new Error(`Could not find text nodes for range ${startOffset}-${endOffset}`);
 	}
 
-	const range = document.createRange();
-	range.setStart(startNode, startNodeOffset);
-	range.setEnd(endNode, endNodeOffset);
-
 	const selection = window.getSelection();
-	selection?.removeAllRanges();
-	selection?.addRange(range);
+	if (!selection) {
+		throw new Error("No selection available");
+	}
 
-	document.dispatchEvent(new Event("selectionchange"));
+	const selectionChanged = new Promise(resolve =>
+		document.addEventListener("selectionchange", resolve, { once: true })
+	);
+	selection.setBaseAndExtent(startNode, startNodeOffset, endNode, endNodeOffset);
+	await selectionChanged;
+
 	editorElement.focus();
 };
 

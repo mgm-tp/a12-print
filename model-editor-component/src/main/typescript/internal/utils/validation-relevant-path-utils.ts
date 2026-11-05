@@ -61,7 +61,7 @@ export function createRelevantPathsFromAffectedItems(
 				}
 			});
 		} else if (item.type === "segment") {
-			printModel.content.segments.definitions.forEach((element, index) => {
+			printModel.content.segments?.definitions.forEach((element, index) => {
 				if (element.id === item.id) {
 					relevantEntities.push(createSegmentDefinitionPath(index));
 				}

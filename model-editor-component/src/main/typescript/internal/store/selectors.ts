@@ -31,6 +31,7 @@
  */
 import sortBy from "lodash/sortBy.js";
 import { createSelector } from "reselect";
+import { nanoid } from "nanoid";
 
 import type {
 	InteractionLogEntry,
@@ -49,12 +50,21 @@ import {
 	getAllInteractionsFromLogStore,
 	StageRegion,
 } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import type { ModelReference } from "@com.mgmtp.a12.base/base-model-api";
-import type {
-	PartialAnyPrintModelElement,
-	PartialPlaceableReference,
-	PartialValidPlaceableReference,
-	PlaceableReference,
+import {
+	type FragmentModelReference,
+	type ModelReferenceEntity,
+	type PrintModelFragmentElement,
+	PrintModelElement,
+	type PartialAnyPrintModelElement,
+	PartialAnyTopLevelContainerElement,
+	type PartialPlaceableReference,
+	type PartialSection,
+	type PartialSegment,
+	type PartialTextStyle,
+	type PartialValidPlaceableReference,
+	type PartialWatermark,
+	type PlaceableReference,
+	type PrintModel,
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	Area,
@@ -76,6 +86,7 @@ import {
 	Table,
 	TableLayout,
 	Text,
+	FRAGMENT_MODEL_REFERENCE_PURPOSE,
 	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
 	PRINT_MODEL_HEADER_LOG_ID,
 	TEXT_STYLE,
@@ -83,20 +94,23 @@ import {
 
 import type { PrintEngineState } from "../../a12internal/api/PrintEngineState.js";
 
+import type { RequestApiState } from "../redux/request-api/state.js";
 import { ElementsUtils } from "../utils/elements-utils.js";
+import { byToolboxOrder } from "../constant/elements.js";
 import { DEFAULT_TEXT_STYLE_ID, NO_TEXT_STYLE_FALLBACK } from "../constant/textstyle.js";
-import { createPlainMmMeasure } from "../utils/measure-utils.js";
+import { createMmMeasure, createPlainMmMeasure } from "../utils/measure-utils.js";
+import { assertExists } from "../utils/type-utils.js";
 import { ROOT_DATA_CONTEXT_ENTRY } from "../constant/data-context.js";
 import type { DataContextEntry } from "../types/data-context.js";
 import { EditorMode, type PrintEditorState } from "../redux/editor-state/state.js";
 import type { ConfirmationDialogState } from "../redux/confirmation-dialog/state.js";
 import {
 	type BaseFormState,
-	type CanvasTab,
 	FULLSCREEN_TABS,
 	type NavigationState,
 	type Wrapper,
 	isElementFormState,
+	isElementLibraryFormState,
 	isBaseElementFormState,
 	isListingColumnFormState,
 	isListingFieldCompFormState,
@@ -110,6 +124,7 @@ import {
 	isVisibilityConfigFormState,
 } from "../redux/navigation/state.js";
 import { NavigationSelectors } from "../redux/navigation/selectors.js";
+import { EditorUtils } from "../utils/editor-utils.js";
 
 import { createSliceSelector, isFpeStore } from "./create-slice-selector.js";
 import { STAGE_REGION_MAP } from "./region-stage-map.js";
@@ -122,8 +137,12 @@ export interface PlaceableWithElement {
 	element: PartialAnyPrintModelElement;
 }
 
+export type OrderedSegmentItem =
+	| { segment: PartialSegment; reference?: FragmentModelReference }
+	| { segment: undefined; reference: FragmentModelReference };
+
 export type HeightChangeMap = Record<
-	"segmentsMap" | "sectionsMap" | "watermarksMap" | "wrapperMap",
+	"segmentsMap" | "sectionsMap" | "watermarksMap" | "wrapperMap" | "fragmentsMap",
 	Record<string, PlaceableWithElement[]>
 >;
 
@@ -171,29 +190,14 @@ export namespace PrintEngineSelectors {
 		printEditorState,
 		printEditorState => printEditorState?.editorStates?.isMarginVisible
 	);
-	export const currentElementContainerId = createSelector(
-		[NavigationSelectors.activeEntities],
-		printModelRefsState => {
-			const { sectionId, segmentId, watermarkId, currentRefType } = printModelRefsState;
-			if (currentRefType === SidebarItem.SEGMENT) {
-				return segmentId;
-			} else if (currentRefType === SidebarItem.SECTION) {
-				return sectionId;
-			} else {
-				return watermarkId;
-			}
-		}
+	export const currentElementContainerId = createSelector([NavigationSelectors.activeEntities], printModelRefsState =>
+		EditorUtils.getCurrentRefId(printModelRefsState)
 	);
 	export const wrappers = createSelector(
 		[navigationState, NavigationSelectors.activeEntities],
 		(nav, refs): ReadonlyArray<Wrapper> => {
-			const tab = refs.currentRefType as CanvasTab;
-			const entityId =
-				tab === SidebarItem.SEGMENT
-					? refs.segmentId
-					: tab === SidebarItem.SECTION
-						? refs.sectionId
-						: refs.watermarkId;
+			const tab = refs.currentRefType;
+			const entityId = EditorUtils.getCurrentRefId(refs);
 			if (!entityId) return [];
 			const stack = nav[tab].entities[entityId];
 			if (!stack || stack.length <= 1) return [];
@@ -203,6 +207,10 @@ export namespace PrintEngineSelectors {
 	export const currentWrapperContainerId = createSelector([wrappers], wrapperState => {
 		return wrapperState.length > 0 ? wrapperState[wrapperState.length - 1]?.id : undefined;
 	});
+
+	export const isCurrentWrapperReferenced = createSelector([wrappers], wrapperState =>
+		wrapperState.some(wrapper => !!wrapper.wrapperContext?.placeableReference?.model)
+	);
 
 	export const currentWrapperContainer = createSelector([state, currentWrapperContainerId], (state, wrapperId) => {
 		return wrapperId ? (printModelElement(state, wrapperId) as ContainerElement) : undefined;
@@ -221,90 +229,330 @@ export namespace PrintEngineSelectors {
 		transactionLogState,
 		logStore => logStore[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]
 	);
-	const rawSegments = createSelector(transactionLogState, logStore => logStore.segments.map);
-	const rawSegmentReferences = createSelector(transactionLogState, logStore => logStore.segments.references);
+	const rawSegments = createSelector(transactionLogState, logStore => logStore.segments?.map);
+	const rawSegmentReferences = createSelector(transactionLogState, logStore => logStore.segments?.references);
 	const rawSections = createSelector(transactionLogState, logStore => logStore.sections?.map);
 	const rawWatermarks = createSelector(transactionLogState, logStore => logStore.watermarks?.map);
-	const rawPrintModelElements = createSelector(transactionLogState, logStore => logStore.printModelElements);
-	const rawTextStyles = createSelector(transactionLogState, logStore => logStore.textStyles?.map);
+	export const watermarkReferences = createSelector(transactionLogState, logStore =>
+		TransactionLog.selectWatermarkReferences(logStore.watermarks?.referencesEntry)
+	);
+	export const sectionReferences = createSelector(transactionLogState, logStore =>
+		TransactionLog.selectSectionReferences(logStore.sections?.referencesEntry)
+	);
+	export const textStyleReferences = createSelector(transactionLogState, logStore =>
+		TransactionLog.selectTextStyleReferences(logStore.textStyles?.referencesEntry)
+	);
+	export const segmentFragmentReferences = createSelector(transactionLogState, logStore =>
+		TransactionLog.selectSegmentFragmentReferences(logStore.segments?.fragmentReferencesEntry)
+	);
+	const requestApiState = createSliceSelector<RequestApiState>(state => state.RequestApi);
+	const fragmentModelIds = createSelector(requestApiState, state => state.fragmentModelIds);
+	const printModelData = createSelector(requestApiState, state => state.printModelData);
+
+	/** All loaded print fragment models the edited print model references. */
+	export const fragmentModels = createSelector(
+		[fragmentModelIds, printModelData],
+		(fragmentModelIds, printModelData): PrintModel[] =>
+			(fragmentModelIds || [])
+				.map(modelId => printModelData?.[modelId])
+				.filter((printModel): printModel is PrintModel => printModel !== undefined)
+	);
+
+	// all element definitions stored in the referenced print fragment models
+	const rawFragmentModelElements = createSelector(
+		[fragmentModelIds, printModelData],
+		(fragmentModelIds, printModelData) => {
+			const result: TransactionLogStoreEntryMap<PartialAnyPrintModelElement> = {};
+			for (const modelId of fragmentModelIds || []) {
+				for (const element of printModelData?.[modelId]?.content?.elementDefinitions || []) {
+					result[element.id] = {
+						id: element.id,
+						log: [],
+						memoizedObject: element,
+						initialObject: element,
+					};
+				}
+			}
+			return result;
+		}
+	);
+	const rawPrintModelElements = createSelector(
+		[transactionLogState, rawFragmentModelElements],
+		(logStore, fragmentElements) => ({
+			...fragmentElements,
+			...logStore.printModelElements,
+		})
+	);
+
+	const rawFragmentModelTextStyles = createSelector(
+		[fragmentModelIds, printModelData],
+		(fragmentModelIds, printModelData) => {
+			const result: TransactionLogStoreEntryMap<PartialTextStyle> = {};
+			for (const modelId of fragmentModelIds || []) {
+				for (const textStyle of printModelData?.[modelId]?.content?.textStyles?.definitions || []) {
+					result[textStyle.id] = {
+						id: textStyle.id,
+						log: [],
+						memoizedObject: textStyle,
+						initialObject: textStyle,
+					};
+				}
+			}
+			return result;
+		}
+	);
+
+	const rawTextStyles = createSelector(
+		[transactionLogState, rawFragmentModelTextStyles],
+		(logStore, fragmentTextStyles) => ({
+			...fragmentTextStyles,
+			...logStore.textStyles?.map,
+		})
+	);
 
 	// builder select
 	export const printHeader = createSelector(rawPrintHeader, header => TransactionLog.selectPrintModelHeader(header));
+	export const printModelSubType = createSelector(printHeader, header => header?.modelSubType);
 	export const printContentGeneral = createSelector(rawPrintContentGeneral, general =>
 		TransactionLog.selectPrintModelContentGeneral(general)
 	);
 	export const segments = createSelector(
-		[rawSegments, printContentGeneral],
-		(segments, printContentGeneral) =>
-			printContentGeneral.structure?.map(segmentId => TransactionLog.selectSegment(segments, segmentId)) || []
+		[rawSegments, printContentGeneral, segmentFragmentReferences, printModelData],
+		(segments, printContentGeneral, segmentFragmentRefs, printModelData): PartialSegment[] =>
+			(printContentGeneral.structure || []).flatMap<PartialSegment>(segmentId => {
+				if (segments && segmentId in segments) {
+					return [TransactionLog.selectSegment(segments, segmentId)];
+				}
+				const ref = segmentFragmentRefs.find(r => r.id === segmentId);
+				const resolved = ref
+					? printModelData?.[ref.model]?.content?.segments?.definitions?.find(s => s.id === ref.refId)
+					: undefined;
+				return resolved ? [{ ...resolved, id: segmentId }] : [];
+			})
 	);
 	export const segmentReferences = createSelector([rawSegmentReferences], segmentReferences =>
-		Object.keys(segmentReferences).map(id => TransactionLog.selectSegmentReference(segmentReferences, id))
+		Object.keys(segmentReferences || {}).map(id => TransactionLog.selectSegmentReference(segmentReferences, id))
 	);
-	export const segment = createSelector([rawSegments, idInputSelector], (segments, id) =>
-		TransactionLog.selectSegment(segments, id)
+	export const segment = createSelector(
+		[rawSegments, idInputSelector, segmentFragmentReferences, printModelData],
+		(segments, id, segmentFragmentRefs, printModelData): PartialSegment => {
+			if (segments && id in segments) {
+				return TransactionLog.selectSegment(segments, id);
+			}
+			const ref = segmentFragmentRefs.find(r => r.id === id);
+			const resolved = ref
+				? printModelData?.[ref.model]?.content?.segments?.definitions?.find(s => s.id === ref.refId)
+				: undefined;
+			if (resolved) {
+				return { ...resolved, id };
+			}
+			// Neither a local nor a resolvable referenced segment - let selectSegment throw as before.
+			return TransactionLog.selectSegment(segments, id);
+		}
+	);
+
+	/**
+	 * The segments in the order of `general.structure`, local and referenced fragment segments interleaved. A referenced
+	 * segment carries the id of its {@link FragmentModelReference} so each reference is an independent instance. A reference whose segment is gone from its fragment model
+	 * keeps its place with an undefined segment, so it stays visible and the structure indices stay correct.
+	 */
+	export const orderedSegmentItems = createSelector(
+		[rawSegments, printContentGeneral, segmentFragmentReferences, printModelData],
+		(segments, general, segmentFragmentRefs, printModelData): OrderedSegmentItem[] =>
+			(general.structure || []).flatMap<OrderedSegmentItem>(segmentId => {
+				if (segments && segmentId in segments) {
+					return [{ segment: TransactionLog.selectSegment(segments, segmentId) }];
+				}
+				const reference = segmentFragmentRefs.find(r => r.id === segmentId);
+				if (!reference) {
+					return [];
+				}
+				const resolved = printModelData?.[reference.model]?.content?.segments?.definitions?.find(
+					s => s.id === reference.refId
+				);
+				return [{ segment: resolved ? { ...resolved, id: segmentId } : undefined, reference }];
+			})
 	);
 	export const segmentElements = createSelector(
 		[segment, rawPrintModelElements],
 		(segment, printModelElements) =>
-			segment.elementReferences?.map(ref =>
-				TransactionLog.selectPrintModelElement(printModelElements, ref.refId || "")
-			) || []
+			segment.elementReferences?.flatMap(ref => {
+				const element = printModelElements[ref.refId || ""]?.memoizedObject;
+				return element ? [element] : [];
+			}) || []
 	);
 
-	export const sections = createSelector(
-		[rawSections, printContentGeneral],
-		(sections, general) => general.sections?.map(id => TransactionLog.selectSection(sections, id)) || []
+	/**
+	 * Structure-ordered list of sections (local and referenced fragment sections interleaved).
+	 * Referenced items carry the id of their {@link SectionFragmentReference}; the resolved section's
+	 * id is overridden with that reference id so each reference is an independent, uniquely keyed instance.
+	 */
+	export const orderedSectionItems = createSelector(
+		[rawSections, printContentGeneral, sectionReferences, printModelData],
+		(sections, general, sectionRefs, printModelData): { section: PartialSection; referenceId?: string }[] => {
+			const refsById = new Map(sectionRefs.map(r => [r.id, r]));
+			return (general.sections || []).flatMap<{ section: PartialSection; referenceId?: string }>(sectionId => {
+				if (sections && sectionId in sections) {
+					return [{ section: TransactionLog.selectSection(sections, sectionId) }];
+				}
+				const ref = refsById.get(sectionId);
+				const resolved = ref
+					? printModelData?.[ref.model]?.content?.sections?.definitions?.find(s => s.id === ref.refId)
+					: undefined;
+				if (!ref || !resolved) return [];
+				const sectionUsage = ref.sectionUsage ?? resolved.sectionUsage;
+				return [
+					{
+						section: { ...resolved, id: sectionId, sectionUsage },
+						referenceId: ref.id,
+					},
+				];
+			});
+		}
 	);
-	export const section = createSelector([rawSections, idInputSelector], (sections, id) =>
-		TransactionLog.selectSection(sections, id)
+
+	export const sections = createSelector([orderedSectionItems], (items): PartialSection[] =>
+		items.map(item => item.section)
+	);
+	export const section = createSelector(
+		[rawSections, idInputSelector, sectionReferences, printModelData],
+		(sections, id, sectionRefs, printModelData): PartialSection => {
+			if (sections && id in sections) {
+				return TransactionLog.selectSection(sections, id);
+			}
+			const ref = sectionRefs.find(r => r.id === id);
+			const resolved = ref
+				? printModelData?.[ref.model]?.content?.sections?.definitions?.find(s => s.id === ref.refId)
+				: undefined;
+			if (ref && resolved) {
+				const sectionUsage = ref.sectionUsage ?? resolved.sectionUsage;
+				return { ...resolved, id, sectionUsage };
+			}
+			return TransactionLog.selectSection(sections, id);
+		}
 	);
 
 	export const sectionElements = createSelector(
 		[section, rawPrintModelElements],
 		(section, printModelElements) =>
-			section.elementReferences?.map(ref =>
-				TransactionLog.selectPrintModelElement(printModelElements, ref.refId || "")
-			) || []
+			section.elementReferences?.flatMap(ref => {
+				const element = printModelElements[ref.refId || ""]?.memoizedObject;
+				return element ? [element] : [];
+			}) || []
 	);
 
-	export const watermarks = createSelector(
-		[rawWatermarks, printContentGeneral],
-		(watermarks, general) => general.watermarks?.map(id => TransactionLog.selectWatermark(watermarks, id)) || []
+	/**
+	 * Structure-ordered list of watermarks (local and referenced fragment watermarks interleaved).
+	 * Referenced items carry the id of their {@link FragmentModelReference}; the resolved watermark's
+	 * id is overridden with that reference id so each reference is an independent, uniquely keyed instance.
+	 */
+	export const orderedWatermarkItems = createSelector(
+		[rawWatermarks, printContentGeneral, watermarkReferences, printModelData],
+		(
+			watermarks,
+			general,
+			watermarkRefs,
+			printModelData
+		): { watermark: PartialWatermark; referenceId?: string }[] => {
+			const refsById = new Map(watermarkRefs.map(r => [r.id, r]));
+			return (general.watermarks || []).flatMap<{ watermark: PartialWatermark; referenceId?: string }>(
+				watermarkId => {
+					if (watermarks && watermarkId in watermarks) {
+						return [{ watermark: TransactionLog.selectWatermark(watermarks, watermarkId) }];
+					}
+					const ref = refsById.get(watermarkId);
+					const resolved = ref
+						? printModelData?.[ref.model]?.content?.watermarks?.definitions?.find(w => w.id === ref.refId)
+						: undefined;
+					return ref && resolved
+						? [{ watermark: { ...resolved, id: watermarkId }, referenceId: ref.id }]
+						: [];
+				}
+			);
+		}
 	);
-	export const watermark = createSelector([rawWatermarks, idInputSelector], (watermarks, id) =>
-		TransactionLog.selectWatermark(watermarks, id)
+
+	export const watermarks = createSelector([orderedWatermarkItems], (items): PartialWatermark[] =>
+		items.map(item => item.watermark)
+	);
+	export const watermark = createSelector(
+		[rawWatermarks, idInputSelector, watermarkReferences, printModelData],
+		(watermarks, id, watermarkRefs, printModelData): PartialWatermark => {
+			if (watermarks && id in watermarks) {
+				return TransactionLog.selectWatermark(watermarks, id);
+			}
+			const ref = watermarkRefs.find(r => r.id === id);
+			const resolved = ref
+				? printModelData?.[ref.model]?.content?.watermarks?.definitions?.find(w => w.id === ref.refId)
+				: undefined;
+			if (resolved) {
+				return { ...resolved, id };
+			}
+			return TransactionLog.selectWatermark(watermarks, id);
+		}
 	);
 
 	export const watermarkElements = createSelector(
 		[watermark, rawPrintModelElements],
 		(watermark, printModelElements) =>
-			watermark.elementReferences?.map(ref =>
-				TransactionLog.selectPrintModelElement(printModelElements, ref.refId || "")
-			) || []
+			watermark.elementReferences?.flatMap(ref => {
+				const element = printModelElements[ref.refId || ""]?.memoizedObject;
+				return element ? [element] : [];
+			}) || []
 	);
 
-	export const textStyles = createSelector(
-		[rawTextStyles, printContentGeneral],
-		(textStyles, printContentGeneral) =>
-			printContentGeneral.textStyles?.map(textStyleId =>
-				TransactionLog.selectTextStyle(textStyles, textStyleId)
-			) || []
+	export interface TextStyleEntry {
+		textStyle: PartialTextStyle;
+		isFragment: boolean;
+	}
+
+	/** The text styles available in this model, local ones first. */
+	export const textStyleEntries = createSelector(
+		[rawTextStyles, printContentGeneral, textStyleReferences, printModelData],
+		(textStyles, printContentGeneral, refs, printModelData): TextStyleEntry[] => {
+			const local = (printContentGeneral.textStyles || []).flatMap<TextStyleEntry>(textStyleId => {
+				if (textStyles && textStyleId in textStyles) {
+					return [{ textStyle: TransactionLog.selectTextStyle(textStyles, textStyleId), isFragment: false }];
+				}
+				return [];
+			});
+			// A referenced text style is addressed by its reference id, matching the `textStyle` selector.
+			const referenced = refs.flatMap<TextStyleEntry>(ref => {
+				const resolved = printModelData?.[ref.model]?.content?.textStyles?.definitions?.find(
+					textStyle => textStyle.id === ref.refId
+				);
+				return resolved ? [{ textStyle: { ...resolved, id: ref.id }, isFragment: true }] : [];
+			});
+			return [...local, ...referenced];
+		}
 	);
+
+	export const textStyles = createSelector(textStyleEntries, entries => entries.map(({ textStyle }) => textStyle));
+
 	export const defaultTextStyle = createSelector(printEditorState, editorState => editorState.defaultTextStyle);
 
 	export const fonts = createSelector(printEditorState, editorState => editorState.fonts);
 
 	export const textStyle = createSelector(
-		[defaultTextStyle, rawTextStyles, idInputSelector],
-		(defaultTextStyleValue, textStyles, id) => {
+		[defaultTextStyle, rawTextStyles, idInputSelector, textStyleReferences, printModelData],
+		(defaultTextStyleValue, textStyles, id, refs, printModelData) => {
 			if (id === DEFAULT_TEXT_STYLE_ID) {
 				return defaultTextStyleValue;
 			}
 			if (id === TEXT_STYLE.NO_TEXT_STYLE_FALLBACK_ID) {
 				return NO_TEXT_STYLE_FALLBACK;
 			}
-			return TransactionLog.selectTextStyle(textStyles, id);
+			if (textStyles && id in textStyles) {
+				return TransactionLog.selectTextStyle(textStyles, id);
+			}
+			const ref = refs.find(r => r.id === id);
+			const resolved = ref
+				? printModelData?.[ref.model]?.content?.textStyles?.definitions?.find(ts => ts.id === ref.refId)
+				: undefined;
+			if (resolved) {
+				return { ...resolved, id };
+			}
+			return defaultTextStyleValue;
 		}
 	);
 
@@ -333,13 +581,52 @@ export namespace PrintEngineSelectors {
 	);
 	export const multiplePrintModelElements = createSelector(
 		[rawPrintModelElements, (state, ids: string[]) => ids],
-		(printModelElements, ids) => ids.map(id => TransactionLog.selectPrintModelElement(printModelElements, id))
+		(printModelElements, ids) =>
+			ids.flatMap(id => {
+				const element = printModelElements[id]?.memoizedObject;
+				return element ? [element] : [];
+			})
 	);
 
 	export const printModelElements = createSelector([rawPrintModelElements], printModelElements =>
 		Object.keys(printModelElements).map(printModelId =>
 			TransactionLog.selectPrintModelElement(printModelElements, printModelId)
 		)
+	);
+
+	export const fragmentElements = createSelector([transactionLogState], logStore =>
+		Object.keys(logStore.printModelElements)
+			.map(id => TransactionLog.selectPrintModelElement(logStore.printModelElements, id))
+			.filter(el => el?.isFragment)
+	);
+
+	export const selectableFragmentElements = createSelector(
+		[fragmentModelIds, printModelData],
+		(fragmentModelIds, printModelData) => {
+			const elements: { model: string; element: PrintModelFragmentElement }[] = [];
+			for (const modelId of fragmentModelIds || []) {
+				for (const element of printModelData?.[modelId]?.content?.elementDefinitions || []) {
+					if (PrintModelElement.isFragmentElement(element)) {
+						elements.push({ element, model: modelId });
+					}
+				}
+			}
+			// Offer the fragments in the same order as the toolbox elements above them. Sorting here
+			// rather than in the model keeps the elementDefinitions index - which validation rule
+			// paths and navigation steps address positionally - untouched.
+			return elements.sort((a, b) => byToolboxOrder(a.element.type, b.element.type));
+		}
+	);
+
+	export const fragment = createSelector(
+		[segments, sections, watermarks, printModelElements, idInputSelector],
+		(segments, sections, watermarks, printModelElements, fragmentId) => {
+			const segmentFragment = segments.find(segment => segment.id === fragmentId);
+			const sectionFragment = sections.find(section => section.id === fragmentId);
+			const watermarkFragment = watermarks.find(watermark => watermark.id === fragmentId);
+			const elementFragment = printModelElements.find(element => element?.id === fragmentId);
+			return segmentFragment ?? sectionFragment ?? watermarkFragment ?? elementFragment;
+		}
 	);
 
 	export const printModelIdByReferenceElementId = createSelector(
@@ -350,9 +637,24 @@ export namespace PrintEngineSelectors {
 
 	// builder computed values
 	export const currentSegment = createSelector(
-		[state, NavigationSelectors.activeEntities],
-		(state, { segmentId }) => {
-			return segmentId ? segment(state, segmentId) : undefined;
+		[requestApiState, rawSegments, NavigationSelectors.activeEntities, segmentFragmentReferences],
+		(requestApi, segments, { segmentId }, segmentFragmentRefs) => {
+			if (!segmentId) {
+				return undefined;
+			}
+			if (segments && segmentId in segments) {
+				return TransactionLog.selectSegment(segments, segmentId);
+			}
+			const ref = segmentFragmentRefs.find(r => r.id === segmentId);
+			if (ref) {
+				const resolved = requestApi.printModelData?.[ref.model]?.content?.segments?.definitions?.find(
+					s => s.id === ref.refId
+				);
+				if (resolved) {
+					return { ...resolved, id: segmentId };
+				}
+			}
+			return undefined;
 		}
 	);
 	export const wrapperDataContext = createSelector(
@@ -405,15 +707,110 @@ export namespace PrintEngineSelectors {
 		return wrappers.length > 0 ? wrappers[wrappers.length - 1]?.wrapperContext : undefined;
 	});
 	export const currentSection = createSelector(
-		[state, NavigationSelectors.activeEntities],
-		(state, { sectionId }) => {
-			return sectionId ? section(state, sectionId) : undefined;
+		[requestApiState, rawSections, NavigationSelectors.activeEntities, sectionReferences],
+		(requestApi, sections, { sectionId }, sectionRefs) => {
+			if (!sectionId) {
+				return undefined;
+			}
+			if (sections && sectionId in sections) {
+				return TransactionLog.selectSection(sections, sectionId);
+			}
+			const ref = sectionRefs.find(r => r.id === sectionId);
+			if (ref) {
+				const resolved = requestApi.printModelData?.[ref.model]?.content?.sections?.definitions?.find(
+					s => s.id === ref.refId
+				);
+				if (resolved) {
+					const sectionUsage = ref.sectionUsage ?? resolved.sectionUsage;
+					return { ...resolved, id: sectionId, sectionUsage };
+				}
+			}
+			return undefined;
 		}
 	);
 	export const currentWatermark = createSelector(
+		[requestApiState, rawWatermarks, NavigationSelectors.activeEntities, watermarkReferences],
+		(requestApi, watermarks, { watermarkId }, watermarkRefs) => {
+			if (!watermarkId) {
+				return undefined;
+			}
+			if (watermarks && watermarkId in watermarks) {
+				return TransactionLog.selectWatermark(watermarks, watermarkId);
+			}
+			const ref = watermarkRefs.find(r => r.id === watermarkId);
+			if (ref) {
+				return requestApi.printModelData?.[ref.model]?.content?.watermarks?.definitions?.find(
+					w => w.id === ref.refId
+				);
+			}
+			return undefined;
+		}
+	);
+	export const isCurrentWatermarkReferenced = createSelector(
+		[rawWatermarks, NavigationSelectors.activeEntities, watermarkReferences],
+		(watermarks, { watermarkId }, watermarkRefs) => {
+			if (!watermarkId) return false;
+			if (watermarks && watermarkId in watermarks) return false;
+			return watermarkRefs.some(r => r.id === watermarkId);
+		}
+	);
+	export const isCurrentSectionReferenced = createSelector(
+		[rawSections, NavigationSelectors.activeEntities, sectionReferences],
+		(sections, { sectionId }, sectionRefs) => {
+			if (!sectionId) return false;
+			if (sections && sectionId in sections) return false;
+			return sectionRefs.some(r => r.id === sectionId);
+		}
+	);
+	export const isCurrentSegmentReferenced = createSelector(
+		[rawSegments, NavigationSelectors.activeEntities, segmentFragmentReferences],
+		(segments, { segmentId }, segmentFragmentRefs) => {
+			if (!segmentId) return false;
+			if (segments && segmentId in segments) return false;
+			return segmentFragmentRefs.some(r => r.id === segmentId);
+		}
+	);
+	/** Whether the top level container currently open was pulled in from a print fragment model. */
+	export const isCurrentContainerReferenced = createSelector(
+		[
+			NavigationSelectors.activeEntities,
+			isCurrentSegmentReferenced,
+			isCurrentSectionReferenced,
+			isCurrentWatermarkReferenced,
+		],
+		({ currentRefType }, isSegmentReferenced, isSectionReferenced, isWatermarkReferenced) => {
+			if (currentRefType === SidebarItem.SEGMENT) {
+				return isSegmentReferenced;
+			}
+			if (currentRefType === SidebarItem.SECTION) {
+				return isSectionReferenced;
+			}
+			return currentRefType === SidebarItem.WATERMARK ? isWatermarkReferenced : false;
+		}
+	);
+
+	export const isCurrentTextStyleReferenced = createSelector(
+		[selectedTextStyleId, textStyleReferences],
+		(textStyleId, textStyleRefs) => {
+			if (!textStyleId) return false;
+			return textStyleRefs.some(reference => reference.id === textStyleId);
+		}
+	);
+
+	export const currentFragment = createSelector(
 		[state, NavigationSelectors.activeEntities],
-		(state, { watermarkId }) => {
-			return watermarkId ? watermark(state, watermarkId) : undefined;
+		(state, { fragmentId }) => {
+			return fragmentId ? fragment(state, fragmentId) : undefined;
+		}
+	);
+
+	export const currentFragmentElement = createSelector(
+		[rawPrintModelElements, NavigationSelectors.activeEntities],
+		(printModelElements, { fragmentId }) => {
+			if (!fragmentId || !printModelElements || !(fragmentId in printModelElements)) {
+				return undefined;
+			}
+			return TransactionLog.selectPrintModelElement(printModelElements, fragmentId);
 		}
 	);
 
@@ -442,6 +839,11 @@ export namespace PrintEngineSelectors {
 				? TransactionLog.selectPrintModelElement(rawPrintModelElements, firstForm.id)
 				: undefined;
 		}
+	);
+
+	export const isCurrentElementReferenced = createSelector(
+		[rawFragmentModelElements, rootFormElement],
+		(fragmentElements, element) => !!element && !!fragmentElements[element.id]
 	);
 
 	export const entityElementIds = createSelector([state, idInputSelector], (state, id) => {
@@ -482,11 +884,12 @@ export namespace PrintEngineSelectors {
 	});
 
 	export const isEditorActive = createSelector(NavigationSelectors.activeEntities, printModelRefs => {
-		const { sectionId, segmentId, watermarkId, currentRefType } = printModelRefs;
+		const { sectionId, segmentId, watermarkId, fragmentId, currentRefType } = printModelRefs;
 		return (
 			(currentRefType === SidebarItem.SEGMENT && segmentId) ||
 			(currentRefType === SidebarItem.SECTION && sectionId) ||
-			(currentRefType === SidebarItem.WATERMARK && watermarkId)
+			(currentRefType === SidebarItem.WATERMARK && watermarkId) ||
+			(currentRefType === SidebarItem.FRAGMENT && fragmentId)
 		);
 	});
 
@@ -537,12 +940,14 @@ export namespace PrintEngineSelectors {
 	);
 
 	export const currentContainerElement = createSelector(
-		[NavigationSelectors.activeEntities, currentSegment, currentSection, currentWatermark],
-		({ currentRefType }, currentSegment, currentSection, currentWatermark) => {
+		[NavigationSelectors.activeEntities, currentSegment, currentSection, currentWatermark, currentFragment],
+		({ currentRefType }, currentSegment, currentSection, currentWatermark, currentFragment) => {
 			if (currentRefType === SidebarItem.SEGMENT) {
 				return currentSegment;
 			} else if (currentRefType === SidebarItem.SECTION) {
 				return currentSection;
+			} else if (currentRefType === SidebarItem.FRAGMENT) {
+				return currentFragment;
 			} else {
 				return currentWatermark;
 			}
@@ -585,22 +990,37 @@ export namespace PrintEngineSelectors {
 
 	export const currentContainerElementReferences = createSelector(
 		[state, currentContainerElement, currentWrapperContainer],
-		(state, container, wrapper) => {
-			return wrapper ? getElementReferences(wrapper) : container?.elementReferences;
+		(_state, container, wrapper) => {
+			if (wrapper) {
+				return getElementReferences(wrapper);
+			}
+			if (container && PartialAnyTopLevelContainerElement.isInstance(container)) {
+				return container?.elementReferences;
+			}
+			// For non-wrappers getElementReferences returns internal form structure (e.g. table columns without
+			// refId), which would crash the printModelElement lookup in currentContainerPrintModelElements.
+			if (container && ElementsUtils.isWrapperElement(container)) {
+				return ElementsUtils.getElementReferences(container);
+			}
+			return [];
 		}
 	);
 
 	export const currentContainerPrintModelElements = createSelector(
-		[state, currentContainerElementReferences],
-		(state, currentContainerElementReferences) => {
-			return currentContainerElementReferences?.map(ref => printModelElement(state, ref.refId));
+		[rawPrintModelElements, currentContainerElementReferences],
+		(printModelElements, currentContainerElementReferences) => {
+			// An external fragment reference may still be loading - skip it instead of crashing; it reappears
+			// once its fragment model's async load completes.
+			return currentContainerElementReferences
+				?.filter(ref => !ref.model || (ref.refId || "") in printModelElements)
+				.map(ref => TransactionLog.selectPrintModelElement(printModelElements, ref.refId || ""));
 		}
 	);
 
 	export const isAnyOverrideSelected = createSelector(
 		[currentContainerPrintModelElements, (_: unknown, selected: string[]) => selected],
 		(printModelElements, selected) => {
-			return selected.some(id => printModelElements?.find(el => el.id === id && PartialOverride.isInstance(el)));
+			return selected.some(id => printModelElements?.find(el => el?.id === id && PartialOverride.isInstance(el)));
 		}
 	);
 
@@ -611,7 +1031,7 @@ export namespace PrintEngineSelectors {
 				selected.length === 1 &&
 				!!printModelElements?.find(
 					el =>
-						el.id === selected[0] &&
+						el?.id === selected[0] &&
 						(PartialOverride.isInstance(el) ||
 							PartialArea.isInstance(el) ||
 							PartialBoundingBox.isInstance(el) ||
@@ -634,36 +1054,72 @@ export namespace PrintEngineSelectors {
 		}
 	);
 
-	export const editorDimensions = createSelector([currentPageOrientation, wrappers], (pageContainer, wrappers) => {
-		const EDITOR_DIMENSIONS = { minHeight: createPlainMmMeasure(297), minWidth: createPlainMmMeasure(210) };
-
-		const getDefaultWidth = () => {
-			return pageContainer === PageOrientation.Portrait
-				? EDITOR_DIMENSIONS.minWidth
-				: EDITOR_DIMENSIONS.minHeight;
-		};
-
-		const getDefaultHeight = () => {
-			return pageContainer === PageOrientation.Portrait
-				? EDITOR_DIMENSIONS.minHeight
-				: EDITOR_DIMENSIONS.minWidth;
-		};
-
-		const currentWrapper = wrappers?.[wrappers.length - 1];
-
-		const minWidth = currentWrapper?.dimensions?.width ?? getDefaultWidth();
-		const minHeight = currentWrapper?.dimensions?.height ?? getDefaultHeight();
-
-		return {
-			minWidth,
-			minHeight,
-		};
+	const currentFragmentElementWidth = createSelector([currentFragmentElement], fragmentElement => {
+		if (!fragmentElement) {
+			return undefined;
+		}
+		assertExists(fragmentElement.fragmentDimensions, "Fragment element must have fragmentDimensions set");
+		return fragmentElement.fragmentDimensions.width.value;
+	});
+	const currentFragmentElementHeight = createSelector([currentFragmentElement], fragmentElement => {
+		if (!fragmentElement) {
+			return undefined;
+		}
+		assertExists(fragmentElement.fragmentDimensions, "Fragment element must have fragmentDimensions set");
+		return fragmentElement.fragmentDimensions.height.value;
 	});
 
+	export const editorDimensions = createSelector(
+		[
+			currentPageOrientation,
+			wrappers,
+			NavigationSelectors.activeEntities,
+			currentFragmentElementWidth,
+			currentFragmentElementHeight,
+		],
+		(pageContainer, wrappers, { currentRefType }, fragmentWidth, fragmentHeight) => {
+			if (
+				currentRefType === SidebarItem.FRAGMENT &&
+				wrappers.length === 0 &&
+				fragmentWidth !== undefined &&
+				fragmentHeight !== undefined
+			) {
+				return {
+					minWidth: createPlainMmMeasure(fragmentWidth),
+					minHeight: createPlainMmMeasure(fragmentHeight),
+				};
+			}
+
+			const EDITOR_DIMENSIONS = { minHeight: createPlainMmMeasure(297), minWidth: createPlainMmMeasure(210) };
+
+			const getDefaultWidth = () => {
+				return pageContainer === PageOrientation.Portrait
+					? EDITOR_DIMENSIONS.minWidth
+					: EDITOR_DIMENSIONS.minHeight;
+			};
+
+			const getDefaultHeight = () => {
+				return pageContainer === PageOrientation.Portrait
+					? EDITOR_DIMENSIONS.minHeight
+					: EDITOR_DIMENSIONS.minWidth;
+			};
+
+			const currentWrapper = wrappers?.[wrappers.length - 1];
+
+			const minWidth = currentWrapper?.dimensions?.width ?? getDefaultWidth();
+			const minHeight = currentWrapper?.dimensions?.height ?? getDefaultHeight();
+
+			return {
+				minWidth,
+				minHeight,
+			};
+		}
+	);
+
 	export const elementsAffectedByTextStyleChange = createSelector(
-		[segments, sections, watermarks, rawPrintModelElements, idInputSelector],
-		(allSegments, allSections, allWatermarks, rawElements, textStyleId) => {
-			return [...allSegments, ...allSections, ...allWatermarks].reduce<HeightChangeMap>(
+		[segments, sections, watermarks, fragmentElements, rawPrintModelElements, idInputSelector],
+		(allSegments, allSections, allWatermarks, allFragmentElements, rawElements, textStyleId) => {
+			const result = [...allSegments, ...allSections, ...allWatermarks].reduce<HeightChangeMap>(
 				(res, container) => {
 					let containerMap;
 
@@ -683,15 +1139,51 @@ export namespace PrintEngineSelectors {
 							}
 							return { placeable: el as PartialValidPlaceableReference, element };
 						})
-						.filter(el => isTextStyleUsed(el.element, textStyleId, rawElements));
+						.filter(el => el.element && isTextStyleUsed(el.element, textStyleId, rawElements)) as {
+						placeable: PartialValidPlaceableReference;
+						element: PartialAnyPrintModelElement;
+					}[];
 					if (filteredPlaceablesWithElement?.length) {
 						containerMap[container.id] = filteredPlaceablesWithElement;
 					}
 					return res;
 				},
-				{ segmentsMap: {}, sectionsMap: {}, watermarksMap: {}, wrapperMap: {} }
+				{ segmentsMap: {}, sectionsMap: {}, watermarksMap: {}, fragmentsMap: {}, wrapperMap: {} }
 			);
+
+			// Standalone isFragment root elements sit in no container, so the reduce above misses them.
+			for (const element of allFragmentElements) {
+				if (element && isTextStyleUsed(element, textStyleId, rawElements)) {
+					assertExists(element.fragmentDimensions, "Fragment element must have fragmentDimensions set");
+					result.fragmentsMap[element.id] = [
+						{
+							element,
+							placeable: {
+								id: nanoid(),
+								refId: element.id,
+								position: { id: nanoid(), x: createMmMeasure(0), y: createMmMeasure(0) },
+								dimensions: {
+									id: nanoid(),
+									minWidth: createMmMeasure(element.fragmentDimensions.width.value),
+									minHeight: createMmMeasure(element.fragmentDimensions.height.value),
+								},
+							},
+						},
+					];
+				}
+			}
+
+			return result;
 		}
+	);
+
+	export const isTextStyleUsedByPrintModel = createSelector(
+		[transactionLogState, idInputSelector],
+		({ printModelElements }, textStyleId) =>
+			Object.keys(printModelElements).some(id => {
+				const element = TransactionLog.selectPrintModelElement(printModelElements, id);
+				return !!element && isTextStyleUsed(element, textStyleId, printModelElements);
+			})
 	);
 
 	export const isIncomingDinTemplatePrintModel = createSelector(
@@ -721,17 +1213,24 @@ export namespace PrintEngineSelectors {
 	export const documentModel = createSelector(printContentGeneral, general => general?.segmentDefaults?.model);
 	export const modelReferences = createSelector(
 		printHeader,
-		header => sortBy(header?.modelReferences || [], ["reference"]) as ModelReference[]
+		header => sortBy(header?.modelReferences || [], ["reference"]) as ModelReferenceEntity[]
 	);
 	export const documentModelReferences = createSelector([modelReferences], modelReferences =>
 		modelReferences.filter(reference => reference.modelType === "document")
 	);
 	export const printModelReferences = createSelector([modelReferences], modelReferences =>
-		modelReferences.filter(reference => reference.modelType === "print")
+		modelReferences.filter(
+			reference => reference.modelType === "print" && reference.purpose !== FRAGMENT_MODEL_REFERENCE_PURPOSE
+		)
 	);
 
 	export const typesettingModelReferences = createSelector([modelReferences], modelReferences =>
 		modelReferences.filter(reference => reference.modelType === "typesetting")
+	);
+	export const fragmentModelReferences = createSelector([modelReferences], modelReferences =>
+		modelReferences.filter(
+			reference => reference.modelType === "print" && reference.purpose === FRAGMENT_MODEL_REFERENCE_PURPOSE
+		)
 	);
 	export const dinTemplateModelReferences = createSelector([printModelReferences], printModelReferences =>
 		printModelReferences.filter(reference => reference.purpose === SegmentReferencePurpose.DINTemplate)
@@ -830,9 +1329,9 @@ export namespace PrintEngineSelectors {
 					);
 				}
 
-				if (currentForm && [EditorMode.Default, EditorMode.Layout].includes(currentMode)) {
-					const regionId = getRegionId(currentForm);
+				const regionId = currentForm ? getRegionId(currentForm) : undefined;
 
+				if (regionId && currentForm && [EditorMode.Default, EditorMode.Layout].includes(currentMode)) {
 					const tempFormRegion = (
 						isElementFormState(currentForm) || isBaseReferenceFormState(currentForm)
 							? GlobalRegion.FORM
@@ -976,7 +1475,10 @@ function addWrapperElements(
 			}
 			return { placeable: el as PartialValidPlaceableReference, element };
 		})
-		.filter(el => isTextStyleUsed(el.element, textStyleId, rawElements));
+		.filter(el => el.element && isTextStyleUsed(el.element, textStyleId, rawElements)) as {
+		placeable: PartialValidPlaceableReference;
+		element: PartialAnyPrintModelElement;
+	}[];
 	if (filtered.length > 0) {
 		wrapperMap[wrapper.id] = filtered;
 	}
@@ -988,7 +1490,7 @@ function getElementReferencesFromSwitch(
 ): PartialPlaceableReference[] {
 	return (switchElement.switch?.cases || []).reduce<PartialPlaceableReference[]>((res, next) => {
 		const area = TransactionLog.selectPrintModelElement(rawElements, next.refId || "");
-		if (PartialArea.isInstance(area) && area.area?.elementReferences) {
+		if (area && PartialArea.isInstance(area) && area.area?.elementReferences) {
 			res.push(...area.area.elementReferences);
 		}
 		return res;
@@ -1003,19 +1505,25 @@ function isTextStyleUsed(
 	switch (element.type) {
 		case ElementType.TableLayout:
 			return element.tableLayout?.cells?.some(cell => {
-				const textElement = TransactionLog.selectPrintModelElement(rawElements, cell.refId || "");
-				return (textElement as Text).textProperties?.textStyleId?.value === textStyleId;
+				const textElement = TransactionLog.selectPrintModelElement(rawElements, cell.refId || "") as
+					Text | undefined;
+				return textElement?.textProperties?.textStyleId?.value === textStyleId;
 			});
 		case ElementType.Table:
 			return element.table?.headerTextProperties?.textStyleId?.value === textStyleId;
 		case ElementType.Listing:
 			return element.listing?.headerTextProperties?.textStyleId?.value === textStyleId;
 		default:
-			return "textProperties" in element && element.textProperties?.textStyleId?.value === textStyleId;
+			return element && "textProperties" in element && element.textProperties?.textStyleId?.value === textStyleId;
 	}
 }
 
 function getRegionId(currentForm: BaseFormState) {
+	if (isElementLibraryFormState(currentForm)) {
+		// The Element Library form owns no interactions, so it contributes no region.
+		return undefined;
+	}
+
 	if (isListingColumnFormState(currentForm)) {
 		return currentForm.columnId;
 	}

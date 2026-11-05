@@ -31,6 +31,8 @@
  */
 import { TextField, type TextFieldProps } from "@com.mgmtp.a12.widgets/widgets-core";
 
+import { useFormReadonly } from "../FormContext.js";
+
 import { useCustomBaseInputProps } from "./use-custom-base-input-props.js";
 
 export const CustomTextField = (props: TextFieldProps) => {
@@ -40,12 +42,15 @@ export const CustomTextField = (props: TextFieldProps) => {
 		props.addonAfter
 	);
 
+	const isFormReadonly = useFormReadonly();
+
 	return (
 		<TextField
 			{...props}
 			errorMessage={errorMessage}
 			warningMessage={warningMessage}
 			addonAfter={[...propsAddonAfter, errorTooltip, warningTooltip]}
+			disabled={props.disabled || isFormReadonly}
 		/>
 	);
 };

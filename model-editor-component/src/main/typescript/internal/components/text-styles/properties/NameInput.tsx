@@ -41,7 +41,7 @@ export interface NameInputProps extends BaseTextStylePropertyProps {
 
 export const NameInput = (props: NameInputProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
-	const { errorMessage, onBlur, isDefaultTextStyle, name } = props;
+	const { errorMessage, onBlur, isReadonly, name } = props;
 
 	return (
 		<DynamicSourceTextField
@@ -49,7 +49,7 @@ export const NameInput = (props: NameInputProps) => {
 			value={name}
 			onBlur={event => onBlur(event.target.value)}
 			errorMessage={errorMessage}
-			disabled={isDefaultTextStyle}
+			disabled={isReadonly}
 		/>
 	);
 };

@@ -44,9 +44,12 @@ import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.container.BaseReferenceContainer;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
 import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
+import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelVisitor;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelWalker;
+import com.mgmtp.a12.print.model.api.walker.model.resolver.SectionIdResolver;
+import com.mgmtp.a12.print.model.api.walker.model.resolver.SectionWithUsage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -59,6 +62,18 @@ import java.util.function.Function;
 public class RuntimeWalker<Runtime extends  InternalCorePrintEngineRuntime> {
 	private final Runtime runtime;
 
+	private final SectionIdResolver sectionIdResolver = new SectionIdResolver() {
+		@Override
+		public Optional<PrintModelTreeTrace<ModelSection>> resolveSectionId(String id) {
+			return resolveSectionIdWithUsage(id).map(SectionWithUsage::getSection);
+		}
+
+		@Override
+		public Optional<SectionWithUsage> resolveSectionIdWithUsage(String id) {
+			return runtime.provide(new SectionDependency(id)).get();
+		}
+	};
+
 	public <V extends PrintModelVisitor, R> R walkPrintModel(
 		final PrintModel printModel,
 		final V visitor,
@@ -68,7 +83,7 @@ public class RuntimeWalker<Runtime extends  InternalCorePrintEngineRuntime> {
 			visitor,
 			e -> runtime.provide(new ReferenceElementDependency(e)).get(),
 			id -> runtime.provide(new SegmentDependency(id)).get(),
-			id -> runtime.provide(new SectionDependency(id)).get(),
+			sectionIdResolver,
 			id -> runtime.provide(new WatermarkDependency(id)).get(),
 			id -> runtime.provide(new PrintModelReferenceElementDependency(id)).get(),
 			id -> Optional.of(providePrintModelResolver(id, runtime))
@@ -86,7 +101,7 @@ public class RuntimeWalker<Runtime extends  InternalCorePrintEngineRuntime> {
 			visitor,
 			e -> runtime.provide(new ReferenceElementDependency(e)).get(),
 			id -> runtime.provide(new SegmentDependency(id)).get(),
-			id -> runtime.provide(new SectionDependency(id)).get(),
+			sectionIdResolver,
 			id -> runtime.provide(new WatermarkDependency(id)).get(),
 			id -> runtime.provide(new PrintModelReferenceElementDependency(id)).get(),
 			id -> Optional.of(providePrintModelResolver(id, runtime))
@@ -104,7 +119,7 @@ public class RuntimeWalker<Runtime extends  InternalCorePrintEngineRuntime> {
 			visitor,
 			e -> runtime.provide(new ReferenceElementDependency(e)).get(),
 			id -> runtime.provide(new SegmentDependency(id)).get(),
-			id -> runtime.provide(new SectionDependency(id)).get(),
+			sectionIdResolver,
 			id -> runtime.provide(new WatermarkDependency(id)).get(),
 			id -> runtime.provide(new PrintModelReferenceElementDependency(id)).get(),
 			id -> Optional.of(providePrintModelResolver(id, runtime))
@@ -122,7 +137,7 @@ public class RuntimeWalker<Runtime extends  InternalCorePrintEngineRuntime> {
 			visitor,
 			e -> runtime.provide(new ReferenceElementDependency(e)).get(),
 			id -> runtime.provide(new SegmentDependency(id)).get(),
-			id -> runtime.provide(new SectionDependency(id)).get(),
+			sectionIdResolver,
 			id -> runtime.provide(new WatermarkDependency(id)).get(),
 			id -> runtime.provide(new PrintModelReferenceElementDependency(id)).get(),
 			id -> Optional.of(providePrintModelResolver(id, runtime))
@@ -137,7 +152,7 @@ public class RuntimeWalker<Runtime extends  InternalCorePrintEngineRuntime> {
 		return runtime.provide(new PrintModelDependency(PrintModelId.fromString(id)))
 			.map(printModel -> new PrintModelTreeTrace<>(PrintModelPath.create(printModel), printModel))
 			.get();
-	};
+	}
 
 	public <V extends PrintModelVisitor, R> R walkElement(
 		final V visitor,
@@ -148,7 +163,7 @@ public class RuntimeWalker<Runtime extends  InternalCorePrintEngineRuntime> {
 			visitor,
 			e -> runtime.provide(new ReferenceElementDependency(e)).get(),
 			id -> runtime.provide(new SegmentDependency(id)).get(),
-			id -> runtime.provide(new SectionDependency(id)).get(),
+			sectionIdResolver,
 			id -> runtime.provide(new WatermarkDependency(id)).get(),
 			id -> runtime.provide(new PrintModelReferenceElementDependency(id)).get(),
 			id -> Optional.of(providePrintModelResolver(id, runtime)),
@@ -167,7 +182,7 @@ public class RuntimeWalker<Runtime extends  InternalCorePrintEngineRuntime> {
 			visitor,
 			e -> runtime.provide(new ReferenceElementDependency(e)).get(),
 			id -> runtime.provide(new SegmentDependency(id)).get(),
-			id -> runtime.provide(new SectionDependency(id)).get(),
+			sectionIdResolver,
 			id -> runtime.provide(new WatermarkDependency(id)).get(),
 			id -> runtime.provide(new PrintModelReferenceElementDependency(id)).get(),
 			id -> Optional.of(providePrintModelResolver(id, runtime)),
@@ -187,7 +202,7 @@ public class RuntimeWalker<Runtime extends  InternalCorePrintEngineRuntime> {
 			visitor,
 			e -> runtime.provide(new ReferenceElementDependency(e)).get(),
 			id -> runtime.provide(new SegmentDependency(id)).get(),
-			id -> runtime.provide(new SectionDependency(id)).get(),
+			sectionIdResolver,
 			id -> runtime.provide(new WatermarkDependency(id)).get(),
 			id -> runtime.provide(new PrintModelReferenceElementDependency(id)).get(),
 			id -> Optional.of(providePrintModelResolver(id, runtime)),
@@ -207,7 +222,7 @@ public class RuntimeWalker<Runtime extends  InternalCorePrintEngineRuntime> {
 			visitor,
 			e -> runtime.provide(new ReferenceElementDependency(e)).get(),
 			id -> runtime.provide(new SegmentDependency(id)).get(),
-			id -> runtime.provide(new SectionDependency(id)).get(),
+			sectionIdResolver,
 			id -> runtime.provide(new WatermarkDependency(id)).get(),
 			id -> runtime.provide(new PrintModelReferenceElementDependency(id)).get(),
 			id -> Optional.of(providePrintModelResolver(id, runtime)),
@@ -216,6 +231,4 @@ public class RuntimeWalker<Runtime extends  InternalCorePrintEngineRuntime> {
 			resultExtractor
 		);
 	}
-
-
 }

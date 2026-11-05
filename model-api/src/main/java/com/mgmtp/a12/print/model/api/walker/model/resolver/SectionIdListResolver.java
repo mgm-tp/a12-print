@@ -31,58 +31,115 @@
  */
 package com.mgmtp.a12.print.model.api.walker.model.resolver;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+import com.mgmtp.a12.print.model.api.exceptions.PrintWalkerException;
+import com.mgmtp.a12.print.model.api.model.PrintFragmentModel;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
-import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
-import com.mgmtp.a12.print.model.api.model.element.type.override.OverrideElement;
 import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
 import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
+import java.util.stream.Collectors;
 
 /**
  * Resolves {@link ModelSection} IDs from a given list of {@link ModelSection}s.
  */
 @OnlyForUsage
 public class SectionIdListResolver implements SectionIdResolver {
-	private final List<PrintModelTreeTrace<ModelSection>> sectionList;
+	private final Map<String, SectionWithUsage> sectionMap;
 
+	/**
+	 * @deprecated Use {@link #SectionIdListResolver(Map)} instead. This constructor will be removed in the next major release.
+	 */
+	@Deprecated(since = "4.1.0", forRemoval = true)
 	public SectionIdListResolver(List<PrintModelTreeTrace<ModelSection>> sectionList) {
-		this.sectionList = sectionList;
+		this.sectionMap = sectionList.stream()
+			.collect(Collectors.toMap(sec -> sec.getTracedElement().getId(), SectionWithUsage::ofSection));
+	}
+
+	public SectionIdListResolver(Map<String, SectionWithUsage> sectionMap) {
+		this.sectionMap = sectionMap;
 	}
 
 	/**
 	 * Creates a new {@link SectionIdListResolver} from the {@link PrintModel}s {@link ModelSection} list.
+	 * @deprecated Use {@link #fromModel(PrintModel, PrintFragmentModelResolver)} instead. This overload will be removed in the next major release.
 	 */
+	@Deprecated(since = "4.1.0", forRemoval = true)
 	public static SectionIdListResolver fromModel(PrintModel printModel) {
-		if (printModel.getContent().getSections().isPresent()) {
+		return new SectionIdListResolver(getSectionsOfPrintModel(printModel));
+	}
 
-			var path = PrintModelPath
-				.create(printModel)
-				.with(printModel.getContent(), 0)
-				.with(new PrintModelPathElement.ObjectProperty("sections"),0);
-			var sections = new ArrayList<PrintModelTreeTrace<ModelSection>>();
-			var i = 0;
-			for (var e : printModel.getContent().getSections().get().getDefinitions()) {
-				sections.add(new PrintModelTreeTrace<>(
-					path.with(new PrintModelPathElement.ObjectProperty("definitions"), i),
-					e
-				));
-				i++;
-			}
-			return new SectionIdListResolver(sections);
+	/**
+	 * Creates a new {@link SectionIdListResolver} from the {@link PrintModel}s + {@link PrintFragmentModel}s {@link ModelSection} list.
+	 */
+	public static SectionIdListResolver fromModel(PrintModel printModel, PrintFragmentModelResolver printFragmentModelResolver) {
+		final var result = new HashMap<>(getSectionsOfPrintModel(printModel));
+
+		if (printModel.getContent().getSections().isEmpty()) {
+			return new SectionIdListResolver(result);
 		}
-		return new SectionIdListResolver(new ArrayList<>());
+
+		final var itemsPerFragmentModel = new HashMap<String, Map<String, SectionWithUsage>>();
+		for (final var reference : printModel.getContent().getSections().get().getReferences()) {
+			final var currentFragmentModelName = reference.getModel();
+			final Map<String, SectionWithUsage> fragmentItems;
+			if (itemsPerFragmentModel.containsKey(currentFragmentModelName)) {
+				fragmentItems = itemsPerFragmentModel.get(currentFragmentModelName);
+			} else {
+				final var fragmentModel = printFragmentModelResolver.resolvePrintFragmentModel(currentFragmentModelName).orElseThrow(() ->
+					new PrintWalkerException(String.format("The Print Fragment Model %s cannot be resolved", currentFragmentModelName))
+				);
+				fragmentItems = getSectionsOfPrintModel(fragmentModel.getTracedElement());
+				itemsPerFragmentModel.put(currentFragmentModelName, fragmentItems);
+			}
+			if (!fragmentItems.containsKey(reference.getRefId())) {
+				throw new PrintWalkerException(String.format(
+					"The Print Fragment Model Section %s from the Fragment Model %s could not be resolved",
+					reference.getRefId(), currentFragmentModelName
+				));
+			}
+			final var currentSection = fragmentItems.get(reference.getRefId());
+			result.put(reference.getId(), new SectionWithUsage(currentSection.getSection(), reference.getSectionUsage()));
+		}
+		return new SectionIdListResolver(result);
+	}
+
+	private static Map<String, SectionWithUsage> getSectionsOfPrintModel(PrintModel printModel) {
+		final var sectionsWithUsage = new HashMap<String, SectionWithUsage>();
+
+		if (printModel.getContent().getSections().isEmpty()) {
+			return sectionsWithUsage;
+		}
+
+		var path = PrintModelPath
+			.create(printModel)
+			.with(printModel.getContent(), 0)
+			.with(new PrintModelPathElement.ObjectProperty("sections"),0);
+		var i = 0;
+		for (var e : printModel.getContent().getSections().get().getDefinitions()) {
+			sectionsWithUsage.put(e.getId(), SectionWithUsage.ofSection(new PrintModelTreeTrace<>(
+				path.with(new PrintModelPathElement.ObjectProperty("definitions"), i),
+				e
+			)));
+			i++;
+		}
+		return sectionsWithUsage;
 	}
 
 	@Override
 	public Optional<PrintModelTreeTrace<ModelSection>> resolveSectionId(String id) {
-		return sectionList.stream().filter(
-			section -> section.getTracedElement().getId().equals(id)
-		).findFirst();
+		final var section = sectionMap.get(id);
+		return section == null ? Optional.empty() : Optional.of(section.getSection());
+	}
+
+	@Override
+	public Optional<SectionWithUsage> resolveSectionIdWithUsage(String id) {
+		return Optional.ofNullable(sectionMap.get(id));
 	}
 }

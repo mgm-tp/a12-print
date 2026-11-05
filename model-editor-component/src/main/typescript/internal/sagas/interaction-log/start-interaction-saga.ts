@@ -50,6 +50,7 @@ import { PrintEngineSelectors } from "../../store/selectors.js";
 import type { RequestApi } from "../../api/index.js";
 import {
 	isBaseElementFormState,
+	isBaseReferenceFormState,
 	isListingColumnFormState,
 	isListingFieldCompFormState,
 	isListingGroupPropertyCompFormState,
@@ -173,7 +174,7 @@ function* handleAppendInteractionSaga(
 	}
 }
 
-function* getRegionId(region: InteractionRegion) {
+export function* getRegionId(region: InteractionRegion) {
 	const currentForm = yield* select(NavigationSelectors.currentForm);
 
 	switch (region) {
@@ -187,7 +188,13 @@ function* getRegionId(region: InteractionRegion) {
 		case TextRegion.TEXT_FROM_FIELD:
 		case TextRegion.TEXT_FROM_CALCULATION:
 		case GlobalRegion.FORM:
-			return currentForm && isBaseElementFormState(currentForm) ? currentForm.id : currentForm?.referenceId;
+			if (!currentForm) {
+				return undefined;
+			}
+			if (isBaseElementFormState(currentForm)) {
+				return currentForm.id;
+			}
+			return isBaseReferenceFormState(currentForm) ? currentForm.referenceId : undefined;
 		case StageRegion.DEFAULT:
 		case StageRegion.LAYOUT:
 		case StageRegion.READING_ORDER:

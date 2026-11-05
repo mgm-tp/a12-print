@@ -29,7 +29,6 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import isEmpty from "lodash/isEmpty.js";
 import { nanoid } from "nanoid";
 import type { SagaGenerator } from "typed-redux-saga";
 import { call, getContext, put, select, takeEvery } from "typed-redux-saga";
@@ -100,10 +99,9 @@ function* checkPreventUndo(lastSetInteraction: UndoInteractionLogEntry) {
 	if (preventUndo !== USED_TEXT_STYLE || !textStyle) {
 		return false;
 	}
-	const { segmentsMap, sectionsMap, wrapperMap } = yield* select((state: PrintEngineState) =>
-		PrintEngineSelectors.elementsAffectedByTextStyleChange(state, textStyle.id)
+	const isTextStyleUsed = yield* select((state: PrintEngineState) =>
+		PrintEngineSelectors.isTextStyleUsedByPrintModel(state, textStyle.id)
 	);
-	const isTextStyleUsed = !isEmpty(segmentsMap) || !isEmpty(sectionsMap) || !isEmpty(wrapperMap);
 	if (!isTextStyleUsed) {
 		return false;
 	}

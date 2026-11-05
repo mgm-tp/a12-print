@@ -35,6 +35,7 @@ import { fireEvent, screen } from "@testing-library/react";
 import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { renderWithProviders } from "../../../../../../../test/typescript/test-utils/index.js";
+import { FormContext } from "../../FormContext.js";
 
 import type { PreconditionRepeatRowType } from "../PreconditionRepeat.js";
 import { PreconditionsRepeat } from "../PreconditionRepeat.js";
@@ -42,8 +43,12 @@ import { PreconditionsRepeat } from "../PreconditionRepeat.js";
 describe("PreconditionsRepeat", () => {
 	const mockSetTableData = jest.fn();
 
-	const setupTest = (tableData: PreconditionRepeatRowType[] = []) =>
-		renderWithProviders(<PreconditionsRepeat tableData={tableData} setTableData={mockSetTableData} />);
+	const setupTest = (tableData: PreconditionRepeatRowType[] = [], isReadonly = false) =>
+		renderWithProviders(
+			<FormContext.Provider value={{ isReadonly }}>
+				<PreconditionsRepeat tableData={tableData} setTableData={mockSetTableData} isReadonly={isReadonly} />
+			</FormContext.Provider>
+		);
 
 	beforeEach(() => {
 		mockSetTableData.mockClear();
@@ -156,5 +161,25 @@ describe("PreconditionsRepeat", () => {
 			/>
 		);
 		expect(container).toBeTruthy();
+	});
+
+	describe("readonly mode", () => {
+		it("disables the Add button when isReadonly is true", () => {
+			const { getByRole } = setupTest([], true);
+
+			expect(getByRole("button", { name: "Add" })).toBeDisabled();
+		});
+
+		it("disables edit and delete buttons when isReadonly is true", () => {
+			const tableData: PreconditionRepeatRowType[] = [{ id: "row1", precondition: "cond" }];
+			const { getAllByRole } = setupTest(tableData, true);
+
+			const actionButtons = getAllByRole("button").filter(
+				button => button.getAttribute("title") === "Edit" || button.getAttribute("title") === "Delete"
+			);
+
+			expect(actionButtons).toHaveLength(2);
+			actionButtons.forEach(button => expect(button).toBeDisabled());
+		});
 	});
 });

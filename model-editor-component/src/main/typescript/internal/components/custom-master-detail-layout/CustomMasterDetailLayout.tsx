@@ -41,11 +41,13 @@ import type {
 } from "@com.mgmtp.a12.widgets/widgets-core";
 import { FocusLastLayout, MasterDetail, MasterDetailLayout } from "@com.mgmtp.a12.widgets/widgets-core";
 import { PartialSwitch } from "@com.mgmtp.a12.print/print-model-api/model";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { EditorMode, NavigationSelectors } from "../../redux/index.js";
 
 import { FormContainer } from "../forms/index.js";
+import { FormContext } from "../forms/FormContext.js";
 import { EditorContextWrapper } from "../editor-stage/EditorContextWrapper.js";
 
 const MAIN_CONTAINER = "MainContainer";
@@ -114,6 +116,18 @@ function useVisibleViews(layout: LayoutResult<ModelComponent>) {
 	const visibleSlots = MasterDetailLayout.visible(layout);
 
 	const currentCanvasEntityId = useSelector(PrintEngineSelectors.currentCanvasEntityId);
+	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
+	const isWatermarkReferenced = useSelector(PrintEngineSelectors.isCurrentWatermarkReferenced);
+	const isSectionReferenced = useSelector(PrintEngineSelectors.isCurrentSectionReferenced);
+	const isSegmentReferenced = useSelector(PrintEngineSelectors.isCurrentSegmentReferenced);
+	const isWrapperReferenced = useSelector(PrintEngineSelectors.isCurrentWrapperReferenced);
+	const isElementReferenced = useSelector(PrintEngineSelectors.isCurrentElementReferenced);
+
+	const isReadonlyStage =
+		(printModelRefs.currentRefType === SidebarItem.WATERMARK && isWatermarkReferenced) ||
+		(printModelRefs.currentRefType === SidebarItem.SECTION && isSectionReferenced) ||
+		(printModelRefs.currentRefType === SidebarItem.SEGMENT && isSegmentReferenced) ||
+		isWrapperReferenced;
 
 	return visibleSlots.map(v => {
 		const isFormContainer =
@@ -121,7 +135,13 @@ function useVisibleViews(layout: LayoutResult<ModelComponent>) {
 		return {
 			width: v.width as ViewWidth,
 			key: v.layoutable.key,
-			element: isFormContainer ? <FormContainer key={currentCanvasEntityId} /> : <EditorContextWrapper />,
+			element: isFormContainer ? (
+				<FormContext.Provider value={{ isReadonly: isReadonlyStage || isElementReferenced }}>
+					<FormContainer key={currentCanvasEntityId} />
+				</FormContext.Provider>
+			) : (
+				<EditorContextWrapper isReadonly={isReadonlyStage} />
+			),
 		};
 	});
 }

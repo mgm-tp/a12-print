@@ -102,7 +102,20 @@ export interface ElementFormState extends BaseElementFormState {
 	type: ElementType;
 }
 
-export type BaseFormState = BaseElementFormState | BaseReferenceFormState;
+/**
+ * A form that edits nothing: it carries neither an element id nor a reference id.
+ * Used by the Element Library, which occupies the detail form panel without being
+ * bound to a model entity.
+ */
+export interface StandaloneFormState {
+	type: string;
+}
+
+export interface ElementLibraryFormState extends StandaloneFormState {
+	type: "ElementLibrary";
+}
+
+export type BaseFormState = BaseElementFormState | BaseReferenceFormState | StandaloneFormState;
 
 export type AnyFormState =
 	| ElementFormState
@@ -114,7 +127,8 @@ export type AnyFormState =
 	| ListingColumnFormState
 	| ListingGroupPropertyCompFormState
 	| ListingPropertyCompFormState
-	| ListingFieldCompFormState;
+	| ListingFieldCompFormState
+	| ElementLibraryFormState;
 
 export function isTableColumnFormState(form: BaseFormState): form is TableColumnFormState {
 	return form.type === TableRegion.TABLE_COLUMN_FORM;
@@ -154,6 +168,10 @@ export function isListingPropertyCompFormState(form: BaseFormState): form is Lis
 
 export function isListingFieldCompFormState(form: BaseFormState): form is ListingFieldCompFormState {
 	return form.type === ListingRegion.FIELD_COMPUTATION_FORM;
+}
+
+export function isElementLibraryFormState(form: BaseFormState): form is ElementLibraryFormState {
+	return form.type === "ElementLibrary";
 }
 
 export function isBaseReferenceFormState(form: BaseFormState): form is BaseReferenceFormState {

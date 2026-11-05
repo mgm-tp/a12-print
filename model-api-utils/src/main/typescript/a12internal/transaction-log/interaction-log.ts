@@ -36,12 +36,17 @@ export type AffectedItemType =
 	| "interaction"
 	| "segment"
 	| "segmentReference"
+	| "segmentFragmentReferences"
 	| "section"
 	| "watermark"
+	| "watermarkReferences"
+	| "sectionReferences"
 	| "printModelHeader"
 	| "printModelContentGeneral"
 	| "textStyle"
-	| "printModelElement";
+	| "textStyleReferences"
+	| "printModelElement"
+	| "fragment";
 
 export const USED_TEXT_STYLE = "USED_TEXT_STYLE";
 export type PreventUndo = typeof USED_TEXT_STYLE | boolean;
@@ -85,6 +90,7 @@ export enum SidebarItem {
 	SECTION = "section",
 	WATERMARK = "watermark",
 	COMMIT_CHANGES = "commit-changes",
+	FRAGMENT = "fragment",
 }
 
 export namespace GlobalRegion {

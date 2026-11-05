@@ -31,17 +31,15 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.engine.provider.formatter;
 
-import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.Constant;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.provider.markup.FormattingResult;
+import com.mgmtp.a12.print.engine.runtime.kernel.internal.elements.Constant;
 import com.mgmtp.a12.print.model.api.model.element.base.DisplayOptions;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Locale;
 import java.util.Objects;
-import java.util.TimeZone;
 
 
 public class BooleanTypeFormatter implements ValueFormatProvider {

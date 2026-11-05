@@ -29,42 +29,59 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import type { PrintModelElement } from "../../model/index.js";
-import { type PartialPlaceableReference, type PartialWatermark } from "../../model/index.js";
+import {
+	type PrintModelElement,
+	type PrintModelEntity,
+	type PartialPlaceableReference,
+	type PartialWatermark,
+} from "../../model/index.js";
+import { isFragmentModelReference } from "../../model/reference/reference.js";
 
 import { type CloneContext } from "./type.js";
+import { dropDuplicateElements } from "./base.js";
 import { clonePrintModelElement } from "./print-model-element.js";
 import { CloneTreeTrace } from "./clone-tree-trace.js";
 
-export function cloneWatermarks(
+export function cloneWatermarks<Reference extends PrintModelEntity>(
 	watermarks: readonly string[],
 	watermarkDefinitions: readonly PartialWatermark[],
 	context: CloneContext,
-	trace: CloneTreeTrace = new CloneTreeTrace([])
+	trace: CloneTreeTrace = new CloneTreeTrace([]),
+	watermarkReferences: readonly Reference[] = []
 ) {
 	const clonedWatermarks: PartialWatermark[] = [];
 	const clonedElements: PrintModelElement[] = [];
 	const newWatermarks: string[] = [];
+	const clonedWatermarkReferences: Reference[] = [];
 
-	watermarks.map(watermarkId => {
+	watermarks.forEach(watermarkId => {
 		const targetWatermark = watermarkDefinitions.find(watermark => watermark.id === watermarkId);
-		if (!targetWatermark) {
+		if (targetWatermark) {
+			const { clonedWatermark, clonedWatermarkElements } = cloneWatermark(targetWatermark, context, trace);
+			clonedWatermarks.push(clonedWatermark);
+			newWatermarks.push(clonedWatermark.id);
+			clonedElements.push(...clonedWatermarkElements);
 			return;
 		}
-		const { clonedWatermark, clonedWatermarkElements } = cloneWatermark(targetWatermark, context, trace);
-		clonedWatermarks.push(clonedWatermark);
-		newWatermarks.push(clonedWatermark.id);
-		clonedElements.push(...clonedWatermarkElements);
+
+		// the list also names watermarks a fragment model provides - the reference is what this model owns
+		const watermarkReference = watermarkReferences.find(reference => reference.id === watermarkId);
+		if (watermarkReference) {
+			const clonedReference = context.cloneObject(watermarkReference);
+			clonedWatermarkReferences.push(clonedReference);
+			newWatermarks.push(clonedReference.id);
+		}
 	});
 
 	return {
 		clonedWatermarks,
-		clonedElements,
+		clonedElements: dropDuplicateElements(clonedElements),
 		newWatermarks,
+		clonedWatermarkReferences,
 	};
 }
 
-function cloneWatermark(
+export function cloneWatermark(
 	watermark: PartialWatermark,
 	context: CloneContext,
 	trace: CloneTreeTrace = new CloneTreeTrace([])
@@ -80,9 +97,18 @@ function cloneWatermark(
 	const watermarkTrace = trace.with(clonedWatermark);
 
 	elementReferences.forEach(elementReference => {
+		if (isFragmentModelReference(elementReference)) {
+			// the reference points outside this model - only the reference itself becomes an entity of this one
+			const clonedFragmentReference = context.cloneObject(elementReference);
+			context.elementIdMap.set(elementReference.id, clonedFragmentReference.id);
+			clonedReferences.push(clonedFragmentReference);
+			return;
+		}
+
 		const targetElement = elementReference.refId ? context.getElement(elementReference.refId) : undefined;
 
 		if (!targetElement) {
+			context.onUnresolved?.("element", elementReference.refId ?? elementReference.id);
 			return;
 		}
 
@@ -114,6 +140,6 @@ function cloneWatermark(
 			...clonedWatermark,
 			elementReferences: clonedReferences,
 		},
-		clonedWatermarkElements: clonedWatermarkElements,
+		clonedWatermarkElements: dropDuplicateElements(clonedWatermarkElements),
 	};
 }

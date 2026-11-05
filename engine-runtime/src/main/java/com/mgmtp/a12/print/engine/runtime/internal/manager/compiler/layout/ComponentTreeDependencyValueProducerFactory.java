@@ -39,6 +39,7 @@ import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.PrintModelCo
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.layout.componentTrees.*;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.Position;
 import com.mgmtp.a12.print.engine.runtime.internal.pdfBoxEngine.provider.component.elements.utils.Size;
+import com.mgmtp.a12.print.model.api.model.PrintFragmentModel;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.container.BaseReferenceContainer;
@@ -60,7 +61,7 @@ import com.mgmtp.a12.print.model.api.walker.TraversalCommand;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelVisitor;
 import com.mgmtp.a12.print.model.api.walker.model.PrintModelWalker;
-import com.mgmtp.a12.print.model.api.walker.model.resolver.PrintModelResolver;
+import com.mgmtp.a12.print.model.api.walker.model.resolver.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -79,12 +80,27 @@ public class ComponentTreeDependencyValueProducerFactory {
 	@NonNull
 	private final PrintModelCompilerRuntime printModelCompilerRuntime;
 
+	@NonNull
+	private final Map<String, PrintModelTreeTrace<PrintFragmentModel>> resolvedPrintModelFragments;
+
 	public void setDependencyValueProducer(PrintModelCompilationContext context) {
-		PlaceableReferenceContainerVisitor placeableReferenceContainerVisitor = PrintModelWalker.walkPrintModelWithDefaultResolver(
-			printModel,
-			getPrintModelResolver(),
-			new PlaceableReferenceContainerVisitor(printModel)
+		final PrintFragmentModelResolver printFragmentModelResolver = id -> Optional.ofNullable(resolvedPrintModelFragments.get(id));
+		final var sectionResolver = SectionIdListResolver.fromModel(printModel, printFragmentModelResolver);
+		final var sections = getSections(printModel, sectionResolver);
+
+		final var placeableReferenceContainerVisitor = new PlaceableReferenceContainerVisitor(printModel, sections);
+
+		final var walker = new PrintModelWalker(
+			placeableReferenceContainerVisitor,
+			ReferenceMultiModelResolver.fromModel(printModel, printFragmentModelResolver),
+			SegmentIdListResolver.fromModel(printModel, printFragmentModelResolver),
+			sectionResolver,
+			WatermarkIdListResolver.fromModel(printModel, printFragmentModelResolver),
+			ReferenceElementListResolver.fromModel(printModel),
+			getPrintModelResolver()
 		);
+		walker.walkPrintModel(printModel);
+
 		final var componentTreeMap =
 			placeableReferenceContainerVisitor.getComponentTreeMap();
 
@@ -107,6 +123,13 @@ public class ComponentTreeDependencyValueProducerFactory {
 		};
 	}
 
+	private List<SectionWithUsage> getSections(PrintModel printModel, SectionIdResolver sectionIdResolver) {
+		return printModel.getContent().getGeneral().getSections().stream().map(sectionId ->
+			sectionIdResolver.resolveSectionIdWithUsage(sectionId)
+				.orElseThrow(() -> new PrintCompilerException("The section {} could not be resolved", sectionId))
+		).toList();
+	}
+
 	@Data
 	private static class PlaceableReferenceContainerVisitor implements PrintModelVisitor {
 
@@ -116,6 +139,7 @@ public class ComponentTreeDependencyValueProducerFactory {
 		private final HashMap<String, PrintModelTreeTrace<TopLevelReferenceContainer>> segmentsWithDinSegment = new HashMap<>();
 
 		private final PrintModel printModel;
+		private final List<SectionWithUsage> sections;
 
 		@Override
 		public DescendCommand descendContainer(BaseReferenceContainer<? extends ElementReference> container, PrintModelPath path, int index) {
@@ -497,24 +521,22 @@ public class ComponentTreeDependencyValueProducerFactory {
 		}
 
 		private MatchingSections getMatchingSections(final ModelSegment segment) {
-			final var sectionDefinitions = this.printModel.getContent().getSections();
-			if (sectionDefinitions.isPresent() && !sectionDefinitions.get().getDefinitions().isEmpty()) {
-				final var isFirstSegment = this.printModel.getContent().getGeneral().getStructure().getFirst().equals(segment.getId());
-				final var pageOrientation = segment.getPageOrientation();
-				final var sections = sectionDefinitions.get().getDefinitions();
-				final var firstPageSection = isFirstSegment
-					? sections.stream().filter(section ->
-						section.getSectionUsage().equals(ModelSection.SectionUsage.FIRST) && section.getPageOrientation().equals(pageOrientation)
-					).findFirst().orElse(null)
-					: null;
+			final var isFirstSegment = this.printModel.getContent().getGeneral().getStructure().getFirst().equals(segment.getId());
+			final var pageOrientation = segment.getPageOrientation();
+			final var firstPageSection = isFirstSegment
+				? sections.stream().filter(section ->
+					section.getSectionUsage().equals(ModelSection.SectionUsage.FIRST) &&
+						section.getSection().getTracedElement().getPageOrientation().equals(pageOrientation)
+				).findFirst().map(section -> section.getSection().getTracedElement()).orElse(null)
+				: null;
 
-				final var remainingPageSection = sections.stream().filter(section ->
-					section.getSectionUsage().equals(ModelSection.SectionUsage.REMAINING) && section.getPageOrientation().equals(pageOrientation)
-				).findFirst().orElse(null);
+			final var remainingPageSection = sections.stream().filter(section ->
+				section.getSectionUsage().equals(ModelSection.SectionUsage.REMAINING) &&
+					section.getSection().getTracedElement().getPageOrientation().equals(pageOrientation)
+			).findFirst().map(section -> section.getSection().getTracedElement()).orElse(null);
 
-				if (firstPageSection != null || remainingPageSection != null) {
-					return new MatchingSections(firstPageSection, remainingPageSection);
-				}
+			if (firstPageSection != null || remainingPageSection != null) {
+				return new MatchingSections(firstPageSection, remainingPageSection);
 			}
 			return null;
 		}

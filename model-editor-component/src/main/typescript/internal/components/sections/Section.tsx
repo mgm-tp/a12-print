@@ -44,13 +44,16 @@ interface SectionProps {
 	startResize: (startPos: OmitId<Measure>, side: ISide) => void;
 	zoomFactor: number;
 	dimensions: OmitId<Dimensions>;
+	isReadonly?: boolean;
 }
 
-export const Section = ({ side, height, startResize, zoomFactor, dimensions }: SectionProps) => {
+export const Section = ({ side, height, startResize, zoomFactor, dimensions, isReadonly }: SectionProps) => {
 	const styledProps = { side, height, zoomFactor };
 	return (
 		<StyledSection {...styledProps}>
-			<ResizeHandle dimensions={dimensions} side={side} startResize={startResize} zoomFactor={zoomFactor} />
+			{!isReadonly && (
+				<ResizeHandle dimensions={dimensions} side={side} startResize={startResize} zoomFactor={zoomFactor} />
+			)}
 		</StyledSection>
 	);
 };

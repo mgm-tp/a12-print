@@ -45,6 +45,7 @@ describe("TextPropertiesForm", () => {
 	const mockElement: PartialTable = {
 		id: "tableId",
 		type: ElementType.Table,
+		name: "mockTable",
 		textProperties: {
 			id: "k0FFvYRpIj2vM_3z-UAYd",
 			color: {

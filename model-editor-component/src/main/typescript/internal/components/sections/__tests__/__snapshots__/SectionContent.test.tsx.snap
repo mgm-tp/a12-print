@@ -71,6 +71,14 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   max-width: unset;
 }
 
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c4 {
+  color: inherit;
+}
+
+.c22.c22 {
+  color: #c91d1d;
+}
+
 .c20 {
   align-items: center;
   border: 2px solid transparent;
@@ -118,6 +126,10 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   border: 2px solid #d50075;
 }
 
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c20:where(:not(:active):not(:hover):not(:focus)) {
+  color: inherit;
+}
+
 .h_inlineBlock.h_middleAlign .c20.c20 {
   display: block;
   height: auto;
@@ -161,7 +173,7 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   -webkit-user-select: none;
 }
 
-.c21 .c3 {
+.c21 {
   color: inherit;
 }
 
@@ -182,6 +194,10 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   box-shadow: none;
   color: #d50075;
   border: 2px solid #d50075;
+}
+
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c21:where(:not(:active):not(:hover):not(:focus)) {
+  color: inherit;
 }
 
 .h_inlineBlock.h_middleAlign .c21.c21 {
@@ -295,7 +311,7 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   width: 100%;
 }
 
-.c11 >.StyledTooltipTriggerWrapper-sc-eBoCRM {
+.c11 >.StyledTooltipTriggerWrapper-sc-cAUnSs {
   margin: 0 4px 4px 0;
 }
 
@@ -331,6 +347,12 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   gap: 2px;
 }
 
+.c18 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .c1 {
   border: none;
   border-bottom: 1px solid #fff;
@@ -346,13 +368,6 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
   min-width: 70px;
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.c18 {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
   gap: 8px;
 }
 
@@ -461,6 +476,8 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             description
           </span>
@@ -489,6 +506,7 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
+              data-disabled="false"
               data-role="text-field-label"
             >
               <span
@@ -500,6 +518,7 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
             </label>
             <div
               class="c15 field__input"
+              data-disabled="false"
               data-role="text-field-input-wrapper"
             >
               <span
@@ -536,6 +555,8 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               square_foot
             </span>
@@ -550,11 +571,13 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           type="button"
         >
           <i
-            class="c3 c4 plasma-icon"
+            class="c3 c4 c22 plasma-icon plasma-icon--error"
             data-role="plasma-icon"
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               delete
             </span>
@@ -576,6 +599,8 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             description
           </span>
@@ -593,6 +618,8 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             repeat
           </span>
@@ -621,6 +648,7 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
+              data-disabled="false"
               data-role="text-field-label"
             >
               <span
@@ -632,6 +660,7 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
             </label>
             <div
               class="c15 field__input"
+              data-disabled="false"
               data-role="text-field-input-wrapper"
             >
               <span
@@ -668,6 +697,8 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               square_foot
             </span>
@@ -682,11 +713,13 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           type="button"
         >
           <i
-            class="c3 c4 plasma-icon"
+            class="c3 c4 c22 plasma-icon plasma-icon--error"
             data-role="plasma-icon"
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               delete
             </span>
@@ -708,6 +741,8 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             topic
           </span>
@@ -736,6 +771,7 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
+              data-disabled="false"
               data-role="text-field-label"
             >
               <span
@@ -747,6 +783,7 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
             </label>
             <div
               class="c15 field__input"
+              data-disabled="false"
               data-role="text-field-input-wrapper"
             >
               <span
@@ -783,6 +820,8 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               square_foot
             </span>
@@ -797,11 +836,13 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           type="button"
         >
           <i
-            class="c3 c4 plasma-icon"
+            class="c3 c4 c22 plasma-icon plasma-icon--error"
             data-role="plasma-icon"
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               delete
             </span>
@@ -823,6 +864,8 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             topic
           </span>
@@ -840,6 +883,8 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             repeat
           </span>
@@ -868,6 +913,7 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           >
             <label
               class="c12 c13 label field__label -u-unseenButRead"
+              data-disabled="false"
               data-role="text-field-label"
             >
               <span
@@ -879,6 +925,7 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
             </label>
             <div
               class="c15 field__input"
+              data-disabled="false"
               data-role="text-field-input-wrapper"
             >
               <span
@@ -915,6 +962,8 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               square_foot
             </span>
@@ -929,11 +978,13 @@ exports[`SectionContent with initial sections should render correctly 1`] = `
           type="button"
         >
           <i
-            class="c3 c4 plasma-icon"
+            class="c3 c4 c22 plasma-icon plasma-icon--error"
             data-role="plasma-icon"
           >
             <span
               aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
               delete
             </span>
@@ -993,6 +1044,10 @@ exports[`SectionContent with no initial sections should render correctly 1`] = `
 
 .c4.c4 {
   max-width: unset;
+}
+
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c4 {
+  color: inherit;
 }
 
 .c7 {
@@ -1119,6 +1174,8 @@ exports[`SectionContent with no initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             description
           </span>
@@ -1158,6 +1215,8 @@ exports[`SectionContent with no initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             description
           </span>
@@ -1175,6 +1234,8 @@ exports[`SectionContent with no initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             repeat
           </span>
@@ -1214,6 +1275,8 @@ exports[`SectionContent with no initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             topic
           </span>
@@ -1253,6 +1316,8 @@ exports[`SectionContent with no initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             topic
           </span>
@@ -1270,6 +1335,8 @@ exports[`SectionContent with no initial sections should render correctly 1`] = `
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
             repeat
           </span>

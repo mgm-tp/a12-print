@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`validateModelReferenceDeclarations - Print Model References reports the reference as broken when the model is missing from the workspace 1`] = `
+{
+  "header": {
+    "modelReferences": [
+      {},
+      {
+        "@error": [
+          "The referenced Print Model 'ReferencedModel' does not exist",
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`validateModelReferenceDeclarations - Typesetting Model References reports the reference as broken when the model is missing from the workspace 1`] = `
+{
+  "header": {
+    "modelReferences": [
+      {},
+      {
+        "@error": [
+          "The referenced Typesetting Model 'ReferencedModel' does not exist",
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`validateModelReferenceDeclarations reports both references as broken when neither model exists in the workspace 1`] = `
+{
+  "header": {
+    "modelReferences": [
+      {
+        "@error": [
+          "The referenced Document Model 'ExampleDM' does not exist",
+        ],
+      },
+      {
+        "@error": [
+          "The referenced Fragment Model 'printFragment' does not exist",
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`validateModelReferenceDeclarations reports the Document Model reference as broken when it is missing from the workspace 1`] = `
+{
+  "header": {
+    "modelReferences": [
+      {
+        "@error": [
+          "The referenced Document Model 'ExampleDM' does not exist",
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`validateModelReferenceDeclarations reports the Fragment Model reference as broken when it is missing from the workspace 1`] = `
+{
+  "header": {
+    "modelReferences": [
+      {},
+      {
+        "@error": [
+          "The referenced Fragment Model 'printFragment' does not exist",
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`validateTypesettingUsages warns about the Typesetting Model of a fragment text style that is missing from the workspace 1`] = `
+{
+  "content": {
+    "textStyles": {
+      "references": [
+        {},
+        {
+          "@warning": [
+            "The Typesetting Model 'Typesetting_for_fragment' used by this text style does not exist",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateTypesettingUsages warns about the Typesetting Model of a local text style that is missing from the workspace 1`] = `
+{
+  "content": {
+    "textStyles": {
+      "definitions": [
+        {
+          "typesettingModelName": {
+            "@warning": [
+              "The Typesetting Model 'Typesetting_for_local' used by this text style does not exist",
+            ],
+          },
+        },
+      ],
+    },
+  },
+}
+`;

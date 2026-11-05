@@ -38,6 +38,7 @@ import { useTheme, ThemeProvider } from "styled-components";
 import { getDefaultTextStyleFont } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 import { ProgressIndicator } from "@com.mgmtp.a12.widgets/widgets-core";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import {
@@ -78,6 +79,7 @@ export const PrintModelEditor = ({
 	navigationPath,
 	sidebarFooter,
 }: ModelEditorComponentProps) => {
+	const { isFragmentModel } = contextApi;
 	const dispatch = useDispatch();
 	const transactionLogState = useSelector(PrintEngineSelectors.transactionLogState);
 	const { activeTab, isFullscreen, isOpen } = useSelector(NavigationSelectors.sidebarState);
@@ -142,7 +144,20 @@ export const PrintModelEditor = ({
 									<StyledApplicationFrame
 										content={<CustomMasterDetailLayout />}
 										main={null}
-										sub={<Sidebar footer={sidebarFooter} />}
+										sub={
+											<Sidebar
+												footer={sidebarFooter}
+												hiddenItems={
+													isFragmentModel
+														? [
+																SidebarItem.SEGMENT,
+																SidebarItem.SECTION,
+																SidebarItem.WATERMARK,
+															]
+														: [SidebarItem.FRAGMENT]
+												}
+											/>
+										}
 										disableCollapsingSub
 										closeSubOnClickOutside
 										subExpanded={isOpen}

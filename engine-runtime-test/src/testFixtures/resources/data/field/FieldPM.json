@@ -2,7 +2,7 @@
   "header": {
     "id": "FieldPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -373,7 +373,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_fc10d"
       },
       {
         "id": "m9eY5Yb6ccJww4yvM_hQM",
@@ -422,7 +423,8 @@
               "refId": "kbIBQQ17N57ElN9UwZ7xP"
             }
           ]
-        }
+        },
+        "name": "Text_bae44"
       },
       {
         "id": "kbIBQQ17N57UUN9UwZ7xP",
@@ -449,7 +451,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_f55ea"
       },
       {
         "id": "MxPt8b-dsboMQA6nKaIQD",
@@ -499,7 +502,8 @@
               "refId": "kbIBQQ17N57UUN9UwZ7xP"
             }
           ]
-        }
+        },
+        "name": "Text_65ef6"
       },
       {
         "id": "kbIBQQ17N897UUN9UwZ7xP",
@@ -532,7 +536,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_d9de4"
       },
       {
         "id": "MxPt8b78dsboMQA6nKaIQD",
@@ -582,7 +587,8 @@
               "refId": "kbIBQQ17N897UUN9UwZ7xP"
             }
           ]
-        }
+        },
+        "name": "Text_63fd2"
       },
       {
         "id": "kbIBzT17N897UUN9UwZ7xP",
@@ -615,7 +621,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_ccfa8"
       },
       {
         "id": "MxPt8b60dsboMQA6nKaIQD",
@@ -665,7 +672,8 @@
               "refId": "kbIBzT17N897UUN9UwZ7xP"
             }
           ]
-        }
+        },
+        "name": "Text_22f1f"
       },
       {
         "id": "kbIBzZ7N897UUN9UwZ7xP",
@@ -698,7 +706,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_3660b"
       },
       {
         "id": "MxPt8b80dsboMQA6nKaIQD",
@@ -748,7 +757,8 @@
               "refId": "kbIBzZ7N897UUN9UwZ7xP"
             }
           ]
-        }
+        },
+        "name": "Text_c162d"
       },
       {
         "id": "m9eY5Yb6ccJww4yvM_hQDR",
@@ -797,7 +807,8 @@
               "refId": "kbIBQQ17N897UUN9UwZ7xDR"
             }
           ]
-        }
+        },
+        "name": "Text_f3a28"
       },
       {
         "id": "kbIBQQ17N897UUN9UwZ7xDR",
@@ -831,7 +842,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_d3f86"
       }
     ],
     "textStyles": {

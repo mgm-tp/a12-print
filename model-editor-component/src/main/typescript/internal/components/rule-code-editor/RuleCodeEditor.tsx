@@ -43,7 +43,7 @@ import type {
 import { AntlrCodeEditor } from "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core";
 import type { Logger } from "@com.mgmtp.a12.utils/utils-logging";
 import { InputElements, CssEllipsis } from "@com.mgmtp.a12.widgets/widgets-core";
-import type { CompletionItemDocResolver, ItemSuggestor } from "@com.mgmtp.a12.dml/dml";
+import type { CompletionItemDocResolver } from "@com.mgmtp.a12.dml/dml";
 import {
 	GRAMMAR_NAME,
 	GRAMMAR_ROOT_RULE_NAMES,
@@ -139,9 +139,6 @@ export interface RuleCodeEditorProps
 		DebugProps {
 	rootRuleName: string;
 	setNewRowData(newData: string): void;
-	fieldSuggestor?: ItemSuggestor;
-	groupSuggestor?: ItemSuggestor;
-	rootGroupNameSuggestor?: ItemSuggestor;
 	completionItemDocResolver?: CompletionItemDocResolver;
 	setFormDirty?(): void;
 	label?: string;
@@ -153,6 +150,7 @@ export interface RuleCodeEditorProps
 	documentModelData: DocumentModelData | undefined;
 	style?: React.CSSProperties;
 	className?: string;
+	readOnly?: boolean;
 }
 
 export const RuleCodeEditor = (props: RuleCodeEditorProps) => {
@@ -177,6 +175,7 @@ export const RuleCodeEditor = (props: RuleCodeEditorProps) => {
 		documentModelData,
 		style,
 		className,
+		readOnly,
 	} = props;
 
 	const localizer = PrintLocalizer.useLocalizer();
@@ -336,6 +335,11 @@ export const RuleCodeEditor = (props: RuleCodeEditorProps) => {
 		return undefined;
 	}, [validationErrors]);
 
+	const uiConfig = React.useMemo(
+		() => ({ ...UI_CONFIG, options: { ...UI_CONFIG.options, readOnly: !!readOnly } }),
+		[readOnly]
+	);
+
 	return (
 		<>
 			<InputElements.Label label={label} />
@@ -353,12 +357,12 @@ export const RuleCodeEditor = (props: RuleCodeEditorProps) => {
 						customCompletionProvider={completionItemProviderRegisterer}
 						languageConfiguration={MONACO_LANGUAGE_CONFIGURATION}
 						customTheme={getTheme({
-							readonly: false,
+							readonly: !!readOnly,
 						})}
 						onValueSubmit={onChangeHandler}
 						fetchExternalErrors={fetchExternalErrors}
 						fetchHelpTextSupport={fetchHelpTextSupport}
-						uiConfig={UI_CONFIG}
+						uiConfig={uiConfig}
 						codeCompletionShortcut={codeCompletionShortcut}
 						loading={loading}
 						initializationErrorMessage={

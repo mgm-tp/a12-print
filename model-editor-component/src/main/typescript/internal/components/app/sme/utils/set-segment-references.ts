@@ -107,11 +107,13 @@ const setReference = (printModel: PrintModel, reference: SegmentReference): Prin
 			...printModel.content,
 			segments: {
 				...printModel.content.segments,
-				references: printModel.content.segments.references.find(
+				id: printModel.content.segments?.id ?? nanoid(),
+				definitions: printModel.content.segments?.definitions ?? [],
+				references: printModel.content.segments?.references?.find(
 					ref => ref.referenceModel === reference.referenceModel
 				)
 					? printModel.content.segments.references
-					: [...printModel.content.segments.references, reference],
+					: [...(printModel.content.segments?.references || []), reference],
 			},
 		},
 	};

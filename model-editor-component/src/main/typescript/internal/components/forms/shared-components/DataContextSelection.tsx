@@ -91,6 +91,7 @@ interface DataContextSelectionProps {
 	elementMapEntries: ElementMapEntry[];
 	isRepeatableInstanceFlag?: boolean;
 	isInstanceContext?: boolean;
+	disabled?: boolean;
 }
 
 export const DataContextSelection = (props: DataContextSelectionProps) => {
@@ -102,6 +103,7 @@ export const DataContextSelection = (props: DataContextSelectionProps) => {
 		setSelectedPath,
 		isRepeatableInstanceFlag,
 		isInstanceContext,
+		disabled,
 	} = props;
 	const localizer = PrintLocalizer.useLocalizer();
 
@@ -128,7 +130,7 @@ export const DataContextSelection = (props: DataContextSelectionProps) => {
 
 	const onToggleSelection = React.useCallback(
 		(node: TreeNode) => {
-			if (node.disabled) {
+			if (node.disabled || disabled) {
 				return;
 			}
 			const toggledNode = findById(treeData, node.id);
@@ -148,7 +150,7 @@ export const DataContextSelection = (props: DataContextSelectionProps) => {
 				setSelectedPath(path);
 			}
 		},
-		[setSelectedPath, treeData, type]
+		[setSelectedPath, treeData, type, disabled]
 	);
 
 	if (!elementMapEntries.length && !treeData.children?.length) {
@@ -164,7 +166,11 @@ export const DataContextSelection = (props: DataContextSelectionProps) => {
 			/>
 		);
 	}
-	return <BasicTree root={treeData} tplTreeNode={tplTreeNode} onToggleSelection={onToggleSelection} hideRoot />;
+	return (
+		<div style={disabled ? { pointerEvents: "none", opacity: 0.5 } : undefined}>
+			<BasicTree root={treeData} tplTreeNode={tplTreeNode} onToggleSelection={onToggleSelection} hideRoot />
+		</div>
+	);
 };
 
 function getRootNode(

@@ -31,14 +31,15 @@
  */
 import { put, race, take } from "typed-redux-saga";
 
-import type { ConfirmationDialogType } from "../../redux/index.js";
+import type { ConfirmationDialogPayload, ConfirmationDialogType } from "../../redux/index.js";
 import { ConfirmationDialogActions } from "../../redux/index.js";
 import { resolveDialogPromise } from "../../hooks/use-confirmation-dialog.js";
 
-export function* openConfirmationDialogSaga(type: ConfirmationDialogType) {
+export function* openConfirmationDialogSaga(type: ConfirmationDialogType, payload?: ConfirmationDialogPayload) {
 	yield* put(
 		ConfirmationDialogActions.open({
-			type: type,
+			type,
+			payload,
 		})
 	);
 	const { confirmed } = yield* race({

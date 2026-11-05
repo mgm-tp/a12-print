@@ -44,6 +44,7 @@ import { ConfirmationDialogReducer } from "../redux/confirmation-dialog/index.js
 import { GeneralViewReducer } from "../redux/index.js";
 import { DocumentModelDataReducer } from "../redux/document-model-data/reducer.js";
 import { NavigationReducer } from "../redux/navigation/index.js";
+import { FragmentUsageReducer } from "../redux/fragment-usage/index.js";
 
 export namespace PrintEditorComponentReducer {
 	export const reducers = {
@@ -57,6 +58,7 @@ export namespace PrintEditorComponentReducer {
 		ConfirmationDialogState: ConfirmationDialogReducer,
 		GeneralViewState: GeneralViewReducer,
 		Navigation: NavigationReducer,
+		FragmentUsageState: FragmentUsageReducer,
 	};
 
 	export const rootReducer: Reducer<PrintEngineState> = combineReducers({

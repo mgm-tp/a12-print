@@ -88,7 +88,7 @@ export const SegmentDefaultReferenceRenderer = ({
 					reference.position.x.value + reference.dimensions.minWidth.value > editorDimensions.minWidth.value;
 				return isOverlap && !isOutOfStage ? (
 					<BrokenElement
-						key={reference.refId}
+						key={reference.id}
 						reference={reference}
 						pageRefs={pageRefs}
 						renderElement={offset => {
@@ -96,9 +96,9 @@ export const SegmentDefaultReferenceRenderer = ({
 								<DragSourceWrapper
 									item={reference}
 									setIsDraggingGL={setIsDraggingGL}
-									isSelected={selected.includes(reference.refId)}
-									isColliding={collisionsList.includes(reference.refId)}
-									isOutsideBox={outOfBoxList.includes(reference.refId)}
+									isSelected={selected.includes(reference.id)}
+									isColliding={collisionsList.includes(reference.id)}
+									isOutsideBox={outOfBoxList.includes(reference.id)}
 									isMultiDrag={isMultiDrag}
 									hovered={hovered}
 									setHovered={setHovered}
@@ -119,12 +119,12 @@ export const SegmentDefaultReferenceRenderer = ({
 					/>
 				) : (
 					<DragSourceWrapper
-						key={reference.refId}
+						key={reference.id}
 						item={reference}
 						setIsDraggingGL={setIsDraggingGL}
-						isSelected={selected.includes(reference.refId)}
-						isColliding={collisionsList.includes(reference.refId)}
-						isOutsideBox={outOfBoxList.includes(reference.refId)}
+						isSelected={selected.includes(reference.id)}
+						isColliding={collisionsList.includes(reference.id)}
+						isOutsideBox={outOfBoxList.includes(reference.id)}
 						isMultiDrag={isMultiDrag}
 						hovered={hovered}
 						setHovered={setHovered}

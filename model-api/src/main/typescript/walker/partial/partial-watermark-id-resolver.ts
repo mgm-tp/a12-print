@@ -31,29 +31,77 @@
  */
 import { type PartialPrintModel, type PartialWatermark } from "../../model/index.js";
 
+import {
+	resolveFragmentDefinitions,
+	resolveTopLevelContainerOrigins,
+	type TopLevelContainerOrigin,
+} from "../fragment-definition-resolver.js";
+import type { PrintModelResolver } from "../print-model-resolver.js";
+
 interface PartialWatermarkMap {
 	[key: string]: PartialWatermark;
 }
 
 export interface PartialWatermarkIdResolver {
 	resolveWatermarkId(id: string): PartialWatermark | undefined;
+
+	resolveWatermarkOrigin?(id: string): TopLevelContainerOrigin | undefined;
+}
+
+/** Where the watermark of an id comes from, `undefined` if the resolver does not track it or the id is unknown. */
+export function resolvePartialWatermarkOrigin(
+	resolver: PartialWatermarkIdResolver,
+	id: string
+): TopLevelContainerOrigin | undefined {
+	return resolver.resolveWatermarkOrigin?.(id);
 }
 
 export class DefaultPartialWatermarkIdResolver implements PartialWatermarkIdResolver {
-	constructor(private watermarkList: ReadonlyArray<PartialWatermark>) {}
+	constructor(
+		private readonly watermarkList: ReadonlyArray<PartialWatermark>,
+		private readonly fragmentWatermarks: ReadonlyMap<string, PartialWatermark> = new Map(),
+		private readonly origins: ReadonlyMap<string, TopLevelContainerOrigin> = new Map()
+	) {}
 
-	public static fromModel(printModel: PartialPrintModel) {
-		return new this(printModel.content?.watermarks?.definitions || []);
+	/** @param fragmentModelResolver Without it only locally defined watermarks are resolvable.
+	 * @remarks
+	 * The signature will change in the next major release to `fromModel(printModel: PartialPrintModel, fragmentModelResolver: PrintModelResolver)`.
+	 */
+	public static fromModel(printModel: PartialPrintModel, fragmentModelResolver?: PrintModelResolver) {
+		const watermarks = printModel.content?.watermarks;
+		return new this(
+			watermarks?.definitions || [],
+			fragmentModelResolver
+				? resolveFragmentDefinitions(
+						watermarks?.references || [],
+						fragmentModelResolver,
+						fragmentModel => fragmentModel.content.watermarks?.definitions || [],
+						// Each reference is an independent instance, keyed by its own id.
+						(watermark, _reference, referenceId) => ({ ...watermark, id: referenceId })
+					)
+				: undefined,
+			resolveTopLevelContainerOrigins(watermarks?.definitions || [], watermarks?.references || [])
+		);
 	}
 
 	resolveWatermarkId(id: string): PartialWatermark | undefined {
-		return this.watermarkList.find(el => el.id === id);
+		return this.watermarkList.find(el => el.id === id) || this.fragmentWatermarks.get(id);
+	}
+
+	resolveWatermarkOrigin(id: string): TopLevelContainerOrigin | undefined {
+		const origin = this.origins.get(id);
+		if (origin) {
+			return origin;
+		}
+		// Without the prepared map only the local definitions are known, fragment references are not.
+		const definitionIndex = this.watermarkList.findIndex(watermark => watermark.id === id);
+		return definitionIndex < 0 ? undefined : { definitionIndex };
 	}
 }
 
 export class CachedPartialWatermarkIdResolver implements PartialWatermarkIdResolver {
-	private watermarksResolver: PartialWatermarkIdResolver;
-	private watermarkMap: PartialWatermarkMap = {};
+	private readonly watermarksResolver: PartialWatermarkIdResolver;
+	private readonly watermarkMap: PartialWatermarkMap = {};
 
 	constructor(referenceResolver: PartialWatermarkIdResolver) {
 		this.watermarksResolver = referenceResolver;
@@ -69,5 +117,9 @@ export class CachedPartialWatermarkIdResolver implements PartialWatermarkIdResol
 			this.watermarkMap[id] = newWatermark;
 		}
 		return newWatermark;
+	}
+
+	resolveWatermarkOrigin(id: string): TopLevelContainerOrigin | undefined {
+		return resolvePartialWatermarkOrigin(this.watermarksResolver, id);
 	}
 }

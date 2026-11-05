@@ -68,9 +68,15 @@ interface PreconditionsRepeatProps {
 	setTableData: (newValue: PreconditionRepeatRowType[]) => void;
 	tableData: PreconditionRepeatRowType[];
 	preconditionErrorMap?: DeepPartialErrorMap<Precondition>[];
+	isReadonly?: boolean;
 }
 
-export const PreconditionsRepeat = ({ tableData, setTableData, preconditionErrorMap }: PreconditionsRepeatProps) => {
+export const PreconditionsRepeat = ({
+	tableData,
+	setTableData,
+	preconditionErrorMap,
+	isReadonly = false,
+}: PreconditionsRepeatProps) => {
 	const [expandedRow, setExpandedRow] = React.useState<number | undefined>();
 	const columns = usePreconditionColumns();
 	const documentModel = useSelector(PrintEngineSelectors.defaultModelReference);
@@ -131,6 +137,7 @@ export const PreconditionsRepeat = ({ tableData, setTableData, preconditionError
 					aliasDocumentModel={aliasDocumentModel}
 					documentModelData={documentModelData}
 					getComputationError={getComputationError}
+					isReadonly={isReadonly}
 					{...props}
 					row={row}
 				/>
@@ -158,6 +165,7 @@ export const PreconditionsRepeat = ({ tableData, setTableData, preconditionError
 			documentModelData,
 			expandedRow,
 			getComputationError,
+			isReadonly,
 			setNewRowData,
 		]
 	);
@@ -168,12 +176,13 @@ export const PreconditionsRepeat = ({ tableData, setTableData, preconditionError
 				<ActionColumnButtonGroup
 					onEdit={() => onEditClick(props)}
 					onDelete={() => deleteBodyRow(props.rowIndex)}
+					isReadonly={isReadonly}
 				/>
 			) : (
 				DefaultTableComponentRenderers.bodyContentRenderer(props)
 			);
 		},
-		[deleteBodyRow, onEditClick]
+		[deleteBodyRow, isReadonly, onEditClick]
 	);
 
 	return (
@@ -186,9 +195,10 @@ export const PreconditionsRepeat = ({ tableData, setTableData, preconditionError
 						bodyContentRenderer,
 						bodyRowRenderer,
 					}}
+					disabled={isReadonly}
 				/>
 			</div>
-			<AddButtonGroup onClick={onAddRowClick} />
+			<AddButtonGroup onClick={onAddRowClick} disabled={isReadonly} />
 		</StyledPreconditionsRepeat>
 	);
 };
@@ -201,6 +211,7 @@ interface RepeatBodyRowProps extends TableRenderPropsType.BodyRowProps<Precondit
 	aliasDocumentModel: string | undefined;
 	documentModelData: DocumentModelData | undefined;
 	getComputationError: (rowIndex: number) => PrintError[] | undefined;
+	isReadonly?: boolean;
 }
 
 const RepeatBodyRow = ({
@@ -211,6 +222,7 @@ const RepeatBodyRow = ({
 	getComputationError,
 	aliasDocumentModel,
 	documentModelData,
+	isReadonly = false,
 	...bodyRowProps
 }: RepeatBodyRowProps) => {
 	const { rowIndex } = bodyRowProps;
@@ -260,6 +272,7 @@ const RepeatBodyRow = ({
 							title={localizer(RESOURCE_KEYS.button.delete)}
 							onClick={onDeleteClick}
 							icon={<Icon>delete</Icon>}
+							disabled={isReadonly}
 						/>
 					</ButtonGroup>
 				</TableTemplate.ExpandableRowFooter>

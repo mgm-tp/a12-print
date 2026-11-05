@@ -47,7 +47,7 @@ export interface GlobalToolbarProps {
 
 export const GlobalToolbar = ({ leftSlots, rightSlots, printModelId, modelIcon }: GlobalToolbarProps) => {
 	return (
-		<StyledToolbar>
+		<StyledToolbar data-testid="global-toolbar">
 			<StyledSlotWrapper slotPosition="left">
 				{modelIcon && <ModelIcon src={modelIcon} />}
 				<ContentBoxElements.Title

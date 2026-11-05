@@ -30,12 +30,14 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { useMemo } from "react";
+import { useSelector } from "react-redux";
 
 import { createPrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
 import type { Localizer } from "@com.mgmtp.a12.utils/utils-localization";
 
 import type { ContextApi } from "../../../api/context-api.js";
+import { PrintEngineSelectors } from "../../../store/selectors.js";
 
 import { useGetPrintComponentMessage } from "./use-get-print-component-message.js";
 
@@ -47,6 +49,7 @@ export function useContextApi({
 	localizer: Localizer;
 }) {
 	const getPrintComponentMessage = useGetPrintComponentMessage();
+	const printModelSubType = useSelector(PrintEngineSelectors.printModelSubType);
 
 	const fontMap = useMemo(() => {
 		return createPrintFontMap(customFonts ?? {});
@@ -60,9 +63,10 @@ export function useContextApi({
 			getFonts() {
 				return fontMap;
 			},
+			isFragmentModel: printModelSubType === "fragment",
 			discardAllChangesPossible: true,
 		}),
-		[fontMap, getPrintComponentMessage, localizer]
+		[fontMap, getPrintComponentMessage, localizer, printModelSubType]
 	);
 
 	return contextApi;

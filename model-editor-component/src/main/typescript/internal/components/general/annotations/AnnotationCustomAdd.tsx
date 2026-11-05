@@ -38,7 +38,7 @@ import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { CustomTextField } from "../../forms/custom-base-input-components/index.js";
 
 import { StyledAnnotationAddContainer } from "./AnnotationCustomAdd.styled.js";
-import type { AnnotationData } from "./annotation.js";
+import { isProtectedAnnotation, type AnnotationData } from "./annotation.js";
 
 interface AnnotationCustomAddProps {
 	data: AnnotationData[];
@@ -61,11 +61,11 @@ export const AnnotationCustomAdd = ({ data, setData }: AnnotationCustomAddProps)
 			setErrorMessage("");
 			return;
 		}
-		if (data.find(el => el.name === "roles")) {
+		if (isProtectedAnnotation(trimmedName)) {
 			setErrorMessage(RESOURCE_KEYS.sidebar.general.message.annotationNameProtected);
 			return;
 		}
-		if (data.find(el => el.name === trimmedName)) {
+		if (data.some(el => el.name === trimmedName)) {
 			setErrorMessage(RESOURCE_KEYS.sidebar.general.message.annotationNameDuplicate);
 			return;
 		}

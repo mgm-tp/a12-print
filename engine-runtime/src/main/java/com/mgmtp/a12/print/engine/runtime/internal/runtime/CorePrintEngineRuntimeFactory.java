@@ -80,6 +80,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 
 @Builder(builderClassName = "Builder")
@@ -166,16 +167,20 @@ public class CorePrintEngineRuntimeFactory<Job extends PrintJob, Engine extends 
 	) {
 		final var printModel = managedPrintJob.getPrintModelCompilationContext();
 
-		final var referenceResolver = ReferenceMultiModelResolver.fromModel(printModel);
+		final PrintFragmentModelResolver fragmentModelResolver = (String id) -> Optional.ofNullable(
+			printModel.getResolvedPrintModelFragments().get(id)
+		);
+
+		final var referenceResolver = ReferenceMultiModelResolver.fromModel(printModel, fragmentModelResolver);
 		final var referenceProvider = new ReferenceElementDependencyValueProducer(referenceResolver);
 
-		final var segmentResolver = SegmentIdListResolver.fromModel(printModel);
+		final var segmentResolver = SegmentIdListResolver.fromModel(printModel, fragmentModelResolver);
 		final var segmentProvider = new SegmentByIdDependencyValueProducer(segmentResolver);
 
-		final var sectionResolver = SectionIdListResolver.fromModel(printModel);
+		final var sectionResolver = SectionIdListResolver.fromModel(printModel, fragmentModelResolver);
 		final var sectionProvider = new SectionByIdDependencyValueProducer(sectionResolver);
 
-		final var watermarkResolver = WatermarkIdListResolver.fromModel(printModel);
+		final var watermarkResolver = WatermarkIdListResolver.fromModel(printModel, fragmentModelResolver);
 		final var watermarkProvider = new WatermarkByIdDependencyValueProducer(watermarkResolver);
 
 		final var referenceElementResolver = ReferenceElementListResolver.fromModel(printModel);
@@ -189,7 +194,7 @@ public class CorePrintEngineRuntimeFactory<Job extends PrintJob, Engine extends 
 
 		final var providers = new ArrayList<>(managedPrintJob.getDataProviderList().keySet());
 
-		final var textStyleResolver = TextStyleIdListResolver.fromModel(printModel);
+		final var textStyleResolver = TextStyleIdListResolver.fromModel(printModel, fragmentModelResolver);
 		final var textStyleProvider = new TextStyleByIdDependencyValueProducer(textStyleResolver);
 
 		jobSpecific

@@ -32,6 +32,7 @@
 import { jest } from "@jest/globals";
 
 import { renderWithProviders } from "../../../../../../../test/typescript/test-utils/index.js";
+import { FormContext } from "../../FormContext.js";
 
 import { ActionColumnButtonGroup } from "../ActionColumnButtonGroup.js";
 
@@ -64,5 +65,33 @@ describe("ActionColumnButtonGroup", () => {
 		// Should not throw when clicked without handlers
 		getAllByRole("button")[0].click();
 		getAllByRole("button")[1].click();
+	});
+
+	describe("readonly mode", () => {
+		it("disables edit and delete buttons when FormContext.isReadonly is true", () => {
+			const { getAllByRole } = renderWithProviders(
+				<FormContext.Provider value={{ isReadonly: true }}>
+					<ActionColumnButtonGroup />
+				</FormContext.Provider>
+			);
+
+			getAllByRole("button").forEach(button => expect(button).toBeDisabled());
+		});
+
+		it("does not call onEdit or onDelete when form is readonly", () => {
+			const onEdit = jest.fn();
+			const onDelete = jest.fn();
+			const { getAllByRole } = renderWithProviders(
+				<FormContext.Provider value={{ isReadonly: true }}>
+					<ActionColumnButtonGroup onEdit={onEdit} onDelete={onDelete} />
+				</FormContext.Provider>
+			);
+
+			getAllByRole("button")[0].click();
+			getAllByRole("button")[1].click();
+
+			expect(onEdit).not.toHaveBeenCalled();
+			expect(onDelete).not.toHaveBeenCalled();
+		});
 	});
 });

@@ -39,7 +39,7 @@ const printShellName = `print-shell-${packageJson.version}.jar`;
 const printShellPath = Path.resolve(__dirname, "../print-shell/build/libs/", printShellName);
 
 async function runPrintShell({ printModelId, caseId, documentId, locale, timeZone }) {
-	const workspacePath = Path.resolve(__dirname, "use-cases", caseId);
+	const workspacePath = Path.resolve(__dirname, "use-cases");
 	return new Promise((resolve, reject) => {
 		const shellCommand = "java";
 		const shellArgs = ["-jar", printShellPath, "print", "-p", printModelId];
@@ -192,45 +192,60 @@ function setupMiddlewares(middlewares, devServer) {
 	});
 
 	devServer.app.get("/api/resources", async (req, res) => {
-		const { caseId } = req.query;
-		const dir = getUseCaseDirectory(Path.join(caseId, "resources"));
-		await fs.mkdir(dir, { recursive: true });
-		const files = await fs.readdir(dir);
-		res.json(files);
+		try {
+			const dir = getImagesDirectory();
+			await fs.mkdir(dir, { recursive: true });
+			const files = await fs.readdir(dir);
+			res.json(files);
+		} catch (error) {
+			res.status(500).json({ error: error.message });
+		}
 	});
 
 	devServer.app.get("/api/resource", async (req, res) => {
-		const { caseId, resourceName } = req.query;
-		const filePath = getUseCaseDirectory(Path.join(caseId, "resources", resourceName));
-		const buf = await fs.readFile(filePath);
-		const mime = getMimeType(resourceName);
-		res.json({
-			name: resourceName,
-			internal_filename: resourceName,
-			size: buf.length,
-			mime_type: mime,
-			content: `data:${mime};base64,${buf.toString("base64")}`,
-		});
+		try {
+			const { resourceName } = req.query;
+			const filePath = Path.join(getImagesDirectory(), resourceName);
+			const buf = await fs.readFile(filePath);
+			const mime = getMimeType(resourceName);
+			res.json({
+				name: resourceName,
+				internal_filename: resourceName,
+				size: buf.length,
+				mime_type: mime,
+				content: `data:${mime};base64,${buf.toString("base64")}`,
+			});
+		} catch (error) {
+			if (error.code === "ENOENT") {
+				res.status(404).json({ error: "Resource " + req.query.resourceName + " not found" });
+			} else {
+				res.status(500).json({ error: error.message });
+			}
+		}
 	});
 
 	devServer.app.post("/api/resource", async (req, res) => {
-		const { caseId, resourceName, content } = req.body;
-		const dir = getUseCaseDirectory(Path.join(caseId, "resources"));
-		await fs.mkdir(dir, { recursive: true });
-		const buf = Buffer.from(content.split(",")[1], "base64");
-		const dotIdx = resourceName.lastIndexOf(".");
-		const ext = dotIdx >= 0 ? resourceName.slice(dotIdx) : "";
-		const base = dotIdx >= 0 ? resourceName.slice(0, dotIdx) : resourceName;
-		const assignedName = `${base}-${buf.length.toString(36)}${ext}`;
-		const filePath = Path.join(dir, assignedName);
-		const exists = await fs
-			.access(filePath)
-			.then(() => true)
-			.catch(() => false);
-		if (!exists) {
-			await fs.writeFile(filePath, buf);
+		try {
+			const { resourceName, content } = req.body;
+			const dir = getImagesDirectory();
+			await fs.mkdir(dir, { recursive: true });
+			const buf = Buffer.from(content.split(",")[1], "base64");
+			const dotIdx = resourceName.lastIndexOf(".");
+			const ext = dotIdx >= 0 ? resourceName.slice(dotIdx) : "";
+			const base = dotIdx >= 0 ? resourceName.slice(0, dotIdx) : resourceName;
+			const assignedName = `${base}-${buf.length.toString(36)}${ext}`;
+			const filePath = Path.join(dir, assignedName);
+			const exists = await fs
+				.access(filePath)
+				.then(() => true)
+				.catch(() => false);
+			if (!exists) {
+				await fs.writeFile(filePath, buf);
+			}
+			res.json({ success: true, name: assignedName });
+		} catch (error) {
+			res.status(500).json({ error: error.message });
 		}
-		res.json({ success: true, name: assignedName });
 	});
 
 	return middlewares;
@@ -238,6 +253,10 @@ function setupMiddlewares(middlewares, devServer) {
 
 function getUseCaseDirectory(filePath) {
 	return Path.join(context, "use-cases", filePath);
+}
+
+function getImagesDirectory() {
+	return getUseCaseDirectory(Path.join("resources", "images"));
 }
 
 function getMimeType(fileName) {
@@ -263,7 +282,7 @@ async function removeFile(filePath) {
 }
 
 module.exports = {
-	port: 9012,
+	port: "auto",
 	historyApiFallback: true,
 	static: [
 		{
@@ -283,5 +302,14 @@ module.exports = {
 	},
 	client: {
 		logging: "info",
+		/*
+		 * Errors, but not warnings: a full screen overlay swallows every click, and the lazy import
+		 * of the use case resources leaves a stale dependency behind whenever an interaction log is
+		 * deleted - which is what a screenshot run and a discarded change both do.
+		 */
+		overlay: {
+			errors: true,
+			warnings: false,
+		},
 	},
 };

@@ -36,7 +36,7 @@ import { PartialLine } from "@com.mgmtp.a12.print/print-model-api/model";
 
 interface StyledFloatingButtonContainerProps {
 	offset: number;
-	element: PartialAnyPrintModelElement;
+	element: PartialAnyPrintModelElement | undefined;
 }
 export const StyledHoverContainer = styled.div`
 	position: absolute;

@@ -95,7 +95,8 @@ export namespace PrintPreviewValidator {
 		};
 	}
 	function validateNoSegments(printModel: PrintModel): PrintPreviewError | undefined {
-		return !printModel.content.segments?.definitions.length
+		return !printModel.content.segments.definitions.length &&
+			!printModel.content.segments.fragmentReferences?.length
 			? {
 					errorCode: PreviewRuleCode.NO_SEGMENTS,
 					severity: "ERROR",
@@ -104,8 +105,8 @@ export namespace PrintPreviewValidator {
 	}
 	function validateNoRepeatableData(printModel: PrintModel, document?: object): PrintPreviewError | undefined {
 		const hasOnlyRepeatable =
-			printModel.content.segments.definitions.filter(segment => segment.type === SegmentType.Repeatable)
-				.length === printModel.content.segments.definitions.length;
+			printModel.content?.segments?.definitions.filter(segment => segment.type === SegmentType.Repeatable)
+				.length === printModel.content?.segments?.definitions.length;
 
 		if (!hasOnlyRepeatable) {
 			return undefined;

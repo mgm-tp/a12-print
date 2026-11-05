@@ -33,11 +33,10 @@ import type { SagaGenerator } from "typed-redux-saga";
 import { takeEvery, put, select } from "typed-redux-saga";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-
 import type { PrintModelRefs } from "../../redux/editor-state/state.js";
 import { EditorStateActions } from "../../redux//editor-state/index.js";
 import { NavigationActions, NavigationSelectors } from "../../redux/navigation/index.js";
+import { EditorUtils } from "../../utils/editor-utils.js";
 
 export function* openEditorView(): SagaGenerator<void> {
 	yield* takeEvery(EditorStateActions.openEditorView.match, handleOpenEditorView);
@@ -49,13 +48,8 @@ function* handleOpenEditorView(action: PayloadAction<PrintModelRefs>) {
 		yield* put(NavigationActions.setExpandedState({ isFullscreen: false }));
 	}
 
-	const { currentRefType, segmentId, sectionId, watermarkId } = action.payload;
-	const entityId =
-		currentRefType === SidebarItem.SEGMENT
-			? segmentId
-			: currentRefType === SidebarItem.SECTION
-				? sectionId
-				: watermarkId;
+	const { currentRefType } = action.payload;
+	const entityId = EditorUtils.getCurrentRefId(action.payload);
 	if (entityId) {
 		yield* put(NavigationActions.setActiveEntity({ tab: currentRefType, entityId }));
 	}

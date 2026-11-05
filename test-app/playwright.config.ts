@@ -31,7 +31,10 @@
  */
 import { defineConfig, devices } from "@playwright/test";
 
-export default defineConfig({
+// eslint-disable-next-line no-restricted-imports
+import type { EditorMode } from "./src/test/typescript/utils/fixtures/useCase";
+
+export default defineConfig<{ editorMode: EditorMode }>({
 	testDir: "./src/test/typescript",
 
 	snapshotPathTemplate: "{testDir}/{testFilePath}/../__snapshots__/{testName}{ext}",
@@ -67,6 +70,11 @@ export default defineConfig({
 		{
 			name: "chromium",
 			use: { ...devices["Desktop Chrome"] },
+		},
+		{
+			name: "chromium-light",
+			use: { ...devices["Desktop Chrome"], editorMode: "light" },
+			testMatch: ["**/elements/**", "**/basic/general.spec.ts"],
 		},
 	],
 

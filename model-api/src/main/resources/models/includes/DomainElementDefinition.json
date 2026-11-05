@@ -1066,6 +1066,46 @@
                 }
               },
               {
+                "type": "Field",
+                "id": "field_693c3",
+                "name": "name",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "element name"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Name des Element."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Field",
+                "id": "field_2ffb4",
+                "name": "isFragment",
+                "Field": {
+                  "fieldType": {
+                    "type": "BooleanType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Is element a fragment?"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Ist das Element ein Fragment?"
+                    }
+                  ]
+                }
+              },
+              {
                 "type": "Group",
                 "id": "group_316a8",
                 "name": "field",
@@ -1963,8 +2003,7 @@
                                   }
                                 ]
                               }
-                            ],
-                            "categories": []
+                            ]
                           }
                         },
                         "label": [
@@ -2125,13 +2164,7 @@
                               "repeatability": 1,
                               "includeConfig": {
                                 "reference": "DomainMeasure"
-                              },
-                              "annotations": [
-                                {
-                                  "name": "sme.globalSearch.hide",
-                                  "value": "true"
-                                }
-                              ]
+                              }
                             }
                           },
                           {
@@ -2142,13 +2175,7 @@
                               "repeatability": 1,
                               "includeConfig": {
                                 "reference": "DomainMeasure"
-                              },
-                              "annotations": [
-                                {
-                                  "name": "sme.globalSearch.hide",
-                                  "value": "true"
-                                }
-                              ]
+                              }
                             }
                           }
                         ]
@@ -2682,10 +2709,26 @@
                                   "type": "Field",
                                   "id": "field_a6a51",
                                   "name": "path",
+                                  "annotations": [
+                                    {
+                                      "name": "sme.globalSearch.hide",
+                                      "value": "true"
+                                    }
+                                  ],
                                   "Field": {
                                     "fieldType": {
                                       "type": "StringType"
                                     },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Path to Input Source Default"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Pfad zum Standardwert der Input Source"
+                                      }
+                                    ],
                                     "requirednessConfig": {
                                       "mode": "relativeToParent"
                                     }
@@ -2701,7 +2744,17 @@
                                       "TypeDefType": {
                                         "typeDefinitionId": "typedef_07cc7007-d3aa-4d64-b599-664c7508691e"
                                       }
-                                    }
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Input Source type"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Input Source Typ"
+                                      }
+                                    ]
                                   }
                                 },
                                 {
@@ -2735,6 +2788,16 @@
                                         "typeDefinitionId": "typedef_deaf13b7-7e7f-4236-8247-e35fd4083cad"
                                       }
                                     },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Column Width Unit"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Einheit der Spaltenbreite"
+                                      }
+                                    ],
                                     "requirednessConfig": {
                                       "mode": "relativeToParent"
                                     }
@@ -2856,10 +2919,26 @@
                                   "type": "Field",
                                   "id": "field_fdafc",
                                   "name": "path",
+                                  "annotations": [
+                                    {
+                                      "name": "sme.globalSearch.hide",
+                                      "value": "true"
+                                    }
+                                  ],
                                   "Field": {
                                     "fieldType": {
                                       "type": "StringType"
                                     },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Path to Input Source Default"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Pfad zum Standardwert der Input Source"
+                                      }
+                                    ],
                                     "requirednessConfig": {
                                       "mode": "relativeToParent"
                                     }
@@ -2875,7 +2954,17 @@
                                       "TypeDefType": {
                                         "typeDefinitionId": "typedef_07cc7007-d3aa-4d64-b599-664c7508691e"
                                       }
-                                    }
+                                    },
+                                    "label": [
+                                      {
+                                        "locale": "en",
+                                        "text": "Input Source type"
+                                      },
+                                      {
+                                        "locale": "de",
+                                        "text": "Typ der Input Source"
+                                      }
+                                    ]
                                   }
                                 },
                                 {
@@ -2902,7 +2991,7 @@
                                       },
                                       {
                                         "locale": "de",
-                                        "text": "Spaltenbeschriftung"
+                                        "text": "Beschriftung der Spalte"
                                       }
                                     ]
                                   }
@@ -4106,7 +4195,7 @@
                                       },
                                       {
                                         "locale": "de",
-                                        "text": "Breite der Spalte"
+                                        "text": "Spaltenbreite"
                                       }
                                     ]
                                   }
@@ -4125,7 +4214,7 @@
                                     "label": [
                                       {
                                         "locale": "en",
-                                        "text": "Column width unit"
+                                        "text": "Column Width Unit"
                                       },
                                       {
                                         "locale": "de",
@@ -5649,7 +5738,7 @@
                                       },
                                       {
                                         "locale": "de",
-                                        "text": "Typ der Input Source"
+                                        "text": "Input Source Typ"
                                       }
                                     ]
                                   }
@@ -5665,11 +5754,11 @@
                                     "label": [
                                       {
                                         "locale": "en",
-                                        "text": "Width of column"
+                                        "text": "Width of the column"
                                       },
                                       {
                                         "locale": "de",
-                                        "text": "Breite der Spalte"
+                                        "text": "Spaltenbreite"
                                       }
                                     ]
                                   }
@@ -5688,7 +5777,7 @@
                                     "label": [
                                       {
                                         "locale": "en",
-                                        "text": "Column Width"
+                                        "text": "Column Width Unit"
                                       },
                                       {
                                         "locale": "de",
@@ -5868,7 +5957,7 @@
                                     "label": [
                                       {
                                         "locale": "en",
-                                        "text": "Label of column"
+                                        "text": "Label of the column"
                                       },
                                       {
                                         "locale": "de",
@@ -6758,11 +6847,11 @@
                               "label": [
                                 {
                                   "locale": "en",
-                                  "text": "Bar Chart Title"
+                                  "text": "Chart Title"
                                 },
                                 {
                                   "locale": "de",
-                                  "text": "Titel des Balkendiagramm"
+                                  "text": "Titel des Diagramms"
                                 }
                               ]
                             }
@@ -7005,6 +7094,12 @@
                             "type": "Field",
                             "id": "field_a500e",
                             "name": "path",
+                            "annotations": [
+                              {
+                                "name": "sme.globalSearch.hide",
+                                "value": "true"
+                              }
+                            ],
                             "Field": {
                               "fieldType": {
                                 "type": "StringType"
@@ -7667,11 +7762,11 @@
                               "label": [
                                 {
                                   "locale": "en",
-                                  "text": "Line Chart title"
+                                  "text": "Chart Title"
                                 },
                                 {
                                   "locale": "de",
-                                  "text": "Titel des Liniendiagramm"
+                                  "text": "Titel des Diagramms"
                                 }
                               ]
                             }
@@ -8554,11 +8649,11 @@
                               "label": [
                                 {
                                   "locale": "en",
-                                  "text": "Pie Chart title"
+                                  "text": "Chart Title"
                                 },
                                 {
                                   "locale": "de",
-                                  "text": "Titel des Tortendiagramm"
+                                  "text": "Titel des Diagramms"
                                 }
                               ]
                             }
@@ -10062,6 +10157,189 @@
                     {
                       "locale": "de",
                       "text": "Bitte wählen sie eine Eingangsquelle"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_2573e",
+                "name": "nameIsRequiredInFragmentModel",
+                "Rule": {
+                  "errorEntityRelPath": "../name",
+                  "errorCode": "Error rule_2573e",
+                  "errorCondition": "GroupFilled(RuleGroup) And FieldNotFilled(name) And CustomCondition print_IsFragmentModel",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "Please specify a name for Fragment Element."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Bitte geben Sie einen Name für das Fragment Element an."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_24378",
+                "name": "fragmentElementOnlyAllowedInFragmentModel",
+                "Rule": {
+                  "errorEntityRelPath": "../isFragment",
+                  "errorCode": "Error rule_24378",
+                  "errorCondition": "[isFragment] == True And CustomCondition print_IsPrintModel",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "An element can only be marked as a Fragment inside a Fragment Model."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Ein Element kann nur innerhalb eines Fragment Modells als Fragment markiert werden."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_2f5d7",
+                "name": "fragmentDimensions",
+                "Group": {
+                  "repeatability": 1,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_8edf7",
+                      "name": "id",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": ""
+                          },
+                          {
+                            "locale": "de",
+                            "text": ""
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "include_86877",
+                      "name": "width",
+                      "Group": {
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Width"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Breite"
+                          }
+                        ],
+                        "repeatability": 1,
+                        "includeConfig": {
+                          "reference": "DomainMeasure"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_458b6",
+                      "name": "widthFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../width/value",
+                        "errorCode": "Error rule_458b6",
+                        "errorCondition": "[../isFragment] == True AND FieldNotFilled(width/value)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Width of the Fragment must be set."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Breite des Fragment muss gesetzt werden."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "include_ad16b",
+                      "name": "height",
+                      "Group": {
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Height"
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Höhe"
+                          }
+                        ],
+                        "repeatability": 1,
+                        "includeConfig": {
+                          "reference": "DomainMeasure"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_2490e",
+                      "name": "heightFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../height/value",
+                        "errorCode": "Error rule_2490e",
+                        "errorCondition": "[../isFragment] == True AND FieldNotFilled(height/value)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Height of the BoundingBox must be set."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Höhe des Rahmens muss gesetzt werden."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_9d755",
+                "name": "fragmentDimensionsFilled",
+                "Rule": {
+                  "errorEntityRelPath": "../fragmentDimensions/id",
+                  "errorCode": "Error rule_9d755",
+                  "errorCondition": "[isFragment] == True And GroupNotFilled(fragmentDimensions) And FieldNotFilled(fragmentDimensions/id)",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "Fragment Element must have Dimensions set"
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Fragment Element muss Dimensionen gesetzt haben"
                     }
                   ]
                 }

@@ -35,8 +35,7 @@ import com.mgmtp.a12.print.engine.runtime.internal.PrintEngineRuntimeDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.PrintEngineRuntimeStreamDependency;
 import com.mgmtp.a12.print.engine.runtime.internal.RuntimeType;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.ValueDependency;
-import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
-import com.mgmtp.a12.print.model.api.model.section.ModelSection;
+import com.mgmtp.a12.print.model.api.walker.model.resolver.SectionWithUsage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -46,6 +45,6 @@ import java.util.Optional;
 @AllArgsConstructor
 @PrintEngineRuntimeDependency(type = RuntimeType.CORE)
 @PrintEngineRuntimeStreamDependency(type = RuntimeType.CORE)
-public class SectionDependency implements ValueDependency<Optional<PrintModelTreeTrace<ModelSection>>> {
+public class SectionDependency implements ValueDependency<Optional<SectionWithUsage>> {
 	private final String sectionId;
 }

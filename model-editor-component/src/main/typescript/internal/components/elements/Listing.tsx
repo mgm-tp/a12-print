@@ -47,7 +47,7 @@ export type ListingProps = BaseElementProps;
 export const Listing = ({ element }: ListingProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	if (!PartialListing.isInstance(element)) {
-		throw new Error(`Expected element of type Listing but got ${element.type}`);
+		throw new Error(`Expected element of type Listing but got ${element?.type}`);
 	}
 	const columns = element.listing?.columns;
 
@@ -89,8 +89,10 @@ export const Listing = ({ element }: ListingProps) => {
 	}
 
 	return (
-		<TypeSettingApplier textStyleId={headerTextProperties?.textStyleId} data-testid="element-listing">
-			{localizer(RESOURCE_KEYS.editor.element.Listing)}
-		</TypeSettingApplier>
+		<div data-testid="element-listing">
+			<TypeSettingApplier textStyleId={headerTextProperties?.textStyleId}>
+				{localizer(RESOURCE_KEYS.editor.element.Listing)}
+			</TypeSettingApplier>
+		</div>
 	);
 };

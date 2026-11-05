@@ -32,5 +32,5 @@
 module.exports = {
 	...require("@com.mgmtp.a12.print/print-dev-tools/jest-config.cjs"),
 	testEnvironment: "node",
-	setupFilesAfterEnv: [],
+	setupFilesAfterEnv: ["./jest-setup.cjs"],
 };

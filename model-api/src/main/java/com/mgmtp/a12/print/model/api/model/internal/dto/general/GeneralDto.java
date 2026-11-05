@@ -33,15 +33,16 @@ package com.mgmtp.a12.print.model.api.model.internal.dto.general;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.properties.RuntimeVariable;
 import com.mgmtp.a12.print.model.api.model.general.General;
+import com.mgmtp.a12.print.model.api.model.general.Metadata;
 import com.mgmtp.a12.print.model.api.model.general.SegmentDefaults;
 import com.mgmtp.a12.print.model.api.model.internal.dto.JsonModel;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelEntityDto;
 import com.mgmtp.a12.print.model.api.model.internal.dto.element.base.RuntimeVariableDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +53,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 public class GeneralDto extends PrintModelEntityDto implements General, JsonModel {
-	@JsonProperty(value = "metadata", required = true)
+	@JsonProperty(value = "metadata")
 	@JsonDeserialize(as = MetadataDto.class)
-	MetadataDto metadata;
+	Metadata metadata;
 
 	@JsonProperty(value = "segmentDefaults", required = true)
 	@JsonDeserialize(as = SegmentDefaultsDto.class)

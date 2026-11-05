@@ -95,6 +95,7 @@ export function createComplexPartialModel(): PartialPrintModel {
 
 	const fieldElement: PartialField = {
 		id: "el-field",
+		name: "Field",
 		type: ElementType.Field,
 		field: { id: "f-1", model: "DomainText", path: "/field" },
 		borderProperties: {
@@ -107,6 +108,7 @@ export function createComplexPartialModel(): PartialPrintModel {
 
 	const calcElement: PartialCalculation = {
 		id: "el-calc",
+		name: "Calculation",
 		type: ElementType.Calculation,
 		calculation: {
 			id: "c-1",
@@ -118,26 +120,30 @@ export function createComplexPartialModel(): PartialPrintModel {
 
 	const listingElement: PartialListing = {
 		id: "el-listing",
+		name: "Listing",
 		type: ElementType.Listing,
 		listing: { id: "l-1", basePath: "/items", model: "DomainText" },
 	};
 
 	const imageElement: PartialImage = {
 		id: "el-image",
+		name: "Image",
 		type: ElementType.Image,
 		image: { id: "img-1", alternativeText: "alt", imageSrcType: ImageSrcType.Static },
 	};
 
-	const lineElement: PartialLine = { id: "el-line", type: ElementType.Line };
+	const lineElement: PartialLine = { id: "el-line", name: "Line", type: ElementType.Line };
 
 	const expressionElement: PartialExpression = {
 		id: "el-expression",
+		name: "Expression",
 		type: ElementType.Expression,
 		expression: { id: "exp-1", basePath: "/expr", text: "hello", model: "DomainText" },
 	};
 
 	const barChartElement: PartialBarChart = {
 		id: "el-barchart",
+		name: "BarChart",
 		type: ElementType.BarChart,
 		barChart: {
 			id: "bar-1",
@@ -150,6 +156,7 @@ export function createComplexPartialModel(): PartialPrintModel {
 
 	const lineChartElement: PartialLineChart = {
 		id: "el-linechart",
+		name: "LineChart",
 		type: ElementType.LineChart,
 		lineChart: {
 			id: "lc-1",
@@ -162,6 +169,7 @@ export function createComplexPartialModel(): PartialPrintModel {
 
 	const pieChartElement: PartialPieChart = {
 		id: "el-piechart",
+		name: "PieChart",
 		type: ElementType.PieChart,
 		pieChart: {
 			id: "pc-1",
@@ -173,6 +181,7 @@ export function createComplexPartialModel(): PartialPrintModel {
 
 	const tableElement: PartialTable = {
 		id: "el-table",
+		name: "Table",
 		type: ElementType.Table,
 		table: {
 			id: "t-1",
@@ -184,6 +193,7 @@ export function createComplexPartialModel(): PartialPrintModel {
 
 	const tableLayoutElement: PartialTableLayout = {
 		id: "el-tablelayout",
+		name: "TableLayout",
 		type: ElementType.TableLayout,
 		tableLayout: {
 			id: "tl-1",
@@ -195,6 +205,7 @@ export function createComplexPartialModel(): PartialPrintModel {
 
 	const boundingBoxElement: PartialBoundingBox = {
 		id: "el-bbox",
+		name: "BoundingBox",
 		type: ElementType.BoundingBox,
 		boundingBox: {
 			id: "bb-1",
@@ -205,6 +216,7 @@ export function createComplexPartialModel(): PartialPrintModel {
 
 	const areaElement: PartialArea = {
 		id: "el-area",
+		name: "Area",
 		type: ElementType.Area,
 		area: {
 			id: "a-1",
@@ -215,6 +227,7 @@ export function createComplexPartialModel(): PartialPrintModel {
 
 	const overrideElement: PartialOverride = {
 		id: "el-override",
+		name: "Override",
 		type: ElementType.Override,
 		override: {
 			id: "ov-1",
@@ -228,6 +241,7 @@ export function createComplexPartialModel(): PartialPrintModel {
 
 	const switchElement: PartialSwitch = {
 		id: "el-switch",
+		name: "Switch",
 		type: ElementType.Switch,
 		switch: {
 			id: "sw-1",
@@ -267,6 +281,8 @@ export function createComplexPartialModel(): PartialPrintModel {
 		title: "Section 1",
 		pageOrientation: PageOrientation.Portrait,
 		sectionUsage: SectionUsage.First,
+		headerHeight: makeMeasure(10),
+		footerHeight: makeMeasure(15),
 		elementReferences: [makePlaceableRef("sec-ref-1", "el-field")],
 	};
 

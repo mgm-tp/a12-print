@@ -52,19 +52,29 @@ public class ReferenceInputSourceResolver implements InputValueSourceResolver.Re
 	private final InternalCorePrintEngineRuntime runtime;
 	private final PrintModelTreeTrace<PrintModelEntity> printModelTreeTrace;
 	@Override
-	public Optional<PrintModelTreeTrace<PrintModelEntity>> resolve(String referenceId) {
+	public Optional<InputValueSourceResolver.ResolvedReference> resolve(String referenceId) {
 		if (printModelTreeTrace.getTracedElement() instanceof PrintModelElement) {
 			final var reference = ElementReferenceDto.builder().refId(referenceId).build();
 
 			final var elementTrace = runtime.provide(new ReferenceElementDependency(printModelTreeTrace.createDescendent(reference))).get();
-			return elementTrace.flatMap(el -> el.tryCastTracedElement(PrintModelEntity.class));
+			return elementTrace
+				.flatMap(el -> el.tryCastTracedElement(PrintModelEntity.class))
+				.map(trace -> new InputValueSourceResolver.ResolvedReference(trace, this));
 		} else if (printModelTreeTrace.getTracedElement() instanceof PlaceableReference) {
-			final var placeableReference = printModelTreeTrace.getPath().findReferenceCallSite(referenceId, false)
-				.flatMap(e -> e.tryCastTracedElement(PlaceableReference.class))
-				.orElseThrow(() -> new PrintException(
-					String.format("The references placeable reference for the ID: %s is not in the path", referenceId)
-				));
-			return Optional.of(placeableReference.tryCastTracedElement(PrintModelEntity.class).orElseThrow());
+			final var placeableReference = referenceId != null
+				// normal case: a real, persisted reference id
+				? printModelTreeTrace.getPath().findReferenceCallSite(referenceId, false)
+					.flatMap(e -> e.tryCastTracedElement(PlaceableReference.class))
+					.orElseThrow(() -> new PrintException(
+						String.format("The references placeable reference for the ID: %s is not in the path", referenceId)
+					))
+				// fragment case: no id could be known upfront, so find the direct parent placement via the trace
+				: printModelTreeTrace.getPath().findParentPlaceableReference()
+					.orElseThrow(() -> new PrintException(
+						"No parent placeable reference found in the path to resolve the inherited value from"
+					));
+			final var parentTrace = placeableReference.tryCastTracedElement(PrintModelEntity.class).orElseThrow();
+			return Optional.of(new InputValueSourceResolver.ResolvedReference(parentTrace, new ReferenceInputSourceResolver(runtime, parentTrace)));
 		}
 		throw new PrintException("Only print models and placeable references are supported for inherited reference resolution");
 	}

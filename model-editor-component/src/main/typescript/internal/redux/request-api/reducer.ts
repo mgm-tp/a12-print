@@ -41,6 +41,7 @@ import type { RequestApiState } from "./state.js";
 const defaultState: RequestApiState = {
 	printModelData: {},
 	resources: {},
+	fragmentModelIds: [],
 };
 
 export const RequestApiReducer: Reducer<RequestApiState> = (
@@ -51,10 +52,10 @@ export const RequestApiReducer: Reducer<RequestApiState> = (
 		return defaultState;
 	}
 
-	if (RequestApiActions.setPrintModelIds.match(action)) {
+	if (RequestApiActions.setPrintModelHeaders.match(action)) {
 		return {
 			...state,
-			printModelIds: action.payload,
+			printModelHeaders: action.payload,
 		};
 	}
 
@@ -65,6 +66,20 @@ export const RequestApiReducer: Reducer<RequestApiState> = (
 				...state.printModelData,
 				[action.payload.id]: action.payload.printModel,
 			},
+		};
+	}
+
+	if (RequestApiActions.setFragmentModel.match(action)) {
+		const modelId = action.payload.header.id;
+		return {
+			...state,
+			printModelData: {
+				...state.printModelData,
+				[modelId]: action.payload,
+			},
+			fragmentModelIds: state.fragmentModelIds?.includes(modelId)
+				? state.fragmentModelIds
+				: [...(state.fragmentModelIds || []), modelId],
 		};
 	}
 

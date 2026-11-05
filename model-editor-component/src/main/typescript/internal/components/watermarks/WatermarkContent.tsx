@@ -35,6 +35,7 @@ import { useSelector } from "react-redux";
 import { PageOrientation } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
+import { RequestApiSelectors } from "../../redux/request-api/selectors.js";
 
 import { StyledWatermarkContainer } from "./WatermarkContent.styled.js";
 import { WatermarkCard } from "./WatermarkCard.js";
@@ -49,23 +50,40 @@ export const WATERMARK_ITEMS = [
 ];
 
 export const WatermarkContent = () => {
-	const watermarks = useSelector(PrintEngineSelectors.watermarks);
+	const watermarkItems = useSelector(PrintEngineSelectors.orderedWatermarkItems);
+	const resolvedReferences = useSelector(RequestApiSelectors.resolvedWatermarkReferences);
 
-	const getWatermark = React.useCallback(
+	const getWatermarkItem = React.useCallback(
 		(pageOrientation: PageOrientation) => {
-			return watermarks.find(section => section.pageOrientation === pageOrientation);
+			return watermarkItems.find(item => item.watermark.pageOrientation === pageOrientation);
 		},
-		[watermarks]
+		[watermarkItems]
+	);
+
+	/**
+	 * References whose watermark is gone from its fragment model. They cannot go into one of the orientation slots -
+	 * the orientation is part of the missing definition - so they get their own cards below to be removable here.
+	 */
+	const missingReferences = React.useMemo(
+		() => resolvedReferences.filter(({ watermark }) => !watermark),
+		[resolvedReferences]
 	);
 
 	return (
 		<StyledWatermarkContainer>
-			{WATERMARK_ITEMS.map(item => (
-				<WatermarkCard
-					watermark={getWatermark(item.pageOrientation)}
-					pageOrientation={item.pageOrientation}
-					key={`${item.pageOrientation}`}
-				/>
+			{WATERMARK_ITEMS.map(item => {
+				const watermarkItem = getWatermarkItem(item.pageOrientation);
+				return (
+					<WatermarkCard
+						watermark={watermarkItem?.watermark}
+						reference={watermarkItem?.referenceId ? { id: watermarkItem?.referenceId } : undefined}
+						pageOrientation={item.pageOrientation}
+						key={`${item.pageOrientation}`}
+					/>
+				);
+			})}
+			{missingReferences.map(({ reference }) => (
+				<WatermarkCard key={reference.id} reference={reference} />
 			))}
 		</StyledWatermarkContainer>
 	);

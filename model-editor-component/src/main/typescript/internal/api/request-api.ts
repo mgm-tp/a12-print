@@ -47,11 +47,12 @@ import type { StaticImageData, SaveStaticImageResponse } from "../../api/StaticI
 
 export interface RequestApi {
 	loadPrintModel: (printModelId: string) => Promise<LoadPrintModelResponse | undefined>;
+	loadFragmentModel: (fragmentModelId: string) => Promise<LoadPrintModelResponse | undefined>;
 	loadReferencedDocumentModels: (ids: string[]) => Promise<Model[]>;
 	loadDocumentModelIds: () => Promise<string[]>;
 	loadTypesettingModelHeaders: () => Promise<Header[]>;
 	loadTypesettingModel: (typesettingModelId: string) => Promise<TypesettingModel | undefined>;
-	loadPrintModelIds: () => Promise<string[]>;
+	loadPrintModelHeaders: () => Promise<Header[]>;
 	loadDINTemplateSegments: (id: string) => Promise<DINTemplateSegment[]>;
 	setPrintModel: (
 		printModel: PrintModel,
@@ -71,6 +72,7 @@ export interface RequestApi {
 	loadStaticImage: (name: string) => Promise<StaticImageData | undefined>;
 	uploadStaticImage: (data: StaticImageData) => Promise<SaveStaticImageResponse | undefined>;
 	discardAllLogs?: () => void;
+	onNavigateToPrintModel?: (printModelId: string, navigationPath?: EntityInstancePath) => void;
 }
 
 interface LoadPrintModelResponse {

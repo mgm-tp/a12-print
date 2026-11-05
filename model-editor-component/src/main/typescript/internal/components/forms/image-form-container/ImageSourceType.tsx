@@ -45,7 +45,8 @@ import { InteractionLogActions } from "../../../redux/interaction-log/index.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../../redux/validation/selectors.js";
-import { DEFAULT_ELEMENT_WIDTH, DEFAULT_IMAGE_HEIGHT } from "../../../utils/elements-utils.js";
+import { DEFAULT_ELEMENT_WIDTH, DEFAULT_IMAGE_HEIGHT, ElementsUtils } from "../../../utils/elements-utils.js";
+import { createMmMeasure } from "../../../utils/measure-utils.js";
 
 import {
 	StyledCustomToggle,
@@ -53,6 +54,7 @@ import {
 } from "../custom-base-input-components/source-input/SourceInputToggles.styled.js";
 import { CustomInputWrapper } from "../shared-components/CustomInputWrapper.js";
 import type { ElementWithoutIdAndType } from "../type.js";
+import { useFormReadonly } from "../FormContext.js";
 
 import { ImageSourceTypeAttachment } from "./ImageSourceTypeAttachment.js";
 import { ImageSourceTypeField } from "./ImageSourceTypeField.js";
@@ -66,10 +68,14 @@ export const ImageSourceType = ({ element }: ImageSourceTypeProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const elementReferences = useSelector(PrintEngineSelectors.elementReferences);
+	const isFormReadonly = useFormReadonly();
 	const imageDimensions = element.image?.dimensions;
 
 	const onChangeImgSrcType = React.useCallback(
 		(imageSrcType: ImageSrcType) => {
+			const shouldResetDimensions = !imageDimensions?.height?.value || !imageDimensions?.width?.value;
+			const resetHeight = imageDimensions?.height?.value ?? DEFAULT_IMAGE_HEIGHT;
+			const resetWidth = imageDimensions?.width?.value ?? DEFAULT_ELEMENT_WIDTH;
 			const updatedElement: PartialImage = {
 				...element,
 				image: {
@@ -86,12 +92,17 @@ export const ImageSourceType = ({ element }: ImageSourceTypeProps) => {
 						originalWidth: undefined,
 					},
 				},
+				...(shouldResetDimensions &&
+					ElementsUtils.getFragmentDimensionsUpdate(element, {
+						width: createMmMeasure(resetWidth),
+						height: createMmMeasure(resetHeight),
+					})),
 			};
 			const actions: UpdateElementsTransactionLogAction[] = [
 				TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }),
 			];
 
-			if (elementReferences && (!imageDimensions?.height?.value || !imageDimensions?.width?.value)) {
+			if (elementReferences && shouldResetDimensions) {
 				actions.push(
 					TransactionLogStateActions.updateReferenceElements({
 						data: elementReferences.map(el =>
@@ -102,11 +113,11 @@ export const ImageSourceType = ({ element }: ImageSourceTypeProps) => {
 											...el.dimensions,
 											minHeight: {
 												...el.dimensions?.minHeight,
-												value: imageDimensions?.height?.value ?? DEFAULT_IMAGE_HEIGHT,
+												value: resetHeight,
 											},
 											minWidth: {
 												...el.dimensions?.minWidth,
-												value: imageDimensions?.width?.value ?? DEFAULT_ELEMENT_WIDTH,
+												value: resetWidth,
 											},
 										},
 									}
@@ -134,7 +145,11 @@ export const ImageSourceType = ({ element }: ImageSourceTypeProps) => {
 					label={localizer(RESOURCE_KEYS.elementForm.image.imageSrc)}
 					errorMessage={useImageAttachmentTypeErrorMessage(element.id)("imageSrcType")}
 				>
-					<StyledCustomToggle value={element.image?.imageSrcType} onValueChanged={onChangeImgSrcType}>
+					<StyledCustomToggle
+						value={element.image?.imageSrcType}
+						onValueChanged={onChangeImgSrcType}
+						disabled={isFormReadonly}
+					>
 						<StyledCustomToggleItem
 							value={ImageSrcType.Static}
 							title={localizer(RESOURCE_KEYS.elementForm.image.imageSrcType.static)}

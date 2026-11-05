@@ -80,6 +80,30 @@ describe("changeInputSource", () => {
 		expect(result.path).toBe("/p");
 		expect(result.id).toBeDefined();
 	});
+
+	it("points an inherited source at the element it takes its value from", () => {
+		const origin = { id: "1", source: PossibleInputSource.DEFAULT, path: "/p" };
+		const result = changeInputSource(PossibleInputSource.INHERITED, "/p", origin, "the-listing");
+		expect(result.reference).toBe("the-listing");
+	});
+
+	it("drops the reference of a source that no longer inherits", () => {
+		const origin = { id: "1", source: PossibleInputSource.INHERITED, path: "/p", reference: "the-listing" };
+		const result = changeInputSource(PossibleInputSource.DEFAULT, "/p", origin);
+		expect(result.reference).toBeUndefined();
+	});
+
+	it("leaves an inherited source without a reference when the caller knows none", () => {
+		// the page break of a fragment stage placement has nothing to inherit from
+		const origin = { id: "1", source: PossibleInputSource.DEFAULT, path: "/p", reference: "gone" };
+		const result = changeInputSource(PossibleInputSource.INHERITED, "/p", origin);
+		expect(result.reference).toBeUndefined();
+	});
+
+	it("gives a new inherited source its reference", () => {
+		const result = changeInputSource(PossibleInputSource.INHERITED, "/p", undefined, "the-listing");
+		expect(result.reference).toBe("the-listing");
+	});
 });
 
 describe("changeMeasureInputValue", () => {

@@ -57,22 +57,24 @@ interface LocalContainerMap {
 	sections: Record<string, NewElementHeight[]>;
 	watermarks: Record<string, NewElementHeight[]>;
 	wrapperElements: Record<string, NewElementHeight[]>;
+	fragments: Record<string, NewElementHeight[]>;
 }
 
 export const HeightRenderTextStyle = ({ textStyle, setTextStyle }: HeightRenderTextStyleProps) => {
 	const dispatch = useDispatch();
-	const { segmentsMap, sectionsMap, watermarksMap, wrapperMap } = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.elementsAffectedByTextStyleChange(state, textStyle.id)
+	const { segmentsMap, sectionsMap, watermarksMap, wrapperMap, fragmentsMap } = useSelector(
+		(state: PrintEngineState) => PrintEngineSelectors.elementsAffectedByTextStyleChange(state, textStyle.id)
 	);
 
 	const handleLocalMapFilled = React.useCallback(
 		(localMap: LocalContainerMap) => {
-			const { segments, sections, wrapperElements, watermarks } = localMap;
+			const { segments, sections, wrapperElements, watermarks, fragments } = localMap;
 			const isFilledMap =
 				isLocalMapFilled(segments, segmentsMap) &&
 				isLocalMapFilled(sections, sectionsMap) &&
 				isLocalMapFilled(watermarks, watermarksMap) &&
-				isLocalMapFilled(wrapperElements, wrapperMap);
+				isLocalMapFilled(wrapperElements, wrapperMap) &&
+				isLocalMapFilled(fragments, fragmentsMap);
 
 			if (isFilledMap) {
 				setTextStyle(undefined);
@@ -82,11 +84,12 @@ export const HeightRenderTextStyle = ({ textStyle, setTextStyle }: HeightRenderT
 						watermarksMap: watermarks,
 						segmentsMap: segments,
 						wrapperMap: wrapperElements,
+						fragmentsMap: fragments,
 					})
 				);
 			}
 		},
-		[dispatch, sectionsMap, segmentsMap, setTextStyle, watermarksMap, wrapperMap]
+		[dispatch, fragmentsMap, sectionsMap, segmentsMap, setTextStyle, watermarksMap, wrapperMap]
 	);
 
 	const createLocalMap = React.useCallback(() => {
@@ -95,6 +98,7 @@ export const HeightRenderTextStyle = ({ textStyle, setTextStyle }: HeightRenderT
 			sections: {},
 			watermarks: {},
 			wrapperElements: {},
+			fragments: {},
 		};
 
 		const createEntityMap = (localKey: keyof LocalContainerMap) => {
@@ -117,19 +121,24 @@ export const HeightRenderTextStyle = ({ textStyle, setTextStyle }: HeightRenderT
 		const setLocalSectionsMap = createEntityMap("sections");
 		const setLocalWatermarksMap = createEntityMap("watermarks");
 		const setLocalWrapperMap = createEntityMap("wrapperElements");
+		const setLocalFragmentsMap = createEntityMap("fragments");
 
 		return {
 			setLocalSegmentsMap,
 			setLocalSectionsMap,
 			setLocalWatermarksMap,
 			setLocalWrapperMap,
+			setLocalFragmentsMap,
 		};
 	}, [handleLocalMapFilled]);
 
-	const { setLocalSectionsMap, setLocalSegmentsMap, setLocalWatermarksMap, setLocalWrapperMap } = React.useMemo(
-		() => createLocalMap(),
-		[createLocalMap]
-	);
+	const {
+		setLocalSectionsMap,
+		setLocalSegmentsMap,
+		setLocalWatermarksMap,
+		setLocalWrapperMap,
+		setLocalFragmentsMap,
+	} = React.useMemo(() => createLocalMap(), [createLocalMap]);
 
 	return (
 		<>
@@ -137,6 +146,7 @@ export const HeightRenderTextStyle = ({ textStyle, setTextStyle }: HeightRenderT
 			{renderMap(sectionsMap, setLocalSectionsMap, textStyle)}
 			{renderMap(watermarksMap, setLocalWatermarksMap, textStyle)}
 			{renderMap(wrapperMap, setLocalWrapperMap, textStyle)}
+			{renderMap(fragmentsMap, setLocalFragmentsMap, textStyle)}
 		</>
 	);
 };

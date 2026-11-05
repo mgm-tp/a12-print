@@ -87,6 +87,7 @@ public class ModelDocumentSectionDependencyValueProducer implements ModelDocumen
 		return () -> new AttachmentWrapper<>(
 			new ModelDocumentSectionResult(
 				section,
+				dependency.getSectionUsage(),
 				headerElements.stream().map(AttachmentWrapper::getElement).toList(),
 				footerElements.stream().map(AttachmentWrapper::getElement).toList()
 			),

@@ -41,6 +41,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Optional;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor(force = true, access = AccessLevel.PROTECTED)
@@ -48,4 +50,12 @@ import lombok.experimental.SuperBuilder;
 public class ElementReferenceDto extends PrintModelEntityDto implements ElementReference, JsonModel {
 	@JsonProperty(value = "refId", required = true)
 	private final String refId;
+
+	@JsonProperty(value = "model")
+	private final String model;
+
+	@Override
+	public Optional<String> getModel() {
+		return Optional.ofNullable(model);
+	}
 }

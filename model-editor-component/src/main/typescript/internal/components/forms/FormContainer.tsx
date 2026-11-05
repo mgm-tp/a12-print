@@ -30,17 +30,28 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import type { ChangeEvent } from "react";
 
-import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
-import { ListingRegion, TableRegion, TextRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { ElementType, type PartialAnyPrintModelElement } from "@com.mgmtp.a12.print/print-model-api/model";
+import {
+	generatePrintModelEntityName,
+	ListingRegion,
+	StageRegion,
+	TableRegion,
+	TextRegion,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import {
 	EditorMode,
+	InteractionLogActions,
+	isElementLibraryFormState,
 	isPageBreakConfigFormState,
 	isVisibilityConfigFormState,
 	NavigationSelectors,
+	TransactionLogStateActions,
 } from "../../redux/index.js";
 import { RESOURCE_KEYS, PrintLocalizer } from "../../localization/index.js";
 import { ValidationSelectors } from "../../redux//validation/selectors.js";
@@ -62,8 +73,13 @@ import { BoundingBoxFormContainer } from "./BoundingBoxFormContainer.js";
 import { OverrideFormContainer } from "./OverrideFormContainer.js";
 import { HideConditionsConfig } from "./hide-conditions-form/HideConditionsConfig.js";
 import { AreaFormContainer } from "./AreaFormContainer.js";
+import { ElementLibraryFormContainer } from "./element-library-form/index.js";
 import { SwitchFormContainer } from "./SwitchFormContainer.js";
 import { LayoutConfigForm } from "./layout-config-form/LayoutConfigForm.js";
+import { DynamicSourceTextField } from "./custom-base-input-components/DynamicSourceTextField.js";
+import type { ElementWithoutIdAndType } from "./type.js";
+
+const ELEMENT_TYPES_WITH_OWN_NAME = new Set<ElementType>([ElementType.Switch]);
 
 const FormContainerProvider: Record<ElementType | string, React.ComponentType> = {
 	[ElementType.Text]: TextFormContainer,
@@ -86,10 +102,21 @@ const DefaultModeElementForm = () => {
 	const element = useSelector(PrintEngineSelectors.rootFormElement);
 	const currentForm = useSelector(NavigationSelectors.currentForm);
 	const formValidationCounter = useSelector(ValidationSelectors.formHeaderValidationCounter);
+	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
+	const dispatch = useDispatch();
+
+	const formElementErrorMap = useSelector(ValidationSelectors.elements).find(el => el["@id"] === element?.id);
+	const getPropertyErrorMessage = (property: keyof ElementWithoutIdAndType<PartialAnyPrintModelElement>) => {
+		return formElementErrorMap
+			? errorMessageLocalizer(formElementErrorMap?.[property]?.[ErrorSeverity.ERROR])
+			: undefined;
+	};
 
 	const localizer = PrintLocalizer.useLocalizer();
 
 	const elementType = element?.type;
+
+	const isElementNameHidden = !elementType || ELEMENT_TYPES_WITH_OWN_NAME.has(elementType);
 
 	const elementName = React.useMemo(() => {
 		switch (currentForm?.type) {
@@ -112,9 +139,52 @@ const DefaultModeElementForm = () => {
 
 	const headline = `${localizer(RESOURCE_KEYS.elementForm.headline)} - ${elementName}`;
 
+	const updateElementName = React.useCallback(
+		(ev: ChangeEvent<HTMLInputElement, Element>) => {
+			const updatedName = ev.target.value;
+
+			if (!element) {
+				return;
+			}
+
+			const updatedElement = {
+				...element,
+				name: updatedName,
+			};
+
+			dispatch(
+				InteractionLogActions.start({
+					description: RESOURCE_KEYS.interaction.form.sharedComponent.changeElementName,
+					region: StageRegion.DEFAULT,
+					transactionLogActions: [
+						TransactionLogStateActions.updatePrintModelElements({
+							data: [updatedElement],
+						}),
+					],
+					affectedItems: [
+						{
+							type: "printModelElement",
+							id: updatedElement.id,
+						},
+					],
+				})
+			);
+		},
+		[dispatch, element]
+	);
+
 	return (
 		<StyledOuterContainer data-testid="detail-form-container">
 			<FormHeader headline={headline} validationCounter={formValidationCounter} />
+			{!isElementNameHidden && (
+				<DynamicSourceTextField
+					value={element?.name}
+					placeholder={generatePrintModelEntityName(element?.type || "")}
+					onBlur={updateElementName}
+					label={localizer(RESOURCE_KEYS.elementForm.elementNameLabel)}
+					errorMessage={getPropertyErrorMessage("name")}
+				/>
+			)}
 			<FormComponentToRender />
 		</StyledOuterContainer>
 	);
@@ -127,6 +197,10 @@ const DefaultModeForm = () => {
 
 	if (!currentForm) {
 		return null;
+	}
+
+	if (isElementLibraryFormState(currentForm)) {
+		return <ElementLibraryFormContainer />;
 	}
 
 	if (isVisibilityConfigFormState(currentForm)) {

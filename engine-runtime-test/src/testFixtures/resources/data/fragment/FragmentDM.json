@@ -1,0 +1,309 @@
+{
+  "header": {
+    "id": "PrintFragmentDM",
+    "modelType": "document",
+    "modelVersion": "29.4.0",
+    "locales": [
+      {
+        "code": "en"
+      }
+    ],
+    "annotations": [],
+    "modelReferences": []
+  },
+  "content": {
+    "modelInfo": {
+      "name": "PrintFragmentDM"
+    },
+    "modelConfig": {
+      "timeZone": "UTC",
+      "decimalSeparator": ".",
+      "conditionLanguage": {
+        "code": "en_US"
+      }
+    },
+    "modelRoot": {
+      "rootGroups": [
+        {
+          "type": "Group",
+          "id": "group_fad70",
+          "name": "root",
+          "Group": {
+            "repeatability": 1,
+            "elements": [
+              {
+                "type": "Field",
+                "id": "field_5a7c2",
+                "name": "name",
+                "Field": {
+                  "fieldType": {
+                    "type": "StringType"
+                  },
+                  "label": [
+                    {
+                      "locale": "en",
+                      "text": "Report title"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_c70fe",
+                "name": "data",
+                "Group": {
+                  "repeatability": 999,
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_e1662",
+                      "name": "id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Product number"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_4e910",
+                      "name": "product",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Product"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_045e2",
+                      "name": "region",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Region"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_7c1a4",
+                      "name": "amount",
+                      "Field": {
+                        "fieldType": {
+                          "type": "NumberType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Revenue"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_2f9b8",
+                      "name": "target",
+                      "Field": {
+                        "fieldType": {
+                          "type": "NumberType"
+                        },
+                        "label": [
+                          {
+                            "locale": "en",
+                            "text": "Revenue target"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Group",
+                "id": "group_0964a",
+                "name": "FragmentImage",
+                "Group": {
+                  "repeatability": 1,
+                  "usageType": "attachment",
+                  "elements": [
+                    {
+                      "type": "Field",
+                      "id": "field_d6b6f",
+                      "name": "original_filename",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_8220c",
+                      "name": "internal_filename",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_e844d",
+                      "name": "content",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType",
+                          "StringType": {
+                            "lineBreaksPermitted": true,
+                            "noValueValidation": true
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_5e7dd",
+                      "name": "attachment_id",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_6aa9d",
+                      "name": "size",
+                      "Field": {
+                        "fieldType": {
+                          "type": "NumberType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_3298e",
+                      "name": "mime_type",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_0b8a2",
+                      "name": "category",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Field",
+                      "id": "field_114da",
+                      "name": "description",
+                      "Field": {
+                        "fieldType": {
+                          "type": "StringType"
+                        }
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_e1f08",
+                      "name": "AttachmentInternalFilenameRequired",
+                      "Rule": {
+                        "errorEntityRelPath": "../internal_filename",
+                        "errorCode": "Error rule_e1f08",
+                        "errorCondition": "GroupFilled(RuleGroup) and FieldNotFilled(internal_filename)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Internal Error: Field internal_filename of customType attachment is not filled."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_87701",
+                      "name": "AttachmentMimeTypeRequired",
+                      "Rule": {
+                        "errorEntityRelPath": "../mime_type",
+                        "errorCode": "Error rule_87701",
+                        "errorCondition": "GroupFilled(RuleGroup) and FieldNotFilled(mime_type)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Internal Error: Field mime_type of customType attachment is not filled."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_6d6f6",
+                      "name": "AttachmentIdOrContentFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../content",
+                        "errorCode": "Error rule_6d6f6",
+                        "errorCondition": "GroupFilled(RuleGroup) and NotExactlyOneFieldFilled(attachment_id, content)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Internal Error: Either attachment_id or content must be filled in a customType attachment, but not both."
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_12969",
+                      "name": "SizeOfContentFilled",
+                      "Rule": {
+                        "errorEntityRelPath": "../content",
+                        "errorCode": "Error rule_12969",
+                        "errorCondition": "FieldFilled(content) and FieldNotFilled(size)",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "Internal Error: If the content is filled, the size must be also filled."
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

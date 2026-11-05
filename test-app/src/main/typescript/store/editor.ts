@@ -39,6 +39,7 @@ import type {
 	PartialTransactionLogPersistentEntry,
 } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import type { Model } from "@com.mgmtp.a12.base/base-model-api";
+import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
 import type { ResolvedCaseConfigResource, CaseConfig } from "../components/case-config/CaseConfig";
 
@@ -51,6 +52,7 @@ export interface Editor {
 	logPersistentEntries?: LogPersistentEntry[];
 	hasExternalStore?: boolean;
 	isBasicEditor?: boolean;
+	navigationPath?: EntityInstancePath;
 }
 
 const initialState: Editor = {};
@@ -72,6 +74,7 @@ export const editorSlice = createSlice({
 			state.caseConfig = undefined;
 			state.logPersistentEntries = undefined;
 			state.hasExternalStore = undefined;
+			state.navigationPath = undefined;
 		},
 		setLogPersistentEntries: (state, action: PayloadAction<LogPersistentEntry[]>) => {
 			state.logPersistentEntries = action.payload;
@@ -81,6 +84,9 @@ export const editorSlice = createSlice({
 		},
 		toggleIsBasicEditor: state => {
 			state.isBasicEditor = state.caseResource?.documentModels?.length === 1 && !state.isBasicEditor;
+		},
+		setNavigationPath: (state, action: PayloadAction<EntityInstancePath | undefined>) => {
+			state.navigationPath = castDraft(action.payload);
 		},
 	},
 });
@@ -94,6 +100,7 @@ export const EditorSelector = {
 		state.editor.isBasicEditor && state.editor.caseResource?.documentModels?.length === 1,
 	selectLogPersistentEntries: (state: RootState) => state.editor.logPersistentEntries,
 	selectHasExternalStore: (state: RootState) => state.editor.hasExternalStore,
+	selectNavigationPath: (state: RootState) => state.editor.navigationPath,
 };
 
 export interface PersistLogsPayload {

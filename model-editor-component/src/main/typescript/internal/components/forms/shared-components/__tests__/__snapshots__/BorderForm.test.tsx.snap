@@ -51,6 +51,10 @@ exports[`BorderForm renders correctly 1`] = `
   max-width: unset;
 }
 
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c9 {
+  color: inherit;
+}
+
 .c1 {
   color: #4d4d4d;
   display: inline-block;
@@ -219,7 +223,7 @@ exports[`BorderForm renders correctly 1`] = `
   width: 100%;
 }
 
-.c21 >.StyledTooltipTriggerWrapper-sc-eBoCRM {
+.c21 >.StyledTooltipTriggerWrapper-sc-cAUnSs {
   margin: 0 4px 4px 0;
 }
 
@@ -656,6 +660,7 @@ exports[`BorderForm renders correctly 1`] = `
       <div>
         <label
           class="c0 c1 label field__label"
+          data-disabled="false"
           data-role="textline-label"
           for="borderStyle"
         >
@@ -689,6 +694,8 @@ exports[`BorderForm renders correctly 1`] = `
                 >
                   <span
                     aria-hidden="true"
+                    class="notranslate"
+                    translate="no"
                   >
                     edit
                   </span>
@@ -724,6 +731,8 @@ exports[`BorderForm renders correctly 1`] = `
                       >
                         <span
                           aria-hidden="true"
+                          class="notranslate"
+                          translate="no"
                         >
                           edit
                         </span>
@@ -756,6 +765,8 @@ exports[`BorderForm renders correctly 1`] = `
                       >
                         <span
                           aria-hidden="true"
+                          class="notranslate"
+                          translate="no"
                         >
                           clear
                         </span>
@@ -772,6 +783,7 @@ exports[`BorderForm renders correctly 1`] = `
           >
             <label
               class="c0 c22 label field__label -u-unseenButRead"
+              data-disabled="false"
               data-role="select-label"
               for="borderStyle"
               id="borderStyle-label"
@@ -785,10 +797,12 @@ exports[`BorderForm renders correctly 1`] = `
             </label>
             <div
               class="c24 field__select"
+              data-disabled="false"
               data-role="select-control"
             >
               <div
                 class="c25 field__select-wrapper"
+                data-disabled="false"
                 data-readonly="false"
                 data-role="select-wrapper"
               >
@@ -868,6 +882,8 @@ exports[`BorderForm renders correctly 1`] = `
                         >
                           <span
                             aria-hidden="true"
+                            class="notranslate"
+                            translate="no"
                           >
                             edit
                           </span>
@@ -903,6 +919,8 @@ exports[`BorderForm renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   settings_applications
                                 </span>
@@ -935,6 +953,8 @@ exports[`BorderForm renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   edit
                                 </span>
@@ -1037,6 +1057,8 @@ exports[`BorderForm renders correctly 1`] = `
                         >
                           <span
                             aria-hidden="true"
+                            class="notranslate"
+                            translate="no"
                           >
                             edit
                           </span>
@@ -1072,6 +1094,8 @@ exports[`BorderForm renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   settings_applications
                                 </span>
@@ -1104,6 +1128,8 @@ exports[`BorderForm renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   edit
                                 </span>

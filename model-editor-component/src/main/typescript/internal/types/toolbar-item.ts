@@ -30,7 +30,6 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 export enum ToolbarItem {
-	ElementLibrary = "elementLibrary",
 	ZoomFactor = "zoomFactor",
 	HideFrames = "hideFrames",
 	HideMargins = "hideMargins",

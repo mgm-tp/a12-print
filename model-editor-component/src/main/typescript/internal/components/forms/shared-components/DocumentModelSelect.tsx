@@ -46,9 +46,16 @@ interface DocumentModelSelectProps extends Omit<SelectProps, "items"> {
 	value?: string;
 	onValueChanged: (value?: string) => void;
 	onDelete?: () => void;
+	disabled?: boolean;
 }
 
-export const DocumentModelSelect = ({ value, onValueChanged, onDelete, ...restProps }: DocumentModelSelectProps) => {
+export const DocumentModelSelect = ({
+	value,
+	onValueChanged,
+	onDelete,
+	disabled,
+	...restProps
+}: DocumentModelSelectProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const modelReferences = useSelector(PrintEngineSelectors.documentModelReferences);
 	const wrappers = useSelector(PrintEngineSelectors.wrappers);
@@ -86,6 +93,7 @@ export const DocumentModelSelect = ({ value, onValueChanged, onDelete, ...restPr
 				label={localizer(RESOURCE_KEYS.elementForm.model.documentModel)}
 				items={modelReferenceOptions}
 				fitToParent={true}
+				disabled={disabled}
 				{...restProps}
 			/>
 			{onDelete && value && (
@@ -95,6 +103,7 @@ export const DocumentModelSelect = ({ value, onValueChanged, onDelete, ...restPr
 					icon={<Icon>delete</Icon>}
 					title={localizer(RESOURCE_KEYS.elementForm.model.deleteDocumentModelButton)}
 					onClick={() => onDelete()}
+					disabled={disabled}
 				/>
 			)}
 		</StyledDocumentModelSelectWrapper>

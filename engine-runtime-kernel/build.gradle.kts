@@ -84,12 +84,19 @@ val generateTypeScriptGrammar = tasks.register<AntlrTask>("generateTypeScriptGra
 	outputDirectory = file("${typescriptCodeDest}/antlr")
 
 	doLast {
-		val file = file("${typescriptCodeDest}/antlr/PrintComputationTSParser.ts")
-		// Unused generated declaration which is not fixed by eslint:fix
-		val oldString = "type int = number;"
-		val newString = ""
-		val content = file.readText()
-		file.writeText("// @ts-nocheck\n" + content.replace(oldString, newString))
+		val antlrPath = "${typescriptCodeDest}/antlr"
+		val parserFile = file("${antlrPath}/PrintComputationTSParser.ts")
+		val lexerFile = file("${antlrPath}/PrintComputationTSLexer.ts")
+		parserFile.writeText("// @ts-nocheck\n" + parserFile.readText()
+			.replace("type int = number;", "")
+			.replace("ATNDeserializer, DecisionState, DFA,", "ATNDeserializer, DFA,")
+			.replace("\tToken, TokenStream,", "\tToken,")
+			.replace("} from 'antlr4';", "} from 'antlr4';\nimport type { DecisionState, TokenStream } from 'antlr4';")
+		)
+		lexerFile.writeText(lexerFile.readText()
+			.replace("DecisionState, DFA,", "DFA,")
+			.replace("} from \"antlr4\";", "} from \"antlr4\";\nimport type { DecisionState } from \"antlr4\";")
+		)
 	}
 
 	inputs.files("src/main/antlr/PrintComputationTS.g4", "package.json")

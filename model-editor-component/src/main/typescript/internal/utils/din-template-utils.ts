@@ -109,6 +109,7 @@ function createOverrideElement(element: PartialBoundingBox, referenceElementId: 
 	return {
 		id: nanoid(),
 		type: ElementType.Override,
+		name: `Override for ${element.id}`,
 		override: {
 			id: nanoid(),
 			refId: element.id,

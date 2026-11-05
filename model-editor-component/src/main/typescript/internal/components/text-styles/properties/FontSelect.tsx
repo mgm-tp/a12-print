@@ -49,7 +49,7 @@ interface FontSelectProps extends BaseTextStylePropertyProps {
 	onValueChanged: (fontName: string) => void;
 }
 
-export const FontSelect = ({ selectedFontName, onValueChanged, isDefaultTextStyle, errorMessage }: FontSelectProps) => {
+export const FontSelect = ({ selectedFontName, onValueChanged, isReadonly, errorMessage }: FontSelectProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const storeFonts = useSelector(PrintEngineSelectors.fonts);
 
@@ -95,7 +95,7 @@ export const FontSelect = ({ selectedFontName, onValueChanged, isDefaultTextStyl
 			items={fontOptions}
 			value={selectedFontName}
 			onValueChanged={onValueChanged}
-			disabled={isDefaultTextStyle}
+			disabled={isReadonly}
 			errorMessage={errorMessage}
 			warningMessage={
 				isSelectedNotConfigured

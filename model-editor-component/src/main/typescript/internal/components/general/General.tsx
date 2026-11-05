@@ -44,6 +44,7 @@ import { TransactionLogStateActions } from "../../redux//transaction-log-state/a
 import { InteractionLogActions } from "../../redux//interaction-log/index.js";
 import { ValidationSelectors } from "../../redux//validation/selectors.js";
 import { GeneralViewSelectors } from "../../redux//general-view/selectors.js";
+import { EditorComponentContext } from "../../api/index.js";
 
 import { RepeatTable } from "../forms/shared-components/RepeatTable.js";
 import { CustomTextField, CustomTextAreaStateful } from "../forms/custom-base-input-components/index.js";
@@ -52,13 +53,14 @@ import { useErrorMessagesByPath } from "../validation/index.js";
 
 import { StyledGeneral, StyledGeneralInput } from "./General.styled.js";
 import { AnnotationCustomAdd } from "./annotations/AnnotationCustomAdd.js";
-import type { AnnotationData } from "./annotations/annotation.js";
+import { isProtectedAnnotation, type AnnotationData } from "./annotations/annotation.js";
 import { RolesTable } from "./roles/RolesTable.js";
 import { MetadataSection } from "./metadata/MetadataSection.js";
 
 export const ModelNameRegExp = new RegExp(/^(?!xml)[a-zA-Z_][\w\-.]*$/);
 
 export const General = () => {
+	const { isFragmentModel } = React.useContext(EditorComponentContext);
 	const dispatch = useDispatch();
 	const header = useSelector(PrintEngineSelectors.printHeader);
 	const annotationErrorMap = useSelector(ValidationSelectors.annotation);
@@ -139,7 +141,9 @@ export const General = () => {
 
 	const setGenericAnnotationsData = React.useCallback(
 		(data: AnnotationData[]) => {
-			const protectedAnnotations = annotationsData.filter(entry => entry.name && entry.name === "roles");
+			const protectedAnnotations = annotationsData.filter(
+				entry => entry.name && isProtectedAnnotation(entry.name)
+			);
 			setAnnotationsData([...protectedAnnotations, ...data]);
 		},
 		[annotationsData, setAnnotationsData]
@@ -193,7 +197,7 @@ export const General = () => {
 					availableRoles={availableRoles}
 				/>
 				<RepeatTable<AnnotationData>
-					data={stripRolesFromAnnotations(annotationsData)}
+					data={stripProtectedAnnotations(annotationsData)}
 					columns={useAnnotationOptionsColumns()}
 					headline={localizer(RESOURCE_KEYS.sidebar.general.annotations.headline)}
 					setTableData={setGenericAnnotationsData}
@@ -202,7 +206,7 @@ export const General = () => {
 					getErrorMessage={getAnnotationErrorMessage}
 					customRepeatAdd={<AnnotationCustomAdd data={annotationsData} setData={setAnnotationsData} />}
 				/>
-				<MetadataSection />
+				{!isFragmentModel && <MetadataSection />}
 			</StyledGeneralInput>
 		</StyledGeneral>
 	);
@@ -214,8 +218,8 @@ function createEmptyRow(): AnnotationData {
 	};
 }
 
-const stripRolesFromAnnotations = (annotationData: AnnotationData[]): AnnotationData[] => {
-	return annotationData.filter(entry => entry.name && entry.name !== "roles");
+const stripProtectedAnnotations = (annotationData: AnnotationData[]): AnnotationData[] => {
+	return annotationData.filter(entry => entry.name && !isProtectedAnnotation(entry.name));
 };
 
 const useAnnotationOptionsColumns = (): RepeatColumnType<AnnotationData>[] => {

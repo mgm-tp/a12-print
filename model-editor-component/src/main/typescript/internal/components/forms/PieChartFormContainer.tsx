@@ -39,6 +39,7 @@ import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { getItemsFromElementMap } from "../../utils/index.js";
+import { ElementsUtils } from "../../utils/elements-utils.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import type { UpdateElementsTransactionLogAction } from "../../redux/index.js";
 import { TransactionLogStateActions } from "../../redux/index.js";
@@ -53,6 +54,7 @@ import type { CommonProperties } from "./shared-components/index.js";
 import { AllowedElementType, ChartCommonProperties, DataContextSelection } from "./shared-components/index.js";
 import { CustomCheckbox, CustomSelect, CustomTextField } from "./custom-base-input-components/index.js";
 import type { ElementWithoutIdAndType } from "./type.js";
+import { useFormReadonly } from "./FormContext.js";
 
 export const PieChartFormContainer = () => {
 	const dispatch = useDispatch();
@@ -62,6 +64,7 @@ export const PieChartFormContainer = () => {
 	const elementReferences = useSelector(PrintEngineSelectors.elementReferences);
 	const errorMap = useSelector((state: PrintEngineState) => ValidationSelectors.pieChart(state, element?.id));
 	const wrapperDataContext = useSelector(PrintEngineSelectors.wrapperDataContext);
+	const isFormReadonly = useFormReadonly();
 
 	if (!element || !PartialPieChart.isInstance(element)) {
 		throw Error("Expected element of type PieChart");
@@ -84,6 +87,7 @@ export const PieChartFormContainer = () => {
 					...pieChart,
 					...newProps,
 				},
+				...ElementsUtils.getFragmentDimensionsUpdate(element, { width, height }),
 			};
 			const actions: UpdateElementsTransactionLogAction[] = [
 				TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }),
@@ -207,6 +211,7 @@ export const PieChartFormContainer = () => {
 				value={model}
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getPropertyErrorMessage("model")}
+				disabled={isFormReadonly}
 			/>
 			<CustomTextField
 				label={localizer(RESOURCE_KEYS.elementForm.model.group)}
@@ -219,6 +224,7 @@ export const PieChartFormContainer = () => {
 				elementMapEntries={processedElementMap}
 				selectedPath={group}
 				setSelectedPath={setSelectedPath}
+				disabled={isFormReadonly}
 				maxRepeatLevel={0}
 			/>
 			<PieDiagramAxisProperties element={element} documentModel={model} />

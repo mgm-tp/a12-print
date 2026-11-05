@@ -50,6 +50,10 @@ import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 @OnlyForUsage
 public interface CalculationProperties extends LogicContainer, PrintModelEntity {
+	/**
+	 * @deprecated Use {@link PrintModelElement#getName()} instead. This method will be removed in the next major release.
+	 */
+	@Deprecated(since = "4.1.0", forRemoval = true)
 	String getName();
 
 	String getModel();

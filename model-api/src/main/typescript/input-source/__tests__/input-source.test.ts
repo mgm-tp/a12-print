@@ -73,8 +73,12 @@ describe("InputSource", () => {
 	});
 
 	describe("InputSourceResolver", () => {
-		const textElement: PrintModelElement = { id: "elem-1", type: ElementType.Text };
-		const expressionElement: PrintModelElement = { id: "elem-2", type: ElementType.Expression };
+		const textElement: PrintModelElement = { id: "elem-1", type: ElementType.Text, name: "mockText" };
+		const expressionElement: PrintModelElement = {
+			id: "elem-2",
+			type: ElementType.Expression,
+			name: "mockExpression",
+		};
 
 		test("getInputSourceMetadata returns metadata with possibleInputSources", () => {
 			const metadata = InputValueSourceResolver.getInputSourceMetadata(textElement, "textProperties.alignment");
@@ -241,7 +245,11 @@ describe("InputSource", () => {
 				path: "/test/",
 			};
 			// tableLayout.rowProperties.minHeight has defaultValue "10"
-			const tableLayoutElement: PrintModelElement = { id: "tl-1", type: ElementType.TableLayout };
+			const tableLayoutElement: PrintModelElement = {
+				id: "tl-1",
+				type: ElementType.TableLayout,
+				name: "mockTableLayout",
+			};
 			const result = InputValueSourceResolver.getSourceNumberValue(
 				inputSource,
 				tableLayoutElement,

@@ -52,7 +52,6 @@ import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 import type { WrapperContext } from "../../redux/index.js";
 import { NavigationActions, NavigationSelectors } from "../../redux/index.js";
 import { EditorMode } from "../../redux/editor-state/state.js";
-import type { WrapperStackEntry } from "../../redux/navigation/state.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { createMmMeasure, createPlainMmMeasure } from "../../utils/index.js";
 
@@ -61,10 +60,9 @@ import type { PreviousEditorRef } from "./editor-context.js";
 import { EditorContext } from "./editor-context.js";
 import { StyledEditorWrapper } from "./EditorContextWrapper.styled.js";
 
-export const EditorContextWrapper = () => {
+export const EditorContextWrapper = ({ isReadonly }: { isReadonly: boolean }) => {
 	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
 	const containerId = useSelector(PrintEngineSelectors.currentElementContainerId);
-
 	const previousEditorRef = React.useRef<PreviousEditorRef>(null);
 
 	const sections = useSelector(PrintEngineSelectors.sections);
@@ -100,7 +98,7 @@ export const EditorContextWrapper = () => {
 						entityId: containerId,
 						entry: {
 							id: elementId,
-							type: type as WrapperStackEntry["type"],
+							type,
 							currentMode: EditorMode.Default,
 							modes: {},
 							dimensions: resolvedDimensions,
@@ -158,19 +156,33 @@ export const EditorContextWrapper = () => {
 		}
 	}, [containerId, currentWrapperContainer, dispatch, printModelRefs.currentRefType]);
 
+	const editorContextValue = React.useMemo(
+		() => ({
+			elementReferences,
+			copyElements,
+			setElementReferences,
+			setCopyElements,
+			openWrapperStage,
+			openPreviousStage,
+			getSection,
+			previousEditorRef,
+			isReadonly,
+		}),
+		[
+			elementReferences,
+			copyElements,
+			setElementReferences,
+			setCopyElements,
+			openWrapperStage,
+			openPreviousStage,
+			getSection,
+			previousEditorRef,
+			isReadonly,
+		]
+	);
+
 	return (
-		<EditorContext.Provider
-			value={{
-				elementReferences,
-				copyElements,
-				setElementReferences,
-				setCopyElements,
-				openWrapperStage,
-				openPreviousStage,
-				getSection,
-				previousEditorRef,
-			}}
-		>
+		<EditorContext.Provider value={editorContextValue}>
 			<StyledEditorWrapper>
 				<EditorStage />
 			</StyledEditorWrapper>

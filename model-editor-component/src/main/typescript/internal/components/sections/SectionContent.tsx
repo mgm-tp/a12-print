@@ -35,6 +35,7 @@ import { useSelector } from "react-redux";
 import { PageOrientation, SectionUsage } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
+import { RequestApiSelectors } from "../../redux/request-api/selectors.js";
 
 import { SectionCard } from "./SectionCard.js";
 import { StyledSectionContainer } from "./SectionContent.styled.js";
@@ -59,26 +60,43 @@ export const SECTION_ITEMS = [
 ];
 
 export const SectionContent = () => {
-	const sections = useSelector(PrintEngineSelectors.sections);
+	const sectionItems = useSelector(PrintEngineSelectors.orderedSectionItems);
+	const resolvedReferences = useSelector(RequestApiSelectors.resolvedSectionReferences);
 
-	const getSection = React.useCallback(
+	/**
+	 * References whose section is gone from its fragment model. They cannot go into one of the slots - orientation
+	 * and usage come from the missing definition - so they get their own cards below to be removable here.
+	 */
+	const missingReferences = React.useMemo(
+		() => resolvedReferences.filter(({ section }) => !section),
+		[resolvedReferences]
+	);
+
+	const getSectionItem = React.useCallback(
 		(pageOrientation: PageOrientation, sectionUsage: SectionUsage) => {
-			return sections.find(
-				section => section.pageOrientation === pageOrientation && section.sectionUsage === sectionUsage
+			return sectionItems.find(
+				item => item.section.pageOrientation === pageOrientation && item.section.sectionUsage === sectionUsage
 			);
 		},
-		[sections]
+		[sectionItems]
 	);
 
 	return (
 		<StyledSectionContainer>
-			{SECTION_ITEMS.map(item => (
-				<SectionCard
-					section={getSection(item.pageOrientation, item.sectionUsage)}
-					sectionUsage={item.sectionUsage}
-					pageOrientation={item.pageOrientation}
-					key={`${item.pageOrientation}-${item.sectionUsage}`}
-				/>
+			{SECTION_ITEMS.map(item => {
+				const sectionItem = getSectionItem(item.pageOrientation, item.sectionUsage);
+				return (
+					<SectionCard
+						section={sectionItem?.section}
+						reference={sectionItem?.referenceId ? { id: sectionItem.referenceId } : undefined}
+						sectionUsage={item.sectionUsage}
+						pageOrientation={item.pageOrientation}
+						key={`${item.pageOrientation}-${item.sectionUsage}`}
+					/>
+				);
+			})}
+			{missingReferences.map(({ reference }) => (
+				<SectionCard key={reference.id} reference={reference} />
 			))}
 		</StyledSectionContainer>
 	);

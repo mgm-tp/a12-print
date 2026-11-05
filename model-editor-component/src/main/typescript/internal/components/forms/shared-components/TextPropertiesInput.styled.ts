@@ -46,3 +46,15 @@ export const StyledTextStyleItem = styled.div<StyledSelectItemProps>(({ fontFami
 		text-overflow: ellipsis;
 	`;
 });
+
+/** Puts the marker of a referenced text style beside its name, which keeps eliding when the option is too narrow. */
+export const StyledTextStyleOption = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	min-width: 0;
+
+	${StyledTextStyleItem} {
+		min-width: 0;
+	}
+`;

@@ -72,7 +72,7 @@ interface SectionsProps {
 }
 
 export const Sections = ({ zoomFactor, bodyState, editorState, section }: SectionsProps) => {
-	const { elementReferences } = React.useContext(EditorContext);
+	const { elementReferences, isReadonly } = React.useContext(EditorContext);
 	const dispatch = useDispatch();
 	const wrappers = useSelector(PrintEngineSelectors.wrappers);
 	const editorDimensions = useSelector(PrintEngineSelectors.editorDimensions);
@@ -187,6 +187,7 @@ export const Sections = ({ zoomFactor, bodyState, editorState, section }: Sectio
 						startResize={startResize}
 						zoomFactor={zoomFactor}
 						dimensions={getSectionDimension(headerHeight, editorDimensions.minWidth.value)}
+						isReadonly={isReadonly}
 					/>
 					<Section
 						side="bottom"
@@ -194,6 +195,7 @@ export const Sections = ({ zoomFactor, bodyState, editorState, section }: Sectio
 						startResize={startResize}
 						zoomFactor={zoomFactor}
 						dimensions={getSectionDimension(footerHeight, editorDimensions.minWidth.value)}
+						isReadonly={isReadonly}
 					/>
 				</>
 			)}

@@ -2,7 +2,7 @@
   "header": {
     "id": "SwitchPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -12,11 +12,11 @@
     "annotations": [
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -762,7 +762,8 @@
               "precondition": "True"
             }
           ]
-        }
+        },
+        "name": "Two"
       },
       {
         "id": "SECOND_AREA",
@@ -849,7 +850,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_20066"
       },
       {
         "id": "SECOND_AREA_TEXT",
@@ -890,7 +892,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_ff3e7"
       },
       {
         "id": "THIRD_SWITCH_TEXT",
@@ -931,7 +934,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_82179"
       },
       {
         "id": "FOURTH_SWITCH",
@@ -965,7 +969,8 @@
               "precondition": "True"
             }
           ]
-        }
+        },
+        "name": "Four"
       },
       {
         "id": "FIRST_FOURTH_AREA",
@@ -1052,7 +1057,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_ff011"
       },
       {
         "id": "FIRST_FOURTH_AREA_TEXT",
@@ -1093,7 +1099,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_2b928"
       },
       {
         "id": "SECOND_FOURTH_AREA",
@@ -1180,7 +1187,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_f3460"
       },
       {
         "id": "SECOND_FOURTH_AREA_TEXT",
@@ -1221,7 +1229,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_255a2"
       },
       {
         "id": "FIFTH_SWITCH_TEXT",
@@ -1262,7 +1271,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_e68c9"
       },
       {
         "id": "SIXTH_SWITCH",
@@ -1291,7 +1301,8 @@
               "precondition": "False"
             }
           ]
-        }
+        },
+        "name": "Six"
       },
       {
         "id": "SIXTH_AREA",
@@ -1378,7 +1389,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_d8c0b"
       },
       {
         "id": "SIXTH_AREA_TEXT",
@@ -1419,7 +1431,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_277c0"
       },
       {
         "id": "FIRST_SWITCH_TEXT",
@@ -1460,7 +1473,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_51ba1"
       },
       {
         "id": "FIRST_SWITCH",
@@ -1489,7 +1503,8 @@
               "precondition": "False"
             }
           ]
-        }
+        },
+        "name": "One"
       },
       {
         "id": "FIRST_AREA",
@@ -1576,7 +1591,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_861dc"
       },
       {
         "id": "FIRST_AREA_TEXT",
@@ -1617,7 +1633,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_2c618"
       },
       {
         "id": "THIRD_SWITCH",
@@ -1646,7 +1663,8 @@
               "precondition": "True"
             }
           ]
-        }
+        },
+        "name": "Three"
       },
       {
         "id": "THIRD_AREA",
@@ -1733,7 +1751,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_2d6e3"
       },
       {
         "id": "THIRD_AREA_TEXT",
@@ -1774,7 +1793,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_cfaf4"
       },
       {
         "id": "FIFTH_SWITCH",
@@ -1803,7 +1823,8 @@
               "precondition": "False"
             }
           ]
-        }
+        },
+        "name": "Five"
       },
       {
         "id": "FIFTH_AREA",
@@ -1890,7 +1911,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_f9359"
       },
       {
         "id": "FIFTH_AREA_TEXT",
@@ -1931,7 +1953,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_887b8"
       },
       {
         "id": "SECOND_SWITCH_TEXT",
@@ -1972,7 +1995,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_85cf0"
       },
       {
         "id": "FOURTH_SWITCH_TEXT",
@@ -2013,7 +2037,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_185b9"
       },
       {
         "id": "SIXTH_SWITCH_TEXT",
@@ -2054,7 +2079,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_c5759"
       },
       {
         "id": "SWITCH_1",
@@ -2083,7 +2109,8 @@
               "precondition": "FieldFilled(SwitchDM/NonRepeatableGroup/StringField1)"
             }
           ]
-        }
+        },
+        "name": "switch 1"
       },
       {
         "id": "SWITCH_1_CASE",
@@ -2170,7 +2197,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_12340"
       },
       {
         "id": "2ZQYjvoJD72Vc9bkCcjCf",
@@ -2220,7 +2248,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_45747"
       },
       {
         "id": "wUXbJe8D3R5rmmY7jT0nY",
@@ -2247,7 +2276,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_979c3"
       },
       {
         "id": "ZNLjhzoaCVdRZoLDMT03t",
@@ -2267,7 +2297,8 @@
               "precondition": "FieldFilled(SwitchDM/NonRepeatableGroup/NumberField)"
             }
           ]
-        }
+        },
+        "name": "cal"
       },
       {
         "id": "SWITCH_3",
@@ -2296,7 +2327,8 @@
               "precondition": "FieldFilled(SwitchDM/NonRepeatableGroup/StringField1)"
             }
           ]
-        }
+        },
+        "name": "switch 3"
       },
       {
         "id": "SWITCH_3_CASE",
@@ -2383,7 +2415,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_10c70"
       },
       {
         "id": "SWITCH_3_SWITCH",
@@ -2412,7 +2445,8 @@
               "precondition": "True"
             }
           ]
-        }
+        },
+        "name": "nested switch 3"
       },
       {
         "id": "SWITCH_3_SWITCH_CASE",
@@ -2499,7 +2533,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_d2dba"
       },
       {
         "id": "SWITCH_3_SWITCH_CASE_BOUNDINGBOX",
@@ -2582,7 +2617,8 @@
             "value": "Solid",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "BoundingBox_d4bb0"
       },
       {
         "id": "dudTaZEAlqYesrTqIY6__",
@@ -2628,7 +2664,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_e2264"
       },
       {
         "id": "ETHBEbHeanRXwDpyDt76K",
@@ -2655,7 +2692,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_93e9f"
       },
       {
         "id": "SWITCH_2",
@@ -2684,7 +2722,8 @@
               "precondition": "FieldNotFilled(SwitchDM/NonRepeatableGroup/EmptyField)"
             }
           ]
-        }
+        },
+        "name": "switch 2"
       },
       {
         "id": "SWITCH_2_CASE",
@@ -2771,7 +2810,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_174e9"
       },
       {
         "id": "SWITCH_2_CASE_AREA",
@@ -2866,7 +2906,8 @@
             "value": "Solid",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Area_dee15"
       },
       {
         "id": "y5OE4RI0PWW0gu3c9ji5j",
@@ -2912,7 +2953,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_fd06b"
       },
       {
         "id": "7NSrYBZ7LXGh9VQmRYjVu",
@@ -2939,7 +2981,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_aca21"
       }
     ]
   }

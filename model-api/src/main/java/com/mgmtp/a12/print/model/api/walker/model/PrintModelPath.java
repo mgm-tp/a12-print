@@ -32,12 +32,15 @@
 package com.mgmtp.a12.print.model.api.walker.model;
 
 import com.google.common.collect.ImmutableList;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+import com.mgmtp.a12.print.model.api.model.PrintFragmentModel;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.container.TopLevelReferenceContainer;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
 import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
 import com.mgmtp.a12.print.model.api.model.reference.ElementReference;
+import com.mgmtp.a12.print.model.api.model.reference.PlaceableReference;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
@@ -49,7 +52,6 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
  * Path object that allows {@link PrintModel} traversal.
@@ -69,6 +71,13 @@ public class PrintModelPath implements PrintModelPathElement {
 	 * @return A new {@link PrintModelPath} with the {@link PrintModel} as its root.
 	 */
 	public static PrintModelPath create(PrintModel root) {
+		return new PrintModelPath(List.of(new PathElement(root, 0)));
+	}
+
+	/**
+	 * @return A new {@link PrintModelPath} with the {@link PrintFragmentModel} as its root.
+	 */
+	public static PrintModelPath create(PrintFragmentModel root) {
 		return new PrintModelPath(List.of(new PathElement(root, 0)));
 	}
 
@@ -137,6 +146,15 @@ public class PrintModelPath implements PrintModelPathElement {
 		BiFunction<State, PathElement, State> fold,
 		Predicate<State> filter
 	) {
+		return findParentPath(state, fold, filter, false);
+	}
+
+	private <State> Optional<PrintModelTreeTrace<? extends PathElement>> findParentPath(
+		State state,
+		BiFunction<State, PathElement, State> fold,
+		Predicate<State> filter,
+		boolean withDeepCheck
+	) {
 		for (var i = parents.size() - 1; i >= 0; i--) {
 			final var current = parents.get(i);
 			state = fold.apply(state, current);
@@ -146,6 +164,11 @@ public class PrintModelPath implements PrintModelPathElement {
 					new PrintModelPath(path),
 					current
 				));
+			} else if (withDeepCheck && current.getElement() instanceof PrintModelPath printModelPath) {
+				final var result = printModelPath.findParentPath(state, fold, filter, false);
+				if (result.isPresent()) {
+					return result;
+				}
 			}
 		}
 		return Optional.empty();
@@ -199,11 +222,29 @@ public class PrintModelPath implements PrintModelPathElement {
 		return findParentPath(
 			false,
 			(a, e) -> e.getElement() instanceof PrintModel,
-			s -> s
+			s -> s,
+			true
 		).map(e -> new PrintModelTreeTrace<>(
 			e.getPath(),
 			(PrintModel) e.getTracedElement().getElement()
 		));
+	}
+
+	/**
+	 * @return The nearest ancestor {@link PlaceableReference} from the path, i.e. the placement an inherited
+	 * {@code pageBreakBehavior} resolves from.
+	 */
+	public Optional<PrintModelTreeTrace<PlaceableReference>> findParentPlaceableReference() {
+		return findParentPath(
+			false,
+			(a, e) -> e.getElement() instanceof PlaceableReference,
+			s -> s
+		).map(
+			e -> new PrintModelTreeTrace<>(
+				e.getPath(),
+				(PlaceableReference) e.getTracedElement().getElement()
+			)
+		);
 	}
 
 	/**

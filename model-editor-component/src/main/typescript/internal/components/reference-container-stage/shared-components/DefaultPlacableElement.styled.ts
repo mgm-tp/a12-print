@@ -40,16 +40,13 @@ import { EditorConst } from "../../../constant/editor.js";
 import { ElementsUtils } from "../../../utils/index.js";
 
 interface StyledDefaultPlaceableElementProps {
-	element: PartialAnyPrintModelElement;
+	element: PartialAnyPrintModelElement | undefined;
 	reference: PartialValidPlaceableReference;
 	zoomFactor: number;
 	isDragging: boolean;
 	isSelected: boolean;
-	isColliding: boolean;
-	isOutsideBox: boolean;
 	isMultiDrag: boolean;
-	hovered: PartialValidPlaceableReference | null;
-	showBorders: boolean;
+	isReadonly?: boolean;
 	offsetTop?: number;
 	zIndex?: number;
 }
@@ -59,6 +56,7 @@ const { MM_TO_PX, getZIndexList } = EditorConst;
 export const StyledDefaultPlaceableElement = styled.div<StyledDefaultPlaceableElementProps>`
 	position: absolute;
 	word-break: break-word;
+	background-color: ${({ isReadonly }) => (isReadonly ? "#e2e6e9" : "transparent")};
 	transform-origin: 0 0;
 	transform: scale(${({ zoomFactor }) => zoomFactor});
 	left: ${({ reference, zoomFactor }) => MM_TO_PX(reference.position.x.value) * zoomFactor}px;
@@ -69,15 +67,5 @@ export const StyledDefaultPlaceableElement = styled.div<StyledDefaultPlaceableEl
 	min-width: ${({ reference }) => MM_TO_PX(reference.dimensions.minWidth.value)}px;
 	min-height: ${({ reference, element }) =>
 		MM_TO_PX(ElementsUtils.getFixedElementHeight(element, reference) || reference.dimensions.minHeight.value)}px;
-	outline: ${({ hovered, isSelected, showBorders, isColliding, isOutsideBox, reference }) =>
-		hovered?.refId === reference.refId
-			? "1px solid #d51079"
-			: isSelected
-				? "1px solid #d51079"
-				: !showBorders
-					? "none"
-					: isColliding || isOutsideBox
-						? "2px solid red"
-						: "1px solid #cbd7e8"};
 	box-shadow: ${({ isSelected }) => (isSelected ? "0px 0px 7px 2px rgba(213, 16, 121, 0.25)" : "none")};}
 `;

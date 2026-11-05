@@ -42,7 +42,7 @@ import { EditorConst } from "../../../constant/editor.js";
 const MM_TO_PX = EditorConst.MM_TO_PX;
 
 interface StyledBoundingBoxElementsProps {
-	itemElement: PartialAnyPrintModelElement;
+	itemElement?: PartialAnyPrintModelElement;
 	item: PartialValidPlaceableReference;
 }
 
@@ -64,4 +64,23 @@ export const StyledBoundingBoxElements = styled.div<StyledBoundingBoxElementsPro
 	z-index: ${() => EditorConst.getZIndexList().NestedElement};
 	outline: none;
 	pointer-events: none;
+`;
+
+/**
+ * Fills the place of a nested placement that has no element to render - same grey as a readonly placement, and the same
+ * red outline a broken placement gets on the stage.
+ */
+export const StyledMissingNestedElement = styled.div`
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-color: #e2e6e9;
+	outline: 2px solid red;
+`;
+
+/** Nested placements have no floating buttons, so the one telling where the missing element came from sits in place. */
+export const StyledMissingNestedElementIcon = styled.div`
+	position: absolute;
+	top: 0;
+	right: 0;
 `;

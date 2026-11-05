@@ -29,7 +29,6 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-/* eslint-disable no-restricted-imports */
 export * from "./print-entity-node.js";
 export * from "./print-text-node.js";
 export * from "./print-paragraph-node.js";

@@ -30,5 +30,6 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 export { openDetailViewSaga } from "./open-detail-view-saga.js";
+export { toggleElementLibrarySaga } from "./toggle-element-library-saga.js";
 export { openVisibilityConfigSaga } from "./open-visibility-config-saga.js";
 export { updateVisibilityConfigSaga } from "./update-visibility-config-saga.js";

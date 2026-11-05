@@ -62,6 +62,7 @@ export interface SwitchCaseProps {
 	isDragging?: boolean;
 	documentModel?: string;
 	validationErrors?: PrintError[];
+	isReadonly?: boolean;
 }
 
 export const SwitchCaseCard = ({
@@ -72,11 +73,12 @@ export const SwitchCaseCard = ({
 	isDragging,
 	documentModel,
 	validationErrors,
+	isReadonly,
 }: SwitchCaseProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
-	const areaElement = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.printModelElement(state, row.refId)
-	) as PartialArea;
+	const areaElement = useSelector(
+		(state: PrintEngineState) => PrintEngineSelectors.printModelElement(state, row.refId) as PartialArea | undefined
+	);
 
 	const documentModelData = useSelector((state: PrintEngineState) =>
 		DocumentModelDataSelectors.documentModelData(state, documentModel)
@@ -85,6 +87,9 @@ export const SwitchCaseCard = ({
 		useModelNameAliasConverter(documentModel);
 
 	const setNewRowData = (newData: string) => {
+		if (isReadonly) {
+			return;
+		}
 		setRowData && setRowData({ ...row, precondition: convertAliasToModelName(newData) });
 	};
 
@@ -105,6 +110,7 @@ export const SwitchCaseCard = ({
 					aliasDocumentModel={aliasDocumentModel}
 					documentModelData={documentModelData}
 					validationErrors={validationErrors}
+					readOnly={isReadonly}
 				/>
 			</StyledPreconditionColumn>
 			<StyledAreaColumn>
@@ -117,6 +123,7 @@ export const SwitchCaseCard = ({
 					icon={<Icon>delete</Icon>}
 					title={localizer(RESOURCE_KEYS.button.delete)}
 					onClick={deleteBodyRow}
+					disabled={isReadonly}
 				/>
 			</StyledActionColumn>
 		</StyledCaseCard>

@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.model.api.walker.model.resolver;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModel;
 import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
@@ -41,10 +42,9 @@ import com.mgmtp.a12.print.model.api.walker.model.PrintModelPath;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 /**
- * Resolves {@link PrintModelElement} IDs from a given list of {@link PrintModelElement}s.
+ * Resolves {@link PrintModelReference} IDs from a given list of {@link PrintModelReference}s.
  */
 @OnlyForUsage
 public class ReferenceElementListResolver implements ReferenceElementResolver {

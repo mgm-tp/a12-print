@@ -32,13 +32,11 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
-import isEmpty from "lodash/isEmpty.js";
 
 import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import { Icon, Button, PopUpMenu, CssEllipsis } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Badge, Icon, Button, PopUpMenu, CssEllipsis } from "@com.mgmtp.a12.widgets/widgets-core";
 import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
-import type { PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/model";
-import { Semantic } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { PartialReference, PartialTextStyle, Semantic } from "@com.mgmtp.a12.print/print-model-api/model";
 import { isFontNotConfigured } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
@@ -53,7 +51,6 @@ import { ValidationSelectors } from "../../redux//validation/selectors.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { EditorComponentApiActions } from "../../../a12internal/api/actions-api.js";
 import { DEFAULT_ERROR_TOAST_DURATION } from "../../constant/configs.js";
-import { useTypesettingModelData } from "../../hooks/use-typesetting-model-data.js";
 
 import { BadgeGroup } from "../badge/BadgeGroup.js";
 
@@ -67,43 +64,94 @@ import {
 } from "./TextStyleCard.styled.js";
 
 interface TextStyleCardProps {
-	textStyle: PartialTextStyle;
+	textStyle?: PartialTextStyle;
+	reference?: PartialReference;
 	isDefaultTextStyle?: boolean;
+	isReadonly?: boolean;
+	onRemoveReference?: () => void;
+	onUnlinkReference?: () => void;
+	navigateToSource?: () => void;
+	usageCount?: number;
+	onShowUsages?: () => void;
+	usagesLoading?: boolean;
+	selectionId?: string;
 }
 
-export const TextStyleCard = ({ textStyle, isDefaultTextStyle = false }: TextStyleCardProps) => {
+export const TextStyleCard = ({
+	textStyle,
+	reference,
+	isDefaultTextStyle = false,
+	isReadonly = false,
+	onRemoveReference,
+	onUnlinkReference,
+	navigateToSource,
+	usageCount,
+	onShowUsages,
+	usagesLoading,
+	selectionId = textStyle?.id ?? reference?.id,
+}: TextStyleCardProps) => {
 	const dispatch = useDispatch();
 
 	const ref = React.useRef<HTMLDivElement | null>(null);
 	const selectedTextStyleId = useSelector(PrintEngineSelectors.selectedTextStyleId);
+	const defaultTextStyle = useSelector(PrintEngineSelectors.defaultTextStyle);
 
 	const fonts = useSelector(PrintEngineSelectors.fonts);
-	const isSelected = React.useMemo(() => selectedTextStyleId === textStyle.id, [selectedTextStyleId, textStyle.id]);
-	const { openMenuLabel, duplicateButtonLabel, deleteButtonLabel, semanticButtonTitle } = useButtonLabels(
-		textStyle.semantic
+	const isSelected = React.useMemo(
+		() => !!selectionId && selectedTextStyleId === selectionId,
+		[selectedTextStyleId, selectionId]
 	);
+	const {
+		openMenuLabel,
+		duplicateButtonLabel,
+		deleteButtonLabel,
+		unlinkButtonLabel,
+		usagesButtonLabel,
+		navigateToSourceLabel,
+		semanticButtonTitle,
+	} = useButtonLabels(textStyle?.semantic);
+	const showUsagesEntry = Boolean(onShowUsages);
+	const usagesDisabled = usagesLoading || !usageCount;
 	const error = useSelector((state: PrintEngineState) => ValidationSelectors.textStyle(state, textStyle?.id));
-	const textStyleValidationCounter: ValidationCounter = ValidationCounter.from(error);
-
-	const typesettingModel = useTypesettingModelData(textStyle.typesettingModelName);
 
 	const fontIsNotConfigured = React.useMemo(
-		() => isFontNotConfigured(fonts, textStyle.font),
-		[fonts, textStyle.font]
+		() => isFontNotConfigured(fonts, textStyle?.font),
+		[fonts, textStyle?.font]
 	);
 
-	if (fontIsNotConfigured) {
-		textStyleValidationCounter.warning += 1;
-	}
-
-	if (textStyle.typesettingModelName && !typesettingModel) {
-		textStyleValidationCounter.warning += 1;
-	}
-
-	const { segmentsMap, sectionsMap, wrapperMap } = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.elementsAffectedByTextStyleChange(state, textStyle.id)
+	const referenceCounter = useSelector((state: PrintEngineState) =>
+		reference?.id
+			? ValidationSelectors.textStyleReferenceValidationCounter(state, reference?.id)
+			: ValidationCounter.EMPTY_VALIDATION_COUNTER
 	);
-	const isTextStyleUsed = !isEmpty(segmentsMap) || !isEmpty(sectionsMap) || !isEmpty(wrapperMap);
+	const referenceError = useSelector((state: PrintEngineState) =>
+		reference?.id ? ValidationSelectors.textStyleReferenceError(state, reference.id) : undefined
+	);
+	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
+	const localizedReferenceError = errorMessageLocalizer(
+		ValidationSelectors.ownFragmentReferenceErrors(referenceError)
+	);
+	const referenceErrorMessage = typeof localizedReferenceError === "string" ? localizedReferenceError : undefined;
+
+	const isMissingReference = !textStyle;
+	// Build the counter immutably: never mutate the object returned by ValidationCounter.from,
+	// since it may be a shared reference (would otherwise leak warnings into other cards).
+	let additionalWarnings = 0;
+	// A missing reference has no text style whose font could be checked - only the reference itself is wrong.
+	if (!isMissingReference && fontIsNotConfigured) {
+		additionalWarnings += 1;
+	}
+	const textStyleValidationCounter: ValidationCounter = ValidationCounter.add(
+		ValidationCounter.add(ValidationCounter.from(error), {
+			error: 0,
+			warning: additionalWarnings,
+		}),
+		referenceCounter
+	);
+
+	const isTextStyleUsed = useSelector((state: PrintEngineState) =>
+		PrintEngineSelectors.isTextStyleUsedByPrintModel(state, reference?.id ?? textStyle?.id)
+	);
 
 	React.useEffect(() => {
 		if (isSelected && ref.current) {
@@ -117,6 +165,9 @@ export const TextStyleCard = ({ textStyle, isDefaultTextStyle = false }: TextSty
 	}, [isSelected]);
 
 	const removeTextStyle = React.useCallback(() => {
+		if (!textStyle) {
+			return;
+		}
 		if (isTextStyleUsed) {
 			dispatch(
 				EditorComponentApiActions.addNotification({
@@ -127,6 +178,9 @@ export const TextStyleCard = ({ textStyle, isDefaultTextStyle = false }: TextSty
 				})
 			);
 		} else {
+			if (isSelected) {
+				dispatch(EditorStateActions.updateSelectedTextStyleId(defaultTextStyle.id));
+			}
 			dispatch(
 				InteractionLogActions.start({
 					description: RESOURCE_KEYS.interaction.textStyle.textStyleCard.removeTextStyle,
@@ -136,9 +190,30 @@ export const TextStyleCard = ({ textStyle, isDefaultTextStyle = false }: TextSty
 				})
 			);
 		}
-	}, [dispatch, isTextStyleUsed, textStyle.id]);
+	}, [dispatch, isTextStyleUsed, textStyle, isSelected, defaultTextStyle.id]);
+
+	const removeReference = React.useCallback(() => {
+		if (isTextStyleUsed) {
+			dispatch(
+				EditorComponentApiActions.addNotification({
+					title: { key: RESOURCE_KEYS.textStyles.notification.preventDelete.title },
+					message: { key: RESOURCE_KEYS.textStyles.notification.preventDelete.description },
+					severity: "error",
+					duration: DEFAULT_ERROR_TOAST_DURATION,
+				})
+			);
+		} else {
+			if (isSelected) {
+				dispatch(EditorStateActions.updateSelectedTextStyleId(defaultTextStyle.id));
+			}
+			onRemoveReference?.();
+		}
+	}, [dispatch, isTextStyleUsed, onRemoveReference, isSelected, defaultTextStyle.id]);
 
 	const duplicateTextStyle = React.useCallback(() => {
+		if (!textStyle) {
+			return;
+		}
 		const newTextStyleId = nanoid();
 		dispatch(
 			InteractionLogActions.start({
@@ -153,37 +228,69 @@ export const TextStyleCard = ({ textStyle, isDefaultTextStyle = false }: TextSty
 	}, [dispatch, textStyle]);
 
 	const onTextStyleClick = React.useCallback(() => {
-		dispatch(EditorStateActions.updateSelectedTextStyleId(textStyle.id));
-	}, [dispatch, textStyle.id]);
+		selectionId && dispatch(EditorStateActions.updateSelectedTextStyleId(selectionId));
+	}, [dispatch, selectionId]);
 
 	return (
 		<StyledTextStyleCard data-testid="text-style-card" isSelected={isSelected} onClick={onTextStyleClick} ref={ref}>
-			<StyledTextStyleCardName data-testid="text-style-card-name">
-				<CssEllipsis maxLine={1}>{textStyle.name}</CssEllipsis>
+			<StyledTextStyleCardName data-testid="text-style-card-name" title={referenceErrorMessage}>
+				<CssEllipsis maxLine={1}>{textStyle?.name ?? reference?.refId}</CssEllipsis>
 				<StyledTextStyleCardSemanticHyphen>-</StyledTextStyleCardSemanticHyphen>
 				<StyledTextStyleCardSemantic maxLine={1}>{semanticButtonTitle}</StyledTextStyleCardSemantic>
 			</StyledTextStyleCardName>
-			<BadgeGroup validationCounter={textStyleValidationCounter} standalone />
+			<BadgeGroup validationCounter={textStyleValidationCounter} errorTitle={referenceErrorMessage} standalone />
 			<StyledTextStyleCardButtonGroup alignment="right">
-				{!isDefaultTextStyle && (
+				{!isDefaultTextStyle && !isReadonly && (
 					<StyledDragIcon data-testid="drag-icon" size="big">
 						drag_handle
 					</StyledDragIcon>
 				)}
 				<PopUpMenu triggerButtonTitle={openMenuLabel} onTriggerElementClick={event => event.stopPropagation()}>
-					<Button
-						title={duplicateButtonLabel}
-						label={duplicateButtonLabel}
-						icon={<Icon>content_copy</Icon>}
-						onClick={duplicateTextStyle}
-					/>
+					{navigateToSource && (
+						<Button
+							label={navigateToSourceLabel}
+							title={navigateToSourceLabel}
+							icon={<Icon>open_in_new</Icon>}
+							onClick={navigateToSource}
+						/>
+					)}
+					{showUsagesEntry && (
+						<Button
+							label={
+								<>
+									{usagesButtonLabel}{" "}
+									{!usagesLoading && <Badge count={usageCount ?? 0} standalone light />}
+								</>
+							}
+							title={usagesButtonLabel}
+							icon={<Icon>open_in_new</Icon>}
+							onClick={onShowUsages}
+							disabled={usagesDisabled}
+						/>
+					)}
+					{!isReadonly && (
+						<Button
+							title={duplicateButtonLabel}
+							label={duplicateButtonLabel}
+							icon={<Icon>content_copy</Icon>}
+							onClick={duplicateTextStyle}
+						/>
+					)}
+					{onUnlinkReference && (
+						<Button
+							title={unlinkButtonLabel}
+							label={unlinkButtonLabel}
+							icon={<Icon>link_off</Icon>}
+							onClick={onUnlinkReference}
+						/>
+					)}
 					<Button
 						title={deleteButtonLabel}
 						label={deleteButtonLabel}
-						onClick={removeTextStyle}
+						onClick={isReadonly ? removeReference : removeTextStyle}
 						icon={<Icon variant={"error"}>delete</Icon>}
 						destructive
-						disabled={isDefaultTextStyle}
+						disabled={isDefaultTextStyle || usagesLoading || Boolean(usageCount)}
 					/>
 				</PopUpMenu>
 			</StyledTextStyleCardButtonGroup>
@@ -191,7 +298,7 @@ export const TextStyleCard = ({ textStyle, isDefaultTextStyle = false }: TextSty
 	);
 };
 
-function useButtonLabels(semantic: DeepPartial<Semantic> = Semantic.P) {
+function useButtonLabels(semantic: DeepPartial<Semantic> | undefined) {
 	const localizer = PrintLocalizer.useLocalizer();
 
 	return React.useMemo(
@@ -199,7 +306,10 @@ function useButtonLabels(semantic: DeepPartial<Semantic> = Semantic.P) {
 			openMenuLabel: localizer(RESOURCE_KEYS.button.openMenu),
 			duplicateButtonLabel: localizer(RESOURCE_KEYS.button.duplicate),
 			deleteButtonLabel: localizer(RESOURCE_KEYS.button.delete),
-			semanticButtonTitle: localizer(RESOURCE_KEYS.textStyles.semantic[semantic]),
+			unlinkButtonLabel: localizer(RESOURCE_KEYS.button.unlink),
+			usagesButtonLabel: localizer(RESOURCE_KEYS.fragmentUsage.modalTitle),
+			navigateToSourceLabel: localizer(RESOURCE_KEYS.button.navigateToSource),
+			semanticButtonTitle: semantic && localizer(RESOURCE_KEYS.textStyles.semantic[semantic]),
 		}),
 		[localizer, semantic]
 	);

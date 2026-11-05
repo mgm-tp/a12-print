@@ -40,7 +40,11 @@ export type ExpressionProps = BaseElementProps;
 export const Expression = ({ styles, element }: ExpressionProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	if (!PartialExpression.isInstance(element)) {
-		throw Error(`Expected element of type Expression but got ${element.type}`);
+		throw new Error(`Expected element of type Expression but got ${element?.type}`);
 	}
-	return <div style={styles}>{element.expression?.text || localizer(RESOURCE_KEYS.editor.element.Expression)}</div>;
+	return (
+		<div data-testid="element-expression" style={styles}>
+			{element.expression?.text || localizer(RESOURCE_KEYS.editor.element.Expression)}
+		</div>
+	);
 };

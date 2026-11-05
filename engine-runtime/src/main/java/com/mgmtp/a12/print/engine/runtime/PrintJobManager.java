@@ -32,11 +32,8 @@
 package com.mgmtp.a12.print.engine.runtime;
 
 import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
-import com.mgmtp.a12.print.engine.api.JobManager;
-import com.mgmtp.a12.print.engine.api.PrintJob;
-import com.mgmtp.a12.print.engine.api.PrintJobConfig;
-import com.mgmtp.a12.print.engine.api.PrintModelId;
-import com.mgmtp.a12.print.engine.api.StaticImageProvider;
+import com.mgmtp.a12.model.utils.OnlyForUsage;
+import com.mgmtp.a12.print.engine.api.*;
 import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import com.mgmtp.a12.print.engine.api.message.PrintMessageReport;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.ManagedPrintJob;
@@ -48,7 +45,6 @@ import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.concurrent.ExecutorService;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 // tag::PrintJobManager[]
 
@@ -122,6 +118,36 @@ public class PrintJobManager implements JobManager {
 		);
 	}
 
+	@Override
+	public void awaitPreparation(@NonNull PrintModelId printModelId) throws PrintCompilerException {
+		final var result = awaitPreparationWithReport(printModelId);
+		if (result.noErrorOccurred()) {
+			return;
+		}
+		throw new PrintCompilerException(
+			"The Print Model preparation failed with the following messages: {}",
+			StringUtils.join(result.getMessages(), "\n")
+		);
+	}
+
+	@Override
+	public PrintMessageReport<PrintModelId> awaitPreparationWithReport(@NonNull PrintModelId printModelId) {
+		return PrintMessageReportImpl.wrapException(() -> {
+			getCompiledPrintModel(printModelId);
+			return new PrintMessageReportImpl<>(printModelId, PrintMessageCollector.getMessages());
+		}, PrintCompilerException.class, PrintCompilerException::new);
+	}
+
+	@Override
+	public boolean isPrepared(PrintModelId printModelId) {
+		return compiler.isPrepared(printModelId);
+	}
+
+	@Override
+	public void invalidatePreparedPrintModel(PrintModelId printModelId) {
+		compiler.invalidatePreparedPrintModel(printModelId);
+	}
+
 	private PrintModelCompilationContext getCompiledPrintModel(@NonNull PrintModelId printModelId) {
 		final var context = compiler.get(printModelId);
 		return context.orElseThrow(
@@ -134,19 +160,24 @@ public class PrintJobManager implements JobManager {
 	// tag::PrintJobManagerApi[]
 
 	/**
-	 * Provides interfaces that load print and document models by given IDs.
+	 * Provides interfaces that load print, print fragment and document models by their IDs.
 	 */
 	public interface PrintJobManagerApi {
 
 		/**
-		 * Load the Print model content by ID
+		 * Load the Print Model content by ID
 		 */
 		String loadPrintModel(String id);
 
 		/**
-		 * Load the document model structure by ID
-		 *
-		 * @param id document model ID
+		 * Load the Print Fragment Model content by ID
+		 */
+		default String loadPrintFragmentModel(String id) {
+			throw new PrintCompilerException("The Print Fragment Model Loading mechanism is not implemented");
+		}
+
+		/**
+		 * Load the Document Model structure by ID
 		 */
 		IDocumentModel loadDocumentModel(String id);
 

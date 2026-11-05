@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`DefaultQuickEditBar should renders correctly 1`] = `
-.c5 {
+.c6 {
   -webkit-clip-path: inset(100%);
   border: 0;
   clip: rect(0 0 0 0);
@@ -16,12 +16,12 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   width: 1px;
 }
 
-.c5 * {
+.c6 * {
   width: 1px;
   height: 1px;
 }
 
-.c14 {
+.c15 {
   -webkit-clip-path: inset(100%);
   border: 0;
   clip: rect(0 0 0 0);
@@ -37,12 +37,12 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   display: none;
 }
 
-.c14 * {
+.c15 * {
   width: 1px;
   height: 1px;
 }
 
-.c3 {
+.c4 {
   box-sizing: border-box;
   color: #7F8C9B;
   display: inline-block;
@@ -63,99 +63,16 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   font-feature-settings: "liga";
 }
 
-.c3 >span {
+.c4 >span {
   display: inline-block;
 }
 
-.c3.c3 {
+.c4.c4 {
   max-width: unset;
 }
 
-.c24 {
-  align-items: center;
-  border: 2px solid transparent;
-  cursor: pointer;
-  display: inline-flex;
-  justify-content: center;
-  font-family: "Open Sans",sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  gap: 4px;
-  outline: none;
-  position: relative;
-  text-transform: uppercase;
-  min-height: 32px;
-  vertical-align: middle;
-  border-radius: 50%;
-  flex-shrink: 0;
-  font-size: 1.125rem;
-  height: 2rem;
-  min-height: 0;
-  padding: 0;
-  width: 2rem;
-  background: transparent;
-  color: #0568ae;
-  background: transparent;
-  color: #c91d1d;
-  border: 2px solid #e2e6e9;
-  border-radius: 50%;
-  box-shadow: none;
-  background: #fff;
-  color: #0568ae;
-  background: #fff;
-  color: #c91d1d;
-}
-
-.c24 .c2 {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.c24 .c2 {
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c4 {
   color: inherit;
-}
-
-.c24 .c2 {
-  font-size: inherit;
-}
-
-.c24:not(:disabled):focus {
-  outline: 1px dotted #333;
-  background-color: transparent;
-  box-shadow: none;
-  color: #d50075;
-  border: 2px solid #d50075;
-}
-
-.c24:not(:disabled):focus {
-  background-color: transparent;
-  box-shadow: none;
-  color: #d50075;
-  border: 2px solid #d50075;
-}
-
-.c24:not(:disabled):focus {
-  background-color: #fff;
-  box-shadow: none;
-  color: #d50075;
-  border: 2px solid #d50075;
-}
-
-.c24:not(:disabled):focus {
-  background-color: #fff;
-  box-shadow: none;
-  color: #d50075;
-  border: 2px solid #d50075;
-}
-
-.h_inlineBlock.h_middleAlign .c24.c24 {
-  display: block;
-  height: auto;
-  min-height: 0;
-}
-
-.h_inlineBlock.h_middleAlign .c24.c24 >.c2 {
-  display: block;
 }
 
 .c25 {
@@ -182,29 +99,51 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   width: 2rem;
   background: transparent;
   color: #0568ae;
+  background: transparent;
+  color: #c91d1d;
   border: 2px solid #e2e6e9;
   border-radius: 50%;
   box-shadow: none;
   background: #fff;
   color: #0568ae;
+  background: #fff;
+  color: #c91d1d;
 }
 
-.c25 .c2 {
+.c25 .c3 {
   user-select: none;
   -webkit-user-select: none;
 }
 
-.c25 .c2 {
+.c25 .c3 {
   color: inherit;
 }
 
-.c25 .c2 {
+.c25 .c3 {
   font-size: inherit;
 }
 
 .c25:not(:disabled):focus {
   outline: 1px dotted #333;
   background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.c25:not(:disabled):focus {
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c25:where(:not(:active):not(:hover):not(:focus)) {
+  color: inherit;
+}
+
+.c25:not(:disabled):focus {
+  background-color: #fff;
   box-shadow: none;
   color: #d50075;
   border: 2px solid #d50075;
@@ -223,11 +162,148 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   min-height: 0;
 }
 
-.h_inlineBlock.h_middleAlign .c25.c25 >.c2 {
+.h_inlineBlock.h_middleAlign .c25.c25 >.c3 {
   display: block;
 }
 
-.c13 {
+.c26 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: 1.125rem;
+  height: 2rem;
+  min-height: 0;
+  padding: 0;
+  width: 2rem;
+  background: transparent;
+  color: #0568ae;
+  border: 2px solid #e2e6e9;
+  border-radius: 50%;
+  box-shadow: none;
+  background: #fff;
+  color: #0568ae;
+}
+
+.c26 .c3 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c26 .c3 {
+  color: inherit;
+}
+
+.c26 .c3 {
+  font-size: inherit;
+}
+
+.c26:not(:disabled):focus {
+  outline: 1px dotted #333;
+  background-color: transparent;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c26:where(:not(:active):not(:hover):not(:focus)) {
+  color: inherit;
+}
+
+.c26:not(:disabled):focus {
+  background-color: #fff;
+  box-shadow: none;
+  color: #d50075;
+  border: 2px solid #d50075;
+}
+
+.h_inlineBlock.h_middleAlign .c26.c26 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c26.c26 >.c3 {
+  display: block;
+}
+
+.c27 {
+  align-items: center;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  gap: 4px;
+  outline: none;
+  position: relative;
+  text-transform: uppercase;
+  min-height: 32px;
+  vertical-align: middle;
+  border: 2px solid transparent;
+  border-radius: 0;
+  padding: 0 8px;
+  position: relative;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: #a9b3bc;
+  cursor: default;
+}
+
+.c27 .c3 {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.c27 .c3 {
+  color: inherit;
+}
+
+.c27.c27.c27:-moz-focusring {
+  outline: none;
+}
+
+.c27.c27 .c3 {
+  color: inherit;
+}
+
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs .c27.c27 ) {
+  color: #a9b3bc;
+  width: auto;
+  height: auto;
+  min-height: 0;
+}
+
+.c27[data-role="quick-access-button-main-action"] {
+  background-color: transparent;
+}
+
+.h_inlineBlock.h_middleAlign .c27.c27 {
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+.h_inlineBlock.h_middleAlign .c27.c27 >.c3 {
+  display: block;
+}
+
+.c14 {
   color: #4d4d4d;
   display: inline-block;
   font-family: "Open Sans",sans-serif;
@@ -251,16 +327,16 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   width: 1px;
 }
 
-.c13:empty {
+.c14:empty {
   display: none;
 }
 
-.c13 * {
+.c14 * {
   width: 1px;
   height: 1px;
 }
 
-.c20 {
+.c21 {
   align-items: center;
   background-color: #e2e6e9;
   border-bottom-right-radius: 0;
@@ -276,7 +352,7 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   padding: 0 4px;
 }
 
-.c18 {
+.c19 {
   align-items: center;
   background-color: transparent;
   display: flex;
@@ -286,16 +362,16 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   margin-left: -12px;
 }
 
-.c18:last-child {
+.c19:last-child {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
 
-.c18 .c19 {
+.c19 .c20 {
   margin: 0 0 0 12px;
 }
 
-.c17 {
+.c18 {
   background-color: transparent;
   border: none;
   box-sizing: border-box;
@@ -315,13 +391,13 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   width: 100%;
 }
 
-.c17::placeholder {
+.c18::placeholder {
   font-style: italic;
   color: #596673;
   opacity: 1;
 }
 
-.c15 {
+.c16 {
   background-color: #f1f2f4;
   border: none;
   border-radius: 0;
@@ -335,11 +411,11 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   height: 32px;
 }
 
-.c15 .c23 {
+.c16 .c24 {
   border-radius: 0;
 }
 
-.c21 {
+.c22 {
   background-color: #f1f2f4;
   border: none;
   border-radius: 0;
@@ -355,11 +431,11 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c21 .c23 {
+.c22 .c24 {
   border-radius: 0;
 }
 
-.c6 {
+.c7 {
   display: inline-flex;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -368,42 +444,42 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   width: 100%;
 }
 
-.c6 .c8 {
+.c7 .c9 {
   display: flex;
   width: 100%;
 }
 
-.c6 * {
+.c7 * {
   max-width: 100%;
 }
 
-.c11 {
+.c12 {
   box-sizing: border-box;
   flex-grow: 1;
   width: 100%;
 }
 
-.c11 >.StyledTooltipTriggerWrapper-sc-eBoCRM {
+.c12 >.StyledTooltipTriggerWrapper-sc-cAUnSs {
   margin: 0 4px 4px 0;
 }
 
-.c11 .c12 {
+.c12 .c13 {
   display: block;
   width: fit-content;
 }
 
-.c9 {
+.c10 {
   display: inline-flex;
 }
 
-.c9 .c10 {
+.c10 .c11 {
   flex-basis: 160px;
   flex-grow: 1;
   flex-shrink: 1;
   max-width: 100%;
 }
 
-.c16 {
+.c17 {
   border: 0;
   clip: rect(0 0 0 0);
   clip-path: inset(100%);
@@ -417,6 +493,7 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
 .c0 {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .c0 input::-webkit-outer-spin-button,
@@ -429,27 +506,34 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
   -moz-appearance: textfield;
 }
 
-.c22 {
+.c1 {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.c23 {
   display: flex;
   gap: 6px;
 }
 
-.c1 {
+.c2 {
   display: flex;
   align-items: center;
   gap: 2px;
 }
 
-.c4 {
+.c5 {
   color: #4d4d4d;
 }
 
-.c7 {
+.c8 {
   width: 75px;
 }
 
 @media (pointer: coarse) {
-  .c24:not(:disabled):active {
+  .c25:not(:disabled):active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     background-color: transparent;
     box-shadow: none;
@@ -459,71 +543,8 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
 }
 
 @media (pointer: fine) {
-  .c24:not(:disabled):hover {
+  .c25:not(:disabled):hover {
     background-color: transparent;
-    box-shadow: none;
-    color: #d50075;
-    border: 2px solid #d50075;
-  }
-}
-
-@media (pointer: coarse) {
-  .c24:not(:disabled):active {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    background-color: transparent;
-    box-shadow: none;
-    color: #d50075;
-    border: 2px solid #d50075;
-  }
-}
-
-@media (pointer: fine) {
-  .c24:not(:disabled):hover {
-    background-color: transparent;
-    box-shadow: none;
-    color: #d50075;
-    border: 2px solid #d50075;
-  }
-}
-
-@media (pointer: fine) {
-  .c24:hover {
-    outline: 1px solid transparent;
-  }
-}
-
-@media (pointer: coarse) {
-  .c24:not(:disabled):active {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    background-color: #fff;
-    box-shadow: none;
-    color: #d50075;
-    border: 2px solid #d50075;
-  }
-}
-
-@media (pointer: fine) {
-  .c24:not(:disabled):hover {
-    background-color: #fff;
-    box-shadow: none;
-    color: #d50075;
-    border: 2px solid #d50075;
-  }
-}
-
-@media (pointer: coarse) {
-  .c24:not(:disabled):active {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    background-color: #fff;
-    box-shadow: none;
-    color: #d50075;
-    border: 2px solid #d50075;
-  }
-}
-
-@media (pointer: fine) {
-  .c24:not(:disabled):hover {
-    background-color: #fff;
     box-shadow: none;
     color: #d50075;
     border: 2px solid #d50075;
@@ -575,14 +596,77 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
 }
 
 @media (pointer: coarse) {
-  .c15:active {
+  .c25:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #fff;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c25:not(:disabled):hover {
+    background-color: #fff;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c26:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c26:not(:disabled):hover {
+    background-color: transparent;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c26:hover {
+    outline: 1px solid transparent;
+  }
+}
+
+@media (pointer: coarse) {
+  .c26:not(:disabled):active {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    background-color: #fff;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: fine) {
+  .c26:not(:disabled):hover {
+    background-color: #fff;
+    box-shadow: none;
+    color: #d50075;
+    border: 2px solid #d50075;
+  }
+}
+
+@media (pointer: coarse) {
+  .c16:active {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     box-shadow: 0 2px 0 0 #d50075;
   }
 }
 
 @media (pointer: fine) {
-  .c15:hover {
+  .c16:hover {
     box-shadow: 0 2px 0 0 #d50075;
   }
 }
@@ -594,81 +678,350 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
     <div
       class="c1"
     >
-      <i
-        class="c2 c3 plasma-icon c4"
-        data-role="plasma-icon"
-        title="Position top"
-      >
-        <span
-          aria-hidden="true"
-        >
-          north
-        </span>
-        <span
-          class="c5 -u-unseenButRead"
-          data-role="hidden-text"
-        >
-          Position top
-        </span>
-      </i>
       <div
-        class="c6 field-wrapper field-wrapper--block c7"
-        data-role="text-field"
+        class="c2"
       >
+        <i
+          class="c3 c4 plasma-icon c5"
+          data-role="plasma-icon"
+          title="Position top"
+        >
+          <span
+            aria-hidden="true"
+            class="notranslate"
+            translate="no"
+          >
+            north
+          </span>
+          <span
+            class="c6 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Position top
+          </span>
+        </i>
         <div
-          class="c8 c9 field__main"
+          class="c7 field-wrapper field-wrapper--block c8"
+          data-role="text-field"
         >
           <div
-            class="c10 c11 field"
-            data-role="text-field-control"
+            class="c9 c10 field__main"
           >
-            <label
-              class="c12 c13 label field__label -u-unseenButRead"
-              data-disabled="false"
-              data-role="text-field-label"
-            >
-              Position top
-              <span
-                class="c14 -u-unseenButRead"
-                data-role="hidden-text"
-              >
-                , Top
-              </span>
-            </label>
             <div
-              class="c15 field__input"
-              data-disabled="false"
-              data-readonly="false"
-              data-role="text-field-input-wrapper"
+              class="c11 c12 field"
+              data-role="text-field-control"
             >
-              <span
-                class="c16 supported-unseen-span"
-              />
-              <input
-                class="c17 field__text field__text--align-right"
-                data-role="text-field-input"
-                min="0"
-                placeholder="Top"
-                required=""
-                step="0.1"
-                type="number"
-                value="0"
-              />
-              <span
-                class="c16 supported-unseen-span"
-              />
-              <div
-                class="c18 field__suffix field__suffix--first -u-background-transparent"
-                data-role="text-field-suffix-0"
+              <label
+                class="c13 c14 label field__label -u-unseenButRead"
+                data-disabled="false"
+                data-role="text-field-label"
               >
-                <div
-                  class="c19 c20 field__affix-text"
-                  data-role="text-field-text-affix"
-                  title="cm"
+                Position top
+                <span
+                  class="c15 -u-unseenButRead"
+                  data-role="hidden-text"
                 >
-                  <span>
-                    cm
-                  </span>
+                  , Top
+                </span>
+              </label>
+              <div
+                class="c16 field__input"
+                data-disabled="false"
+                data-readonly="false"
+                data-role="text-field-input-wrapper"
+              >
+                <span
+                  class="c17 supported-unseen-span"
+                />
+                <input
+                  class="c18 field__text field__text--align-right"
+                  data-role="text-field-input"
+                  min="0"
+                  placeholder="Top"
+                  required=""
+                  step="0.1"
+                  type="number"
+                  value="0"
+                />
+                <span
+                  class="c17 supported-unseen-span"
+                />
+                <div
+                  class="c19 field__suffix field__suffix--first -u-background-transparent"
+                  data-role="text-field-suffix-0"
+                >
+                  <div
+                    class="c20 c21 field__affix-text"
+                    data-role="text-field-text-affix"
+                    title="cm"
+                  >
+                    <span>
+                      cm
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c2"
+      >
+        <i
+          class="c3 c4 plasma-icon c5"
+          data-role="plasma-icon"
+          title="Position left"
+        >
+          <span
+            aria-hidden="true"
+            class="notranslate"
+            translate="no"
+          >
+            west
+          </span>
+          <span
+            class="c6 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Position left
+          </span>
+        </i>
+        <div
+          class="c7 field-wrapper field-wrapper--block c8"
+          data-role="text-field"
+        >
+          <div
+            class="c9 c10 field__main"
+          >
+            <div
+              class="c11 c12 field"
+              data-role="text-field-control"
+            >
+              <label
+                class="c13 c14 label field__label -u-unseenButRead"
+                data-disabled="false"
+                data-role="text-field-label"
+              >
+                Position left
+                <span
+                  class="c15 -u-unseenButRead"
+                  data-role="hidden-text"
+                >
+                  , Left
+                </span>
+              </label>
+              <div
+                class="c16 field__input"
+                data-disabled="false"
+                data-readonly="false"
+                data-role="text-field-input-wrapper"
+              >
+                <span
+                  class="c17 supported-unseen-span"
+                />
+                <input
+                  class="c18 field__text field__text--align-right"
+                  data-role="text-field-input"
+                  max="297"
+                  min="0"
+                  placeholder="Left"
+                  required=""
+                  step="0.1"
+                  type="number"
+                  value="0"
+                />
+                <span
+                  class="c17 supported-unseen-span"
+                />
+                <div
+                  class="c19 field__suffix field__suffix--first -u-background-transparent"
+                  data-role="text-field-suffix-0"
+                >
+                  <div
+                    class="c20 c21 field__affix-text"
+                    data-role="text-field-text-affix"
+                    title="cm"
+                  >
+                    <span>
+                      cm
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c2"
+      >
+        <i
+          class="c3 c4 plasma-icon c5"
+          data-role="plasma-icon"
+          title="Width"
+        >
+          <span
+            aria-hidden="true"
+            class="notranslate"
+            translate="no"
+          >
+            settings_ethernet
+          </span>
+          <span
+            class="c6 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Width
+          </span>
+        </i>
+        <div
+          class="c7 field-wrapper field-wrapper--block c8"
+          data-role="text-field"
+        >
+          <div
+            class="c9 c10 field__main"
+          >
+            <div
+              class="c11 c12 field"
+              data-role="text-field-control"
+            >
+              <label
+                class="c13 c14 label field__label -u-unseenButRead"
+                data-disabled="false"
+                data-role="text-field-label"
+              >
+                Width
+                <span
+                  class="c15 -u-unseenButRead"
+                  data-role="hidden-text"
+                >
+                  , Width
+                </span>
+              </label>
+              <div
+                class="c16 field__input"
+                data-disabled="false"
+                data-readonly="false"
+                data-role="text-field-input-wrapper"
+              >
+                <span
+                  class="c17 supported-unseen-span"
+                />
+                <input
+                  class="c18 field__text field__text--align-right"
+                  data-role="text-field-input"
+                  min="0"
+                  placeholder="Width"
+                  required=""
+                  step="0.1"
+                  type="number"
+                  value="0.1"
+                />
+                <span
+                  class="c17 supported-unseen-span"
+                />
+                <div
+                  class="c19 field__suffix field__suffix--first -u-background-transparent"
+                  data-role="text-field-suffix-0"
+                >
+                  <div
+                    class="c20 c21 field__affix-text"
+                    data-role="text-field-text-affix"
+                    title="cm"
+                  >
+                    <span>
+                      cm
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="c2"
+      >
+        <i
+          class="c3 c4 plasma-icon c5"
+          data-role="plasma-icon"
+          title="Height"
+        >
+          <span
+            aria-hidden="true"
+            class="notranslate"
+            translate="no"
+          >
+            height
+          </span>
+          <span
+            class="c6 -u-unseenButRead"
+            data-role="hidden-text"
+          >
+            Height
+          </span>
+        </i>
+        <div
+          class="c7 field-wrapper field-wrapper--block c8"
+          data-role="text-field"
+        >
+          <div
+            class="c9 c10 field__main"
+          >
+            <div
+              class="c11 c12 field"
+              data-role="text-field-control"
+            >
+              <label
+                class="c13 c14 label field__label -u-unseenButRead"
+                data-disabled="false"
+                data-role="text-field-label"
+              >
+                Height
+                <span
+                  class="c15 -u-unseenButRead"
+                  data-role="hidden-text"
+                >
+                  , Height
+                </span>
+              </label>
+              <div
+                class="c22 field__input field__input--readonly"
+                data-disabled="false"
+                data-readonly="true"
+                data-role="text-field-input-wrapper"
+              >
+                <span
+                  class="c17 supported-unseen-span"
+                />
+                <input
+                  class="c18 field__text field__text--align-right"
+                  data-role="text-field-input"
+                  min="0"
+                  placeholder="Height"
+                  readonly=""
+                  required=""
+                  step="0.1"
+                  type="number"
+                  value="0.1"
+                />
+                <span
+                  class="c17 supported-unseen-span"
+                />
+                <div
+                  class="c19 field__suffix field__suffix--first -u-background-transparent"
+                  data-role="text-field-suffix-0"
+                >
+                  <div
+                    class="c20 c21 field__affix-text"
+                    data-role="text-field-text-affix"
+                    title="cm"
+                  >
+                    <span>
+                      cm
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -679,345 +1032,126 @@ exports[`DefaultQuickEditBar should renders correctly 1`] = `
     <div
       class="c1"
     >
-      <i
-        class="c2 c3 plasma-icon c4"
-        data-role="plasma-icon"
-        title="Position left"
-      >
-        <span
-          aria-hidden="true"
-        >
-          west
-        </span>
-        <span
-          class="c5 -u-unseenButRead"
-          data-role="hidden-text"
-        >
-          Position left
-        </span>
-      </i>
       <div
-        class="c6 field-wrapper field-wrapper--block c7"
-        data-role="text-field"
+        class="c23"
       >
-        <div
-          class="c8 c9 field__main"
+        <button
+          aria-label="Delete selected elements"
+          class="c24 c25 button button--icon button--destructive button--secondary"
+          data-role="button"
+          data-type="icon"
+          data-variant-type="secondary"
+          title="Delete selected elements"
+          type="button"
         >
-          <div
-            class="c10 c11 field"
-            data-role="text-field-control"
+          <i
+            class="c3 c4 plasma-icon"
+            data-role="plasma-icon"
           >
-            <label
-              class="c12 c13 label field__label -u-unseenButRead"
-              data-disabled="false"
-              data-role="text-field-label"
+            <span
+              aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
-              Position left
-              <span
-                class="c14 -u-unseenButRead"
-                data-role="hidden-text"
-              >
-                , Left
-              </span>
-            </label>
-            <div
-              class="c15 field__input"
-              data-disabled="false"
-              data-readonly="false"
-              data-role="text-field-input-wrapper"
-            >
-              <span
-                class="c16 supported-unseen-span"
-              />
-              <input
-                class="c17 field__text field__text--align-right"
-                data-role="text-field-input"
-                max="297"
-                min="0"
-                placeholder="Left"
-                required=""
-                step="0.1"
-                type="number"
-                value="0"
-              />
-              <span
-                class="c16 supported-unseen-span"
-              />
-              <div
-                class="c18 field__suffix field__suffix--first -u-background-transparent"
-                data-role="text-field-suffix-0"
-              >
-                <div
-                  class="c19 c20 field__affix-text"
-                  data-role="text-field-text-affix"
-                  title="cm"
-                >
-                  <span>
-                    cm
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="c1"
-    >
-      <i
-        class="c2 c3 plasma-icon c4"
-        data-role="plasma-icon"
-        title="Width"
-      >
-        <span
-          aria-hidden="true"
+              delete
+            </span>
+          </i>
+        </button>
+        <button
+          aria-label="Copy selected elements"
+          class="c24 c26 button button--icon button--secondary"
+          data-role="button"
+          data-type="icon"
+          data-variant-type="secondary"
+          title="Copy selected elements"
+          type="button"
         >
-          settings_ethernet
-        </span>
-        <span
-          class="c5 -u-unseenButRead"
-          data-role="hidden-text"
-        >
-          Width
-        </span>
-      </i>
-      <div
-        class="c6 field-wrapper field-wrapper--block c7"
-        data-role="text-field"
-      >
-        <div
-          class="c8 c9 field__main"
-        >
-          <div
-            class="c10 c11 field"
-            data-role="text-field-control"
+          <i
+            class="c3 c4 plasma-icon"
+            data-role="plasma-icon"
           >
-            <label
-              class="c12 c13 label field__label -u-unseenButRead"
-              data-disabled="false"
-              data-role="text-field-label"
+            <span
+              aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
-              Width
-              <span
-                class="c14 -u-unseenButRead"
-                data-role="hidden-text"
-              >
-                , Width
-              </span>
-            </label>
-            <div
-              class="c15 field__input"
-              data-disabled="false"
-              data-readonly="false"
-              data-role="text-field-input-wrapper"
-            >
-              <span
-                class="c16 supported-unseen-span"
-              />
-              <input
-                class="c17 field__text field__text--align-right"
-                data-role="text-field-input"
-                min="0"
-                placeholder="Width"
-                required=""
-                step="0.1"
-                type="number"
-                value="0.1"
-              />
-              <span
-                class="c16 supported-unseen-span"
-              />
-              <div
-                class="c18 field__suffix field__suffix--first -u-background-transparent"
-                data-role="text-field-suffix-0"
-              >
-                <div
-                  class="c19 c20 field__affix-text"
-                  data-role="text-field-text-affix"
-                  title="cm"
-                >
-                  <span>
-                    cm
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="c1"
-    >
-      <i
-        class="c2 c3 plasma-icon c4"
-        data-role="plasma-icon"
-        title="Height"
-      >
-        <span
-          aria-hidden="true"
+              content_copy
+            </span>
+          </i>
+        </button>
+        <button
+          aria-label="Group selected elements into Area"
+          class="c24 c26 button button--icon button--secondary"
+          data-role="button"
+          data-type="icon"
+          data-variant-type="secondary"
+          title="Group selected elements into Area"
+          type="button"
         >
-          height
-        </span>
-        <span
-          class="c5 -u-unseenButRead"
-          data-role="hidden-text"
-        >
-          Height
-        </span>
-      </i>
-      <div
-        class="c6 field-wrapper field-wrapper--block c7"
-        data-role="text-field"
-      >
-        <div
-          class="c8 c9 field__main"
-        >
-          <div
-            class="c10 c11 field"
-            data-role="text-field-control"
+          <i
+            class="c3 c4 plasma-icon"
+            data-role="plasma-icon"
           >
-            <label
-              class="c12 c13 label field__label -u-unseenButRead"
-              data-disabled="false"
-              data-role="text-field-label"
+            <span
+              aria-hidden="true"
+              class="notranslate"
+              translate="no"
             >
-              Height
-              <span
-                class="c14 -u-unseenButRead"
-                data-role="hidden-text"
-              >
-                , Height
-              </span>
-            </label>
-            <div
-              class="c21 field__input field__input--readonly"
-              data-disabled="false"
-              data-readonly="true"
-              data-role="text-field-input-wrapper"
-            >
-              <span
-                class="c16 supported-unseen-span"
-              />
-              <input
-                class="c17 field__text field__text--align-right"
-                data-role="text-field-input"
-                min="0"
-                placeholder="Height"
-                readonly=""
-                required=""
-                step="0.1"
-                type="number"
-                value="0.1"
-              />
-              <span
-                class="c16 supported-unseen-span"
-              />
-              <div
-                class="c18 field__suffix field__suffix--first -u-background-transparent"
-                data-role="text-field-suffix-0"
-              >
-                <div
-                  class="c19 c20 field__affix-text"
-                  data-role="text-field-text-affix"
-                  title="cm"
-                >
-                  <span>
-                    cm
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+              padding
+            </span>
+          </i>
+        </button>
       </div>
-    </div>
-    <div
-      class="c22"
-    >
       <button
-        aria-label="Delete selected elements"
-        class="c23 c24 button button--icon button--destructive button--secondary"
+        aria-label="Open Detail Edit"
+        class="c24 c26 button button--icon button--secondary"
         data-role="button"
         data-type="icon"
         data-variant-type="secondary"
-        title="Delete selected elements"
+        title="Open Detail Edit"
         type="button"
       >
         <i
-          class="c2 c3 plasma-icon"
+          class="c3 c4 plasma-icon"
           data-role="plasma-icon"
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
-            delete
+            edit_note
           </span>
         </i>
       </button>
       <button
-        aria-label="Copy selected elements"
-        class="c23 c25 button button--icon button--secondary"
+        aria-label="Open/Close Element Library"
+        class="c24 c27 button button--secondary"
         data-role="button"
-        data-type="icon"
         data-variant-type="secondary"
-        title="Copy selected elements"
+        disabled=""
+        title="Open/Close Element Library"
         type="button"
       >
         <i
-          class="c2 c3 plasma-icon"
+          class="c3 c4 plasma-icon"
           data-role="plasma-icon"
         >
           <span
             aria-hidden="true"
+            class="notranslate"
+            translate="no"
           >
-            content_copy
+            category
           </span>
         </i>
-      </button>
-      <button
-        aria-label="Group selected elements into Area"
-        class="c23 c25 button button--icon button--secondary"
-        data-role="button"
-        data-type="icon"
-        data-variant-type="secondary"
-        title="Group selected elements into Area"
-        type="button"
-      >
-        <i
-          class="c2 c3 plasma-icon"
-          data-role="plasma-icon"
+        <span
+          data-role="button-label"
         >
-          <span
-            aria-hidden="true"
-          >
-            padding
-          </span>
-        </i>
+          Element Library
+        </span>
       </button>
     </div>
-    <button
-      aria-label="Open Detail Edit"
-      class="c23 c25 button button--icon button--secondary"
-      data-role="button"
-      data-type="icon"
-      data-variant-type="secondary"
-      title="Open Detail Edit"
-      type="button"
-    >
-      <i
-        class="c2 c3 plasma-icon"
-        data-role="plasma-icon"
-      >
-        <span
-          aria-hidden="true"
-        >
-          edit_note
-        </span>
-      </i>
-    </button>
   </div>
-  ,
 </div>
 `;

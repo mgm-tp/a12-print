@@ -19,12 +19,53 @@ THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPR
 
 The Expression element inserts the result of a Form Engine Expression into the resulting PDF.
 
+[WARNING]
+====
+The Expression element only supports a subset of the Expression language used by the Form Engine.
+Most use cases are better modelled by combining other Print Model elements, which represent both semantics and layout more clearly.
+See <<ExpressionLimitations, Limitations>> for details.
+====
+
 Document Model:: Select a Document Model referenced in the <<SchemaTab, Schema Tab>>.
-Content:: The Expression elements content is generated from the Expression _content_.
-For more information regarding the expected syntax, please refer to the link:/docs/SME/sme-dm-ba-docs/index.html[Expression documentation].
+Content:: The Expression element's content is generated from the Expression _content_.
+For more information regarding the expected syntax, please refer to the link:/docs/EXPRESSION/expression-docs/index.html[Expression documentation].
++
+[WARNING]
+====
+The Expression content is not validated in the editor, so errors only occur when printing.
+====
 
 The Expression Element can be hidden automatically if all referenced Fields are evaluated to an empty value or string. To enable this behavior, select the option `Hide this element if all nested entities are empty`.
 
 Additionally, the Expression element is configurable using <<BorderProperties, Border Properties>> and <<TextProperties, Text Properties>>.
 
 image::chapter03/03_expression_detail_view.png[Expression element detail view,title="Expression element detail view"]
+
+== Limitations [[ExpressionLimitations]]
+
+The Expression element only supports a subset of the Expression language.
+
+The following features are not supported:
+
+[cols="1,2",options="header"]
+|===
+| Not supported | Alternative
+
+| `case` operations for field types other than String and Enumeration
+| Use a <<Text, Text>> element with <<Calculation, Calculation>> elements and use a precondition to determine if a value should be shown.
+
+| Repeatable groups and multi-select fields
+| Use Print elements which control the repetition, such as <<Table, Table>>, <<Listing, Listing>> or a repeatable <<Area, Area>> with a nested <<Text, Text>> element.
+
+| Multilingual texts
+| Create helper enumeration fields in the Document Model and display them with <<Field, Field>> in a <<Text, Text>> element.
+
+| Escaped quotes (`\"`) inside strings
+| Use a <<Text, Text>> element to display any kind of character.
+
+| Markdown, except bold and italic text outside of `case` operations
+| Use a <<Text, Text>> element and its formatting options.
+
+| Line breaks and paragraphs may behave differently than in the Form Engine
+| Use a <<Text, Text>> element.
+|===

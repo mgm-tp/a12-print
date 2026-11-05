@@ -44,6 +44,7 @@ import { ValidationSelectors } from "../../redux//validation/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import type { OmitId } from "../../utils/index.js";
 import { DEFAULT_TEXT_STYLE_ID } from "../../constant/textstyle.js";
+import { PrintEngineSelectors } from "../../store/selectors.js";
 
 import { HiddenHeightComponentContext } from "../hidden-height-context-wrapper/index.js";
 
@@ -83,6 +84,7 @@ interface TextStyleEditorProps {
 }
 
 export const TextStyleEditor = ({ textStyle }: TextStyleEditorProps) => {
+	const isReadonly = useSelector(PrintEngineSelectors.isCurrentTextStyleReferenced);
 	const { name, semantic, font, fontSize, lineHeight, id, typesettingModelName, staticHyphenator } = textStyle;
 	const getErrorMessage = useTextStylePropertyErrorMessage(textStyle);
 	const isDefaultTextStyle = id === DEFAULT_TEXT_STYLE_ID;
@@ -102,7 +104,7 @@ export const TextStyleEditor = ({ textStyle }: TextStyleEditorProps) => {
 					<NameInput
 						name={name}
 						onBlur={useTextStylePropertyChange(textStyle, "name")}
-						isDefaultTextStyle={isDefaultTextStyle}
+						isReadonly={isDefaultTextStyle || isReadonly}
 						key={`name-${id}`}
 						errorMessage={getErrorMessage("name")}
 					/>
@@ -111,7 +113,7 @@ export const TextStyleEditor = ({ textStyle }: TextStyleEditorProps) => {
 					<SemanticSelect
 						semantic={semantic}
 						onValueChanged={useTextStylePropertyChange(textStyle, "semantic")}
-						isDefaultTextStyle={isDefaultTextStyle}
+						isReadonly={isDefaultTextStyle || isReadonly}
 						key={`semantic-${id}`}
 						errorMessage={getErrorMessage("semantic")}
 					/>
@@ -129,14 +131,15 @@ export const TextStyleEditor = ({ textStyle }: TextStyleEditorProps) => {
 					<TypesettingModelSelect
 						value={typesettingModelName}
 						onChange={useTextStylePropertyChange(textStyle, "typesettingModelName")}
-						isDefaultTextStyle={isDefaultTextStyle}
+						isReadonly={isDefaultTextStyle || isReadonly}
 						errorMessage={getErrorMessage("typesettingModelName")}
+						warningMessage={getErrorMessage("typesettingModelName", "WARNING")}
 					/>
 				</Column>
 				<Column size={{ lg: 4 }}>
 					<HyphenatorSelect
 						value={staticHyphenator}
-						isDefaultTextStyle={isDefaultTextStyle}
+						isReadonly={isDefaultTextStyle || isReadonly}
 						onValueChanged={useTextStylePropertyChange(textStyle, "staticHyphenator")}
 						errorMessage={getErrorMessage("staticHyphenator")}
 					/>
@@ -147,7 +150,7 @@ export const TextStyleEditor = ({ textStyle }: TextStyleEditorProps) => {
 					<FontSelect
 						selectedFontName={font}
 						onValueChanged={useTextStylePropertyChange(textStyle, "font")}
-						isDefaultTextStyle={isDefaultTextStyle}
+						isReadonly={isDefaultTextStyle || isReadonly}
 						key={`font-${id}`}
 						errorMessage={getErrorMessage("font")}
 					/>
@@ -158,14 +161,14 @@ export const TextStyleEditor = ({ textStyle }: TextStyleEditorProps) => {
 							<FontSizeInput
 								fontSize={fontSize}
 								onBlur={useTextStylePropertyChange(textStyle, "fontSize")}
-								isDefaultTextStyle={isDefaultTextStyle}
+								isReadonly={isDefaultTextStyle || isReadonly}
 								key={`fontSize-${id}`}
 								errorMessage={getErrorMessage("fontSize")}
 							/>
 							<LineHeightInput
 								lineHeight={lineHeight}
 								onBlur={useTextStylePropertyChange(textStyle, "lineHeight")}
-								isDefaultTextStyle={isDefaultTextStyle}
+								isReadonly={isDefaultTextStyle || isReadonly}
 								key={`lineHeight-${id}`}
 								errorMessage={getErrorMessage("lineHeight")}
 							/>
@@ -184,12 +187,22 @@ export const TextStyleEditor = ({ textStyle }: TextStyleEditorProps) => {
 function useTextStylePropertyErrorMessage<T extends keyof OmitId<TextStyle>>(textStyle: PartialTextStyle) {
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
 	const error = useSelector((state: PrintEngineState) => ValidationSelectors.textStyle(state, textStyle?.id));
+	const referenceError = useSelector((state: PrintEngineState) =>
+		ValidationSelectors.textStyleReferenceErrorByTextStyleId(state, textStyle?.id)
+	);
 
-	return (property: T) => {
-		if (!error) {
-			return;
+	return (property: T, severity: keyof typeof ErrorSeverity = "ERROR") => {
+		const ownMessages = error?.[property]?.[ErrorSeverity[severity]];
+		if (ownMessages?.length) {
+			return errorMessageLocalizer(ownMessages);
 		}
-		return errorMessageLocalizer(error[property]?.[ErrorSeverity.ERROR]);
+		/*
+		 * A text style of a fragment model has no definition here, so what is wrong with one of its fields is reported
+		 * at the reference that pulled it in, naming the field it belongs to.
+		 */
+		return errorMessageLocalizer(
+			referenceError?.[ErrorSeverity[severity]]?.filter(({ parameters }) => parameters?.field === property)
+		);
 	};
 }
 

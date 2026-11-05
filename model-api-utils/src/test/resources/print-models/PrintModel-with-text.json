@@ -2,7 +2,7 @@
   "header": {
     "id": "TextPrintModel",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -73,6 +73,9 @@
       "textStyles": [
         {
           "id": "ID_eaec83d5-b064-4874-916e-2fe62af0ef24"
+        },
+        {
+          "id": "TEXT_STYLE_ID-abc12"
         }
       ],
       "structure": [
@@ -383,7 +386,8 @@
           "id": "ID_a9be69b4-ec02-4319-aab1-9bf78a08ecba",
           "text": "<div><p>TEST</p></div>",
           "entities": []
-        }
+        },
+        "name": "Text_c6fe1"
       },
       {
         "id": "Bh8Qr9ZG9283i87ZIPcY_",
@@ -410,7 +414,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_22c1f"
       },
       {
         "id": "vkMPtkFmNFedvHa3l7fOo",
@@ -425,7 +430,8 @@
               "operation": "[DomainText/general/StringField]"
             }
           ]
-        }
+        },
+        "name": "Calculation"
       },
       {
         "id": "aymJotzgBFBPVVufjeG56",
@@ -478,7 +484,8 @@
               "refId": "vkMPtkFmNFedvHa3l7fOo"
             }
           ]
-        }
+        },
+        "name": "Text_e40fa"
       },
       {
         "id": "Bh8Qr9ZG9283i87ZIPcYC6",
@@ -505,7 +512,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_1201f"
       },
       {
         "id": "vkMPtkFmNFedvHa3l7f89",
@@ -520,7 +528,8 @@
               "operation": "[DomainText/general/EmptyField]"
             }
           ]
-        }
+        },
+        "name": "Calculation"
       },
       {
         "id": "aymJotzgBFBPVVufjeG4o",
@@ -574,11 +583,13 @@
               "refId": "vkMPtkFmNFedvHa3l7f89"
             }
           ]
-        }
+        },
+        "name": "Text_cb8ea"
       },
       {
         "id": "Px7ZwU9NlE75N71QQBIbk",
-        "type": "PageNumber"
+        "type": "PageNumber",
+        "name": "PageNumber_fec36"
       },
       {
         "id": "aymJotzgBFBPVVufjeG45",
@@ -627,11 +638,13 @@
               "refId": "Px7ZwU9NlE75N71QQBIbk"
             }
           ]
-        }
+        },
+        "name": "Text_31d79"
       },
       {
         "id": "kbIBQQ17N57ElN9UwZ7xP",
-        "type": "PageNumberTotal"
+        "type": "PageNumberTotal",
+        "name": "PageNumberTotal_6b234"
       },
       {
         "id": "54GejfuVVPBFBgztoJmya",
@@ -680,7 +693,8 @@
               "refId": "kbIBQQ17N57ElN9UwZ7xP"
             }
           ]
-        }
+        },
+        "name": "Text_a9530"
       },
       {
         "id": "aymJotzgBFBPVVufje123",
@@ -724,7 +738,8 @@
           "id": "ID_fae3c616-4e75-4fc0-a0a8-a26083ebd888",
           "text": "<p>Create new page for total page number</p>",
           "entities": []
-        }
+        },
+        "name": "Text_83b00"
       }
     ],
     "textStyles": {
@@ -739,7 +754,7 @@
           "semantic": "H1"
         },
         {
-          "id": "default",
+          "id": "TEXT_STYLE_ID-abc12",
           "name": "Noto Sans Mono@15.0 within 19.0",
           "font": "Noto Sans Mono",
           "fontSize": 11,

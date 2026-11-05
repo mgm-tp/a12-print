@@ -31,6 +31,7 @@
  */
 package com.mgmtp.a12.print.engine.runtime.internal.message;
 
+import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.api.message.PrintMessage;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -88,10 +89,19 @@ public class PrintMessageCollector {
 
 	public static PrintMessage getErrorMessage(Exception cause) {
 		Throwable root = cause;
-		while (root.getCause() != null) {
+		while (root.getCause() != null && !describesTheError(root)) {
 			root = root.getCause();
 		}
 		return new PrintErrorMessageImpl(root.getMessage(), stackTraceOf(cause));
+	}
+
+	/**
+	 * A {@link PrintDomainException} can state that its own message describes the error, which ends the search for the
+	 * root cause.
+	 */
+	private static boolean describesTheError(Throwable throwable) {
+		return throwable instanceof PrintDomainException printDomainException
+			&& printDomainException.isRootMessage();
 	}
 
 	@Nullable

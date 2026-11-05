@@ -34,6 +34,8 @@ import { useCallback, useMemo } from "react";
 import type { CheckboxProps } from "@com.mgmtp.a12.widgets/widgets-core";
 import { PossibleInputSource, InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
+import { useFormReadonly } from "../../FormContext.js";
+
 import { useCustomBaseInputProps } from "../use-custom-base-input-props.js";
 import type { SourceCheckboxProperties } from "../types.js";
 
@@ -63,6 +65,9 @@ export const SourceCheckbox = (props: SourceCheckboxProps) => {
 		infoMessage,
 		...restProps
 	} = props;
+
+	const isFormReadonly = useFormReadonly();
+	const isDisabled = disabled || isFormReadonly;
 
 	const { errorMessage, warningMessage, errorTooltip, warningTooltip, propsTooltips } = useCustomBaseInputProps(
 		originalErrorMessage,
@@ -103,12 +108,7 @@ export const SourceCheckbox = (props: SourceCheckboxProps) => {
 			return null;
 		}
 
-		const displayValue =
-			inputSource.source === PossibleInputSource.DEFAULT
-				? inputSourceValue
-				: inputSource.source === PossibleInputSource.INPUT
-					? checked
-					: undefined;
+		const displayValue = inputSource.source === PossibleInputSource.INPUT ? checked : inputSourceValue;
 
 		const isInputUndefined = inputSource.source === PossibleInputSource.INPUT && checked === undefined;
 
@@ -119,20 +119,22 @@ export const SourceCheckbox = (props: SourceCheckboxProps) => {
 					source={inputSource!.source}
 					onValueChanged={handleSourceChange}
 					showOnlySelectedOption
+					disabled={isDisabled}
 				/>
 				{isInputUndefined ? (
-					<StyleCheckboxIndeterminate checked={"mixed"} onChange={restProps.onChange} />
+					<StyleCheckboxIndeterminate checked={"mixed"} onChange={restProps.onChange} disabled={isDisabled} />
 				) : (
 					<StyleCheckbox
 						{...restProps}
 						id={id}
 						readonly={inputSource.source !== PossibleInputSource.INPUT}
 						checked={!!displayValue}
+						disabled={isDisabled}
 					/>
 				)}
 			</StyleSourceCheckbox>
 		);
-	}, [id, checked, handleSourceChange, inputSource, inputSourceValue, possibleInputSources, restProps]);
+	}, [id, checked, handleSourceChange, inputSource, inputSourceValue, possibleInputSources, restProps, isDisabled]);
 
 	return (
 		<SourceInputContainer
@@ -146,7 +148,7 @@ export const SourceCheckbox = (props: SourceCheckboxProps) => {
 			label={label}
 			labelGraphic={labelGraphic}
 			hideLabel={hideLabel}
-			disabled={disabled}
+			disabled={isDisabled}
 			infoMessage={infoMessage}
 		>
 			{checkbox}

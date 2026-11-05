@@ -30,6 +30,7 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useCallback, useMemo } from "react";
 import type { Store } from "@reduxjs/toolkit";
 
@@ -45,18 +46,22 @@ import type {
 	PrintEngineState,
 } from "@com.mgmtp.a12.print/print-model-editor-component/a12internal/api";
 import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
+import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
 import { EditorActions, EditorSelector } from "../../../store/editor";
 import { NotificationActions } from "../../../store/notification";
 import { PreviewActions } from "../../../store/preview";
+import type { ResolvedCaseConfigResource } from "../../case-config/CaseConfig";
+import { caseConfigResources, caseConfigs } from "../../case-config/CaseConfig";
 
-import { createTestAppStaticImageProvider } from "./staticImageProviderTestApp";
+import { testAppStaticImageProvider } from "./staticImageProviderTestApp";
 
 interface PrintEditorProps {
 	printModel: Model;
 	documentModels?: Model[];
 	typesettingModels?: Model[];
 	templatePrintModels?: Model[];
+	fragmentPrintModels?: Model[];
 	logPersistentEntries: LogPersistentEntry[];
 	store?: PrintEngineState;
 	customFonts: FontResourceMap;
@@ -72,6 +77,7 @@ const onDeploy = () => undefined;
 export function PrintModelEditorSMEWrapper({
 	printModel,
 	templatePrintModels = [],
+	fragmentPrintModels = [],
 	documentModels = [],
 	typesettingModels = [],
 	logPersistentEntries,
@@ -79,12 +85,15 @@ export function PrintModelEditorSMEWrapper({
 	customFonts,
 }: Readonly<PrintEditorProps>) {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const caseConfig = useSelector(EditorSelector.selectCaseConfig);
 	const caseId = caseConfig?.id;
+	const navigationPath = useSelector(EditorSelector.selectNavigationPath);
 
 	const onClose = useCallback(() => {
 		dispatch(EditorActions.clearEditorState());
-	}, [dispatch]);
+		navigate("/");
+	}, [dispatch, navigate]);
 
 	const hasExternalStore = useSelector(EditorSelector.selectHasExternalStore);
 
@@ -157,11 +166,23 @@ export function PrintModelEditorSMEWrapper({
 		}
 	}, []);
 
-	const printModels = useMemo(() => {
-		return [...templatePrintModels, printModel];
-	}, [templatePrintModels, printModel]);
+	const reverseReferencingPrintModels = useMemo(() => {
+		const currentPrintModelId = printModel.header.id;
+		return caseConfigs
+			.filter(cc => cc.path !== caseConfig?.path)
+			.map(cc => caseConfigResources[cc.path])
+			.filter((resource): resource is ResolvedCaseConfigResource => Boolean(resource))
+			.filter(resource =>
+				[...(resource.fragmentPrintModels ?? []), ...(resource.templatePrintModels ?? [])].some(
+					model => model.header.id === currentPrintModelId
+				)
+			)
+			.map(resource => resource.printModel);
+	}, [printModel.header.id, caseConfig?.path]);
 
-	const staticImageProvider = useMemo(() => createTestAppStaticImageProvider(caseId ?? ""), [caseId]);
+	const printModels = useMemo(() => {
+		return [...templatePrintModels, ...fragmentPrintModels, printModel, ...reverseReferencingPrintModels];
+	}, [templatePrintModels, fragmentPrintModels, printModel, reverseReferencingPrintModels]);
 
 	const loadReferencedDocumentModels = useCallback(
 		(ids: string[]) => {
@@ -169,6 +190,29 @@ export function PrintModelEditorSMEWrapper({
 		},
 		[documentModels]
 	);
+
+	const onNavigateToPrintModel = useCallback(
+		(printModelId: string, navPath?: unknown) => {
+			const targetCase = caseConfigs.find(
+				cc => caseConfigResources[cc.path]?.printModel.header.id === printModelId
+			);
+
+			if (targetCase) {
+				dispatch(EditorActions.clearEditorState());
+				dispatch(EditorActions.setNavigationPath(navPath as EntityInstancePath | undefined));
+				dispatch(EditorActions.setCaseConfig(targetCase));
+				navigate(`/${targetCase.id}`);
+			} else {
+				console.warn("No use case found for print model:", printModelId, navPath);
+			}
+		},
+		[dispatch, navigate]
+	);
+
+	const modelIconPaths = {
+		printModelIcon: "images/Model-Print.svg",
+		fragmentModelIcon: "images/Print-Fragment.svg",
+	};
 
 	return (
 		<InternalPrintModelEditorSME
@@ -189,13 +233,15 @@ export function PrintModelEditorSMEWrapper({
 			showNotification={showNotification}
 			onPrintModelChange={onChange}
 			onValidationStateChange={() => {}}
-			modelIconPath="images/Model-Print.svg"
+			modelIconPaths={modelIconPaths}
 			isConnectedToServer={false}
 			onSetStore={printState}
 			initialState={store}
 			hasExternalStore={hasExternalStore}
 			availableRoles={devProps.roles}
-			staticImageProvider={staticImageProvider}
+			staticImageProvider={testAppStaticImageProvider}
+			onNavigateToPrintModel={onNavigateToPrintModel}
+			navigationPath={navigationPath}
 		/>
 	);
 }

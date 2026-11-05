@@ -47,6 +47,7 @@ include("model-document")
 include("model-editor-component")
 include("model-migration")
 include("print-dev-tools")
+include("print-integration")
 include("print-fonts")
 include("print-shell")
 include("print-workspace")
@@ -62,4 +63,3 @@ dependencyResolutionManagement {
 		})
 	}
 }
-

@@ -136,7 +136,7 @@ export const MarginBreakPageContext = React.memo(function MarginBreakPageContext
 				renderElement={offset => {
 					return (
 						<PlaceableElement
-							key={reference.refId}
+							key={reference.id}
 							reference={reference}
 							onClick={onClick}
 							onDoubleClick={onDoubleClick}

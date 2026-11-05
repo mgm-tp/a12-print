@@ -36,5 +36,6 @@ export * from "./partial-print-model-trace.js";
 export * from "./partial-reference-resolver.js";
 export * from "./partial-segment-id-resolver.js";
 export * from "./partial-section-id-resolver.js";
+export * from "./partial-text-style-id-resolver.js";
 export * from "./partial-watermark-id-resolver.js";
 export * from "./parital-reference-element-resolver.js";

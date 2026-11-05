@@ -39,17 +39,29 @@ import type {
 	LogPersistentEntry,
 } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { PrintModelCreator, Log } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
 
 import type { RequestApi } from "../../api/index.js";
-import { InteractionLogActions, TransactionLogStateActions, CommitViewActions } from "../../redux/index.js";
+import {
+	ConfirmationDialogType,
+	InteractionLogActions,
+	TransactionLogStateActions,
+	CommitViewActions,
+} from "../../redux/index.js";
+import type { FragmentUsagePrintModelInfo } from "../../redux/confirmation-dialog/state.js";
+import { FragmentUsageSelectors } from "../../redux/fragment-usage/selectors.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { interactionGraph } from "../../constant/interaction-graph.js";
 import { RESOURCE_KEYS } from "../../../internal/localization/index.js";
 import type { CommitInteractionRow } from "../../types/commit-view.js";
 import { EditorComponentApiActions } from "../../../a12internal/api/actions-api.js";
 import { PrintEngineActions } from "../../store/actions.js";
+import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 
+import { openConfirmationDialogSaga } from "../confirmation-dialog/open-confirmation-dialog-saga.js";
+
+import { propagateFragmentElementChanges } from "./propagate-fragment-element-changes-saga.js";
 import { createCommitInteractionRows } from "./utils.js";
 
 const log = LoggerFactory.getLogger("CommitChangesSaga");
@@ -64,6 +76,20 @@ export function* commitChangesSaga(): SagaGenerator<void> {
 
 function* handleCommitChangesSaga(action: PayloadAction<CommitInteractionRow[]>) {
 	const commits = action.payload.filter(el => el.state !== "pending");
+
+	const modelSubType: ReturnType<typeof PrintEngineSelectors.printModelSubType> = yield* select(
+		PrintEngineSelectors.printModelSubType
+	);
+	const usages: FragmentUsagePrintModelInfo[] =
+		modelSubType === "fragment" ? yield* call(getAffectedFragmentUsages, commits) : [];
+	if (usages.length > 0) {
+		const confirmed = yield* call(openConfirmationDialogSaga, ConfirmationDialogType.COMMIT_AFFECTS_PRINT_MODELS, {
+			usages,
+		});
+		if (!confirmed) {
+			return;
+		}
+	}
 
 	const requestApi = yield* getContext<RequestApi>("requestApi");
 	const header = yield* select(PrintEngineSelectors.printHeader);
@@ -111,6 +137,16 @@ function* handleCommitChangesSaga(action: PayloadAction<CommitInteractionRow[]>)
 	} else if (savedPrintModelResponse?.precompileMessages && savedPrintModelResponse.precompileMessages.length > 0) {
 		yield* put(CommitViewActions.setCommitViewPrecompileMessages(savedPrintModelResponse.precompileMessages));
 	}
+
+	if (modelSubType === "fragment") {
+		yield* call(
+			propagateFragmentElementChangesSafely,
+			commits,
+			initialPrintModel,
+			savedPrintModelResponse.printModel
+		);
+	}
+
 	const { transactionLogStore: newTransactionLogStore, interactionLogStore } = Log.createStores(
 		filteredEntriesToRemain,
 		savedPrintModelResponse?.printModel,
@@ -129,6 +165,79 @@ function* handleCommitChangesSaga(action: PayloadAction<CommitInteractionRow[]>)
 
 	const remainingCommitInteractionRows = yield* call(createCommitInteractionRows);
 	yield* put(CommitViewActions.setCommitInteractionRows(remainingCommitInteractionRows));
+}
+
+function* propagateFragmentElementChangesSafely(
+	commits: CommitInteractionRow[],
+	initialPrintModel: PrintModel,
+	savedPrintModel: PrintModel
+): SagaGenerator<void> {
+	try {
+		const affectedElementIds = yield* call(getAffectedEntityIds, commits, PRINT_MODEL_ELEMENT_AFFECTED_ITEM_TYPES);
+		yield* call(propagateFragmentElementChanges, initialPrintModel, savedPrintModel, affectedElementIds);
+	} catch (error) {
+		log.error("Could not propagate the committed fragment element dimensions: ", error);
+		yield* put(
+			EditorComponentApiActions.addNotification({
+				title: { key: RESOURCE_KEYS.validation.error.internalError },
+				message: { key: RESOURCE_KEYS.sidebar.commitChanges.error.propagateFragmentChangesFailed },
+				severity: "error",
+			})
+		);
+	}
+}
+
+const PRINT_MODEL_ELEMENT_AFFECTED_ITEM_TYPES = new Set(["printModelElement"]);
+
+const FRAGMENT_ENTITY_AFFECTED_ITEM_TYPES = new Set([
+	"segment",
+	"section",
+	"watermark",
+	"textStyle",
+	...PRINT_MODEL_ELEMENT_AFFECTED_ITEM_TYPES,
+]);
+
+/** Resolves the ids of every entity of the given affected-item types touched by the given commit rows. */
+function* getAffectedEntityIds(
+	commits: CommitInteractionRow[],
+	itemTypes: ReadonlySet<string>
+): SagaGenerator<Set<string>> {
+	const commitInteractionIds = new Set(commits.map(commit => commit.interactionId));
+	const allInteractions = yield* select(PrintEngineSelectors.allInteractions);
+
+	const affectedEntityIds = new Set<string>();
+	for (const entry of allInteractions) {
+		if (!commitInteractionIds.has(entry.interactionId)) {
+			continue;
+		}
+		for (const item of entry.affectedItems) {
+			if (itemTypes.has(item.type)) {
+				affectedEntityIds.add(item.id);
+			}
+		}
+	}
+
+	return affectedEntityIds;
+}
+
+/**
+ * Resolves the print models referencing any fragment entity touched by the commit rows, deduplicated by print model
+ * (the dialog lists models, not references). Non-fragment element ids simply yield no usages.
+ */
+function* getAffectedFragmentUsages(commits: CommitInteractionRow[]): SagaGenerator<FragmentUsagePrintModelInfo[]> {
+	const affectedEntityIds = yield* call(getAffectedEntityIds, commits, FRAGMENT_ENTITY_AFFECTED_ITEM_TYPES);
+
+	return yield* select((state: PrintEngineState) => {
+		const usagesByPrintModelId = new Map<string, FragmentUsagePrintModelInfo>();
+		for (const entityId of affectedEntityIds) {
+			for (const usage of FragmentUsageSelectors.usageForEntity(state, entityId)) {
+				if (!usagesByPrintModelId.has(usage.printModelId)) {
+					usagesByPrintModelId.set(usage.printModelId, usage);
+				}
+			}
+		}
+		return [...usagesByPrintModelId.values()];
+	});
 }
 
 const filterRemainingUnusedLogs = (entriesToRemain: LogPersistentEntry[], allEntries: LogPersistentEntry[]) => {

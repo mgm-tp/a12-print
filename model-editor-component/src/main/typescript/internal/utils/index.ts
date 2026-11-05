@@ -37,4 +37,5 @@ export * from "./type-utils.js";
 export * from "./utils.js";
 export * from "./validation-utils.js";
 export * from "./format-utils.js";
+export * from "./fragment-utils.js";
 export * from "./text-properties-utils.js";

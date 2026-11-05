@@ -40,6 +40,7 @@ export * from "./LineChartFormContainer.js";
 export * from "./OverrideFormContainer.js";
 export * from "./BoundingBoxFormContainer.js";
 export * from "./AreaFormContainer.js";
+export * from "./element-library-form/index.js";
 export * from "./PieChartFormContainer.js";
 export * from "./TableLayoutFormContainer.js";
 export * from "./table-form-container/index.js";

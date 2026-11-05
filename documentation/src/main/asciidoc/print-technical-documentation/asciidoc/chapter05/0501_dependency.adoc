@@ -15,18 +15,34 @@ You must select and comply with exactly one of the above license options.
 Warranty Disclaimer (applies to either option)
 THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
 ////
-= Dependency
+= Additional Dependency
 
-This section outlines the dependencies required to integrate the `PrintModelEditorLight` component into a React application. The following module is required:
+This section covers the additional dependencies necessary for integrating the XML PrintEngines into a Maven or Gradle application.
+In both cases it is required to first follow the instructions from the previous chapter.
 
-- `print-model-editor-component`
+For the usage with Maven, the following additional dependencies need to be added in the applications POM-file:
 
-To install this module, use the following command:
+Maven plugin::
 
 [source,bash]
 ----
-pnpm install @com.mgmtp.a12.print/print-model-editor-component
+<dependency>
+    <groupId>com.mgmtp.a12.print</groupId>
+    <artifactId>print-engine-runtime-xml</artifactId>
+    <version>{printEngineVersion}</version>
+</dependency>
 ----
 
-Note: This package depends on the peer dependencies listed in `package.json`. Ensure your project uses compatible versions.
+For the usage with Gradle, the following additional dependencies need to be added in the applications `build.gradle` file:
 
+Gradle plugin::
+
+[source,bash]
+----
+...
+dependencies {
+	...
+	implementation("com.mgmtp.a12.print:print-engine-runtime-xml:${printEngineVersion}")
+	...
+}
+----

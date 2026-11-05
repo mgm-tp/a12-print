@@ -2,6 +2,7 @@
   "extends": "./node_modules/@com.mgmtp.a12.print/print-dev-tools/tsconfig.json",
   "include": [
     "src/**/*",
+    "scripts/**/*",
     "playwright.config.ts",
     "use-cases/**/*"
   ],
@@ -10,6 +11,8 @@
     "declarationMap": false,
     "module": "ESNext",
     "moduleResolution": "bundler",
+    // The screenshot script is run from source by Node, which needs the extension on an import.
+    "rewriteRelativeImportExtensions": true,
     "outDir": "./lib",
     "allowJs": true,
     "checkJs": false,
@@ -29,7 +32,7 @@
     "lib": [
       "webworker",
       "dom",
-      "ES2020"
+      "ES2022"
     ],
   }
 }

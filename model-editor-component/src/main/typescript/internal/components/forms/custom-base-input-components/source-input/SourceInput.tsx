@@ -35,6 +35,7 @@ import { InputValueSourceResolver, PossibleInputSource } from "@com.mgmtp.a12.pr
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../../localization/index.js";
 import { stringifyInputValue } from "../../../../utils/input-source-utils.js";
+import { useFormReadonly } from "../../FormContext.js";
 
 import { CustomTextField } from "../CustomTextField.js";
 import type { TextLineStatefulProps } from "../types.js";
@@ -70,6 +71,8 @@ export const SourceInput = (props: SourceInputProps) => {
 	} = props;
 	const localizer = useLocalizer();
 	const inputRef = useRef<HTMLInputElement | null>(null);
+	const isFormReadonly = useFormReadonly();
+	const isDisabled = disabled || isFormReadonly;
 	const { onSourceChange, inputSource, element, property, determineInheritedSource, inheritedValueResolver } =
 		sourceProperties;
 
@@ -109,7 +112,7 @@ export const SourceInput = (props: SourceInputProps) => {
 			labelGraphic={labelGraphic}
 			hideLabel={hideLabel}
 			labelRef={labelRef}
-			disabled={disabled}
+			disabled={isDisabled}
 			placeholder={placeholder}
 			errorMessage={errorMessage}
 			warningMessage={warningMessage}
@@ -127,7 +130,7 @@ export const SourceInput = (props: SourceInputProps) => {
 						}
 					}}
 					readonly={inputSource.source !== PossibleInputSource.INPUT}
-					disabled={disabled}
+					disabled={isDisabled}
 					value={
 						inputSource.source !== PossibleInputSource.INPUT
 							? (stringifyInputValue(inputSourceValue) ?? "")
@@ -146,7 +149,7 @@ export const SourceInput = (props: SourceInputProps) => {
 							source={inputSource.source}
 							onValueChanged={handleSourceChange}
 							showOnlySelectedOption
-							disabled={disabled}
+							disabled={isDisabled}
 						/>
 					}
 				/>

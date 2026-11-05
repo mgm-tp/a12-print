@@ -32,14 +32,14 @@
 import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 /** Canvas tabs that hold entity stacks */
-export type CanvasTab = SidebarItem.SEGMENT | SidebarItem.SECTION | SidebarItem.WATERMARK;
+export type CanvasTab = SidebarItem.SEGMENT | SidebarItem.SECTION | SidebarItem.WATERMARK | SidebarItem.FRAGMENT;
 
 export function getCanvasTabKey(tab: CanvasTab): CanvasTab {
 	return tab;
 }
 
 /** Derive the EntityStackEntry type string from a CanvasTab */
-export function tabToEntityType(tab: CanvasTab): "Segment" | "Section" | "Watermark" {
+export function tabToEntityType(tab: CanvasTab): "Segment" | "Section" | "Watermark" | "Fragment" {
 	switch (tab) {
 		case SidebarItem.SEGMENT:
 			return "Segment";
@@ -47,9 +47,11 @@ export function tabToEntityType(tab: CanvasTab): "Segment" | "Section" | "Waterm
 			return "Section";
 		case SidebarItem.WATERMARK:
 			return "Watermark";
+		case SidebarItem.FRAGMENT:
+			return "Fragment";
 	}
 }
 
 export function isCanvasTab(value: SidebarItem): value is CanvasTab {
-	return [SidebarItem.SEGMENT, SidebarItem.SECTION, SidebarItem.WATERMARK].includes(value);
+	return [SidebarItem.SEGMENT, SidebarItem.SECTION, SidebarItem.WATERMARK, SidebarItem.FRAGMENT].includes(value);
 }

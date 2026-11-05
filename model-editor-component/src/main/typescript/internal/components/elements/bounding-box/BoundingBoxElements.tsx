@@ -36,8 +36,13 @@ import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-
 
 import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 import { PrintEngineSelectors } from "../../../store/selectors.js";
+import { FragmentReferenceIconButton } from "../../element-container/FragmentReferenceIconButton.js";
 
-import { StyledBoundingBoxElements } from "./BoundingBoxElements.styled.js";
+import {
+	StyledBoundingBoxElements,
+	StyledMissingNestedElement,
+	StyledMissingNestedElementIcon,
+} from "./BoundingBoxElements.styled.js";
 
 interface Props {
 	item: PartialValidPlaceableReference;
@@ -51,6 +56,14 @@ export const BoundingBoxElements: React.FunctionComponent<Props> = ({ item, chil
 
 	return (
 		<StyledBoundingBoxElements itemElement={itemElement} item={item}>
+			{/* A placement whose element is gone renders nothing, so its area is shown as an empty box instead. */}
+			{!itemElement && (
+				<StyledMissingNestedElement>
+					<StyledMissingNestedElementIcon>
+						<FragmentReferenceIconButton reference={item} disabled />
+					</StyledMissingNestedElementIcon>
+				</StyledMissingNestedElement>
+			)}
 			{children}
 		</StyledBoundingBoxElements>
 	);

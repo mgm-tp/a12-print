@@ -37,14 +37,17 @@ import { DocumentServiceFactory } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 
 import testPartialPrintModelJson from "../../../../../../test/resources/print-models/Print-model-with-path-references.json" with { type: "json" };
 import testDocumentModelJson from "../../../../../../test/resources/document-models/Person.json" with { type: "json" };
-import { PrintModelMarshaller } from "../../../../marshaller/model-marshaller.js";
-import { PrintModelCreator } from "../../../../a12internal/utils/print-model-creator.js";
-import { Log } from "../../../../a12internal/transaction-log/index.js";
+import {
+	createTestPrintModel,
+	createTestPrintModelWithLog,
+} from "../../../../../../test/typescript/test-utils/setup-test-model.js";
 
 import { ReferencePathValidation } from "../reference-path-validation.js";
 import { ReferencePathValidationService } from "../reference-path-validation-service.js";
+import { getAllReferencedLocations } from "../partial-print-model-visitor-reference-collector.js";
 
-const printModelMarshaller = new PrintModelMarshaller();
+import fragmentDocumentModelJson from "./__testdata__/ExampleDM.json" with { type: "json" };
+import fragmentPrintModelJson from "./__testdata__/printFragment.json" with { type: "json" };
 
 describe("validateDocumentModelReferences", () => {
 	let testPrintModel: PartialPrintModel;
@@ -53,13 +56,7 @@ describe("validateDocumentModelReferences", () => {
 		.deserialize(JSON.stringify(testDocumentModelJson));
 
 	beforeEach(async () => {
-		const deserializeResult = printModelMarshaller.deserialize(testPartialPrintModelJson);
-		const printModel = deserializeResult.result;
-		if (!printModel) {
-			throw new Error("Cannot read test print model");
-		}
-		const { transactionLogStore } = Log.createStores([], printModel);
-		testPrintModel = PrintModelCreator.createStoreModel(transactionLogStore);
+		testPrintModel = createTestPrintModelWithLog(testPartialPrintModelJson);
 	});
 
 	afterEach(() => {
@@ -67,11 +64,17 @@ describe("validateDocumentModelReferences", () => {
 	});
 
 	it("should have no errors in all paths", async () => {
-		const errorpMap = ReferencePathValidation.validateDocumentModelReferences(testPrintModel, [testDocumentModel]);
+		const result = getAllReferencedLocations(testPrintModel);
+		const errorpMap = ReferencePathValidation.validateDocumentModelReferences(
+			testPrintModel,
+			[testDocumentModel],
+			result.collectedPaths
+		);
 		expect(DeepPartialErrorMap.getReadableErrorMap(errorpMap)).toMatchSnapshot();
 	});
 
 	it("should have errors in all paths", async () => {
+		const result = getAllReferencedLocations(testPrintModel);
 		jest.spyOn(ReferencePathValidationService, "createFactory")
 			.mockClear()
 			.mockReturnValue(() => ({
@@ -82,7 +85,73 @@ describe("validateDocumentModelReferences", () => {
 				isPathRepeatable: () => false,
 				isPathInListing: () => false,
 			}));
-		const errorpMap = ReferencePathValidation.validateDocumentModelReferences(testPrintModel, [testDocumentModel]);
+		const errorpMap = ReferencePathValidation.validateDocumentModelReferences(
+			testPrintModel,
+			[testDocumentModel],
+			result.collectedPaths
+		);
 		expect(DeepPartialErrorMap.getReadableErrorMap(errorpMap)).toMatchSnapshot();
 	});
+
+	it("should have errors in the element fragments of a fragment model without its document model", async () => {
+		const fragmentModel = createTestPrintModel(fragmentPrintModelJson);
+		const result = getAllReferencedLocations(fragmentModel);
+		const errorMap = ReferencePathValidation.validateDocumentModelReferences(
+			fragmentModel,
+			[],
+			result.collectedPaths
+		);
+		expect(DeepPartialErrorMap.getReadableErrorMap(errorMap)).toMatchSnapshot();
+	});
+
+	it("should have no errors in the element fragments of a fragment model with its document model", async () => {
+		const fragmentModel = createTestPrintModel(fragmentPrintModelJson);
+		const result = getAllReferencedLocations(fragmentModel);
+		const errorMap = ReferencePathValidation.validateDocumentModelReferences(
+			fragmentModel,
+			[deserializeDocumentModel(fragmentDocumentModelJson)],
+			result.collectedPaths
+		);
+		expect(DeepPartialErrorMap.getReadableErrorMap(errorMap)).toMatchSnapshot();
+	});
+
+	it.each([
+		[
+			"renamed",
+			(fields: { name: string }[], index: number) => {
+				fields[index].name = "renamedStringField";
+			},
+		],
+		[
+			"deleted",
+			(fields: { name: string }[], index: number) => {
+				fields.splice(index, 1);
+			},
+		],
+	])(
+		"should have errors in the element fragments of a fragment model for a path %s in its document model",
+		async (_, changeField) => {
+			const fragmentModel = createTestPrintModel(fragmentPrintModelJson);
+			const documentModelJson = structuredClone(fragmentDocumentModelJson);
+			const repeatableFields = documentModelJson.content.modelRoot.rootGroups[0].Group.elements.find(
+				element => element.name === "repeatable"
+			)!.Group!.elements;
+			changeField(
+				repeatableFields,
+				repeatableFields.findIndex(field => field.name === "stringField")
+			);
+
+			const result = getAllReferencedLocations(fragmentModel);
+			const errorMap = ReferencePathValidation.validateDocumentModelReferences(
+				fragmentModel,
+				[deserializeDocumentModel(documentModelJson)],
+				result.collectedPaths
+			);
+			expect(DeepPartialErrorMap.getReadableErrorMap(errorMap)).toMatchSnapshot();
+		}
+	);
 });
+
+function deserializeDocumentModel(documentModelJson: unknown) {
+	return new DocumentServiceFactory().getDocumentModelSerializer().deserialize(JSON.stringify(documentModelJson));
+}

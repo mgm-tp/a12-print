@@ -58,14 +58,16 @@ import type {
 	InteractionLogStore,
 } from "./interaction-log.js";
 import { createNewInteractionLogStore } from "./interaction-log.js";
-import type {
-	PartialTransactionLogPersistentEntry,
-	TransactionLogEntryCommand,
-	TransactionLogStore,
-} from "./transaction-log.js";
 import {
 	EntryType,
 	TransactionLogPersistentEntry,
+	type PartialTransactionLogPersistentEntry,
+	type SectionReferencesContainer,
+	type SegmentFragmentReferencesContainer,
+	type TextStyleReferencesContainer,
+	type TransactionLogEntryCommand,
+	type TransactionLogStore,
+	type WatermarkReferencesContainer,
 	createMemoizedObject,
 	createNewTransactionLogStore,
 } from "./transaction-log.js";
@@ -197,8 +199,9 @@ function addPersistentEntriesFromTransactionLogEntry(
 		return;
 	}
 	if (EntryType.isSegment(entryType)) {
-		const initialObject = newTransactionLogStore.segments.map[elementId]?.initialObject;
-		const newLogDiff = [...(newTransactionLogStore.segments.map[elementId]?.log || []), log];
+		newTransactionLogStore.segments ??= { id: nanoid(), map: {}, references: {} };
+		const initialObject = newTransactionLogStore.segments?.map[elementId]?.initialObject;
+		const newLogDiff = [...(newTransactionLogStore.segments?.map[elementId]?.log || []), log];
 		newTransactionLogStore.segments.map[elementId] = {
 			id: elementId,
 			log: newLogDiff,
@@ -208,12 +211,30 @@ function addPersistentEntriesFromTransactionLogEntry(
 		return;
 	}
 	if (EntryType.isSegmentReference(entryType)) {
-		const initialObject = newTransactionLogStore.segments.references[elementId]?.initialObject;
-		const newLogDiff = [...(newTransactionLogStore.segments.references[elementId]?.log || []), log];
+		newTransactionLogStore.segments ??= { id: nanoid(), map: {}, references: {} };
+		const initialObject = newTransactionLogStore.segments?.references[elementId]?.initialObject;
+		const newLogDiff = [...(newTransactionLogStore.segments?.references[elementId]?.log || []), log];
 		newTransactionLogStore.segments.references[elementId] = {
 			id: elementId,
 			log: newLogDiff,
 			memoizedObject: createMemoizedObject<PartialSegmentReference>(
+				elementId,
+				entryType,
+				newLogDiff,
+				initialObject
+			),
+			initialObject,
+		};
+		return;
+	}
+	if (EntryType.isSegmentFragmentReferences(entryType)) {
+		newTransactionLogStore.segments ??= { id: nanoid(), map: {}, references: {} };
+		const initialObject = newTransactionLogStore.segments.fragmentReferencesEntry?.initialObject;
+		const newLogDiff = [...(newTransactionLogStore.segments.fragmentReferencesEntry?.log || []), log];
+		newTransactionLogStore.segments.fragmentReferencesEntry = {
+			id: elementId,
+			log: newLogDiff,
+			memoizedObject: createMemoizedObject<SegmentFragmentReferencesContainer>(
 				elementId,
 				entryType,
 				newLogDiff,
@@ -247,6 +268,40 @@ function addPersistentEntriesFromTransactionLogEntry(
 		};
 		return;
 	}
+	if (EntryType.isWatermarkReferences(entryType)) {
+		newTransactionLogStore.watermarks ??= { id: nanoid(), map: {} };
+		const initialObject = newTransactionLogStore.watermarks.referencesEntry?.initialObject;
+		const newLogDiff = [...(newTransactionLogStore.watermarks.referencesEntry?.log || []), log];
+		newTransactionLogStore.watermarks.referencesEntry = {
+			id: elementId,
+			log: newLogDiff,
+			memoizedObject: createMemoizedObject<WatermarkReferencesContainer>(
+				elementId,
+				entryType,
+				newLogDiff,
+				initialObject
+			),
+			initialObject,
+		};
+		return;
+	}
+	if (EntryType.isSectionReferences(entryType)) {
+		newTransactionLogStore.sections ??= { id: nanoid(), map: {} };
+		const initialObject = newTransactionLogStore.sections.referencesEntry?.initialObject;
+		const newLogDiff = [...(newTransactionLogStore.sections.referencesEntry?.log || []), log];
+		newTransactionLogStore.sections.referencesEntry = {
+			id: elementId,
+			log: newLogDiff,
+			memoizedObject: createMemoizedObject<SectionReferencesContainer>(
+				elementId,
+				entryType,
+				newLogDiff,
+				initialObject
+			),
+			initialObject,
+		};
+		return;
+	}
 	if (EntryType.isTextStyle(entryType)) {
 		newTransactionLogStore.textStyles ??= { id: nanoid(), map: {} };
 		const initialObject = newTransactionLogStore.textStyles.map[elementId]?.initialObject;
@@ -259,9 +314,27 @@ function addPersistentEntriesFromTransactionLogEntry(
 		};
 		return;
 	}
+	if (EntryType.isTextStyleReferences(entryType)) {
+		newTransactionLogStore.textStyles ??= { id: nanoid(), map: {} };
+		const initialObject = newTransactionLogStore.textStyles.referencesEntry?.initialObject;
+		const newLogDiff = [...(newTransactionLogStore.textStyles.referencesEntry?.log || []), log];
+		newTransactionLogStore.textStyles.referencesEntry = {
+			id: elementId,
+			log: newLogDiff,
+			memoizedObject: createMemoizedObject<TextStyleReferencesContainer>(
+				elementId,
+				entryType,
+				newLogDiff,
+				initialObject
+			),
+			initialObject,
+		};
+		return;
+	}
 	if (EntryType.isPrintModelElement(entryType)) {
-		const initialObject = newTransactionLogStore.printModelElements[elementId]?.initialObject;
-		const newLogDiff = [...(newTransactionLogStore.printModelElements[elementId]?.log || []), log];
+		const existingEntry = newTransactionLogStore.printModelElements[elementId];
+		const initialObject = existingEntry?.initialObject;
+		const newLogDiff = [...(existingEntry?.log || []), log];
 		newTransactionLogStore.printModelElements[elementId] = {
 			id: elementId,
 			log: newLogDiff,
@@ -284,10 +357,9 @@ function addPersistentEntriesFromPrintModelElement(
 	elementId: string,
 	newTransactionLogStore: DeepMutable<TransactionLogStore>
 ) {
-	const initialObject = newTransactionLogStore.printModelElements[elementId]?.initialObject;
-	const newLogDiff = newTransactionLogStore.printModelElements[elementId]
-		? newTransactionLogStore.printModelElements[elementId].log.slice()
-		: [];
+	const existingEntry = newTransactionLogStore.printModelElements[elementId];
+	const initialObject = existingEntry?.initialObject;
+	const newLogDiff = existingEntry ? existingEntry.log.slice() : [];
 	newTransactionLogStore.printModelElements[elementId] = {
 		id: elementId,
 		log: newLogDiff,

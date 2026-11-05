@@ -38,16 +38,19 @@ import type {
 	PartialAnyPrintModelElement,
 	PrintModelEntity,
 	PartialTextProperties,
-	PartialTextStyle,
 	TextStyle,
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import { Alignment, TEXT_STYLE } from "@com.mgmtp.a12.print/print-model-api/model";
 import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
 import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
-import { InputValueSourceResolver, PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
+import {
+	InputValueSourceResolver,
+	PossibleInputSource,
+	type InheritedValueResolver,
+} from "@com.mgmtp.a12.print/print-model-api/input-source";
 import type { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
-import { Button, addPrefix } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, Icon, addPrefix } from "@com.mgmtp.a12.widgets/widgets-core";
 import type { PrintFontMap } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 import { getPrefixedFontFamily } from "@com.mgmtp.a12.print/print-fonts/a12internal";
 
@@ -66,7 +69,7 @@ import {
 	StyleCheckboxGroup,
 } from "../custom-base-input-components/index.js";
 
-import { StyledTextStyleItem } from "./TextPropertiesInput.styled.js";
+import { StyledTextStyleItem, StyledTextStyleOption } from "./TextPropertiesInput.styled.js";
 
 export interface TextPropertiesProps {
 	showColor?: boolean;
@@ -76,13 +79,26 @@ export interface TextPropertiesProps {
 	showUnderline?: boolean;
 }
 
-export interface TextPropertiesInputProps extends TextPropertiesProps {
+/** Resolves what a property inherits, the same way {@link InheritedBorderResolver} does for a border. */
+export interface InheritedTextPropertiesResolver {
+	resolveTextStyleId?: InheritedValueResolver<string>;
+	resolveBold?: InheritedValueResolver<boolean>;
+	resolveItalic?: InheritedValueResolver<boolean>;
+	resolveUnderlined?: InheritedValueResolver<boolean>;
+	resolveColor?: InheritedValueResolver<string>;
+	resolveBackgroundColor?: InheritedValueResolver<string>;
+	resolveAlignment?: InheritedValueResolver<string>;
+}
+
+export interface TextPropertiesInputProps extends TextPropertiesProps, InheritedTextPropertiesResolver {
 	element: PartialAnyPrintModelElement;
 	setTextProperties: (newProps: OmitId<PartialTextProperties>) => void;
 	textProperties?: PartialTextProperties;
 	textPropertyErrors?: DeepPartialErrorMap<PartialTextProperties>;
 	propertiesPath: TextPropertiesPath;
 	determineInheritedSource?: (element: PrintModelEntity, inheritedCondition: string) => boolean;
+	/** The element an inherited property takes its value from, for the reference such a property carries. */
+	inheritedFrom?: string;
 }
 
 export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
@@ -92,24 +108,52 @@ export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
 		showBold = true,
 		showItalic = true,
 		showUnderline = true,
+		resolveTextStyleId,
+		resolveBold,
+		resolveItalic,
+		resolveUnderlined,
+		resolveColor,
+		resolveBackgroundColor,
+		resolveAlignment,
 		element,
 		textProperties,
 		setTextProperties,
 		textPropertyErrors,
 		propertiesPath,
 		determineInheritedSource = () => false,
+		inheritedFrom,
 	} = props;
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
 
+	const textStyleEntries = useSelector(PrintEngineSelectors.textStyleEntries);
 	const textStyles = useSelector(PrintEngineSelectors.textStyles);
+	const textStyleReferences = useSelector(PrintEngineSelectors.textStyleReferences);
 	const defaultTextStyle = useSelector(PrintEngineSelectors.defaultTextStyle);
 	const fonts = useSelector(PrintEngineSelectors.fonts);
 
-	const textStyleId = InputValueSourceResolver.getSourceStringValue(
-		textProperties?.textStyleId,
-		element,
-		TEXT_PROPERTIES_PATH.textStyleId
+	// An element of a fragment model names a text style by its id in that fragment model, while the selection lists
+	// it under the id of the reference that pulled it into this model.
+	const toSelectableTextStyleId = React.useCallback(
+		(id?: string) => textStyleReferences.find(reference => reference.refId === id)?.id ?? id,
+		[textStyleReferences]
+	);
+
+	// what an element leaves at DEFAULT resolves to no text style id at all, but it still prints in the
+	// default one - so that is what a property inheriting from it gets to show
+	const resolveInheritedTextStyleId = React.useCallback<InheritedValueResolver<string>>(
+		(inputSource, inheritingElement, property) =>
+			toSelectableTextStyleId(resolveTextStyleId?.(inputSource, inheritingElement, property)) ??
+			defaultTextStyle.id,
+		[resolveTextStyleId, defaultTextStyle.id, toSelectableTextStyleId]
+	);
+
+	const textStyleId = toSelectableTextStyleId(
+		InputValueSourceResolver.getSourceStringValue(
+			textProperties?.textStyleId,
+			element,
+			TEXT_PROPERTIES_PATH.textStyleId
+		)
 	);
 
 	const selectedSemantic = useMemo(
@@ -157,16 +201,29 @@ export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
 		return textStyleId === TEXT_STYLE.NO_TEXT_STYLE_FALLBACK_ID;
 	}, [textPropertiesTextStyleId, element]);
 
+	const referencedTextStyleLabel = localizer(RESOURCE_KEYS.sidebar.textStyleReference.referencedLabel);
+
 	const { textStyleItems, tooltips: textStyleTooltip } = useMemo(() => {
+		const source = textPropertiesTextStyleId?.source;
+		const defaultEntry = { textStyle: defaultTextStyle, isFragment: false };
+		function entries() {
+			if (source === PossibleInputSource.DEFAULT) {
+				return [defaultEntry];
+			}
+			return source === PossibleInputSource.INHERITED ? [...textStyleEntries, defaultEntry] : textStyleEntries;
+		}
+
 		return {
-			textStyleItems:
-				textPropertiesTextStyleId?.source === PossibleInputSource.DEFAULT
-					? generateTextStyleItems([defaultTextStyle], defaultTextStyle, fonts)
-					: generateTextStyleItems(textStyles, defaultTextStyle, fonts, isFallbackTextStyleExisted),
+			textStyleItems: generateTextStyleItems(
+				entries(),
+				defaultTextStyle,
+				fonts,
+				referencedTextStyleLabel,
+				source === PossibleInputSource.DEFAULT ? false : isFallbackTextStyleExisted
+			),
 			tooltips:
-				textPropertiesTextStyleId?.source === PossibleInputSource.DEFAULT ||
-				(textPropertiesTextStyleId?.source === PossibleInputSource.INPUT &&
-					textPropertiesTextStyleId?.value) ? (
+				source === PossibleInputSource.DEFAULT ||
+				(source === PossibleInputSource.INPUT && textPropertiesTextStyleId?.value) ? (
 					<Button key="semantic-tooltip" disabled title={semanticButtonLabel} label={selectedSemantic} />
 				) : null,
 		};
@@ -174,8 +231,9 @@ export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
 		isFallbackTextStyleExisted,
 		textPropertiesTextStyleId,
 		defaultTextStyle,
-		textStyles,
+		textStyleEntries,
 		fonts,
+		referencedTextStyleLabel,
 		semanticButtonLabel,
 		selectedSemantic,
 	]);
@@ -185,16 +243,20 @@ export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
 			<SourceSelect
 				id="textStyleId"
 				label={localizer(RESOURCE_KEYS.textStyles.label)}
-				value={textProperties?.textStyleId?.value}
+				value={toSelectableTextStyleId(textProperties?.textStyleId?.value)}
 				items={textStyleItems}
 				sourceProperties={{
 					element,
 					determineInheritedSource,
 					property: propertiesPath.textStyleId,
 					onSourceChange: (source, path) => {
-						updateTexProperty(changeInputSource(source, path, textPropertiesTextStyleId), "textStyleId");
+						updateTexProperty(
+							changeInputSource(source, path, textPropertiesTextStyleId, inheritedFrom),
+							"textStyleId"
+						);
 					},
 					inputSource: textPropertiesTextStyleId,
+					inheritedValueResolver: resolveInheritedTextStyleId,
 				}}
 				onValueChanged={value =>
 					updateTexProperty(changeInputValue(value, textPropertiesTextStyleId!), "textStyleId")
@@ -214,8 +276,12 @@ export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
 								determineInheritedSource,
 								property: propertiesPath.bold,
 								inputSource: textProperties?.bold,
+								inheritedValueResolver: resolveBold,
 								onSourceChange: (source: PossibleInputSource, path: string) =>
-									updateTexProperty(changeInputSource(source, path, textProperties?.bold), "bold"),
+									updateTexProperty(
+										changeInputSource(source, path, textProperties?.bold, inheritedFrom),
+										"bold"
+									),
 							}}
 							checked={textProperties?.bold?.value}
 							onChange={checked =>
@@ -233,9 +299,10 @@ export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
 								determineInheritedSource,
 								property: propertiesPath.italic,
 								inputSource: textProperties?.italic,
+								inheritedValueResolver: resolveItalic,
 								onSourceChange: (source: PossibleInputSource, path: string) =>
 									updateTexProperty(
-										changeInputSource(source, path, textProperties?.italic),
+										changeInputSource(source, path, textProperties?.italic, inheritedFrom),
 										"italic"
 									),
 							}}
@@ -256,9 +323,10 @@ export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
 								determineInheritedSource,
 								property: propertiesPath.underlined,
 								inputSource: textProperties?.underlined,
+								inheritedValueResolver: resolveUnderlined,
 								onSourceChange: (source: PossibleInputSource, path: string) =>
 									updateTexProperty(
-										changeInputSource(source, path, textProperties?.underlined),
+										changeInputSource(source, path, textProperties?.underlined, inheritedFrom),
 										"underlined"
 									),
 							}}
@@ -281,9 +349,13 @@ export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
 						determineInheritedSource,
 						property: propertiesPath.color,
 						onSourceChange: (source: PossibleInputSource, path: string) => {
-							updateTexProperty(changeInputSource(source, path, textProperties?.color), "color");
+							updateTexProperty(
+								changeInputSource(source, path, textProperties?.color, inheritedFrom),
+								"color"
+							);
 						},
 						inputSource: textProperties?.color,
+						inheritedValueResolver: resolveColor,
 					}}
 					onColorChange={value => updateTexProperty(changeInputValue(value, textProperties!.color!), "color")}
 					errorMessage={getErrorMessage("color")}
@@ -300,11 +372,12 @@ export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
 						property: propertiesPath.backgroundColor,
 						onSourceChange: (source: PossibleInputSource, path: string) => {
 							updateTexProperty(
-								changeInputSource(source, path, textProperties?.backgroundColor),
+								changeInputSource(source, path, textProperties?.backgroundColor, inheritedFrom),
 								"backgroundColor"
 							);
 						},
 						inputSource: textProperties?.backgroundColor,
+						inheritedValueResolver: resolveBackgroundColor,
 					}}
 					onColorChange={value =>
 						updateTexProperty(changeInputValue(value, textProperties!.backgroundColor!), "backgroundColor")
@@ -323,9 +396,13 @@ export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
 						determineInheritedSource,
 						property: propertiesPath.alignment,
 						onSourceChange: (source: PossibleInputSource, path: string) => {
-							updateTexProperty(changeInputSource(source, path, textProperties?.alignment), "alignment");
+							updateTexProperty(
+								changeInputSource(source, path, textProperties?.alignment, inheritedFrom),
+								"alignment"
+							);
 						},
 						inputSource: textProperties?.alignment,
+						inheritedValueResolver: resolveAlignment,
 					}}
 					onValueChanged={(value: Alignment) =>
 						updateTexProperty(changeInputValue(value, textProperties!.alignment!), "alignment")
@@ -339,18 +416,25 @@ export const TextPropertiesInput = (props: TextPropertiesInputProps) => {
 };
 
 function generateTextStyleItems(
-	textStyles: PartialTextStyle[],
+	textStyleEntries: PrintEngineSelectors.TextStyleEntry[],
 	defaultTextStyle: TextStyle,
 	fonts: PrintFontMap,
+	referencedLabel: string,
 	isFallbackTextStyleExisted: boolean = false
 ): SelectItem[] {
-	const items = [...textStyles].map(({ name, id, font }) => ({
+	const items = textStyleEntries.map(({ textStyle: { name, id, font }, isFragment }) => ({
 		label: "",
 		value: String(id),
 		graphic: (
-			<StyledTextStyleItem fontFamily={getPrefixedFontFamily(fonts, font)} fontSize={defaultTextStyle.fontSize}>
-				{name}
-			</StyledTextStyleItem>
+			<StyledTextStyleOption>
+				{isFragment && <Icon title={referencedLabel}>link</Icon>}
+				<StyledTextStyleItem
+					fontFamily={getPrefixedFontFamily(fonts, font)}
+					fontSize={defaultTextStyle.fontSize}
+				>
+					{name}
+				</StyledTextStyleItem>
+			</StyledTextStyleOption>
 		),
 	}));
 

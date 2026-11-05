@@ -31,15 +31,17 @@
  */
 import { createSelector } from "reselect";
 
-import { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { DeepPartialErrorMap, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 import type {
 	PrintModelEntity,
 	Reference,
 	PlaceableReference,
 	ElementType,
 	PrintModel,
+	PartialAnyPrintModelElement,
 } from "@com.mgmtp.a12.print/print-model-api/model";
-import { isReference } from "@com.mgmtp.a12.print/print-model-api/model";
+import { isReference, PartialAnyTopLevelContainerElement } from "@com.mgmtp.a12.print/print-model-api/model";
 import type { LogPersistentEntry } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
@@ -60,8 +62,27 @@ import { ElementsUtils } from "../../../internal/utils/index.js";
 import { RESOURCE_KEYS } from "../../../internal/localization/index.js";
 import type { PrintMessage } from "../../../a12internal/api/PrintMessageReport.js";
 
+type ReferenceElement =
+	| (DeepPartialRecursive<Reference> & PrintModelEntity)
+	| (DeepPartialRecursive<PlaceableReference> & PrintModelEntity);
+
+function isModelReferenceError(error: PrintError) {
+	return error.jsonPath[0]?.elementName === "header" && error.jsonPath[1]?.elementName === "modelReferences";
+}
+
+function withoutModelReferenceErrors<T extends { modelReferences?: unknown }>(headerErrorMap: T) {
+	const { modelReferences: _modelReferences, ...rest } = headerErrorMap;
+	const errorMap = rest as unknown as DeepPartialErrorMap<unknown>;
+	return {
+		...errorMap,
+		[ErrorSeverity.ERROR]: errorMap[ErrorSeverity.ERROR].filter(error => !isModelReferenceError(error)),
+		[ErrorSeverity.WARNING]: errorMap[ErrorSeverity.WARNING].filter(error => !isModelReferenceError(error)),
+		[ErrorSeverity.INFO]: errorMap[ErrorSeverity.INFO].filter(error => !isModelReferenceError(error)),
+	};
+}
+
 function getContainerErrors<T>(container: DeepPartialErrorMap<T>[] | undefined, id: string) {
-	if (!container || !container.length) {
+	if (!container?.length) {
 		return;
 	}
 	return container.find(containerElement => containerElement["@id"] === id);
@@ -106,26 +127,43 @@ export namespace CommitViewSelectors {
 			DeepPartialErrorMap.mergeErrorMaps(newMap, errorMap?.content?.general);
 		}
 		if (errorMap?.header) {
-			DeepPartialErrorMap.mergeErrorMaps(newMap, errorMap?.header);
+			DeepPartialErrorMap.mergeErrorMaps(newMap, withoutModelReferenceErrors(errorMap.header));
 		}
 		return newMap;
 	});
+
+	export const modelReferencesCommitErrors = createSelector(
+		[commitViewErrorMapState],
+		errorMap => errorMap?.header?.modelReferences
+	);
+
+	export const modelReferenceCommitErrors = createSelector(
+		[modelReferencesCommitErrors, idInputSelector],
+		(modelReferences, id) => getContainerErrors(modelReferences, id)
+	);
 
 	export const textStylesCommitErrors = createSelector(
 		[commitViewErrorMapState],
 		errorMap => errorMap?.content?.textStyles
 	);
 
+	/*
+	 * A container pulled in from a print fragment model has no definition here - everything unresolvable about it is
+	 * reported at the reference instead, which is also keyed by the id the container is used under.
+	 */
 	export const sectionCommitErrors = createSelector([commitViewErrorMapState, idInputSelector], (errorMap, id) => {
-		return getContainerErrors(errorMap?.content?.sections?.definitions, id);
+		const sections = errorMap?.content?.sections;
+		return getContainerErrors(sections?.definitions, id) ?? getContainerErrors(sections?.references, id);
 	});
 
 	export const watermarkCommitErrors = createSelector([commitViewErrorMapState, idInputSelector], (errorMap, id) => {
-		return getContainerErrors(errorMap?.content?.watermarks?.definitions, id);
+		const watermarks = errorMap?.content?.watermarks;
+		return getContainerErrors(watermarks?.definitions, id) ?? getContainerErrors(watermarks?.references, id);
 	});
 
 	export const segmentCommitErrors = createSelector([commitViewErrorMapState, idInputSelector], (errorMap, id) => {
-		return getContainerErrors(errorMap?.content?.segments?.definitions, id);
+		const segments = errorMap?.content?.segments;
+		return getContainerErrors(segments?.definitions, id) ?? getContainerErrors(segments?.fragmentReferences, id);
 	});
 
 	export const elementCommitErrors = createSelector([commitViewErrorMapState, idInputSelector], (errorMap, id) => {
@@ -202,11 +240,83 @@ function createSidebarErrorTreeRoot<T>(
 	return containerRoot;
 }
 
+/** The sections of the Schema tab, in the order it shows them. */
+const SCHEMA_SECTIONS = [
+	{
+		referencesSelector: PrintEngineSelectors.documentModelReferences,
+		title: RESOURCE_KEYS.sidebar.schema.tab.documentModelReferenced,
+	},
+	{
+		referencesSelector: PrintEngineSelectors.printModelReferences,
+		title: RESOURCE_KEYS.sidebar.schema.tab.printModelReferenced,
+	},
+	{
+		referencesSelector: PrintEngineSelectors.fragmentModelReferences,
+		title: RESOURCE_KEYS.sidebar.schema.tab.fragmentModelReferenced,
+	},
+	{
+		referencesSelector: PrintEngineSelectors.typesettingModelReferences,
+		title: RESOURCE_KEYS.sidebar.schema.tab.typesettingModelReferenced,
+	},
+];
+
+/** Groups the errors of the Model References like the Schema tab: by its sections and, within them, by reference. */
+function createSchemaErrorTreeNodes(pestate: PrintEngineState, parentId: string): ErrorTreeNode {
+	const navigation: NavigationTarget = { sidebarTarget: SidebarItem.SCHEMA };
+	const schemaRoot = createSidebarErrorTreeRoot(SidebarItem.SCHEMA, parentId);
+	const listedReferenceIds = new Set<string>();
+
+	SCHEMA_SECTIONS.forEach(({ referencesSelector, title }, sectionIndex) => {
+		const sectionId = `${schemaRoot.id}[${sectionIndex}]`;
+		const sectionRoot: ErrorTreeNode = {
+			icon: "description",
+			id: sectionId,
+			path: title,
+			label: title,
+			children: [],
+			initiallyExpanded: true,
+		};
+
+		referencesSelector(pestate).forEach((reference, referenceIndex) => {
+			listedReferenceIds.add(reference.id);
+			const referenceId = `${sectionId}.reference[${referenceIndex}]`;
+			pushErrorTreeNode(sectionRoot.children, {
+				icon: "link",
+				id: referenceId,
+				label: reference.reference,
+				children: createErrorNodes(
+					CommitViewSelectors.modelReferenceCommitErrors(pestate, reference.id),
+					referenceId,
+					navigation
+				),
+				initiallyExpanded: true,
+			});
+		});
+
+		pushErrorTreeNode(schemaRoot.children, sectionRoot);
+	});
+
+	// A Model Reference the Schema tab does not list, e.g. of an unknown type, still has to show its errors.
+	CommitViewSelectors.modelReferencesCommitErrors(pestate)
+		?.filter(referenceErrorMap => !listedReferenceIds.has(referenceErrorMap["@id"] as string))
+		.forEach((referenceErrorMap, index) => {
+			schemaRoot.children?.push(
+				...createErrorNodes(referenceErrorMap, `${schemaRoot.id}.unlisted[${index}]`, navigation)
+			);
+		});
+
+	return schemaRoot;
+}
+
 function createSidebarErrorTreeNodes(
 	pestate: PrintEngineState,
 	parentId: string,
 	containerType: SidebarItem
 ): ErrorTreeNode | undefined {
+	if (containerType === SidebarItem.SCHEMA) {
+		return createSchemaErrorTreeNodes(pestate, parentId);
+	}
+
 	const containerSelectorConfig = {
 		[SidebarItem.GENERAL]: {
 			errorMapSelector: CommitViewSelectors.generalCommitErrors,
@@ -219,14 +329,21 @@ function createSidebarErrorTreeNodes(
 		[SidebarItem.SECTION]: {
 			errorMapSelector: CommitViewSelectors.sectionCommitErrors,
 			containerSelector: PrintEngineSelectors.sections,
+			referenceSelector: PrintEngineSelectors.sectionReferences,
 		},
 		[SidebarItem.SEGMENT]: {
 			errorMapSelector: CommitViewSelectors.segmentCommitErrors,
 			containerSelector: PrintEngineSelectors.segments,
+			referenceSelector: PrintEngineSelectors.segmentFragmentReferences,
 		},
 		[SidebarItem.WATERMARK]: {
 			errorMapSelector: CommitViewSelectors.watermarkCommitErrors,
 			containerSelector: PrintEngineSelectors.watermarks,
+			referenceSelector: PrintEngineSelectors.watermarkReferences,
+		},
+		[SidebarItem.FRAGMENT]: {
+			errorMapSelector: CommitViewSelectors.elementCommitErrors,
+			containerSelector: PrintEngineSelectors.fragmentElements,
 		},
 		[SidebarItem.SCHEMA]: undefined,
 		[SidebarItem.COMMIT_CHANGES]: undefined,
@@ -236,6 +353,8 @@ function createSidebarErrorTreeNodes(
 		return undefined;
 	}
 	const { errorMapSelector, containerSelector } = containerSelectorConfig;
+	const referenceSelector =
+		"referenceSelector" in containerSelectorConfig ? containerSelectorConfig.referenceSelector : undefined;
 
 	if (!containerSelector) {
 		return createSidebarErrorTreeRoot(containerType, parentId, errorMapSelector(pestate));
@@ -244,22 +363,30 @@ function createSidebarErrorTreeNodes(
 	const containerRoot = createSidebarErrorTreeRoot(containerType, parentId);
 	const container = containerSelector(pestate);
 	container?.forEach((containerElement, i) => {
-		const navigation: NavigationTarget = { sidebarTarget: containerType, containerTarget: containerElement.id };
+		const navigation: NavigationTarget = { sidebarTarget: containerType, containerTarget: containerElement?.id };
 
 		// containers general
-		const containerErrorMap = errorMapSelector(pestate, containerElement.id);
+		const containerErrorMap = errorMapSelector(pestate, containerElement?.id);
 		const rootId = `${parentId}.${containerType}[${i}]`;
+		const isTopLevelContainer = PartialAnyTopLevelContainerElement.isInstance(containerElement);
 		const containerElementRoot = {
 			icon: "description",
 			id: rootId,
 			path: containerType + ".element",
-			label: containerElement.title || `${containerType} #${i + 1}`,
+			label: isTopLevelContainer
+				? containerElement?.title || `${containerType} #${i + 1}`
+				: `${containerElement?.name || "element not found"}`,
 			children: createErrorNodes(containerErrorMap, rootId, navigation),
 			initiallyExpanded: true,
 		};
 
 		// containers element definitions
-		const nestedRefs = containerElement.elementReferences || [];
+		let nestedRefs: readonly ReferenceElement[] = [];
+		if (isTopLevelContainer && containerElement?.elementReferences) {
+			nestedRefs = containerElement?.elementReferences;
+		} else if (containerElement) {
+			nestedRefs = ElementsUtils.getElementReferences(containerElement as PartialAnyPrintModelElement);
+		}
 		const nodeId = `${rootId}.elements`;
 		const elementsRoot: ErrorTreeNode = {
 			icon: "category",
@@ -273,15 +400,32 @@ function createSidebarErrorTreeNodes(
 		pushErrorTreeNode(containerElementRoot.children, elementsRoot);
 		pushErrorTreeNode(containerRoot.children, containerElementRoot);
 	});
+
+	// A reference whose container is gone from its fragment model has no container above to carry its errors.
+	referenceSelector?.(pestate)
+		.filter(reference => !container?.some(containerElement => containerElement?.id === reference.id))
+		.forEach((reference, i) => {
+			const rootId = `${parentId}.${containerType}.reference[${i}]`;
+			pushErrorTreeNode(containerRoot.children, {
+				icon: "link",
+				id: rootId,
+				path: `${containerType}.reference`,
+				label: reference.refId || reference.id,
+				children: createErrorNodes(errorMapSelector(pestate, reference.id), rootId, {
+					sidebarTarget: containerType,
+					containerTarget: reference.id,
+				}),
+				initiallyExpanded: true,
+			});
+		});
+
 	return containerRoot;
 }
 
 function createNestedElementErrorTreeNodes(
 	pestate: PrintEngineState,
 	navigationTarget: NavigationTarget,
-	elementReferences:
-		| readonly (DeepPartialRecursive<Reference> & PrintModelEntity)[]
-		| readonly (DeepPartialRecursive<PlaceableReference> & PrintModelEntity)[],
+	elementReferences: readonly ReferenceElement[],
 	parentId: string,
 	depth = 0
 ) {
@@ -292,6 +436,9 @@ function createNestedElementErrorTreeNodes(
 			return;
 		}
 		const element = PrintEngineSelectors.printModelElement(pestate, ref.refId);
+		if (!element) {
+			return;
+		}
 		const nodeId = `${parentId}[${index}].${element.type}`;
 		const navigation = createNestedNavigationTarget(navigationTarget, element.type, element.id);
 
@@ -324,8 +471,8 @@ function createNestedElementErrorTreeNodes(
 }
 
 function createNestedNavigationTarget(navigation: NavigationTarget, elementType: ElementType, elementRef: string) {
-	const elementTargets = navigation.elementTargets || [];
 	const newNavigationElement: ElementNavigationTarget = { elementType, elementRef };
-	elementTargets.push(newNavigationElement);
+	// A copy, because siblings and their descendants share the navigation target they descend from.
+	const elementTargets = [...(navigation.elementTargets || []), newNavigationElement];
 	return { ...navigation, elementTargets } as NavigationTarget;
 }

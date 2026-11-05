@@ -36,7 +36,6 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { DetailViewActions, NavigationActions, NavigationSelectors } from "../../redux/index.js";
 import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { assertExists } from "../../utils/type-utils.js";
 
 export function* openDetailViewSaga(): SagaGenerator<void> {
 	yield* takeLatest(DetailViewActions.openElementForm.match, handleOpenDetailView);
@@ -49,7 +48,9 @@ function* handleOpenDetailView(action: PayloadAction<string>) {
 	const activeCanvasTab = yield* select(NavigationSelectors.activeCanvasTab);
 	const element = yield* select((state: PrintEngineState) => PrintEngineSelectors.printModelElement(state, refId));
 
-	assertExists(element);
+	if (!element) {
+		return;
+	}
 
 	yield* all([
 		put(

@@ -37,10 +37,14 @@ import { StyledHeightRenderContainer } from "./HeightRender.styled.js";
 import { HeightRenderTextStyle } from "./HeightRenderTextStyle.js";
 import type { NewElementData } from "./HeightRenderNewElement.js";
 import { HeightRenderNewElement } from "./HeightRenderNewElement.js";
+import type { NewFragmentElementData } from "./HeightRenderNewFragmentElement.js";
+import { HeightRenderNewFragmentElement } from "./HeightRenderNewFragmentElement.js";
 
 interface HeightRenderContainerProps {
 	newElementData: NewElementData | undefined;
 	setNewElementData: React.Dispatch<React.SetStateAction<NewElementData | undefined>>;
+	newFragmentElementData: NewFragmentElementData | undefined;
+	setNewFragmentElementData: React.Dispatch<React.SetStateAction<NewFragmentElementData | undefined>>;
 	textStyle: PartialTextStyle | undefined;
 	setTextStyle: React.Dispatch<React.SetStateAction<PartialTextStyle | undefined>>;
 }
@@ -48,10 +52,12 @@ interface HeightRenderContainerProps {
 export const HeightRenderContainer = ({
 	newElementData,
 	setNewElementData,
+	newFragmentElementData,
+	setNewFragmentElementData,
 	setTextStyle,
 	textStyle,
 }: HeightRenderContainerProps) => {
-	if (!textStyle && !newElementData) {
+	if (!textStyle && !newElementData && !newFragmentElementData) {
 		return null;
 	}
 	return (
@@ -59,6 +65,12 @@ export const HeightRenderContainer = ({
 			{textStyle && <HeightRenderTextStyle textStyle={textStyle} setTextStyle={setTextStyle} />}
 			{newElementData && (
 				<HeightRenderNewElement newElementData={newElementData} setNewElementData={setNewElementData} />
+			)}
+			{newFragmentElementData && (
+				<HeightRenderNewFragmentElement
+					newFragmentElementData={newFragmentElementData}
+					setNewFragmentElementData={setNewFragmentElementData}
+				/>
 			)}
 		</StyledHeightRenderContainer>
 	);

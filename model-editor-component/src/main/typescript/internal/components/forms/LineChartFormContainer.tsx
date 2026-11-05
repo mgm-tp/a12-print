@@ -46,6 +46,7 @@ import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { getItemsFromElementMap } from "../../utils/index.js";
+import { ElementsUtils } from "../../utils/elements-utils.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import type { UpdateElementsTransactionLogAction } from "../../redux/index.js";
 import { TransactionLogStateActions } from "../../redux/index.js";
@@ -66,6 +67,7 @@ import { DocumentModelSelect } from "./shared-components/DocumentModelSelect.js"
 import { CustomTextField } from "./custom-base-input-components/index.js";
 import type { ElementWithoutIdAndType } from "./type.js";
 import type { RepeatColumnType } from "./shared-components/types.js";
+import { useFormReadonly } from "./FormContext.js";
 
 type LineDiagramData = DeepPartial<LineChartData>;
 
@@ -77,6 +79,7 @@ export const LineChartFormContainer = () => {
 	const elementReferences = useSelector(PrintEngineSelectors.elementReferences);
 	const errorMap = useSelector((state: PrintEngineState) => ValidationSelectors.lineChart(state, element?.id));
 	const wrapperDataContext = useSelector(PrintEngineSelectors.wrapperDataContext);
+	const isFormReadonly = useFormReadonly();
 
 	if (!element || !PartialLineChart.isInstance(element)) {
 		throw Error("Expected element of type LineChart");
@@ -134,6 +137,7 @@ export const LineChartFormContainer = () => {
 					...lineChart,
 					...newProps,
 				},
+				...ElementsUtils.getFragmentDimensionsUpdate(element, { width, height }),
 			};
 			const actions: UpdateElementsTransactionLogAction[] = [
 				TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }),
@@ -263,6 +267,7 @@ export const LineChartFormContainer = () => {
 				value={model}
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getBaseErrorMessage("model")}
+				disabled={isFormReadonly}
 			/>
 
 			<CustomTextField
@@ -276,6 +281,7 @@ export const LineChartFormContainer = () => {
 				elementMapEntries={processedElementMap}
 				selectedPath={group}
 				setSelectedPath={setSelectedPath}
+				disabled={isFormReadonly}
 				maxRepeatLevel={0}
 			/>
 			<RepeatTable<LineDiagramData>

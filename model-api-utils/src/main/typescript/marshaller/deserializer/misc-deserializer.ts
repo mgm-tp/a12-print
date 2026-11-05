@@ -34,6 +34,7 @@ import type * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/generat
 
 import { Deserializer } from "./deserializer.js";
 import { InputSourceDeserializer } from "./input-source-deserializer.js";
+import { MeasureDeserializer } from "./measure-deserializer.js";
 
 export class TextPropertiesDeserializer extends Deserializer<
 	GeneratedDTO.HeaderTextPropertiesDTO,
@@ -211,6 +212,26 @@ class TypeDefinitionDeserializer extends Deserializer<GeneratedDTO.TypeDefinitio
 			case "id": {
 				return this.getRequired(dto.id, property);
 			}
+		}
+		this.unknownProperty(property);
+	}
+}
+
+export class FragmentDimensionsDeserializer extends Deserializer<
+	GeneratedDTO.FragmentDimensionsDTO,
+	ModelAPI.Dimensions
+> {
+	prefix = "dimensions";
+	elementBase = {};
+
+	map(property: keyof GeneratedDTO.FragmentDimensionsDTO, dto: GeneratedDTO.FragmentDimensionsDTO) {
+		switch (property) {
+			case "id":
+				return this.getRequired(dto.id, property);
+			case "height":
+				return this.deserializeRequired(dto.height, property, new MeasureDeserializer(this.path));
+			case "width":
+				return this.deserializeRequired(dto.width, property, new MeasureDeserializer(this.path));
 		}
 		this.unknownProperty(property);
 	}

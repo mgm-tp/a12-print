@@ -52,23 +52,23 @@ import {
 } from "./SwitchAreaContainer.styled.js";
 
 interface SwitchAreaContainerProps {
-	areaElement: PartialArea;
+	areaElement: PartialArea | undefined;
 	scale?: number;
 }
 
 export const SwitchAreaContainer = ({ areaElement, scale = 1 }: SwitchAreaContainerProps) => {
 	const areaValidationCounter = useSelector((state: PrintEngineState) =>
-		ValidationSelectors.elementValidationCounterById(state, areaElement.id)
+		ValidationSelectors.elementValidationCounterById(state, areaElement?.id)
 	);
 	const currentWrapperContext = useSelector(PrintEngineSelectors.currentWrapperContext);
 
 	const styles = React.useMemo(
 		() => ({
-			height: areaElement.area?.dimensions?.height
-				? EditorConst.MM_TO_PX(areaElement.area?.dimensions?.height?.value || 0)
+			height: areaElement?.area?.dimensions?.height
+				? EditorConst.MM_TO_PX(areaElement?.area?.dimensions?.height?.value || 0)
 				: undefined,
-			width: areaElement.area?.dimensions?.width
-				? EditorConst.MM_TO_PX(areaElement.area?.dimensions?.width?.value || 0)
+			width: areaElement?.area?.dimensions?.width
+				? EditorConst.MM_TO_PX(areaElement?.area?.dimensions?.width?.value || 0)
 				: undefined,
 		}),
 		[areaElement]
@@ -78,11 +78,13 @@ export const SwitchAreaContainer = ({ areaElement, scale = 1 }: SwitchAreaContai
 
 	return (
 		<SwitchAreaOuterContainer>
-			<SwitchAreaInnerContainer scale={scale} dimensions={areaElement.area?.dimensions}>
-				<Area element={areaElement} styles={styles} ElementContainer={LayoutElementContainer} />
+			<SwitchAreaInnerContainer scale={scale} dimensions={areaElement?.area?.dimensions}>
+				{areaElement && (
+					<Area element={areaElement} styles={styles} ElementContainer={LayoutElementContainer} />
+				)}
 			</SwitchAreaInnerContainer>
 			<StyledFloatingButtonContainer>
-				<OpenWrapperStageButton element={areaElement} reference={reference} />
+				{areaElement && <OpenWrapperStageButton element={areaElement} reference={reference} />}
 			</StyledFloatingButtonContainer>
 			<ErrorBadgeContainer>
 				<BadgeGroup validationCounter={areaValidationCounter} standalone />

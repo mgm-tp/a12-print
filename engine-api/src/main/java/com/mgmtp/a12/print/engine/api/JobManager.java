@@ -64,12 +64,13 @@ public interface JobManager {
 	 * in the returned {@link PrintMessageReport} rather than being thrown.
 	 *
 	 * @param printModel Print Model content to be printed
+	 * @see #prepare(String)
 	 */
 	PrintMessageReport<PrintModelId> prepareWithReport(String printModel) throws PrintCompilerException;
 
 	/**
 	 * Create a new {@link PrintJob} from the given {@link PrintModelId}.
-	 * Compiles the Print Model if it has not already been compiled.
+	 * The Print Model must already have been {@link #prepare(String) prepared}
 	 * Throws a {@link PrintCompilerException} for issues during {@link PrintJob} creation
 	 *
 	 * @param printModelId Print Model ID
@@ -78,13 +79,52 @@ public interface JobManager {
 
 	/**
 	 * Create a new {@link PrintJob} from the given {@link PrintModelId}.
-	 * Compiles the Print Model if it has not already been compiled.
+	 * The Print Model must already have been {@link #prepare(String) prepared}
 	 * <p>
 	 * Issues during {@link PrintJob} creation are captured as {@link com.mgmtp.a12.print.engine.api.message.PrintMessage}s
 	 * in the returned {@link PrintMessageReport} rather than being thrown.
 	 *
 	 * @param printModelId Print Model ID
+	 * @see #createNewJob(PrintModelId)
 	 */
 	PrintMessageReport<PrintJob> createNewJobWithReport(PrintModelId printModelId) throws PrintCompilerException;
+
+	/**
+	 * Waits until the asynchronous compilation started by {@link #prepare(String)} for the given
+	 * {@link PrintModelId} has finished.
+	 * @param printModelId Print Model ID returned by {@link #prepare(String)}
+	 * @throws PrintCompilerException if the compilation failed or the Print Model was never prepared
+	 */
+	void awaitPreparation(PrintModelId printModelId) throws PrintCompilerException;
+
+	/**
+	 * Waits until the asynchronous compilation started by {@link #prepare(String)} for the given
+	 * {@link PrintModelId} has finished.
+	 * <p>
+	 * Issues during compilation are captured as {@link com.mgmtp.a12.print.engine.api.message.PrintMessage}s
+	 * in the returned {@link PrintMessageReport} rather than being thrown.
+	 *
+	 * @param printModelId Print Model ID returned by {@link #prepare(String)}
+	 * @see #awaitPreparation(PrintModelId)
+	 */
+	PrintMessageReport<PrintModelId> awaitPreparationWithReport(PrintModelId printModelId);
+
+	/**
+	 * Allows to check if the Print Model with the given {@link PrintModelId} is already prepared
+	 * @param printModelId Print Model ID
+	 * @return boolean
+	 */
+	boolean isPrepared(PrintModelId printModelId);
+
+	/**
+	 * Drops the prepared (compiled) Print Model with the given {@link PrintModelId} from the cache,
+	 * so that it is compiled again the next time it is needed.
+	 * <p>
+	 * After invalidation {@link #createNewJob(PrintModelId)} fails until the Print Model is
+	 * {@link #prepare(String) prepared} again.
+	 *
+	 * @param printModelId Print Model ID
+	 */
+	void invalidatePreparedPrintModel(PrintModelId printModelId);
 }
 // end::JobManagerInterface[]

@@ -32,6 +32,8 @@
 import type { SelectProps } from "@com.mgmtp.a12.widgets/widgets-core";
 import { Select } from "@com.mgmtp.a12.widgets/widgets-core";
 
+import { useFormReadonly } from "../FormContext.js";
+
 import { useCustomBaseInputProps } from "./use-custom-base-input-props.js";
 
 export const CustomSelect = (props: SelectProps) => {
@@ -42,12 +44,15 @@ export const CustomSelect = (props: SelectProps) => {
 		props.tooltips
 	);
 
+	const isFormReadonly = useFormReadonly();
+
 	return (
 		<Select
 			{...props}
 			errorMessage={errorMessage}
 			warningMessage={warningMessage}
 			tooltips={[...propsTooltips, errorTooltip, warningTooltip]}
+			disabled={props.disabled || isFormReadonly}
 		/>
 	);
 };

@@ -32,8 +32,8 @@
 import { nanoid } from "nanoid";
 import get from "lodash/get.js";
 
-import type { MeasureUnit } from "../model/index.js";
 import {
+	type MeasureUnit,
 	type BorderProperties,
 	type InputSource,
 	type MeasureInputSource,

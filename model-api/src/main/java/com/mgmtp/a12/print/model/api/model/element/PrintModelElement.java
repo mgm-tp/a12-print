@@ -33,9 +33,22 @@ package com.mgmtp.a12.print.model.api.model.element;
 
 
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
+import com.mgmtp.a12.print.model.api.model.element.base.Dimensions;
 import com.mgmtp.a12.model.utils.OnlyForUsage;
+
+import java.util.Optional;
 
 @OnlyForUsage
 public interface PrintModelElement extends PrintModelEntity {
 	ElementType getType();
+	/**
+	 * @apiNote Optional in the current release to preserve compatibility. Will become required in the next major release and the return type will change to {@code String}.
+	 */
+	Optional<String> getName();
+	Optional<Boolean> isFragment();
+
+	/**
+	 * @return The dimensions of the element when used as a fragment. Must be set if {@link #isFragment()} is {@code true}.
+	 */
+	Optional<Dimensions> getFragmentDimensions();
 }

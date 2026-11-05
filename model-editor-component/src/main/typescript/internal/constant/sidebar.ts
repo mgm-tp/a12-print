@@ -67,4 +67,8 @@ export const SidebarItemTypes: Record<SidebarItem, ElementProperties | undefined
 		name: RESOURCE_KEYS.sidebar.commitChanges.title,
 		iconName: "commit",
 	},
+	[SidebarItem.FRAGMENT]: {
+		iconName: "browse",
+		name: RESOURCE_KEYS.sidebar.fragment.name,
+	},
 };

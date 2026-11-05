@@ -35,15 +35,18 @@ import type { PartialTextStyle } from "@com.mgmtp.a12.print/print-model-api/mode
 
 import { HeightRenderContainer } from "./HeightRenderContainer.js";
 import type { NewElementData } from "./HeightRenderNewElement.js";
+import type { NewFragmentElementData } from "./HeightRenderNewFragmentElement.js";
 
 interface HiddenHeightContext {
 	calculateNewHeightsTextStyle: (newTextStyle: PartialTextStyle) => void;
 	calculateNewElementHeight: (data: NewElementData) => void;
+	calculateNewFragmentElementHeight: (data: NewFragmentElementData) => void;
 }
 
 const defaultHiddenHeightContext: HiddenHeightContext = {
 	calculateNewHeightsTextStyle: () => undefined,
 	calculateNewElementHeight: () => undefined,
+	calculateNewFragmentElementHeight: () => undefined,
 };
 
 export const HiddenHeightComponentContext = React.createContext<HiddenHeightContext>(defaultHiddenHeightContext);
@@ -51,6 +54,7 @@ export const HiddenHeightComponentContext = React.createContext<HiddenHeightCont
 export const HiddenHeightContextWrapper = ({ children }: { children: React.ReactNode }) => {
 	const [textStyle, setTextStyle] = React.useState<PartialTextStyle | undefined>();
 	const [newElementData, setNewElementData] = React.useState<NewElementData | undefined>();
+	const [newFragmentElementData, setNewFragmentElementData] = React.useState<NewFragmentElementData | undefined>();
 
 	const calculateNewHeightsTextStyle = React.useCallback((newTextStyle: PartialTextStyle) => {
 		setTextStyle(newTextStyle);
@@ -60,11 +64,19 @@ export const HiddenHeightContextWrapper = ({ children }: { children: React.React
 		setNewElementData(data);
 	}, []);
 
+	const calculateNewFragmentElementHeight = React.useCallback((data: NewFragmentElementData) => {
+		setNewFragmentElementData(data);
+	}, []);
+
 	return (
-		<HiddenHeightComponentContext.Provider value={{ calculateNewHeightsTextStyle, calculateNewElementHeight }}>
+		<HiddenHeightComponentContext.Provider
+			value={{ calculateNewHeightsTextStyle, calculateNewElementHeight, calculateNewFragmentElementHeight }}
+		>
 			<HeightRenderContainer
 				newElementData={newElementData}
 				setNewElementData={setNewElementData}
+				newFragmentElementData={newFragmentElementData}
+				setNewFragmentElementData={setNewFragmentElementData}
 				setTextStyle={setTextStyle}
 				textStyle={textStyle}
 			/>

@@ -43,7 +43,7 @@ export const DOCUMENT_MODEL_SEPARATOR = "-";
 
 export const routes: RouteObject[] = [
 	{
-		path: "/",
+		path: "/:caseId?",
 		element: <AppLayout />,
 	},
 	{

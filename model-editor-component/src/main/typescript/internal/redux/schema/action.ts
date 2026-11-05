@@ -37,4 +37,5 @@ const factory = actionCreatorFactory("Print/Schema");
 
 export namespace SchemaActions {
 	export const addModelReference = factory<ModelReferenceEntity>("ADD_MODEL_REFERENCE");
+	export const addFragmentModelReference = factory<ModelReferenceEntity>("ADD_FRAGMENT_MODEL_REFERENCE");
 }

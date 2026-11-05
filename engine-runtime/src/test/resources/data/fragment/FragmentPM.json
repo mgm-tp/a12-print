@@ -1,0 +1,61 @@
+{
+  "header": {
+    "id": "FragmentPM",
+    "modelType": "print",
+    "modelVersion": "4.1.0",
+    "description": "Fragment Model Guard Test",
+    "annotations": [
+      {
+        "name": "modelSubType",
+        "value": "fragment"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "4.1.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "4.1.0-rc.1"
+      }
+    ],
+    "labels": [],
+    "locales": [],
+    "modelReferences": []
+  },
+  "content": {
+    "id": "FRAGMENT_PM_CONTENT",
+    "general": {
+      "id": "FRAGMENT_PM_GENERAL",
+      "metadata": {
+        "id": "AChiAcTf84BDAEeVUkKRk",
+        "titleComputation": [],
+        "descriptionComputation": [],
+        "authorComputation": [],
+        "languageComputation": []
+      },
+      "segmentDefaults": {
+        "id": "FRAGMENT_PM_SEGMENT_DEFAULTS",
+        "fontSize": 12
+      },
+      "structure": [],
+      "sections": [],
+      "watermarks": [],
+      "runtimeVariables": [],
+      "textStyles": []
+    },
+    "segments": {
+      "id": "FRAGMENT_PM_SEGMENTS",
+      "definitions": [],
+      "references": []
+    },
+    "sections": {
+      "id": "FRAGMENT_PM_SECTIONS",
+      "definitions": []
+    },
+    "watermarks": {
+      "id": "FRAGMENT_PM_WATERMARKS",
+      "definitions": []
+    },
+    "elementDefinitions": []
+  }
+}

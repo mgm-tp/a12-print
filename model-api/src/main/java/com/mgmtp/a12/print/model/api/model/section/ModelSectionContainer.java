@@ -31,12 +31,13 @@
  */
 package com.mgmtp.a12.print.model.api.model.section;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.container.DefinitionsContainer;
 
 import java.util.List;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 @OnlyForUsage
 public interface ModelSectionContainer extends DefinitionsContainer {
 	List<ModelSection> getDefinitions();
+	List<ModelSectionFragmentReference> getReferences();
 }

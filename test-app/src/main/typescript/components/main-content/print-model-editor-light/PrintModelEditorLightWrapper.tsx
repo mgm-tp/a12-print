@@ -37,8 +37,9 @@ import { PrintModelMarshaller } from "@com.mgmtp.a12.print/print-model-api-utils
 import type { DocumentModel } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 import { DocumentServiceFactory } from "@com.mgmtp.a12.kernel/kernel-md-facade";
 import type { FontResourceMap } from "@com.mgmtp.a12.print/print-fonts";
+import { DefaultLocalizerContextProvider } from "@com.mgmtp.a12.utils/utils-localization-react";
 
-import { createTestAppStaticImageProvider } from "../print-model-editor-sme/staticImageProviderTestApp";
+import { testAppStaticImageProvider } from "../print-model-editor-sme/staticImageProviderTestApp";
 
 import { StyledPrintModelEditorLightWrapper } from "./PrintModelEditorLightWrapper.styled";
 
@@ -46,14 +47,12 @@ const printModelMarshaller = new PrintModelMarshaller();
 const documentModelMarshaller = new DocumentServiceFactory().getDocumentModelSerializer();
 
 interface PrintEditorProps {
-	caseConfigId: string;
 	printModel: Model;
 	documentModels?: Model[];
 	customFonts?: FontResourceMap;
 }
 
 export function PrintModelEditorLightWrapper({
-	caseConfigId,
 	printModel,
 	documentModels = [],
 	customFonts,
@@ -83,16 +82,18 @@ export function PrintModelEditorLightWrapper({
 	}
 
 	return (
-		<StyledPrintModelEditorLightWrapper className="print-editor">
-			<PrintModelEditorLight
-				printModel={printModelInstance}
-				documentModel={documentModelInstance}
-				onChange={(printModel, dirty) => {
-					console.log("Print model changed", printModel, dirty);
-				}}
-				staticImageProvider={createTestAppStaticImageProvider(caseConfigId)}
-				customFonts={customFonts}
-			/>
-		</StyledPrintModelEditorLightWrapper>
+		<DefaultLocalizerContextProvider locale={{ language: "en", country: "US" }}>
+			<StyledPrintModelEditorLightWrapper className="print-editor">
+				<PrintModelEditorLight
+					printModel={printModelInstance}
+					documentModel={documentModelInstance}
+					onChange={(printModel, dirty) => {
+						console.log("Print model changed", printModel, dirty);
+					}}
+					staticImageProvider={testAppStaticImageProvider}
+					customFonts={customFonts}
+				/>
+			</StyledPrintModelEditorLightWrapper>
+		</DefaultLocalizerContextProvider>
 	);
 }

@@ -34,29 +34,7 @@ import { expect } from "@playwright/test";
 
 import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
-import { closeDetail } from "./editorActions";
-
-// Selector for the Lexical rich text editor's editable area
-export const RICHTEXT_EDITOR_SELECTOR = "#print-richtext-editor";
-
-// Will timeout if the text element is not available
-export const writeToTextElement = async ({ page, text }: { page: Page; text: string }) => {
-	const textBoxInput = page.locator(RICHTEXT_EDITOR_SELECTOR);
-	await textBoxInput.clear();
-	await textBoxInput.click();
-
-	// Split text by newlines and type each segment, pressing Enter between them
-	const segments = text.split("\n");
-	for (let i = 0; i < segments.length; i++) {
-		if (segments[i]) {
-			await textBoxInput.pressSequentially(segments[i], { delay: 0 });
-		}
-		if (i < segments.length - 1) {
-			await page.keyboard.press("Enter");
-		}
-	}
-	await textBoxInput.blur();
-};
+import { closeDetail, RICHTEXT_EDITOR_SELECTOR } from "./editorActions";
 
 export const deleteTextByBackspace = async ({
 	page,

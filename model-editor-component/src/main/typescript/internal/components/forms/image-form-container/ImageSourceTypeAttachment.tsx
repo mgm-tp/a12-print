@@ -49,6 +49,7 @@ import { RequestApiSelectors } from "../../../redux/request-api/selectors.js";
 import { RequestApiActions } from "../../../redux/index.js";
 
 import type { ElementWithoutIdAndType } from "../type.js";
+import { useFormReadonly } from "../FormContext.js";
 
 import { StyledResourceSelectContainer, StyledSelectWrapper } from "./ImageSourceTypeToggle.styled.js";
 
@@ -60,6 +61,7 @@ export const ImageSourceTypeAttachment = ({ element }: ImageSourceTypeAttachment
 	const initialResourceName = element.image?.resourceSource?.resourceName;
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
+	const isFormReadonly = useFormReadonly();
 	const inputRef = React.useRef<HTMLInputElement | null>(null);
 
 	React.useEffect(() => {
@@ -129,12 +131,14 @@ export const ImageSourceTypeAttachment = ({ element }: ImageSourceTypeAttachment
 					value={initialResourceName}
 					onValueChanged={selectResource}
 					errorMessage={useImageAttachmentSourceContentErrorMessage(element.id)("resourceName")}
+					disabled={isFormReadonly}
 				/>
 			</StyledSelectWrapper>
 			<Button
 				icon={<Icon>upload</Icon>}
 				title={localizer(RESOURCE_KEYS.elementForm.image.action.upload)}
 				onClick={() => inputRef.current?.click()}
+				disabled={isFormReadonly}
 			/>
 			<input
 				type="file"

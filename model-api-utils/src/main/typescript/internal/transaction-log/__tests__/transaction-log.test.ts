@@ -32,12 +32,15 @@
 import cloneDeep from "lodash/cloneDeep.js";
 import { nanoid } from "nanoid";
 
-import type {
-	CalculationProperties,
-	PartialAnyPrintModelElement,
-	PrintModel,
-	PrintModelContentGeneral,
-	PrintModelHeader,
+import {
+	SectionUsage,
+	type CalculationProperties,
+	type FragmentModelReference,
+	type PartialAnyPrintModelElement,
+	type PrintModel,
+	type PrintModelContentGeneral,
+	type PrintModelHeader,
+	type SectionFragmentReference,
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	DisplayType,
@@ -64,11 +67,19 @@ import type {
 	CreateStoreEntryObject,
 	TransactionLogPersistentEntry,
 	TransactionLogStoreEntryMap,
+	SectionReferencesContainer,
+	SegmentFragmentReferencesContainer,
+	TextStyleReferencesContainer,
+	WatermarkReferencesContainer,
 } from "../../../../../main/typescript/a12internal/transaction-log/index.js";
 import {
 	createNewInteractionLogStore,
 	Log,
 	TransactionLog,
+	SECTIONS_REFERENCES_ENTRY_ID,
+	SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID,
+	TEXT_STYLES_REFERENCES_ENTRY_ID,
+	WATERMARKS_REFERENCES_ENTRY_ID,
 } from "../../../../../main/typescript/a12internal/transaction-log/index.js";
 
 describe("Transaction Log", () => {
@@ -102,7 +113,7 @@ describe("Transaction Log", () => {
 				expect(newTextElement.text?.text).toBe("hello new text");
 
 				const logAfter = payload.storeEntry.log;
-				expect(logAfter.length).toBe(7);
+				expect(logAfter.length).toBe(8);
 			}
 		});
 
@@ -411,7 +422,7 @@ describe("Transaction Log", () => {
 
 			expect(store[PRINT_MODEL_HEADER_LOG_ID].log.length).toBe(0);
 			expect(store[PRINT_MODEL_CONTENT_GENERAL_LOG_ID].log.length).toBe(0);
-			expect(Object.keys(store.segments.map).length).toBe(0);
+			expect(Object.keys(store.segments?.map || {}).length).toBe(0);
 			expect(store.sections).toBeFalsy();
 			expect(Object.keys(store.printModelElements).length).toBe(1);
 			expect(store.textStyles).toBeUndefined();
@@ -435,8 +446,8 @@ describe("Transaction Log", () => {
 				regionId: calculationElementId,
 			};
 			const persistentEntries: TransactionLogPersistentEntry[] = [
-				...calculationLog.slice(0, 3),
-				...calculationLog.slice(4),
+				...calculationLog.slice(0, 4),
+				...calculationLog.slice(5),
 			].map(logEntry => {
 				return {
 					...logEntry,
@@ -447,6 +458,7 @@ describe("Transaction Log", () => {
 			const partlyFilledCalculation: PartialCalculation = {
 				id: calculationElementId,
 				type: ElementType.Calculation,
+				name: "myCalculation",
 				calculation: {
 					id: "ogm42og42",
 					displayOptions: { id: "fm2qiogm42", displayType: DisplayType.Date, suffix: "hello suffix" },
@@ -459,7 +471,10 @@ describe("Transaction Log", () => {
 					id: PRINT_MODEL_CONTENT_LOG_ID,
 					general: cloneDeep(generalStoreEntry.memoizedObject) as PrintModelContentGeneral,
 					segments: { id: "omgo42g4", definitions: [], references: [] },
-					elementDefinitions: [partlyFilledCalculation, { id: emptyTextElementId, type: ElementType.Text }],
+					elementDefinitions: [
+						partlyFilledCalculation,
+						{ id: emptyTextElementId, name: "myEmptyText", type: ElementType.Text },
+					],
 				},
 			};
 			const { transactionLogStore: store, interactionLogStore } = Log.createStores(
@@ -484,7 +499,7 @@ describe("Transaction Log", () => {
 
 			expect(store[PRINT_MODEL_HEADER_LOG_ID].log.length).toBe(0);
 			expect(store[PRINT_MODEL_CONTENT_GENERAL_LOG_ID].log.length).toBe(0);
-			expect(Object.keys(store.segments.map).length).toBe(0);
+			expect(Object.keys(store.segments?.map || {}).length).toBe(0);
 			expect(store.sections).toBeFalsy();
 			expect(Object.keys(store.printModelElements).length).toBe(2);
 			expect(store.textStyles).toBeUndefined();
@@ -544,7 +559,7 @@ describe("Transaction Log", () => {
 
 			expect(store[PRINT_MODEL_HEADER_LOG_ID].log.length).toBe(0);
 			expect(store[PRINT_MODEL_CONTENT_GENERAL_LOG_ID].log.length).toBe(0);
-			expect(Object.keys(store.segments.map).length).toBe(0);
+			expect(Object.keys(store.segments?.map || {}).length).toBe(0);
 			expect(store.sections).toBeFalsy();
 			expect(Object.keys(store.printModelElements).length).toBe(1);
 			expect(Object.keys(store.printModelElements)).toContain(calculationElementId);
@@ -561,6 +576,7 @@ describe("Transaction Log", () => {
 			const partlyFilledCalculation: PartialCalculation = {
 				id: calculationElementId,
 				type: ElementType.Calculation,
+				name: "myCalculation",
 				calculation: { id: "kfm243ogm42", name: "coolName123" },
 			};
 			const printModel: PrintModel = {
@@ -623,7 +639,7 @@ describe("Transaction Log", () => {
 			printModelElements = {};
 			const newCalcEl = TransactionLog.createStoreEntryPrintModelElement(
 				printModelElements,
-				{ id: "someUniqueCalcId987", type: ElementType.Calculation },
+				{ id: "someUniqueCalcId987", name: "myCalculation", type: ElementType.Calculation },
 				"interaction0"
 			);
 			updatePrintModelElements(newCalcEl);
@@ -711,6 +727,428 @@ describe("Transaction Log", () => {
 			expect(objectAfterRedo).toEqual(objectAfterUpdate2);
 			expect(objectAfterRedo).not.toEqual(objectAfterUndo);
 			expect(objectAfterRedo).toEqual(newCalcProps);
+		});
+
+		describe("watermarkReferences", () => {
+			const reference1: FragmentModelReference = {
+				id: "ref-portrait-id",
+				refId: "portrait",
+				model: "fragment-model-1",
+			};
+			const reference2: FragmentModelReference = {
+				id: "ref-landscape-id",
+				refId: "landscape",
+				model: "fragment-model-1",
+			};
+			let afterAdd1: CreateStoreEntryObject<WatermarkReferencesContainer>;
+			let afterAdd2: CreateStoreEntryObject<WatermarkReferencesContainer>;
+
+			beforeEach(() => {
+				afterAdd1 = TransactionLog.createStoreEntryWatermarkReferences(
+					undefined,
+					{ id: WATERMARKS_REFERENCES_ENTRY_ID, references: [reference1] },
+					"interaction1"
+				);
+				afterAdd2 = TransactionLog.createStoreEntryWatermarkReferences(
+					afterAdd1.storeEntry,
+					{ id: WATERMARKS_REFERENCES_ENTRY_ID, references: [reference1, reference2] },
+					"interaction2"
+				);
+			});
+
+			it("should undo adding a watermark reference", () => {
+				expect(TransactionLog.selectWatermarkReferences(afterAdd2.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+
+				const afterUndo = TransactionLog.undo(
+					afterAdd2.storeEntry,
+					"watermarkReferences",
+					"interaction2",
+					"interaction3"
+				);
+
+				expect(TransactionLog.selectWatermarkReferences(afterUndo.storeEntry)).toEqual([reference1]);
+			});
+
+			it("should redo adding a watermark reference after undoing", () => {
+				const afterUndo = TransactionLog.undo(
+					afterAdd2.storeEntry,
+					"watermarkReferences",
+					"interaction2",
+					"interaction3"
+				);
+				expect(TransactionLog.selectWatermarkReferences(afterUndo.storeEntry)).toEqual([reference1]);
+
+				const afterRedo = TransactionLog.undo(
+					afterUndo.storeEntry,
+					"watermarkReferences",
+					"interaction3",
+					"interaction4"
+				);
+				expect(TransactionLog.selectWatermarkReferences(afterRedo.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+			});
+
+			it("should undo removing a watermark reference", () => {
+				const afterRemove = TransactionLog.createStoreEntryWatermarkReferences(
+					afterAdd2.storeEntry,
+					{ id: WATERMARKS_REFERENCES_ENTRY_ID, references: [reference2] },
+					"interaction3"
+				);
+				expect(TransactionLog.selectWatermarkReferences(afterRemove.storeEntry)).toEqual([reference2]);
+
+				const afterUndo = TransactionLog.undo(
+					afterRemove.storeEntry,
+					"watermarkReferences",
+					"interaction3",
+					"interaction4"
+				);
+
+				expect(TransactionLog.selectWatermarkReferences(afterUndo.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+			});
+
+			it("should redo removing a watermark reference after undoing", () => {
+				const afterRemove = TransactionLog.createStoreEntryWatermarkReferences(
+					afterAdd2.storeEntry,
+					{ id: WATERMARKS_REFERENCES_ENTRY_ID, references: [reference2] },
+					"interaction3"
+				);
+				const afterUndo = TransactionLog.undo(
+					afterRemove.storeEntry,
+					"watermarkReferences",
+					"interaction3",
+					"interaction4"
+				);
+				expect(TransactionLog.selectWatermarkReferences(afterUndo.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+
+				const afterRedo = TransactionLog.undo(
+					afterUndo.storeEntry,
+					"watermarkReferences",
+					"interaction4",
+					"interaction5"
+				);
+				expect(TransactionLog.selectWatermarkReferences(afterRedo.storeEntry)).toEqual([reference2]);
+			});
+		});
+
+		describe("sectionReferences", () => {
+			const reference1: SectionFragmentReference = {
+				id: "ref-portrait-id",
+				refId: "portrait",
+				model: "fragment-model-1",
+				sectionUsage: SectionUsage.First,
+			};
+			const reference2: SectionFragmentReference = {
+				id: "ref-landscape-id",
+				refId: "landscape",
+				model: "fragment-model-1",
+				sectionUsage: SectionUsage.First,
+			};
+			let afterAdd1: CreateStoreEntryObject<SectionReferencesContainer>;
+			let afterAdd2: CreateStoreEntryObject<SectionReferencesContainer>;
+
+			beforeEach(() => {
+				afterAdd1 = TransactionLog.createStoreEntrySectionReferences(
+					undefined,
+					{ id: SECTIONS_REFERENCES_ENTRY_ID, references: [reference1] },
+					"interaction1"
+				);
+				afterAdd2 = TransactionLog.createStoreEntrySectionReferences(
+					afterAdd1.storeEntry,
+					{ id: SECTIONS_REFERENCES_ENTRY_ID, references: [reference1, reference2] },
+					"interaction2"
+				);
+			});
+
+			it("should undo adding a section reference", () => {
+				expect(TransactionLog.selectSectionReferences(afterAdd2.storeEntry)).toEqual([reference1, reference2]);
+
+				const afterUndo = TransactionLog.undo(
+					afterAdd2.storeEntry,
+					"sectionReferences",
+					"interaction2",
+					"interaction3"
+				);
+
+				expect(TransactionLog.selectSectionReferences(afterUndo.storeEntry)).toEqual([reference1]);
+			});
+
+			it("should redo adding a section reference after undoing", () => {
+				const afterUndo = TransactionLog.undo(
+					afterAdd2.storeEntry,
+					"sectionReferences",
+					"interaction2",
+					"interaction3"
+				);
+				expect(TransactionLog.selectSectionReferences(afterUndo.storeEntry)).toEqual([reference1]);
+
+				const afterRedo = TransactionLog.undo(
+					afterUndo.storeEntry,
+					"sectionReferences",
+					"interaction3",
+					"interaction4"
+				);
+				expect(TransactionLog.selectSectionReferences(afterRedo.storeEntry)).toEqual([reference1, reference2]);
+			});
+
+			it("should undo removing a section reference", () => {
+				const afterRemove = TransactionLog.createStoreEntrySectionReferences(
+					afterAdd2.storeEntry,
+					{ id: SECTIONS_REFERENCES_ENTRY_ID, references: [reference2] },
+					"interaction3"
+				);
+				expect(TransactionLog.selectSectionReferences(afterRemove.storeEntry)).toEqual([reference2]);
+
+				const afterUndo = TransactionLog.undo(
+					afterRemove.storeEntry,
+					"sectionReferences",
+					"interaction3",
+					"interaction4"
+				);
+
+				expect(TransactionLog.selectSectionReferences(afterUndo.storeEntry)).toEqual([reference1, reference2]);
+			});
+
+			it("should redo removing a section reference after undoing", () => {
+				const afterRemove = TransactionLog.createStoreEntrySectionReferences(
+					afterAdd2.storeEntry,
+					{ id: SECTIONS_REFERENCES_ENTRY_ID, references: [reference2] },
+					"interaction3"
+				);
+				const afterUndo = TransactionLog.undo(
+					afterRemove.storeEntry,
+					"sectionReferences",
+					"interaction3",
+					"interaction4"
+				);
+				expect(TransactionLog.selectSectionReferences(afterUndo.storeEntry)).toEqual([reference1, reference2]);
+
+				const afterRedo = TransactionLog.undo(
+					afterUndo.storeEntry,
+					"sectionReferences",
+					"interaction4",
+					"interaction5"
+				);
+				expect(TransactionLog.selectSectionReferences(afterRedo.storeEntry)).toEqual([reference2]);
+			});
+		});
+
+		describe("textStyleReferences", () => {
+			const reference1 = { id: "ref-ts-1", refId: "text-style-1", model: "fragment-model-1" };
+			const reference2 = { id: "ref-ts-2", refId: "text-style-2", model: "fragment-model-1" };
+			let afterAdd1: CreateStoreEntryObject<TextStyleReferencesContainer>;
+			let afterAdd2: CreateStoreEntryObject<TextStyleReferencesContainer>;
+
+			beforeEach(() => {
+				afterAdd1 = TransactionLog.createStoreEntryTextStyleReferences(
+					undefined,
+					{ id: TEXT_STYLES_REFERENCES_ENTRY_ID, references: [reference1] },
+					"interaction1"
+				);
+				afterAdd2 = TransactionLog.createStoreEntryTextStyleReferences(
+					afterAdd1.storeEntry,
+					{ id: TEXT_STYLES_REFERENCES_ENTRY_ID, references: [reference1, reference2] },
+					"interaction2"
+				);
+			});
+
+			it("should undo adding a text style reference", () => {
+				expect(TransactionLog.selectTextStyleReferences(afterAdd2.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+
+				const afterUndo = TransactionLog.undo(
+					afterAdd2.storeEntry,
+					"textStyleReferences",
+					"interaction2",
+					"interaction3"
+				);
+
+				expect(TransactionLog.selectTextStyleReferences(afterUndo.storeEntry)).toEqual([reference1]);
+			});
+
+			it("should redo adding a text style reference after undoing", () => {
+				const afterUndo = TransactionLog.undo(
+					afterAdd2.storeEntry,
+					"textStyleReferences",
+					"interaction2",
+					"interaction3"
+				);
+				expect(TransactionLog.selectTextStyleReferences(afterUndo.storeEntry)).toEqual([reference1]);
+
+				const afterRedo = TransactionLog.undo(
+					afterUndo.storeEntry,
+					"textStyleReferences",
+					"interaction3",
+					"interaction4"
+				);
+				expect(TransactionLog.selectTextStyleReferences(afterRedo.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+			});
+
+			it("should undo removing a text style reference", () => {
+				const afterRemove = TransactionLog.createStoreEntryTextStyleReferences(
+					afterAdd2.storeEntry,
+					{ id: TEXT_STYLES_REFERENCES_ENTRY_ID, references: [reference2] },
+					"interaction3"
+				);
+				expect(TransactionLog.selectTextStyleReferences(afterRemove.storeEntry)).toEqual([reference2]);
+
+				const afterUndo = TransactionLog.undo(
+					afterRemove.storeEntry,
+					"textStyleReferences",
+					"interaction3",
+					"interaction4"
+				);
+
+				expect(TransactionLog.selectTextStyleReferences(afterUndo.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+			});
+
+			it("should redo removing a text style reference after undoing", () => {
+				const afterRemove = TransactionLog.createStoreEntryTextStyleReferences(
+					afterAdd2.storeEntry,
+					{ id: TEXT_STYLES_REFERENCES_ENTRY_ID, references: [reference2] },
+					"interaction3"
+				);
+				const afterUndo = TransactionLog.undo(
+					afterRemove.storeEntry,
+					"textStyleReferences",
+					"interaction3",
+					"interaction4"
+				);
+				expect(TransactionLog.selectTextStyleReferences(afterUndo.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+
+				const afterRedo = TransactionLog.undo(
+					afterUndo.storeEntry,
+					"textStyleReferences",
+					"interaction4",
+					"interaction5"
+				);
+				expect(TransactionLog.selectTextStyleReferences(afterRedo.storeEntry)).toEqual([reference2]);
+			});
+		});
+
+		describe("segmentFragmentReferences", () => {
+			const reference1 = { id: "ref-seg-1", refId: "segment-1", model: "fragment-model-1" };
+			const reference2 = { id: "ref-seg-2", refId: "segment-2", model: "fragment-model-1" };
+			let afterAdd1: CreateStoreEntryObject<SegmentFragmentReferencesContainer>;
+			let afterAdd2: CreateStoreEntryObject<SegmentFragmentReferencesContainer>;
+
+			beforeEach(() => {
+				afterAdd1 = TransactionLog.createStoreEntrySegmentFragmentReferences(
+					undefined,
+					{ id: SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID, references: [reference1] },
+					"interaction1"
+				);
+				afterAdd2 = TransactionLog.createStoreEntrySegmentFragmentReferences(
+					afterAdd1.storeEntry,
+					{ id: SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID, references: [reference1, reference2] },
+					"interaction2"
+				);
+			});
+
+			it("should undo adding a segment fragment reference", () => {
+				expect(TransactionLog.selectSegmentFragmentReferences(afterAdd2.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+
+				const afterUndo = TransactionLog.undo(
+					afterAdd2.storeEntry,
+					"segmentFragmentReferences",
+					"interaction2",
+					"interaction3"
+				);
+
+				expect(TransactionLog.selectSegmentFragmentReferences(afterUndo.storeEntry)).toEqual([reference1]);
+			});
+
+			it("should redo adding a segment fragment reference after undoing", () => {
+				const afterUndo = TransactionLog.undo(
+					afterAdd2.storeEntry,
+					"segmentFragmentReferences",
+					"interaction2",
+					"interaction3"
+				);
+				expect(TransactionLog.selectSegmentFragmentReferences(afterUndo.storeEntry)).toEqual([reference1]);
+
+				const afterRedo = TransactionLog.undo(
+					afterUndo.storeEntry,
+					"segmentFragmentReferences",
+					"interaction3",
+					"interaction4"
+				);
+				expect(TransactionLog.selectSegmentFragmentReferences(afterRedo.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+			});
+
+			it("should undo removing a segment fragment reference", () => {
+				const afterRemove = TransactionLog.createStoreEntrySegmentFragmentReferences(
+					afterAdd2.storeEntry,
+					{ id: SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID, references: [reference2] },
+					"interaction3"
+				);
+				expect(TransactionLog.selectSegmentFragmentReferences(afterRemove.storeEntry)).toEqual([reference2]);
+
+				const afterUndo = TransactionLog.undo(
+					afterRemove.storeEntry,
+					"segmentFragmentReferences",
+					"interaction3",
+					"interaction4"
+				);
+
+				expect(TransactionLog.selectSegmentFragmentReferences(afterUndo.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+			});
+
+			it("should redo removing a segment fragment reference after undoing", () => {
+				const afterRemove = TransactionLog.createStoreEntrySegmentFragmentReferences(
+					afterAdd2.storeEntry,
+					{ id: SEGMENTS_FRAGMENT_REFERENCES_ENTRY_ID, references: [reference2] },
+					"interaction3"
+				);
+				const afterUndo = TransactionLog.undo(
+					afterRemove.storeEntry,
+					"segmentFragmentReferences",
+					"interaction3",
+					"interaction4"
+				);
+				expect(TransactionLog.selectSegmentFragmentReferences(afterUndo.storeEntry)).toEqual([
+					reference1,
+					reference2,
+				]);
+
+				const afterRedo = TransactionLog.undo(
+					afterUndo.storeEntry,
+					"segmentFragmentReferences",
+					"interaction4",
+					"interaction5"
+				);
+				expect(TransactionLog.selectSegmentFragmentReferences(afterRedo.storeEntry)).toEqual([reference2]);
+			});
 		});
 	});
 });

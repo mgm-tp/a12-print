@@ -34,7 +34,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
-import { isPartialSegment } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { Toolbar } from "../../toolbar/index.js";
 import { ToolbarItem } from "../../../types/toolbar-item.js";
@@ -77,22 +76,21 @@ export const BasicLayoutEditor = ({
 	}, []);
 	const dispatch = useDispatch();
 
-	const { elementReferences } = React.useContext(EditorContext);
+	const { elementReferences, isReadonly } = React.useContext(EditorContext);
 	const zoomFactor = useSelector(PrintEngineSelectors.zoomFactor);
 	const editorDimensions = useSelector(PrintEngineSelectors.editorDimensions);
-	const currentTopContainer = useSelector(PrintEngineSelectors.currentContainerElement);
 
 	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
 	const [selectedReferenceId, setSelectedReferenceId] = React.useState<string>();
 	const [hoveredReferenceId, setHoveredReferenceId] = React.useState<string>();
 
 	const onClickReference = React.useCallback((reference: PartialValidPlaceableReference) => {
-		setSelectedReferenceId(reference.refId);
+		setSelectedReferenceId(reference.id);
 	}, []);
 
 	const onDoubleClickReference = React.useCallback(
 		(reference: PartialValidPlaceableReference) => {
-			if (!referenceContainer?.id || !currentTopContainer || !isPartialSegment(currentTopContainer)) return;
+			if (!referenceContainer?.id) return;
 
 			dispatch(
 				NavigationActions.setDetailForm({
@@ -105,7 +103,7 @@ export const BasicLayoutEditor = ({
 				})
 			);
 		},
-		[dispatch, tab, entityId, mode, referenceContainer?.id, currentTopContainer]
+		[dispatch, tab, entityId, mode, referenceContainer?.id]
 	);
 
 	const debouncedOnHoverElement = (reference?: PartialValidPlaceableReference) => {
@@ -113,7 +111,7 @@ export const BasicLayoutEditor = ({
 			if (timer) {
 				clearTimeout(timer);
 			}
-			setHoveredReferenceId(reference.refId);
+			setHoveredReferenceId(reference.id);
 			return;
 		}
 		setTimer(
@@ -126,6 +124,7 @@ export const BasicLayoutEditor = ({
 
 	const handleUpdateMargin = React.useCallback(
 		(margin: number, side: MarginSide, reference: PartialValidPlaceableReference) => {
+			if (isReadonly) return;
 			const hasChanged = (reference.margins?.[side]?.margin?.value || 0) !== margin;
 
 			if (!hasChanged) {
@@ -149,7 +148,7 @@ export const BasicLayoutEditor = ({
 				})
 			);
 		},
-		[dispatch]
+		[dispatch, isReadonly]
 	);
 
 	return (
@@ -193,11 +192,10 @@ export const BasicLayoutEditor = ({
 								customGetLimitElement,
 							})
 						: elementReferences.map(ref => {
-								const isHighlight =
-									ref.refId === selectedReferenceId || hoveredReferenceId === ref?.refId;
+								const isHighlight = ref.id === selectedReferenceId || hoveredReferenceId === ref?.id;
 								return (
 									<PlaceableElement
-										key={ref.refId}
+										key={ref.id}
 										reference={ref}
 										onClick={onClickReference}
 										onDoubleClick={onDoubleClickReference}

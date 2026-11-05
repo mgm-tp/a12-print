@@ -40,6 +40,8 @@ import type {
 	PartialValidPlaceableReference,
 } from "@com.mgmtp.a12.print/print-model-api/model";
 
+import type { ModelReferenceSection } from "../../redux/navigation/state.js";
+
 // ─── Token interfaces ─────────────────────────────────────────────────────────
 
 export interface RootNavigationStep {
@@ -73,7 +75,19 @@ export interface ReferenceNavigationStep {
 	kind: "reference";
 	elementId: string;
 	referenceId: string;
-	referemce: PartialValidPlaceableReference;
+	reference: PartialValidPlaceableReference;
+	jsonPath: EntityInstancePath;
+}
+
+export interface TextStyleNavigationStep {
+	kind: "textStyle";
+	textStyleId: string;
+	jsonPath: EntityInstancePath;
+}
+
+export interface ModelReferenceNavigationStep {
+	kind: "modelReference";
+	section: ModelReferenceSection;
 	jsonPath: EntityInstancePath;
 }
 
@@ -82,7 +96,9 @@ export type NavigationStep =
 	| CanvasRootNavigationStep
 	| WrapperElementNavigationStep
 	| ElementNavigationStep
-	| ReferenceNavigationStep;
+	| ReferenceNavigationStep
+	| TextStyleNavigationStep
+	| ModelReferenceNavigationStep;
 
 // ─── Type guards ──────────────────────────────────────────────────────────────
 
@@ -104,6 +120,14 @@ export function isElementNavigationStep(step: NavigationStep): step is ElementNa
 
 export function isReferenceNavigationStep(step: NavigationStep): step is ReferenceNavigationStep {
 	return step.kind === "reference";
+}
+
+export function isTextStyleNavigationStep(step: NavigationStep): step is TextStyleNavigationStep {
+	return step.kind === "textStyle";
+}
+
+export function isModelReferenceNavigationStep(step: NavigationStep): step is ModelReferenceNavigationStep {
+	return step.kind === "modelReference";
 }
 
 // ─── Factories ────────────────────────────────────────────────────────────────
@@ -131,10 +155,21 @@ export function createElementStep(
 export function createReferenceStep(
 	elementId: string,
 	referenceId: string,
-	referemce: PartialValidPlaceableReference,
+	reference: PartialValidPlaceableReference,
 	jsonPath: EntityInstancePath
 ): ReferenceNavigationStep {
-	return { kind: "reference", elementId, referenceId, referemce, jsonPath };
+	return { kind: "reference", elementId, referenceId, reference, jsonPath };
+}
+
+export function createTextStyleStep(textStyleId: string, jsonPath: EntityInstancePath): TextStyleNavigationStep {
+	return { kind: "textStyle", textStyleId, jsonPath };
+}
+
+export function createModelReferenceStep(
+	section: ModelReferenceSection,
+	jsonPath: EntityInstancePath
+): ModelReferenceNavigationStep {
+	return { kind: "modelReference", section, jsonPath };
 }
 
 export function createWrapperStep(

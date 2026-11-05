@@ -32,22 +32,22 @@
 package com.mgmtp.a12.print.model.api.model.internal.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.PrintModelContent;
 import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
 import com.mgmtp.a12.print.model.api.model.general.General;
-import com.mgmtp.a12.print.model.api.model.section.ModelSectionContainer;
-import com.mgmtp.a12.print.model.api.model.segment.ModelSegmentContainer;
-import com.mgmtp.a12.print.model.api.model.textStyle.TextStylesContainer;
-import com.mgmtp.a12.print.model.api.model.watermark.WatermarkContainer;
 import com.mgmtp.a12.print.model.api.model.internal.dto.element.PrintModelElementDto;
 import com.mgmtp.a12.print.model.api.model.internal.dto.general.GeneralDto;
 import com.mgmtp.a12.print.model.api.model.internal.dto.section.ModelSectionContainerDTO;
 import com.mgmtp.a12.print.model.api.model.internal.dto.segment.ModelSegmentContainerDTO;
 import com.mgmtp.a12.print.model.api.model.internal.dto.textStyle.TextStylesContainerDto;
 import com.mgmtp.a12.print.model.api.model.internal.dto.watermark.WatermarkContainerDto;
+import com.mgmtp.a12.print.model.api.model.section.ModelSectionContainer;
+import com.mgmtp.a12.print.model.api.model.segment.ModelSegmentContainer;
+import com.mgmtp.a12.print.model.api.model.textStyle.TextStylesContainer;
+import com.mgmtp.a12.print.model.api.model.watermark.WatermarkContainer;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;
 import java.util.List;

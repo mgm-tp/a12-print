@@ -33,17 +33,22 @@ import type { SagaGenerator } from "typed-redux-saga";
 import { call, put, select, takeEvery } from "typed-redux-saga";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { PrintModelCreator } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { PrintModelCreator, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { PrintModelGarbageCollector } from "@com.mgmtp.a12.print/print-model-api-utils/garbage-collector";
 import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { NavigationActions } from "../../redux/index.js";
+import { DetailViewActions, EditorStateActions, NavigationActions } from "../../redux/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 
 import { parsePath } from "./path-to-steps.js";
 import { buildAncestrySteps, filterTableLayoutAncestors } from "./ancestry-steps.js";
 import { stepsToNavigationState } from "./steps-to-navigation-state.js";
-import { isElementNavigationStep, isWrapperElementNavigationStep } from "./navigation-steps.js";
+import {
+	isElementNavigationStep,
+	isReferenceNavigationStep,
+	isTextStyleNavigationStep,
+	isWrapperElementNavigationStep,
+} from "./navigation-steps.js";
 
 export function* navigateFromPathSaga(): SagaGenerator<void> {
 	yield* takeEvery(NavigationActions.navigateFromPath.match, handlenNavigateFromPath);
@@ -74,10 +79,42 @@ function* handlenNavigateFromPath(
 	}
 
 	if (isElementNavigationStep(rootStep) || isWrapperElementNavigationStep(rootStep)) {
-		const ancestryTokens = buildAncestrySteps(rootStep, cleanPrintModelWithOverrides, target);
+		// Needed to find the ancestry of an element inside a referenced fragment container.
+		const fragmentModels = yield* select(PrintEngineSelectors.fragmentModels);
+		const ancestryTokens = buildAncestrySteps(rootStep, cleanPrintModelWithOverrides, target, fragmentModels);
 		steps.unshift(...ancestryTokens);
 	}
 
-	const navState = stepsToNavigationState(filterTableLayoutAncestors(steps));
+	const textStyleStep = steps.find(isTextStyleNavigationStep);
+	if (textStyleStep) {
+		yield* put(EditorStateActions.updateSelectedTextStyleId(textStyleStep.textStyleId));
+	}
+
+	const filteredSteps = filterTableLayoutAncestors(steps);
+	const navState = stepsToNavigationState(filteredSteps);
+
+	const printModelSubType = yield* select(PrintEngineSelectors.printModelSubType);
+	if (
+		printModelSubType === "fragment" &&
+		navState.sidebarState?.activeTab !== undefined &&
+		[SidebarItem.SEGMENT, SidebarItem.SECTION, SidebarItem.WATERMARK].includes(navState.sidebarState.activeTab)
+	) {
+		navState.sidebarState = {
+			...navState.sidebarState,
+			activeTab: SidebarItem.FRAGMENT,
+		};
+	}
+
 	yield* put(NavigationActions.jumpTo(navState));
+
+	// A trailing reference step without sub-path targets the placement itself - open its default form, which
+	// needs jumpTo to have activated the right canvas tab first.
+	const lastStep = filteredSteps.at(-1);
+	if (
+		lastStep &&
+		isReferenceNavigationStep(lastStep) &&
+		!lastStep.jsonPath.some(e => e.elementName === "pageBreakBehavior" || e.elementName === "hideConditions")
+	) {
+		yield* put(DetailViewActions.openElementForm(lastStep.reference.refId));
+	}
 }

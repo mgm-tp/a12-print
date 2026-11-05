@@ -85,6 +85,11 @@ export function setupStoreLight(
 				logPersistentEntries: logStorage.getEntries(),
 			});
 		},
+		loadFragmentModel() {
+			return Promise.resolve({
+				printModel: undefined,
+			});
+		},
 		setPrintModelReferences() {
 			return Promise.resolve(undefined);
 		},
@@ -103,7 +108,7 @@ export function setupStoreLight(
 			onChange(printModel, false);
 			return Promise.resolve({ printModel });
 		},
-		loadPrintModelIds() {
+		loadPrintModelHeaders() {
 			return Promise.resolve([]);
 		},
 		loadDINTemplateSegments() {
@@ -170,7 +175,7 @@ export function setupStoreLight(
 
 	store.dispatch(PrintEngineActions.resetState());
 	store.dispatch(RequestApiActions.loadPrintModel(""));
-	store.dispatch(RequestApiActions.loadPrintModelIds());
+	store.dispatch(RequestApiActions.loadPrintModelHeaders());
 
 	store.dispatch(EditorStateActions.setFonts(fontMap));
 	store.dispatch(ValidationActions.validateTextStyles());

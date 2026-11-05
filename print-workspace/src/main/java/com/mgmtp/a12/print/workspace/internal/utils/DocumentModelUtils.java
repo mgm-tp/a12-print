@@ -34,8 +34,6 @@ package com.mgmtp.a12.print.workspace.internal.utils;
 import com.mgmtp.a12.kernel.md.combination.a12internal.CombinationModelService;
 import com.mgmtp.a12.kernel.md.combination.a12internal.IUnexpandedModelResolver;
 import com.mgmtp.a12.kernel.md.model.a12internal.DocumentModel;
-import com.mgmtp.a12.kernel.md.model.a12internal.fieldtypes.CustomFieldType;
-import com.mgmtp.a12.kernel.md.model.a12internal.fieldtypes.StringType;
 import com.mgmtp.a12.kernel.md.model.a12internal.services.DocumentModelService;
 import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
 import com.mgmtp.a12.kernel.md.model.api.services.IDocumentModelSerializer;
@@ -50,7 +48,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class DocumentModelUtils {
@@ -115,18 +112,5 @@ public class DocumentModelUtils {
 			throw new PrintWorkspaceException(e);
 		}
 		return expandedModel.toString();
-	}
-
-	public DocumentModel convertCustomTypeDefinitionsToStringType(
-		DocumentModel documentModel
-	) {
-		documentModel.getContent().setTypeDefinitions(
-			documentModel.getContent().getTypeDefinitions().stream().peek(def -> {
-				if (def.getFieldType() instanceof CustomFieldType) {
-					def.setFieldType(new StringType());
-				}
-			}).collect(Collectors.toList())
-		);
-		return documentModel;
 	}
 }

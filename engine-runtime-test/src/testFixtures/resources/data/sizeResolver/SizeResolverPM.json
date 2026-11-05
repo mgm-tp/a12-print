@@ -2,16 +2,16 @@
   "header": {
     "id": "SizeResolverPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "description": "Description",
     "annotations": [
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "labels": [],
@@ -353,7 +353,8 @@
             "model": "SizeResolverDM",
             "path": "/root/Image/img/content"
           }
-        }
+        },
+        "name": "Image_54c61"
       },
       {
         "id": "IMAGE_ATT_FIXED_ORIGINAL_SIZE",
@@ -389,7 +390,8 @@
             "id": "9ZWClHscISaktGfAbuxYc",
             "resourceName": "test_b7879c59.png"
           }
-        }
+        },
+        "name": "Image_67bc4"
       },
       {
         "id": "IMAGE_ATT_CHANGED_SIZE",
@@ -425,7 +427,8 @@
             "id": "ildfVbO6RRTC7DXxpLJYV",
             "resourceName": "test_b7879c59.png"
           }
-        }
+        },
+        "name": "Image_bb7c8"
       },
       {
         "id": "IMAGE_ATT_SCALED_ORIGINAL_SIZE",
@@ -456,7 +459,8 @@
             "id": "1tejbK-wAss08U77cY4ol",
             "resourceName": "test_b7879c59.png"
           }
-        }
+        },
+        "name": "Image_3d44d"
       },
       {
         "id": "IMAGE_ATT_ORIGINAL_SIZE",
@@ -482,7 +486,8 @@
             "id": "YwjlCaUAd9JaocMQ4rtuG",
             "resourceName": "test_b7879c59.png"
           }
-        }
+        },
+        "name": "Image_40560"
       },
       {
         "id": "IMAGE_FIELD_SCALED_SIZE",
@@ -504,7 +509,8 @@
             "model": "SizeResolverDM",
             "path": "/root/Image/img/content"
           }
-        }
+        },
+        "name": "Image_6f7c7"
       }
     ]
   }

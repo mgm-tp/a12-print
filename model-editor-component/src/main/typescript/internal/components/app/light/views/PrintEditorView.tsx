@@ -57,7 +57,7 @@ const fullscreenItems = new Set<SidebarItem>([
 ]);
 
 export const PrintEditorView: React.ComponentType = function PrintEditorView() {
-	const { localizer } = React.useContext(EditorComponentContext);
+	const { localizer, isFragmentModel } = React.useContext(EditorComponentContext);
 	const { currentSize } = React.useContext(SizeContext);
 
 	const { isOpen, isFullscreen, activeTab } = useSelector(NavigationSelectors.sidebarState);
@@ -101,7 +101,19 @@ export const PrintEditorView: React.ComponentType = function PrintEditorView() {
 				</StyledSlotWrapper>
 			</StyledToolbar>
 			<StyledSidebar>
-				<Sidebar hiddenItems={[SidebarItem.SCHEMA, SidebarItem.COMMIT_CHANGES]} />
+				<Sidebar
+					hiddenItems={
+						isFragmentModel
+							? [
+									SidebarItem.SCHEMA,
+									SidebarItem.COMMIT_CHANGES,
+									SidebarItem.SEGMENT,
+									SidebarItem.SECTION,
+									SidebarItem.WATERMARK,
+								]
+							: [SidebarItem.SCHEMA, SidebarItem.COMMIT_CHANGES, SidebarItem.FRAGMENT]
+					}
+				/>
 			</StyledSidebar>
 			{className !== "maximized" && (
 				<StyledContent>

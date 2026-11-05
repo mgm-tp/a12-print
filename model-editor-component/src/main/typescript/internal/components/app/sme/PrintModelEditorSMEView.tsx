@@ -29,13 +29,16 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
+import { useDispatch } from "react-redux";
 
 import { LocalizerContext } from "@com.mgmtp.a12.utils/utils-localization-react";
 import { Button, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 import type { EntityInstancePath } from "@com.mgmtp.a12.kernel/kernel-md-facade";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { GlobalOverride } from "../../../global-override.styled.js";
+import { NavigationActions } from "../../../redux/index.js";
 
 import { PrintModelEditor } from "../PrintModelEditor.js";
 import { useContextApi } from "../hooks/use-context-api.js";
@@ -57,22 +60,35 @@ export const PrintModelEditorSMEView = ({
 	onDeploy,
 	navigationPath,
 	isConnectedToServer,
-	modelIconPath,
+	modelIconPaths,
 }: PrintEditorAppProps) => {
+	const dispatch = useDispatch();
 	const { localizer } = useContext(LocalizerContext);
 
 	const contextApi = useContextApi({ customFonts, localizer });
+
 	const fontMap = contextApi.getFonts();
 
+	useEffect(() => {
+		if (!navigationPath) {
+			dispatch(
+				NavigationActions.setActiveTab(contextApi.isFragmentModel ? SidebarItem.FRAGMENT : SidebarItem.SEGMENT)
+			);
+		}
+	}, [navigationPath, dispatch, contextApi.isFragmentModel]);
+
 	const toolbarProps = useMemo(() => {
+		const previewButton = <Button key={"preview"} onClick={onPreview} icon={<Icon>print</Icon>} title="Print" />;
+		const closeButton = <Button key={"close"} onClick={onClose} icon={<Icon>close</Icon>} title="Close" />;
+		const rightSlots = [];
+		!contextApi.isFragmentModel && rightSlots.push(previewButton);
+		rightSlots.push(closeButton);
+
 		return {
-			modelIcon: modelIconPath,
-			rightSlots: [
-				<Button key={"preview"} onClick={onPreview} icon={<Icon>print</Icon>} title="Print" />,
-				<Button key={"close"} onClick={onClose} icon={<Icon>close</Icon>} title="Close" />,
-			],
+			modelIcon: contextApi.isFragmentModel ? modelIconPaths.fragmentModelIcon : modelIconPaths.printModelIcon,
+			rightSlots,
 		};
-	}, [modelIconPath, onClose, onPreview]);
+	}, [modelIconPaths, onClose, onPreview, contextApi.isFragmentModel]);
 
 	return (
 		<>

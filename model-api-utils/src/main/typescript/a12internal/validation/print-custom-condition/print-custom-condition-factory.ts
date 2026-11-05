@@ -34,6 +34,8 @@ import type { ICustomCondition, ICustomConditionFactory } from "@com.mgmtp.a12.k
 import {
 	alwaysFalseCondition,
 	ElementReferenceOverlapped,
+	isFragmentModel,
+	isPrintModel,
 	OnlyOneIsSortingColumn,
 	RoleNotEmpty,
 	RolesNotUnique,
@@ -47,6 +49,8 @@ export enum CustomConditionName {
 	RolesModelPresent = "print_RolesModelPresent",
 	ElementReferenceOverlapped = "print_ElementReferenceOverlapped",
 	OnlyOneIsSortingColumn = "print_OnlyOneIsSortingColumn",
+	IsPrintModel = "print_IsPrintModel",
+	IsFragmentModel = "print_IsFragmentModel",
 }
 
 type CustomConditionMap = Record<CustomConditionName, ICustomCondition>;
@@ -65,6 +69,8 @@ export class PrintCustomConditionFactory implements ICustomConditionFactory {
 		[CustomConditionName.RolesNotUnique]: RolesNotUnique,
 		[CustomConditionName.ElementReferenceOverlapped]: ElementReferenceOverlapped,
 		[CustomConditionName.OnlyOneIsSortingColumn]: OnlyOneIsSortingColumn,
+		[CustomConditionName.IsPrintModel]: isPrintModel,
+		[CustomConditionName.IsFragmentModel]: isFragmentModel,
 	};
 
 	private constructor() {}

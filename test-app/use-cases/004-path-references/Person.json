@@ -13,13 +13,6 @@
         "name": "roles",
         "value": "admin"
       }
-    ],
-    "modelReferences": [
-      {
-        "modelType": "document",
-        "purpose": "include",
-        "reference": "Address"
-      }
     ]
   },
   "content": {
@@ -97,17 +90,6 @@
                 "Field": {
                   "fieldType": {
                     "type": "StringType"
-                  }
-                }
-              },
-              {
-                "type": "Group",
-                "id": "include_99803",
-                "name": "address",
-                "Group": {
-                  "repeatability": 1,
-                  "includeConfig": {
-                    "reference": "Address"
                   }
                 }
               },

@@ -34,13 +34,7 @@ import { useSelector } from "react-redux";
 import { useMemo } from "react";
 
 import type { PartialValidPlaceableReference } from "@com.mgmtp.a12.print/print-model-api/model";
-import {
-	PageBreakBehavior,
-	PartialArea,
-	PartialBoundingBox,
-	PartialOverride,
-	PartialSwitch,
-} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PageBreakBehavior } from "@com.mgmtp.a12.print/print-model-api/model";
 import { Typography } from "@com.mgmtp.a12.widgets/widgets-core";
 import { InputValueSourceResolver } from "@com.mgmtp.a12.print/print-model-api/input-source";
 
@@ -49,6 +43,7 @@ import { useInheritedPageBreakResolver } from "../../../hooks/use-inherited-page
 import { PrintEngineSelectors } from "../../../store/selectors.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 import { NavigationSelectors } from "../../../redux/index.js";
+import { ElementsUtils } from "../../../utils/index.js";
 
 import { PageBreakBehaviorInput } from "./PageBreakBehaviorInput.js";
 
@@ -86,14 +81,9 @@ export const LayoutConfigForm = () => {
 		if (value !== PageBreakBehavior.AVOID || !currentElement) {
 			return "";
 		}
-		const isContainerElement =
-			PartialArea.isInstance(currentElement) ||
-			PartialBoundingBox.isInstance(currentElement) ||
-			PartialOverride.isInstance(currentElement) ||
-			PartialSwitch.isInstance(currentElement);
 
 		return localizer(
-			isContainerElement
+			ElementsUtils.isWrapperElement(currentElement)
 				? RESOURCE_KEYS.elementForm.layoutConfig.pageBreakBehavior.avoidInfoMessage.containerElement
 				: RESOURCE_KEYS.elementForm.layoutConfig.pageBreakBehavior.avoidInfoMessage.standaloneElement
 		);

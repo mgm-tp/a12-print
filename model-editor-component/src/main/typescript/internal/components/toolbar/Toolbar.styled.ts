@@ -47,6 +47,8 @@ export const ToolbarContainer = styled.div`
 export const FlexChildContainer = styled.div`
 	display: flex;
 	gap: 12px;
+	flex-wrap: wrap;
+	min-width: 0;
 `;
 
 export const StyledButton = styled(Button)`

@@ -37,7 +37,7 @@ type LineProps = BaseElementProps;
 
 export const Line = ({ styles, element }: LineProps) => {
 	if (!PartialLine.isInstance(element)) {
-		throw Error(`Expected element of type Line but got ${element.type}`);
+		throw new Error(`Expected element of type Line but got ${element?.type}`);
 	}
 	return <hr data-testid="element-line" style={styles} />;
 };

@@ -2,7 +2,7 @@
   "header": {
     "id": "TestPrintModel-CustomType",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -202,7 +202,7 @@
           "path": "/general/StringField1",
           "displayOptions": {
             "id": "id_dO",
-            "dateFormat": "<dateFormat>"
+            "dateFormat": "'<dateFormat>'"
           }
         },
         "borderProperties": {
@@ -222,7 +222,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_663ff"
       },
       {
         "id": "text1",
@@ -271,7 +272,8 @@
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
             "reference": "tableLayout2"
           }
-        }
+        },
+        "name": "Text_76079"
       },
       {
         "id": "Bh8Qr9ZG9283i87Z75976",
@@ -286,7 +288,8 @@
               "operation": "[DomainTableLayout/general/StringField2]"
             }
           ]
-        }
+        },
+        "name": "Bh8Qr9ZG9283i87Z75976"
       },
       {
         "id": "text2",
@@ -335,7 +338,8 @@
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
             "reference": "tableLayout2"
           }
-        }
+        },
+        "name": "Text_f2350"
       },
       {
         "id": "Bh8Qr9ZG9283i87Z7333",
@@ -362,7 +366,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_9efcd"
       },
       {
         "id": "Bh8Qr9ZG9283i87Z75678",
@@ -377,7 +382,8 @@
               "operation": "[DomainTableLayout/general/StringField3]"
             }
           ]
-        }
+        },
+        "name": "Bh8Qr9ZG9283i87Z75678"
       },
       {
         "id": "text3",
@@ -430,7 +436,8 @@
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
             "reference": "tableLayout2"
           }
-        }
+        },
+        "name": "Text_0c79c"
       },
       {
         "id": "tableLayout1",
@@ -519,7 +526,8 @@
               "column": 0
             }
           ]
-        }
+        },
+        "name": "TableLayout_06005"
       },
       {
         "id": "tableLayout2",
@@ -608,7 +616,8 @@
               "column": 0
             }
           ]
-        }
+        },
+        "name": "TableLayout_a82dd"
       }
     ]
   }

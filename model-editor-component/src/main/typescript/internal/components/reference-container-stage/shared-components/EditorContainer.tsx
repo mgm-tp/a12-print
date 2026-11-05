@@ -57,7 +57,7 @@ export const EditorContainer = ({
 	renderTopSlots,
 	containerId,
 }: React.PropsWithChildren<EditorContainerProps>) => {
-	const { previousEditorRef } = React.useContext(EditorContext);
+	const { previousEditorRef, isReadonly } = React.useContext(EditorContext);
 
 	const editorDimensions = useSelector(PrintEngineSelectors.editorDimensions);
 	const zoomFactor = useSelector(PrintEngineSelectors.zoomFactor);
@@ -90,6 +90,7 @@ export const EditorContainer = ({
 				numberOfPages={numberOfPages}
 				zoomFactor={zoomFactor}
 				editorDimensions={editorDimensions}
+				isReadonly={isReadonly}
 				ref={editorRef}
 			>
 				{children}

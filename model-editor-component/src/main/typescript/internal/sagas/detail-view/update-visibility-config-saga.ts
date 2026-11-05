@@ -49,7 +49,7 @@ function* handleUpdateVisibilityConfig(action: PayloadAction<DetailViewActions.U
 	const detailData = yield* select(NavigationSelectors.currentReferenceForm);
 	const elementReferences = yield* select(PrintEngineSelectors.elementReferences);
 
-	const currentRefId = elementReferences.find(ref => ref.refId === selected[0])?.id || "";
+	const currentRefId = elementReferences.some(ref => ref.id === selected[0]) ? selected[0] : "";
 
 	if (
 		detailData &&

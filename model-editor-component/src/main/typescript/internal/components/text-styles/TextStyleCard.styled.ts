@@ -44,11 +44,12 @@ export const StyledTextStyleCard = styled.div<SelectableProps>`
 	border-bottom: 1px solid ${props => props.theme.colors.divider.colorLight};
 	background: ${props =>
 		props.isSelected
-			? props.theme.colors.background.primaryBackground
-			: props.theme.colors.background.interactiveBackground};
+			? props.theme.colors.background.interactiveBackground
+			: props.theme.colors.background.primaryBackground};
 	border-left: ${props => (props.isSelected ? "3px solid #00589f" : "none")};
 	padding: 0 4px;
 	font-size: 14px;
+	cursor: pointer;
 `;
 
 export const StyledTextStyleCardName = styled.div`

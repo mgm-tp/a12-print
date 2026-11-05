@@ -40,7 +40,12 @@ import type {
 	AffectedItem,
 } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { TransactionLog, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import type { PartialSection, PartialSegment, PartialWatermark } from "@com.mgmtp.a12.print/print-model-api/model";
+import type {
+	PartialFragment,
+	PartialSection,
+	PartialSegment,
+	PartialWatermark,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 
 import {
 	type AnyTransactionLogAction,
@@ -102,19 +107,22 @@ function* handleReferenceContainerActions({
 
 function getReferenceContainerStore(
 	state: TransactionLogStore,
-	currentRefType: SidebarItem.SECTION | SidebarItem.SEGMENT | SidebarItem.WATERMARK
+	currentRefType: SidebarItem.SECTION | SidebarItem.SEGMENT | SidebarItem.WATERMARK | SidebarItem.FRAGMENT
 ) {
 	const containTypeAction: Record<
-		SidebarItem.SEGMENT | SidebarItem.SECTION | SidebarItem.WATERMARK,
-		Extract<keyof TransactionLogStore, "segments" | "sections" | "watermarks">
+		SidebarItem.SEGMENT | SidebarItem.SECTION | SidebarItem.WATERMARK | SidebarItem.FRAGMENT,
+		Extract<keyof TransactionLogStore, "segments" | "sections" | "watermarks" | "fragments">
 	> = {
 		[SidebarItem.SEGMENT]: "segments",
 		[SidebarItem.SECTION]: "sections",
 		[SidebarItem.WATERMARK]: "watermarks",
+		[SidebarItem.FRAGMENT]: "fragments",
 	};
 
 	const entryKey = containTypeAction[currentRefType];
-	const entryData: StoreEntryMapWithId<PartialSegment | PartialSection | PartialWatermark> = state[entryKey] || {
+	const entryData: StoreEntryMapWithId<PartialSegment | PartialSection | PartialWatermark | PartialFragment> = state[
+		entryKey
+	] || {
 		id: nanoid(),
 		map: {},
 	};

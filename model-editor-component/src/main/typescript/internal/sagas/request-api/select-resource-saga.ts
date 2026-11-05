@@ -50,6 +50,7 @@ import {
 import { RequestApiSelectors } from "../../redux/request-api/selectors.js";
 import type { RequestApi } from "../../api/request-api.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
+import { ElementsUtils } from "../../utils/elements-utils.js";
 import { RESOURCE_KEYS } from "../../localization/index.js";
 import { createMmMeasureFromPx } from "../../utils/measure-utils.js";
 
@@ -57,7 +58,9 @@ export function* selectResourceSaga(): SagaGenerator<void> {
 	yield* takeEvery(RequestApiActions.selectResource.match, handleSelectResource);
 }
 
-function* handleSelectResource(action: ReturnType<typeof RequestApiActions.selectResource>): SagaGenerator<void> {
+export function* handleSelectResource(
+	action: ReturnType<typeof RequestApiActions.selectResource>
+): SagaGenerator<void> {
 	const { elementId, resourceName } = action.payload;
 
 	let resource = yield* select(state => RequestApiSelectors.resourceByName(state, resourceName));
@@ -82,6 +85,9 @@ function* handleSelectResource(action: ReturnType<typeof RequestApiActions.selec
 	const el = elements[0] as (PrintModelElement & DeepPartial<PrintImage>) | undefined;
 	if (!el) return;
 
+	const minHeight = computeMinHeight(el, originalHeight, originalWidth);
+	const minWidth = (el.image?.dimensions?.width as Measure) ?? originalWidth;
+
 	const transactionLogActions: UpdateElementsTransactionLogAction[] = [
 		TransactionLogStateActions.updatePrintModelElements({
 			data: [
@@ -97,6 +103,7 @@ function* handleSelectResource(action: ReturnType<typeof RequestApiActions.selec
 							originalWidth,
 						},
 					},
+					...ElementsUtils.getFragmentDimensionsUpdate(el, { width: minWidth, height: minHeight }),
 				} as PrintModelElement & DeepPartial<PrintImage>,
 			],
 		}),
@@ -112,8 +119,8 @@ function* handleSelectResource(action: ReturnType<typeof RequestApiActions.selec
 							...ref,
 							dimensions: {
 								...ref.dimensions,
-								minHeight: computeMinHeight(el, originalHeight, originalWidth),
-								minWidth: (el.image?.dimensions?.width as Measure) ?? originalWidth,
+								minHeight,
+								minWidth,
 							},
 						};
 					}

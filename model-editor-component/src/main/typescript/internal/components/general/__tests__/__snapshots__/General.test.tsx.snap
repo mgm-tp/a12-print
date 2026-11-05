@@ -71,6 +71,10 @@ exports[`General should renders correctly 1`] = `
   max-width: unset;
 }
 
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c59 {
+  color: inherit;
+}
+
 .c47 {
   align-items: center;
   border: 2px solid transparent;
@@ -169,6 +173,10 @@ exports[`General should renders correctly 1`] = `
   border: 2px solid #d50075;
 }
 
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c57:where(:not(:active):not(:hover):not(:focus)) {
+  color: inherit;
+}
+
 .h_inlineBlock.h_middleAlign .c57.c57 {
   display: block;
   height: auto;
@@ -235,6 +243,10 @@ exports[`General should renders correctly 1`] = `
   border: 2px solid #d50075;
 }
 
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c60:where(:not(:active):not(:hover):not(:focus)) {
+  color: inherit;
+}
+
 .h_inlineBlock.h_middleAlign .c60.c60 {
   display: block;
   height: auto;
@@ -286,6 +298,13 @@ exports[`General should renders correctly 1`] = `
 
 .c67.c67 .c58 {
   color: inherit;
+}
+
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs .c67.c67 ) {
+  color: #a9b3bc;
+  width: auto;
+  height: auto;
+  min-height: 0;
 }
 
 .h_inlineBlock.h_middleAlign .c67.c67 {
@@ -469,7 +488,7 @@ exports[`General should renders correctly 1`] = `
   width: 100%;
 }
 
-.c6 >.StyledTooltipTriggerWrapper-sc-eBoCRM {
+.c6 >.StyledTooltipTriggerWrapper-sc-cAUnSs {
   margin: 0 4px 4px 0;
 }
 
@@ -491,9 +510,9 @@ exports[`General should renders correctly 1`] = `
   vertical-align: middle;
 }
 
-.c69[data-role="checkbox-group"] .c7 ~.StyledTooltipTriggerWrapper-sc-eBoCRM,
-.c69[data-role="radio-group"] .c7 ~.StyledTooltipTriggerWrapper-sc-eBoCRM,
-.c69[data-role="file-upload"] .c7 ~.StyledTooltipTriggerWrapper-sc-eBoCRM {
+.c69[data-role="checkbox-group"] .c7 ~.StyledTooltipTriggerWrapper-sc-cAUnSs,
+.c69[data-role="radio-group"] .c7 ~.StyledTooltipTriggerWrapper-sc-cAUnSs,
+.c69[data-role="file-upload"] .c7 ~.StyledTooltipTriggerWrapper-sc-cAUnSs {
   margin: 0 0 4px 0;
 }
 
@@ -508,6 +527,17 @@ exports[`General should renders correctly 1`] = `
   max-width: 100%;
 }
 
+.c10 {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 0;
+}
+
 .c13 {
   height: auto;
 }
@@ -519,17 +549,6 @@ exports[`General should renders correctly 1`] = `
   max-height: 100px;
   min-height: 32px;
   min-width: 0;
-}
-
-.c10 {
-  border: 0;
-  clip: rect(0 0 0 0);
-  clip-path: inset(100%);
-  height: 0;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 0;
 }
 
 .c73 {
@@ -600,7 +619,7 @@ exports[`General should renders correctly 1`] = `
   outline: 1px dotted #333;
 }
 
-.c72 .StyledFieldPrefixWrapper-sc-gvObj>.c58 {
+.c72 .StyledFieldPrefixWrapper-sc-hkShpX>.c58 {
   color: inherit;
   cursor: default;
 }
@@ -730,7 +749,7 @@ exports[`General should renders correctly 1`] = `
 }
 
 [data-role="tree"] .c25:first-child .c29.c29:first-child.c25:first-child .c29.c29:first-child {
-  padding-left: calc( 									16px + 8px 								);
+  padding-left: calc( 										16px + 8px 									);
 }
 
 .c34 {
@@ -1097,7 +1116,7 @@ exports[`General should renders correctly 1`] = `
   min-height: 22px;
 }
 
-.c32 >.c58:not(.StyledTableHeadCellSortingIcon-sc-ihQbcf):not(.StyledVariantIconWrapper-sc-aKNbV) {
+.c32 >.c58:not(.StyledTableHeadCellSortingIcon-sc-bpeDqD):not(.StyledVariantIconWrapper-sc-cNaPcl) {
   color: inherit;
 }
 
@@ -1130,7 +1149,7 @@ exports[`General should renders correctly 1`] = `
   text-align: center;
 }
 
-.c48 >.c58:not(.StyledTableHeadCellSortingIcon-sc-ihQbcf):not(.StyledVariantIconWrapper-sc-aKNbV) {
+.c48 >.c58:not(.StyledTableHeadCellSortingIcon-sc-bpeDqD):not(.StyledVariantIconWrapper-sc-cNaPcl) {
   color: inherit;
 }
 
@@ -1436,25 +1455,25 @@ exports[`General should renders correctly 1`] = `
 }
 
 @media (pointer: fine) {
-  .StyledTableExpandableWrapper-sc-zNvUv>:first-child:hover+.c51 {
+  .StyledTableExpandableWrapper-sc-hlwFYv>:first-child:hover+.c51 {
     background-color: #f9fafb;
   }
 }
 
 @media (pointer: coarse) {
-  .StyledTableExpandableWrapper-sc-zNvUv>:first-child:active+.c51 {
+  .StyledTableExpandableWrapper-sc-hlwFYv>:first-child:active+.c51 {
     background-color: #f9fafb;
   }
 }
 
 @media (pointer: fine) {
-  .StyledTableExpandableWrapper-sc-zNvUv>:first-child+.c51:hover {
+  .StyledTableExpandableWrapper-sc-hlwFYv>:first-child+.c51:hover {
     background-color: #f5fbff;
   }
 }
 
 @media (pointer: coarse) {
-  .StyledTableExpandableWrapper-sc-zNvUv>:first-child+.c51:active {
+  .StyledTableExpandableWrapper-sc-hlwFYv>:first-child+.c51:active {
     background-color: #f5fbff;
   }
 }
@@ -1504,25 +1523,25 @@ exports[`General should renders correctly 1`] = `
 }
 
 @media (pointer: fine) {
-  .StyledTableExpandableWrapper-sc-zNvUv>:first-child:hover+.c79 {
+  .StyledTableExpandableWrapper-sc-hlwFYv>:first-child:hover+.c79 {
     background-color: #f9fafb;
   }
 }
 
 @media (pointer: coarse) {
-  .StyledTableExpandableWrapper-sc-zNvUv>:first-child:active+.c79 {
+  .StyledTableExpandableWrapper-sc-hlwFYv>:first-child:active+.c79 {
     background-color: #f9fafb;
   }
 }
 
 @media (pointer: fine) {
-  .StyledTableExpandableWrapper-sc-zNvUv>:first-child+.c79:hover {
+  .StyledTableExpandableWrapper-sc-hlwFYv>:first-child+.c79:hover {
     background-color: #f5fbff;
   }
 }
 
 @media (pointer: coarse) {
-  .StyledTableExpandableWrapper-sc-zNvUv>:first-child+.c79:active {
+  .StyledTableExpandableWrapper-sc-hlwFYv>:first-child+.c79:active {
     background-color: #f5fbff;
   }
 }
@@ -1553,12 +1572,14 @@ exports[`General should renders correctly 1`] = `
           >
             <label
               class="c7 c8 label field__label"
+              data-disabled="false"
               data-role="text-field-label"
             >
               Model name*
             </label>
             <div
               class="c9 field__input field__input--readonly"
+              data-disabled="false"
               data-readonly="true"
               data-role="text-field-input-wrapper"
             >
@@ -1592,12 +1613,14 @@ exports[`General should renders correctly 1`] = `
           >
             <label
               class="c7 c8 label field__label"
+              data-disabled="false"
               data-role="textarea-label"
             >
               Description
             </label>
             <div
               class="c12 c13 field__input field__input--textarea"
+              data-disabled="false"
             >
               <textarea
                 autocomplete="off"
@@ -1952,6 +1975,8 @@ exports[`General should renders correctly 1`] = `
                         >
                           <span
                             aria-hidden="true"
+                            class="notranslate"
+                            translate="no"
                           >
                             edit
                           </span>
@@ -1971,6 +1996,8 @@ exports[`General should renders correctly 1`] = `
                         >
                           <span
                             aria-hidden="true"
+                            class="notranslate"
+                            translate="no"
                           >
                             delete
                           </span>
@@ -2063,6 +2090,7 @@ exports[`General should renders correctly 1`] = `
             >
               <label
                 class="c7 c64 label field__label -u-unseenButRead"
+                data-disabled="false"
                 data-role="text-field-label"
               >
                 <span
@@ -2074,6 +2102,7 @@ exports[`General should renders correctly 1`] = `
               </label>
               <div
                 class="c12 field__input"
+                data-disabled="false"
                 data-role="text-field-input-wrapper"
               >
                 <span
@@ -2109,6 +2138,8 @@ exports[`General should renders correctly 1`] = `
                 >
                   <span
                     aria-hidden="true"
+                    class="notranslate"
+                    translate="no"
                   >
                     add
                   </span>
@@ -2157,16 +2188,19 @@ exports[`General should renders correctly 1`] = `
         >
           <label
             class="c7 c8 label field__label"
+            data-disabled="false"
             data-role="select-label"
           >
             Document Model
           </label>
           <div
             class="c70 c71 field__select"
+            data-disabled="false"
             data-role="select-control"
           >
             <div
               class="c72 field__select-wrapper"
+              data-disabled="false"
               data-role="select-wrapper"
             >
               <select
@@ -2348,6 +2382,8 @@ exports[`General should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   edit
                                 </span>
@@ -2367,6 +2403,8 @@ exports[`General should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   delete
                                 </span>
@@ -2614,6 +2652,8 @@ exports[`General should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   edit
                                 </span>
@@ -2633,6 +2673,8 @@ exports[`General should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   delete
                                 </span>
@@ -2885,6 +2927,8 @@ exports[`General should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   edit
                                 </span>
@@ -2904,6 +2948,8 @@ exports[`General should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   delete
                                 </span>
@@ -3151,6 +3197,8 @@ exports[`General should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   edit
                                 </span>
@@ -3170,6 +3218,8 @@ exports[`General should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   delete
                                 </span>

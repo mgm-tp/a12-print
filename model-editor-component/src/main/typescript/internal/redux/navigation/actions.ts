@@ -38,8 +38,17 @@ import type { OmitId } from "../../utils/type-utils.js";
 
 import type { EditorMode } from "../editor-state/state.js";
 import { actionCreatorFactory } from "../actionCreatorFactory/actionCreatorFactory.js";
+import type { FragmentReferenceEntityType, FragmentUsagePrintModelInfo } from "../confirmation-dialog/state.js";
 
-import type { AnyFormState, CanvasTab, DetailFormState, NavigationState, WrapperStackEntry } from "./state.js";
+import type {
+	AnyFormState,
+	CanvasTab,
+	DetailFormState,
+	ModelReferenceSection,
+	NavigationState,
+	SectionSlot,
+	WrapperStackEntry,
+} from "./state.js";
 
 const factory = actionCreatorFactory("Print/Navigation");
 
@@ -133,8 +142,10 @@ export namespace NavigationActions {
 		target?: { type: SidebarItem; id: string };
 	}
 
+	export const setActiveSectionSlot = factory<SectionSlot | undefined>("SET_ACTIVE_SECTION_SLOT");
 	export const setActiveTab = factory<SidebarItem>("SET_ACTIVE_TAB");
 	export const setExpandedState = factory<SetExpandedStatePayload>("SET_EXPANDED_STATE");
+	export const toggleSchemaSection = factory<ModelReferenceSection>("TOGGLE_SCHEMA_SECTION");
 	export const setActiveEntity = factory<SetActiveEntityPayload>("SET_ACTIVE_ENTITY");
 	export const pushWrapper = factory<PushWrapperPayload>("PUSH_WRAPPER");
 	export const popWrapper = factory<PopWrapperPayload>("POP_WRAPPER");
@@ -151,5 +162,21 @@ export namespace NavigationActions {
 	export const toggleDetailFormFullscreen = factory<ToggleDetailFormFullscreenPayload>(
 		"TOGGLE_DETAIL_FORM_FULLSCREEN"
 	);
+	export interface NavigateToFragmentSourcePayload {
+		/** The reference id (e.g. from sectionReferences, watermarkReferences, segmentFragmentReferences, textStyleReferences). */
+		referenceId: string;
+		entityType: FragmentReferenceEntityType;
+		/** Fragment model id and referenced entity id, for the "element" type - the caller has both at hand. */
+		fragmentReference?: { model: string; refId: string };
+	}
+
+	export type NavigateToPrintModelPayload = Pick<
+		FragmentUsagePrintModelInfo,
+		"printModelId" | "referenceEntityType" | "referenceIndex" | "elementPath"
+	>;
+
 	export const navigateFromPath = factory<NavigateFromPathPayload>("NAVIGATE_FROM_LINK");
+	export const navigateToFragmentSource = factory<NavigateToFragmentSourcePayload>("NAVIGATE_TO_FRAGMENT_SOURCE");
+	/** Opens (or focuses) a print model that uses a fragment entity — the reverse of `navigateToFragmentSource`. */
+	export const navigateToPrintModel = factory<NavigateToPrintModelPayload>("NAVIGATE_TO_PRINT_MODEL");
 }

@@ -111,7 +111,7 @@ export class ElementDefinitionSerializer implements Serializer<
 				return this.mapSwitchElement(element as ModelAPI.Switch);
 			case ModelAPI.ElementType.PageNumber:
 			case ModelAPI.ElementType.PageNumberTotal:
-				return { id: element.id, type: element.type };
+				return this.mapBaseElement(element);
 			default:
 				throw {
 					jsonPath: [...parentPath, { elementName: "elementDefinition", index }],
@@ -132,10 +132,21 @@ export class ElementDefinitionSerializer implements Serializer<
 		}
 	}
 
-	private mapPieChart(element: ModelAPI.PieChart): GeneratedDTO.ElementDefinitionsDTO {
+	private mapBaseElement(
+		element: ModelAPI.PrintModelElement
+	): Pick<GeneratedDTO.ElementDefinitionsDTO, "id" | "type" | "name" | "isFragment" | "fragmentDimensions"> {
 		return {
 			id: element.id,
 			type: element.type,
+			name: element.name,
+			isFragment: this.mapIsFragment(element.isFragment),
+			fragmentDimensions: this.mapFragmentDimensions(element.fragmentDimensions),
+		};
+	}
+
+	private mapPieChart(element: ModelAPI.PieChart): GeneratedDTO.ElementDefinitionsDTO {
+		return {
+			...this.mapBaseElement(element),
 			pieChart: {
 				id: element?.pieChart?.id,
 				model: element?.pieChart?.model,
@@ -160,8 +171,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapLineChart(element: ModelAPI.LineChart): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			lineChart: {
 				id: element?.lineChart?.id,
 				model: element?.lineChart?.model,
@@ -192,8 +202,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapBarChart(element: ModelAPI.BarChart): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			barChart: {
 				id: element?.barChart?.id,
 				model: element?.barChart?.model,
@@ -225,8 +234,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapTableLayout(element: ModelAPI.TableLayout): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			tableLayout: {
 				id: element?.tableLayout?.id,
 				columnCount: element?.tableLayout?.columnCount,
@@ -261,8 +269,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapTable(element: ModelAPI.Table): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			table: {
 				id: element?.table?.id,
 				model: element?.table?.model,
@@ -291,8 +298,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapListing(element: ModelAPI.Listing): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			listing: {
 				id: element?.listing?.id,
 				model: element?.listing?.model,
@@ -405,8 +411,7 @@ export class ElementDefinitionSerializer implements Serializer<
 	}
 	private mapImage(element: ModelAPI.Image): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			image: {
 				id: element?.image?.id,
 				imageSrcType: element?.image?.imageSrcType,
@@ -447,8 +452,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapLineElement(element: ModelAPI.Line): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			borderProperties: this.mapBorderProperties(element?.borderProperties),
 			textProperties: this.mapInputSourceTextProperties(element?.textProperties),
 		};
@@ -456,8 +460,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapExpressionElement(element: ModelAPI.Expression): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			expression: {
 				id: element?.expression?.id,
 				model: element?.expression?.model,
@@ -472,8 +475,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapCalculationElement(element: ModelAPI.Calculation): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			calculation: {
 				id: element?.calculation?.id,
 				model: element?.calculation?.model,
@@ -499,8 +501,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapFieldElement(element: ModelAPI.Field): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			field: {
 				id: element?.field?.id,
 				model: element?.field?.model,
@@ -514,8 +515,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapTextElement(element: ModelAPI.Text): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			text: {
 				id: element?.text?.id,
 				text: element?.text?.text,
@@ -534,8 +534,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapBoundingBoxElement(element: ModelAPI.BoundingBox): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			boundingBox: {
 				id: element.boundingBox?.id,
 				dimensions: {
@@ -554,8 +553,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapOverrideElement(element: ModelAPI.Override): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			override: {
 				id: element.override.id,
 				refId: element.override.refId,
@@ -579,8 +577,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapAreaElement(element: ModelAPI.Area): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			area: {
 				id: element.area?.id,
 				dimensions: {
@@ -598,8 +595,7 @@ export class ElementDefinitionSerializer implements Serializer<
 
 	private mapSwitchElement(element: ModelAPI.Switch): GeneratedDTO.ElementDefinitionsDTO {
 		return {
-			id: element.id,
-			type: element.type,
+			...this.mapBaseElement(element),
 			switch: {
 				id: element.switch?.id,
 				name: element.switch?.name,
@@ -622,6 +618,7 @@ export class ElementDefinitionSerializer implements Serializer<
 		return {
 			id: ref?.id,
 			refId: ref?.refId,
+			model: ref?.model,
 			position: {
 				id: ref?.position?.id,
 				x: mapMeasure(ref?.position?.x),
@@ -697,10 +694,27 @@ export class ElementDefinitionSerializer implements Serializer<
 		return undefined;
 	}
 
+	private mapFragmentDimensions(
+		dimensions?: ModelAPI.FragmentDimensions
+	): GeneratedDTO.FragmentDimensionsDTO | undefined {
+		if (!dimensions) {
+			return undefined;
+		}
+		return {
+			id: dimensions?.id,
+			height: mapMeasure(dimensions?.height),
+			width: mapMeasure(dimensions?.width),
+		};
+	}
+
 	private mapRepeatableGroup = <I, O>(
 		repeatableGroup: readonly I[] | undefined,
 		serializer: (item: I, index: number) => O
 	): O[] => {
 		return repeatableGroup?.map((item, index) => serializer.call(this, item, index)) || [];
 	};
+
+	private mapIsFragment(isFragment: boolean | undefined) {
+		return isFragment ? true : undefined;
+	}
 }

@@ -29,6 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+export { collectFragmentModels } from "./fragment-definition-resolver.js";
 export * from "./print-model-resolver.js";
 export * from "./print-model-trace.js";
 export * from "./print-model-visitor.js";
@@ -37,5 +38,6 @@ export * from "./reference-element-resolver.js";
 export * from "./reference-resolver.js";
 export * from "./section-id-resolver.js";
 export * from "./segment-id-resolver.js";
+export * from "./text-style-id-resolver.js";
 export * from "./watermark-id-resolver.js";
 export * from "./partial/index.js";

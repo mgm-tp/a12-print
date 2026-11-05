@@ -39,6 +39,8 @@ import type {
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import {
 	PageOrientation,
+	SegmentReferenceDirection,
+	SegmentReferencePurpose,
 	SegmentType,
 	Semantic,
 	PRINT_MODEL_CONTENT_GENERAL_LOG_ID,
@@ -60,6 +62,7 @@ import {
 
 export { renderWithProviders } from "./render-with-provider.js";
 export * from "./utils.js";
+export * from "./fragment-placement-utils.js";
 export { setupTestWithSchema } from "./schema.js";
 
 export const mockSegment: Segment = {
@@ -201,6 +204,59 @@ export const createTransactionLogState = (
 		},
 		action
 	) => TransactionLogStateReducer(state, action);
+};
+
+export const DIN_TEMPLATE_SEGMENT_ID = "din-template-segment-1";
+
+export const mockDinTemplateSegment: Segment = {
+	...mockSegment,
+	id: DIN_TEMPLATE_SEGMENT_ID,
+	dinTemplate: { id: "din-props-1", referenceId: "din-ref-1", refId: "din-target-1" },
+};
+
+/**
+ * A log store that additionally holds {@link mockDinTemplateSegment}, so `isDinTemplateSegmentEditor`
+ * turns true once the editor navigates to {@link DIN_TEMPLATE_SEGMENT_ID}.
+ */
+export const logStoreWithDinTemplateSegment: TransactionLogStore = {
+	...initialStateLogStoreMock,
+	segments: {
+		...initialStateLogStoreMock.segments!,
+		map: {
+			...initialStateLogStoreMock.segments!.map,
+			[DIN_TEMPLATE_SEGMENT_ID]: TransactionLog.createStoreEntrySegment(
+				initialStateLogStore.segments,
+				mockDinTemplateSegment,
+				"din-interaction-1"
+			).storeEntry,
+		},
+	},
+};
+
+const INCOMING_DIN_REFERENCE_ID = "incoming-din-ref-1";
+
+/**
+ * A log store carrying an incoming DINTemplate segment reference, which is what
+ * `isIncomingDinTemplatePrintModel` keys on.
+ */
+export const logStoreWithIncomingDinTemplateReference: TransactionLogStore = {
+	...initialStateLogStoreMock,
+	segments: {
+		...initialStateLogStoreMock.segments!,
+		references: {
+			[INCOMING_DIN_REFERENCE_ID]: TransactionLog.createStoreEntrySegmentReference(
+				initialStateLogStore.segments.references,
+				{
+					id: INCOMING_DIN_REFERENCE_ID,
+					referenceModel: "some-other-print-model",
+					purpose: SegmentReferencePurpose.DINTemplate,
+					direction: SegmentReferenceDirection.IncomingReference,
+					refIds: [],
+				},
+				"din-interaction-2"
+			).storeEntry,
+		},
+	},
 };
 
 export const testTextStyle: PartialTextStyle = {

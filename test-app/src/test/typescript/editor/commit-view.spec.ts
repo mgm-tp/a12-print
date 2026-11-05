@@ -38,6 +38,7 @@ import {
 	commitChanges,
 	closeDetail,
 	setPageBreakBehavior,
+	openWrapperStage,
 } from "../utils/index.js";
 
 devAppTest.use({ useCase: "003-automated-tests" });
@@ -57,12 +58,10 @@ test.describe("Commit View", () => {
 
 		await test.step("Navigate into nested area", async () => {
 			const area = page.getByTestId("element-area").first();
-			await area.hover();
-			await page.getByRole("button", { name: "Edit", exact: true }).click();
+			await openWrapperStage({ page, element: area });
 
 			const nestedArea = page.getByText("InformationColumnColumn");
-			await nestedArea.hover();
-			await page.getByRole("button", { name: "Edit", exact: true }).click();
+			await openWrapperStage({ page, element: nestedArea });
 		});
 		await test.step("Add Error to Table Default Stage", async () => {
 			await table.dblclick();

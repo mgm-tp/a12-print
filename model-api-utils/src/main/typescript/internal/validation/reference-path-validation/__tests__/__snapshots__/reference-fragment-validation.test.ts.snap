@@ -1,0 +1,396 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`validateDocumentModelReferences should have errors in all paths 1`] = `
+{
+  "content": {
+    "elementDefinitions": [
+      {},
+      {
+        "area": {
+          "elementReferences": [
+            {
+              "@error": [
+                "The Element Fragment 'STkFV2hpwaVKMKQfFlwN2' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+          ],
+        },
+      },
+    ],
+    "sections": {
+      "references": [
+        {
+          "@error": [
+            "The Section Fragment 'MK9xwezDmDvpRJKPNgh_c' can not be resolved, no Fragment Model 'printFragment' given",
+          ],
+        },
+        {
+          "@error": [
+            "The Section Fragment 'SIxRNb1lUuJRuSnbhinUO' can not be resolved, no Fragment Model 'printFragment' given",
+          ],
+        },
+      ],
+    },
+    "segments": {
+      "definitions": [
+        {
+          "elementReferences": [
+            {
+              "@error": [
+                "The Element Fragment 'FbEm_JhTNLntrGYHhigVB' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'zHue7T3DMCvwCX_jy1JdI' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'PRmYjK6-S1CLn9yD9N2-c' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'XQJlAVSmmP9fkoRMRSf3B' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'oCB8IOQoayXCSyvBxLpmB' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'zJ21L0Z-IDdTlHLL97wwZ' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment '2O1nY86Tb0X7kkKg6LWbQ' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'RIInmvI4Pg3QEKvI60CQu' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'STkFV2hpwaVKMKQfFlwN2' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'jY83gVXzj4RuBBQcItlwF' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'V0kMMxvCAWFmA--LxSJ1r' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'IYKBGuGh906tdF6_eXAxd' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'mAjRGuqxfr7mTlU9OvxLe' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+            {
+              "@error": [
+                "The Element Fragment 'SaVJhTNFWCRalGg0_YLqe' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+          ],
+        },
+        {
+          "elementReferences": [
+            {
+              "@error": [
+                "The Element Fragment 'STkFV2hpwaVKMKQfFlwN2' can not be resolved, no Fragment Model 'printFragment' given",
+              ],
+            },
+          ],
+        },
+      ],
+      "fragmentReferences": [
+        {
+          "@error": [
+            "The Segment Fragment 'IbAJW7rFCbe1-cFdmKvoW' can not be resolved, no Fragment Model 'printFragment' given",
+          ],
+        },
+      ],
+    },
+    "textStyles": {
+      "references": [
+        {
+          "@error": [
+            "The Text Style Fragment 'AbpttoBg_E-qcIMw6thXH' can not be resolved, no Fragment Model 'printFragment' given",
+          ],
+        },
+        {
+          "@error": [
+            "The Text Style Fragment 'xYdWFiFBWC2uJDb9D4tvk' can not be resolved, no Fragment Model 'printFragment' given",
+          ],
+        },
+      ],
+    },
+    "watermarks": {
+      "references": [
+        {
+          "@error": [
+            "The Watermark Fragment 'Y-0d5mSisS5KR6E5A307L' can not be resolved, no Fragment Model 'printFragment' given",
+          ],
+        },
+        {
+          "@error": [
+            "The Watermark Fragment 'UdO0AkXGF0xINc0MJew9Q' can not be resolved, no Fragment Model 'printFragment' given",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateDocumentModelReferences should have no errors in all paths 2 1`] = `{}`;
+
+exports[`validateFragmentReferences with something deleted in the fragment model reports a fragment element placed in a local area as unresolvable 1`] = `
+{
+  "content": {
+    "elementDefinitions": [
+      {},
+      {
+        "area": {
+          "elementReferences": [
+            {
+              "@error": [
+                "The Element Fragment 'STkFV2hpwaVKMKQfFlwN2' can not be resolved in the Fragment Model 'printFragment'",
+              ],
+            },
+          ],
+        },
+      },
+    ],
+    "segments": {
+      "definitions": [
+        {
+          "elementReferences": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {
+              "@error": [
+                "The Element Fragment 'STkFV2hpwaVKMKQfFlwN2' can not be resolved in the Fragment Model 'printFragment'",
+              ],
+            },
+          ],
+        },
+        {
+          "elementReferences": [
+            {
+              "@error": [
+                "The Element Fragment 'STkFV2hpwaVKMKQfFlwN2' can not be resolved in the Fragment Model 'printFragment'",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateFragmentReferences with something deleted in the fragment model reports a referenced fragment section itself as unresolvable 1`] = `
+{
+  "content": {
+    "sections": {
+      "references": [
+        {
+          "@error": [
+            "The Section Fragment 'MK9xwezDmDvpRJKPNgh_c' can not be resolved in the Fragment Model 'printFragment'",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateFragmentReferences with something deleted in the fragment model reports a referenced fragment segment itself as unresolvable 1`] = `
+{
+  "content": {
+    "segments": {
+      "fragmentReferences": [
+        {
+          "@error": [
+            "The Segment Fragment 'IbAJW7rFCbe1-cFdmKvoW' can not be resolved in the Fragment Model 'printFragment'",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateFragmentReferences with something deleted in the fragment model reports a referenced fragment text style itself as unresolvable 1`] = `
+{
+  "content": {
+    "textStyles": {
+      "references": [
+        {
+          "@error": [
+            "The Text Style Fragment 'AbpttoBg_E-qcIMw6thXH' can not be resolved in the Fragment Model 'printFragment'",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateFragmentReferences with something deleted in the fragment model reports a referenced fragment watermark itself as unresolvable 1`] = `
+{
+  "content": {
+    "watermarks": {
+      "references": [
+        {
+          "@error": [
+            "The Watermark Fragment 'Y-0d5mSisS5KR6E5A307L' can not be resolved in the Fragment Model 'printFragment'",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateFragmentReferences with something deleted in the fragment model reports an element placed in a fragment area as unresolvable 1`] = `
+{
+  "content": {
+    "segments": {
+      "definitions": [
+        {
+          "elementReferences": [
+            {
+              "@error": [
+                "The Element Fragment 'ixlm-snVMgQYQElzCYsbX' can not be resolved in the Fragment Model 'printFragment'",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateFragmentReferences with something deleted in the fragment model reports an element placed in a fragment bounding box as unresolvable 1`] = `
+{
+  "content": {
+    "segments": {
+      "definitions": [
+        {
+          "elementReferences": [
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {},
+            {
+              "@error": [
+                "The Element Fragment 'N71BAGKspBy8GwPMMvzyp' can not be resolved in the Fragment Model 'printFragment'",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateFragmentReferences with something deleted in the fragment model reports an element placed in a referenced fragment section as unresolvable 1`] = `
+{
+  "content": {
+    "sections": {
+      "references": [
+        {
+          "@error": [
+            "The Element Fragment '91FxDmC2cR7w7ErYPhJDL' can not be resolved in the Fragment Model 'printFragment'",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateFragmentReferences with something deleted in the fragment model reports an element placed in a referenced fragment segment as unresolvable 1`] = `
+{
+  "content": {
+    "segments": {
+      "fragmentReferences": [
+        {
+          "@error": [
+            "The Element Fragment 'OxZLfKLrTeMRE9t6JB2ry' can not be resolved in the Fragment Model 'printFragment'",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateFragmentReferences with something deleted in the fragment model reports an element placed in a referenced fragment watermark as unresolvable 1`] = `
+{
+  "content": {
+    "watermarks": {
+      "references": [
+        {},
+        {
+          "@error": [
+            "The Element Fragment 'Pd2WIw6XtliFEKDaEbvUn' can not be resolved in the Fragment Model 'printFragment'",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`validateFragmentReferences with something deleted in the fragment model reports an element used by a case of a fragment switch as unresolvable 1`] = `
+{
+  "content": {
+    "segments": {
+      "definitions": [
+        {
+          "elementReferences": [
+            {},
+            {
+              "@error": [
+                "The Element Fragment '5Z-xc5WkcVCZYaWrUJDQk' can not be resolved in the Fragment Model 'printFragment'",
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  },
+}
+`;

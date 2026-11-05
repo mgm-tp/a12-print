@@ -57,6 +57,7 @@ import {
 	useFieldPropertyErrorMessage,
 } from "../shared-components/index.js";
 import { CustomTextField } from "../custom-base-input-components/index.js";
+import { useFormReadonly } from "../FormContext.js";
 
 import type { TableColumnElementBaseProps } from "./table-column-element-base.js";
 
@@ -68,6 +69,7 @@ export const TableColumnFieldForm = ({ refId, group, model, renderAppendContent 
 		DocumentModelDataSelectors.documentModelData(state, model)
 	)?.elementMap;
 	const wrapperDataContext = useSelector(PrintEngineSelectors.wrapperDataContext);
+	const isFormReadonly = useFormReadonly();
 
 	if (!PartialField.isInstance(element)) {
 		throw Error("Expected element of type Field");
@@ -145,6 +147,7 @@ export const TableColumnFieldForm = ({ refId, group, model, renderAppendContent 
 				elementMapEntries={processedElementMap}
 				selectedPath={element.field?.path}
 				setSelectedPath={setSelectedPath}
+				disabled={isFormReadonly}
 				maxRepeatLevel={0}
 				isInstanceContext
 			/>

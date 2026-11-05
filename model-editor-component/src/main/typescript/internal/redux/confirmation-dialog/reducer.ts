@@ -42,9 +42,10 @@ export const ConfirmationDialogReducer: Reducer<ConfirmationDialogState> = (
 	action: Action
 ): ConfirmationDialogState => {
 	if (ConfirmationDialogActions.open.match(action)) {
-		const { type } = action.payload;
+		const { type, payload } = action.payload;
 		return {
-			type: type,
+			type,
+			payload,
 		};
 	}
 

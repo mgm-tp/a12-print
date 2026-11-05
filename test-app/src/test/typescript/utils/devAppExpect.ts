@@ -30,7 +30,17 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import type { Page } from "@playwright/test";
-import { expect as baseExpect } from "@playwright/test";
+import { expect as baseExpect, test } from "@playwright/test";
+
+/**
+ * Returns a screenshot name with a `-light` suffix when running in the
+ * `chromium-light` project. Use only for screenshots that differ between
+ * the SME and light editor modes.
+ */
+export function screenshotName(name: string): string {
+	const isLight = test.info().project.name.includes("light");
+	return isLight ? `${name}-light.png` : `${name}.png`;
+}
 
 export const expect = baseExpect.extend({
 	async toMatchStore(page: Page) {
@@ -66,7 +76,11 @@ export const expect = baseExpect.extend({
 		const assertionName = "toHaveEditorStageErrors";
 		try {
 			const editorContainer = page.getByTestId("editor-container");
-			const errorBadge = editorContainer.locator('[data-role="badge"]').first();
+			// errors and warnings share the badge role, so the warning ones have to be kept out
+			const errorBadge = editorContainer
+				.locator('[data-role="badge"]')
+				.filter({ hasNotText: /warning/i })
+				.first();
 			if (count === 0) {
 				await expect(errorBadge).toHaveCount(0);
 			} else {

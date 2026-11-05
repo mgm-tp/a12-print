@@ -54,7 +54,7 @@ export const SemanticSelect = (props: SemanticSelectProps) => {
 			label={localizer(RESOURCE_KEYS.textStyles.properties.semantic)}
 			items={semantics}
 			onValueChanged={props.onValueChanged}
-			disabled={props.isDefaultTextStyle}
+			disabled={props.isReadonly}
 			errorMessage={props.errorMessage}
 		/>
 	);

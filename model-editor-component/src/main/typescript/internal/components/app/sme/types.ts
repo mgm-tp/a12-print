@@ -49,9 +49,14 @@ export interface PrintEditorSMEBaseProps {
 	onClose: () => void;
 	onDeploy: () => void;
 	onPreview: () => void;
-	modelIconPath: string;
+	modelIconPaths: ModelIconPaths;
 	isConnectedToServer?: boolean;
 }
+
+export type ModelIconPaths = {
+	printModelIcon: string;
+	fragmentModelIcon: string;
+};
 
 export interface PrintEditorSMEProps extends PrintEditorSMEBaseProps {
 	printModel: Model;
@@ -75,6 +80,7 @@ export interface PrintEditorSMEProps extends PrintEditorSMEBaseProps {
 	locale?: Locale;
 	availableRoles?: string[];
 	navigationPath?: EntityInstancePath;
+	onNavigateToPrintModel?: (printModelId: string, navigationPath?: EntityInstancePath) => void;
 }
 
 interface PrecompilePrintModelParams {

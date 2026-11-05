@@ -31,7 +31,7 @@
  */
 import type { Action, Reducer } from "redux";
 
-import type { InteractionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import type { InteractionLogStore, InteractionRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { createNewInteractionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineActions } from "../../store/actions.js";
@@ -73,6 +73,28 @@ export const InteractionLogReducer: Reducer<InteractionLogStore> = (
 				),
 			},
 		};
+	}
+	if (InteractionLogActions.markPreventUndo.match(action)) {
+		const { interactionIds } = action.payload;
+		if (interactionIds.length === 0) {
+			return state;
+		}
+		const idsToLock = new Set(interactionIds);
+		return Object.fromEntries(
+			(Object.entries(state) as [InteractionRegion, InteractionLogStore[InteractionRegion]][]).map(
+				([region, regionState]) => [
+					region,
+					Object.fromEntries(
+						Object.entries(regionState).map(([regionId, entries]) => [
+							regionId,
+							entries.map(entry =>
+								idsToLock.has(entry.interactionId) ? { ...entry, preventUndo: true } : entry
+							),
+						])
+					),
+				]
+			)
+		) as InteractionLogStore;
 	}
 	return state;
 };

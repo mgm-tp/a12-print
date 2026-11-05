@@ -30,9 +30,13 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import type { SagaGenerator } from "typed-redux-saga";
-import { call, put } from "typed-redux-saga";
+import { call, put, select } from "typed-redux-saga";
 import { nanoid } from "nanoid";
 
+import {
+	TEXT_STYLES_REFERENCES_ENTRY_ID,
+	TransactionLog,
+} from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import type {
 	AffectedItem,
 	PartialTransactionLogPersistentEntry,
@@ -42,12 +46,13 @@ import type {
 	TransactionLogStoreEntry,
 	TransactionLogStoreEntryMap,
 } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import type {
+	FragmentModelReference,
 	PartialAnyPrintModelElement,
 	PartialPrintModelContentGeneral,
 	PartialSection,
 	PartialSegment,
+	PartialTextStyle,
 	PartialWatermark,
 	PlaceableReference,
 	PrintModelEntity,
@@ -65,16 +70,23 @@ import type { AnyTransactionLogAction } from "../../../redux/index.js";
 import { ConfirmationDialogType, TransactionLogStateActions } from "../../../redux/index.js";
 import { openConfirmationDialogSaga } from "../../confirmation-dialog/open-confirmation-dialog-saga.js";
 import type { NewElementHeight } from "../../../components/hidden-height-context-wrapper/types.js";
-import { changePartialMmMeasureValue } from "../../../utils/measure-utils.js";
+import { changeMmMeasureValue, changePartialMmMeasureValue } from "../../../utils/measure-utils.js";
 import { ElementsUtils } from "../../../utils/elements-utils.js";
 import type { ValidAnyTransactionLogAction } from "../../../redux/transaction-log-state/actions.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
+import { FragmentUsageSelectors } from "../../../redux/fragment-usage/selectors.js";
+
+import { replaceIdInPlace } from "./unlink-utils.js";
 
 const TEXTSTYLE_ACTIONS = [
+	TransactionLogStateActions.addTextStyleReference,
+	TransactionLogStateActions.removeTextStyleReference,
 	TransactionLogStateActions.addTextStyle,
 	TransactionLogStateActions.updateTextStyle,
 	TransactionLogStateActions.removeTextStyle,
 	TransactionLogStateActions.moveTextStyle,
 	TransactionLogStateActions.updateElementHeightsTextStyle,
+	TransactionLogStateActions.unlinkTextStyleReference,
 ];
 
 export const TextstyleTransactionLogHandler = {
@@ -96,6 +108,45 @@ function* handleTextstyleActions({
 	const { interactionId } = action.payload;
 
 	const newAffectedItems: AffectedItem[] = [];
+
+	if (TransactionLogStateActions.addTextStyleReference.match(action)) {
+		const reference = action.payload.data;
+		const existingRefs = TransactionLog.selectTextStyleReferences(state.textStyles?.referencesEntry);
+		const newRefs = [...existingRefs.filter(r => r.id !== reference.id), reference];
+		const contentGeneral = TransactionLog.selectPrintModelContentGeneral(state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]);
+		const newTextStylesOrder = [
+			...(contentGeneral.textStyles || []).filter(id => id !== reference.id),
+			reference.id,
+		];
+		yield* call(
+			updateTextStyleReferences,
+			state,
+			newRefs,
+			newTextStylesOrder,
+			interactionId,
+			persistentEntries,
+			newAffectedItems
+		);
+		return newAffectedItems;
+	}
+
+	if (TransactionLogStateActions.removeTextStyleReference.match(action)) {
+		const { id } = action.payload.data;
+		const existingRefs = TransactionLog.selectTextStyleReferences(state.textStyles?.referencesEntry);
+		const newRefs = existingRefs.filter(r => r.id !== id);
+		const contentGeneral = TransactionLog.selectPrintModelContentGeneral(state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]);
+		const newTextStylesOrder = (contentGeneral.textStyles || []).filter(textStyleId => textStyleId !== id);
+		yield* call(
+			updateTextStyleReferences,
+			state,
+			newRefs,
+			newTextStylesOrder,
+			interactionId,
+			persistentEntries,
+			newAffectedItems
+		);
+		return newAffectedItems;
+	}
 
 	if (TransactionLogStateActions.addTextStyle.match(action)) {
 		const newTextStyleId = action.payload.data.id;
@@ -158,6 +209,15 @@ function* handleTextstyleActions({
 	}
 
 	if (TransactionLogStateActions.removeTextStyle.match(action)) {
+		const usageMapLoading = yield* select(FragmentUsageSelectors.isUsageMapLoading);
+		const usages = yield* select((printEngineState: PrintEngineState) =>
+			FragmentUsageSelectors.usageForEntity(printEngineState, action.payload.data.id)
+		);
+		if (usageMapLoading || usages.length > 0) {
+			yield* call(openConfirmationDialogSaga, ConfirmationDialogType.FRAGMENT_IN_USE, { usages });
+			return newAffectedItems;
+		}
+
 		const isConfirmed = yield* call(openConfirmationDialogSaga, ConfirmationDialogType.DELETE);
 		if (!isConfirmed) {
 			return newAffectedItems;
@@ -212,7 +272,7 @@ function* handleTextstyleActions({
 	}
 
 	if (TransactionLogStateActions.updateElementHeightsTextStyle.match(action)) {
-		const { sectionsMap, segmentsMap, watermarksMap, wrapperMap } = action.payload.data;
+		const { sectionsMap, segmentsMap, watermarksMap, wrapperMap, fragmentsMap } = action.payload.data;
 		const newSections = updateElementHeightsMap(
 			sectionsMap,
 			state.sections || { id: nanoid(), map: {} },
@@ -233,7 +293,7 @@ function* handleTextstyleActions({
 		);
 		const newSegments = updateElementHeightsMap(
 			segmentsMap,
-			state.segments,
+			state.segments!,
 			interactionId,
 			persistentEntries,
 			newAffectedItems,
@@ -246,40 +306,58 @@ function* handleTextstyleActions({
 			const memoizedObject = elementStoreEntry.memoizedObject;
 			const newElementHeightList = wrapperMap[elementId];
 			if (
-				!newElementHeightList ||
-				newElementHeightList.length === 0 ||
-				!ElementsUtils.isWrapperElement(memoizedObject) ||
-				PartialSwitch.isInstance(memoizedObject)
+				newElementHeightList?.length &&
+				ElementsUtils.isWrapperElement(memoizedObject) &&
+				!PartialSwitch.isInstance(memoizedObject)
 			) {
-				return { ...res, [elementId]: elementStoreEntry };
+				const mapElRef = (elRef: DeepPartialRecursive<PlaceableReference> & PrintModelEntity) => {
+					const changedEl = newElementHeightList.find(el => el.elId === elRef.refId);
+					if (!changedEl) {
+						return elRef;
+					}
+					return {
+						...elRef,
+						dimensions: {
+							id: nanoid(),
+							...elRef.dimensions,
+							minHeight: changePartialMmMeasureValue(changedEl.newHeight, elRef.dimensions?.minHeight),
+						},
+					};
+				};
+
+				const currentElementContainer = updateContainerElementReferences(memoizedObject, mapElRef);
+
+				const storeEntry = TransactionLog.createStoreEntryPrintModelElement(
+					state.printModelElements,
+					currentElementContainer,
+					interactionId
+				);
+				persistentEntries.push(...storeEntry.persistentEntries);
+				newAffectedItems.push({ type: "printModelElement", id: elementId });
+				return { ...res, [elementId]: storeEntry.storeEntry };
 			}
 
-			const mapElRef = (elRef: DeepPartialRecursive<PlaceableReference> & PrintModelEntity) => {
-				const changedEl = newElementHeightList.find(el => el.elId === elRef.refId);
-				if (!changedEl) {
-					return elRef;
-				}
-				return {
-					...elRef,
-					dimensions: {
-						id: nanoid(),
-						...elRef.dimensions,
-						minHeight: changePartialMmMeasureValue(changedEl.newHeight, elRef.dimensions?.minHeight),
+			// standalone isFragment root elements own their dimensions directly (fragmentDimensions) instead of
+			// holding placed child references, so their height fix-up updates the element itself, not a child ref.
+			const newFragmentHeight = fragmentsMap[elementId]?.[0]?.newHeight;
+			if (newFragmentHeight !== undefined && memoizedObject.fragmentDimensions) {
+				const storeEntry = TransactionLog.createStoreEntryPrintModelElement(
+					state.printModelElements,
+					{
+						...memoizedObject,
+						fragmentDimensions: {
+							...memoizedObject.fragmentDimensions,
+							height: changeMmMeasureValue(newFragmentHeight, memoizedObject.fragmentDimensions.height),
+						},
 					},
-				};
-			};
+					interactionId
+				);
+				persistentEntries.push(...storeEntry.persistentEntries);
+				newAffectedItems.push({ type: "printModelElement", id: elementId });
+				return { ...res, [elementId]: storeEntry.storeEntry };
+			}
 
-			const currentElementContainer = updateContainerElementReferences(memoizedObject, mapElRef);
-
-			const storeEntry = TransactionLog.createStoreEntryPrintModelElement(
-				state.printModelElements,
-				currentElementContainer,
-				interactionId
-			);
-			persistentEntries.push(...storeEntry.persistentEntries);
-			newAffectedItems.push({ type: "printModelElement", id: elementId });
-			res[elementId] = storeEntry.storeEntry;
-			return res;
+			return { ...res, [elementId]: elementStoreEntry };
 		}, {});
 
 		yield* put(
@@ -291,6 +369,81 @@ function* handleTextstyleActions({
 				printModelElements: newPrintModelElements,
 			})
 		);
+		return newAffectedItems;
+	}
+
+	if (TransactionLogStateActions.unlinkTextStyleReference.match(action)) {
+		const { referenceId, fragmentContent } = action.payload.data;
+		const ref = TransactionLog.selectTextStyleReferences(state.textStyles?.referencesEntry).find(
+			r => r.id === referenceId
+		);
+		if (!ref) {
+			return newAffectedItems;
+		}
+
+		const fragmentDefinition = fragmentContent.textStyles?.definitions?.find(
+			textStyle => textStyle.id === ref.refId
+		);
+		if (!fragmentDefinition) {
+			return newAffectedItems;
+		}
+
+		const localId = nanoid();
+		const clonedTextStyle: PartialTextStyle = { ...fragmentDefinition, id: localId };
+
+		const updatedTextStyle = TransactionLog.createStoreEntryTextStyle(
+			state.textStyles,
+			clonedTextStyle,
+			interactionId
+		);
+
+		const existingTextStyleRefs = TransactionLog.selectTextStyleReferences(state.textStyles?.referencesEntry);
+		const updatedTextStyleRefsEntry = TransactionLog.createStoreEntryTextStyleReferences(
+			state.textStyles?.referencesEntry,
+			{
+				id: TEXT_STYLES_REFERENCES_ENTRY_ID,
+				references: existingTextStyleRefs.filter(r => r.id !== referenceId),
+			},
+			interactionId
+		);
+
+		const contentGeneral = TransactionLog.selectPrintModelContentGeneral(state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]);
+		const updatedGeneral = TransactionLog.createStoreEntryPrintModelContentGeneral(
+			state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID],
+			{
+				...contentGeneral,
+				textStyles: replaceIdInPlace(contentGeneral.textStyles, referenceId, localId),
+			},
+			interactionId
+		);
+
+		persistentEntries.push(
+			...updatedTextStyle.persistentEntries,
+			...updatedTextStyleRefsEntry.persistentEntries,
+			...updatedGeneral.persistentEntries
+		);
+		newAffectedItems.push(
+			{ type: "textStyle" as const, id: updatedTextStyle.storeEntry.id },
+			{ type: "textStyleReferences" as const, id: updatedTextStyleRefsEntry.storeEntry.id },
+			{ type: "printModelContentGeneral" as const, id: updatedGeneral.storeEntry.id }
+		);
+
+		const newTextStyles = state.textStyles || { id: nanoid(), map: {} };
+		yield* put(
+			TransactionLogStateActions.setLogStore({
+				...state,
+				textStyles: {
+					...newTextStyles,
+					map: {
+						...newTextStyles.map,
+						[localId]: updatedTextStyle.storeEntry,
+					},
+					referencesEntry: updatedTextStyleRefsEntry.storeEntry,
+				},
+				[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]: updatedGeneral.storeEntry,
+			})
+		);
+
 		return newAffectedItems;
 	}
 
@@ -410,5 +563,42 @@ function updateElementHeightsMap<T extends PartialSection | PartialSegment | Par
 			return res;
 		},
 		{ ...storeEntryMap, map: {} }
+	);
+}
+
+function* updateTextStyleReferences(
+	state: TransactionLogStore,
+	newRefs: FragmentModelReference[],
+	newTextStylesOrder: ReadonlyArray<string>,
+	interactionId: string,
+	persistentEntries: PartialTransactionLogPersistentEntry[],
+	newAffectedItems: AffectedItem[]
+): SagaGenerator<void> {
+	const updatedRefsEntry = TransactionLog.createStoreEntryTextStyleReferences(
+		state.textStyles?.referencesEntry,
+		{ id: TEXT_STYLES_REFERENCES_ENTRY_ID, references: newRefs },
+		interactionId
+	);
+	const contentGeneral = TransactionLog.selectPrintModelContentGeneral(state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]);
+	const updatedGeneral = TransactionLog.createStoreEntryPrintModelContentGeneral(
+		state[PRINT_MODEL_CONTENT_GENERAL_LOG_ID],
+		{ ...contentGeneral, textStyles: newTextStylesOrder },
+		interactionId
+	);
+	persistentEntries.push(...updatedRefsEntry.persistentEntries, ...updatedGeneral.persistentEntries);
+	newAffectedItems.push(
+		{ type: "textStyleReferences" as const, id: updatedRefsEntry.storeEntry.id },
+		{ type: "printModelContentGeneral" as const, id: updatedGeneral.storeEntry.id }
+	);
+	const newTextStyles = state.textStyles || { id: nanoid(), map: {} };
+	yield* put(
+		TransactionLogStateActions.setLogStore({
+			...state,
+			[PRINT_MODEL_CONTENT_GENERAL_LOG_ID]: updatedGeneral.storeEntry,
+			textStyles: {
+				...newTextStyles,
+				referencesEntry: updatedRefsEntry.storeEntry,
+			},
+		})
 	);
 }

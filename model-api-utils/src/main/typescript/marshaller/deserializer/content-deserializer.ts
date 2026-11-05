@@ -198,6 +198,7 @@ class SectionsContainerDeserializer extends Deserializer<GeneratedDTO.SectionsDT
 	prefix = "sections";
 	elementBase = {
 		definitions: [],
+		references: [],
 	};
 
 	map(property: keyof GeneratedDTO.SectionsDTO_1, dto: GeneratedDTO.SectionsDTO_1) {
@@ -210,6 +211,33 @@ class SectionsContainerDeserializer extends Deserializer<GeneratedDTO.SectionsDT
 					index => new SectionDeserializer(this.path, index, true),
 					property
 				);
+			case "references":
+				return this.deserializeRepeatable(
+					dto.references,
+					index => new SectionFragmentReferenceDeserializer(this.path, index, true),
+					property
+				);
+		}
+		this.unknownProperty(property);
+	}
+}
+
+class SectionFragmentReferenceDeserializer extends Deserializer<
+	GeneratedDTO.ReferencesDTO_1,
+	ModelAPI.SectionFragmentReference
+> {
+	prefix = "fragmentReference";
+
+	map(property: keyof GeneratedDTO.ReferencesDTO_1, dto: GeneratedDTO.ReferencesDTO_1) {
+		switch (property) {
+			case "id":
+				return this.getRequired(dto.id, property);
+			case "refId":
+				return this.getRequired(dto.refId, property);
+			case "model":
+				return this.getRequired(dto.model, property);
+			case "sectionUsage":
+				return ModelAPI.SectionUsage[this.getRequired(dto.sectionUsage, property)];
 		}
 		this.unknownProperty(property);
 	}
@@ -219,6 +247,7 @@ class WatermarksContainerDeserializer extends Deserializer<GeneratedDTO.Watermar
 	prefix = "watermarks";
 	elementBase = {
 		definitions: [],
+		references: [],
 	};
 
 	map(property: keyof GeneratedDTO.WatermarksDTO_1, dto: GeneratedDTO.WatermarksDTO_1) {
@@ -231,6 +260,31 @@ class WatermarksContainerDeserializer extends Deserializer<GeneratedDTO.Watermar
 					index => new WatermarkDeserializer(this.path, index, true),
 					property
 				);
+			case "references":
+				return this.deserializeRepeatable(
+					dto.references,
+					index => new FragmentReferenceDeserializer(this.path, index, true),
+					property
+				);
+		}
+		this.unknownProperty(property);
+	}
+}
+
+class FragmentReferenceDeserializer extends Deserializer<
+	GeneratedDTO.ReferencesDTO_2,
+	ModelAPI.FragmentModelReference
+> {
+	prefix = "fragmentReference";
+
+	map(property: keyof GeneratedDTO.ReferencesDTO_2, dto: GeneratedDTO.ReferencesDTO_2) {
+		switch (property) {
+			case "id":
+				return this.getRequired(dto.id, property);
+			case "refId":
+				return this.getRequired(dto.refId, property);
+			case "model":
+				return this.getRequired(dto.model, property);
 		}
 		this.unknownProperty(property);
 	}
@@ -247,6 +301,12 @@ class TextStylesContainerDeserializer extends Deserializer<GeneratedDTO.TextStyl
 				return this.deserializeRepeatable(
 					dto.definitions,
 					index => new TextStyleDeserializer(this.path, index, true),
+					property
+				);
+			case "references":
+				return this.deserializeRepeatable(
+					dto.references,
+					index => new FragmentReferenceDeserializer(this.path, index, true),
 					property
 				);
 		}
@@ -285,6 +345,7 @@ class SegmentsContainerDeserializer extends Deserializer<GeneratedDTO.SegmentsDT
 	elementBase = {
 		definitions: [],
 		references: [],
+		fragmentReferences: [],
 	};
 
 	map(property: keyof GeneratedDTO.SegmentsDTO, dto: GeneratedDTO.SegmentsDTO) {
@@ -301,6 +362,12 @@ class SegmentsContainerDeserializer extends Deserializer<GeneratedDTO.SegmentsDT
 				return this.deserializeRepeatable(
 					dto.references,
 					index => new SegmentReferencesDeserializer(this.path, index, true),
+					property
+				);
+			case "fragmentReferences":
+				return this.deserializeRepeatable(
+					dto.fragmentReferences,
+					index => new FragmentReferenceDeserializer(this.path, index, true),
 					property
 				);
 		}

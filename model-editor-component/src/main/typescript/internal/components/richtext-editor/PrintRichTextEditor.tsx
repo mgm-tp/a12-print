@@ -60,6 +60,7 @@ import { NavigationSelectors, TransactionLogStateActions } from "../../redux/ind
 import { InteractionLogActions } from "../../redux/interaction-log/index.js";
 import { useTextStyleSelector } from "../../hooks/use-text-style-selector.js";
 import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { IS_DEBUG_MODE } from "../../utils/dev-utils.js";
 
 import {
 	PrintEntityNode,
@@ -85,12 +86,11 @@ import {
 } from "./toolbar/index.js";
 import { EditorThemeStyles } from "./themes/editor-theme.js";
 
-const IS_DEBUG_MODE = typeof process !== "undefined" && process?.env?.DEBUG;
-
 interface RichTextEditorProps {
 	element: PartialText;
 	errorMessage?: React.ReactNode;
 	onChangeEntity?: (entity?: PartialAnyPrintModelElement) => void;
+	isReadonly?: boolean;
 	/** @internal Test-only callback to capture exported HTML on blur */
 	_testOnBlur?: (html: string, entities: ReadonlyArray<PartialReference>) => void;
 }
@@ -123,7 +123,13 @@ const INITIAL_CONFIG = {
 
 const EMPTY_ENTITY_ELEMENTS: string[] = [];
 
-export const PrintRichTextEditor = ({ element, errorMessage, onChangeEntity, _testOnBlur }: RichTextEditorProps) => {
+export const PrintRichTextEditor = ({
+	element,
+	errorMessage,
+	onChangeEntity,
+	isReadonly = false,
+	_testOnBlur,
+}: RichTextEditorProps) => {
 	const dispatch = useDispatch();
 	const { currentRefType } = useSelector(NavigationSelectors.activeEntities);
 	const selectEntityElements = React.useMemo(
@@ -145,6 +151,7 @@ export const PrintRichTextEditor = ({ element, errorMessage, onChangeEntity, _te
 
 	const toolbarButtons = React.useMemo(() => {
 		const isEntityFormOpen = Boolean(editElement);
+
 		const buttons = [
 			BoldButton,
 			ItalicButton,
@@ -201,6 +208,11 @@ export const PrintRichTextEditor = ({ element, errorMessage, onChangeEntity, _te
 			entities?: ReadonlyArray<PartialReference>;
 			extraElements?: PartialAnyPrintModelElement[];
 		}) => {
+			// safeguard against commands or editor.update() calls from plugins
+			if (isReadonly) {
+				return;
+			}
+
 			const { html, entities, extraElements } = params || {};
 
 			// Skip dispatch if HTML hasn't changed and no new elements are being added
@@ -236,7 +248,7 @@ export const PrintRichTextEditor = ({ element, errorMessage, onChangeEntity, _te
 				})
 			);
 		},
-		[dispatch, element]
+		[dispatch, element, isReadonly]
 	);
 
 	const handleEntityClick = React.useCallback(
@@ -287,8 +299,9 @@ export const PrintRichTextEditor = ({ element, errorMessage, onChangeEntity, _te
 				initialConfig={INITIAL_CONFIG}
 				id="print-richtext-editor"
 				labelGraphic={<Icon>info</Icon>}
-				staticToolbarButtons={toolbarButtons}
+				staticToolbarButtons={isReadonly ? undefined : toolbarButtons}
 				minHeight={100}
+				readonly={isReadonly}
 				disabled={Boolean(editElement)}
 				errorMessage={errorMessage}
 			>

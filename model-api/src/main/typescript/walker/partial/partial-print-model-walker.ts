@@ -71,13 +71,23 @@ import { ExtendedEntityInstancePathBuilder } from "../../errors/extended-entity-
 import { DescendCommand, TraversalCommand } from "../print-model-visitor.js";
 import { ReferenceListResolver, type ReferenceResolver } from "../reference-resolver.js";
 import { PrintModelListResolver, type PrintModelResolver } from "../print-model-resolver.js";
+import type { TopLevelContainerOrigin } from "../fragment-definition-resolver.js";
 import { DefaultSegmentIdResolver } from "../segment-id-resolver.js";
 import { walkReferencedBoundingBoxes } from "../print-model-walker.js";
 
 import type { PartialPrintModelVisitor } from "./partial-print-model-visitor.js";
-import { type PartialSectionIdResolver } from "./partial-section-id-resolver.js";
-import { type PartialWatermarkIdResolver } from "./partial-watermark-id-resolver.js";
-import { type PartialSegmentIdResolver } from "./partial-segment-id-resolver.js";
+import {
+	type PartialSectionIdResolver,
+	resolvePartialSectionOrigin,
+	resolvePartialSectionWithUsage,
+} from "./partial-section-id-resolver.js";
+import {
+	DefaultPartialTextStyleIdResolver,
+	type PartialTextStyleIdResolver,
+	resolvePartialTextStyleOrigin,
+} from "./partial-text-style-id-resolver.js";
+import { type PartialWatermarkIdResolver, resolvePartialWatermarkOrigin } from "./partial-watermark-id-resolver.js";
+import { type PartialSegmentIdResolver, resolvePartialSegmentOrigin } from "./partial-segment-id-resolver.js";
 import { type PartialReferenceResolver } from "./partial-reference-resolver.js";
 import {
 	PartialReferenceElementListResolver,
@@ -86,13 +96,14 @@ import {
 import { PartialPrintModelTrace } from "./partial-print-model-trace.js";
 
 export class PartialPrintModelWalker {
-	private visitor: PartialPrintModelVisitor;
-	private referenceResolver: PartialReferenceResolver;
-	private segmentIdResolver: PartialSegmentIdResolver;
-	private sectionIdResolver: PartialSectionIdResolver;
-	private watermarkIdResolver: PartialWatermarkIdResolver;
-	private referenceElementResolver: PartialReferenceElementResolver;
-	private printModelResolver: PrintModelResolver;
+	private readonly visitor: PartialPrintModelVisitor;
+	private readonly referenceResolver: PartialReferenceResolver;
+	private readonly segmentIdResolver: PartialSegmentIdResolver;
+	private readonly sectionIdResolver: PartialSectionIdResolver;
+	private readonly watermarkIdResolver: PartialWatermarkIdResolver;
+	private readonly referenceElementResolver: PartialReferenceElementResolver;
+	private readonly printModelResolver: PrintModelResolver;
+	private readonly textStyleIdResolver: PartialTextStyleIdResolver;
 
 	constructor(
 		visitor: PartialPrintModelVisitor,
@@ -101,7 +112,8 @@ export class PartialPrintModelWalker {
 		sectionIdResolver: PartialSectionIdResolver,
 		watermarkIdResolver: PartialWatermarkIdResolver,
 		referenceElementResolver: PartialReferenceElementResolver = new PartialReferenceElementListResolver([]),
-		printModelResolver: PrintModelResolver = new PrintModelListResolver([])
+		printModelResolver: PrintModelResolver = new PrintModelListResolver([]),
+		textStyleIdResolver: PartialTextStyleIdResolver = new DefaultPartialTextStyleIdResolver([])
 	) {
 		this.visitor = visitor;
 		this.referenceResolver = referenceResolver;
@@ -110,6 +122,7 @@ export class PartialPrintModelWalker {
 		this.watermarkIdResolver = watermarkIdResolver;
 		this.referenceElementResolver = referenceElementResolver;
 		this.printModelResolver = printModelResolver;
+		this.textStyleIdResolver = textStyleIdResolver;
 	}
 
 	public walkPrintModel(printModel: PartialPrintModel): TraversalCommand {
@@ -161,8 +174,33 @@ export class PartialPrintModelWalker {
 		if (result === TraversalCommand.CONTINUE && general.watermarks) {
 			result = this.walkWatermarks(general.watermarks);
 		}
+		if (result === TraversalCommand.CONTINUE && general.textStyles) {
+			result = this.walkTextStyles(general.textStyles);
+		}
 
 		return result;
+	}
+
+	private walkTextStyles(textStyles: ReadonlyArray<string>): TraversalCommand {
+		for (let index = 0; index < textStyles.length; index++) {
+			const id = textStyles[index];
+			const textStyle = this.textStyleIdResolver.resolveTextStyleId(id);
+			const origin = resolvePartialTextStyleOrigin(this.textStyleIdResolver, id);
+			const printModelPath = getTextStyleBasePath(origin, index);
+
+			const result = textStyle
+				? this.visitor.visitTextStyle(textStyle, printModelPath, index)
+				: this.visitor.visitUnresolvedTextStyle(id, index);
+
+			if (result === TraversalCommand.STOP) {
+				break;
+			}
+			if (result === TraversalCommand.HALT) {
+				return result;
+			}
+		}
+
+		return TraversalCommand.CONTINUE;
 	}
 
 	private walkMetadata(metadata: PartialMetadata): TraversalCommand {
@@ -180,8 +218,9 @@ export class PartialPrintModelWalker {
 
 			let result;
 			if (segment) {
-				const printModelPath = getTopLevelContainerBasePath(segment, index);
-				result = this.walkContainer(segment, PartialPrintModelTrace.ROOT_PATH, printModelPath, index);
+				const origin = resolvePartialSegmentOrigin(this.segmentIdResolver, id);
+				const { printModelPath, printModelTrace } = getTopLevelContainerContext(segment, index, origin);
+				result = this.walkContainer(segment, printModelTrace, printModelPath, index);
 			} else {
 				result = this.visitor.visitUnresolvedSegment(id, index);
 			}
@@ -200,12 +239,22 @@ export class PartialPrintModelWalker {
 	private walkSections(sections: ReadonlyArray<string>): TraversalCommand {
 		for (let index = 0; index < sections.length; index++) {
 			const id = sections[index];
-			const section = this.sectionIdResolver.resolveSectionId(id);
+			const sectionWithUsage = resolvePartialSectionWithUsage(this.sectionIdResolver, id);
 
 			let result;
-			if (section) {
-				const printModelPath = getTopLevelContainerBasePath(section, index);
-				result = this.walkContainer(section, PartialPrintModelTrace.ROOT_PATH, printModelPath, index);
+			if (sectionWithUsage) {
+				const { section, sectionUsage } = sectionWithUsage;
+				const origin = resolvePartialSectionOrigin(this.sectionIdResolver, id);
+				const { printModelPath, printModelTrace } = getTopLevelContainerContext(section, index, origin);
+				result = this.visitor.preVisitSectionWithUsage(
+					section,
+					sectionUsage,
+					printModelTrace.with(section, index),
+					printModelPath
+				);
+				if (result === TraversalCommand.CONTINUE) {
+					result = this.walkContainer(section, printModelTrace, printModelPath, index);
+				}
 			} else {
 				result = this.visitor.visitUnresolvedSection(id, index);
 			}
@@ -228,8 +277,9 @@ export class PartialPrintModelWalker {
 
 			let result;
 			if (watermark) {
-				const printModelPath = getTopLevelContainerBasePath(watermark, index);
-				result = this.walkContainer(watermark, PartialPrintModelTrace.ROOT_PATH, printModelPath, index);
+				const origin = resolvePartialWatermarkOrigin(this.watermarkIdResolver, id);
+				const { printModelPath, printModelTrace } = getTopLevelContainerContext(watermark, index, origin);
+				result = this.walkContainer(watermark, printModelTrace, printModelPath, index);
 			} else {
 				result = this.visitor.visitUnresolvedWatermark(id, index);
 			}
@@ -332,14 +382,15 @@ export class PartialPrintModelWalker {
 			const resolvedReference = this.referenceResolver.resolveReferenceWithIndex(reference);
 			if (resolvedReference) {
 				const { element, index } = resolvedReference;
-				// the referenced element has a different print model path than the reference itself
-				const elementDefinitionBasePath = getElementDefinitionBasePath(
+				const elementDefinitionBasePath = getResolvedElementBasePath(
+					reference,
 					element as PartialAnyPrintModelElement,
-					index
+					index,
+					printModelPath
 				);
 				result = this.walkElement(element, newPrintModelInstancePath, elementDefinitionBasePath, index);
 			} else {
-				result = this.visitor.visitUnresolvedElement(reference, printModelTrace, index);
+				result = this.visitor.visitUnresolvedElement(reference, printModelTrace, index, printModelPath);
 			}
 		}
 
@@ -550,6 +601,86 @@ export function getTopLevelContainerBasePath(
 	}
 	if (isPartialWatermark(element)) {
 		return path.append("watermarks").append("definitions", index);
+	}
+
+	throw new Error("unknown toplevel container");
+}
+
+/**
+ * Where the definition of a placed element lives. The referenced element has a print model path of its own, unless it
+ * comes from a print fragment model - then its placement is the deepest path this print model has for it, and paths
+ * below the fragment boundary stay there.
+ */
+function getResolvedElementBasePath(
+	reference: PartialReference,
+	element: PartialAnyPrintModelElement,
+	index: number,
+	placementPath: ExtendedEntityInstancePathBuilder
+): ExtendedEntityInstancePathBuilder {
+	if (placementPath.isFrozen()) {
+		return placementPath;
+	}
+	return reference.model ? placementPath.freeze() : getElementDefinitionBasePath(element, index);
+}
+
+/**
+ * Where a top level container is walked from. A container that comes from a print fragment model has no definition in
+ * the using print model, so the path stays at the fragment boundary - the reference pulling it in - and is frozen
+ * there, making everything inside the container report at that reference. That reference also starts the trace, so a
+ * visitor can tell that what follows lives in a fragment model and which one.
+ *
+ * @param usageIndex Position in the id list being walked, used when the origin of the container is unknown.
+ */
+function getTopLevelContainerContext(
+	container: PartialAnyTopLevelContainerElement,
+	usageIndex: number,
+	origin?: TopLevelContainerOrigin
+): { printModelPath: ExtendedEntityInstancePathBuilder; printModelTrace: PartialPrintModelTrace } {
+	const fragmentReference = origin?.fragmentReference;
+	if (fragmentReference) {
+		return {
+			printModelPath: getTopLevelFragmentReferenceBasePath(container, fragmentReference.index).freeze(),
+			printModelTrace: PartialPrintModelTrace.ROOT_PATH.with(
+				fragmentReference.reference,
+				fragmentReference.index
+			),
+		};
+	}
+	// The visit order is the usage order, while the path addresses the definition list.
+	return {
+		printModelPath: getTopLevelContainerBasePath(container, origin?.definitionIndex ?? usageIndex),
+		printModelTrace: PartialPrintModelTrace.ROOT_PATH,
+	};
+}
+
+/**
+ * Base path of a text style. Like a top level container, a text style from a print fragment model is only addressable
+ * through the reference pulling it in - see {@link getTopLevelContainerContext}.
+ */
+function getTextStyleBasePath(
+	origin: TopLevelContainerOrigin | undefined,
+	usageIndex: number
+): ExtendedEntityInstancePathBuilder {
+	const path = new ExtendedEntityInstancePathBuilder().append("content").append("textStyles");
+	const fragmentReference = origin?.fragmentReference;
+	return fragmentReference
+		? path.append("references", fragmentReference.index).freeze()
+		: path.append("definitions", origin?.definitionIndex ?? usageIndex);
+}
+
+export function getTopLevelFragmentReferenceBasePath(
+	element: PartialAnyTopLevelContainerElement,
+	index: number
+): ExtendedEntityInstancePathBuilder {
+	const path = new ExtendedEntityInstancePathBuilder().append("content");
+	if (isPartialSegment(element)) {
+		return path.append("segments").append("fragmentReferences", index);
+	}
+	if (isPartialSection(element)) {
+		return path.append("sections").append("references", index);
+	}
+	if (isPartialWatermark(element)) {
+		return path.append("watermarks").append("references", index);
 	}
 
 	throw new Error("unknown toplevel container");

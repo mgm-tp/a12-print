@@ -32,6 +32,9 @@
 import type { PrintModelElement } from "../model/index.js";
 import { type PrintModel, type Reference } from "../model/index.js";
 
+import { collectFragmentModels } from "./fragment-definition-resolver.js";
+import type { PrintModelResolver } from "./print-model-resolver.js";
+
 export interface PrintModelElementMap {
 	[key: string]: PrintModelElement;
 }
@@ -42,13 +45,33 @@ export interface ReferenceResolver {
 }
 
 export class ReferenceListResolver implements ReferenceResolver {
-	constructor(private elementList: ReadonlyArray<PrintModelElement>) {}
+	constructor(
+		private readonly elementList: ReadonlyArray<PrintModelElement>,
+		private readonly fragmentModelResolver?: PrintModelResolver
+	) {}
 
-	public static fromModel(printModel: PrintModel) {
-		return new this(printModel.content.elementDefinitions);
+	/** @param fragmentModelResolver Makes the elements of referenced print fragment models resolvable. */
+	public static fromModel(printModel: PrintModel, fragmentModelResolver?: PrintModelResolver) {
+		const fragmentModels = fragmentModelResolver ? collectFragmentModels(printModel, fragmentModelResolver) : [];
+		return new this(
+			[
+				...printModel.content.elementDefinitions,
+				...fragmentModels.flatMap(fragmentModel => fragmentModel.content.elementDefinitions),
+			],
+			fragmentModelResolver
+		);
 	}
 
 	resolveReference(reference: Reference): PrintModelElement | undefined {
+		// A placement that names a model is resolved in that fragment model; otherwise by id alone.
+		if (reference.model) {
+			const element = this.fragmentModelResolver
+				?.resolvePrintModel(reference.model)
+				?.content.elementDefinitions.find(el => el.id === reference.refId);
+			if (element) {
+				return element;
+			}
+		}
 		return this.elementList.find(el => el.id === reference.refId);
 	}
 
@@ -58,8 +81,8 @@ export class ReferenceListResolver implements ReferenceResolver {
 }
 
 export class CachedReferenceResolver implements ReferenceResolver {
-	private referenceResolver: ReferenceListResolver;
-	private printModelElementMap: PrintModelElementMap = {};
+	private readonly referenceResolver: ReferenceListResolver;
+	private readonly printModelElementMap: PrintModelElementMap = {};
 
 	constructor(referenceResolver: ReferenceListResolver) {
 		this.referenceResolver = referenceResolver;

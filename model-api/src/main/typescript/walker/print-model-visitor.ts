@@ -60,12 +60,14 @@ import {
 	PrintModelElement,
 	type Reference,
 	type Section,
+	type SectionUsage,
 	type Segment,
 	Switch,
 	Table,
 	TableLayout,
 	type TableLayoutCellReference,
 	Text,
+	type TextStyle,
 	type Watermark,
 } from "../model/index.js";
 
@@ -89,6 +91,19 @@ export enum TraversalCommand {
 	STOP,
 	HALT,
 	CONTINUE,
+}
+
+export function traversalCommandToString(cmd: TraversalCommand) {
+	switch (cmd) {
+		case TraversalCommand.CONTINUE:
+			return "Continue";
+		case TraversalCommand.HALT:
+			return "Halt";
+		case TraversalCommand.STOP:
+			return "Stop";
+		default:
+			throw new Error("Invalid Traversal Command");
+	}
 }
 
 export abstract class PrintModelVisitor {
@@ -153,11 +168,24 @@ export abstract class PrintModelVisitor {
 		return TraversalCommand.CONTINUE;
 	}
 
+	/** Called before descending into a used section, with the usage it has in this print model. */
+	preVisitSectionWithUsage(
+		section: Section,
+		sectionUsage: SectionUsage,
+		printModelTrace: PrintModelTrace
+	): TraversalCommand {
+		return TraversalCommand.CONTINUE;
+	}
+
 	visitSection(section: Section, printModelTrace: PrintModelTrace): TraversalCommand {
 		return TraversalCommand.CONTINUE;
 	}
 
 	visitWatermark(watermark: Watermark, printModelTrace: PrintModelTrace): TraversalCommand {
+		return TraversalCommand.CONTINUE;
+	}
+
+	visitTextStyle(textStyle: TextStyle, index?: number): TraversalCommand {
 		return TraversalCommand.CONTINUE;
 	}
 
@@ -387,6 +415,11 @@ export abstract class PrintModelVisitor {
 
 	visitUnresolvedWatermark(id: string, index?: number): TraversalCommand {
 		return TraversalCommand.HALT;
+	}
+
+	visitUnresolvedTextStyle(id: string, index?: number): TraversalCommand {
+		// CONTINUE instead of the usual HALT to avoid breaking behavior
+		return TraversalCommand.CONTINUE;
 	}
 
 	visitUnresolvedDinTemplate(templateId: string): TraversalCommand {

@@ -35,7 +35,9 @@ import type {
 	LabelEntity,
 	LocaleEntity,
 	ModelReferenceEntity,
+	PrintModelSubType,
 } from "@com.mgmtp.a12.print/print-model-api/model";
+import { MODEL_SUB_TYPE_ANNOTATION_NAME } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { Deserializer } from "../../marshaller/deserializer/deserializer.js";
 import type { BaseHeaderDTO } from "../../internal/marshaller/deserializer/base-header-dto.js";
@@ -64,6 +66,7 @@ interface BaseHeaderAPI {
 	readonly locales?: ReadonlyArray<LocaleEntity>;
 	readonly labels?: ReadonlyArray<LabelEntity>;
 	readonly modelReferences?: ReadonlyArray<ModelReferenceEntity>;
+	readonly modelSubType?: PrintModelSubType;
 	readonly description?: string;
 }
 
@@ -100,12 +103,19 @@ export abstract class BaseHeaderDeserializer<
 				return this.getRequired(dto.modelType, property) as APIType[keyof APIType];
 			case "modelVersion":
 				return this.getRequired(dto.modelVersion, property) as APIType[keyof APIType];
-			case "annotations":
+			case "annotations": {
+				const modelSubType = dto.annotations?.find(
+					annotation => annotation.name === MODEL_SUB_TYPE_ANNOTATION_NAME
+				)?.value;
+				if (modelSubType) {
+					this.addAdditionalProperty(MODEL_SUB_TYPE_ANNOTATION_NAME, modelSubType as APIType[keyof APIType]);
+				}
 				return (this as Deserializer<BaseHeaderDTO, BaseHeaderAPI>).deserializeRepeatable(
 					dto.annotations,
 					index => new AnnotationDeserializer(this.path, index, true),
 					property
 				) as APIType[keyof APIType];
+			}
 		}
 
 		if (property === "description" && this.config.hasDescription) {

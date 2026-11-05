@@ -33,10 +33,11 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 
 import { Breadcrumb, Link, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
+import { PartialAnyTopLevelContainerElement } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { EditorConst } from "../../constant/editor.js";
-import { PrintLocalizer } from "../../localization/index.js";
+import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { ElementTypes } from "../../constant/elements.js";
 import { formatNumberToString } from "../../utils/index.js";
 import { isAreaStackEntry } from "../../redux/index.js";
@@ -49,16 +50,28 @@ export const BreadcrumbNavigation = () => {
 	const { openPreviousStage } = React.useContext(EditorContext);
 	const wrappers = useSelector(PrintEngineSelectors.wrappers);
 	const currentContainerElement = useSelector(PrintEngineSelectors.currentContainerElement);
+	const isContainerReferenced = useSelector(PrintEngineSelectors.isCurrentContainerReferenced);
 	const localizer = PrintLocalizer.useLocalizer();
+	const fragmentReferenceTitle = localizer(RESOURCE_KEYS.indicator.fragmentReference);
 
 	if (!wrappers.length || !currentContainerElement) {
 		return null;
 	}
 
+	let currentContainerElementTitle;
+	if (PartialAnyTopLevelContainerElement.isInstance(currentContainerElement)) {
+		currentContainerElementTitle = currentContainerElement.title;
+	} else {
+		currentContainerElementTitle = currentContainerElement.name;
+	}
+
 	return (
 		<Breadcrumb>
 			<Breadcrumb.Item>
-				<Link onClick={() => openPreviousStage(currentContainerElement)}>{currentContainerElement.title}</Link>
+				<Link onClick={() => openPreviousStage(currentContainerElement)}>
+					{isContainerReferenced && <Icon title={fragmentReferenceTitle}>link</Icon>}
+					{currentContainerElementTitle}
+				</Link>
 			</Breadcrumb.Item>
 
 			{wrappers.map((wrapper, idx) => {
@@ -66,6 +79,7 @@ export const BreadcrumbNavigation = () => {
 				const wrapperHeight = formatNumberToString(MM_TO_CM(wrapper.dimensions?.height?.value || 0));
 				const wrapperType = localizer(ElementTypes[wrapper.type]?.name || "");
 				const isWrapperRepeatableArea = isAreaStackEntry(wrapper) && !!wrapper?.dataContexts?.length;
+				const isWrapperReferenced = Boolean(wrapper.wrapperContext?.placeableReference?.model);
 				return (
 					<Breadcrumb.Item key={wrapper.id}>
 						{wrapper.id && (
@@ -75,6 +89,7 @@ export const BreadcrumbNavigation = () => {
 									openPreviousStage(currentContainerElement, wrapper.id)
 								}
 							>
+								{isWrapperReferenced && <Icon title={fragmentReferenceTitle}>link</Icon>}
 								{isWrapperRepeatableArea && <Icon>repeat</Icon>}
 								{wrapperType} (w: {wrapperWidth} cm; h: {wrapperHeight} cm)
 							</Link>

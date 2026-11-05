@@ -31,7 +31,7 @@
  */
 import { createSelector } from "reselect";
 
-import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import type { DeepPartialErrorMap, PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
 import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 import type {
 	Expression,
@@ -45,7 +45,12 @@ import type {
 	TextStyle,
 	Watermark,
 } from "@com.mgmtp.a12.print/print-model-api/model";
-import { ElementType, PartialArea, PartialBoundingBox } from "@com.mgmtp.a12.print/print-model-api/model";
+import {
+	ElementType,
+	PartialAnyTopLevelContainerElement,
+	PartialArea,
+	PartialBoundingBox,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import {
@@ -58,9 +63,10 @@ import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState
 import type { AnnotationData } from "../../../internal/components/general/annotations/annotation.js";
 import type { PrintModelErrorMap } from "../../../internal/types/index.js";
 import type { ValidationState } from "../../../a12internal/api/ValidationState.js";
+import { ElementsUtils } from "../../utils/elements-utils.js";
 
 import { NavigationSelectors } from "../navigation/selectors.js";
-import { isBaseElementFormState, isBaseReferenceFormState } from "../navigation/state.js";
+import { isBaseElementFormState, isBaseReferenceFormState, isElementLibraryFormState } from "../navigation/state.js";
 
 import { ValidationCounter } from "./state.js";
 import type { Selector } from "./selector-utils.js";
@@ -129,6 +135,99 @@ export namespace ValidationSelectors {
 		}
 		return watermarks.find(watermark => watermark["@id"] === id);
 	});
+
+	/**
+	 * The errors of a fragment reference that are about the reference itself. Anything unresolvable inside the
+	 * referenced entity is reported at the reference as well - that belongs in the badge count, but not in the message
+	 * shown for the reference, which would otherwise name an element the reference knows nothing about.
+	 */
+	export const ownFragmentReferenceErrors = (referenceErrorMap?: DeepPartialErrorMap<unknown>) =>
+		referenceErrorMap?.[ErrorSeverity.ERROR]?.filter(error => error.parameters?.fragmentType !== "element");
+
+	/**
+	 * Errors reported for a fragment reference itself - e.g. its target no longer exists in the fragment model. They
+	 * are only present once the validation ran with the fragment models at hand.
+	 */
+	export const watermarkReferenceError = createSelector([errorMapState, idInputSelector], (errorMap, referenceId) =>
+		errorMap?.content?.watermarks?.references?.find(reference => reference["@id"] === referenceId)
+	);
+	export const textStyleReferenceError = createSelector([errorMapState, idInputSelector], (errorMap, referenceId) =>
+		errorMap?.content?.textStyles?.references?.find(reference => reference["@id"] === referenceId)
+	);
+	export const sectionReferenceError = createSelector([errorMapState, idInputSelector], (errorMap, referenceId) =>
+		errorMap?.content?.sections?.references?.find(reference => reference["@id"] === referenceId)
+	);
+
+	/**
+	 * The errors of the reference that pulled in a text style, looked up by the id of the text style itself - what is
+	 * wrong with a text style of a fragment model is reported at that reference, since it has no definition here.
+	 */
+	export const textStyleReferenceErrorByTextStyleId = createSelector(
+		[errorMapState, PrintEngineSelectors.textStyleReferences, idInputSelector],
+		(errorMap, references, textStyleId) => {
+			const reference = references.find(({ refId }) => refId === textStyleId);
+			return reference && errorMap?.content?.textStyles?.references?.find(({ "@id": id }) => id === reference.id);
+		}
+	);
+
+	/**
+	 * Errors reported for a Model Reference declared in the header
+	 */
+	export const modelReferenceError = createSelector([header, idInputSelector], (headerErrorMap, referenceId) =>
+		headerErrorMap?.modelReferences?.find(reference => reference["@id"] === referenceId)
+	);
+	export const segmentFragmentReferenceError = createSelector(
+		[errorMapState, idInputSelector],
+		(errorMap, referenceId) =>
+			errorMap?.content?.segments?.fragmentReferences?.find(reference => reference["@id"] === referenceId)
+	);
+
+	/*
+	 * Everything reported for a fragment reference comes from the validator: the reference itself being unresolvable as
+	 * well as anything unresolvable inside the referenced entity, which is reported at the reference.
+	 */
+	export const sectionReferenceValidationCounter = createSelector([sectionReferenceError], referenceErrorMap =>
+		ValidationCounter.from(referenceErrorMap)
+	);
+	export const segmentFragmentReferenceValidationCounter = createSelector(
+		[segmentFragmentReferenceError],
+		referenceErrorMap => ValidationCounter.from(referenceErrorMap)
+	);
+	export const textStyleReferenceValidationCounter = createSelector([textStyleReferenceError], referenceErrorMap =>
+		ValidationCounter.from(referenceErrorMap)
+	);
+	export const watermarkReferenceValidationCounter = createSelector([watermarkReferenceError], referenceErrorMap =>
+		ValidationCounter.from(referenceErrorMap)
+	);
+	export const modelReferenceValidationCounter = createSelector([modelReferenceError], referenceErrorMap =>
+		ValidationCounter.from(referenceErrorMap)
+	);
+
+	/** Aggregated over the Model References of one kind, driving the badge of that kind's panel. */
+	function createModelReferencesValidationCounter(
+		referencesSelector: (state: PrintEngineState) => ReadonlyArray<{ id: string }>
+	) {
+		return createSelector([PrintEngineSelectors.state, referencesSelector], (state, references) =>
+			references.reduce<ValidationCounter>(
+				(result, reference) =>
+					ValidationCounter.add(result, modelReferenceValidationCounter(state, reference.id)),
+				ValidationCounter.EMPTY_VALIDATION_COUNTER
+			)
+		);
+	}
+
+	export const documentModelReferencesValidationCounter = createModelReferencesValidationCounter(
+		PrintEngineSelectors.documentModelReferences
+	);
+	export const printModelReferencesValidationCounter = createModelReferencesValidationCounter(
+		PrintEngineSelectors.printModelReferences
+	);
+	export const fragmentModelReferencesValidationCounter = createModelReferencesValidationCounter(
+		PrintEngineSelectors.fragmentModelReferences
+	);
+	export const typesettingModelReferencesValidationCounter = createModelReferencesValidationCounter(
+		PrintEngineSelectors.typesettingModelReferences
+	);
 
 	export const segment = createSelector([errorMapState, idInputSelector], (errorMap, id) => {
 		const segments: DeepPartialErrorMap<Segment>[] | undefined = errorMap?.content?.segments?.definitions;
@@ -288,7 +387,6 @@ export namespace ValidationSelectors {
 			if ([SidebarItem.SCHEMA, SidebarItem.COMMIT_CHANGES].includes(selectedSidebarItem)) {
 				return ValidationCounter.EMPTY_VALIDATION_COUNTER;
 			}
-			const elementIds = currentContainerElement?.elementReferences?.map(reference => reference?.refId) || [];
 
 			let counter: ValidationCounter;
 			if (sidebarState.isOpen) {
@@ -303,6 +401,14 @@ export namespace ValidationSelectors {
 				counter = ValidationCounter.EMPTY_VALIDATION_COUNTER;
 			}
 
+			if (!currentContainerElement) {
+				return counter;
+			}
+
+			const elementIds = PartialAnyTopLevelContainerElement.isInstance(currentContainerElement)
+				? currentContainerElement?.elementReferences?.map(reference => reference?.refId) || []
+				: ElementsUtils.getElementReferences(currentContainerElement).map(reference => reference?.refId) || [];
+
 			elementIds.forEach(element => {
 				counter = ValidationCounter.add(counter, elementValidationCounterById(state, element));
 			});
@@ -315,27 +421,61 @@ export namespace ValidationSelectors {
 		[PrintEngineSelectors.state, generalTabValidationCounter, textStylesValidationCounter],
 		(state, generalTabValidationCounter, textStylesValidationCounter) => {
 			const segments = PrintEngineSelectors.segments(state);
+			const segmentFragmentRefs = PrintEngineSelectors.segmentFragmentReferences(state);
 			const sections = PrintEngineSelectors.sections(state);
+			const sectionRefs = PrintEngineSelectors.sectionReferences(state);
 			const watermarks = PrintEngineSelectors.watermarks(state);
+			const watermarkRefs = PrintEngineSelectors.watermarkReferences(state);
+			const textStyleRefs = PrintEngineSelectors.textStyleReferences(state);
+			const fragmentElements = PrintEngineSelectors.fragmentElements(state);
 			const emptyValidationCounter = ValidationCounter.EMPTY_VALIDATION_COUNTER;
 
 			return {
 				[SidebarItem.GENERAL]: generalTabValidationCounter,
-				[SidebarItem.TEXT_STYLES]: textStylesValidationCounter,
-				[SidebarItem.SEGMENT]: segments.reduce<ValidationCounter>((result, segment) => {
-					result = ValidationCounter.add(result, segmentValidationCounter(state, segment.id));
-					return result;
-				}, emptyValidationCounter),
-				[SidebarItem.SECTION]: sections.reduce<ValidationCounter>((result, section) => {
-					result = ValidationCounter.add(result, sectionValidationCounter(state, section.id));
-					return result;
-				}, emptyValidationCounter),
-				[SidebarItem.WATERMARK]: watermarks.reduce<ValidationCounter>((result, watermark) => {
-					result = ValidationCounter.add(result, watermarkValidationCounter(state, watermark.id));
-					return result;
-				}, emptyValidationCounter),
-				[SidebarItem.SCHEMA]: emptyValidationCounter,
+				[SidebarItem.TEXT_STYLES]: textStyleRefs.reduce<ValidationCounter>(
+					(result, ref) => ValidationCounter.add(result, textStyleReferenceValidationCounter(state, ref.id)),
+					textStylesValidationCounter
+				),
+				[SidebarItem.SEGMENT]: [
+					...segments.map(segment => segmentValidationCounter(state, segment.id)),
+					...segmentFragmentRefs.map(ref => segmentFragmentReferenceValidationCounter(state, ref.id)),
+				].reduce<ValidationCounter>(
+					(result, counter) => ValidationCounter.add(result, counter),
+					emptyValidationCounter
+				),
+				[SidebarItem.SECTION]: [
+					...sections.map(section => sectionValidationCounter(state, section.id)),
+					...sectionRefs.map(ref => sectionReferenceValidationCounter(state, ref.id)),
+				].reduce<ValidationCounter>(
+					(result, counter) => ValidationCounter.add(result, counter),
+					emptyValidationCounter
+				),
+				[SidebarItem.WATERMARK]: [
+					...watermarks.map(watermark => watermarkValidationCounter(state, watermark.id)),
+					...watermarkRefs.map(ref => watermarkReferenceValidationCounter(state, ref.id)),
+				].reduce<ValidationCounter>(
+					(result, counter) => ValidationCounter.add(result, counter),
+					emptyValidationCounter
+				),
+				[SidebarItem.SCHEMA]: [
+					documentModelReferencesValidationCounter(state),
+					printModelReferencesValidationCounter(state),
+					fragmentModelReferencesValidationCounter(state),
+					typesettingModelReferencesValidationCounter(state),
+				].reduce<ValidationCounter>(
+					(result, counter) => ValidationCounter.add(result, counter),
+					emptyValidationCounter
+				),
 				[SidebarItem.COMMIT_CHANGES]: emptyValidationCounter,
+				[SidebarItem.FRAGMENT]: [
+					...fragmentElements.map(element => elementValidationCounterById(state, element?.id)),
+					...segments.map(segment => segmentValidationCounter(state, segment.id)),
+					...sections.map(section => sectionValidationCounter(state, section.id)),
+					...watermarks.map(watermark => watermarkValidationCounter(state, watermark.id)),
+				].reduce<ValidationCounter>(
+					(result, counter) => ValidationCounter.add(result, counter),
+					emptyValidationCounter
+				),
 			};
 		}
 	);
@@ -441,13 +581,25 @@ export namespace ValidationSelectors {
 		return areas.find(area => area["@id"] === id);
 	});
 
+	/** The placements of the top level container currently open, no matter which wrapper is opened inside it. */
+	const containerElementReferences = createSelector(
+		[PrintEngineSelectors.state, NavigationSelectors.activeEntities],
+		(state, { currentRefType, segmentId, sectionId, watermarkId }) => {
+			let elementContainerErrorMap;
+			if (currentRefType === SidebarItem.SEGMENT) {
+				elementContainerErrorMap = segment(state, segmentId);
+			} else if (currentRefType === SidebarItem.SECTION) {
+				elementContainerErrorMap = section(state, sectionId);
+			} else {
+				elementContainerErrorMap = watermark(state, watermarkId);
+			}
+			return elementContainerErrorMap?.elementReferences;
+		}
+	);
+
 	export const currentElementReferences = createSelector(
-		[
-			PrintEngineSelectors.state,
-			PrintEngineSelectors.currentWrapperContainerId,
-			NavigationSelectors.activeEntities,
-		],
-		(state, wrapperId, printModelRefs) => {
+		[PrintEngineSelectors.state, PrintEngineSelectors.currentWrapperContainerId, containerElementReferences],
+		(state, wrapperId, containerPlacements) => {
 			if (wrapperId) {
 				const element = PrintEngineSelectors.printModelElement(state, wrapperId);
 				if (PartialBoundingBox.isInstance(element)) {
@@ -458,17 +610,7 @@ export namespace ValidationSelectors {
 				}
 				return override(state, wrapperId)?.override?.boundingBox?.elementReferences;
 			}
-			const { currentRefType, segmentId, sectionId, watermarkId } = printModelRefs;
-
-			let elementContainerErrorMap;
-			if (currentRefType === SidebarItem.SEGMENT) {
-				elementContainerErrorMap = segment(state, segmentId);
-			} else if (currentRefType === SidebarItem.SECTION) {
-				elementContainerErrorMap = section(state, sectionId);
-			} else {
-				elementContainerErrorMap = watermark(state, watermarkId);
-			}
-			return elementContainerErrorMap?.elementReferences;
+			return containerPlacements;
 		}
 	);
 
@@ -510,9 +652,9 @@ export namespace ValidationSelectors {
 		}
 	);
 
-	export const placeableRefLayoutCounter = createSelector([currentPlaceableReference], placeableReferenceErrorMap => {
-		return ValidationCounter.from(placeableReferenceErrorMap?.pageBreakBehavior);
-	});
+	export const placeableRefLayoutCounter = createSelector([currentPlaceableReference], placeableReferenceErrorMap =>
+		ValidationCounter.from(placeableReferenceErrorMap?.pageBreakBehavior)
+	);
 
 	export const placeableRefDefaultCounter = createSelector(
 		[currentPlaceableReference],
@@ -574,6 +716,10 @@ export namespace ValidationSelectors {
 			if (!currentForm) {
 				return;
 			}
+			if (isElementLibraryFormState(currentForm)) {
+				// The Element Library form edits no model entity, so it has nothing to validate.
+				return;
+			}
 			if (isBaseReferenceFormState(currentForm)) {
 				return elementDefaultStageValidationCounterById(state, currentForm.referenceId);
 			}
@@ -585,11 +731,90 @@ export namespace ValidationSelectors {
 		}
 	);
 
+	/**
+	 * The errors of the fragment reference the open entity was pulled in by, if it came from a print fragment model.
+	 * Anything unresolvable inside such an entity is reported at that reference, because the entity itself has no
+	 * definition in this print model - that is where the stage has to look for the errors of its placements.
+	 */
+	const currentFragmentReferenceError = createSelector(
+		[PrintEngineSelectors.state, NavigationSelectors.activeEntities],
+		(state, { currentRefType, segmentId, sectionId, watermarkId }) => {
+			if (currentRefType === SidebarItem.SEGMENT) {
+				return segmentFragmentReferenceError(state, segmentId);
+			}
+			if (currentRefType === SidebarItem.SECTION) {
+				return sectionReferenceError(state, sectionId);
+			}
+			if (currentRefType === SidebarItem.WATERMARK) {
+				return watermarkReferenceError(state, watermarkId);
+			}
+			return undefined;
+		}
+	);
+
+	/**
+	 * The elements that could not be resolved in a print fragment model. Such an error is reported at the fragment
+	 * boundary - the placement or the reference leading into the fragment - and names the element it could not resolve,
+	 * which is how it finds its way back to the placements pointing at it, however deeply nested.
+	 */
+	const currentUnresolvableFragmentElements = createSelector(
+		[currentElementReferences, containerElementReferences, currentFragmentReferenceError],
+		(placementErrorMaps, containerPlacementErrorMaps, referenceErrorMap) => {
+			const elementIds = new Set<string>();
+			const collect = (errors?: PrintError[]) =>
+				errors?.forEach(error => {
+					if (error.parameters?.fragmentType === "element" && error.refId) {
+						elementIds.add(error.refId);
+					}
+				});
+
+			// A wrapper from a fragment model has no definition here, so its errors stay at its placement in the
+			// container - which is where they are found from inside its wrapper stage as well.
+			placementErrorMaps?.forEach(placementErrorMap => collect(placementErrorMap[ErrorSeverity.ERROR]));
+			containerPlacementErrorMaps?.forEach(placementErrorMap => collect(placementErrorMap[ErrorSeverity.ERROR]));
+			collect(referenceErrorMap?.[ErrorSeverity.ERROR]);
+			return elementIds;
+		}
+	);
+
+	/**
+	 * The placement of an element that no longer exists in its print fragment model. Counted as one problem per
+	 * placement, no matter how many other placements point at the same missing element.
+	 */
+	const fragmentElementCounter = createSelector(
+		[currentUnresolvableFragmentElements, idInputSelectorSecond],
+		(unresolvableElementIds, refId): ValidationCounter => ({
+			error: refId && unresolvableElementIds.has(refId) ? 1 : 0,
+			warning: 0,
+		})
+	);
+
+	/**
+	 * A wrapper placement whose own entry carries errors about elements it contains - that is the case for a wrapper
+	 * from a print fragment model, which has no definition here to report them at.
+	 */
+	const nestedFragmentElementCounter = createSelector(
+		[currentPlaceableReference, idInputSelectorSecond],
+		(placementErrorMap, refId): ValidationCounter => {
+			const errors = placementErrorMap?.[ErrorSeverity.ERROR]?.filter(
+				error => error.parameters?.fragmentType === "element" && error.refId !== refId
+			);
+			return { error: errors?.length ?? 0, warning: 0 };
+		}
+	);
+
 	export const elementDefaultStageValidationCounter = createSelector(
 		[PrintEngineSelectors.state, elements, idInputSelector, idInputSelectorSecond],
 		(state, elements, placeableRefId, refId) => {
 			const currentElement = elements.find(element => refId === element["@id"]);
-			const placeableCounter = placeableRefDefaultCounter(state, placeableRefId);
+			const placeableCounter = [
+				placeableRefDefaultCounter(state, placeableRefId),
+				fragmentElementCounter(state, placeableRefId, refId),
+				nestedFragmentElementCounter(state, placeableRefId, refId),
+			].reduce((result, counter) => ValidationCounter.add(result, counter), {
+				error: 0,
+				warning: 0,
+			});
 
 			if (!currentElement) {
 				return placeableCounter;
@@ -609,7 +834,14 @@ export namespace ValidationSelectors {
 		[PrintEngineSelectors.state, elements, idInputSelector, idInputSelectorSecond],
 		(state, elements, placeableRefId, refId) => {
 			const currentElement = elements.find(element => refId === element["@id"]);
-			const placeableCounter = placeableRefLayoutCounter(state, placeableRefId);
+			const placeableCounter = [
+				placeableRefLayoutCounter(state, placeableRefId),
+				fragmentElementCounter(state, placeableRefId, refId),
+				nestedFragmentElementCounter(state, placeableRefId, refId),
+			].reduce((result, counter) => ValidationCounter.add(result, counter), {
+				error: 0,
+				warning: 0,
+			});
 
 			if (!currentElement) {
 				return placeableCounter;

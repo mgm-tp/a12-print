@@ -45,7 +45,7 @@ interface FontSizeInputProps extends BaseTextStylePropertyProps {
 	onBlur: (val?: number) => void;
 }
 
-export const FontSizeInput = (props: FontSizeInputProps) => {
+export const FontSizeInput = ({ onBlur, fontSize, isReadonly, errorMessage }: FontSizeInputProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 
 	const formatOnChange = React.useCallback((newFontSize: string, oldFontSize?: string) => {
@@ -55,18 +55,18 @@ export const FontSizeInput = (props: FontSizeInputProps) => {
 		return newFontSize;
 	}, []);
 
-	const onBlur = React.useCallback(
+	const handleOnBlur = React.useCallback(
 		(event: React.FocusEvent<HTMLInputElement>) => {
-			props.onBlur(event.target.value ? Number(event.target.value) : undefined);
+			onBlur(event.target.value ? Number(event.target.value) : undefined);
 		},
-		[props]
+		[onBlur]
 	);
 
 	return (
 		<StyledTextInput
 			textAlignment="right"
-			value={props.fontSize ? String(props.fontSize) : undefined}
-			onBlur={onBlur}
+			value={fontSize ? String(fontSize) : undefined}
+			onBlur={handleOnBlur}
 			suffixes={<TextAffix>pt</TextAffix>}
 			addonBefore={
 				<TextPropertyButton
@@ -75,8 +75,8 @@ export const FontSizeInput = (props: FontSizeInputProps) => {
 				/>
 			}
 			formatOnChange={formatOnChange}
-			disabled={props.isDefaultTextStyle}
-			errorMessage={props.errorMessage}
+			disabled={isReadonly}
+			errorMessage={errorMessage}
 		/>
 	);
 };

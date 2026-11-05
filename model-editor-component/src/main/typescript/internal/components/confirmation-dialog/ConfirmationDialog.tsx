@@ -38,19 +38,30 @@ import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { ConfirmationDialogActions, ConfirmationDialogType } from "../../redux/index.js";
 
+import { FragmentUsagesList } from "../fragment/FragmentUsagesList.js";
+
 const CANCEL_BUTTON_LABEL_MAP: Record<ConfirmationDialogType, string> = {
 	[ConfirmationDialogType.DELETE]: RESOURCE_KEYS.button.close,
 	[ConfirmationDialogType.CANNOT_BE_UNDONE]: RESOURCE_KEYS.button.close,
 	[ConfirmationDialogType.DISCARD_CHANGES]: RESOURCE_KEYS.button.back,
+	[ConfirmationDialogType.FRAGMENT_IN_USE]: RESOURCE_KEYS.button.close,
+	[ConfirmationDialogType.COMMIT_AFFECTS_PRINT_MODELS]: RESOURCE_KEYS.button.cancel,
+	[ConfirmationDialogType.FRAGMENT_UNLINK]: RESOURCE_KEYS.button.cancel,
+	[ConfirmationDialogType.FRAGMENT_UNLINK_ADDS_DEPENDENCIES]: RESOURCE_KEYS.button.cancel,
 };
 
 const CONFIRM_BUTTON_LABEL_MAP: Record<ConfirmationDialogType, string> = {
 	[ConfirmationDialogType.DELETE]: RESOURCE_KEYS.button.delete,
 	[ConfirmationDialogType.CANNOT_BE_UNDONE]: RESOURCE_KEYS.button.apply,
 	[ConfirmationDialogType.DISCARD_CHANGES]: RESOURCE_KEYS.button.discardChanges,
+	[ConfirmationDialogType.FRAGMENT_IN_USE]: RESOURCE_KEYS.button.close,
+	[ConfirmationDialogType.COMMIT_AFFECTS_PRINT_MODELS]:
+		RESOURCE_KEYS.confirmationDialog.commitAffectsPrintModels.confirmButton,
+	[ConfirmationDialogType.FRAGMENT_UNLINK]: RESOURCE_KEYS.button.apply,
+	[ConfirmationDialogType.FRAGMENT_UNLINK_ADDS_DEPENDENCIES]: RESOURCE_KEYS.button.apply,
 };
 
-const DESTRUCTIVE_TYPE = [ConfirmationDialogType.DELETE, ConfirmationDialogType.DISCARD_CHANGES];
+const DESTRUCTIVE_TYPE = new Set([ConfirmationDialogType.DELETE, ConfirmationDialogType.DISCARD_CHANGES]);
 
 export const ConfirmationDialog = () => {
 	const dispatch = useDispatch();
@@ -70,7 +81,7 @@ export const ConfirmationDialog = () => {
 		return null;
 	}
 
-	const { type } = confirmationDialogState;
+	const { type, payload } = confirmationDialogState;
 	const title = localizer(RESOURCE_KEYS.confirmationDialog[type].title);
 	const closeButtonLabel = localizer(CANCEL_BUTTON_LABEL_MAP[type]);
 	const confirmButtonLabel = localizer(CONFIRM_BUTTON_LABEL_MAP[type]);
@@ -80,7 +91,7 @@ export const ConfirmationDialog = () => {
 			<Button onClick={onClose} label={closeButtonLabel} title={closeButtonLabel} />
 			<Button
 				primary
-				destructive={DESTRUCTIVE_TYPE.includes(type)}
+				destructive={DESTRUCTIVE_TYPE.has(type)}
 				onClick={onConfirm}
 				label={confirmButtonLabel}
 				title={confirmButtonLabel}
@@ -97,6 +108,24 @@ export const ConfirmationDialog = () => {
 			onClose={onClose}
 		>
 			{localizer(RESOURCE_KEYS.confirmationDialog[type].text)}
+			{payload?.usages && payload.usages.length > 0 && (
+				<FragmentUsagesList usages={payload.usages} onNavigated={onClose} />
+			)}
+			{payload?.dependencies && payload.dependencies.length > 0 && (
+				<ul>
+					{payload.dependencies.map(dependency => (
+						<li key={`${dependency.modelType}-${dependency.reference}`}>
+							{localizer(
+								dependency.modelType === "document"
+									? RESOURCE_KEYS.confirmationDialog.fragmentUnlinkAddsDependencies.documentModelItem
+									: RESOURCE_KEYS.confirmationDialog.fragmentUnlinkAddsDependencies
+											.typesettingModelItem
+							)}{" "}
+							{dependency.reference}
+						</li>
+					))}
+				</ul>
+			)}
 		</ModalNotification>
 	);
 };

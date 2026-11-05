@@ -2,7 +2,7 @@
   "header": {
     "id": "WatermarkPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -12,11 +12,11 @@
     "annotations": [
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -348,7 +348,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_edbb6"
       },
       {
         "id": "mUfHHK6ldFvKqUgZCekfh",
@@ -389,7 +390,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_3b3f4"
       },
       {
         "id": "ohn4-tj4E8I-gXINbODCw",
@@ -435,7 +437,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_da5f5"
       },
       {
         "id": "uM8zICNPgu6ERHPD_VIxF",
@@ -462,7 +465,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_1a05e"
       },
       {
         "id": "NuWLGJRpf9V1Jv5nYFPzc",
@@ -508,7 +512,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_da9b8"
       },
       {
         "id": "W-GDdqyTu21WGnmnlrZSN",
@@ -535,7 +540,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_b7f80"
       }
     ]
   }

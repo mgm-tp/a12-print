@@ -94,16 +94,18 @@ describe("Toolbar", () => {
 	const TransactionLogStateMock: Reducer = (state: TransactionLogStore = transactionStateMock, action) =>
 		TransactionLogStateReducer(state, action);
 
+	// Mirrors how BasicDefaultEditor composes the toolbar: the quick edit bar renders the
+	// Element Library button as part of its action buttons, so both wrap as one block.
 	const setupTest = () => {
 		return renderWithProviders(
 			<EditorContext.Provider value={EditorContextMock}>
 				<Toolbar
-					leftItems={[ToolbarItem.ElementLibrary, ToolbarItem.ZoomFactor, ToolbarItem.HideFrames]}
+					leftItems={[ToolbarItem.ZoomFactor, ToolbarItem.HideFrames]}
 					rightItems={[
 						<DefaultQuickEditBar
 							groupSelectedEls={jest.fn()}
 							key="quick-edit-bar"
-							selected={[elementMock.id]}
+							selected={[elementRefMock.id]}
 							deleteSelectedEls={deleteSelectedElsMock}
 						/>,
 					]}
@@ -120,5 +122,11 @@ describe("Toolbar", () => {
 	it("renders correctly", () => {
 		const { container } = setupTest();
 		expect(container).toMatchSnapshot();
+	});
+
+	it("renders the element library button as part of the quick edit bar", () => {
+		const { getByTitle } = setupTest();
+
+		expect(getByTitle("Open/Close Element Library")).toBeInTheDocument();
 	});
 });

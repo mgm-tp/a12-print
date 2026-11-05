@@ -245,27 +245,6 @@
                     }
                   ]
                 }
-              },
-              {
-                "type": "Rule",
-                "id": "rule_74a85",
-                "name": "referenceFilled",
-                "Rule": {
-                  "errorEntityRelPath": "../reference",
-                  "errorCode": "Error rule_74a85",
-                  "errorCondition": "GroupFilled(RuleGroup) And [source] == \"INHERITED\" And FieldNotFilled(reference)",
-                  "severity": "ERROR",
-                  "errorMessage": [
-                    {
-                      "locale": "en",
-                      "text": "Please specify a value"
-                    },
-                    {
-                      "locale": "de",
-                      "text": "Bitte gib einen Wert an"
-                    }
-                  ]
-                }
               }
             ]
           }

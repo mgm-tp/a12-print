@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`validateDocumentModelCompatibility reports the fragment model reference if only the fragment model uses a document model 1`] = `
+{
+  "header": {
+    "modelReferences": [
+      {
+        "@error": [
+          "The Fragment Model 'printFragment' references a Document Model, but this Print Model does not",
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`validateDocumentModelCompatibility reports the fragment model reference if the print model uses more than one document model 1`] = `
+{
+  "header": {
+    "modelReferences": [
+      {
+        "@error": [
+          "The Fragment Model 'printFragment' references a different Document Model than this Print Model",
+        ],
+      },
+    ],
+  },
+}
+`;
+
+exports[`validateDocumentModelCompatibility reports the fragment model reference if they use different document models 1`] = `
+{
+  "header": {
+    "modelReferences": [
+      {
+        "@error": [
+          "The Fragment Model 'printFragment' references a different Document Model than this Print Model",
+        ],
+      },
+    ],
+  },
+}
+`;

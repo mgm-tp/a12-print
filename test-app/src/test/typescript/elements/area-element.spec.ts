@@ -42,7 +42,12 @@ import {
 	setBorderColor,
 	setBorderStyle,
 	setBorderWidth,
+	openWrapperStage,
+	selectTab,
+	testCopyElement,
+	waitForInteractionSagasSettled,
 } from "../utils/index.js";
+import { selectFieldFromTree } from "../utils/userActions/treeActions";
 
 devAppTest.use({ useCase: "003-automated-tests" });
 
@@ -54,7 +59,7 @@ test.describe("Area Element", () => {
 		await page.locator("#sidebar-panel").getByLabel("Close").click({ force: true });
 	});
 
-	devAppTest("General interactions", async ({ page }) => {
+	devAppTest("General interactions", async ({ page, editorMode }) => {
 		const area = page.getByTestId("element-area");
 
 		await test.step("Add border properties", async () => {
@@ -69,8 +74,7 @@ test.describe("Area Element", () => {
 		});
 
 		await test.step("Open Wrapper Stage and increase the area stage height", async () => {
-			await area.hover();
-			await page.getByRole("button", { name: "Edit", exact: true }).click();
+			await openWrapperStage({ page, element: area });
 
 			const resizeHandle = page.getByTestId("resize-handle").nth(0);
 			await dragAndDrop(page, resizeHandle, 0, 100);
@@ -107,14 +111,46 @@ test.describe("Area Element", () => {
 			// resizing to the bottom of the table element should work
 			await dragAndDrop(page, resizeHandle, 0, -67);
 			boundingBox = await parent.boundingBox();
-			expect(boundingBox?.height).toBe(232);
-
-			await expect.soft(parent).toHaveScreenshot();
+			if (editorMode !== "light") {
+				expect(boundingBox?.height).toBe(232);
+				await expect.soft(parent).toHaveScreenshot();
+			} else {
+				expect(boundingBox?.height).toBe(236);
+			}
 		});
 
 		await test.step("Commit changes", async () => {
 			await page.getByRole("link", { name: "First Segment" }).click();
 			await commitChanges({ page, hasErrors: true });
+		});
+
+		await test.step("Bind the table inside the area, so that nothing is left in error", async () => {
+			await selectTab({ page, tab: "Segment" });
+			await openEditorStage({ page, tab: "Segment", cardName: "First Segment" });
+
+			await openWrapperStage({ page, element: area });
+			await page.getByTestId("element-table").dblclick();
+
+			const detailForm = page.getByTestId("detail-form-container");
+			await detailForm
+				.getByRole("combobox")
+				.filter({ has: page.getByRole("option", { name: "ExampleDM" }) })
+				.selectOption({ label: "ExampleDM" });
+			await selectFieldFromTree({ tree: detailForm.locator('[data-role="tree"]'), fieldPath: "/example" });
+			await waitForInteractionSagasSettled(page);
+
+			await closeDetail({ page });
+			// leave the area stage
+			await page.getByRole("link", { name: "First Segment" }).click();
+			await expect(page).toHaveEditorStageErrors(0);
+		});
+
+		await test.step("Commit changes", async () => {
+			await commitChanges({ page });
+		});
+
+		await test.step("Copy Element", async () => {
+			await testCopyElement({ page, testId: "element-area" });
 		});
 	});
 });

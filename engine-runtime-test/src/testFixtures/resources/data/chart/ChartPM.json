@@ -2,7 +2,7 @@
   "header": {
     "id": "ChartPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -274,7 +274,8 @@
             "valueField": "/general/repeatable/integer_field",
             "keyField": "/general/repeatable/string_field"
           }
-        }
+        },
+        "name": "PieChart_d6f5f"
       },
       {
         "id": "aymJotzgBFBPVVuf7079",
@@ -351,7 +352,8 @@
               "color": "#0000FF"
             }
           ]
-        }
+        },
+        "name": "BarChart_7dff4"
       },
       {
         "id": "aymJo565656BPVVuf7079",
@@ -421,7 +423,8 @@
               "color": "#0000FF"
             }
           ]
-        }
+        },
+        "name": "LineChart_97a30"
       }
     ],
     "textStyles": {

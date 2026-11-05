@@ -268,4 +268,24 @@ describe("DataContextSelection", () => {
 
 		expect(queryByText("RepeatableGroup")).toBeInTheDocument();
 	});
+
+	describe("readonly mode", () => {
+		it("does not call setSelectedPath when disabled is true", () => {
+			const setSelectedPath = jest.fn();
+			const { getByText } = renderWithProviders(
+				<DataContextSelection
+					type={AllowedElementType.anyGroup}
+					selectedPath={undefined}
+					setSelectedPath={setSelectedPath}
+					maxRepeatLevel={MAX_REPEAT_LEVEL}
+					elementMapEntries={[nonRepeatableGroupEntry]}
+					disabled={true}
+				/>
+			);
+
+			fireEvent.click(getByText("RootGroup"));
+
+			expect(setSelectedPath).not.toHaveBeenCalled();
+		});
+	});
 });

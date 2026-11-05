@@ -75,19 +75,20 @@ Field:: Navigate to the desired field by expanding Groups in the selected Docume
 The following Fields from the Attachment Group should be selected when referencing Attachments from the Document Model:
 +
 * `content` Field when using Attachments in Embedded mode.
-* `attachment_id` Field when using Attachments in Reference mode.
+* `attachment_id` Field when using Attachments in Reference mode. The AttachmentProvider will use this ID to provide the attachment content at render time
+
+To allow referenced attachments, you need to use the link:/docs/PRINT_ENGINE/print-technical-documentation/index.html#attachment_provider[AttachmentProvider].
 
 [NOTE]
 ====
 Any other Field in a Document Model that contains a valid base64-encoded image string may also be selected.
 ====
 
-
 [CAUTION]
 ====
-Please note that the <<Preview, Print Preview>> will not work with the `attachment_id` selected. This functionality is intended for use in A12 applications that have an _AttachmentProvider_ implemented.
+It is strongly recommended to use the `attachment_id`, as A12 no longer fully supports embedded attachments.
 ====
 
 Since the image dimensions are not available during the editing, the width must be explicitly set by the user.
 
-image::chapter03/03_image_dynamic_detail_view.png.png[Image element detail view using dynamic image,title="Image element detail view using dynamic image"]
+image::chapter03/03_image_dynamic_detail_view.png[Image element detail view using dynamic image,title="Image element detail view using dynamic image"]

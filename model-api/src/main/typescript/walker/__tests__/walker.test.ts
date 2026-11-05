@@ -38,6 +38,7 @@ import {
 	type Segment,
 	type Section,
 	type Watermark,
+	SectionUsage,
 	SegmentReferencePurpose,
 	SegmentReferenceDirection,
 } from "../../model/index.js";
@@ -789,5 +790,145 @@ describe("PrintModelWalker with complex model", () => {
 			// STOP breaks the structure loop; sections/watermarks still run
 			expect(result).toBe(TraversalCommand.CONTINUE);
 		});
+	});
+});
+
+describe("PrintModelWalker with print fragment models", () => {
+	const fragmentModel: PrintModel = {
+		...complexModel,
+		header: { ...complexModel.header, id: "fragment-model", modelSubType: "fragment" },
+	};
+
+	const usingModel: PrintModel = {
+		header: {
+			id: "using-model",
+			modelType: "print",
+			modelVersion: complexModel.header.modelVersion,
+			description: "",
+			modelReferences: [
+				{ id: "mr-1", modelType: "print", purpose: "print-fragment", reference: "fragment-model" },
+			],
+		},
+		content: {
+			id: "content-1",
+			general: {
+				...complexModel.content.general,
+				structure: ["seg-ref"],
+				sections: ["sec-ref"],
+				watermarks: ["wm-ref"],
+			},
+			segments: {
+				id: "segs-1",
+				definitions: [],
+				references: [],
+				fragmentReferences: [{ id: "seg-ref", refId: "seg-1", model: "fragment-model" }],
+			},
+			sections: {
+				id: "secdefs-1",
+				definitions: [],
+				references: [
+					{ id: "sec-ref", refId: "sec-1", model: "fragment-model", sectionUsage: SectionUsage.Remaining },
+				],
+			},
+			watermarks: {
+				id: "wmdefs-1",
+				definitions: [],
+				references: [{ id: "wm-ref", refId: "wm-1", model: "fragment-model" }],
+			},
+			elementDefinitions: [],
+		},
+	};
+
+	class FragmentVisitor extends CollectingVisitor {
+		public visitedSections: string[] = [];
+		public visitedWatermarks: string[] = [];
+		public preVisitedSections: Array<{ id: string; sectionUsage: SectionUsage }> = [];
+
+		preVisitSectionWithUsage(section: Section, sectionUsage: SectionUsage): TraversalCommand {
+			this.preVisitedSections.push({ id: section.id, sectionUsage });
+			return TraversalCommand.CONTINUE;
+		}
+
+		visitSection(section: Section): TraversalCommand {
+			this.visitedSections.push(section.id);
+			return TraversalCommand.CONTINUE;
+		}
+
+		visitWatermark(watermark: Watermark): TraversalCommand {
+			this.visitedWatermarks.push(watermark.id);
+			return TraversalCommand.CONTINUE;
+		}
+
+		visitUnresolvedSection(): TraversalCommand {
+			return TraversalCommand.CONTINUE;
+		}
+
+		visitUnresolvedSegment(): TraversalCommand {
+			return TraversalCommand.CONTINUE;
+		}
+
+		visitUnresolvedWatermark(): TraversalCommand {
+			return TraversalCommand.CONTINUE;
+		}
+	}
+
+	function walkUsingModel(fragmentModels: PrintModel[]): FragmentVisitor {
+		const visitor = new FragmentVisitor();
+		PrintModelWalker.withDefaultResolvers(
+			visitor,
+			usingModel,
+			PrintModelListResolver.fromModelList(fragmentModels)
+		).walkPrintModel(usingModel);
+		return visitor;
+	}
+
+	it("walks the referenced segment, section and watermark under their reference ids", () => {
+		const visitor = walkUsingModel([fragmentModel]);
+
+		expect(visitor.visitedSegments).toContain("seg-ref");
+		expect(visitor.visitedSections).toContain("sec-ref");
+		expect(visitor.visitedWatermarks).toContain("wm-ref");
+	});
+
+	it("reports the usage of the reference, not the one of the fragment's section definition", () => {
+		const visitor = walkUsingModel([fragmentModel]);
+
+		expect(complexModel.content.sections?.definitions[0].sectionUsage).toBe(SectionUsage.First);
+		expect(visitor.preVisitedSections).toEqual([{ id: "sec-ref", sectionUsage: SectionUsage.Remaining }]);
+	});
+
+	it("walks the elements the referenced containers place, although they live in the fragment model", () => {
+		const visitor = walkUsingModel([fragmentModel]);
+
+		expect(visitor.visitedElements).toContain("Field");
+		expect(visitor.unresolvedElements).toEqual([]);
+	});
+
+	it("reports the used ids as unresolved while the fragment model is not available", () => {
+		const visitor = walkUsingModel([]);
+
+		expect(visitor.visitedSegments).toEqual([]);
+		expect(visitor.visitedSections).toEqual([]);
+		expect(visitor.visitedWatermarks).toEqual([]);
+		expect(visitor.preVisitedSections).toEqual([]);
+	});
+
+	it("skips descending into a section whose preVisitSectionWithUsage does not continue", () => {
+		class SkippingVisitor extends FragmentVisitor {
+			preVisitSectionWithUsage(): TraversalCommand {
+				return TraversalCommand.STOP;
+			}
+		}
+
+		const visitor = new SkippingVisitor();
+		PrintModelWalker.withDefaultResolvers(
+			visitor,
+			usingModel,
+			PrintModelListResolver.fromModelList([fragmentModel])
+		).walkPrintModel(usingModel);
+
+		expect(visitor.visitedSections).toEqual([]);
+		expect(visitor.visitedSegments).toContain("seg-ref");
+		expect(visitor.visitedWatermarks).toContain("wm-ref");
 	});
 });

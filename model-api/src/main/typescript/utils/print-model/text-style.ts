@@ -31,35 +31,60 @@
  */
 import { nanoid } from "nanoid";
 
-import { type PartialTextStyle } from "../../model/index.js";
+import { type PartialTextStyle, type PrintModelEntity } from "../../model/index.js";
 
 import { deepCloneObject } from "./base.js";
 
-export function cloneTextStyles(textStyles: readonly string[], textStyleDefinitions: readonly PartialTextStyle[]) {
-	const textStyleIdMap = new Map();
+export function cloneTextStyles<Reference extends PrintModelEntity & { readonly refId?: string }>(
+	textStyles: readonly string[],
+	textStyleDefinitions: readonly PartialTextStyle[],
+	textStyleReferences: readonly Reference[] = []
+) {
+	const textStyleIdMap = new Map<string, string>();
 	const clonedTextStyles: PartialTextStyle[] = [];
 	const newTextStyles: string[] = [];
+	const clonedTextStyleReferences: Reference[] = [];
 
 	textStyles?.forEach(textStyleId => {
 		const targetTextStyle = textStyleDefinitions?.find(textStyle => textStyle.id === textStyleId);
-		if (!targetTextStyle) {
+		if (targetTextStyle) {
+			const clonedTextStyle = deepCloneObject({
+				target: targetTextStyle,
+				extraAssignFunc: (key, value) => {
+					return key === "id" ? nanoid() : value;
+				},
+			});
+
+			textStyleIdMap.set(textStyleId, clonedTextStyle.id);
+			newTextStyles.push(clonedTextStyle.id);
+			clonedTextStyles.push(clonedTextStyle);
 			return;
 		}
-		const clonedTextStyle = deepCloneObject({
-			target: targetTextStyle,
-			extraAssignFunc: (key, value) => {
-				return key === "id" ? nanoid() : value;
-			},
+
+		// the list also names text styles a fragment model provides - the reference is what this model owns
+		const textStyleReference = textStyleReferences.find(reference => reference.id === textStyleId);
+		if (!textStyleReference) {
+			return;
+		}
+
+		const clonedReference = deepCloneObject({
+			target: textStyleReference,
+			extraAssignFunc: (key, value) => (key === "id" ? nanoid() : value),
 		});
 
-		textStyleIdMap.set(textStyleId, clonedTextStyle.id);
-		newTextStyles.push(clonedTextStyle.id);
-		clonedTextStyles.push(clonedTextStyle);
+		textStyleIdMap.set(textStyleId, clonedReference.id);
+		if (textStyleReference.refId) {
+			// elements may address the fragment style by the id it has in the fragment model, which stays
+			textStyleIdMap.set(textStyleReference.refId, textStyleReference.refId);
+		}
+		newTextStyles.push(clonedReference.id);
+		clonedTextStyleReferences.push(clonedReference);
 	});
 
 	return {
 		newTextStyles,
 		clonedTextStyles,
+		clonedTextStyleReferences,
 		textStyleIdMap,
 	};
 }

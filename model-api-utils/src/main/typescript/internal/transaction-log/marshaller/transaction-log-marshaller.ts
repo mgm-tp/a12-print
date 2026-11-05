@@ -42,9 +42,9 @@ import { LogValueType } from "./log-value-type.js";
 import type { OutputCell, OutputRow } from "./tsv-output.js";
 
 export class TransactionLogMarshaller extends LogMarshaller {
-	private static CELL_COUNT = 11;
+	private static readonly CELL_COUNT = 11;
 
-	private static indexes: LogIndexes<PartialTransactionLogPersistentEntry> = {
+	private static readonly indexes: LogIndexes<PartialTransactionLogPersistentEntry> = {
 		interactionId: { value: 1 },
 		id: { value: 2 },
 		entryType: { value: 3 },

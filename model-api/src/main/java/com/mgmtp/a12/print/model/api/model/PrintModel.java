@@ -32,12 +32,13 @@
 package com.mgmtp.a12.print.model.api.model;
 
 
+import com.mgmtp.a12.model.Model;
 import com.mgmtp.a12.model.header.Header;
-import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
 import com.mgmtp.a12.model.utils.OnlyForUsage;
+import com.mgmtp.a12.print.model.api.model.path.PrintModelPathElement;
 
 @OnlyForUsage
-public interface PrintModel extends PrintModelPathElement  {
+public interface PrintModel extends PrintModelPathElement, Model {
 
 	Header getHeader();
 	PrintModelContent getContent();

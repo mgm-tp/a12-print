@@ -32,6 +32,7 @@
 export * from "./base-header-deserializer.js";
 export * from "./document-model-data.js";
 export * from "./document-model-utils.js";
+export * from "./generate-element-name.js";
 export * from "./object-utils.js";
 export * from "./print-model-creator.js";
 export * from "./print-model-image-utils.js";

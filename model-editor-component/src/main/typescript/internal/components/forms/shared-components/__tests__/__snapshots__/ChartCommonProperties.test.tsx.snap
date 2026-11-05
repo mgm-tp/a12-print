@@ -30,6 +30,10 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
   max-width: unset;
 }
 
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c14 {
+  color: inherit;
+}
+
 .c1 {
   color: #4d4d4d;
   display: inline-block;
@@ -191,7 +195,7 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
   width: 100%;
 }
 
-.c6 >.StyledTooltipTriggerWrapper-sc-eBoCRM {
+.c6 >.StyledTooltipTriggerWrapper-sc-cAUnSs {
   margin: 0 4px 4px 0;
 }
 
@@ -510,6 +514,7 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
       <div>
         <label
           class="c0 c1 label field__label"
+          data-disabled="false"
           data-role="textline-label"
         >
           Title
@@ -527,6 +532,7 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
             >
               <div
                 class="c7 field__input"
+                data-disabled="false"
                 data-readonly="false"
                 data-role="text-field-input-wrapper"
               >
@@ -559,6 +565,8 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
                         >
                           <span
                             aria-hidden="true"
+                            class="notranslate"
+                            translate="no"
                           >
                             edit
                           </span>
@@ -594,6 +602,8 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   edit
                                 </span>
@@ -626,6 +636,8 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   clear
                                 </span>
@@ -669,12 +681,14 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
         >
           <label
             class="c0 c1 label field__label"
+            data-disabled="false"
             data-role="text-field-label"
           >
             Height
           </label>
           <div
             class="c7 field__input"
+            data-disabled="false"
             data-role="text-field-input-wrapper"
           >
             <span
@@ -722,12 +736,14 @@ exports[`ChartCommonProperties should renders correctly 1`] = `
         >
           <label
             class="c0 c1 label field__label"
+            data-disabled="false"
             data-role="text-field-label"
           >
             Width
           </label>
           <div
             class="c7 field__input"
+            data-disabled="false"
             data-role="text-field-input-wrapper"
           >
             <span
@@ -794,6 +810,10 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
 
 .c15.c15 {
   max-width: unset;
+}
+
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c15 {
+  color: inherit;
 }
 
 .c1 {
@@ -957,7 +977,7 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
   width: 100%;
 }
 
-.c6 >.StyledTooltipTriggerWrapper-sc-eBoCRM {
+.c6 >.StyledTooltipTriggerWrapper-sc-cAUnSs {
   margin: 0 4px 4px 0;
 }
 
@@ -979,9 +999,9 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
   vertical-align: middle;
 }
 
-.c32[data-role="checkbox-group"] .c0 ~.StyledTooltipTriggerWrapper-sc-eBoCRM,
-.c32[data-role="radio-group"] .c0 ~.StyledTooltipTriggerWrapper-sc-eBoCRM,
-.c32[data-role="file-upload"] .c0 ~.StyledTooltipTriggerWrapper-sc-eBoCRM {
+.c32[data-role="checkbox-group"] .c0 ~.StyledTooltipTriggerWrapper-sc-cAUnSs,
+.c32[data-role="radio-group"] .c0 ~.StyledTooltipTriggerWrapper-sc-cAUnSs,
+.c32[data-role="file-upload"] .c0 ~.StyledTooltipTriggerWrapper-sc-cAUnSs {
   margin: 0 0 4px 0;
 }
 
@@ -1429,6 +1449,7 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
       <div>
         <label
           class="c0 c1 label field__label"
+          data-disabled="false"
           data-role="textline-label"
         >
           Title
@@ -1446,6 +1467,7 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
             >
               <div
                 class="c7 field__input"
+                data-disabled="false"
                 data-isfocused="false"
                 data-readonly="false"
                 data-role="text-field-input-wrapper"
@@ -1479,6 +1501,8 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
                         >
                           <span
                             aria-hidden="true"
+                            class="notranslate"
+                            translate="no"
                           >
                             edit
                           </span>
@@ -1514,6 +1538,8 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   edit
                                 </span>
@@ -1546,6 +1572,8 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   clear
                                 </span>
@@ -1589,12 +1617,14 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
         >
           <label
             class="c0 c1 label field__label"
+            data-disabled="false"
             data-role="text-field-label"
           >
             Height
           </label>
           <div
             class="c7 field__input"
+            data-disabled="false"
             data-role="text-field-input-wrapper"
           >
             <span
@@ -1642,12 +1672,14 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
         >
           <label
             class="c0 c1 label field__label"
+            data-disabled="false"
             data-role="text-field-label"
           >
             Width
           </label>
           <div
             class="c7 field__input"
+            data-disabled="false"
             data-role="text-field-input-wrapper"
           >
             <span
@@ -1686,6 +1718,7 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
       <div>
         <label
           class="c0 c1 label field__label"
+          data-disabled="false"
           data-role="textline-label"
         >
           Label Category Axis
@@ -1703,6 +1736,7 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
             >
               <div
                 class="c7 field__input"
+                data-disabled="false"
                 data-isfocused="false"
                 data-readonly="false"
                 data-role="text-field-input-wrapper"
@@ -1736,6 +1770,8 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
                         >
                           <span
                             aria-hidden="true"
+                            class="notranslate"
+                            translate="no"
                           >
                             edit
                           </span>
@@ -1771,6 +1807,8 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   edit
                                 </span>
@@ -1803,6 +1841,8 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   clear
                                 </span>
@@ -1837,6 +1877,7 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
       <div>
         <label
           class="c0 c1 label field__label"
+          data-disabled="false"
           data-role="textline-label"
         >
           Label Value Axis
@@ -1854,6 +1895,7 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
             >
               <div
                 class="c7 field__input"
+                data-disabled="false"
                 data-readonly="false"
                 data-role="text-field-input-wrapper"
               >
@@ -1886,6 +1928,8 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
                         >
                           <span
                             aria-hidden="true"
+                            class="notranslate"
+                            translate="no"
                           >
                             edit
                           </span>
@@ -1921,6 +1965,8 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   edit
                                 </span>
@@ -1953,6 +1999,8 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
                               >
                                 <span
                                   aria-hidden="true"
+                                  class="notranslate"
+                                  translate="no"
                                 >
                                   clear
                                 </span>
@@ -1989,16 +2037,19 @@ exports[`ChartCommonProperties with Repeatable should renders correctly 1`] = `
     >
       <label
         class="c0 c1 label field__label"
+        data-disabled="false"
         data-role="select-label"
       >
         Orientation
       </label>
       <div
         class="c33 field__select"
+        data-disabled="false"
         data-role="select-control"
       >
         <div
           class="c34 field__select-wrapper"
+          data-disabled="false"
           data-role="select-wrapper"
         >
           <select

@@ -30,34 +30,34 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import { useSelector } from "react-redux";
-import { useReducer } from "react";
-
-import { CollapsiblePanel } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
+import { ValidationSelectors } from "../../redux/validation/selectors.js";
 
 import { TypesettingModelReferencesToolbar } from "./TypesettingModelReferencesToolbar.js";
-import { TypesettingModelReference } from "./TypesettingModelReference.js";
+import { ModelReferenceCard } from "./ModelReferenceCard.js";
+import { ModelReferencesPanel } from "./ModelReferencesPanel.js";
 
 export const TypesettingModelReferences = () => {
 	const localizer = PrintLocalizer.useLocalizer();
-	const [isOpenTypesettingModelReferences, toggleTypesettingModelReferences] = useReducer(state => !state, false);
 	const typesettingModelReferences = useSelector(PrintEngineSelectors.typesettingModelReferences);
+	const validationCounter = useSelector(ValidationSelectors.typesettingModelReferencesValidationCounter);
 
 	return (
-		<CollapsiblePanel
-			onClick={toggleTypesettingModelReferences}
+		<ModelReferencesPanel
+			section="typesetting"
 			title={localizer(RESOURCE_KEYS.sidebar.schema.tab.typesettingModelReferenced)}
+			validationCounter={validationCounter}
 		>
-			{isOpenTypesettingModelReferences && (
-				<>
-					<TypesettingModelReferencesToolbar />
-					{typesettingModelReferences.map(reference => (
-						<TypesettingModelReference key={reference.reference} reference={reference.reference} />
-					))}
-				</>
-			)}
-		</CollapsiblePanel>
+			<TypesettingModelReferencesToolbar />
+			{typesettingModelReferences.map(modelReference => (
+				<ModelReferenceCard
+					key={modelReference.reference}
+					modelReference={modelReference}
+					dataTestId="typesetting-model-reference-card"
+				/>
+			))}
+		</ModelReferencesPanel>
 	);
 };

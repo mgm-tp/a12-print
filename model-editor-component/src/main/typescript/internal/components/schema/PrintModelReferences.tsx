@@ -33,56 +33,60 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
-import {
-	CollapsiblePanel,
-	Button,
-	Icon,
-	Select,
-	addPrefix,
-	TextField,
-	Tooltip,
-} from "@com.mgmtp.a12.widgets/widgets-core";
+import { Button, Icon, Select, addPrefix, Tooltip, InputElements } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { PrintEngineSelectors } from "../../store/selectors.js";
 import { DINTemplateActions } from "../../redux//din-template/index.js";
 import { RequestApiSelectors } from "../../redux//request-api/selectors.js";
 import { RequestApiActions } from "../../redux/index.js";
+import { ValidationSelectors } from "../../redux/validation/selectors.js";
 
 import { StyledSchemaToolbar } from "./DocumentModelReferencesToolbar.styled.js";
-import { StyledPrintModelReferenceContainer } from "./PrintModelReference.styled.js";
+import { ModelReferenceCard } from "./ModelReferenceCard.js";
+import { ModelReferencesPanel } from "./ModelReferencesPanel.js";
 
 export const PrintModelReferences = () => {
 	const localizer = PrintLocalizer.useLocalizer();
-	const [isOpenPrintModelReferences, togglePrintModelReferences] = React.useReducer(state => !state, false);
 	const printModelReferences = useSelector(PrintEngineSelectors.printModelReferences);
+	const validationCounter = useSelector(ValidationSelectors.printModelReferencesValidationCounter);
+	const fragmentModelReferences = useSelector(PrintEngineSelectors.fragmentModelReferences);
+
+	// A Print Model may reference either Fragments or a DIN Template, never both at the same time.
+	const disabled = fragmentModelReferences.length > 0;
 
 	return (
-		<CollapsiblePanel
-			onClick={togglePrintModelReferences}
+		<ModelReferencesPanel
+			section="print"
 			title={localizer(RESOURCE_KEYS.sidebar.schema.tab.printModelReferenced)}
+			validationCounter={validationCounter}
 		>
-			{isOpenPrintModelReferences && (
-				<>
-					<PrintModelReferencesToolbar />
-					{printModelReferences.length > 0 &&
-						printModelReferences.map(({ reference }) => (
-							<PrintModelReference key={reference} reference={reference} />
-						))}
-				</>
+			{disabled && (
+				<InputElements.Info
+					dataRole="print-model-references-disabled-info"
+					infoMessage={localizer(RESOURCE_KEYS.sidebar.schema.info.printModelReferenceDisabled)}
+				/>
 			)}
-		</CollapsiblePanel>
+			<PrintModelReferencesToolbar disabled={disabled} />
+			{printModelReferences.map(modelReference => (
+				<ModelReferenceCard
+					key={modelReference.reference}
+					modelReference={modelReference}
+					dataTestId="print-model-reference-card"
+				/>
+			))}
+		</ModelReferencesPanel>
 	);
 };
 
-const PrintModelReferencesToolbar = () => {
+const PrintModelReferencesToolbar = ({ disabled }: { disabled: boolean }) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const [selectedPrintModel, setSelectedPrintModel] = React.useState("");
 	const [pendingModel, setPendingModel] = React.useState<string | null>(null);
 
 	const dinTemplateSegments = useSelector(RequestApiSelectors.dinTemplatePrintModels);
-	const printModelIds = useSelector(RequestApiSelectors.selectablePrintModelIds);
+	const printModelIds = useSelector(RequestApiSelectors.selectableDINPrintModelIds);
 	const printHeader = useSelector(PrintEngineSelectors.printHeader);
 	const dinTemplatePrintModelItems: SelectItem[] = React.useMemo(
 		() =>
@@ -140,9 +144,10 @@ const PrintModelReferencesToolbar = () => {
 				onValueChanged={onValueChanged}
 				items={dinTemplatePrintModelItems}
 				fitToParent={false}
+				disabled={disabled}
 			/>
 			<Tooltip
-				disabled={currentSelectedModelHasTemplateSegments || !selectedPrintModel}
+				disabled={disabled || currentSelectedModelHasTemplateSegments || !selectedPrintModel}
 				variant="hint"
 				text={localizer(RESOURCE_KEYS.sidebar.schema.tooltips.printModelReferenceWithoutSegments)}
 			>
@@ -151,18 +156,10 @@ const PrintModelReferencesToolbar = () => {
 					title={addButtonLabel}
 					label={addButtonLabel}
 					icon={<Icon>add</Icon>}
-					disabled={!selectedPrintModel || !currentSelectedModelHasTemplateSegments}
+					disabled={disabled || !selectedPrintModel || !currentSelectedModelHasTemplateSegments}
 					onClick={addReferencedPrintModel}
 				/>
 			</Tooltip>
 		</StyledSchemaToolbar>
-	);
-};
-
-const PrintModelReference = ({ reference }: { reference: string }) => {
-	return (
-		<StyledPrintModelReferenceContainer>
-			<TextField value={reference} readonly />
-		</StyledPrintModelReferenceContainer>
 	);
 };

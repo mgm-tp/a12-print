@@ -60,6 +60,7 @@ import { TABLE_PROPERTY_PATH } from "../../../constant/element-property-path.js"
 
 import { ActionColumnButtonGroup } from "../shared-components/ActionColumnButtonGroup.js";
 import { CustomCheckbox } from "../custom-base-input-components/index.js";
+import { useFormReadonly } from "../FormContext.js";
 
 type RowType = DeepPartial<TableColumnReference>;
 
@@ -71,6 +72,7 @@ export const TableColumns = ({ element }: TableColumnsProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const { tab, entityId, mode } = useSelector(NavigationSelectors.currentCanvasStageContext);
+	const isFormReadonly = useFormReadonly();
 
 	const table = element.table;
 	const columnsCopy = React.useMemo(() => element.table?.columns?.slice() || [], [element.table?.columns]);
@@ -162,6 +164,7 @@ export const TableColumns = ({ element }: TableColumnsProps) => {
 					label={localizer(RESOURCE_KEYS.button.add)}
 					className="-u-margin-t-2xs"
 					onClick={openTableColumnForm}
+					disabled={isFormReadonly}
 				/>
 			</ButtonGroup>
 		</div>
@@ -265,7 +268,7 @@ const useTableHandlers = (
 const TypeColumn = ({ refId }: { refId: string }) => {
 	const refElement = useSelector((state: PrintEngineState) => PrintEngineSelectors.printModelElement(state, refId));
 
-	return <>{refElement.type}</>;
+	return <>{refElement?.type}</>;
 };
 
 const useColumnDefinitions = (): BaseColumnType<RowType>[] => {

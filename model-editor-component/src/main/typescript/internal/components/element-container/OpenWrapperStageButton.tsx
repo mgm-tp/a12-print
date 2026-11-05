@@ -54,7 +54,7 @@ export const OpenWrapperStageButton = ({ element, reference }: OpenWrapperStageB
 
 	const handleOpenWrapperStage = () => {
 		if (!ElementsUtils.isWrapperElement(element)) {
-			throw new Error(`Expected element of type Bounding Box/Area/Switch but got ${element.type}`);
+			throw new Error(`Expected element of type Bounding Box/Area/Switch but got ${element?.type}`);
 		}
 
 		let dimension;

@@ -32,6 +32,8 @@
 import type { TextAreaStatelessProps } from "@com.mgmtp.a12.widgets/widgets-core";
 import { TextAreaStateless } from "@com.mgmtp.a12.widgets/widgets-core";
 
+import { useFormReadonly } from "../FormContext.js";
+
 import { useCustomBaseInputProps } from "./use-custom-base-input-props.js";
 
 export const CustomTextAreaStateless = (props: TextAreaStatelessProps) => {
@@ -41,12 +43,15 @@ export const CustomTextAreaStateless = (props: TextAreaStatelessProps) => {
 		props.addonAfter
 	);
 
+	const isFormReadonly = useFormReadonly();
+
 	return (
 		<TextAreaStateless
 			{...props}
 			errorMessage={errorMessage}
 			warningMessage={warningMessage}
 			addonAfter={[...propsAddonAfter, errorTooltip, warningTooltip]}
+			disabled={props.disabled || isFormReadonly}
 		/>
 	);
 };

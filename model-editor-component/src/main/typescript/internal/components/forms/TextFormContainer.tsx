@@ -63,6 +63,7 @@ import { BORDER_PROPERTIES_PATH } from "../../constant/element-property-path.js"
 
 import { PrintRichTextEditor } from "../richtext-editor/index.js";
 
+import { useFormReadonly } from "./FormContext.js";
 import {
 	FieldForm,
 	TextPropertiesForm,
@@ -78,6 +79,7 @@ import type { ElementWithoutIdAndType } from "./type.js";
 export const TextFormContainer = () => {
 	const dispatch = useDispatch();
 	const localize = PrintLocalizer.useLocalizer();
+	const isFormReadonly = useFormReadonly();
 	const element = useSelector(PrintEngineSelectors.rootFormElement);
 	const entityElement = useSelector(PrintEngineSelectors.currentSubFormElement);
 	const allPrintModelElements = useSelector(PrintEngineSelectors.printModelElements);
@@ -102,21 +104,29 @@ export const TextFormContainer = () => {
 
 	const text = element.text;
 
-	const { isBorderPropertiesInherited, inheritedWidthResolver, inheritedStyleResolver, inheritedColorResolver } =
-		React.useMemo(() => {
-			if (!parentElement || !PartialTableLayout.isInstance(parentElement)) {
-				return {
-					isBorderPropertiesInherited: false,
-					inheritedWidthResolver: () => undefined,
-					inheritedStyleResolver: () => undefined,
-					inheritedColorResolver: () => undefined,
-				};
-			}
+	const {
+		isBorderPropertiesInherited,
+		inheritedFrom,
+		inheritedWidthResolver,
+		inheritedStyleResolver,
+		inheritedColorResolver,
+	} = React.useMemo(() => {
+		if (!parentElement || !PartialTableLayout.isInstance(parentElement)) {
 			return {
-				isBorderPropertiesInherited: true,
-				...createBorderPropertiesInheritedResolver((parentElement as PartialTableLayout).borderProperties),
+				isBorderPropertiesInherited: false,
+				inheritedFrom: undefined,
+				inheritedWidthResolver: () => undefined,
+				inheritedStyleResolver: () => undefined,
+				inheritedColorResolver: () => undefined,
 			};
-		}, [parentElement]);
+		}
+		// a text used as a cell inherits its border from the table layout holding it
+		return {
+			isBorderPropertiesInherited: true,
+			inheritedFrom: parentElement.id,
+			...createBorderPropertiesInheritedResolver((parentElement as PartialTableLayout).borderProperties),
+		};
+	}, [parentElement]);
 
 	const onHideIfEmptyChange = React.useCallback(
 		(checked: boolean) => {
@@ -223,6 +233,7 @@ export const TextFormContainer = () => {
 				<BorderPropertiesForm
 					element={element}
 					determineInheritedSource={() => isBorderPropertiesInherited}
+					inheritedFrom={inheritedFrom}
 					propertiesPath={BORDER_PROPERTIES_PATH}
 					borderProperties={element.borderProperties}
 					setBorderProperties={setBorderProperties}
@@ -247,6 +258,7 @@ export const TextFormContainer = () => {
 		inheritedStyleResolver,
 		inheritedColorResolver,
 		isBorderPropertiesInherited,
+		inheritedFrom,
 	]);
 
 	return (
@@ -254,7 +266,7 @@ export const TextFormContainer = () => {
 			<CompactErrorWrapper
 				errorMessage={getErrorMessage("text")}
 				Child={PrintRichTextEditor}
-				childProps={{ element, onChangeEntity }}
+				childProps={{ element, onChangeEntity, isReadonly: isFormReadonly }}
 				childKey={element.id}
 			/>
 			{TextForm}

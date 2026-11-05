@@ -152,6 +152,10 @@ public interface PrintModelVisitor {
 		return TraversalCommand.CONTINUE;
 	}
 
+	default TraversalCommand preVisitSectionWithUsage(final ModelSection section, final ModelSection.SectionUsage sectionUsage, final PrintModelPath path) {
+		return TraversalCommand.CONTINUE;
+	}
+
 	default TraversalCommand visitSection(final ModelSection section, final PrintModelPath path) {
 		return TraversalCommand.CONTINUE;
 	}

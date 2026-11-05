@@ -30,14 +30,11 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import * as React from "react";
-import { useSelector } from "react-redux";
 
 import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
-import { PrintEngineSelectors } from "../../../store/selectors.js";
-import { ElementsUtils } from "../../../utils/index.js";
-import { NavigationSelectors } from "../../../redux/index.js";
+import { useCurrentEditorType } from "../../../hooks/use-current-editor-type.js";
 
 import { BoundingBoxDefaultEditor } from "./BoundingBoxDefaultEditor.js";
 import { AreaDefaultEditor } from "./AreaDefaultEditor.js";
@@ -45,26 +42,20 @@ import { OverrideDefaultEditor } from "./OverrideDefaultEditor.js";
 import { SegmentDefaultEditor } from "./SegmentDefaultEditor.js";
 import { SectionDefaultEditor } from "./SectionDefaultEditor.js";
 import { WatermarkDefaultEditor } from "./WatermarkDefaultEditor.js";
+import { FragmentElementDefaultEditor } from "./FragmentElementDefaultEditor.js";
 
 const EditorProvider: Record<string, React.ComponentType> = {
 	[SidebarItem.SEGMENT]: SegmentDefaultEditor,
 	[SidebarItem.SECTION]: SectionDefaultEditor,
 	[SidebarItem.WATERMARK]: WatermarkDefaultEditor,
+	[SidebarItem.FRAGMENT]: FragmentElementDefaultEditor,
 	[ElementType.BoundingBox]: BoundingBoxDefaultEditor,
 	[ElementType.Area]: AreaDefaultEditor,
 	[ElementType.Override]: OverrideDefaultEditor,
 };
 
 export const DefaultEditorRenderer = React.memo(function DefaultEditorRenderer() {
-	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
-	const currentWrapperContainer = useSelector(PrintEngineSelectors.currentWrapperContainer);
-
-	let editorType;
-	if (currentWrapperContainer && ElementsUtils.isWrapperElement(currentWrapperContainer)) {
-		editorType = currentWrapperContainer.type;
-	} else {
-		editorType = printModelRefs.currentRefType;
-	}
-	const Editor = EditorProvider[editorType] || SegmentDefaultEditor;
+	const currentEditorType = useCurrentEditorType();
+	const Editor = EditorProvider[currentEditorType] || SegmentDefaultEditor;
 	return <Editor />;
 });

@@ -41,6 +41,7 @@ import java.util.List;
 @Value
 public class ModelDocumentSectionResult {
 	@NonNull ModelSection modelSection;
+	@NonNull ModelSection.SectionUsage sectionUsage;
 	@NonNull List<IPrintElement> headerElements;
 	@NonNull List<IPrintElement> footerElements;
 }

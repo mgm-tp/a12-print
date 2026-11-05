@@ -93,7 +93,7 @@ export class InteractionGraph {
 		const { content, header } = printModel;
 		this.turnTransactionLogObjectToGraph(header, PRINT_MODEL_HEADER_LOG_ID);
 		this.turnTransactionLogObjectToGraph(content.general, PRINT_MODEL_CONTENT_GENERAL_LOG_ID);
-		content.segments.definitions.forEach(el => this.turnTransactionLogObjectToGraph(el, el.id));
+		content.segments?.definitions.forEach(el => this.turnTransactionLogObjectToGraph(el, el.id));
 		content.sections?.definitions.forEach(el => this.turnTransactionLogObjectToGraph(el, el.id));
 		content.textStyles?.definitions.forEach(el => this.turnTransactionLogObjectToGraph(el, el.id));
 		content.elementDefinitions.forEach(el => this.turnTransactionLogObjectToGraph(el, el.id));

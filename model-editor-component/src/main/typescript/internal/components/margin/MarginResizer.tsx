@@ -39,6 +39,8 @@ import { calculateNewMargin } from "../../utils/margin-utils.js";
 import type { MarginSide } from "../../types/margin.js";
 import { formatNumberToString } from "../../utils/index.js";
 
+import { EditorContext } from "../editor-stage/editor-context.js";
+
 import {
 	StyledDeleteIcon,
 	StyledIconContainer,
@@ -90,6 +92,7 @@ export const MarginResizer = ({
 	const [isResizing, setIsResizing] = React.useState(false);
 	const localizer = PrintLocalizer.useLocalizer();
 	const { margin: contextMargin, updateMargin } = React.useContext(MarginContext);
+	const { isReadonly } = React.useContext(EditorContext);
 
 	const onMouseMove = React.useCallback(
 		(event: MouseEvent) => {
@@ -159,7 +162,7 @@ export const MarginResizer = ({
 
 	return (
 		<StyledMargin ref={resizerRef} side={side} margin={marginValue} highlight={highlight}>
-			{showTooltip && highlight && (
+			{!isReadonly && showTooltip && highlight && (
 				<ToolTip>
 					{formatNumberToString(PX_TO_CM(marginValue))} cm
 					<StyledDeleteIcon
@@ -171,7 +174,7 @@ export const MarginResizer = ({
 					</StyledDeleteIcon>
 				</ToolTip>
 			)}
-			{!alwaysTooltip && marginValue >= MIN_VISIBLE_HEIGHT && highlight && (
+			{!isReadonly && !alwaysTooltip && marginValue >= MIN_VISIBLE_HEIGHT && highlight && (
 				<>
 					<StyledMarginValueContainer offset={textOffset}>
 						{formatNumberToString(PX_TO_CM(marginValue))} cm
@@ -183,7 +186,7 @@ export const MarginResizer = ({
 					</StyledIconContainer>
 				</>
 			)}
-			<StyledMarginResizeHandle side={side} onMouseDown={onMouseDown} />
+			{!isReadonly && <StyledMarginResizeHandle side={side} onMouseDown={onMouseDown} />}
 		</StyledMargin>
 	);
 };

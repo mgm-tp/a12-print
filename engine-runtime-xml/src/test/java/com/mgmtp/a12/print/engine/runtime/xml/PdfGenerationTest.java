@@ -31,7 +31,12 @@
  */
 package com.mgmtp.a12.print.engine.runtime.xml;
 
+import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
+import com.mgmtp.a12.print.engine.api.XmlPrintResult;
 import com.mgmtp.a12.print.engine.api.a12.AttachmentDependencyDescriptor;
+import com.mgmtp.a12.print.engine.api.exception.PrintException;
+import com.mgmtp.a12.print.engine.api.message.PrintMessage;
+import com.mgmtp.a12.print.engine.api.message.PrintMessageReport;
 import com.mgmtp.a12.print.engine.runtime.AttachmentProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
 import com.mgmtp.a12.print.engine.runtime.test.internal.PrintTestUtil;
@@ -44,6 +49,7 @@ import org.junit.platform.commons.util.StringUtils;
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -410,6 +416,122 @@ public class PdfGenerationTest {
 				)
 			);
 		}
+	}
+
+	@Test
+	public void testPieChartWithNegativeValueIsReportedAsErrorMessage() {
+		final var report = printChart("ChartPM", "ChartDM-2");
+
+		assertEquals(
+			"The value for the Pie Chart series 'ROW B' must not be negative.",
+			getSingleErrorDescription(report)
+		);
+	}
+
+	@Test
+	public void testPieChartWithNegativeValueMergedIntoANonNegativeSliceIsPrinted() {
+		final var report = printChart("ChartPM", "ChartDM-4");
+
+		assertTrue(report.noErrorOccurred());
+	}
+
+	@Test
+	public void testPieChartWithValuesMergedIntoANegativeSliceIsReportedAsErrorMessage() {
+		final var report = printChart("ChartPM", "ChartDM-5");
+
+		assertEquals(
+			"The value for the Pie Chart series 'ROW B' must not be negative.",
+			getSingleErrorDescription(report)
+		);
+	}
+
+	@Test
+	public void testPieChartWithValueOutOfFloatRangeIsReportedAsErrorMessage() {
+		final var report = printChart("ChartPM", "ChartDM-3");
+
+		assertEquals(
+			"The value for the Pie Chart series 'ROW B' must be a finite number.",
+			getSingleErrorDescription(report)
+		);
+	}
+
+	@Test
+	public void testChartWithDuplicateSeriesNameIsReportedAsErrorMessage() {
+		final var report = printChart("ChartDuplicateSeriesPM", "ChartDM-1");
+
+		assertEquals(
+			"The Chart series name 'series1' is used more than once. Every series of a Chart needs a unique name.",
+			getSingleErrorDescription(report)
+		);
+	}
+
+	@Test
+	public void testBarChartWithValueOutOfFloatRangeIsReportedAsErrorMessage() {
+		final var report = printChart("ChartBarPM", "ChartDM-3");
+
+		assertEquals(
+			"The values of the Chart series 'series1' must be finite numbers.",
+			getSingleErrorDescription(report)
+		);
+	}
+
+	@Test
+	public void testChartRejectedByTheChartLibraryIsReportedAsErrorMessage() {
+		final var report = printChart("ChartEmptySeriesNamePM", "ChartDM-1");
+
+		assertEquals(
+			"A chart from the given Print Model and data could not be generated.",
+			getSingleErrorDescription(report)
+		);
+	}
+
+	@Test
+	public void testChartWithoutDefaultFontThrowsPrintException() {
+		final var exception = assertThrows(
+			PrintException.class,
+			() -> XmlRuntimeTestUtil.printWithReport(
+				PrintTestUtil.loadFromResources("/data/chart/ChartPM.json"),
+				"ChartDM",
+				PrintTestUtil.loadFromResources("/data/chart/ChartDM.json"),
+				PrintTestUtil.loadFromResources("/data/chart/ChartDM-1.json"),
+				PdfBoxPrintEngineConfig.DEFAULT.toBuilder()
+					.availableFonts(Map.of(
+						PdfBoxPrintEngineConfig.DEFAULT_TEXT_STYLE_FONT_KEY, "classpath:fonts/OpenSans-Regular.ttf"
+					))
+					.build()
+			)
+		);
+
+		assertEquals("The default font key needs to be provided.", getRootCause(exception).getMessage());
+	}
+
+	private static PrintMessageReport<XmlPrintResult> printChart(String printModelName, String documentName) {
+		return XmlRuntimeTestUtil.printWithReport(
+			PrintTestUtil.loadFromResources(String.format("/data/chart/%s.json", printModelName)),
+			"ChartDM",
+			PrintTestUtil.loadFromResources("/data/chart/ChartDM.json"),
+			PrintTestUtil.loadFromResources(String.format("/data/chart/%s.json", documentName))
+		);
+	}
+
+	private static Throwable getRootCause(Throwable throwable) {
+		var rootCause = throwable;
+		while (rootCause.getCause() != null) {
+			rootCause = rootCause.getCause();
+		}
+		return rootCause;
+	}
+
+	private static String getSingleErrorDescription(PrintMessageReport<XmlPrintResult> report) {
+		assertFalse(report.noErrorOccurred());
+
+		final var errors = report.getMessages().stream()
+			.filter(message -> message.getSeverity() == PrintMessage.Severity.ERROR)
+			.toList();
+		assertEquals(1, errors.size());
+
+		assertThrows(PrintException.class, report::getResult);
+		return errors.getFirst().getDescription();
 	}
 
 	@Test

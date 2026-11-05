@@ -68,6 +68,7 @@ describe("BorderPropertiesForm", () => {
 	const mockElement: PartialTable = {
 		id: "tableId",
 		type: ElementType.Table,
+		name: "mockTable",
 		borderProperties: mockBorderProperties,
 	};
 

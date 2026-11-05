@@ -30,7 +30,7 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import type * as ModelAPI from "@com.mgmtp.a12.print/print-model-api/model";
-import { SegmentType } from "@com.mgmtp.a12.print/print-model-api/model";
+import { MODEL_SUB_TYPE_ANNOTATION_NAME, SegmentType } from "@com.mgmtp.a12.print/print-model-api/model";
 import type * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
 import type { PrintError } from "@com.mgmtp.a12.print/print-model-api/errors";
 import { DeepPartialErrorMap, ErrorOrigin, ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
@@ -79,12 +79,7 @@ export class PrintModelSerializer implements Serializer<ModelAPI.PrintModel, Gen
 			modelType: header.modelType,
 			modelVersion: header.modelVersion,
 			description: header.description,
-			annotations: this.mapRepeatableGroup(header.annotations, annotation => {
-				return {
-					name: annotation.name,
-					value: annotation.value,
-				};
-			}),
+			annotations: this.mapAnnotations(header),
 			labels: this.mapRepeatableGroup(header.labels, label => {
 				return {
 					locale: label.locale,
@@ -107,33 +102,55 @@ export class PrintModelSerializer implements Serializer<ModelAPI.PrintModel, Gen
 		};
 	}
 
+	private mapAnnotations(header: ModelAPI.PrintModelHeader): GeneratedDTO.AnnotationsDTO[] {
+		const modelSubType = header.modelSubType;
+		const serializedAnnotations = this.mapRepeatableGroup(header.annotations, annotation => {
+			return {
+				name: annotation.name,
+				value: annotation.value,
+			};
+		});
+		if (
+			modelSubType &&
+			header.annotations?.every(annotation => annotation.name !== MODEL_SUB_TYPE_ANNOTATION_NAME)
+		) {
+			serializedAnnotations.push({
+				name: MODEL_SUB_TYPE_ANNOTATION_NAME,
+				value: modelSubType,
+			});
+		}
+		return serializedAnnotations;
+	}
+
 	private mapContent(content: ModelAPI.PrintModelContent): GeneratedDTO.ContentDTO {
 		this.errorMap.content = DeepPartialErrorMap.getEmptyMap<ModelAPI.PrintModelContent>();
 		this.errorMap.content.elementDefinitions = [];
 		return {
 			id: content.id,
 			general: {
-				id: content.general.id,
-				metadata: {
-					id: content.general.metadata.id,
-					model: content.general.metadata.model,
-					titleComputation: this.mapRepeatableGroup(
-						content.general.metadata.titleComputation,
-						mapComputationAlternative
-					),
-					descriptionComputation: this.mapRepeatableGroup(
-						content.general.metadata.descriptionComputation,
-						mapComputationAlternative
-					),
-					authorComputation: this.mapRepeatableGroup(
-						content.general.metadata.authorComputation,
-						mapComputationAlternative
-					),
-					languageComputation: this.mapRepeatableGroup(
-						content.general.metadata.languageComputation,
-						mapComputationAlternative
-					),
-				},
+				id: content?.general?.id,
+				metadata: content?.general?.metadata
+					? {
+							id: content.general.metadata.id,
+							model: content.general.metadata.model,
+							titleComputation: this.mapRepeatableGroup(
+								content.general.metadata.titleComputation,
+								mapComputationAlternative
+							),
+							descriptionComputation: this.mapRepeatableGroup(
+								content.general.metadata.descriptionComputation,
+								mapComputationAlternative
+							),
+							authorComputation: this.mapRepeatableGroup(
+								content.general.metadata.authorComputation,
+								mapComputationAlternative
+							),
+							languageComputation: this.mapRepeatableGroup(
+								content.general.metadata.languageComputation,
+								mapComputationAlternative
+							),
+						}
+					: undefined,
 				segmentDefaults: content.general.segmentDefaults,
 				structure: this.mapRepeatableGroup(content.general.structure, id => ({ id })),
 				sections: this.mapRepeatableGroup(content.general.sections, id => ({ id })),
@@ -145,7 +162,7 @@ export class PrintModelSerializer implements Serializer<ModelAPI.PrintModel, Gen
 				})),
 				textStyles: this.mapRepeatableGroup(content.general.textStyles, id => ({ id })),
 			},
-			segments: this.mapSegmentsContainer(content.segments),
+			segments: content.segments ? this.mapSegmentsContainer(content.segments) : undefined,
 			sections: content.sections ? this.mapSectionsContainer(content.sections) : undefined,
 			watermarks: content.watermarks ? this.mapWatermarksContainer(content.watermarks) : undefined,
 			elementDefinitions: this.mapRepeatableGroup(content.elementDefinitions, this.mapElementDefinition),
@@ -158,6 +175,10 @@ export class PrintModelSerializer implements Serializer<ModelAPI.PrintModel, Gen
 			id: segmentsContainer.id,
 			definitions: this.mapRepeatableGroup(segmentsContainer.definitions, this.mapSegment),
 			references: this.mapRepeatableGroup(segmentsContainer.references, this.mapSegmentReference),
+			fragmentReferences: this.mapRepeatableGroup(
+				segmentsContainer.fragmentReferences,
+				this.mapFragmentReference
+			),
 		};
 	}
 
@@ -212,6 +233,16 @@ export class PrintModelSerializer implements Serializer<ModelAPI.PrintModel, Gen
 		return {
 			id: sectionsContainer?.id,
 			definitions: this.mapRepeatableGroup(sectionsContainer?.definitions, this.mapSection),
+			references: this.mapRepeatableGroup(sectionsContainer?.references, this.mapSectionFragmentReference),
+		};
+	}
+
+	private mapSectionFragmentReference(ref: ModelAPI.SectionFragmentReference): GeneratedDTO.ReferencesDTO_1 {
+		return {
+			id: ref.id,
+			refId: ref.refId,
+			model: ref.model,
+			sectionUsage: ref.sectionUsage,
 		};
 	}
 
@@ -219,7 +250,7 @@ export class PrintModelSerializer implements Serializer<ModelAPI.PrintModel, Gen
 		return {
 			id: section.id,
 			pageOrientation: section.pageOrientation,
-			sectionUsage: section.sectionUsage,
+			sectionUsage: section?.sectionUsage,
 			title: section.title,
 			footerHeight: mapMeasure(section.footerHeight),
 			headerHeight: mapMeasure(section.headerHeight),
@@ -231,6 +262,7 @@ export class PrintModelSerializer implements Serializer<ModelAPI.PrintModel, Gen
 		return {
 			id: watermarksContainer?.id,
 			definitions: this.mapRepeatableGroup(watermarksContainer?.definitions, this.mapWatermark),
+			references: this.mapRepeatableGroup(watermarksContainer?.references, this.mapFragmentReference),
 		};
 	}
 
@@ -300,6 +332,7 @@ export class PrintModelSerializer implements Serializer<ModelAPI.PrintModel, Gen
 		return {
 			id: textStylesContainer?.id,
 			definitions: this.mapRepeatableGroup(textStylesContainer?.definitions, this.mapTextStyle),
+			references: this.mapRepeatableGroup(textStylesContainer?.references, this.mapFragmentReference),
 		};
 	}
 
@@ -320,6 +353,7 @@ export class PrintModelSerializer implements Serializer<ModelAPI.PrintModel, Gen
 		return {
 			id: ref.id,
 			refId: ref.refId,
+			model: ref.model,
 			position: {
 				id: ref.position.id,
 				x: mapMeasure(ref.position.x),
@@ -345,6 +379,14 @@ export class PrintModelSerializer implements Serializer<ModelAPI.PrintModel, Gen
 					}
 				: undefined,
 			pageBreakBehavior: mapInputSource<ModelAPI.PageBreakBehavior>(ref.pageBreakBehavior),
+		};
+	}
+
+	private mapFragmentReference(ref: ModelAPI.FragmentModelReference): GeneratedDTO.ReferencesDTO_2 {
+		return {
+			id: ref.id,
+			refId: ref.refId,
+			model: ref.model,
 		};
 	}
 

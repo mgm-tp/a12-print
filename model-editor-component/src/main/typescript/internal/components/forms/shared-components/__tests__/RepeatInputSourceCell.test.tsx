@@ -47,7 +47,7 @@ type TestRowType = {
 	width?: MeasureInputSource;
 };
 
-const mockElement: PartialTableLayout = { id: "elementId", type: ElementType.TableLayout };
+const mockElement: PartialTableLayout = { id: "elementId", type: ElementType.TableLayout, name: "mockElement" };
 
 const mockMmInputSource: MeasureInputSource = {
 	id: "inputSourceId",

@@ -248,10 +248,10 @@ describe("PrintRichTextEditor formatting operations", () => {
 
 describe("PrintRichTextEditor entity operations", () => {
 	it.each([
-		{ entityType: "PageNumber", iconName: "filter_1", displayText: "PageNumber" },
-		{ entityType: "PageNumberTotal", iconName: "filter_9_plus", displayText: "PageNumberTotal" },
-		{ entityType: "Field", iconName: "input", displayText: "field-entity" },
-		{ entityType: "Calculation", iconName: "functions", displayText: "calc-entity" },
+		{ entityType: "PageNumber", iconName: "filter_1", displayText: /^PageNumber$/ },
+		{ entityType: "PageNumberTotal", iconName: "filter_9_plus", displayText: /^PageNumberTotal$/ },
+		{ entityType: "Field", iconName: "input", displayText: /^field-entity$/ },
+		{ entityType: "Calculation", iconName: "functions", displayText: /^Calculation_[0-9a-f]+$/ },
 	])(
 		"should insert a $entityType entity and produces correct HTML output",
 		async ({ entityType, iconName, displayText }) => {
@@ -293,9 +293,74 @@ describe("PrintRichTextEditor entity operations", () => {
 			expect(outputEntities[0].refId).toBe(entityIdInHtml);
 			expect(outputEntities[0].id).toBeTruthy();
 
-			expect(normalizeForComparison(outputHtml)).toBe(
-				`<p><span style="">Hallo </span><span entity-id="${outputEntities[0].refId}" entity-type="${entityType}"><span style="">${displayText}</span></span></p>`
+			const normalizedHtml = normalizeForComparison(outputHtml);
+			const displayTextInHtml = new RegExp(/entity-type="[^"]+"><span style="">([^<]*)</).exec(
+				normalizedHtml
+			)?.[1];
+			expect(displayTextInHtml).toMatch(displayText);
+
+			expect(normalizedHtml).toBe(
+				`<p><span style="">Hallo </span><span entity-id="${outputEntities[0].refId}" entity-type="${entityType}"><span style="">${displayTextInHtml}</span></span></p>`
 			);
+		}
+	);
+});
+
+describe("PrintRichTextEditor read-only mode", () => {
+	it.each([
+		{ isReadonly: false, expectToolbar: true },
+		{ isReadonly: true, expectToolbar: false },
+	])("renders the toolbar: $expectToolbar (isReadonly: $isReadonly)", async ({ isReadonly, expectToolbar }) => {
+		const mockElement = createMockTextElement(`<p>Hallo Welt</p>`);
+
+		const { getByRole, container } = renderWithProviders(
+			<PrintRichTextEditor element={mockElement} isReadonly={isReadonly} />,
+			defaultReducers
+		);
+
+		const editor = await waitFor(() => {
+			const el = getByRole("textbox");
+			expect(el).toBeInTheDocument();
+			return el;
+		});
+
+		expect(editor).toHaveAttribute("contenteditable", String(!isReadonly));
+		expect(editor).toHaveAttribute("aria-readonly", String(isReadonly));
+		for (const type of ["Bold", "Italic", "Underline"]) {
+			expect(Boolean(getToolbarButton(container, type))).toBe(expectToolbar);
+		}
+	});
+});
+
+describe("PrintRichTextEditor store writes on blur", () => {
+	it.each([
+		{ isReadonly: false, expectedWrite: true },
+		{ isReadonly: true, expectedWrite: false },
+	])(
+		"writes the element on blur: $expectedWrite (isReadonly: $isReadonly)",
+		async ({ isReadonly, expectedWrite }) => {
+			// the exported HTML differs from this input, so a non-readonly blur dispatches an update
+			const mockElement = createMockTextElement(`<p>Hallo Welt</p>`);
+
+			const { getByRole, store } = renderWithProviders(
+				<PrintRichTextEditor element={mockElement} isReadonly={isReadonly} />,
+				defaultReducers
+			);
+
+			const editor = await waitFor(() => {
+				const el = getByRole("textbox");
+				expect(el).toBeInTheDocument();
+				return el;
+			});
+
+			await act(async () => {
+				fireEvent.focus(editor);
+				fireEvent.blur(editor);
+				await new Promise(r => setTimeout(r, 0));
+			});
+
+			const writtenElement = store.getState().TransactionLogState.printModelElements[mockElement.id];
+			expect(Boolean(writtenElement)).toBe(expectedWrite);
 		}
 	);
 });
@@ -314,8 +379,6 @@ async function selectText(editor: HTMLElement, start = 0, end = 0) {
 
 async function setCursor(editor: HTMLElement, position: number) {
 	await act(async () => {
-		// set cursor twice to because of a bug causing the selection of whole text
-		await setCursorInEditor(editor, position);
 		await setCursorInEditor(editor, position);
 	});
 }

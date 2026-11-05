@@ -38,6 +38,7 @@ import test, { expect } from "@playwright/test";
 import {
 	closeDetail,
 	commitChanges,
+	testCopyElement,
 	dragElementToEditor,
 	openEditorStage,
 	devAppTest,
@@ -111,6 +112,10 @@ test.describe("Image-Element", () => {
 			await closeDetail({ page });
 			await commitChanges({ page });
 		});
+
+		await test.step("Copy Element", async () => {
+			await testCopyElement({ page, testId: "element-image" });
+		});
 	});
 });
 
@@ -161,6 +166,10 @@ test.describe("Image-Element", () => {
 
 		await test.step("Commit changes", async () => {
 			await commitChanges({ page });
+		});
+
+		await test.step("Copy Element", async () => {
+			await testCopyElement({ page, testId: "element-image" });
 		});
 	});
 });

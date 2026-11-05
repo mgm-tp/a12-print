@@ -2,7 +2,7 @@
   "header": {
     "id": "MergedSegmentsPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -218,7 +218,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_99094"
       },
       {
         "id": "text1",
@@ -267,7 +268,8 @@
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
             "reference": "tableLayout2"
           }
-        }
+        },
+        "name": "Text_81f51"
       },
       {
         "id": "Bh8Qr9ZG9283i87Z75976",
@@ -282,7 +284,8 @@
               "operation": "[TableLayoutDM/general/StringField2]"
             }
           ]
-        }
+        },
+        "name": "Bh8Qr9ZG9283i87Z75976"
       },
       {
         "id": "text2",
@@ -331,7 +334,8 @@
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
             "reference": "tableLayout2"
           }
-        }
+        },
+        "name": "Text_7b76f"
       },
       {
         "id": "Bh8Qr9ZG9283i87Z7333",
@@ -358,7 +362,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_b509b"
       },
       {
         "id": "Bh8Qr9ZG9283i87Z75678",
@@ -373,7 +378,8 @@
               "operation": "[TableLayoutDM/general/StringField3]"
             }
           ]
-        }
+        },
+        "name": "Bh8Qr9ZG9283i87Z75678"
       },
       {
         "id": "text3",
@@ -426,7 +432,8 @@
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/",
             "reference": "tableLayout2"
           }
-        }
+        },
+        "name": "Text_abfca"
       },
       {
         "id": "tableLayout1",
@@ -515,7 +522,8 @@
               "column": 0
             }
           ]
-        }
+        },
+        "name": "TableLayout_caea9"
       },
       {
         "id": "tableLayout2",
@@ -604,7 +612,8 @@
               "column": 0
             }
           ]
-        }
+        },
+        "name": "TableLayout_400ba"
       }
     ],
     "textStyles": {

@@ -33,7 +33,7 @@ import { jest } from "@jest/globals";
 import type { Reducer } from "redux";
 
 import type { TransactionLogStore } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import { TransactionLog, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import type { Segment, PartialText } from "@com.mgmtp.a12.print/print-model-api/model";
 import { SegmentType, ElementType } from "@com.mgmtp.a12.print/print-model-api/model";
 
@@ -53,8 +53,10 @@ import { DefaultQuickEditBar } from "../DefaultQuickEditBar.js";
 describe("DefaultQuickEditBar", () => {
 	const deleteSelectedElsMock = jest.fn();
 	const setCopyElementsMock = jest.fn();
+	const groupSelectedElsMock = jest.fn();
 	const textElementMock: PartialText = {
 		id: "textElId123",
+		name: "Text_abcd1",
 		type: ElementType.Text,
 		text: { id: "mngho492hj4h4", text: "foo" },
 	};
@@ -72,6 +74,7 @@ describe("DefaultQuickEditBar", () => {
 	const imageElementMock = {
 		id: "imageElId123",
 		type: ElementType.Image,
+		name: "Image_abcd1",
 		image: {
 			id: "ingi1gn4i2g1",
 			dimensions: { id: "mf4o2mg43o2g", height: createMmMeasureFromPx(60), width: createMmMeasureFromPx(50) },
@@ -127,23 +130,17 @@ describe("DefaultQuickEditBar", () => {
 	const TransactionLogStateMock: Reducer = (state: TransactionLogStore = initialStateMock, action) =>
 		TransactionLogStateReducer(state, action);
 
-	const EditorStateReducerMock: Reducer = (
-		state: PrintEditorState = {
-			...defaultPrintEditorState,
-			printModelRefs: {
-				currentRefType: SidebarItem.SEGMENT,
-				segmentId: "",
-				sectionId: "",
-				watermarkId: "",
-			},
-		},
-		action
-	) => EditorStateReducer(state, action);
+	const EditorStateReducerMock: Reducer = (state: PrintEditorState = defaultPrintEditorState, action) =>
+		EditorStateReducer(state, action);
 
-	const setupTest = (selectedElId = textElementMock.id) => {
+	const setupTest = (selectedPlaceableId = textRefMock.id, isReadonly = false) => {
 		return renderWithProviders(
-			<EditorContext.Provider value={{ ...EditorContextMock }}>
-				<DefaultQuickEditBar selected={[selectedElId]} deleteSelectedEls={deleteSelectedElsMock} />,
+			<EditorContext.Provider value={{ ...EditorContextMock, isReadonly }}>
+				<DefaultQuickEditBar
+					selected={[selectedPlaceableId]}
+					deleteSelectedEls={deleteSelectedElsMock}
+					groupSelectedEls={groupSelectedElsMock}
+				/>
 			</EditorContext.Provider>,
 			{
 				PrintEditorState: EditorStateReducerMock,
@@ -163,5 +160,25 @@ describe("DefaultQuickEditBar", () => {
 		expect(queryByLabelText(/delete selected elements/i)).toBeInTheDocument();
 		expect(queryByLabelText(/copy selected elements/i)).toBeInTheDocument();
 		expect(queryByLabelText(/open detail edit/i)).toBeInTheDocument();
+	});
+
+	describe("readonly mode", () => {
+		it("makes position/dimension inputs readonly when isReadonly is true", () => {
+			const { getByPlaceholderText } = setupTest(textRefMock.id, true);
+
+			expect(getByPlaceholderText("Top")).toHaveAttribute("readonly");
+			expect(getByPlaceholderText("Left")).toHaveAttribute("readonly");
+			expect(getByPlaceholderText("Width")).toHaveAttribute("readonly");
+			expect(getByPlaceholderText("Height")).toHaveAttribute("readonly");
+		});
+
+		it("disables delete and copy buttons but keeps detail edit enabled when readonly", () => {
+			const { getByLabelText } = setupTest(textRefMock.id, true);
+
+			expect(getByLabelText(/delete selected elements/i)).toBeDisabled();
+			expect(getByLabelText(/copy selected elements/i)).toBeDisabled();
+			expect(getByLabelText(/group selected elements/i)).toBeDisabled();
+			expect(getByLabelText(/open detail edit/i)).toBeEnabled();
+		});
 	});
 });

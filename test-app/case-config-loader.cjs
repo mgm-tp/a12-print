@@ -57,9 +57,13 @@ const caseConfigResourceSchema = {
 		validation: val => typeof val === "string",
 		errMsg: "need to be a path.",
 	},
+	fragmentPrintModels: {
+		validation: val => typeof val === "string" || (Array.isArray(val) && val.every(v => typeof v === "string")),
+		errMsg: "need to be a path or an array of paths.",
+	},
 	typesettingModels: {
-		validation: val => typeof val === "string",
-		errMsg: "need to be a path.",
+		validation: val => typeof val === "string" || (Array.isArray(val) && val.every(v => typeof v === "string")),
+		errMsg: "need to be a path or an array of paths.",
 	},
 	documents: {
 		validation: val => typeof val === "string",
@@ -112,14 +116,23 @@ module.exports = async function (source) {
 		const { resource } = config;
 		assertValidatedConfig(configPath, resource, caseConfigResourceSchema);
 
-		const { printModel, documentModel, templatePrintModels, typesettingModels, store, documents, fontMap } =
-			resource;
+		const {
+			printModel,
+			documentModel,
+			templatePrintModels,
+			fragmentPrintModels,
+			typesettingModels,
+			store,
+			documents,
+			fontMap,
+		} = resource;
 
 		const printModelPath = Path.join(__dirname, "use-cases", printModel);
 
 		const printModelContent = await fs.readFile(printModelPath, "utf-8");
 		let documentModelContents = [];
 		let templatePrintModelContents = [];
+		let fragmentPrintModelContents = [];
 		let typesettingModelsContents = [];
 		let documentNames = [];
 		let storeContent;
@@ -137,8 +150,16 @@ module.exports = async function (source) {
 			templatePrintModelContents = await readModels(templatePrintModels);
 		}
 
+		if (fragmentPrintModels) {
+			const fragmentPaths = Array.isArray(fragmentPrintModels) ? fragmentPrintModels : [fragmentPrintModels];
+			const results = await Promise.all(fragmentPaths.map(p => readModels(p)));
+			fragmentPrintModelContents = results.flat();
+		}
+
 		if (typesettingModels) {
-			typesettingModelsContents = await readModels(typesettingModels);
+			const typesettingPaths = Array.isArray(typesettingModels) ? typesettingModels : [typesettingModels];
+			const results = await Promise.all(typesettingPaths.map(p => readModels(p)));
+			typesettingModelsContents = results.flat();
 		}
 
 		if (store) {
@@ -153,6 +174,9 @@ module.exports = async function (source) {
 				documentNames,
 				templatePrintModels: templatePrintModelContents.length
 					? parseDocumentModels(templatePrintModelContents)
+					: [],
+				fragmentPrintModels: fragmentPrintModelContents.length
+					? parseDocumentModels(fragmentPrintModelContents)
 					: [],
 				typesettingModels: typesettingModelsContents.length
 					? parseDocumentModels(typesettingModelsContents)

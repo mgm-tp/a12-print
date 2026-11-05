@@ -2,7 +2,7 @@
   "header": {
     "id": "EscapeDocumentModelName-print",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "annotations": [
       {
         "name": "roles",
@@ -10,11 +10,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "labels": [],
@@ -185,7 +185,8 @@
             "source": "DEFAULT",
             "path": "/content/elementDefinitions/textProperties/alignment/value/"
           }
-        }
+        },
+        "name": "Text_8df13"
       },
       {
         "id": "VMA7HPxqFotMd6iIuVjLo",
@@ -204,7 +205,8 @@
             "id": "f8y3jxru5g9GDk2fOw_Rq",
             "fieldType": "Number"
           }
-        }
+        },
+        "name": "NumberOfGroups"
       }
     ],
     "textStyles": {

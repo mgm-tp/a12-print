@@ -2,7 +2,7 @@
   "header": {
     "id": "EscapeXmlCommentPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -193,7 +193,8 @@
               "refId": "Bh8Qr9ZG9283i87ZIPcY_"
             }
           ]
-        }
+        },
+        "name": "Text_93797"
       },
       {
         "id": "Bh8Qr9ZG9283i87ZIPcY_",
@@ -220,7 +221,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_ede05"
       }
     ],
     "textStyles": {

@@ -39,10 +39,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.TimeZone;
 
 
 public class NumberTypeFormatter implements ValueFormatProvider {

@@ -59,10 +59,10 @@ export const useHoverLines = (
 	const [hovered, setHovered] = React.useState<PartialValidPlaceableReference | null>(null);
 	const getSectionOffset = useGetSectionOffset();
 	const getHoverLines = React.useCallback(() => {
-		if (!hovered || selected.length !== 1 || hovered.refId === selected[0]) {
+		if (!hovered || selected.length !== 1 || hovered.id === selected[0]) {
 			return null;
 		}
-		const selectedEl = elementReferences.find(el => el.refId === selected[0]);
+		const selectedEl = elementReferences.find(el => el.id === selected[0]);
 		if (!selectedEl || EditorUtils.isColliding(selectedEl, hovered)) {
 			return null;
 		}

@@ -540,6 +540,27 @@
                           }
                         ]
                       }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_dcf4d",
+                      "name": "onlyFragmentModelSubType",
+                      "Rule": {
+                        "errorEntityRelPath": "../value",
+                        "errorCode": "Error rule_dcf4d",
+                        "errorCondition": "[name] == \"modelSubType\"\r\nAnd [value] != \"fragment\"",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "The only allowed model sub type is a Print Fragment Model."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Es ist als Model Sub Typ nur ein Print Fragment Modell erlaubt."
+                          }
+                        ]
+                      }
                     }
                   ]
                 }
@@ -646,6 +667,27 @@
                           }
                         ]
                       }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_c3e71",
+                      "name": "noPrintModelReferenceInFragmentModel",
+                      "Rule": {
+                        "errorEntityRelPath": "../modelType",
+                        "errorCode": "Error rule_c3e71",
+                        "errorCondition": "[modelType] == \"print\" And CustomCondition print_IsFragmentModel",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "A Fragment Model cannot reference a Print Model or a Fragment Model."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Ein Fragment Modell kann kein Print Modell und kein Fragment Modell referenzieren."
+                          }
+                        ]
+                      }
                     }
                   ]
                 }
@@ -694,6 +736,27 @@
               },
               {
                 "type": "Rule",
+                "id": "rule_7a5da",
+                "name": "onlyOneTypeOfPrintModelReferenceAllowed",
+                "Rule": {
+                  "errorEntityRelPath": "../modelReferences/reference",
+                  "errorCode": "Error rule_7a5da",
+                  "errorCondition": "AtLeastOneFieldFilled(modelReferences*/reference Having [modelReferences/purpose] == \"print-fragment\") And AtLeastOneFieldFilled(modelReferences*/reference Having [modelReferences/purpose] == \"DINTemplate\")",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "A Print Model can either reference Fragments or a DIN Model, but not both at the same time."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Ein Print Modell kann entweder Fragmente oder ein DIN Modell referenzieren, aber nicht beides gleichzeitig."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
                 "id": "rule_8171a",
                 "name": "mustHaveRolesIfRolesModelPresent",
                 "Rule": {
@@ -709,6 +772,48 @@
                     {
                       "locale": "de",
                       "text": "Der Arbeitsbereich enthält eine Rollen-Datei, die vorschreibt, dass alle Modelle Rollen angegeben haben müssen."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_eb527",
+                "name": "onlyOneModelSubTypeAllowed",
+                "Rule": {
+                  "errorEntityRelPath": "../annotations/name",
+                  "errorCode": "Error rule_eb527",
+                  "errorCondition": "NumberOfFilledFields(annotations*/name Having [annotations/name] == \"modelSubType\") > 1",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "A Print Model can only have one subtype."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Ein Print Modell kann nur einen Subtyp haben."
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "Rule",
+                "id": "rule_9d4b2",
+                "name": "onlyOneDocumentModelReferenceInFragmentModel",
+                "Rule": {
+                  "errorEntityRelPath": "../modelReferences/reference",
+                  "errorCode": "Error rule_9d4b2",
+                  "errorCondition": "NumberOfFilledFields(modelReferences*/reference Having [modelReferences/modelType] == \"document\") > 1 And CustomCondition print_IsFragmentModel",
+                  "severity": "ERROR",
+                  "errorMessage": [
+                    {
+                      "locale": "en",
+                      "text": "A Fragment Model can only reference one Document Model."
+                    },
+                    {
+                      "locale": "de",
+                      "text": "Ein Fragment Modell kann nur ein Document Model referenzieren."
                     }
                   ]
                 }
@@ -800,7 +905,7 @@
                           },
                           {
                             "locale": "de",
-                            "text": "Metadatum"
+                            "text": "Metadaten"
                           }
                         ],
                         "repeatability": 1,
@@ -945,7 +1050,7 @@
                             "Rule": {
                               "errorEntityRelPath": "../titleComputation/operation",
                               "errorCode": "Error rule_c5be3",
-                              "errorCondition": "NumberOfFilledGroups(titleComputation*) == 0",
+                              "errorCondition": "NumberOfFilledGroups(titleComputation*) == 0 AND CustomCondition print_IsPrintModel",
                               "severity": "ERROR",
                               "errorMessage": [
                                 {
@@ -966,7 +1071,7 @@
                             "Rule": {
                               "errorEntityRelPath": "../descriptionComputation/operation",
                               "errorCode": "Error rule_3b423",
-                              "errorCondition": "NumberOfFilledGroups(descriptionComputation*) == 0",
+                              "errorCondition": "NumberOfFilledGroups(descriptionComputation*) == 0 AND CustomCondition print_IsPrintModel",
                               "severity": "ERROR",
                               "errorMessage": [
                                 {
@@ -987,7 +1092,7 @@
                             "Rule": {
                               "errorEntityRelPath": "../languageComputation/operation",
                               "errorCode": "Error rule_3dc1f",
-                              "errorCondition": "NumberOfFilledGroups(languageComputation*) == 0",
+                              "errorCondition": "NumberOfFilledGroups(languageComputation*) == 0 AND CustomCondition print_IsPrintModel",
                               "severity": "ERROR",
                               "errorMessage": [
                                 {
@@ -1008,7 +1113,7 @@
                             "Rule": {
                               "errorEntityRelPath": "../authorComputation/operation",
                               "errorCode": "Error rule_9789b",
-                              "errorCondition": "NumberOfFilledGroups(authorComputation*) == 0",
+                              "errorCondition": "NumberOfFilledGroups(authorComputation*) == 0 AND CustomCondition print_IsPrintModel",
                               "severity": "ERROR",
                               "errorMessage": [
                                 {
@@ -1029,7 +1134,7 @@
                             "Rule": {
                               "errorEntityRelPath": "../titleComputation/operation",
                               "errorCode": "Error rule_8878d",
-                              "errorCondition": "NumberOfFilledGroups(titleComputation*) == 1 And [titleComputation/operation] == \"\"\" + [/header/id] + \"\"\"",
+                              "errorCondition": "NumberOfFilledGroups(titleComputation*) == 1 And [titleComputation/operation] == \"\"\"\" + [/header/id] + \"\"\"\"",
                               "severity": "INFO",
                               "errorMessage": [
                                 {
@@ -1102,6 +1207,27 @@
                                 {
                                   "locale": "de",
                                   "text": "Das Feld Autor verwendet seinen Standardwert. Erwäge den tatsächlichen Autor für bessere PDF-Metadaten anzugeben."
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_3ba2c",
+                            "name": "metadataIdIsRequiredInPrintModel",
+                            "Rule": {
+                              "errorEntityRelPath": "../id",
+                              "errorCode": "Error rule_3ba2c",
+                              "errorCondition": "FieldNotFilled(id) AND CustomCondition print_IsPrintModel",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "Metadata Id is required in a Print Model."
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Die Id der Metadaten is vorrausgesetzt in einem Print Modell."
                                 }
                               ]
                             }
@@ -1481,7 +1607,7 @@
                         }
                       ],
                       "Group": {
-                        "repeatability": 2,
+                        "repeatability": 999999,
                         "elements": [
                           {
                             "type": "Field",
@@ -2178,6 +2304,61 @@
                           }
                         ]
                       }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_fa9c1",
+                      "name": "fragmentReferences",
+                      "annotations": [
+                        {
+                          "name": "sme.globalSearch.hide",
+                          "value": "true"
+                        }
+                      ],
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_fb1d2",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_fc3e4",
+                            "name": "refId",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_fd5a6",
+                            "name": "model",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          }
+                        ]
+                      }
                     }
                   ]
                 }
@@ -2510,6 +2691,147 @@
                                 }
                               ]
                             }
+                          },
+                          {
+                            "type": "Rule",
+                            "id": "rule_1fd98",
+                            "name": "sectionUsageRequiredInPrintModel",
+                            "Rule": {
+                              "errorEntityRelPath": "../sectionUsage",
+                              "errorCode": "Error rule_1fd98",
+                              "errorCondition": "GroupFilled(RuleGroup) AND FieldNotFilled(sectionUsage) AND CustomCondition print_IsPrintModel",
+                              "severity": "ERROR",
+                              "errorMessage": [
+                                {
+                                  "locale": "en",
+                                  "text": "Must set type of Section: First (title page) or Remaining (general pages)."
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Der Typ des Seitenabschnitts muss festgelegt werden: First (Titelseite) oder Remaining (generelle Seiten)."
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_7fab3",
+                      "name": "references",
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_b4e2a",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_c3f1d",
+                            "name": "refId",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_e5a2b",
+                            "name": "model",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_tsusg1",
+                            "name": "sectionUsage",
+                            "Field": {
+                              "fieldType": {
+                                "type": "EnumerationType",
+                                "EnumerationType": {
+                                  "values": [
+                                    {
+                                      "value": "First",
+                                      "label": [
+                                        {
+                                          "locale": "en",
+                                          "text": "First Page"
+                                        },
+                                        {
+                                          "locale": "de",
+                                          "text": "Erste Seite"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "value": "Remaining",
+                                      "label": [
+                                        {
+                                          "locale": "en",
+                                          "text": "Remaining Pages"
+                                        },
+                                        {
+                                          "locale": "de",
+                                          "text": "Verbleibende Seiten"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              },
+                              "label": [
+                                {
+                                  "locale": "en",
+                                  "text": "Purpose of section (override)"
+                                },
+                                {
+                                  "locale": "de",
+                                  "text": "Verwendungszweck der Abschnitte (Override)"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_69289",
+                      "name": "onlyFourSectionsForPrintModel",
+                      "Rule": {
+                        "errorEntityRelPath": "../definitions/id",
+                        "errorCode": "Error rule_69289",
+                        "errorCondition": "NumberOfFilledGroups(definitions*) > 4 AND CustomCondition print_IsPrintModel",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "A Print Model is only allowed to have 4 Sections."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Ein Print Modell darf nur 4 Abschnitte haben."
                           }
                         ]
                       }
@@ -2571,6 +2893,55 @@
                           "reference": "DomainTextStyles"
                         }
                       }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_a3f7e",
+                      "name": "references",
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_a1b2c",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_b3c4d",
+                            "name": "refId",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_c5d6e",
+                            "name": "model",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          }
+                        ]
+                      }
                     }
                   ]
                 }
@@ -2603,7 +2974,7 @@
                       "id": "group_48005",
                       "name": "definitions",
                       "Group": {
-                        "repeatability": 2,
+                        "repeatability": 999999,
                         "elements": [
                           {
                             "type": "Field",
@@ -2822,6 +3193,76 @@
                                 }
                               ]
                             }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Group",
+                      "id": "group_7af6b",
+                      "name": "references",
+                      "Group": {
+                        "repeatability": 999999,
+                        "elements": [
+                          {
+                            "type": "Field",
+                            "id": "field_509c0",
+                            "name": "id",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_0eb37",
+                            "name": "refId",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          },
+                          {
+                            "type": "Field",
+                            "id": "field_ac692",
+                            "name": "model",
+                            "Field": {
+                              "fieldType": {
+                                "type": "StringType"
+                              },
+                              "requirednessConfig": {
+                                "mode": "absoluteOrRelativeToNextRepAncestor"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "Rule",
+                      "id": "rule_84140",
+                      "name": "onlyTwoWatermarksForPrintModel",
+                      "Rule": {
+                        "errorEntityRelPath": "../definitions/id",
+                        "errorCode": "Error rule_84140",
+                        "errorCondition": "NumberOfFilledGroups(definitions*) > 2 AND CustomCondition print_IsPrintModel",
+                        "severity": "ERROR",
+                        "errorMessage": [
+                          {
+                            "locale": "en",
+                            "text": "A Print Model is only allowed to have 2 Watermarks."
+                          },
+                          {
+                            "locale": "de",
+                            "text": "Ein Print Modell darf nur 2 Wasserzeichen haben."
                           }
                         ]
                       }

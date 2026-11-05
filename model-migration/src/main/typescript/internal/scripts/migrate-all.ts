@@ -42,6 +42,7 @@ function runCli(script: string, ...args: string[]): void {
 // Print Model migration
 runCli(
 	"cli:pm",
+	"../engine-runtime/src/test/resources",
 	"../engine-runtime-test/src/testFixtures/resources",
 	"../model-api-utils/src",
 	"../model-api/src",

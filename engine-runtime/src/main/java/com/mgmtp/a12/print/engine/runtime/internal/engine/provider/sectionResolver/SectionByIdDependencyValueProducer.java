@@ -36,23 +36,22 @@ import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.runtime.internal.CoreDependencyValueProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.ValueFactory;
 import com.mgmtp.a12.print.engine.runtime.internal.generated.InternalCorePrintEngineRuntime;
-import com.mgmtp.a12.print.model.api.model.PrintModelTreeTrace;
-import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 import com.mgmtp.a12.print.model.api.walker.model.resolver.SectionIdResolver;
+import com.mgmtp.a12.print.model.api.walker.model.resolver.SectionWithUsage;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class SectionByIdDependencyValueProducer implements CoreDependencyValueProvider<Optional<PrintModelTreeTrace<ModelSection>>, SectionDependency> {
+public class SectionByIdDependencyValueProducer implements CoreDependencyValueProvider<Optional<SectionWithUsage>, SectionDependency> {
 
 	@NonNull
 	private final SectionIdResolver sectionIdResolver;
 
 	@Override
-	public ValueFactory<Optional<PrintModelTreeTrace<ModelSection>>> produce(SectionDependency dependency, PrintJob job, PrintEngine<?> engine, InternalCorePrintEngineRuntime runtime) {
-		final var result = sectionIdResolver.resolveSectionId(dependency.getSectionId());
+	public ValueFactory<Optional<SectionWithUsage>> produce(SectionDependency dependency, PrintJob job, PrintEngine<?> engine, InternalCorePrintEngineRuntime runtime) {
+		final var result = sectionIdResolver.resolveSectionIdWithUsage(dependency.getSectionId());
 		return () -> result;
 	}
 }

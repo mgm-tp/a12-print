@@ -34,97 +34,82 @@ import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 
 import type {
+	PartialReference,
 	PageOrientation,
 	Precondition,
-	Watermark,
 	PartialWatermark,
+	FragmentModelReference,
 } from "@com.mgmtp.a12.print/print-model-api/model";
-import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import type { DeepPartialErrorMap } from "@com.mgmtp.a12.print/print-model-api/errors";
+import { GlobalRegion, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
-import { ButtonGroup, Icon, Button } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Icon, Button, Select } from "@com.mgmtp.a12.widgets/widgets-core";
 import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import type { SelectItem } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import {
 	EditorStateActions,
+	FragmentActions,
 	InteractionLogActions,
 	NavigationActions,
 	NavigationSelectors,
+	RequestApiSelectors,
 	TransactionLogStateActions,
 	ValidationCounter,
 } from "../../redux/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { ValidationSelectors } from "../../redux//validation/selectors.js";
 import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
+import { EditorComponentContext } from "../../api/context-api.js";
 
 import { BadgeGroup } from "../badge/BadgeGroup.js";
-import { CustomTextField } from "../forms/custom-base-input-components/index.js";
+import { CustomTextField, DynamicSourceTextField } from "../forms/custom-base-input-components/index.js";
 import { orientationIconMapping } from "../sections/SectionCard.js";
 import type { PreconditionRepeatRowType } from "../forms/index.js";
 import { PreconditionsRepeat } from "../forms/index.js";
+import { FormContainerHeadline } from "../forms/shared-components/FormContainerHeadline.js";
+import { CustomInputWrapper } from "../forms/shared-components/CustomInputWrapper.js";
 import { PositiveNumberInput, formatLeadingDecimal } from "../custom-input/PositiveNumberInput.js";
+import { SideBarItemActionButtons } from "../sidebar/SideBarItemActionButtons.js";
 
 import {
-	StyledCollapsibleWatermarkTitle,
 	StyledConditionDescription,
-	StyledFlexContainerCenter,
 	StyledOpenCollapsibleWatermark,
-	StyledWatermarkAction,
-	StyledWatermarkActionColumn,
 	StyledWatermarkCard,
 	StyledWatermarkCardContainer,
 	StyledWatermarkIcon,
 	StyledWatermarkInputColumn,
 } from "./WatermarkCard.styled.js";
 
-interface WatermarkCardProps {
+interface WatermarkCardContentProps {
 	watermark?: PartialWatermark;
-	pageOrientation: PageOrientation;
+	pageOrientation?: PageOrientation;
+	currentWatermarkSetting?: string;
+	setCurrentWatermarkSetting: (entityId?: string) => void;
+	/** reference to the {@link FragmentModelReference} when this card represents a referenced fragment watermark. */
+	reference?: PartialReference;
 }
-export const WatermarkCard = (props: WatermarkCardProps) => {
-	const { watermark, pageOrientation } = props;
+
+const WatermarkCardContent = (props: WatermarkCardContentProps) => {
+	const { watermark, pageOrientation, currentWatermarkSetting, setCurrentWatermarkSetting, reference } = props;
+
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
-	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
-	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
 	const error = useSelector((state: PrintEngineState) => ValidationSelectors.watermark(state, watermark?.id));
-	const watermarkValidationCounter: ValidationCounter = useSelector((state: PrintEngineState) =>
-		watermark?.id
-			? ValidationSelectors.watermarkValidationCounter(state, watermark?.id)
-			: ValidationCounter.EMPTY_VALIDATION_COUNTER
+	const referenceError = useSelector((state: PrintEngineState) =>
+		reference ? ValidationSelectors.watermarkReferenceError(state, reference.id) : undefined
 	);
+	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
+	const watermarkTitleError = error ? errorMessageLocalizer(error.title?.[ErrorSeverity.ERROR]) : undefined;
+	const warningMessage = errorMessageLocalizer(error?.[ErrorSeverity.WARNING]);
+	const referenceErrorMessage = errorMessageLocalizer(ValidationSelectors.ownFragmentReferenceErrors(referenceError));
+
 	const [title, setTitle] = React.useState(watermark?.title);
 	const [prevTitle, setPrevTitle] = React.useState(watermark?.title);
-	const [isOpenSetting, setOpenSetting] = React.useState(false);
 
 	if (prevTitle !== watermark?.title) {
 		setPrevTitle(watermark?.title);
 		setTitle(watermark?.title);
 	}
-
-	const isSelectedWatermark = React.useMemo(() => {
-		return Boolean(watermark?.id && printModelRefs?.watermarkId === watermark?.id);
-	}, [printModelRefs?.watermarkId, watermark?.id]);
-
-	const onClickAddWatermark = React.useCallback(() => {
-		const newWatermarkId = nanoid();
-		dispatch(
-			InteractionLogActions.start({
-				description: RESOURCE_KEYS.interaction.watermark.watermarkCard.addWatermark,
-				region: "sidebar",
-				transactionLogActions: [
-					TransactionLogStateActions.addWatermark({
-						data: {
-							id: newWatermarkId,
-							pageOrientation,
-							elementReferences: [],
-						},
-					}),
-				],
-			})
-		);
-		dispatch(NavigationActions.setActiveEntity({ tab: SidebarItem.WATERMARK, entityId: newWatermarkId }));
-	}, [dispatch, pageOrientation]);
 
 	const handleUpdateTitle = React.useCallback(() => {
 		if (!watermark || watermark.title === title) {
@@ -146,104 +131,197 @@ export const WatermarkCard = (props: WatermarkCardProps) => {
 		);
 	}, [dispatch, watermark, title]);
 
-	const onClickDeleteWatermark = React.useCallback(
-		(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-			event.stopPropagation();
-			if (!watermark) {
-				return;
-			}
-			dispatch(
-				InteractionLogActions.start({
-					description: RESOURCE_KEYS.interaction.watermark.watermarkCard.deleteWatermark,
-					region: "sidebar",
-					transactionLogActions: [
-						TransactionLogStateActions.removeWatermark({
-							data: { id: watermark.id },
-						}),
-					],
-					affectedItems: [{ type: "watermark", id: watermark.id }],
-				})
-			);
-		},
-		[dispatch, watermark]
+	const onClickDeleteWatermark = React.useCallback(() => {
+		if (!watermark) {
+			return;
+		}
+		dispatch(
+			InteractionLogActions.start({
+				description: RESOURCE_KEYS.interaction.watermark.watermarkCard.deleteWatermark,
+				region: "sidebar",
+				transactionLogActions: [
+					TransactionLogStateActions.removeWatermark({
+						data: { id: watermark.id },
+					}),
+				],
+				affectedItems: [{ type: "watermark", id: watermark.id }],
+			})
+		);
+	}, [dispatch, watermark]);
+
+	const onClickRemoveReference = React.useCallback(() => {
+		if (!reference) {
+			return;
+		}
+		dispatch(
+			InteractionLogActions.start({
+				description: RESOURCE_KEYS.interaction.watermark.watermarkCard.removeWatermarkReference,
+				region: "sidebar",
+				transactionLogActions: [
+					TransactionLogStateActions.removeWatermarkReference({
+						data: { id: reference.id },
+					}),
+				],
+			})
+		);
+		setCurrentWatermarkSetting(undefined);
+	}, [dispatch, setCurrentWatermarkSetting, reference]);
+
+	const onNavigateToSource = React.useCallback(() => {
+		if (!reference) {
+			return;
+		}
+		dispatch(NavigationActions.navigateToFragmentSource({ referenceId: reference.id, entityType: "watermark" }));
+	}, [dispatch, reference]);
+
+	const onUnlinkReference = React.useCallback(() => {
+		if (!reference?.id) {
+			return;
+		}
+		dispatch(FragmentActions.unlinkReference({ referenceId: reference.id, entityType: "watermark" }));
+	}, [dispatch, reference]);
+
+	if (watermark && reference) {
+		return (
+			<>
+				<CustomTextField
+					value={watermark.title}
+					placeholder={localizer(RESOURCE_KEYS.sidebar.watermark.reference.referencedLabel)}
+					onClick={event => event.stopPropagation()}
+					errorMessage={referenceErrorMessage}
+					hideLabel
+					disabled
+				/>
+				<SideBarItemActionButtons
+					entityId={reference.id}
+					openEditorEntityId={watermark.id}
+					type="watermark"
+					setOpenSetting={setCurrentWatermarkSetting}
+					isOpenSetting={currentWatermarkSetting === reference.id}
+					deleteItem={onClickRemoveReference}
+					unlinkItem={onUnlinkReference}
+					navigateToSource={onNavigateToSource}
+				/>
+			</>
+		);
+	}
+	if (!watermark && reference) {
+		return (
+			<>
+				<CustomTextField
+					value={reference.refId}
+					onClick={event => event.stopPropagation()}
+					errorMessage={referenceErrorMessage}
+					hideLabel
+					disabled
+				/>
+				<SideBarItemActionButtons
+					entityId={reference.id}
+					type="watermark"
+					deleteItem={onClickRemoveReference}
+					unlinkItem={onUnlinkReference}
+					navigateToSource={onNavigateToSource}
+				/>
+			</>
+		);
+	}
+	if (watermark) {
+		return (
+			<>
+				<CustomTextField
+					value={title}
+					placeholder={localizer(RESOURCE_KEYS.sidebar.watermark.titlePlaceholder)}
+					onClick={event => event.stopPropagation()}
+					onChange={event => setTitle(event.target.value)}
+					onBlur={handleUpdateTitle}
+					errorMessage={watermarkTitleError}
+					warningMessage={warningMessage}
+					hideLabel
+				/>
+				<SideBarItemActionButtons
+					entityId={watermark.id}
+					type="watermark"
+					setOpenSetting={setCurrentWatermarkSetting}
+					isOpenSetting={currentWatermarkSetting === watermark.id}
+					deleteItem={onClickDeleteWatermark}
+					errorMessage={watermarkTitleError}
+				/>
+			</>
+		);
+	}
+	if (!pageOrientation) {
+		return null;
+	}
+	return <WatermarkFragmentSelect pageOrientation={pageOrientation} />;
+};
+
+interface WatermarkCardProps {
+	watermark?: PartialWatermark;
+	pageOrientation?: PageOrientation;
+	reference?: PartialReference;
+}
+export const WatermarkCard = (props: WatermarkCardProps) => {
+	const { watermark, pageOrientation, reference } = props;
+
+	const dispatch = useDispatch();
+	const localizer = PrintLocalizer.useLocalizer();
+	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
+	const watermarkValidationCounter: ValidationCounter = useSelector((state: PrintEngineState) => {
+		if (reference) {
+			return ValidationSelectors.watermarkReferenceValidationCounter(state, reference.id);
+		}
+		if (watermark?.id) {
+			return ValidationSelectors.watermarkValidationCounter(state, watermark.id);
+		}
+		return ValidationCounter.EMPTY_VALIDATION_COUNTER;
+	});
+
+	const [currentWatermarkSetting, setCurrentWatermarkSetting] = React.useState<string>();
+
+	/* A reference whose watermark is missing is selectable as well - the stage then simply stays empty. */
+	const entityId = watermark?.id ?? reference?.id;
+
+	const isSelectedWatermark = React.useMemo(
+		() => Boolean(entityId && printModelRefs?.watermarkId === entityId),
+		[printModelRefs?.watermarkId, entityId]
 	);
 
-	const watermarkId = watermark?.id;
 	const handleOpenWatermarkEditor = React.useCallback(() => {
-		if (!watermarkId) {
+		if (!entityId) {
 			return;
 		}
 		dispatch(
 			EditorStateActions.openEditorView({
 				...printModelRefs,
-				watermarkId: watermarkId,
+				watermarkId: entityId,
 				currentRefType: SidebarItem.WATERMARK,
 			})
 		);
-	}, [dispatch, printModelRefs, watermarkId]);
+	}, [dispatch, printModelRefs, entityId]);
 
-	const watermarkTitleError = error ? errorMessageLocalizer(error.title?.[ErrorSeverity.ERROR]) : undefined;
-
-	const OpenSetting = React.useMemo(() => {
-		const handleOpenSetting = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-			event.stopPropagation();
-			setOpenSetting(!isOpenSetting);
-		};
-		return (
-			<Button
-				icon={<Icon>{isOpenSetting ? "close" : "settings"}</Icon>}
-				onClick={handleOpenSetting}
-				title={localizer(RESOURCE_KEYS.button[isOpenSetting ? "closeSetting" : "openSetting"])}
-			/>
-		);
-	}, [isOpenSetting, setOpenSetting, localizer]);
+	const orientation = pageOrientation && orientationIconMapping[pageOrientation];
 
 	return (
 		<StyledWatermarkCardContainer data-testid="watermark-card" isSelected={isSelectedWatermark}>
 			<StyledWatermarkCard onClick={handleOpenWatermarkEditor} isSelected={isSelectedWatermark}>
 				<StyledWatermarkIcon>
-					<Icon title={localizer(orientationIconMapping[pageOrientation].title)}>
-						{orientationIconMapping[pageOrientation].icon}
-					</Icon>
+					{orientation && <Icon title={localizer(orientation?.title)}>{orientation?.icon}</Icon>}
+					{reference && (
+						<Icon title={localizer(RESOURCE_KEYS.sidebar.watermark.reference.referencedLabel)}>link</Icon>
+					)}
 					<BadgeGroup validationCounter={watermarkValidationCounter} standalone />
 				</StyledWatermarkIcon>
 
-				{watermark ? (
-					<>
-						<CustomTextField
-							value={title}
-							placeholder={localizer(RESOURCE_KEYS.sidebar.watermark.titlePlaceholder)}
-							onClick={event => event.stopPropagation()}
-							onChange={event => setTitle(event.target.value)}
-							onBlur={handleUpdateTitle}
-							errorMessage={watermarkTitleError}
-							warningMessage={errorMessageLocalizer(error?.[ErrorSeverity.WARNING])}
-							hideLabel
-						/>
-						<StyledWatermarkAction>
-							{OpenSetting}
-							<Button
-								icon={<Icon>square_foot</Icon>}
-								onClick={handleOpenWatermarkEditor}
-								title={localizer(RESOURCE_KEYS.button.openEditor)}
-								disabled={Boolean(watermarkTitleError)}
-							/>
-							<Button
-								destructive
-								icon={<Icon>delete</Icon>}
-								onClick={onClickDeleteWatermark}
-								title={localizer(RESOURCE_KEYS.button.delete)}
-							/>
-						</StyledWatermarkAction>
-					</>
-				) : (
-					<Button onClick={onClickAddWatermark} title={localizer(RESOURCE_KEYS.button.add)}>
-						{localizer(RESOURCE_KEYS.button.add)}
-					</Button>
-				)}
+				<WatermarkCardContent
+					watermark={watermark}
+					pageOrientation={pageOrientation}
+					currentWatermarkSetting={currentWatermarkSetting}
+					setCurrentWatermarkSetting={setCurrentWatermarkSetting}
+					reference={reference}
+				/>
 			</StyledWatermarkCard>
-			{isOpenSetting && watermark && (
-				<CollapsibleWatermarkSetting watermark={watermark} error={error} setOpenSetting={setOpenSetting} />
+			{currentWatermarkSetting && watermark && (
+				<CollapsibleWatermarkSetting watermark={watermark} isReadonly={!!reference} />
 			)}
 		</StyledWatermarkCardContainer>
 	);
@@ -251,15 +329,106 @@ export const WatermarkCard = (props: WatermarkCardProps) => {
 
 interface CollapsibleWatermarkSettingProps {
 	readonly watermark: PartialWatermark;
-	readonly error: DeepPartialErrorMap<Watermark> | undefined;
+	readonly isReadonly?: boolean;
 
-	setOpenSetting(isOpenSetting: boolean): void;
+	includeTitleInSetting?: boolean;
 }
 
-export const CollapsibleWatermarkSetting = ({ watermark, error, setOpenSetting }: CollapsibleWatermarkSettingProps) => {
+const WatermarkFragmentSelect = ({ pageOrientation }: { pageOrientation: PageOrientation }) => {
+	const dispatch = useDispatch();
+	const localizer = PrintLocalizer.useLocalizer();
+
+	const selectAvailableFragmentWatermarksForOrientation = React.useMemo(
+		() => RequestApiSelectors.makeAvailableFragmentWatermarksForOrientation(),
+		[]
+	);
+	const availableFragmentWatermarks = useSelector((state: PrintEngineState) =>
+		selectAvailableFragmentWatermarksForOrientation(state, pageOrientation)
+	);
+
+	const fragmentWatermarkSelectItems: SelectItem[] = React.useMemo(
+		() =>
+			availableFragmentWatermarks.map(({ watermark: fragmentWatermark }, index) => ({
+				value: `${index}`,
+				label: fragmentWatermark.title || fragmentWatermark.id,
+			})),
+		[availableFragmentWatermarks]
+	);
+
+	const onSelectFragmentWatermark = React.useCallback(
+		(selectedValue: string) => {
+			const item = availableFragmentWatermarks[Number.parseInt(selectedValue, 10)];
+			if (!item) {
+				return;
+			}
+			const reference: FragmentModelReference = { id: nanoid(), refId: item.watermark.id, model: item.modelId };
+			dispatch(
+				InteractionLogActions.start({
+					description: RESOURCE_KEYS.interaction.watermark.watermarkCard.addWatermarkReference,
+					region: GlobalRegion.SIDEBAR,
+					transactionLogActions: [
+						TransactionLogStateActions.addWatermarkReference({
+							data: reference,
+						}),
+					],
+				})
+			);
+			dispatch(NavigationActions.setActiveEntity({ tab: SidebarItem.WATERMARK, entityId: item.watermark.id }));
+		},
+		[dispatch, availableFragmentWatermarks]
+	);
+
+	const onClickAddWatermark = React.useCallback(() => {
+		const newWatermarkId = nanoid();
+		dispatch(
+			InteractionLogActions.start({
+				description: RESOURCE_KEYS.interaction.watermark.watermarkCard.addWatermark,
+				region: GlobalRegion.SIDEBAR,
+				transactionLogActions: [
+					TransactionLogStateActions.addWatermark({
+						data: {
+							id: newWatermarkId,
+							pageOrientation,
+							elementReferences: [],
+						},
+					}),
+				],
+			})
+		);
+		dispatch(NavigationActions.setActiveEntity({ tab: SidebarItem.WATERMARK, entityId: newWatermarkId }));
+	}, [dispatch, pageOrientation]);
+
+	return (
+		<>
+			<Button onClick={onClickAddWatermark} title={localizer(RESOURCE_KEYS.button.add)}>
+				{localizer(RESOURCE_KEYS.button.add)}
+			</Button>
+			{availableFragmentWatermarks.length > 0 && (
+				<Select
+					placeholder={localizer(RESOURCE_KEYS.sidebar.watermark.reference.selectPlaceholder)}
+					value=""
+					onValueChanged={onSelectFragmentWatermark}
+					items={fragmentWatermarkSelectItems}
+					fitToParent={false}
+				/>
+			)}
+		</>
+	);
+};
+
+export const CollapsibleWatermarkSetting = ({
+	watermark,
+	includeTitleInSetting,
+	isReadonly = false,
+}: CollapsibleWatermarkSettingProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
 	const dispatch = useDispatch();
+	const { isFragmentModel } = React.useContext(EditorComponentContext);
+
+	const watermarkErrorMap = useSelector((state: PrintEngineState) =>
+		ValidationSelectors.watermark(state, watermark.id)
+	);
 
 	const updateCurrentColumn = React.useCallback(
 		(newData: PartialWatermark, description: string) => {
@@ -280,6 +449,9 @@ export const CollapsibleWatermarkSetting = ({ watermark, error, setOpenSetting }
 
 	const onOpacityUpdate = React.useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) => {
+			if (isReadonly) {
+				return;
+			}
 			updateCurrentColumn(
 				{
 					...watermark,
@@ -288,7 +460,7 @@ export const CollapsibleWatermarkSetting = ({ watermark, error, setOpenSetting }
 				RESOURCE_KEYS.interaction.watermark.watermarkCard.changeOpacity
 			);
 		},
-		[updateCurrentColumn, watermark]
+		[isReadonly, updateCurrentColumn, watermark]
 	);
 
 	const formatOnChange = React.useCallback((newValue: string) => {
@@ -297,6 +469,9 @@ export const CollapsibleWatermarkSetting = ({ watermark, error, setOpenSetting }
 
 	const setConditions = React.useCallback(
 		(newTableData: PreconditionRepeatRowType[]) => {
+			if (isReadonly) {
+				return;
+			}
 			updateCurrentColumn(
 				{
 					...watermark,
@@ -305,57 +480,70 @@ export const CollapsibleWatermarkSetting = ({ watermark, error, setOpenSetting }
 				RESOURCE_KEYS.interaction.watermark.watermarkCard.changePreconditions
 			);
 		},
-		[updateCurrentColumn, watermark]
+		[isReadonly, updateCurrentColumn, watermark]
 	);
 
-	const opacityError = error ? errorMessageLocalizer(error.opacity?.[ErrorSeverity.ERROR]) : undefined;
+	const onUpdateWatermarkTitle = React.useCallback(
+		(event: React.FocusEvent<HTMLInputElement>) => {
+			if (isReadonly) {
+				return;
+			}
+			const updatedWatermark = { ...watermark, title: event.target.value };
+			dispatch(
+				InteractionLogActions.start({
+					description: RESOURCE_KEYS.interaction.fragment.watermark.updateWatermark,
+					region: GlobalRegion.SIDEBAR,
+					transactionLogActions: [TransactionLogStateActions.updateWatermark({ data: updatedWatermark })],
+				})
+			);
+		},
+		[dispatch, isReadonly, watermark]
+	);
+
+	const opacityError = watermarkErrorMap
+		? errorMessageLocalizer(watermarkErrorMap.opacity?.[ErrorSeverity.ERROR])
+		: undefined;
 	const conditions = (watermark.conditions || []) as DeepPartial<Precondition>[];
 
 	return (
-		<StyledOpenCollapsibleWatermark>
+		<StyledOpenCollapsibleWatermark isFragmentModel={isFragmentModel}>
+			{includeTitleInSetting && (
+				<DynamicSourceTextField
+					value={watermark.title}
+					placeholder={localizer(RESOURCE_KEYS.sidebar.watermark.titlePlaceholder)}
+					label={localizer(RESOURCE_KEYS.sidebar.watermark.setting.name)}
+					onBlur={onUpdateWatermarkTitle}
+				/>
+			)}
+			<FormContainerHeadline label={localizer(RESOURCE_KEYS.sidebar.watermark.setting.headline)} />
 			<StyledWatermarkInputColumn>
-				<StyledFlexContainerCenter>
-					<StyledCollapsibleWatermarkTitle>
-						{localizer(RESOURCE_KEYS.sidebar.watermark.setting.opacity)}
-					</StyledCollapsibleWatermarkTitle>
-					<PositiveNumberInput
-						inputProps={{
-							type: "number",
-							min: 0.1,
-							max: 1,
-							step: 0.1,
-						}}
-						value={String(watermark.opacity ?? "")}
-						onBlur={onOpacityUpdate}
-						errorMessage={opacityError}
-						formatOnChange={formatOnChange}
-					/>
-				</StyledFlexContainerCenter>
-				<StyledConditionDescription>
-					{localizer(RESOURCE_KEYS.sidebar.watermark.setting.description)}
-				</StyledConditionDescription>
-				<StyledFlexContainerCenter>
-					<StyledCollapsibleWatermarkTitle>
-						{localizer(RESOURCE_KEYS.sidebar.watermark.setting.conditions)}
-					</StyledCollapsibleWatermarkTitle>
+				<PositiveNumberInput
+					label={localizer(RESOURCE_KEYS.sidebar.watermark.setting.opacity)}
+					inputProps={{
+						type: "number",
+						min: 0.1,
+						max: 1,
+						step: 0.1,
+						disabled: isReadonly,
+					}}
+					value={String(watermark.opacity ?? "")}
+					onBlur={onOpacityUpdate}
+					errorMessage={opacityError}
+					formatOnChange={formatOnChange}
+					readonly={isReadonly}
+				/>
+				<CustomInputWrapper label={localizer(RESOURCE_KEYS.sidebar.watermark.setting.conditions)}>
+					<StyledConditionDescription>
+						{localizer(RESOURCE_KEYS.sidebar.watermark.setting.description)}
+					</StyledConditionDescription>
 					<PreconditionsRepeat
 						tableData={conditions}
 						setTableData={setConditions}
-						preconditionErrorMap={error?.conditions}
+						preconditionErrorMap={watermarkErrorMap?.conditions}
+						isReadonly={isReadonly}
 					/>
-				</StyledFlexContainerCenter>
+				</CustomInputWrapper>
 			</StyledWatermarkInputColumn>
-			<StyledWatermarkActionColumn>
-				<ButtonGroup>
-					<Button
-						icon={<Icon size={"big"}>close</Icon>}
-						title={localizer(RESOURCE_KEYS.button.cancel)}
-						onClick={() => setOpenSetting(false)}
-						secondary
-						destructive
-					/>
-				</ButtonGroup>
-			</StyledWatermarkActionColumn>
 		</StyledOpenCollapsibleWatermark>
 	);
 };

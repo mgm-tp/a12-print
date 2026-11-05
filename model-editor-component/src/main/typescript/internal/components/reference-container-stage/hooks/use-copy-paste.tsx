@@ -102,15 +102,7 @@ export const useCopyPaste = (params: CopyPasteParams) => {
 				};
 			}
 
-			const referenceId = wrappers.at(-1)?.wrapperContext?.placeableReference?.id;
-			if (!referenceId) {
-				throw new Error("No selected placeable reference in the current wrapper.");
-			}
-			return {
-				...newPageBreakBehavior,
-				source: PossibleInputSource.INHERITED,
-				reference: referenceId,
-			};
+			return newPageBreakBehavior;
 		},
 		[currentContainer, wrappers]
 	);
@@ -133,19 +125,21 @@ export const useCopyPaste = (params: CopyPasteParams) => {
 					});
 					copyElements.forEach(elementToCopy => {
 						const newId = nanoid();
+						const isFragmentReference = !!elementToCopy.model;
 
 						const newPlaceableRef = {
 							...clonePrintModelEntity(elementToCopy),
-							refId: newId,
+							refId: isFragmentReference ? elementToCopy.refId : newId,
+							model: elementToCopy.model,
 							position: {
 								id: nanoid(),
 								x: createMmMeasure(
-									elementToCopy.refId === closestEl.refId
+									elementToCopy.id === closestEl.id
 										? posX
 										: posX + elementToCopy.position.x.value - closestEl.position.x.value
 								),
 								y: createMmMeasure(
-									elementToCopy.refId === closestEl.refId
+									elementToCopy.id === closestEl.id
 										? posY
 										: posY + elementToCopy.position.y.value - closestEl.position.y.value
 								),
@@ -155,14 +149,18 @@ export const useCopyPaste = (params: CopyPasteParams) => {
 
 						newPlaceableRefList.push(newPlaceableRef);
 						referenceIdMap.set(elementToCopy.id, newPlaceableRef.id);
-						copyElementIdsList.push({ copyId: elementToCopy.refId, newId });
+						if (!isFragmentReference) {
+							copyElementIdsList.push({ copyId: elementToCopy.refId, newId });
+						}
 					});
 				} else {
 					copyElements.forEach(elementToCopy => {
 						const newId = nanoid();
+						const isFragmentReference = !!elementToCopy.model;
 						const newPlaceableRef = {
 							...clonePrintModelEntity(elementToCopy),
-							refId: newId,
+							refId: isFragmentReference ? elementToCopy.refId : newId,
+							model: elementToCopy.model,
 							position: {
 								id: nanoid(),
 								x: createMmMeasure(elementToCopy.position.x.value + 3),
@@ -172,7 +170,9 @@ export const useCopyPaste = (params: CopyPasteParams) => {
 						};
 
 						newPlaceableRefList.push(newPlaceableRef);
-						copyElementIdsList.push({ copyId: elementToCopy.refId, newId });
+						if (!isFragmentReference) {
+							copyElementIdsList.push({ copyId: elementToCopy.refId, newId });
+						}
 						referenceIdMap.set(elementToCopy.id, newPlaceableRef.id);
 					});
 				}
@@ -201,7 +201,7 @@ export const useCopyPaste = (params: CopyPasteParams) => {
 						minHeight: createPlainMmMeasureFromPx(editorClientRect.height / zoomFactor),
 					};
 					const allOutOfBoxEls = EditorUtils.checkAllElementsInBox(newPlaceableRefList, boxRect);
-					setOutOfBoxList(allOutOfBoxEls.map(el => el.refId));
+					setOutOfBoxList(allOutOfBoxEls.map(el => el.id));
 				}
 			}
 		},

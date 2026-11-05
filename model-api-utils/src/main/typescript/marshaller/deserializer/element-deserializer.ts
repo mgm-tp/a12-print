@@ -34,7 +34,11 @@ import type * as GeneratedDTO from "@com.mgmtp.a12.print/print-model-api/generat
 import type { UnionToType } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import { Deserializer } from "./deserializer.js";
-import { BorderPropertiesDeserializer, TextPropertiesDeserializer } from "./misc-deserializer.js";
+import {
+	BorderPropertiesDeserializer,
+	FragmentDimensionsDeserializer,
+	TextPropertiesDeserializer,
+} from "./misc-deserializer.js";
 import { TextDeserializer } from "./text-deserializer.js";
 import { CalculationDeserializer, FieldDeserializer } from "./nested-element-deserializer.js";
 import { ExpressionDeserializer } from "./expression-deserializer.js";
@@ -60,6 +64,10 @@ export class ElementDefinitionDeserializer extends Deserializer<
 				return dto.id;
 			case "type":
 				return dto.type;
+			case "name":
+				return dto.name;
+			case "isFragment":
+				return dto.isFragment;
 			case "text":
 				return this.deserializeRequired(dto.text, property, new TextDeserializer(this.path));
 			case "field":
@@ -100,6 +108,13 @@ export class ElementDefinitionDeserializer extends Deserializer<
 				return this.deserializeOptional(
 					dto.textProperties,
 					new TextPropertiesDeserializer(this.path),
+					property
+				);
+			}
+			case "fragmentDimensions": {
+				return this.deserializeOptional(
+					dto.fragmentDimensions,
+					new FragmentDimensionsDeserializer(this.path),
 					property
 				);
 			}

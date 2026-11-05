@@ -15,102 +15,84 @@ You must select and comply with exactly one of the above license options.
 Warranty Disclaimer (applies to either option)
 THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT WARRANTY OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
 ////
-[#configuration]
+[#integration_configuration]
 = Configuration
 
-This section covers the core configurations of the Print Engine, necessary for printing valid PDF-documents.
+This section covers the configurations of the Print Integration.
 
-You can either create these configurations directly or if you are using Spring you can do so by using the `@Bean` annotation in the Configuration class.
+== Backend Configuration
 
-== Direct Configuration
+To activate printing functionality in the backend the Print Operation needs to be added to the allowlist in the Data Services configuration:
 
-=== Creating the PrintJobManagerApi
+`mgmtp.a12.dataservices.jsonRpc.allowedOperations=PRINT`
 
-First of all, we need to define the PrintJobManagerApi.
+In addition the Print integration needs to know the source paths for <<static_image_provider, static images>> and <<pdf_box_print_engine_config, fonts>>.
+These can be defined by the following configurations from Data Services:
 
-NOTE: the PrintJobManagerApi may be called by any thread from the ExecutorService.
-These threads will not carry a `SecurityContext`.
+`mgmtp.a12.dataservices.resources.fonts.path`
+`mgmtp.a12.dataservices.resources.static-images.path`
 
-[source,java]
+Apart from these points, no further action should be necessary to enable printing functionality in an A12 backend application.
+
+But there are possible Print configuration parameters:
+
+* `mgmtp.a12.print.engine.preCompilingEnabledForModels` = `*`
+** Restricts pre-compiling to specified models while disabling all others. Setting the value to `*` permits all existing models.
+* `mgmtp.a12.print.engine.timeZone` = `TimeZone.getTimeZone("UTC")`
+** Allows you to define the time zone, which is needed for the localization of language specific content and dates.
+
+== Frontend Configuration
+
+There are two possible ways to activate printing functionality in the frontend of an A12 application.
+
+=== Register Print Integration using `customSagas`
+
+[source, typescript]
 ----
-include::../../sourceCode/print-shell/main/java/com/mgmtp/a12/print/shell/internal/ApplicationShell.java[tag=PrintJobManagerApi,indent=0]
-----
-<1> This should be changed by your local service accordingly.
-<2> This should be changed by your local service accordingly.
-
-=== Creating the ExecutorService
-
-The <<print_engine_runtime, Print Engine Runtime>> provides a default implementation for the ExecutorService:
-[source,java]
-
-----
-ExecutorServiceFactory.getInstance(Runtime.getRuntime().availableProcessors(), "print-pool");
-----
-
-Alternatively, you can declare your own ExecutorService:
-
-[source,java]
-----
-include::../../sourceCode/engine-runtime-test/com/mgmtp/a12/print/engine/runtime/test/internal/PrintTestUtil.java[tag=ExecutorService,indent=0]
-----
-
-[#print_job_manager_usage]
-=== Creating PrintJobManager and PrintEngine
-
-Then we can create PrintJobManager with <<static_image_provider, StaticImageProvider>> and <<pdf_box_print_engine_runtime, PdfBoxPrintEngine>>.
-
-[source,java]
-----
-include::../../sourceCode/print-shell/main/java/com/mgmtp/a12/print/shell/internal/service/PrintService.java[tag=PrintJobManager,indent=0]
-include::../../sourceCode/print-shell/main/java/com/mgmtp/a12/print/shell/internal/commands/PrintCommand.java[tag=PdfPrintEngine,indent=0]
+	config = ApplicationFactories.createApplicationSetup({
+		...
+		customSagas: [
+			...PrintFactories.createSagas(),
+		],
+		...
+	})
 ----
 
-The possibilities of the configs are described in <<pdf_box_print_engine_config, PdfBoxPrintEngineConfig>>.
+The `createSagas` method currently has two optional parameters:
 
-== Using the `@Bean` Annotation
+* `showLoadingIndicatorDuringPrint`: A boolean which defines if a loading spinner should be shown during print execution
+** Please make sure the `ProgressIndicator` is set up correctly so you can see the loading spinner.
+* `validateAndSaveBeforePrint`: A boolean which defines if the form should be validated and saved before print execution
 
-Example::
+Both options are enabled by default.
 
-[source,java,title="Configuration class"]
+=== Register Print Integration using Composable Factories (Experimental)
+
+The same configuration possibilities can be registered in another way:
+
+[source, typescript]
 ----
-public class PrintConfiguration {
-	public static final String PRINT_THREAD_POOL = "printThreadPool";
-
-	@Bean
-	@Qualifier(PRINT_THREAD_POOL)
-	public ExecutorService printThreadPool() {
-		return ExecutorServiceFactory.getInstance();
+	const config: A12ApplicationConfig = {
+		...
+		print: {
+			showLoadingIndicatorDuringPrint: true,
+			validateAndSaveBeforePrint: true
+		}
+		...
 	}
-
-	@Bean
-	public PrintJobManager.PrintJobManagerApi printJobManagerApi() {
-		return new PrintJobManager.PrintJobManagerApi() {
-			@Override
-			public String loadPrintModel(String id) {
-				// load print model content with the provided id <1>
-			}
-
-			@Override
-			public IDocumentModel loadDocumentModel(String id) {
-				// load document model with the provided id <2>
-			}
-		};
-	}
-
-	@Bean
-	public PdfBoxPrintEngine pdfPrintEngine(@lombok.NonNull @Qualifier(PRINT_THREAD_POOL) ExecutorService printThreadPool) {
-		return new com.mgmtp.a12.print.engine.runtime.pdfBox.PdfBoxPrintEngine(
-			printThreadPool,
-			PdfBoxPrintEngineConfig.DEFAULT.toBuilder()
-				.availableFonts(PrintEngineConfig.DEFAULT_FONTS) // <3>
-				.build()
-		);
-	}
-}
 ----
 
-<1> Load Print Model content.
-The implementation should be changed by your local service accordingly.
-<2> Load IDocumentModel.
-The implementation should be changed by your local service accordingly.
-<3> Customization fonts could be set for the PdfBoxPrintEngineConfig.
+In addition, the Print feature needs to be registered with `withPrint`.
+`withPrint` takes an application config and returns a new config with the Print feature.
+Pass the final config to `createA12ApplicationSetup`.
+
+[source, typescript]
+----
+	const configWithPrint = withPrint(config);
+	...
+	createA12ApplicationSetup(configWithPrint);
+----
+
+
+NOTE: Once the <<integration_dependencies, Dependencies>> have been properly set up and <<integration_configuration, configured>>
+the models still need to be properly prepared (link:/docs/PRINT_ENGINE/print-modeling-documentation/index.html#print_model_usage[Print Model Usage]).

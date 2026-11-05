@@ -2,7 +2,7 @@
   "header": {
     "id": "Print-model-without-overlap",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "description": "Complex Listing Showcase",
     "annotations": [
       {
@@ -11,11 +11,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "labels": [],
@@ -228,7 +228,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_5bd19"
       },
       {
         "id": "WsMCSh835NG-0kjwncbF0",
@@ -268,7 +269,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_5049b"
       }
     ],
     "textStyles": {

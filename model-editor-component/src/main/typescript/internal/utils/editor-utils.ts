@@ -36,6 +36,9 @@ import type {
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import { SectionUsage } from "@com.mgmtp.a12.print/print-model-api/model";
 import type { PrintModelDTO } from "@com.mgmtp.a12.print/print-model-api/generated/a12internal";
+import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+
+import type { PrintModelRefs } from "../redux/index.js";
 
 import type { PlainMeasureDimensions, PlainMeasurePosition } from "./measure-utils.js";
 import { createPlainMmMeasure } from "./measure-utils.js";
@@ -46,7 +49,7 @@ const FIRST_PAGE_NUMBER = 1;
 
 export namespace EditorUtils {
 	export function isColliding(curRef: PartialValidPlaceableReference, nextRef: PartialValidPlaceableReference) {
-		if (curRef.refId === nextRef.refId) {
+		if (curRef.id === nextRef.id) {
 			return false;
 		}
 		return (
@@ -61,7 +64,7 @@ export namespace EditorUtils {
 		return placeableReferences.reduce((res: ReadonlyArray<PartialValidPlaceableReference>, dragElRef) => {
 			const collisions = checkCollisionsSingle(dragElRef, placeableReferences);
 			collisions.forEach(collisionEl => {
-				if (!res.find(resEl => resEl.refId === collisionEl.refId)) {
+				if (!res.find(resEl => resEl.id === collisionEl.id)) {
 					res = [...res, collisionEl];
 				}
 			});
@@ -275,6 +278,21 @@ export namespace EditorUtils {
 			isSectionsEmpty
 		);
 	};
+
+	export function getCurrentRefId(currentRefs: PrintModelRefs): string {
+		switch (currentRefs.currentRefType) {
+			case SidebarItem.SEGMENT:
+				return currentRefs.segmentId ?? "";
+			case SidebarItem.SECTION:
+				return currentRefs.sectionId ?? "";
+			case SidebarItem.WATERMARK:
+				return currentRefs.watermarkId ?? "";
+			case SidebarItem.FRAGMENT:
+				return currentRefs.fragmentId ?? "";
+			default:
+				throw new Error(`Unknown ref type: ${currentRefs.currentRefType}`);
+		}
+	}
 }
 
 function distanceToTopLeft(editorPos: PlainMeasurePosition, elPos: PlainMeasurePosition) {

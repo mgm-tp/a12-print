@@ -32,6 +32,7 @@
 export const DOM_ATTRIBUTES = {
 	ENTITY_ID: "entity-id",
 	ENTITY_TYPE: "entity-type",
+	MANAGED_LINEBREAK: "data-lexical-managed-linebreak",
 } as const;
 
 export const STYLE_PROPERTIES = {

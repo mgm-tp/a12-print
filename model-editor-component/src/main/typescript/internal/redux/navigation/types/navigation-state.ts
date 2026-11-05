@@ -29,6 +29,7 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import type { PageOrientation, SectionUsage } from "@com.mgmtp.a12.print/print-model-api/model";
 import { SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import type { CanvasTab } from "./canvas-tab.js";
@@ -41,6 +42,11 @@ export const FULLSCREEN_TABS: readonly SidebarItem[] = [
 	SidebarItem.COMMIT_CHANGES,
 ];
 
+export interface SectionSlot {
+	pageOrientation: PageOrientation;
+	sectionUsage?: SectionUsage;
+}
+
 export interface NavigationState {
 	sidebarState: {
 		activeTab: SidebarItem;
@@ -52,9 +58,11 @@ export interface NavigationState {
 		isFullscreen: boolean;
 	};
 	[SidebarItem.SEGMENT]: CanvasTabState;
-	[SidebarItem.SECTION]: CanvasTabState;
+	[SidebarItem.SECTION]: SectionCanvasTabState;
 	[SidebarItem.WATERMARK]: CanvasTabState;
+	[SidebarItem.FRAGMENT]: CanvasTabState;
 	[SidebarItem.TEXT_STYLES]: TextStylesTabState;
+	[SidebarItem.SCHEMA]: SchemaTabState;
 }
 
 export interface CanvasTabState {
@@ -62,6 +70,16 @@ export interface CanvasTabState {
 	entities: Record<string, EntityNavStack>;
 }
 
+export interface SectionCanvasTabState extends CanvasTabState {
+	activeSectionSlot?: SectionSlot;
+}
+
 export interface TextStylesTabState {
 	selectedTextStyleId?: string;
+}
+
+export type ModelReferenceSection = "document" | "print" | "fragment" | "typesetting";
+
+export interface SchemaTabState {
+	expandedSections: ModelReferenceSection[];
 }

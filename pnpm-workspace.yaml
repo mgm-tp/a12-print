@@ -39,6 +39,7 @@ packages:
   - model-migration
   - print-dev-tools
   - print-fonts
+  - print-integration
 
 catalog:
   "@asciidoctor/core": ^3.0.4
@@ -48,20 +49,20 @@ catalog:
   "@babel/preset-typescript": ^7.28.5
   "@jambit/eslint-plugin-typed-redux-saga": ^0.4.0
   "@jest/globals": ^30.2.0
-  "@lexical/html": ^0.44.0
-  "@lexical/react": ^0.44.0
-  "@lexical/selection": ^0.44.0
+  "@lexical/html": ^0.51.0
+  "@lexical/react": ^0.51.0
+  "@lexical/selection": ^0.51.0
   "@monaco-editor/react": 4.7.0
   "@playwright/test": 1.58.0
   "@pmmmwh/react-refresh-webpack-plugin": ^0.6.2
   "@reduxjs/toolkit": ^2.11.2
   "@redux-devtools/extension": ^4.0.0
-  "@swc/core": ^1.15.17
+  "@swc/core": ^1.15.43
   "@swc/jest": ^0.2.39
   "@testing-library/dom": ^10.4.1
   "@testing-library/jest-dom": ^6.9.1
   "@testing-library/react": ^16.3.2
-  "@types/big.js": ^6.2.2
+  "@types/big.js": ^7.0.0
   "@types/fs-extra": ^11.0.1
   "@types/glob": ^8.1.0
   "@types/jest": ^30.0.0
@@ -78,7 +79,7 @@ catalog:
   antlr4: 4.13.2
   assert: ^2.1.0
   babel-loader: ^10.0.0
-  big.js: ^6.2.2
+  big.js: ^7.0.1
   body-parser: ^2.2.2
   buffer: ^6.0.3
   cpx2: ^8.0.0
@@ -103,13 +104,12 @@ catalog:
   jest-environment-jsdom: ^30.2.0
   jest-junit: ^16.0.0
   jest-styled-components: ^7.2.0
-  lexical: ^0.44.0
+  lexical: ^0.51.0
   lodash: ^4.18.1
   madge: ^8.0.0
   md5: ^2.3.0
   mini-css-extract-plugin: ^2.10.0
   mkdirp: ^3.0.1
-  moment-timezone: ^0.6.0
   monaco-editor: 0.50.0
   monocart-coverage-reports: ^2.12.9
   nanoid: ^5.1.6
@@ -130,7 +130,7 @@ catalog:
   source-map-loader: ^5.0.0
   string_decoder: ^1.3.0
   style-loader: ^4.0.0
-  styled-components: ~6.3.11
+  styled-components: ~6.4.1
   ts-loader: ^9.5.4
   tsx: ^4.21.0
   typed-redux-saga: ^1.5.0
@@ -145,40 +145,48 @@ catalog:
 catalogs:
 
   a12:
-    "@com.mgmtp.a12.base/base-model-api": 30.0.2
-    "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core": 7.0.1
+    "@com.mgmtp.a12.base/base-model-api": 30.1.1
+    "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core": 7.1.0
     "@com.mgmtp.a12.devtools/tsconfig": ^2.0.1
     "@com.mgmtp.a12.devtools/codemod": ^2.2.2
     "@com.mgmtp.a12.devtools/eslint-config": ^3.1.2
     "@com.mgmtp.a12.devtools/prettier-config": ^1.1.1
-    "@com.mgmtp.a12.dml/dml": 6.1.0
-    "@com.mgmtp.a12.kernel/kernel-core-parser-web": 31.1.1
-    "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts": 31.1.1
-    "@com.mgmtp.a12.kernel/kernel-core-runtime-ts": 31.1.1
-    "@com.mgmtp.a12.kernel/kernel-md-facade": 31.1.1
-    "@com.mgmtp.a12.kernel-next/kernel-md-facade": npm:@com.mgmtp.a12.kernel/kernel-md-facade@31.1.1
-    "@com.mgmtp.a12.migrationtool/migrationtool-core": 3.0.1
-    "@com.mgmtp.a12.migrationtool/migrationtool-utils": 3.0.1
-    "@com.mgmtp.a12.utils/utils-connector": 9.0.3
+    "@com.mgmtp.a12.dml/dml": 6.2.0
+    "@com.mgmtp.a12.kernel/kernel-core-parser-web": 31.3.1
+    "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts": 31.3.1
+    "@com.mgmtp.a12.kernel/kernel-core-runtime-ts": 31.3.1
+    "@com.mgmtp.a12.kernel/kernel-md-facade": 31.3.1
+    "@com.mgmtp.a12.kernel-next/kernel-md-facade": npm:@com.mgmtp.a12.kernel/kernel-md-facade@31.3.1
+    "@com.mgmtp.a12.migrationtool/migrationtool-core": 3.0.2
+    "@com.mgmtp.a12.migrationtool/migrationtool-utils": 3.0.2
+    "@com.mgmtp.a12.utils/utils-connector": 9.0.4
     "@com.mgmtp.a12.utils/utils-collections": 7.0.1
-    "@com.mgmtp.a12.utils/utils-logging": 7.0.2
-    "@com.mgmtp.a12.utils/utils-localization": 8.0.2
-    "@com.mgmtp.a12.utils/utils-localization-react": 8.0.2
-    "@com.mgmtp.a12.widgets/widgets-core": 39.0.3
+    "@com.mgmtp.a12.utils/utils-logging": 7.1.0
+    "@com.mgmtp.a12.utils/utils-localization": 8.1.0
+    "@com.mgmtp.a12.utils/utils-localization-react": 8.1.0
+    "@com.mgmtp.a12.widgets/widgets-core": 39.1.0
+	# A12 Integration Dependencies
+    "@com.mgmtp.a12.client/client-core": 17.1.0
+    "@com.mgmtp.a12.dataservices/dataservices-access": 39.1.1
+    "@com.mgmtp.a12.formengine/formengine-core": 39.1.1
+    "@com.mgmtp.a12.overviewengine/overviewengine-core": 39.1.1
 
   a12Ranges:
-    "@com.mgmtp.a12.base/base-model-api": ^30.0.2
-    "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core": ^7.0.1
-    "@com.mgmtp.a12.kernel/kernel-core-parser-web": ^31.1.1
-    "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts": ^31.1.1
-    "@com.mgmtp.a12.kernel/kernel-core-runtime-ts": ^31.1.1
-    "@com.mgmtp.a12.kernel/kernel-md-facade": ^31.1.1
-    "@com.mgmtp.a12.utils/utils-connector": ^9.0.3
+    "@com.mgmtp.a12.base/base-model-api": ^30.1.1
+    "@com.mgmtp.a12.antlrcodeeditor/antlrcodeeditor-core": ^7.1.0
+    "@com.mgmtp.a12.kernel/kernel-core-parser-web": ^31.3.1
+    "@com.mgmtp.a12.kernel/kernel-core-runtime-api-ts": ^31.3.1
+    "@com.mgmtp.a12.kernel/kernel-core-runtime-ts": ^31.3.1
+    "@com.mgmtp.a12.kernel/kernel-md-facade": ^31.3.1
+    "@com.mgmtp.a12.utils/utils-connector": ^9.0.4
     "@com.mgmtp.a12.utils/utils-collections": ^7.0.1
-    "@com.mgmtp.a12.utils/utils-logging": ^7.0.2
-    "@com.mgmtp.a12.utils/utils-localization": ^8.0.2
-    "@com.mgmtp.a12.utils/utils-localization-react": ^8.0.2
-    "@com.mgmtp.a12.widgets/widgets-core": ^39.0.3
+    "@com.mgmtp.a12.utils/utils-logging": ^7.1.0
+    "@com.mgmtp.a12.utils/utils-localization": ^8.1.0
+    "@com.mgmtp.a12.utils/utils-localization-react": ^8.1.0
+    "@com.mgmtp.a12.widgets/widgets-core": ^39.1.0
+	# A12 Integration Dependencies
+    "@com.mgmtp.a12.client/client-core": ^17.1.0
+    "@com.mgmtp.a12.dataservices/dataservices-access": ^39.1.1
+    "@com.mgmtp.a12.formengine/formengine-core": ^39.1.1
+    "@com.mgmtp.a12.overviewengine/overviewengine-core": ^39.1.1
 
-overrides:
-    "framer-motion>motion-dom": "12.40.0"

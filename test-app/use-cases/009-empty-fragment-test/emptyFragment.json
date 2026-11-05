@@ -1,0 +1,70 @@
+{
+  "header": {
+    "id": "emptyFragment",
+    "modelType": "print",
+    "modelVersion": "4.1.0",
+    "description": "Empty fragment model for automated tests",
+    "annotations": [
+      {
+        "name": "modelSubType",
+        "value": "fragment"
+      },
+      {
+        "name": "lastMigratedVersion",
+        "value": "4.1.0"
+      },
+      {
+        "name": "previousMigratedVersion",
+        "value": "4.1.0-rc.1"
+      }
+    ],
+    "labels": [],
+    "locales": [],
+    "modelReferences": [
+      {
+        "modelType": "document",
+        "reference": "ExampleDM",
+        "purpose": "data binding"
+      }
+    ]
+  },
+  "content": {
+    "id": "PRINT_MODEL_CONTENT",
+    "general": {
+      "id": "PRINT_MODEL_CONTENT_GENERAL",
+      "metadata": {
+        "id": "emptyMetaData",
+        "titleComputation": [],
+        "descriptionComputation": [],
+        "authorComputation": [],
+        "languageComputation": []
+      },
+      "segmentDefaults": {
+        "id": "emptyFragTestSegDef",
+        "fontSize": 12
+      },
+      "structure": [],
+      "sections": [],
+      "watermarks": [],
+      "runtimeVariables": [],
+      "textStyles": []
+    },
+    "segments": {
+      "id": "emptyFragTestSegments",
+      "definitions": [],
+      "references": [],
+      "fragmentReferences": []
+    },
+    "sections": {
+      "id": "emptyFragTestSections",
+      "definitions": [],
+      "references": []
+    },
+    "watermarks": {
+      "id": "emptyFragTestWatermarks",
+      "definitions": [],
+      "references": []
+    },
+    "elementDefinitions": []
+  }
+}

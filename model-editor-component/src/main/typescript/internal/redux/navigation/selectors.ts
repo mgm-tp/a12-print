@@ -48,6 +48,15 @@ export namespace NavigationSelectors {
 
 	export const activeTab = createSelector(navigationState, state => state.sidebarState.activeTab);
 	export const activeCanvasTab = createSelector(navigationState, state => state.sidebarState.activeCanvasTab);
+	export const activeSectionSlot = createSelector(
+		navigationState,
+		state => state[SidebarItem.SECTION].activeSectionSlot
+	);
+
+	export const expandedSchemaSections = createSelector(
+		navigationState,
+		state => state[SidebarItem.SCHEMA].expandedSections
+	);
 
 	const currentCanvasNavigationParts = createSelector([navigationState], navigation => {
 		const tab = navigation.sidebarState.activeCanvasTab;
@@ -76,6 +85,7 @@ export namespace NavigationSelectors {
 		segmentId: nav[SidebarItem.SEGMENT].activeEntityId || "",
 		sectionId: nav[SidebarItem.SECTION].activeEntityId || "",
 		watermarkId: nav[SidebarItem.WATERMARK].activeEntityId || "",
+		fragmentId: nav[SidebarItem.FRAGMENT].activeEntityId || "",
 		currentRefType: nav.sidebarState.activeCanvasTab,
 	}));
 

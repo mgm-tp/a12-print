@@ -32,7 +32,6 @@
 export * from "./border-line/BorderLines.js";
 export * from "./context-menu/ContextMenu.js";
 export * from "./drag-and-drop/index.js";
-export * from "./element-library/index.js";
 export * from "./elements/index.js";
 export * from "./forms/index.js";
 export * from "./app/PrintModelEditor.js";

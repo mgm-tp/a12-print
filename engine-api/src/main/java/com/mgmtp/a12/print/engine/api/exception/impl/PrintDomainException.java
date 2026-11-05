@@ -33,29 +33,41 @@ package com.mgmtp.a12.print.engine.api.exception.impl;
 
 import org.slf4j.helpers.MessageFormatter;
 import com.mgmtp.a12.model.utils.OnlyForUsage;
+import lombok.Getter;
 
 @OnlyForUsage
 public class PrintDomainException extends RuntimeException {
 	private final Object[] messageArguments;
 
+	@Getter
+	private final boolean isRootMessage;
+
 	public PrintDomainException(final String message) {
 		super(message);
-		messageArguments = null;
+		this.messageArguments = null;
+		this.isRootMessage = false;
 	}
 
 	public PrintDomainException(final String message, final Object... args) {
 		super(message, args.length > 0 && args[args.length - 1] instanceof Throwable throwable ? throwable : null);
 		this.messageArguments = args;
+		this.isRootMessage = false;
 	}
 
 	public PrintDomainException(final String message, final Throwable throwable) {
+		this(message, throwable, false);
+	}
+
+	public PrintDomainException(final String message, final Throwable throwable, final boolean isRootMessage) {
 		super(message, throwable);
 		this.messageArguments = null;
+		this.isRootMessage = isRootMessage;
 	}
 
 	public PrintDomainException(final Throwable throwable) {
 		super(throwable);
 		this.messageArguments = null;
+		this.isRootMessage = false;
 	}
 
 	@Override

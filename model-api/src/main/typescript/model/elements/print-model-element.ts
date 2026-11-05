@@ -31,7 +31,7 @@
  */
 import { isObject } from "../print-model.js";
 
-import type { PrintModelEntity } from "./base.js";
+import type { Measure, PrintModelEntity } from "./base.js";
 import type {
 	Area,
 	BarChart,
@@ -55,6 +55,20 @@ import type {
 
 export interface PrintModelElement extends PrintModelEntity {
 	readonly type: ElementType;
+	/** Optional in this release for backwards compatibility. Will become required in the next major release. */
+	readonly name?: string;
+	readonly isFragment?: boolean;
+	readonly fragmentDimensions?: FragmentDimensions;
+}
+
+export interface FragmentDimensions extends PrintModelEntity {
+	width: Measure;
+	height: Measure;
+}
+
+export interface PrintModelFragmentElement extends PrintModelElement {
+	readonly isFragment: true;
+	readonly fragmentDimensions: FragmentDimensions;
 }
 
 export enum ElementType {
@@ -106,5 +120,9 @@ export namespace PrintModelElement {
 			"type" in element &&
 			Object.values(ElementType).includes(element.type as ElementType)
 		);
+	}
+
+	export function isFragmentElement(element: PrintModelElement): element is PrintModelFragmentElement {
+		return Boolean(element.isFragment && element.fragmentDimensions);
 	}
 }

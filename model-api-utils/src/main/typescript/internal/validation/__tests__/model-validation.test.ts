@@ -113,7 +113,7 @@ describe("PrintMetaModel Validation", () => {
 
 		tests.forEach(({ dateFormat, hasError, errorEnum }) => {
 			it(`validate test print model with format ${dateFormat} ${hasError ? "with" : "without"} error`, () => {
-				const printModel = JSON.stringify(printModelWithCustomTypeJson).replace("<dateFormat>", dateFormat);
+				const printModel = JSON.stringify(printModelWithCustomTypeJson).replace("'<dateFormat>'", dateFormat);
 				const report = PrintModelValidator.getInstance().validate(printModel);
 
 				if (hasError) {

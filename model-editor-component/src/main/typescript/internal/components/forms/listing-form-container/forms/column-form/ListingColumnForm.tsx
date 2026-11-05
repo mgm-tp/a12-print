@@ -76,6 +76,7 @@ import {
 	parseNumberInputValue,
 	stringifyInputValue,
 	createBorderPropertiesInheritedResolver,
+	createTextPropertiesInheritedResolver,
 } from "../../../../../utils/input-source-utils.js";
 import { LISTING_PROPERTY_PATH } from "../../../../../constant/element-property-path.js";
 
@@ -194,6 +195,44 @@ export const ListingColumnForm = ({ element, formState }: ListingColumnFormProps
 		[currentColumn?.width, updateCurrentColumn]
 	);
 
+	const onSortingIndexChange = React.useCallback(
+		(isSortingIndex: boolean) => {
+			updateCurrentColumn(
+				{ isSortingIndex },
+				RESOURCE_KEYS.interaction.form.listingFormContainer.form.column.listingColumnForm.toggleSortGroupContent
+			);
+		},
+		[updateCurrentColumn]
+	);
+
+	const onCustomTextPropertiesChange = React.useCallback(
+		(hasCustomTextProperties: boolean) => {
+			const generatedColumns = InputSourceGenerator.generateInputSource<Listing>("listing.columns.textProperties")
+				.listing.columns;
+
+			updateCurrentColumn(
+				{ hasCustomTextProperties, textProperties: generatedColumns?.textProperties },
+				RESOURCE_KEYS.interaction.form.listingFormContainer.form.column.listingColumnForm
+					.toggleColumnTextProperty
+			);
+		},
+		[updateCurrentColumn]
+	);
+
+	const onCustomBorderPropertiesChange = React.useCallback(
+		(hasCustomBorderProperties: boolean) => {
+			const generatedColumns =
+				InputSourceGenerator.generateInputSource<Listing>("listing.columns").listing.columns;
+
+			updateCurrentColumn(
+				{ hasCustomBorderProperties, borderProperties: generatedColumns?.borderProperties },
+				RESOURCE_KEYS.interaction.form.listingFormContainer.form.column.listingColumnForm
+					.toggleColumnBorderProperty
+			);
+		},
+		[updateCurrentColumn]
+	);
+
 	const onBack = React.useCallback(() => {
 		assertExists(entityId);
 		dispatch(NavigationActions.popFormStack({ tab, entityId, mode }));
@@ -238,52 +277,21 @@ export const ListingColumnForm = ({ element, formState }: ListingColumnFormProps
 			<CustomCheckbox
 				label={localizer(RESOURCE_KEYS.elementForm.listing.columns.isSortingIndexFormLabel)}
 				checked={Boolean(currentColumn.isSortingIndex)}
-				onChange={newVal =>
-					updateCurrentColumn(
-						{ isSortingIndex: newVal },
-						RESOURCE_KEYS.interaction.form.listingFormContainer.form.column.listingColumnForm
-							.toggleSortGroupContent
-					)
-				}
+				onChange={onSortingIndexChange}
 				fitToParent={false}
 				errorMessage={getPropertyError("isSortingIndex")}
 			/>
 			<CustomCheckbox
 				label={localizer(RESOURCE_KEYS.elementForm.listing.columns.hasCustomTextProperties)}
 				checked={Boolean(currentColumn.hasCustomTextProperties)}
-				onChange={newVal => {
-					updateCurrentColumn(
-						{
-							hasCustomTextProperties: newVal,
-							textProperties: InputSourceGenerator.generateInputSource<Listing>(
-								"listing.columns.textProperties"
-							).listing.columns?.textProperties,
-						},
-						RESOURCE_KEYS.interaction.form.listingFormContainer.form.column.listingColumnForm
-							.toggleColumnTextProperty
-					);
-				}}
+				onChange={onCustomTextPropertiesChange}
 				fitToParent={false}
 				errorMessage={getPropertyError("hasCustomTextProperties")}
 			/>
 			<CustomCheckbox
 				label={localizer(RESOURCE_KEYS.elementForm.listing.columns.hasCustomBorderProperties)}
 				checked={Boolean(currentColumn.hasCustomBorderProperties)}
-				onChange={newVal => {
-					const generatedColumns =
-						InputSourceGenerator.generateInputSource<Listing>("listing.columns").listing.columns;
-					const borderProperties =
-						generatedColumns?.borderProperties &&
-						InputSourceGenerator.upgradeBorderPropertiesWithReference(
-							generatedColumns.borderProperties,
-							element.id
-						);
-					updateCurrentColumn(
-						{ hasCustomBorderProperties: newVal, borderProperties },
-						RESOURCE_KEYS.interaction.form.listingFormContainer.form.column.listingColumnForm
-							.toggleColumnBorderProperty
-					);
-				}}
+				onChange={onCustomBorderPropertiesChange}
 				fitToParent={false}
 				errorMessage={getPropertyError("hasCustomBorderProperties")}
 			/>
@@ -306,6 +314,17 @@ const TextProperties = ({ element, columnIndex, columns }: ListingColumnChildPro
 	);
 
 	const textProperties = columns[columnIndex].textProperties;
+
+	// a column inherits from the listing it belongs to, the same way its border does
+	const {
+		inheritedTextStyleIdResolver,
+		inheritedBoldResolver,
+		inheritedItalicResolver,
+		inheritedUnderlinedResolver,
+		inheritedColorResolver,
+		inheritedBackgroundColorResolver,
+		inheritedAlignmentResolver,
+	} = React.useMemo(() => createTextPropertiesInheritedResolver(element.textProperties), [element.textProperties]);
 
 	const handleSetTextProperties = React.useCallback(
 		(newProperties: OmitId<PartialTextProperties>) => {
@@ -353,6 +372,14 @@ const TextProperties = ({ element, columnIndex, columns }: ListingColumnChildPro
 				setTextProperties={handleSetTextProperties}
 				textPropertyErrors={errorMap}
 				propertiesPath={LISTING_PROPERTY_PATH.columns.textProperties}
+				inheritedFrom={element.id}
+				resolveTextStyleId={inheritedTextStyleIdResolver}
+				resolveBold={inheritedBoldResolver}
+				resolveItalic={inheritedItalicResolver}
+				resolveUnderlined={inheritedUnderlinedResolver}
+				resolveColor={inheritedColorResolver}
+				resolveBackgroundColor={inheritedBackgroundColorResolver}
+				resolveAlignment={inheritedAlignmentResolver}
 			/>
 		</CollapsibleSection>
 	);
@@ -421,6 +448,7 @@ const BorderProperties = ({ element, columnIndex, columns }: ListingColumnChildP
 				element={element}
 				propertiesPath={LISTING_PROPERTY_PATH.columns.borderProperties}
 				borderProperties={borderProperties}
+				inheritedFrom={element.id}
 				determineInheritedSource={() => true}
 				setBorderProperties={handleSetBorderProperties}
 				getErrorMessage={getBorderPropertiesErrorMessage}

@@ -38,6 +38,7 @@ import type {
 	MeasureInputSource,
 	PrintModelEntity,
 	PartialBorderProperties,
+	PartialTextProperties,
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import { MeasureUnit } from "@com.mgmtp.a12.print/print-model-api/model";
 import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
@@ -58,14 +59,22 @@ export const changeInputValue = <T>(
 	};
 };
 
+/**
+ * @param inheritedFrom the id an INHERITED source takes its value from - every other source drops it, so a
+ * property that no longer inherits stops pointing at something it does not read.
+ */
 export function changeInputSource<T>(
 	source: PossibleInputSource,
 	path: string,
-	origin?: Partial<InputSource<T>> & PrintModelEntity
+	origin?: Partial<InputSource<T>> & PrintModelEntity,
+	inheritedFrom?: string
 ): Partial<InputSource<T | undefined>> & PrintModelEntity {
 	if (source === origin?.source) {
 		return origin;
 	}
+
+	// only an inherited value comes from somewhere else, every other source carries its value itself
+	const reference = source === PossibleInputSource.INHERITED ? inheritedFrom : undefined;
 
 	return origin
 		? {
@@ -73,8 +82,9 @@ export function changeInputSource<T>(
 				source,
 				path,
 				value: undefined,
+				reference,
 			}
-		: createPlainInputSource(source, path);
+		: { ...createPlainInputSource(source, path), reference };
 }
 export const changeMeasureInputValue = (
 	value: number | undefined,
@@ -162,6 +172,33 @@ export const parseNumberInputValue = (value: number | string | undefined) => {
 	}
 	return value;
 };
+
+export const createTextPropertiesInheritedResolver = (
+	textProperties: PartialTextProperties | undefined
+): {
+	inheritedTextStyleIdResolver: InheritedValueResolver<string>;
+	inheritedBoldResolver: InheritedValueResolver<boolean>;
+	inheritedItalicResolver: InheritedValueResolver<boolean>;
+	inheritedUnderlinedResolver: InheritedValueResolver<boolean>;
+	inheritedColorResolver: InheritedValueResolver<string>;
+	inheritedBackgroundColorResolver: InheritedValueResolver<string>;
+	inheritedAlignmentResolver: InheritedValueResolver<string>;
+} => ({
+	inheritedTextStyleIdResolver: (_inputSource, el, property) =>
+		InputValueSourceResolver.getSourceStringValue(textProperties?.textStyleId, el, property),
+	inheritedBoldResolver: (_inputSource, el, property) =>
+		InputValueSourceResolver.getSourceBooleanValue(textProperties?.bold, el, property),
+	inheritedItalicResolver: (_inputSource, el, property) =>
+		InputValueSourceResolver.getSourceBooleanValue(textProperties?.italic, el, property),
+	inheritedUnderlinedResolver: (_inputSource, el, property) =>
+		InputValueSourceResolver.getSourceBooleanValue(textProperties?.underlined, el, property),
+	inheritedColorResolver: (_inputSource, el, property) =>
+		InputValueSourceResolver.getSourceStringValue(textProperties?.color, el, property),
+	inheritedBackgroundColorResolver: (_inputSource, el, property) =>
+		InputValueSourceResolver.getSourceStringValue(textProperties?.backgroundColor, el, property),
+	inheritedAlignmentResolver: (_inputSource, el, property) =>
+		InputValueSourceResolver.getSourceStringValue(textProperties?.alignment, el, property),
+});
 
 export const createBorderPropertiesInheritedResolver = (
 	borderProperties: PartialBorderProperties | undefined

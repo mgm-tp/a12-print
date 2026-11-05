@@ -58,6 +58,7 @@ interface DataContextInputProps {
 	onUpdateDataContexts: (dataContexts: DeepPartial<DataContext>[]) => void;
 	wrapperDataContext: DataContextEntry[];
 	dataContextErrorMap?: DeepPartialErrorMap<DataContext>[];
+	isReadonly?: boolean;
 }
 
 export const RepeatableSettings = ({
@@ -65,6 +66,7 @@ export const RepeatableSettings = ({
 	wrapperDataContext,
 	onUpdateDataContexts,
 	dataContextErrorMap,
+	isReadonly = false,
 }: DataContextInputProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
@@ -149,6 +151,7 @@ export const RepeatableSettings = ({
 				value={repeatableDataContext?.model}
 				onValueChanged={onChangeDocumentModel}
 				onDelete={onDeleteDocumentModel}
+				disabled={isReadonly}
 			/>
 			<CustomTextField
 				readonly
@@ -164,6 +167,7 @@ export const RepeatableSettings = ({
 					setSelectedPath={onChangeDataContextGroup}
 					maxRepeatLevel={0}
 					isInstanceContext
+					disabled={isReadonly}
 				/>
 			</StyledDataContextContainer>
 		</>

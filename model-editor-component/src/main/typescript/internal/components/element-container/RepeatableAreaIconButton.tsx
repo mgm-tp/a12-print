@@ -39,7 +39,7 @@ import { Button, Icon } from "@com.mgmtp.a12.widgets/widgets-core";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 
 interface RepeatableAreaIconButtonProps extends ButtonProps {
-	element: PartialAnyPrintModelElement;
+	element: PartialAnyPrintModelElement | undefined;
 }
 export const RepeatableAreaIconButton = ({ element, ...buttonProps }: RepeatableAreaIconButtonProps) => {
 	const localizer = PrintLocalizer.useLocalizer();

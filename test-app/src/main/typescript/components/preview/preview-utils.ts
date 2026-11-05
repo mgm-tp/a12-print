@@ -29,27 +29,49 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import moment from "moment-timezone";
-
 import type { DropDownItem } from "@com.mgmtp.a12.widgets/widgets-core";
 
 const MINUTES_PER_HOUR = 60;
 const TIMEZONE_PREFIX = "UTC";
+const LONG_OFFSET_PATTERN = /^GMT([+-])(\d{2}):(\d{2})$/;
+
+/**
+ * Current UTC offset of a zone in minutes. `longOffset` renders as `GMT+02:00`, or plain `GMT` at zero offset.
+ * Unknown zone names are treated as zero offset, since the name may come from a user editable URL parameter.
+ */
+function getUtcOffsetInMinutes(timeZoneName: string): number {
+	let longOffset;
+	try {
+		const parts = new Intl.DateTimeFormat("en-US", {
+			timeZone: timeZoneName,
+			timeZoneName: "longOffset",
+		}).formatToParts(new Date());
+		longOffset = parts.find(part => part.type === "timeZoneName")?.value ?? "";
+	} catch {
+		return 0;
+	}
+
+	const match = LONG_OFFSET_PATTERN.exec(longOffset);
+	if (!match) {
+		return 0;
+	}
+
+	const [, sign, hours, minutes] = match;
+	const offset = Number(hours) * MINUTES_PER_HOUR + Number(minutes);
+	return sign === "-" ? -offset : offset;
+}
 
 export function getDefaultTimeZone() {
-	const defaultTimeZone = moment.tz.guess();
-	const offset = moment.tz(defaultTimeZone).utcOffset();
+	const defaultTimeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-	return { formattedOffset: formatTimeZoneOffset(offset), name: defaultTimeZone };
+	return { formattedOffset: formatTimeZoneOffset(getUtcOffsetInMinutes(defaultTimeZone)), name: defaultTimeZone };
 }
 
 export function getAllTimeZones() {
-	const timeZones = moment.tz.names();
-
-	return timeZones
-		.map(tz => {
-			const offset = moment.tz(tz).utcOffset();
-			return { offset, formattedOffset: formatTimeZoneOffset(offset), name: tz };
+	return Intl.supportedValuesOf("timeZone")
+		.map(timeZoneName => {
+			const offset = getUtcOffsetInMinutes(timeZoneName);
+			return { offset, formattedOffset: formatTimeZoneOffset(offset), name: timeZoneName };
 		})
 		.sort((a, b) => a.offset - b.offset);
 }
@@ -59,7 +81,7 @@ export function formatTimeZoneLabel(formattedOffset: string, timeZoneName: strin
 }
 
 export function getTimeZoneOption(timeZoneName: string): DropDownItem {
-	const offset = moment.tz(timeZoneName).utcOffset();
+	const offset = getUtcOffsetInMinutes(timeZoneName);
 	return {
 		value: timeZoneName,
 		label: formatTimeZoneLabel(formatTimeZoneOffset(offset), timeZoneName),
@@ -67,7 +89,7 @@ export function getTimeZoneOption(timeZoneName: string): DropDownItem {
 }
 
 export function fromNameToOffset(timeZoneName: string) {
-	return formatTimeZoneOffset(moment.tz(timeZoneName).utcOffset()).replace(TIMEZONE_PREFIX, "");
+	return formatTimeZoneOffset(getUtcOffsetInMinutes(timeZoneName)).replace(TIMEZONE_PREFIX, "");
 }
 
 function formatTimeZoneOffset(timeZoneOffset: number) {

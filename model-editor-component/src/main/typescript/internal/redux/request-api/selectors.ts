@@ -33,12 +33,18 @@ import type { Selector } from "reselect";
 import { createSelector } from "reselect";
 
 import type { Header } from "@com.mgmtp.a12.base/base-model-api";
-import type { PartialAnyPrintModelElement } from "@com.mgmtp.a12.print/print-model-api/model";
+import type {
+	PageOrientation,
+	PartialAnyPrintModelElement,
+	SectionUsage,
+} from "@com.mgmtp.a12.print/print-model-api/model";
 import { Log, TransactionLog } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { FRAGMENT_MODEL_REFERENCE_PURPOSE } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import { createSliceSelector, idInputSelector, PrintEngineSelectors } from "../../store/selectors.js";
 import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import type { DinTemplateSegmentItem } from "../../../internal/components/segments/din-template-segment-item.js";
+import { FragmentUtils } from "../../utils/fragment-utils.js";
 
 import type { RequestApiState } from "./state.js";
 
@@ -49,12 +55,18 @@ export function segmentReferenceItemSelector(_: PrintEngineState, printModelId: 
 export namespace RequestApiSelectors {
 	const printEngineState = createSliceSelector<PrintEngineState>(state => state);
 	export const requestApiState = createSliceSelector<RequestApiState>(state => state.RequestApi);
-	export const printModelIds = createSelector([requestApiState], state => state.printModelIds);
-	export const selectablePrintModelIds: Selector<PrintEngineState, string[] | undefined> = createSelector(
-		[printModelIds, PrintEngineSelectors.dinTemplateModelReferences, PrintEngineSelectors.printHeader],
-		(printModelIds, dinTemplateModelReferences, currentPrintModelHeader) => {
+	export const printModelHeaders = createSelector([requestApiState], state => state.printModelHeaders);
+	export const dinPrintModelIds = createSelector([printModelHeaders], headers =>
+		headers
+			?.filter(header => !FragmentUtils.isFragmentModelHeader(header))
+			?.filter(header => !header.modelReferences?.some(ref => ref.purpose === FRAGMENT_MODEL_REFERENCE_PURPOSE))
+			?.map(header => header.id)
+	);
+	export const selectableDINPrintModelIds: Selector<PrintEngineState, string[] | undefined> = createSelector(
+		[dinPrintModelIds, PrintEngineSelectors.dinTemplateModelReferences, PrintEngineSelectors.printHeader],
+		(dinPrintModelIds, dinTemplateModelReferences, currentPrintModelHeader) => {
 			const usedModelIds = [...dinTemplateModelReferences.map(ref => ref.reference), currentPrintModelHeader.id];
-			return (printModelIds || []).filter(model => !usedModelIds.includes(model));
+			return (dinPrintModelIds || []).filter(model => !usedModelIds.includes(model));
 		}
 	);
 	export const referencedPrintModelHeaders: Selector<PrintEngineState, Header[]> = createSelector(
@@ -81,7 +93,7 @@ export namespace RequestApiSelectors {
 	export const segment = createSelector(
 		[printEngineState, segmentReferenceItemSelector],
 		(state, [printModelId, segmentId]) =>
-			printModel(state, printModelId)?.content.segments.definitions.find(segment => segment.id === segmentId)
+			printModel(state, printModelId)?.content?.segments?.definitions.find(segment => segment.id === segmentId)
 	);
 	export const dinTemplatePrintModels = createSelector(
 		[requestApiState],
@@ -131,7 +143,7 @@ export namespace RequestApiSelectors {
 		return elementReferenceIds.reduce((elements: PartialAnyPrintModelElement[], id) => {
 			const element = TransactionLog.selectPrintModelElement(printModelElements, id);
 			const entityElements = TransactionLog.selectEntityElements(printModelElements, id);
-			return elements.concat(element).concat(entityElements);
+			return element ? elements.concat(element).concat(entityElements) : elements.concat(entityElements);
 		}, []);
 	});
 
@@ -156,4 +168,149 @@ export namespace RequestApiSelectors {
 	);
 	export const availableResources = createSelector([requestApiState], state => state.availableResources);
 	export const lastUploadedResource = createSelector([requestApiState], state => state.lastUploadedResource);
+
+	export const makeAvailableFragmentSections = () =>
+		createSelector(
+			[
+				printModelData,
+				PrintEngineSelectors.fragmentModelReferences,
+				(_: PrintEngineState, pageOrientation: PageOrientation) => pageOrientation,
+			],
+			(pmd, fragmentModelRefs, pageOrientation) =>
+				fragmentModelRefs.flatMap(ref => {
+					const model = pmd?.[ref.reference];
+					if (!model) return [];
+					return (model.content?.sections?.definitions || [])
+						.filter(s => s.pageOrientation === pageOrientation)
+						.map(s => ({ modelId: ref.reference, section: s }));
+				})
+		);
+
+	export const resolvedSectionReferences = createSelector(
+		[printModelData, PrintEngineSelectors.sectionReferences],
+		(pmd, references) =>
+			references.map(reference => ({
+				reference,
+				section: pmd?.[reference.model]?.content?.sections?.definitions?.find(s => s.id === reference.refId),
+			}))
+	);
+
+	export const makeResolvedSectionForSlot = () =>
+		createSelector(
+			[
+				printModelData,
+				PrintEngineSelectors.sectionReferences,
+				(_: PrintEngineState, pageOrientation: PageOrientation) => pageOrientation,
+				(_: PrintEngineState, __: PageOrientation, sectionUsage: SectionUsage | undefined) => sectionUsage,
+			],
+			(pmd, references, pageOrientation, sectionUsage) => {
+				for (const reference of references) {
+					const section = pmd?.[reference.model]?.content?.sections?.definitions?.find(
+						s => s.id === reference.refId
+					);
+					const slotUsage = reference.sectionUsage ?? section?.sectionUsage;
+					if (section?.pageOrientation === pageOrientation && slotUsage === sectionUsage) {
+						return { reference, section };
+					}
+				}
+				return undefined;
+			}
+		);
+
+	export const availableFragmentTextStyles = createSelector(
+		[printModelData, PrintEngineSelectors.fragmentModelReferences, PrintEngineSelectors.textStyleReferences],
+		(pmd, fragmentModelRefs, textStyleRefs) => {
+			const referencedRefIds = new Set(textStyleRefs.map(r => r.refId));
+			return fragmentModelRefs.flatMap(ref => {
+				const model = pmd?.[ref.reference];
+				if (!model) return [];
+				return (model.content?.textStyles?.definitions || [])
+					.filter(ts => !referencedRefIds.has(ts.id))
+					.map(ts => ({ modelId: ref.reference, textStyle: ts }));
+			});
+		}
+	);
+
+	export const resolvedTextStyleReferences = createSelector(
+		[printModelData, PrintEngineSelectors.textStyleReferences],
+		(pmd, references) =>
+			references.map(reference => ({
+				reference,
+				textStyle: pmd?.[reference.model]?.content?.textStyles?.definitions?.find(
+					ts => ts.id === reference.refId
+				),
+			}))
+	);
+
+	export const availableFragmentSegments = createSelector(
+		[printModelData, PrintEngineSelectors.fragmentModelReferences],
+		(pmd, fragmentModelRefs) =>
+			fragmentModelRefs.flatMap(ref => {
+				const model = pmd?.[ref.reference];
+				if (!model) return [];
+				return (model.content?.segments?.definitions || []).map(segment => ({
+					modelId: ref.reference,
+					segment,
+				}));
+			})
+	);
+
+	export const resolvedSegmentFragmentReferences = createSelector(
+		[printModelData, PrintEngineSelectors.segmentFragmentReferences],
+		(pmd, references) =>
+			references.map(reference => ({
+				reference,
+				segment: pmd?.[reference.model]?.content?.segments?.definitions?.find(
+					segment => segment.id === reference.refId
+				),
+			}))
+	);
+
+	export const makeAvailableFragmentWatermarksForOrientation = () =>
+		createSelector(
+			[
+				printModelData,
+				PrintEngineSelectors.fragmentModelReferences,
+				(_: PrintEngineState, pageOrientation: PageOrientation) => pageOrientation,
+			],
+			(pmd, fragmentModelRefs, pageOrientation) =>
+				fragmentModelRefs.flatMap(ref => {
+					const model = pmd?.[ref.reference];
+					if (!model) return [];
+					return (model.content?.watermarks?.definitions || [])
+						.filter(w => w.pageOrientation === pageOrientation)
+						.map(w => ({ modelId: ref.reference, watermark: w }));
+				})
+		);
+
+	export const resolvedWatermarkReferences = createSelector(
+		[printModelData, PrintEngineSelectors.watermarkReferences],
+		(pmd, references) =>
+			references.map(reference => ({
+				reference,
+				watermark: pmd?.[reference.model]?.content?.watermarks?.definitions?.find(
+					w => w.id === reference.refId
+				),
+			}))
+	);
+
+	export const makeResolvedWatermarkForOrientation = () =>
+		createSelector(
+			[
+				printModelData,
+				PrintEngineSelectors.watermarkReferences,
+				(_: PrintEngineState, pageOrientation: PageOrientation) => pageOrientation,
+			],
+			(pmd, references, pageOrientation) => {
+				for (const reference of references) {
+					const watermark = pmd?.[reference.model]?.content?.watermarks?.definitions?.find(
+						w => w.id === reference.refId
+					);
+					if (watermark?.pageOrientation === pageOrientation) {
+						return { reference, watermark };
+					}
+				}
+				return undefined;
+			}
+		);
 }

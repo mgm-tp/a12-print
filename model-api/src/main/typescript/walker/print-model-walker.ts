@@ -64,21 +64,36 @@ import {
 
 import { PrintModelTrace } from "./print-model-trace.js";
 import { DescendCommand, PrintModelVisitor, TraversalCommand } from "./print-model-visitor.js";
-import { ReferenceListResolver, type ReferenceResolver } from "./reference-resolver.js";
-import { DefaultSectionIdResolver, type SectionIdResolver } from "./section-id-resolver.js";
-import { DefaultSegmentIdResolver, type SegmentIdResolver } from "./segment-id-resolver.js";
-import { DefaultWatermarkIdResolver, type WatermarkIdResolver } from "./watermark-id-resolver.js";
+import { CachedReferenceResolver, ReferenceListResolver, type ReferenceResolver } from "./reference-resolver.js";
+import {
+	CachedSectionIdResolver,
+	DefaultSectionIdResolver,
+	resolveSectionWithUsage,
+	type SectionIdResolver,
+} from "./section-id-resolver.js";
+import { CachedSegmentIdResolver, DefaultSegmentIdResolver, type SegmentIdResolver } from "./segment-id-resolver.js";
+import {
+	CachedWatermarkIdResolver,
+	DefaultWatermarkIdResolver,
+	type WatermarkIdResolver,
+} from "./watermark-id-resolver.js";
 import { ReferenceElementListResolver, type ReferenceElementResolver } from "./reference-element-resolver.js";
 import { PrintModelListResolver, type PrintModelResolver } from "./print-model-resolver.js";
+import {
+	CachedTextStyleIdResolver,
+	DefaultTextStyleIdResolver,
+	type TextStyleIdResolver,
+} from "./text-style-id-resolver.js";
 
 export class PrintModelWalker {
-	private visitor: PrintModelVisitor;
-	private referenceResolver: ReferenceResolver;
-	private segmentIdResolver: SegmentIdResolver;
-	private sectionIdResolver: SectionIdResolver;
-	private watermarkIdResolver: WatermarkIdResolver;
-	private referenceElementResolver: ReferenceElementResolver;
-	private printModelResolver: PrintModelResolver;
+	private readonly visitor: PrintModelVisitor;
+	private readonly referenceResolver: ReferenceResolver;
+	private readonly segmentIdResolver: SegmentIdResolver;
+	private readonly sectionIdResolver: SectionIdResolver;
+	private readonly watermarkIdResolver: WatermarkIdResolver;
+	private readonly referenceElementResolver: ReferenceElementResolver;
+	private readonly printModelResolver: PrintModelResolver;
+	private readonly textStyleIdResolver: TextStyleIdResolver;
 
 	constructor(
 		visitor: PrintModelVisitor,
@@ -87,7 +102,8 @@ export class PrintModelWalker {
 		sectionIdResolver: SectionIdResolver,
 		watermarkIdResolver: WatermarkIdResolver,
 		referenceElementResolver: ReferenceElementResolver = new ReferenceElementListResolver([]),
-		printModelResolver: PrintModelResolver = new PrintModelListResolver([])
+		printModelResolver: PrintModelResolver = new PrintModelListResolver([]),
+		textStyleIdResolver: TextStyleIdResolver = new DefaultTextStyleIdResolver([])
 	) {
 		this.visitor = visitor;
 		this.referenceResolver = referenceResolver;
@@ -96,6 +112,30 @@ export class PrintModelWalker {
 		this.watermarkIdResolver = watermarkIdResolver;
 		this.referenceElementResolver = referenceElementResolver;
 		this.printModelResolver = printModelResolver;
+		this.textStyleIdResolver = textStyleIdResolver;
+	}
+
+	/**
+	 * Creates a walker with all resolvers derived from the given print model, including what it references from
+	 * print fragment models.
+	 *
+	 * @param printModelResolver Source of the fragment models and of the models used for the DIN template feature.
+	 */
+	public static withDefaultResolvers(
+		visitor: PrintModelVisitor,
+		printModel: PrintModel,
+		printModelResolver: PrintModelResolver = new PrintModelListResolver([])
+	): PrintModelWalker {
+		return new PrintModelWalker(
+			visitor,
+			new CachedReferenceResolver(ReferenceListResolver.fromModel(printModel, printModelResolver)),
+			new CachedSegmentIdResolver(DefaultSegmentIdResolver.fromModel(printModel, printModelResolver)),
+			new CachedSectionIdResolver(DefaultSectionIdResolver.fromModel(printModel, printModelResolver)),
+			new CachedWatermarkIdResolver(DefaultWatermarkIdResolver.fromModel(printModel, printModelResolver)),
+			ReferenceElementListResolver.fromModel(printModel),
+			printModelResolver,
+			new CachedTextStyleIdResolver(DefaultTextStyleIdResolver.fromModel(printModel, printModelResolver))
+		);
 	}
 
 	public walkPrintModel(printModel: PrintModel): TraversalCommand {
@@ -127,15 +167,38 @@ export class PrintModelWalker {
 		let result: TraversalCommand;
 		const { general } = content;
 
-		result = this.walkStructure(general.structure);
-		if (result === TraversalCommand.CONTINUE && general.sections) {
+		result = this.walkStructure(general?.structure || []);
+		if (result === TraversalCommand.CONTINUE && general?.sections) {
 			result = this.walkSections(general.sections);
 		}
-		if (result === TraversalCommand.CONTINUE && general.watermarks) {
+		if (result === TraversalCommand.CONTINUE && general?.watermarks) {
 			result = this.walkWatermarks(general.watermarks);
+		}
+		if (result === TraversalCommand.CONTINUE && general?.textStyles) {
+			result = this.walkTextStyles(general.textStyles);
 		}
 
 		return result;
+	}
+
+	private walkTextStyles(textStyles: ReadonlyArray<string>): TraversalCommand {
+		for (let index = 0; index < textStyles.length; index++) {
+			const id = textStyles[index];
+			const textStyle = this.textStyleIdResolver.resolveTextStyleId(id);
+
+			const result = textStyle
+				? this.visitor.visitTextStyle(textStyle, index)
+				: this.visitor.visitUnresolvedTextStyle(id, index);
+
+			if (result === TraversalCommand.STOP) {
+				break;
+			}
+			if (result === TraversalCommand.HALT) {
+				return result;
+			}
+		}
+
+		return TraversalCommand.CONTINUE;
 	}
 
 	private walkStructure(structure: ReadonlyArray<string>): TraversalCommand {
@@ -161,11 +224,22 @@ export class PrintModelWalker {
 	private walkSections(sections: ReadonlyArray<string>): TraversalCommand {
 		for (let index = 0; index < sections.length; index++) {
 			const id = sections[index];
-			const section = this.sectionIdResolver.resolveSectionId(id);
+			const sectionWithUsage = resolveSectionWithUsage(this.sectionIdResolver, id);
 
-			const result = section
-				? this.walkContainer(section, PrintModelTrace.ROOT_PATH, index)
-				: this.visitor.visitUnresolvedSection(id, index);
+			let result: TraversalCommand;
+			if (sectionWithUsage) {
+				const { section, sectionUsage } = sectionWithUsage;
+				result = this.visitor.preVisitSectionWithUsage(
+					section,
+					sectionUsage,
+					PrintModelTrace.ROOT_PATH.with(section, index)
+				);
+				if (result === TraversalCommand.CONTINUE) {
+					result = this.walkContainer(section, PrintModelTrace.ROOT_PATH, index);
+				}
+			} else {
+				result = this.visitor.visitUnresolvedSection(id, index);
+			}
 
 			if (result === TraversalCommand.STOP) {
 				break;

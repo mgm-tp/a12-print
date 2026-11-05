@@ -171,6 +171,7 @@ export const TableColumnFormDetail = ({ element, columnIndex }: TableColumnFormD
 			let newElement: PartialExpression | PartialField = {
 				id: newId,
 				type,
+				name: "newElement",
 				[String(type).toLowerCase()]: {
 					id: nanoid(),
 					model: element.table?.model,

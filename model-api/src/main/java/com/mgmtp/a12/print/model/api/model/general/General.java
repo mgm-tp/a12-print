@@ -31,15 +31,17 @@
  */
 package com.mgmtp.a12.print.model.api.model.general;
 
+import com.mgmtp.a12.model.utils.OnlyForUsage;
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
-import com.mgmtp.a12.print.model.api.model.element.base.ComputationAlternative;
 import com.mgmtp.a12.print.model.api.model.element.properties.RuntimeVariable;
 
 import java.util.List;
-import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 @OnlyForUsage
 public interface General extends PrintModelEntity {
+	/**
+	 * @apiNote Will become optional in the next major release and the return type will change to {@code Optional<Metadata>}.
+	 */
 	Metadata getMetadata();
 
 	SegmentDefaults getSegmentDefaults();

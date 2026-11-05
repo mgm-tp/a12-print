@@ -29,13 +29,14 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useCallback } from "react";
+import { nanoid } from "nanoid";
 
-import type { PartialSegment } from "@com.mgmtp.a12.print/print-model-api/model";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
 import { PrintEngineSelectors } from "../../store/selectors.js";
-import { TransactionLogStateActions } from "../../redux/index.js";
+import { FragmentActions, TransactionLogStateActions } from "../../redux/index.js";
 import { InteractionLogActions } from "../../redux//interaction-log/index.js";
 import { RESOURCE_KEYS } from "../../localization/index.js";
 import { SEGMENT_CARD } from "../../constant/drag.js";
@@ -46,16 +47,17 @@ import { StyledDragSegment } from "./SegmentContent.styled.js";
 import { SegmentCard } from "./SegmentCard.js";
 
 export const SegmentContent = () => {
-	const segments = useSelector(PrintEngineSelectors.segments);
+	const segmentItems = useSelector(PrintEngineSelectors.orderedSegmentItems);
+	const segmentFragmentReferences = useSelector(PrintEngineSelectors.segmentFragmentReferences);
 	const [currentSettingSegment, setCurrentSettingSegment] = useState<string>();
 	const dispatch = useDispatch();
 
 	const handleReorderSegment = useCallback(
-		(item: PartialSegment, currentIndex: number, targetIndex: number) => {
+		(_item: { id: string }, currentIndex: number, targetIndex: number) => {
 			dispatch(
 				InteractionLogActions.start({
 					description: RESOURCE_KEYS.interaction.segment.segmentContent.reorderSegment,
-					region: "sidebar",
+					region: GlobalRegion.SIDEBAR,
 					transactionLogActions: [
 						TransactionLogStateActions.reorderStructure({ data: { currentIndex, targetIndex } }),
 					],
@@ -65,25 +67,71 @@ export const SegmentContent = () => {
 		[dispatch]
 	);
 
+	const onRemoveReference = useCallback(
+		(referenceId: string) => {
+			dispatch(
+				InteractionLogActions.start({
+					description: RESOURCE_KEYS.interaction.segment.segmentReferenceSection.removeSegmentReference,
+					region: GlobalRegion.SIDEBAR,
+					transactionLogActions: [
+						TransactionLogStateActions.removeSegmentFragmentReference({ data: { id: referenceId } }),
+					],
+				})
+			);
+		},
+		[dispatch]
+	);
+
+	const onUnlinkReference = useCallback(
+		(referenceId: string) => {
+			dispatch(FragmentActions.unlinkReference({ referenceId, entityType: "segment" }));
+		},
+		[dispatch]
+	);
+
+	const onDuplicateReference = useCallback(
+		(referenceId: string) => {
+			const reference = segmentFragmentReferences.find(r => r.id === referenceId);
+			if (!reference) {
+				return;
+			}
+			dispatch(
+				InteractionLogActions.start({
+					description: RESOURCE_KEYS.interaction.segment.segmentReferenceSection.addSegmentReference,
+					region: GlobalRegion.SIDEBAR,
+					transactionLogActions: [
+						TransactionLogStateActions.addSegmentFragmentReference({
+							data: { id: nanoid(), refId: reference.refId, model: reference.model },
+						}),
+					],
+				})
+			);
+		},
+		[dispatch, segmentFragmentReferences]
+	);
+
 	return (
 		<StyledDragSegment>
-			{segments.map((segment, index) => {
-				return (
-					<DragListItemWrapper
-						key={segment.id}
-						onMoveItem={handleReorderSegment}
-						index={index}
-						item={segment}
-						type={SEGMENT_CARD}
-					>
-						<SegmentCard
-							segment={segment}
-							setOpenSetting={setCurrentSettingSegment}
-							isOpenSetting={currentSettingSegment === segment.id}
-						/>
-					</DragListItemWrapper>
-				);
-			})}
+			{segmentItems.map(({ segment, reference }, index) => (
+				// Reordering only needs the indices, so a reference whose segment is missing can still be moved.
+				<DragListItemWrapper
+					key={segment?.id ?? reference?.id}
+					onMoveItem={handleReorderSegment}
+					index={index}
+					item={segment ?? reference}
+					type={SEGMENT_CARD}
+				>
+					<SegmentCard
+						segment={segment}
+						setOpenSetting={setCurrentSettingSegment}
+						isOpenSetting={!!segment && currentSettingSegment === segment.id}
+						reference={reference}
+						onRemoveReference={reference ? () => onRemoveReference(reference.id) : undefined}
+						onDuplicateReference={reference ? () => onDuplicateReference(reference.id) : undefined}
+						onUnlinkReference={reference ? () => onUnlinkReference(reference.id) : undefined}
+					/>
+				</DragListItemWrapper>
+			))}
 		</StyledDragSegment>
 	);
 };

@@ -59,7 +59,7 @@ interface PreviewElementContainerProps extends BasePreviewProps {
 export const PreviewElementContainer = (props: PreviewElementContainerProps) => {
 	const { mainTarget, zoomFactor, selected, newPos, snapOffset, newType } = props;
 
-	if (newType) {
+	if (newType && !mainTarget.model) {
 		return (
 			<NewElementPreview
 				newType={newType}
@@ -70,7 +70,7 @@ export const PreviewElementContainer = (props: PreviewElementContainerProps) => 
 		);
 	}
 
-	return selected.includes(mainTarget.refId) && selected.length > 1 ? (
+	return selected.includes(mainTarget.id) && selected.length > 1 ? (
 		<GroupElementPreview {...props} />
 	) : (
 		<SingleElementPreview mainTarget={mainTarget} newPos={newPos} snapOffset={snapOffset} zoomFactor={zoomFactor} />
@@ -82,12 +82,16 @@ interface GroupElementPreviewProps extends BasePreviewProps {
 }
 
 const GroupElementPreview = ({ mainTarget, zoomFactor, selected, newPos, snapOffset }: GroupElementPreviewProps) => {
+	const { elementReferences } = React.useContext(EditorContext);
+	const selectedPlaceables = React.useMemo(
+		() => elementReferences.filter(el => selected.includes(el.id)),
+		[elementReferences, selected]
+	);
+	const selectedRefIds = React.useMemo(() => selectedPlaceables.map(el => el.refId), [selectedPlaceables]);
 	const printModelElements = useSelector((state: PrintEngineState) =>
-		PrintEngineSelectors.multiplePrintModelElements(state, selected)
+		PrintEngineSelectors.multiplePrintModelElements(state, selectedRefIds)
 	);
 	const isMarginVisible = useSelector(PrintEngineSelectors.isMarginVisible);
-
-	const { elementReferences } = React.useContext(EditorContext);
 
 	function getPreviewStyle(mainEl: PartialValidPlaceableReference, groupEl: PartialValidPlaceableReference) {
 		const anyPMElement = printModelElements.find(el => el.id === groupEl.refId);
@@ -112,21 +116,15 @@ const GroupElementPreview = ({ mainTarget, zoomFactor, selected, newPos, snapOff
 
 	return (
 		<>
-			{elementReferences
-				.filter(el => selected.includes(el.refId))
-				.map(el => (
-					<StyleDragPreviewElement
-						style={getPreviewStyle(mainTarget, el)}
-						zoomFactor={zoomFactor}
-						key={el.refId}
-					>
-						<ReadOnlyMarginWrapper margins={el.margins} hideMargins={!isMarginVisible} highlight>
-							<DefaultElementBadgeWrapper placeableRef={el}>
-								<DefaultElementContainer reference={el} />
-							</DefaultElementBadgeWrapper>
-						</ReadOnlyMarginWrapper>
-					</StyleDragPreviewElement>
-				))}
+			{selectedPlaceables.map(el => (
+				<StyleDragPreviewElement style={getPreviewStyle(mainTarget, el)} zoomFactor={zoomFactor} key={el.id}>
+					<ReadOnlyMarginWrapper margins={el.margins} hideMargins={!isMarginVisible} highlight>
+						<DefaultElementBadgeWrapper placeableRef={el}>
+							<DefaultElementContainer reference={el} />
+						</DefaultElementBadgeWrapper>
+					</ReadOnlyMarginWrapper>
+				</StyleDragPreviewElement>
+			))}
 		</>
 	);
 };
@@ -142,7 +140,8 @@ const SingleElementPreview = ({ mainTarget, zoomFactor, newPos, snapOffset }: Si
 	const style = {
 		width: MM_TO_PX(mainTarget.dimensions.minWidth.value),
 		height: MM_TO_PX(
-			ElementsUtils.getFixedElementHeight(printModelElement, mainTarget) || mainTarget.dimensions.minHeight.value
+			(printModelElement && ElementsUtils.getFixedElementHeight(printModelElement, mainTarget)) ||
+				mainTarget.dimensions.minHeight.value
 		),
 		left: MM_TO_PX(newPos.x.value + snapOffset.x.value) * zoomFactor,
 		top: MM_TO_PX(newPos.y.value + snapOffset.y.value) * zoomFactor,

@@ -56,9 +56,9 @@ export const DragSourceWrapper: React.FunctionComponent<DragSourceWrapperProps> 
 
 	const [{ isDragging, targetItem }, drag, dragPreview] = useDrag(
 		() => ({
-			type: itemElement.type,
+			type: itemElement?.type ?? ElementType.Text,
 			item,
-			canDrag: itemElement.type === ElementType.Override ? false : canDrag,
+			canDrag: !itemElement || itemElement.type === ElementType.Override ? false : canDrag,
 			collect: monitor => ({
 				isDragging: monitor.isDragging(),
 				targetItem: monitor.getItem(),
@@ -79,7 +79,7 @@ export const DragSourceWrapper: React.FunctionComponent<DragSourceWrapperProps> 
 		<DefaultPlaceableElement
 			{...props}
 			element={itemElement}
-			isDragging={isDragging || targetItem?.refId === item.refId}
+			isDragging={isDragging || targetItem?.id === item.id}
 			ref={ref => {
 				drag(ref);
 			}}

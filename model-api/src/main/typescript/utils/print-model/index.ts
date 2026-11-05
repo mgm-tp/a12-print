@@ -31,8 +31,10 @@
  */
 export * from "./type.js";
 export * from "./base.js";
+export * from "./fragment.js";
 export * from "./segment.js";
 export * from "./section.js";
+export * from "./watermark.js";
 export * from "./text-style.js";
 export * from "./print-model-element.js";
 export * from "./print-model.js";

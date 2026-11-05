@@ -32,29 +32,36 @@
 import * as React from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 
-import { Button, Icon, PopUpMenu, TextField } from "@com.mgmtp.a12.widgets/widgets-core";
+import { Icon, TextField } from "@com.mgmtp.a12.widgets/widgets-core";
 import { GlobalRegion, SidebarItem } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import type { DataContext, PartialSegment } from "@com.mgmtp.a12.print/print-model-api/model";
+import type { DataContext, PartialReference, PartialSegment } from "@com.mgmtp.a12.print/print-model-api/model";
 import { PageOrientation, SegmentType } from "@com.mgmtp.a12.print/print-model-api/model";
 import { ErrorSeverity } from "@com.mgmtp.a12.print/print-model-api/errors";
 import type { DeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
 
-import { EditorStateActions, NavigationSelectors, TransactionLogStateActions } from "../../redux/index.js";
+import {
+	EditorStateActions,
+	NavigationActions,
+	NavigationSelectors,
+	TransactionLogStateActions,
+	ValidationCounter,
+} from "../../redux/index.js";
 import { PrintLocalizer, RESOURCE_KEYS } from "../../localization/index.js";
 import { InteractionLogActions } from "../../redux//interaction-log/index.js";
 import type { PrintEngineState } from "../../../a12internal/api/PrintEngineState.js";
 import { ValidationSelectors } from "../../redux//validation/selectors.js";
 import { RequestApiSelectors } from "../../redux//request-api/selectors.js";
+import { EditorComponentContext } from "../../api/context-api.js";
 import { ROOT_DATA_CONTEXT_ENTRY } from "../../constant/data-context.js";
 
 import { BadgeGroup } from "../badge/BadgeGroup.js";
-import { DynamicSourceTextField } from "../forms/custom-base-input-components/index.js";
+import { CustomTextField, DynamicSourceTextField } from "../forms/custom-base-input-components/index.js";
 import { RepeatableSettings } from "../custom-input/RepeatableSettings.js";
+import { SideBarItemActionButtons } from "../sidebar/SideBarItemActionButtons.js";
 
 import {
 	StyledLeftSideSegmentSetting,
 	StyledOpenCollapsibleSegment,
-	StyledRightSideSegmentSetting,
 	StyledSegmentCard,
 	StyledSegmentCardContainer,
 	StyledSegmentTitle,
@@ -62,121 +69,183 @@ import {
 import { DinTemplateSegmentItem } from "./din-template-segment-item.js";
 
 export interface SegmentCardProps {
-	segment: PartialSegment;
-	isOpenSetting: boolean;
-	setOpenSetting: (segmentId?: string) => void;
+	/** Missing when this card represents a fragment reference whose segment is gone from its fragment model. */
+	segment?: PartialSegment;
+	isOpenSetting?: boolean;
+	setOpenSetting?: (segmentId?: string) => void;
+	/** The reference when this card represents a referenced fragment segment. */
+	reference?: PartialReference;
+	onRemoveReference?: () => void;
+	onDuplicateReference?: () => void;
+	onUnlinkReference?: () => void;
 }
 
 export const SegmentCard: React.FunctionComponent<SegmentCardProps> = React.memo(function SegmentCard({
 	segment,
-	isOpenSetting,
+	isOpenSetting = false,
 	setOpenSetting,
+	reference,
+	onRemoveReference,
+	onDuplicateReference,
+	onUnlinkReference,
 }) {
 	const dispatch = useDispatch();
+	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
 	const printModelRefs = useSelector(NavigationSelectors.activeEntities);
+	const referenceError = useSelector((state: PrintEngineState) =>
+		reference ? ValidationSelectors.segmentFragmentReferenceError(state, reference.id) : undefined
+	);
+	const referenceErrorMessage = errorMessageLocalizer(ValidationSelectors.ownFragmentReferenceErrors(referenceError));
+	// The title of a card and a badge take plain text only.
+	const referenceErrorTitle = typeof referenceErrorMessage === "string" ? referenceErrorMessage : undefined;
+	/* A reference whose segment is missing is selectable as well - the stage then simply stays empty. */
+	const entityId = segment?.id ?? reference?.id;
 
 	const openEditor = React.useCallback(() => {
+		if (!entityId) {
+			return;
+		}
 		dispatch(
 			EditorStateActions.openEditorView({
 				...printModelRefs,
-				segmentId: segment.id,
+				segmentId: entityId,
 				currentRefType: SidebarItem.SEGMENT,
 			})
 		);
-	}, [dispatch, segment, printModelRefs]);
+	}, [dispatch, entityId, printModelRefs]);
 
 	const isSelectedSegment = React.useMemo(
-		() => printModelRefs.segmentId === segment.id,
-		[printModelRefs.segmentId, segment.id]
+		() => Boolean(entityId && printModelRefs.segmentId === entityId),
+		[printModelRefs.segmentId, entityId]
 	);
 
 	return (
 		<StyledSegmentCardContainer isSelected={isSelectedSegment} data-testid="segment-card">
 			<StyledSegmentCard isSelected={isSelectedSegment} onClick={openEditor}>
-				<LeftSideSegmentSetting segment={segment} />
-				<StyledSegmentTitle>{segment.title}</StyledSegmentTitle>
+				<LeftSideSegmentSetting
+					segment={segment}
+					reference={reference}
+					referenceErrorTitle={referenceErrorTitle}
+				/>
+				{segment ? (
+					<StyledSegmentTitle title={referenceErrorTitle}>{segment.title}</StyledSegmentTitle>
+				) : (
+					<CustomTextField
+						value={reference?.refId}
+						onClick={event => event.stopPropagation()}
+						errorMessage={referenceErrorMessage}
+						hideLabel
+						disabled
+					/>
+				)}
 				<RightSideSegmentSetting
 					segment={segment}
 					isOpenSetting={isOpenSetting}
 					setOpenSetting={setOpenSetting}
-					openEditor={openEditor}
+					reference={reference}
+					onRemoveReference={onRemoveReference}
+					onDuplicateReference={onDuplicateReference}
+					onUnlinkReference={onUnlinkReference}
 				/>
 			</StyledSegmentCard>
-			{isOpenSetting && <CollapsibleSegmentSetting segment={segment} />}
+			{isOpenSetting && segment && <CollapsibleSegmentSetting segment={segment} isReadonly={!!reference} />}
 		</StyledSegmentCardContainer>
 	);
 });
 
 interface LeftSideSegmentSettingProps {
-	readonly segment: PartialSegment;
+	readonly segment?: PartialSegment;
+	readonly reference?: PartialReference;
+	readonly referenceErrorTitle?: string;
 }
 
-export const LeftSideSegmentSetting = ({ segment }: LeftSideSegmentSettingProps) => {
+export const LeftSideSegmentSetting = ({ segment, reference, referenceErrorTitle }: LeftSideSegmentSettingProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
-	const selectSegmentValidationCounter = React.useMemo(
-		() => (state: PrintEngineState) => ValidationSelectors.segmentValidationCounter(state, segment?.id),
-		[segment.id]
-	);
 
-	const segmentValidationCounter = useSelector(selectSegmentValidationCounter, shallowEqual);
+	const segmentValidationCounter = useSelector((state: PrintEngineState) => {
+		if (reference) {
+			return ValidationSelectors.segmentFragmentReferenceValidationCounter(state, reference.id);
+		}
+		if (segment) {
+			return ValidationSelectors.segmentValidationCounter(state, segment.id);
+		}
+		return ValidationCounter.EMPTY_VALIDATION_COUNTER;
+	}, shallowEqual);
 	const dinTemplateSegmentItem = useSelector((state: PrintEngineState) =>
-		RequestApiSelectors.dinTemplateSegmentItem(state, segment.id)
+		segment ? RequestApiSelectors.dinTemplateSegmentItem(state, segment.id) : undefined
 	);
 
 	const PageOrientationIcon = React.useMemo(() => {
+		if (!segment) {
+			// The page orientation is part of the missing segment definition, so there is nothing to show.
+			return null;
+		}
 		const isPortraitOrientation = segment.defaultSegment?.pageOrientation === PageOrientation.Portrait;
 		const iconName = isPortraitOrientation ? "description" : "topic";
 		const localizedKey = isPortraitOrientation
 			? RESOURCE_KEYS.editor.pageOrientation.portrait
 			: RESOURCE_KEYS.editor.pageOrientation.landscape;
 		return <Icon title={localizer(localizedKey)}>{iconName}</Icon>;
-	}, [localizer, segment.defaultSegment?.pageOrientation]);
+	}, [localizer, segment]);
 
 	const SegmentTypeIcon = React.useMemo(() => {
-		if (dinTemplateSegmentItem) {
-			const localizedSegmentTemplate = localizer(RESOURCE_KEYS.sidebar.segment.setting.segmentTemplate);
-			return (
-				<Icon
-					title={`${localizedSegmentTemplate}: ${DinTemplateSegmentItem.stringify(dinTemplateSegmentItem)}`}
-				>
-					link
-				</Icon>
-			);
-		}
-		if (segment.type === SegmentType.Repeatable) {
-			return <Icon title={localizer(RESOURCE_KEYS.sidebar.segment.repeatable)}>repeat</Icon>;
-		}
-		return null;
-	}, [dinTemplateSegmentItem, localizer, segment]);
+		return (
+			<>
+				{segment?.type === SegmentType.Repeatable && (
+					<Icon title={localizer(RESOURCE_KEYS.sidebar.segment.repeatable)}>repeat</Icon>
+				)}
+				{reference && (
+					<Icon title={localizer(RESOURCE_KEYS.sidebar.segment.reference.referencedLabel)}>link</Icon>
+				)}
+				{dinTemplateSegmentItem && (
+					<Icon
+						title={`${localizer(RESOURCE_KEYS.sidebar.segment.setting.segmentTemplate)}: ${DinTemplateSegmentItem.stringify(dinTemplateSegmentItem)}`}
+					>
+						link
+					</Icon>
+				)}
+			</>
+		);
+	}, [reference, dinTemplateSegmentItem, localizer, segment?.type]);
 
 	return (
 		<StyledLeftSideSegmentSetting>
 			{PageOrientationIcon}
 			{SegmentTypeIcon}
-			<BadgeGroup validationCounter={segmentValidationCounter} standalone />
+			<BadgeGroup validationCounter={segmentValidationCounter} errorTitle={referenceErrorTitle} standalone />
 		</StyledLeftSideSegmentSetting>
 	);
 };
 
 interface RightSideSegmentSettingProps {
-	readonly segment: PartialSegment;
+	readonly segment?: PartialSegment;
 	readonly isOpenSetting: boolean;
+	readonly reference?: PartialReference;
 
-	setOpenSetting: (segmentId?: string) => void;
+	setOpenSetting?: (segmentId?: string) => void;
 
-	openEditor: () => void;
+	onRemoveReference?: () => void;
+
+	onDuplicateReference?: () => void;
+
+	onUnlinkReference?: () => void;
 }
 
 export const RightSideSegmentSetting = ({
 	segment,
 	isOpenSetting,
 	setOpenSetting,
-	openEditor,
+	reference,
+	onRemoveReference,
+	onDuplicateReference,
+	onUnlinkReference,
 }: RightSideSegmentSettingProps) => {
 	const dispatch = useDispatch();
-	const localizer = PrintLocalizer.useLocalizer();
 
 	const duplicateSegmentation = React.useCallback(() => {
+		if (!segment) {
+			return;
+		}
 		dispatch(
 			InteractionLogActions.start({
 				description: RESOURCE_KEYS.interaction.segment.segmentCard.duplicateSegment,
@@ -187,6 +256,9 @@ export const RightSideSegmentSetting = ({
 	}, [dispatch, segment]);
 
 	const deleteSegmentation = React.useCallback(() => {
+		if (!segment) {
+			return;
+		}
 		dispatch(
 			InteractionLogActions.start({
 				description: RESOURCE_KEYS.interaction.segment.segmentCard.deleteSegment,
@@ -195,63 +267,68 @@ export const RightSideSegmentSetting = ({
 				affectedItems: [{ type: "segment", id: segment.id }],
 			})
 		);
-	}, [dispatch, segment.id]);
+	}, [dispatch, segment]);
 
-	const OpenSetting = React.useMemo(() => {
-		const handleOpenSetting = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-			event.stopPropagation();
-			setOpenSetting(isOpenSetting ? undefined : segment.id);
-		};
+	const onNavigateToSource = React.useCallback(() => {
+		if (!reference) {
+			return;
+		}
+		dispatch(NavigationActions.navigateToFragmentSource({ referenceId: reference.id, entityType: "segment" }));
+	}, [dispatch, reference]);
+
+	if (reference && !segment) {
+		// There are no settings to open and nothing worth duplicating - the referenced segment is gone.
 		return (
-			<Button
-				icon={<Icon>{isOpenSetting ? "close" : "settings"}</Icon>}
-				onClick={handleOpenSetting}
-				title={localizer(RESOURCE_KEYS.button[isOpenSetting ? "closeSetting" : "openSetting"])}
+			<SideBarItemActionButtons
+				entityId={reference.id}
+				type="segment"
+				deleteItem={onRemoveReference ?? (() => undefined)}
+				navigateToSource={onNavigateToSource}
 			/>
 		);
-	}, [isOpenSetting, localizer, setOpenSetting, segment.id]);
+	}
 
-	const duplicateButtonLabel = localizer(RESOURCE_KEYS.button.duplicate);
-	const deleteButtonLabel = localizer(RESOURCE_KEYS.button.delete);
+	if (!segment) {
+		return null;
+	}
+
+	if (reference) {
+		return (
+			<SideBarItemActionButtons
+				entityId={segment.id}
+				type="segment"
+				isOpenSetting={isOpenSetting}
+				setOpenSetting={setOpenSetting}
+				duplicateItem={onDuplicateReference ?? (() => undefined)}
+				deleteItem={onRemoveReference ?? (() => undefined)}
+				unlinkItem={onUnlinkReference}
+				navigateToSource={onNavigateToSource}
+			/>
+		);
+	}
 
 	return (
-		<StyledRightSideSegmentSetting>
-			{OpenSetting}
-			<Button
-				icon={<Icon>square_foot</Icon>}
-				onClick={openEditor}
-				title={localizer(RESOURCE_KEYS.button.openEditor)}
-			/>
-			<PopUpMenu
-				triggerButtonTitle={localizer(RESOURCE_KEYS.sidebar.segment.button.menuSetting)}
-				onTriggerElementClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => event.stopPropagation()}
-			>
-				<Button
-					label={duplicateButtonLabel}
-					title={duplicateButtonLabel}
-					icon={<Icon>content_copy</Icon>}
-					onClick={duplicateSegmentation}
-				/>
-				<Button
-					label={deleteButtonLabel}
-					title={deleteButtonLabel}
-					onClick={deleteSegmentation}
-					icon={<Icon variant="error">delete</Icon>}
-					destructive
-				/>
-			</PopUpMenu>
-		</StyledRightSideSegmentSetting>
+		<SideBarItemActionButtons
+			entityId={segment.id}
+			type="segment"
+			isOpenSetting={isOpenSetting}
+			setOpenSetting={setOpenSetting}
+			duplicateItem={duplicateSegmentation}
+			deleteItem={deleteSegmentation}
+		/>
 	);
 };
 
 interface CollapsibleSegmentSettingProps {
 	readonly segment: PartialSegment;
+	readonly isReadonly?: boolean;
 }
 
-export const CollapsibleSegmentSetting = ({ segment }: CollapsibleSegmentSettingProps) => {
+export const CollapsibleSegmentSetting = ({ segment, isReadonly = false }: CollapsibleSegmentSettingProps) => {
 	const dispatch = useDispatch();
 	const localizer = PrintLocalizer.useLocalizer();
 	const errorMessageLocalizer = PrintLocalizer.useErrorMessageLocalizer();
+	const { isFragmentModel } = React.useContext(EditorComponentContext);
 	const dinTemplateSegmentItem = useSelector((state: PrintEngineState) =>
 		RequestApiSelectors.dinTemplateSegmentItem(state, segment.id)
 	);
@@ -313,13 +390,14 @@ export const CollapsibleSegmentSetting = ({ segment }: CollapsibleSegmentSetting
 	}, []);
 
 	return (
-		<StyledOpenCollapsibleSegment draggable onDragStart={preventDragEvent}>
+		<StyledOpenCollapsibleSegment draggable onDragStart={preventDragEvent} isFragmentModel={isFragmentModel}>
 			<DynamicSourceTextField
 				value={segment.title}
 				placeholder={localizer(RESOURCE_KEYS.sidebar.segment.setting.namePlaceholder)}
 				onBlur={onUpdateSegmentTitle}
 				errorMessage={titleErrorMessage}
 				label={localizer(RESOURCE_KEYS.sidebar.segment.setting.name)}
+				readonly={isReadonly}
 			/>
 			{dinTemplateSegmentItem && (
 				<TextField
@@ -334,6 +412,7 @@ export const CollapsibleSegmentSetting = ({ segment }: CollapsibleSegmentSetting
 					dataContexts={segment?.dataContexts}
 					onUpdateDataContexts={onUpdateDataContexts}
 					dataContextErrorMap={segmentErrorMap?.dataContexts}
+					isReadonly={isReadonly}
 				/>
 			)}
 		</StyledOpenCollapsibleSegment>

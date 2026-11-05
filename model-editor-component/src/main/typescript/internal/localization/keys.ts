@@ -80,10 +80,15 @@ export const RESOURCE_KEYS = {
 				documentModelReferenced: "",
 				printModelReferenced: "",
 				typesettingModelReferenced: "",
+				fragmentModelReferenced: "",
 			},
 			tooltips: {
 				defaultTypesettingModel: "",
 				printModelReferenceWithoutSegments: "",
+			},
+			info: {
+				printModelReferenceDisabled: "",
+				fragmentModelReferenceDisabled: "",
 			},
 		},
 		content: "",
@@ -106,6 +111,10 @@ export const RESOURCE_KEYS = {
 					selectPlaceHolder: "",
 				},
 			},
+			reference: {
+				selectPlaceholder: "",
+				referencedLabel: "",
+			},
 		},
 		section: {
 			name: "",
@@ -114,15 +123,33 @@ export const RESOURCE_KEYS = {
 				first: "",
 				remaining: "",
 			},
+			reference: {
+				selectPlaceholder: "",
+				referencedLabel: "",
+			},
 		},
 		watermark: {
 			name: "",
 			titlePlaceholder: "",
 			setting: {
+				name: "",
+				headline: "",
 				opacity: "",
 				conditions: "",
 				description: "",
 			},
+			reference: {
+				selectPlaceholder: "",
+				removeReference: "",
+				noFragmentWatermarks: "",
+				referencedLabel: "",
+			},
+		},
+		textStyleReference: {
+			selectPlaceholder: "",
+			referenceAllButton: "",
+			internalSectionLabel: "",
+			referencedLabel: "",
 		},
 		commitChanges: {
 			title: "",
@@ -143,6 +170,26 @@ export const RESOURCE_KEYS = {
 			discard: "",
 			error: {
 				commitChangesFailed: "",
+				propagateFragmentChangesFailed: "",
+			},
+		},
+		fragment: {
+			name: "",
+			search: {
+				label: "",
+				placeholder: "",
+			},
+			section: {
+				setting: {
+					name: "",
+					namePlaceholder: "",
+				},
+			},
+			element: {
+				setting: {
+					name: "",
+					namePlaceholder: "",
+				},
 			},
 		},
 	},
@@ -155,11 +202,7 @@ export const RESOURCE_KEYS = {
 		topMenu: {
 			elementLibrary: {
 				title: "",
-				headline: "",
-				floatLibrary: "",
-				popupLibrary: "",
-				incomingDinTemplate: "",
-				dinTemplateSegmentEditor: "",
+				label: "",
 			},
 			layout: "",
 			tabOrder: "",
@@ -169,6 +212,7 @@ export const RESOURCE_KEYS = {
 			showMargins: "",
 			textStyles: "",
 			deleteElement: "",
+			setIsFragment: "",
 			copyElement: "",
 			groupElement: "",
 			openElement: "",
@@ -251,6 +295,7 @@ export const RESOURCE_KEYS = {
 		close: "",
 		open: "",
 		duplicate: "",
+		unlink: "",
 		back: "",
 		openSetting: "",
 		closeSetting: "",
@@ -262,6 +307,7 @@ export const RESOURCE_KEYS = {
 		undo: "",
 		redo: "",
 		openMenu: "",
+		navigateToSource: "",
 	},
 	input: {
 		selectPlaceholder: "",
@@ -281,6 +327,8 @@ export const RESOURCE_KEYS = {
 	indicator: {
 		repeatable: "",
 		pageBreakAvoid: "",
+		fragmentReference: "",
+		missingFragmentElement: "",
 	},
 	elements: {
 		tableLayout: {
@@ -293,6 +341,7 @@ export const RESOURCE_KEYS = {
 		},
 	},
 	elementForm: {
+		elementNameLabel: "",
 		dataContextSelection: {
 			repeatableGroup: "",
 			repeatableInstance: "",
@@ -309,6 +358,16 @@ export const RESOURCE_KEYS = {
 				instanceRepeatableGroup: "",
 				instanceAnyGroup: "",
 			},
+		},
+		elementLibrary: {
+			headline: "",
+			elementsPanel: "",
+			empty: "",
+			incomingDinTemplate: "",
+			dinTemplateSegmentEditor: "",
+		},
+		fragmentLibrary: {
+			headline: "",
 		},
 		hideConditions: {
 			headline: "",
@@ -694,7 +753,6 @@ export const RESOURCE_KEYS = {
 		},
 		warningMessage: {
 			fontIsNotConfigured: "",
-			typesettingModeNotFound: "",
 		},
 		notification: {
 			preventDelete: {
@@ -740,13 +798,51 @@ export const RESOURCE_KEYS = {
 			title: "",
 			text: "",
 		},
+		fragmentInUse: {
+			title: "",
+			text: "",
+		},
+		commitAffectsPrintModels: {
+			title: "",
+			text: "",
+			confirmButton: "",
+		},
+		fragmentUnlink: {
+			title: "",
+			text: "",
+		},
+		fragmentUnlinkAddsDependencies: {
+			title: "",
+			text: "",
+			documentModelItem: "",
+			typesettingModelItem: "",
+		},
+	},
+	fragmentUsage: {
+		modalTitle: "",
+		description: "",
+		navigateButton: "",
+	},
+	fragmentUnlink: {
+		error: {
+			title: "",
+			fragmentNotLoaded: "",
+			definitionMissing: "",
+			invalidSectionUsage: "",
+			slotConflict: "",
+			cardinalityExceeded: "",
+			documentModelConflict: "",
+			multipleDocumentModels: "",
+		},
 	},
 	interaction: {
 		editor: {
 			createNewElement: "",
+			addFragmentReference: "",
 			deleteElementsOnStage: "",
 			groupElementsOnStage: "",
 			moveElementByArrowKey: "",
+			unlinkFragmentElementReference: "",
 		},
 		relativeLayout: {
 			changeMargin: "",
@@ -891,6 +987,7 @@ export const RESOURCE_KEYS = {
 				},
 			},
 			sharedComponent: {
+				changeElementName: "",
 				calculationForm: {
 					changeCalculationForm: "",
 				},
@@ -1004,6 +1101,9 @@ export const RESOURCE_KEYS = {
 				addSection: "",
 				changeTitle: "",
 				deleteSection: "",
+				addSectionReference: "",
+				removeSectionReference: "",
+				unlinkSectionReference: "",
 			},
 			section: {
 				resizeSection: "",
@@ -1016,6 +1116,9 @@ export const RESOURCE_KEYS = {
 				changeOpacity: "",
 				changePreconditions: "",
 				deleteWatermark: "",
+				addWatermarkReference: "",
+				removeWatermarkReference: "",
+				unlinkWatermarkReference: "",
 			},
 		},
 		segment: {
@@ -1033,6 +1136,37 @@ export const RESOURCE_KEYS = {
 				loadOverrideElements: "",
 				addReferenceSegment: "",
 			},
+			segmentReferenceSection: {
+				addSegmentReference: "",
+				removeSegmentReference: "",
+				unlinkSegmentReference: "",
+			},
+		},
+		fragment: {
+			section: {
+				addSection: "",
+				duplicateSection: "",
+				deleteSection: "",
+				updateSection: "",
+			},
+			watermark: {
+				addWatermark: "",
+				duplicateWatermark: "",
+				deleteWatermark: "",
+				updateWatermark: "",
+			},
+			segment: {
+				addSegment: "",
+				duplicateSegment: "",
+				deleteSegment: "",
+				updateSegment: "",
+			},
+			element: {
+				updateElement: "",
+				duplicateElement: "",
+				deleteElement: "",
+				updateElementReferenceDimensions: "",
+			},
 		},
 		textStyle: {
 			textStyle: {
@@ -1047,6 +1181,12 @@ export const RESOURCE_KEYS = {
 			},
 			textStyleContent: {
 				reorderTextStyle: "",
+			},
+			textStyleReferenceSection: {
+				addTextStyleReference: "",
+				removeTextStyleReference: "",
+				referenceAllTextStyles: "",
+				unlinkTextStyleReference: "",
 			},
 		},
 		utils: {

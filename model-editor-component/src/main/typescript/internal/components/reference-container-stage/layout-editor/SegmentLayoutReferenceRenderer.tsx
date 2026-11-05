@@ -76,15 +76,14 @@ export const SegmentLayoutReferenceRenderer = ({
 						getSection,
 						segmentSection
 					);
-					const isHighlight =
-						reference.refId === selectedReferenceId || reference.refId === hoveredReferenceId;
+					const isHighlight = reference.id === selectedReferenceId || reference.id === hoveredReferenceId;
 					const isOutOfStage =
 						reference.position.x.value < 0 ||
 						reference.position.x.value + reference.dimensions.minWidth.value >
 							editorDimensions.minWidth.value;
 					return isOverlap && !isOutOfStage ? (
 						<MarginBreakPageContext
-							key={reference.refId}
+							key={reference.id}
 							onClick={onClick}
 							onDoubleClick={onDoubleClick}
 							onHoverChange={onHoverChange}
@@ -97,7 +96,7 @@ export const SegmentLayoutReferenceRenderer = ({
 						/>
 					) : (
 						<PlaceableElement
-							key={reference.refId}
+							key={reference.id}
 							reference={reference}
 							onClick={onClick}
 							onDoubleClick={onDoubleClick}

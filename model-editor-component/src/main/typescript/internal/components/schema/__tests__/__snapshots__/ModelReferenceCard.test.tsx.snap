@@ -1,0 +1,494 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ModelReferenceCard with an alias keeps the alias column for an alias that is not set yet 1`] = `
+.c11 {
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.45;
+  outline: none;
+  padding: 0 12px;
+  text-align: inherit;
+  text-overflow: ellipsis;
+  text-transform: inherit;
+  min-width: 0;
+  width: 100%;
+}
+
+.c11::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c9 {
+  background-color: #f1f2f4;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 1px 0 0 #596673;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  outline: 1px solid transparent;
+  height: 32px;
+  background-color: #f1f2f4;
+  box-shadow: none;
+}
+
+.c3 {
+  display: inline-flex;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex-direction: column;
+  display: flex;
+  width: 100%;
+}
+
+.c3 .c5 {
+  display: flex;
+  width: 100%;
+}
+
+.c3 * {
+  max-width: 100%;
+}
+
+.c8 {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.c8 >.StyledTooltipTriggerWrapper-sc-cAUnSs {
+  margin: 0 4px 4px 0;
+}
+
+.c6 {
+  display: inline-flex;
+}
+
+.c6 .c7 {
+  flex-basis: 160px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.c10 {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 0;
+}
+
+.c0 {
+  border-bottom: 1px solid #fff;
+}
+
+.c1 {
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.c2 {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+}
+
+.c4 {
+  min-width: 40%;
+  max-width: 40%;
+  flex: 0 1 auto;
+}
+
+.c12 {
+  max-width: 45%;
+  min-width: 45%;
+  word-wrap: break-word;
+}
+
+<div>
+  <div
+    class="c0"
+    data-testid="model-reference-card"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2"
+      >
+        <div
+          class="c3 field-wrapper field-wrapper--block c4"
+          data-role="text-field"
+        >
+          <div
+            class="c5 c6 field__main"
+          >
+            <div
+              class="c7 c8 field"
+              data-role="text-field-control"
+            >
+              <div
+                class="c9 field__input field__input--readonly"
+                data-disabled="false"
+                data-readonly="true"
+                data-role="text-field-input-wrapper"
+              >
+                <span
+                  class="c10 supported-unseen-span"
+                />
+                <input
+                  class="c11 field__text"
+                  data-role="text-field-input"
+                  readonly=""
+                  type="text"
+                  value="DomainText"
+                />
+                <span
+                  class="c10 supported-unseen-span"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="c12"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ModelReferenceCard with an unresolvable reference shows the error, spanning the full width of a split row 1`] = `
+.c9 {
+  -webkit-clip-path: inset(100%);
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  margin: -1px!important;
+  min-height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+
+.c9 * {
+  width: 1px;
+  height: 1px;
+}
+
+.c7 {
+  box-sizing: border-box;
+  color: #7F8C9B;
+  display: inline-block;
+  direction: ltr;
+  font-family: custom-icons;
+  font-variation-settings: normal;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "liga";
+}
+
+.c7 >span {
+  display: inline-block;
+}
+
+.c7.c7 {
+  max-width: unset;
+}
+
+:where(.StyledTooltipTriggerWrapper-sc-cAUnSs) .c7 {
+  color: inherit;
+}
+
+.c8.c8 {
+  color: #c91d1d;
+}
+
+.c4 {
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin: 0 0 4px 0;
+  padding: 4px 8px;
+  background: #fce9e9;
+  color: #c91d1d;
+}
+
+.c5 {
+  display: flex;
+  margin-right: 4px;
+}
+
+.c5 .c6 {
+  font-size: 1.25rem;
+}
+
+.c10 {
+  align-self: center;
+  max-width: calc(100% - (1.25rem + 4px));
+}
+
+.c10 >ul,
+.c10 >.StyledBulletList-sc-jPtFrK {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.c19 {
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  color: inherit;
+  flex-grow: 1;
+  font-style: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.45;
+  outline: none;
+  padding: 0 12px;
+  text-align: inherit;
+  text-overflow: ellipsis;
+  text-transform: inherit;
+  min-width: 0;
+  width: 100%;
+}
+
+.c19::placeholder {
+  font-style: italic;
+  color: #596673;
+  opacity: 1;
+}
+
+.c17 {
+  background-color: #f1f2f4;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 1px 0 0 #596673;
+  color: #4d4d4d;
+  display: flex;
+  font-family: "Open Sans",sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  outline: 1px solid transparent;
+  height: 32px;
+  background-color: #f1f2f4;
+  box-shadow: none;
+}
+
+.c11 {
+  display: inline-flex;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  flex-direction: column;
+  display: flex;
+  width: 100%;
+}
+
+.c11 .c13 {
+  display: flex;
+  width: 100%;
+}
+
+.c11 * {
+  max-width: 100%;
+}
+
+.c16 {
+  box-sizing: border-box;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.c16 >.StyledTooltipTriggerWrapper-sc-cAUnSs {
+  margin: 0 4px 4px 0;
+}
+
+.c14 {
+  display: inline-flex;
+}
+
+.c14 .c15 {
+  flex-basis: 160px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  max-width: 100%;
+}
+
+.c18 {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 0;
+}
+
+.c0 {
+  border-bottom: 1px solid #fff;
+}
+
+.c1 {
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.c2 {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+}
+
+.c3 {
+  flex: 1 1 100%;
+  min-width: 0;
+}
+
+.c12 {
+  min-width: 40%;
+  max-width: 40%;
+  flex: 0 1 auto;
+}
+
+.c20 {
+  max-width: 45%;
+  min-width: 45%;
+  word-wrap: break-word;
+}
+
+<div>
+  <div
+    class="c0"
+    data-testid="model-reference-card"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2"
+      >
+        <div
+          class="c3"
+        >
+          <div
+            class="c4 message message--error"
+            data-role="model-reference-error-message"
+          >
+            <div
+              class="c5 messageIcon"
+            >
+              <i
+                class="c6 c7 c8 plasma-icon plasma-icon--error plasma-icon--custom"
+                data-role="plasma-icon"
+                title="Error"
+              >
+                <span
+                  aria-hidden="true"
+                  class="notranslate"
+                  translate="no"
+                >
+                  
+                </span>
+                <span
+                  class="c9 -u-unseenButRead"
+                  data-role="hidden-text"
+                >
+                  Error
+                </span>
+              </i>
+            </div>
+            <div
+              class="c10 messageText"
+              data-role="error-text"
+            >
+              The referenced Document Model 'DomainText' does not exist
+            </div>
+          </div>
+        </div>
+        <div
+          class="c11 field-wrapper field-wrapper--block c12"
+          data-role="text-field"
+        >
+          <div
+            class="c13 c14 field__main"
+          >
+            <div
+              class="c15 c16 field"
+              data-role="text-field-control"
+            >
+              <div
+                class="c17 field__input field__input--readonly"
+                data-disabled="false"
+                data-readonly="true"
+                data-role="text-field-input-wrapper"
+              >
+                <span
+                  class="c18 supported-unseen-span"
+                />
+                <input
+                  class="c19 field__text"
+                  data-role="text-field-input"
+                  readonly=""
+                  type="text"
+                  value="DomainText"
+                />
+                <span
+                  class="c18 supported-unseen-span"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="c20"
+        >
+          Text
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

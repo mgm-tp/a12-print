@@ -35,6 +35,7 @@ const factory = actionCreatorFactory("Print/DetailView");
 
 export namespace DetailViewActions {
 	export const openElementForm = factory<string>("OPEN_ELEMENT_FORM");
+	export const toggleElementLibrary = factory("TOGGLE_ELEMENT_LIBRARY");
 	export const openVisibilityConfig = factory<string>("OPEN_VISIBILITY_CONFIG");
 	export const updateVisibilityConfig = factory<UpdateVisibilityConfigPayload>("UPDATE_VISIBILITY_CONFIG");
 	export interface UpdateVisibilityConfigPayload {

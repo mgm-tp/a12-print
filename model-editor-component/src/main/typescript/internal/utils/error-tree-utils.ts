@@ -57,8 +57,8 @@ export function countErrorDataNodes(rootNodes: ErrorTreeNode[]): number {
 	return count;
 }
 
-export function createErrorNodes<T>(
-	errorMap: DeepPartialErrorMap<T> | undefined,
+export function createErrorNodes(
+	errorMap: DeepPartialErrorMap<unknown> | undefined,
 	parentId: string,
 	navigation: NavigationTarget | undefined,
 	flat: boolean = true
@@ -70,8 +70,10 @@ export function createErrorNodes<T>(
 	}
 
 	if (flat) {
-		treeNodes.push(...createFlatErrorNodes(errorMap["@error"], parentId, navigation));
-		treeNodes.push(...createFlatErrorNodes(errorMap["@warning"], parentId, navigation));
+		treeNodes.push(
+			...createFlatErrorNodes(errorMap["@error"], parentId, navigation),
+			...createFlatErrorNodes(errorMap["@warning"], parentId, navigation)
+		);
 	} else {
 		treeNodes.push(...createNestedErrorNodes(errorMap, parentId, navigation));
 	}

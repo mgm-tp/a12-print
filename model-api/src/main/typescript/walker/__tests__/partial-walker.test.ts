@@ -29,7 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import { SegmentType } from "../../model/index.js";
+import { SectionUsage, SegmentType } from "../../model/index.js";
+import type { PrintModel } from "../../model/print-model.js";
 import type {
 	PartialMetadata,
 	PartialPrintModel,
@@ -37,6 +38,7 @@ import type {
 	PartialReference,
 	PartialSection,
 	PartialSegment,
+	PartialTextStyle,
 	PartialWatermark,
 } from "../../model/partial.js";
 import type { ExtendedEntityInstancePathBuilder } from "../../errors/extended-entity-instance-path.js";
@@ -738,6 +740,181 @@ describe("PartialPrintModelWalker with complex model", () => {
 			const result = walker.walkPrintModel(complexModel);
 
 			expect(result).toBe(TraversalCommand.CONTINUE);
+		});
+	});
+});
+
+describe("PartialPrintModelWalker with print fragment models", () => {
+	const complexPartialModel = createComplexPartialModel();
+
+	const fragmentModel = {
+		...complexPartialModel,
+		header: { ...complexPartialModel.header, id: "fragment-model", modelSubType: "fragment" },
+	} as unknown as PrintModel;
+
+	const usingModel: PartialPrintModel = {
+		header: {
+			id: "using-model",
+			modelType: "print",
+			modelReferences: [
+				{ id: "mr-1", modelType: "print", purpose: "print-fragment", reference: "fragment-model" },
+			],
+		},
+		content: {
+			id: "content-1",
+			general: {
+				...complexPartialModel.content?.general,
+				structure: ["seg-ref"],
+				sections: ["sec-ref"],
+				watermarks: ["wm-ref"],
+			},
+			segments: {
+				id: "segs-1",
+				definitions: [],
+				references: [],
+				fragmentReferences: [{ id: "seg-ref", refId: "seg-1", model: "fragment-model" }],
+			},
+			sections: {
+				id: "secdefs-1",
+				definitions: [],
+				references: [
+					{ id: "sec-ref", refId: "sec-1", model: "fragment-model", sectionUsage: SectionUsage.Remaining },
+				],
+			},
+			watermarks: {
+				id: "wmdefs-1",
+				definitions: [],
+				references: [{ id: "wm-ref", refId: "wm-1", model: "fragment-model" }],
+			},
+			elementDefinitions: [],
+		},
+	};
+
+	class PartialFragmentVisitor extends PartialCollectingVisitor {
+		public visitedSections: string[] = [];
+		public visitedWatermarks: string[] = [];
+		public preVisitedSections: Array<{ id?: string; sectionUsage?: SectionUsage }> = [];
+
+		preVisitSectionWithUsage(section: PartialSection, sectionUsage?: SectionUsage): TraversalCommand {
+			this.preVisitedSections.push({ id: section.id, sectionUsage });
+			return TraversalCommand.CONTINUE;
+		}
+
+		visitSection(section: PartialSection): TraversalCommand {
+			this.visitedSections.push(section.id ?? "unknown");
+			return TraversalCommand.CONTINUE;
+		}
+
+		visitWatermark(watermark: PartialWatermark): TraversalCommand {
+			this.visitedWatermarks.push(watermark.id ?? "unknown");
+			return TraversalCommand.CONTINUE;
+		}
+
+		visitUnresolvedSegment(): TraversalCommand {
+			return TraversalCommand.CONTINUE;
+		}
+
+		visitUnresolvedSection(): TraversalCommand {
+			return TraversalCommand.CONTINUE;
+		}
+
+		visitUnresolvedWatermark(): TraversalCommand {
+			return TraversalCommand.CONTINUE;
+		}
+	}
+
+	function walkUsingModel(printModelList: PrintModel[]): PartialFragmentVisitor {
+		const visitor = new PartialFragmentVisitor();
+		createPartialPrintModelWalker(usingModel, visitor, printModelList).walkPrintModel(usingModel);
+		return visitor;
+	}
+
+	it("walks the referenced segment, section and watermark under their reference ids", () => {
+		const visitor = walkUsingModel([fragmentModel]);
+
+		expect(visitor.visitedSegments).toContain("seg-ref");
+		expect(visitor.visitedSections).toContain("sec-ref");
+		expect(visitor.visitedWatermarks).toContain("wm-ref");
+	});
+
+	it("reports the usage of the reference, not the one of the fragment's section definition", () => {
+		const visitor = walkUsingModel([fragmentModel]);
+
+		expect(visitor.preVisitedSections).toEqual([{ id: "sec-ref", sectionUsage: SectionUsage.Remaining }]);
+	});
+
+	it("walks the elements the referenced containers place, although they live in the fragment model", () => {
+		const visitor = walkUsingModel([fragmentModel]);
+
+		expect(visitor.visitedElements).toContain("Field");
+		expect(visitor.unresolvedElements).toEqual([]);
+	});
+
+	it("reports the used ids as unresolved while the fragment model is not available", () => {
+		const visitor = walkUsingModel([]);
+
+		expect(visitor.visitedSegments).toEqual([]);
+		expect(visitor.visitedSections).toEqual([]);
+		expect(visitor.visitedWatermarks).toEqual([]);
+	});
+
+	describe("text styles", () => {
+		const fragmentTextStyle = { id: "frag-ts", name: "Fragment Text Style" };
+		const modelWithTextStyleReference: PartialPrintModel = {
+			...usingModel,
+			content: {
+				...usingModel.content,
+				general: { ...usingModel.content?.general, structure: [], sections: [], textStyles: ["ts-ref"] },
+				textStyles: {
+					id: "text-styles",
+					definitions: [],
+					references: [{ id: "ts-ref", refId: "frag-ts", model: "fragment-model" }],
+				},
+			},
+		};
+		const fragmentModelWithTextStyle = {
+			...fragmentModel,
+			content: {
+				...fragmentModel.content,
+				textStyles: { id: "frag-ts-container", definitions: [fragmentTextStyle] },
+			},
+		} as unknown as PrintModel;
+
+		class TextStyleVisitor extends PartialFragmentVisitor {
+			public visitedTextStyles: Array<string | undefined> = [];
+			public unresolvedTextStyles: string[] = [];
+
+			visitTextStyle(textStyle: PartialTextStyle): TraversalCommand {
+				this.visitedTextStyles.push(textStyle.id);
+				return TraversalCommand.CONTINUE;
+			}
+
+			visitUnresolvedTextStyle(id: string): TraversalCommand {
+				this.unresolvedTextStyles.push(id);
+				return TraversalCommand.CONTINUE;
+			}
+		}
+
+		function walk(printModelList: PrintModel[]): TextStyleVisitor {
+			const visitor = new TextStyleVisitor();
+			createPartialPrintModelWalker(modelWithTextStyleReference, visitor, printModelList).walkPrintModel(
+				modelWithTextStyleReference
+			);
+			return visitor;
+		}
+
+		it("visits a text style referenced from a fragment model under the id of its reference", () => {
+			const visitor = walk([fragmentModelWithTextStyle]);
+
+			expect(visitor.visitedTextStyles).toEqual(["ts-ref"]);
+			expect(visitor.unresolvedTextStyles).toEqual([]);
+		});
+
+		it("reports the reference as unresolved while the fragment model is not available", () => {
+			const visitor = walk([]);
+
+			expect(visitor.visitedTextStyles).toEqual([]);
+			expect(visitor.unresolvedTextStyles).toEqual(["ts-ref"]);
 		});
 	});
 });

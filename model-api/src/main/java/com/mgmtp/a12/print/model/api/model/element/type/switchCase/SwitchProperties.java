@@ -32,6 +32,7 @@
 package com.mgmtp.a12.print.model.api.model.element.type.switchCase;
 
 import com.mgmtp.a12.print.model.api.model.PrintModelEntity;
+import com.mgmtp.a12.print.model.api.model.element.PrintModelElement;
 import com.mgmtp.a12.print.model.api.model.element.base.Dimensions;
 
 import java.util.List;
@@ -39,7 +40,11 @@ import com.mgmtp.a12.model.utils.OnlyForUsage;
 
 @OnlyForUsage
 public interface SwitchProperties extends PrintModelEntity {
-    String getName();
+	/**
+	 * @deprecated Use {@link PrintModelElement#getName()} instead. This method will be removed in the next major release.
+	 */
+	@Deprecated(since = "4.1.0", forRemoval = true)
+	String getName();
 
     String getModel();
 

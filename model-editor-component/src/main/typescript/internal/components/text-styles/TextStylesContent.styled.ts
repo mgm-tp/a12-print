@@ -46,3 +46,12 @@ export const StyledTextStyleDragListWrapper = styled(StyledDragListWrapper)`
 	background-color: ${props => props.theme.colors.background.nonInteractiveBackground};
 	height: 100%;
 `;
+
+export const StyledTextStyleAddCard = styled.div`
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 4px;
+	border-bottom: 1px solid ${props => props.theme.colors.divider.colorLight};
+	background: ${props => props.theme.colors.background.interactiveBackground};
+`;

@@ -68,9 +68,12 @@ Both `serialize` and `deserialize` accept an optional `PrintModelValidatorOption
 [source,typescript]
 ----
 interface PrintModelValidatorOptions {
-    /** Document Models to validate field and calculation references against. */
+    /** Catalogs of the models the Print Model may refer to. Each catalog enables its own checks. */
     references?: {
         documentModels?: readonly DocumentModel[];
+        fragmentModels?: PrintModel[];
+        typesettingModelIds?: readonly string[];
+        printModelIds?: readonly string[];
     };
     /** When true, HTML content in Text elements is validated. Default: true. */
     html?: boolean;
@@ -83,14 +86,28 @@ interface PrintModelValidatorOptions {
 
 ==== Reference Validation
 
-Pass the document models that the Print Model references to validate field paths and calculations:
+Every entry of `references` is a catalog of the models the Print Model is allowed to refer to.
+Each catalog is optional and switches on exactly the checks that need it.
+When `references` is omitted entirely, reference validation is skipped.
 
 [source,typescript]
 ----
 const { result, report } = marshaller.deserialize(rawJson, {
-    references: { documentModels: [myDocumentModel] }
+    references: {
+        documentModels: [myDocumentModel],
+        fragmentModels: [myPrintFragmentModel],
+        typesettingModelIds: ["my-typesetting"],
+        printModelIds: ["my-din-template"],
+    }
 });
 ----
+
+* `documentModels`: validates the field paths, calculations and preconditions, including those of the used Fragments when `fragmentModels` is supplied.
+* `fragmentModels`: validates that every used Fragment (Element, Segment, Section, Watermark or Text Style) can be resolved in the Print Fragment Model it names.
+* `typesettingModelIds`: validates the `typesettingModelName` of every Text Style, local or used from a Print Fragment Model.
+* `printModelIds`: validates the Print Model References of the header that are not Print Fragment Model References (DIN templates).
+
+Reference errors do not prevent the model from being returned, so an editor can open it and let the user fix them.
 
 ==== HTML Validation
 

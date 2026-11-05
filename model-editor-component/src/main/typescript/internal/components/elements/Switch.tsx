@@ -41,7 +41,7 @@ type SwitchProps = BaseElementProps;
 export const Switch = ({ styles, element }: SwitchProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	if (!PartialSwitch.isInstance(element)) {
-		throw Error(`Expected element of type Switch but got ${element.type}`);
+		throw new Error(`Expected element of type Switch but got ${element?.type}`);
 	}
 	return (
 		<div data-testid="element-switch" style={styles}>

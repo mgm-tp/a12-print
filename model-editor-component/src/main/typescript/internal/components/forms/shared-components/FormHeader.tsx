@@ -41,11 +41,13 @@ import { BadgeGroup } from "../../badge/BadgeGroup.js";
 
 interface FormHeaderProps {
 	readonly headline?: string;
+	readonly warning?: string;
 	validationCounter?: ValidationCounter;
 }
 
 export const FormHeader = ({
 	headline,
+	warning,
 	validationCounter = ValidationCounter.EMPTY_VALIDATION_COUNTER,
 }: FormHeaderProps) => {
 	const dispatch = useDispatch();
@@ -79,9 +81,24 @@ export const FormHeader = ({
 		),
 		[detailForm?.isFullScreen, localizer, dispatch, tab, entityId, mode]
 	);
+
+	const addons = React.useMemo(
+		() => (
+			<>
+				{warning && (
+					<Icon variant="warning" title={warning}>
+						warning
+					</Icon>
+				)}
+				{closeButton}
+			</>
+		),
+		[warning, closeButton]
+	);
+
 	return (
 		<Typography.Section>
-			<Typography.Headline level={2} ariaLevel={2} addons={closeButton}>
+			<Typography.Headline level={2} ariaLevel={2} addons={addons}>
 				<BadgeGroup
 					validationCounter={validationCounter}
 					errorTitle={useErrorTitle("error", validationCounter)}

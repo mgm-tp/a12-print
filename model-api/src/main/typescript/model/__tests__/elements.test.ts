@@ -33,28 +33,34 @@ import { ElementType, Field, PrintModelElement, Text, type PartialAnyPrintModelE
 
 const textElement = {
 	id: "1",
+	name: "mockText",
 	type: ElementType.Text,
 	text: { id: "2", text: "hello", entities: [] },
 } as PartialAnyPrintModelElement;
 
 const fieldElement = {
 	id: "3",
+	name: "mockField",
 	type: ElementType.Field,
 	field: { id: "4", model: "someModel", path: "some.path" },
 } as PartialAnyPrintModelElement;
 
 describe("PrintModelElement", () => {
 	describe("isInstance", () => {
-		test("returns true for an object with a valid id and element type", () => {
-			expect(PrintModelElement.isInstance({ id: "1", type: ElementType.Text })).toBe(true);
+		test("returns true for an object with a valid id, element type and name", () => {
+			expect(PrintModelElement.isInstance({ id: "1", type: ElementType.Text, name: "mockElement" })).toBe(true);
 		});
 
 		test("returns false for an object missing id", () => {
-			expect(PrintModelElement.isInstance({ type: ElementType.Text })).toBe(false);
+			expect(PrintModelElement.isInstance({ type: ElementType.Text, name: "mockElement" })).toBe(false);
 		});
 
 		test("returns false for an invalid type value", () => {
-			expect(PrintModelElement.isInstance({ id: "1", type: "InvalidType" })).toBe(false);
+			expect(PrintModelElement.isInstance({ id: "1", type: "InvalidType", name: "mockElement" })).toBe(false);
+		});
+
+		test("returns true for an object missing name", () => {
+			expect(PrintModelElement.isInstance({ id: "1", type: ElementType.Text })).toBe(true);
 		});
 
 		test("returns false for a non-object", () => {

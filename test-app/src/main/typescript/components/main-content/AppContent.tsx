@@ -36,29 +36,19 @@ import { ActionContentbox } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { EditorActions, EditorSelector } from "../../store/editor";
 
-import type { ResolvedCaseConfigResource } from "../case-config/CaseConfig";
+import { useCaseConfigFromParams } from "../case-config/use-case-config-from-params";
 
 import { PrintEditor } from "./PrintEditor";
 
 export const AppContent = memo(function AppContent() {
-	const caseConfig = useSelector(EditorSelector.selectCaseConfig);
+	const { caseConfig, caseResource } = useCaseConfigFromParams();
 	const logPersistentEntries = useSelector(EditorSelector.selectLogPersistentEntries);
-	const caseResource = useSelector(EditorSelector.selectCaseResource);
 	const printModel = useSelector(EditorSelector.selectPrintModel);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(EditorActions.setCaseResource(undefined));
-		dispatch(EditorActions.setPrintModel(undefined));
-		if (caseConfig?.path) {
-			resolveResource(caseConfig.path).then(res => {
-				if (res) {
-					dispatch(EditorActions.setCaseResource(res));
-					dispatch(EditorActions.setPrintModel(res.printModel));
-				}
-			});
-		}
-	}, [caseConfig, dispatch]);
+		dispatch(EditorActions.setPrintModel(caseResource?.printModel));
+	}, [caseResource, dispatch]);
 
 	if (!printModel || !caseConfig || !caseResource || logPersistentEntries === undefined) {
 		return null;
@@ -70,17 +60,3 @@ export const AppContent = memo(function AppContent() {
 		</ActionContentbox>
 	);
 });
-
-const resolveResource = async (originalPath: string): Promise<ResolvedCaseConfigResource | undefined> => {
-	const parts = originalPath.split("/");
-	parts.pop();
-	parts.shift();
-	const path = `${parts.join("/")}/case.config.resource.json`;
-	try {
-		const data = await import(`@use-cases/${path}`);
-		return data.default;
-	} catch (error) {
-		console.error(error);
-		return undefined;
-	}
-};

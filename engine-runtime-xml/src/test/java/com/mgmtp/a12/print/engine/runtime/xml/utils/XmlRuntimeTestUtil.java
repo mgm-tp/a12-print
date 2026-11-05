@@ -34,11 +34,13 @@ package com.mgmtp.a12.print.engine.runtime.xml.utils;
 import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
 import com.mgmtp.a12.print.engine.api.PdfBoxPrintEngineConfig;
+import com.mgmtp.a12.print.engine.api.PrintJob;
 import com.mgmtp.a12.print.engine.api.PrintJobConfig;
 import com.mgmtp.a12.print.engine.api.StaticImageProvider;
 import com.mgmtp.a12.print.engine.api.XmlPrintResult;
 import com.mgmtp.a12.print.engine.api.a12.DocumentDependencyDescriptor;
 import com.mgmtp.a12.print.engine.api.exception.StaticImageNotFoundException;
+import com.mgmtp.a12.print.engine.api.message.PrintMessageReport;
 import com.mgmtp.a12.print.engine.runtime.AttachmentProvider;
 import com.mgmtp.a12.print.engine.runtime.KernelDocumentV2Provider;
 import com.mgmtp.a12.print.engine.runtime.PrintJobManager;
@@ -55,7 +57,9 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
+import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -64,6 +68,11 @@ public class XmlRuntimeTestUtil {
 
 	private XmlRuntimeTestUtil() {
 	}
+
+	private static final PdfBoxPrintEngineConfig DEFAULT_ENGINE_CONFIG = PdfBoxPrintEngineConfig.DEFAULT
+		.toBuilder()
+		.availableFonts(PdfBoxPrintEngineConfig.DEFAULT_FONTS)
+		.build();
 
 	private static final StaticImageProvider STATIC_IMAGE_PROVIDER = internalFilename -> {
 		try (InputStream stream = XmlRuntimeTestUtil.class.getResourceAsStream("/static-images/" + internalFilename)) {
@@ -105,6 +114,31 @@ public class XmlRuntimeTestUtil {
 		return print(printModel, documentModelId, timeZone, documentModel, document, null);
 	}
 
+	/**
+	 * Prints a Print Model that references Print Fragment Models.
+	 *
+	 * @param printFragmentModels the Print Fragment Model contents by their model IDs
+	 */
+	public static XmlPrintResult print(
+		@NonNull String printModel,
+		@NonNull String documentModelId,
+		String documentModel,
+		String document,
+		@NonNull Map<String, String> printFragmentModels
+	) {
+		return runPrint(
+			printModel,
+			documentModelId,
+			TimeZone.getTimeZone("UTC"),
+			documentModel,
+			document,
+			null,
+			printFragmentModels,
+			DEFAULT_ENGINE_CONFIG,
+			XmlPrintEngine::execute
+		);
+	}
+
 	public static XmlPrintResult print(
 		@NonNull String printModel,
 		@NonNull String documentModelId,
@@ -112,6 +146,67 @@ public class XmlRuntimeTestUtil {
 		String documentModel,
 		String document,
 		AttachmentProvider attachmentProvider
+	) {
+		return runPrint(
+			printModel, documentModelId, timeZone, documentModel, document, attachmentProvider, XmlPrintEngine::execute
+		);
+	}
+
+	/**
+	 * Prints like {@link #print(String, String, String, String)}, but returns the {@link PrintMessageReport} instead of
+	 * the bare result, so that tests can assert on the messages that are reported back to the caller.
+	 */
+	public static PrintMessageReport<XmlPrintResult> printWithReport(
+		@NonNull String printModel,
+		@NonNull String documentModelId,
+		String documentModel,
+		String document
+	) {
+		return printWithReport(printModel, documentModelId, documentModel, document, DEFAULT_ENGINE_CONFIG);
+	}
+
+	/**
+	 * Prints like {@link #printWithReport(String, String, String, String)}, but with the given engine config, so that
+	 * tests can print with a font configuration that deviates from the default one.
+	 */
+	public static PrintMessageReport<XmlPrintResult> printWithReport(
+		@NonNull String printModel,
+		@NonNull String documentModelId,
+		String documentModel,
+		String document,
+		@NonNull PdfBoxPrintEngineConfig printEngineConfig
+	) {
+		return runPrint(
+			printModel, documentModelId, TimeZone.getTimeZone("UTC"), documentModel, document, null,
+			Map.of(), printEngineConfig, XmlPrintEngine::executeWithReport
+		);
+	}
+
+	private static <T> T runPrint(
+		@NonNull String printModel,
+		@NonNull String documentModelId,
+		@NonNull TimeZone timeZone,
+		String documentModel,
+		String document,
+		AttachmentProvider attachmentProvider,
+		BiFunction<XmlPrintEngine, PrintJob, T> printer
+	) {
+		return runPrint(
+			printModel, documentModelId, timeZone, documentModel, document, attachmentProvider,
+			Map.of(), DEFAULT_ENGINE_CONFIG, printer
+		);
+	}
+
+	private static <T> T runPrint(
+		@NonNull String printModel,
+		@NonNull String documentModelId,
+		@NonNull TimeZone timeZone,
+		String documentModel,
+		String document,
+		AttachmentProvider attachmentProvider,
+		@NonNull Map<String, String> printFragmentModels,
+		@NonNull PdfBoxPrintEngineConfig printEngineConfig,
+		BiFunction<XmlPrintEngine, PrintJob, T> printer
 	) {
 		final var pool = PrintTestUtil.getPrintPool();
 		try {
@@ -128,8 +223,17 @@ public class XmlRuntimeTestUtil {
 				}
 
 				@Override
+				public String loadPrintFragmentModel(String id) {
+					final var printFragmentModel = printFragmentModels.get(id); // <2>
+					if (printFragmentModel == null) {
+						throw new RuntimeException(id);
+					}
+					return printFragmentModel;
+				}
+
+				@Override
 				public IDocumentModel loadDocumentModel(String id) {
-					if (id.equals(documentModelId)) { // <2>
+					if (id.equals(documentModelId)) { // <3>
 						return PrintTestUtil.loadDocumentModel(documentModel, documentModelId);
 					}
 					throw new RuntimeException(id);
@@ -143,12 +247,7 @@ public class XmlRuntimeTestUtil {
 			// end::PrintJobManager[]
 			var printModelId = printJobManager.prepare(printModel);
 			// tag::PdfPrintEngine[]
-			var xmlPrintEngine = new XmlPrintEngine(
-				pool,
-				PdfBoxPrintEngineConfig.DEFAULT.toBuilder()
-					.availableFonts(PdfBoxPrintEngineConfig.DEFAULT_FONTS)
-					.build()
-			);
+			var xmlPrintEngine = new XmlPrintEngine(pool, printEngineConfig);
 			// end::PdfPrintEngine[]
 
 			// tag::PrintJob[]
@@ -159,7 +258,7 @@ public class XmlRuntimeTestUtil {
 
 
 			if (Constants.NO_SELECTED_DOCUMENT_ID.equals(documentModelId)) {
-				return xmlPrintEngine.execute(printJob);
+				return printer.apply(xmlPrintEngine, printJob);
 			}
 
 			var documentToPrint = PrintTestUtil.getDocumentV2ToPrint(
@@ -184,7 +283,7 @@ public class XmlRuntimeTestUtil {
 			if (attachmentProvider != null) {
 				printJob.withProvider(attachmentProvider);
 			}
-			return xmlPrintEngine.execute(printJob);
+			return printer.apply(xmlPrintEngine, printJob);
 		} finally {
 			pool.shutdown();
 		}

@@ -40,12 +40,14 @@ import type { PrintEngineState } from "../../a12internal/api/PrintEngineState.js
 import { PrintEngineSelectors } from "../store/selectors.js";
 import { TEXT_PROPERTIES_PATH } from "../constant/element-property-path.js";
 
-export const useTextStyleSelector = (element: PrintModelElement & DeepPartial<Styleable>) => {
-	const textStyleId = InputValueSourceResolver.getSourceStringValue(
-		element.textProperties?.textStyleId,
-		element,
-		TEXT_PROPERTIES_PATH.textStyleId
-	);
+export const useTextStyleSelector = (element: (PrintModelElement & DeepPartial<Styleable>) | undefined) => {
+	const textStyleId =
+		element &&
+		InputValueSourceResolver.getSourceStringValue(
+			element.textProperties?.textStyleId,
+			element,
+			TEXT_PROPERTIES_PATH.textStyleId
+		);
 	return useSelector((state: PrintEngineState) =>
 		textStyleId ? PrintEngineSelectors.textStyle(state, textStyleId) : undefined
 	);

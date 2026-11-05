@@ -58,7 +58,7 @@ const RESTRICTED_IMPORT_PATTERNS = [
 		message: "Use 'node:assert/strict' instead.",
 	},
 	{
-		regex: "node:*",
+		regex: "^node:.+",
 		importNames: ["*", "default"],
 		message: "Use the specific named exports instead.",
 	},

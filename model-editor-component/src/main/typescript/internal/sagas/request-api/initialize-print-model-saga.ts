@@ -35,9 +35,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 import { LoggerFactory } from "@com.mgmtp.a12.utils/utils-logging";
 import { Log, PrintModelCreator } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
+import { FRAGMENT_MODEL_REFERENCE_PURPOSE } from "@com.mgmtp.a12.print/print-model-api/model";
 
 import type { RequestApi } from "../../api/index.js";
 import {
+	FragmentActions,
 	InteractionLogActions,
 	RequestApiActions,
 	TransactionLogStateActions,
@@ -77,9 +79,21 @@ function* handleInitializePrintModelSaga(action: PayloadAction<string>): SagaGen
 		yield* put(ValidationActions.validateTextStyles());
 		yield* put(RequestApiActions.loadTypesettingModels());
 
-		const referencedPrintModels =
-			references?.flatMap(ref => (ref.reference && ref.modelType === "print" ? [ref.reference] : [])) || [];
-		yield* all(referencedPrintModels.map(ref => put(RequestApiActions.loadDINTemplatePrintModel(ref))));
+		const referencedDINTemplateModels =
+			references?.flatMap(ref =>
+				ref.reference && ref.modelType === "print" && ref.purpose !== FRAGMENT_MODEL_REFERENCE_PURPOSE
+					? [ref.reference]
+					: []
+			) || [];
+		yield* all(referencedDINTemplateModels.map(ref => put(RequestApiActions.loadDINTemplatePrintModel(ref))));
+
+		const referencedFragmentModels =
+			references?.flatMap(ref =>
+				ref.reference && ref.modelType === "print" && ref.purpose === FRAGMENT_MODEL_REFERENCE_PURPOSE
+					? [ref.reference]
+					: []
+			) || [];
+		yield* all(referencedFragmentModels.map(ref => put(FragmentActions.loadFragment(ref))));
 	} else {
 		if (loadPrintModelResponse?.errorMap) {
 			yield* put(ValidationActions.setErrorMap(loadPrintModelResponse.errorMap));

@@ -31,12 +31,10 @@
  */
 import type { StaticImageData, StaticImageProvider } from "@com.mgmtp.a12.print/print-model-editor-component/api";
 
-export const createTestAppStaticImageProvider: (caseConfigId: string) => StaticImageProvider = (
-	caseConfigId: string
-) => ({
+export const testAppStaticImageProvider: StaticImageProvider = {
 	listStaticImages: async () => {
 		try {
-			const res = await fetch(`/api/resources?caseId=${encodeURIComponent(caseConfigId)}`);
+			const res = await fetch("/api/resources");
 			if (res.ok) {
 				return await res.json();
 			}
@@ -47,9 +45,7 @@ export const createTestAppStaticImageProvider: (caseConfigId: string) => StaticI
 	},
 	loadStaticImage: async (name: string) => {
 		try {
-			const res = await fetch(
-				`/api/resource?caseId=${encodeURIComponent(caseConfigId)}&resourceName=${encodeURIComponent(name)}`
-			);
+			const res = await fetch(`/api/resource?resourceName=${encodeURIComponent(name)}`);
 			if (res.ok) {
 				return (await res.json()) as StaticImageData;
 			}
@@ -66,7 +62,6 @@ export const createTestAppStaticImageProvider: (caseConfigId: string) => StaticI
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					caseId: caseConfigId,
 					resourceName: resource.name,
 					content: resource.content,
 				}),
@@ -80,4 +75,4 @@ export const createTestAppStaticImageProvider: (caseConfigId: string) => StaticI
 		}
 		return undefined;
 	},
-});
+};

@@ -2,7 +2,7 @@
   "header": {
     "id": "DINReferencePrintModel",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -189,7 +189,8 @@
               }
             ]
           }
-        }
+        },
+        "name": "Override_db7d9"
       },
       {
         "id": "textLong",
@@ -237,7 +238,8 @@
               "refId": "fieldLong"
             }
           ]
-        }
+        },
+        "name": "Text_ed5a8"
       },
       {
         "id": "fieldLong",
@@ -264,7 +266,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_26291"
       },
       {
         "id": "OverrideYellowBox",
@@ -324,7 +327,8 @@
               }
             ]
           }
-        }
+        },
+        "name": "Override_d1b5b"
       },
       {
         "id": "textFirst",
@@ -373,7 +377,8 @@
               "refId": "fieldFirst"
             }
           ]
-        }
+        },
+        "name": "Text_6ce18"
       },
       {
         "id": "fieldFirst",
@@ -400,7 +405,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_b3e16"
       },
       {
         "id": "OverrideGreenBox",
@@ -500,7 +506,8 @@
               }
             ]
           }
-        }
+        },
+        "name": "Override_236b1"
       },
       {
         "id": "textLast",
@@ -549,7 +556,8 @@
               "refId": "fieldLast"
             }
           ]
-        }
+        },
+        "name": "Text_1ce96"
       },
       {
         "id": "fieldLast",
@@ -576,7 +584,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_f96a0"
       },
       {
         "id": "RedBox",
@@ -660,7 +669,8 @@
             "value": "Solid",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "BoundingBox_7dbf3"
       },
       {
         "id": "textSecond",
@@ -704,7 +714,8 @@
           "id": "ID_f8ca2rtd37-c38c-46eb-866e-62ba47799c1c",
           "text": "<p><span>RESULT 3</span></p>",
           "entities": []
-        }
+        },
+        "name": "Text_64132"
       }
     ],
     "textStyles": {

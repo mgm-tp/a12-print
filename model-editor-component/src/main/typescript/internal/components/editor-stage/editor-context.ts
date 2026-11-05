@@ -68,6 +68,7 @@ export interface IEditorContext {
 	openPreviousStage: (referenceContainer: PartialSegment | PartialSection, wrapperId?: string) => void;
 	getSection: (pageOrientation: PageOrientation, usage: SectionUsage) => PartialSection | undefined;
 	previousEditorRef?: React.MutableRefObject<PreviousEditorRef | null>;
+	isReadonly: boolean;
 }
 
 export const EDITOR_DIMENSIONS = { minHeight: createPlainMmMeasure(297), minWidth: createPlainMmMeasure(210) };
@@ -87,6 +88,7 @@ export const EDITOR_CONTEXT_DEFAULT_VALUE: IEditorContext = {
 		/* empty */
 	},
 	getSection: () => undefined,
+	isReadonly: false,
 };
 
 export const EditorContext = React.createContext<IEditorContext>(EDITOR_CONTEXT_DEFAULT_VALUE);

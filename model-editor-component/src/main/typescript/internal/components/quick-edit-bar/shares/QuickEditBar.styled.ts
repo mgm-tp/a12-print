@@ -34,6 +34,7 @@ import { styled } from "styled-components";
 export const StyledOuterContainer = styled.div`
 	display: flex;
 	gap: 12px;
+	flex-wrap: wrap;
 	input::-webkit-outer-spin-button,
 	input::-webkit-inner-spin-button {
 		-webkit-appearance: none;
@@ -42,6 +43,18 @@ export const StyledOuterContainer = styled.div`
 	input[type="number"] {
 		-moz-appearance: textfield;
 	}
+`;
+
+/**
+ * A block of quick edit bar items that stays together when the toolbar wraps: the toolbar
+ * breaks between these blocks first. Breaking inside a block is the last resort for a block
+ * that does not fit a line of its own, which keeps it from overflowing the editor stage.
+ */
+export const StyledGroupContainer = styled.div`
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	min-width: 0;
 `;
 
 export const StyledFlexGroupContainer = styled.div`

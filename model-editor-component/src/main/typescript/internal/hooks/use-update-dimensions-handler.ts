@@ -31,30 +31,17 @@
  */
 import { useDispatch } from "react-redux";
 import { useCallback } from "react";
-import { nanoid } from "nanoid";
 
 import type {
-	Measure,
 	PartialAnyPrintModelElement,
 	PartialValidPlaceableReference,
-	PrintModelEntity,
 } from "@com.mgmtp.a12.print/print-model-api/model";
-import {
-	PartialArea,
-	PartialBarChart,
-	PartialBoundingBox,
-	PartialImage,
-	PartialLineChart,
-	PartialPieChart,
-	PartialSwitch,
-} from "@com.mgmtp.a12.print/print-model-api/model";
+import { PartialArea, PartialBoundingBox, PartialSwitch } from "@com.mgmtp.a12.print/print-model-api/model";
 import { StageRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
-import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
 import type { AnyTransactionLogAction } from "../redux/index.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../redux/index.js";
 import { ElementsUtils } from "../utils/elements-utils.js";
-import { changePartialMmMeasureValue } from "../utils/index.js";
 
 interface ResizeParams {
 	targetElement: PartialAnyPrintModelElement;
@@ -85,118 +72,17 @@ export const useUpdateDimensionsHandler = () => {
 				return;
 			}
 
-			if (PartialPieChart.isInstance(targetElement)) {
-				const updatedElement: PartialPieChart = {
-					...targetElement,
-					pieChart: {
-						id: nanoid(),
-						...targetElement.pieChart,
-						dimensions: {
-							...targetElement.pieChart?.dimensions,
-							id: targetElement.pieChart?.dimensions?.id || nanoid(),
-							...updateDimensions(dimensions, targetElement.pieChart?.dimensions),
-						},
-					},
-				};
+			const updatedElement = ElementsUtils.withOwnDimensions(targetElement, dimensions);
+			// Area/BoundingBox/Switch are committed via their own dedicated action rather than
+			// updatePrintModelElements - see TransactionLogStateActions.updateArea/updateBoundingBox/updateSwitch.
+			if (PartialArea.isInstance(updatedElement)) {
+				actions.push(TransactionLogStateActions.updateArea({ data: updatedElement }));
+			} else if (PartialBoundingBox.isInstance(updatedElement)) {
+				actions.push(TransactionLogStateActions.updateBoundingBox({ data: updatedElement }));
+			} else if (PartialSwitch.isInstance(updatedElement)) {
+				actions.push(TransactionLogStateActions.updateSwitch({ data: updatedElement }));
+			} else {
 				actions.push(TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }));
-			} else if (PartialBarChart.isInstance(targetElement)) {
-				const updatedElement: PartialBarChart = {
-					...targetElement,
-					barChart: {
-						id: nanoid(),
-						...targetElement.barChart,
-						dimensions: {
-							...targetElement.barChart?.dimensions,
-							id: targetElement.barChart?.dimensions?.id || nanoid(),
-							...updateDimensions(dimensions, targetElement.barChart?.dimensions),
-						},
-					},
-				};
-				actions.push(TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }));
-			} else if (PartialLineChart.isInstance(targetElement)) {
-				const updatedElement = {
-					...targetElement,
-					lineChart: {
-						id: nanoid(),
-						...targetElement.lineChart,
-						dimensions: {
-							...targetElement.lineChart?.dimensions,
-							id: targetElement.lineChart?.dimensions?.id || nanoid(),
-							...updateDimensions(dimensions, targetElement.lineChart?.dimensions),
-						},
-					},
-				};
-
-				actions.push(TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }));
-			} else if (PartialImage.isInstance(targetElement)) {
-				const updatedElement: PartialImage = {
-					...targetElement,
-					image: {
-						id: nanoid(),
-						...targetElement.image,
-						dimensions: {
-							...targetElement.image?.dimensions,
-							id: targetElement.image?.dimensions?.id || nanoid(),
-							...updateDimensions(dimensions, targetElement.image?.dimensions),
-						},
-					},
-				};
-				actions.push(TransactionLogStateActions.updatePrintModelElements({ data: [updatedElement] }));
-			} else if (PartialBoundingBox.isInstance(targetElement)) {
-				const boundingBox: PartialBoundingBox = {
-					...targetElement,
-					boundingBox: {
-						id: nanoid(),
-						...targetElement.boundingBox,
-						dimensions: {
-							...targetElement.boundingBox?.dimensions,
-							id: targetElement.boundingBox?.dimensions?.id || nanoid(),
-							...updateDimensions(dimensions, targetElement.boundingBox?.dimensions),
-						},
-					},
-				};
-
-				actions.push(
-					TransactionLogStateActions.updateBoundingBox({
-						data: boundingBox,
-					})
-				);
-			} else if (PartialArea.isInstance(targetElement)) {
-				const area: PartialArea = {
-					...targetElement,
-					area: {
-						id: nanoid(),
-						...targetElement.area,
-						dimensions: {
-							...targetElement.area?.dimensions,
-							id: targetElement.area?.dimensions?.id || nanoid(),
-							...updateDimensions(dimensions, targetElement.area?.dimensions),
-						},
-					},
-				};
-				actions.push(
-					TransactionLogStateActions.updateArea({
-						data: area,
-					})
-				);
-			} else if (PartialSwitch.isInstance(targetElement)) {
-				const switchElement: PartialSwitch = {
-					...targetElement,
-					switch: {
-						id: nanoid(),
-						...targetElement.switch,
-						dimensions: {
-							...targetElement.switch?.dimensions,
-							id: targetElement.switch?.dimensions?.id || nanoid(),
-							...updateDimensions(dimensions, targetElement.switch?.dimensions),
-						},
-					},
-				};
-				actions.push(
-					TransactionLogStateActions.updateSwitch({
-						data: switchElement,
-					})
-				);
 			}
 
 			dispatch(
@@ -210,28 +96,3 @@ export const useUpdateDimensionsHandler = () => {
 		[dispatch]
 	);
 };
-
-function updateDimensions(
-	change: { height?: number; width?: number },
-	origin?: {
-		width?: DeepPartialRecursive<Measure> & PrintModelEntity;
-		height?: DeepPartialRecursive<Measure> & PrintModelEntity;
-	}
-) {
-	let newDimensions = { ...origin };
-
-	if ("height" in change) {
-		newDimensions = {
-			...newDimensions,
-			height: change.height ? changePartialMmMeasureValue(change.height, origin?.height) : undefined,
-		};
-	}
-
-	if ("width" in change) {
-		newDimensions = {
-			...newDimensions,
-			width: change.width ? changePartialMmMeasureValue(change.width, origin?.width) : undefined,
-		};
-	}
-	return newDimensions;
-}

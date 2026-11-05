@@ -39,7 +39,7 @@ The following tools are required in order to build this repository.
 | [JDK]    | `^21` |
 | [Gradle] | `9.6.0` |
 | [Node]   | `24.15` |
-| [pnpm]   | `10.4.1` |
+| [pnpm]   | `10.34.7` |
 | [Trivy]  | `Latest` |
 
 > **Note**: Trivy is only required for the SBOM-generation of the Node.js modules.
@@ -249,6 +249,7 @@ influences how to [build](#building-individual-modules) them.
 | model-migration        | contains migration steps for Print Models, Print Setting Models and Typesetting Models                        | FS          |
 | print-dev-tools        | shared configurations for frontend dev tools                                                                  | FE          |
 | print-fonts            | provides default font resources, shared constants and utilities for the Print Engine                          | FE          |
+| print-integration      | provides a FE and BE module to integrate Print functionalities in an A12 Full Stack application               | FS          |
 | print-shell            | CLI tool for the printing process and some utility functionality                                              | BE          |
 | print-workspace        | specific workspace functionality for print-shell to handle Print related files                                | BE          |
 | test-app               | serves as a running Print Model Editor for development purposes                                               | FE          |

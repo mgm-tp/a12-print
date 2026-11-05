@@ -29,33 +29,39 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import {
-	type Area,
-	type BoundingBox,
-	type Calculation,
-	type Field,
-	type Listing,
-	type Text,
-	type Table,
-	type TableLayout,
-	type Override,
-	type Switch,
-	type PartialText,
-	type PartialImage,
-	ElementType,
-	type InputSource,
-	type PartialSegment,
-	type PartialTextStyle,
-	type PartialTextProperties,
-	type PrintModel,
-	type PrintModelElement,
-	Alignment,
-	type PartialSection,
-	type PartialWatermark,
-	ImageSrcType,
+import { nanoid } from "nanoid";
+
+import { ElementType, Alignment, ImageSrcType } from "../../model/index.js";
+import type {
+	Area,
+	BoundingBox,
+	Calculation,
+	Field,
+	Listing,
+	Text,
+	Table,
+	TableLayout,
+	Override,
+	Switch,
+	PartialText,
+	PartialImage,
+	InputSource,
+	PartialSegment,
+	PartialTextStyle,
+	PartialTextProperties,
+	PartialBorderProperties,
+	PrintModel,
+	PrintModelElement,
+	PartialSection,
+	PartialWatermark,
+	PartialArea,
+	PartialTable,
+	PartialExpression,
+	Expression,
 } from "../../model/index.js";
-import { TEXT_STYLE } from "../../model/constant.js";
+import { TEXT_STYLE } from "../../model/index.js";
 import printModelFixtureRaw from "../../../../test/resources/print-models/PrintModel-with-text.json" with { type: "json" };
+import { PRINT_MODEL_VERSION } from "../../constant/model.js";
 
 import type { DeepPartial } from "../type-utils.js";
 import {
@@ -66,6 +72,7 @@ import {
 	deepCloneArray,
 	cloneInputSource,
 	cloneTextProperties,
+	cloneBorderProperties,
 	cloneTextStyles,
 	cloneSegment,
 	cloneSegments,
@@ -370,6 +377,38 @@ describe("cloneTextProperties", () => {
 	});
 });
 
+describe("cloneBorderProperties", () => {
+	test("returns undefined for falsy input", () => {
+		expect(cloneBorderProperties(makeGenericCloneContext())).toBeUndefined();
+	});
+
+	test("clones border properties with new ids", () => {
+		const props = {
+			id: "bp-1",
+			borderWidth: { id: "bw-1", value: 2 },
+			borderColor: { id: "bc-1", value: "#ff0000" },
+			borderStyle: { id: "bs-1", value: "Solid" },
+		} as PartialBorderProperties;
+		const result = cloneBorderProperties(makeGenericCloneContext(), props);
+		expect(result).toBeDefined();
+		expect(result?.id).not.toBe("bp-1");
+		expect(result?.borderWidth?.id).not.toBe("bw-1");
+		expect(result?.borderColor?.id).not.toBe("bc-1");
+		expect(result?.borderStyle?.id).not.toBe("bs-1");
+	});
+
+	test("updates reference via elementIdMap", () => {
+		const ctx = makeGenericCloneContext();
+		ctx.elementIdMap.set("old-ref", "new-ref");
+		const props = {
+			id: "bp-1",
+			borderWidth: { id: "bw-1", value: 2, source: "INHERITED", reference: "old-ref" },
+		} as PartialBorderProperties;
+		const result = cloneBorderProperties(ctx, props);
+		expect(result?.borderWidth?.reference).toBe("new-ref");
+	});
+});
+
 function makeGenericContext(elements: Record<string, PrintModelElement> = {}): CloneContext {
 	return {
 		getElement: (id: string) => elements[id],
@@ -472,6 +511,25 @@ describe("clonePrintModelElement", () => {
 			const cloned = result[0] as Text;
 			expect(cloned.textProperties).toBeDefined();
 			expect(cloned.textProperties?.id).not.toBe("tp-1");
+		});
+
+		test("clones borderProperties when present", () => {
+			const ctx = makeGenericContext();
+			ctx.elementIdMap.set("tl-parent", "tl-parent-new");
+			const textElement = {
+				id: "text-4",
+				type: ElementType.Text,
+				text: { id: "txt-body-4", text: "", entities: [] },
+				borderProperties: {
+					id: "bp-1",
+					borderWidth: { id: "bw-1", value: 1, source: "INHERITED", reference: "tl-parent" },
+				},
+			};
+			const result = clonePrintModelElement(textElement, ctx);
+			const cloned = result[0] as Text;
+			expect(cloned.borderProperties).toBeDefined();
+			expect(cloned.borderProperties?.id).not.toBe("bp-1");
+			expect(cloned.borderProperties?.borderWidth?.reference).toBe("tl-parent-new");
 		});
 	});
 
@@ -633,6 +691,64 @@ describe("clonePrintModelElement", () => {
 			expect(result[0].id).not.toBe("area-1");
 			expect((result[0] as Area).area.elementReferences).toEqual([]);
 		});
+
+		test("clones an area containing a table with expression column referencing the table", () => {
+			const expressionElement: PartialExpression = {
+				id: "expr-1",
+				type: ElementType.Expression,
+				textProperties: {
+					id: "tp-1",
+					bold: { id: "bold-1", source: "INHERITED", reference: "table-1" } as InputSource<boolean>,
+					italic: { id: "italic-1", source: "INHERITED", reference: "table-1" } as InputSource<boolean>,
+					textStyleId: { id: "tsi-1", source: "INHERITED", reference: "table-1" } as InputSource<string>,
+				},
+			};
+			const tableElement: PartialTable = {
+				id: "table-1",
+				type: ElementType.Table,
+				table: {
+					id: "t-inner",
+					basePath: "items",
+					columns: [{ id: "col-ref-1", refId: "expr-1" }],
+				},
+				textProperties: undefined,
+			};
+			const areaElement: PartialArea = {
+				id: "area-1",
+				type: ElementType.Area,
+				area: {
+					id: "area-inner",
+					elementReferences: [
+						{
+							id: "ref-1",
+							refId: "table-1",
+							position: { id: "pos-1", x: { id: "pos-1-x", value: 0 }, y: { id: "pos-1-y", value: 0 } },
+							dimensions: {
+								id: "dim-1",
+								minWidth: { id: "dim-1-width", value: 100 },
+								minHeight: { id: "dim-1-height", value: 50 },
+							},
+						},
+					],
+				},
+			};
+			const ctx = makeGenericContext({ "table-1": tableElement, "expr-1": expressionElement });
+			const result = clonePrintModelElement(areaElement, ctx);
+
+			// result: [clonedArea, clonedTable, clonedExpression]
+			expect(result.length).toBe(3);
+			const clonedTable = result[1] as Table;
+			const clonedExpression = result[2] as Expression;
+
+			// The table's column reference should point to the cloned expression
+			expect(clonedTable.table.columns[0].refId).toBe(clonedExpression.id);
+
+			// The expression's InputSource references should point to the cloned table, not the old one
+			const clonedTp = clonedExpression.textProperties;
+			expect(clonedTp?.bold?.reference).toBe(clonedTable.id);
+			expect(clonedTp?.italic?.reference).toBe(clonedTable.id);
+			expect(clonedTp?.textStyleId?.reference).toBe(clonedTable.id);
+		});
 	});
 
 	describe("Switch element", () => {
@@ -707,6 +823,47 @@ describe("clonePrintModelElement", () => {
 			expect(cloned.listing.headerTextProperties?.id).not.toBe("htp-1");
 			expect(cloned.textProperties?.id).not.toBe("tp-1");
 		});
+
+		test("clones column borderProperties and registers listing in elementIdMap", () => {
+			const listingElement = {
+				id: "lst-3",
+				type: ElementType.Listing,
+				name: "MyListing",
+				listing: {
+					id: "lst-inner-3",
+					basePath: "rows",
+					columns: [
+						{
+							id: "col-2",
+							name: "Amount",
+							textProperties: { id: "ctp-2" },
+							borderProperties: {
+								id: "cbp-1",
+								borderWidth: { id: "cbw-1", value: 1, source: "INHERITED", reference: "lst-3" },
+							},
+						},
+					],
+				},
+				borderProperties: {
+					id: "bp-lst",
+					borderStyle: { id: "bs-lst", value: "Solid", source: "INPUT" },
+				},
+			};
+			const ctx = makeGenericContext();
+			const result = clonePrintModelElement(listingElement, ctx);
+			const cloned = result[0] as Listing;
+
+			// Column borderProperties should be cloned with updated reference
+			expect(cloned.listing.columns?.[0].borderProperties?.id).not.toBe("cbp-1");
+			const clonedColBorderRef = cloned.listing.columns?.[0].borderProperties?.borderWidth?.reference;
+			expect(clonedColBorderRef).toBe(cloned.id);
+
+			// Element-level borderProperties should be cloned
+			expect(cloned.borderProperties?.id).not.toBe("bp-lst");
+
+			// Listing ID should be registered in elementIdMap
+			expect(ctx.elementIdMap.get("lst-3")).toBe(cloned.id);
+		});
 	});
 
 	describe("fallback (unknown/simple element type)", () => {
@@ -734,6 +891,24 @@ describe("clonePrintModelElement", () => {
 			expect(result.length).toBe(1);
 			expect(result[0].id).not.toBe("field-1");
 			expect((result[0] as Field).textProperties?.id).not.toBe("ftp-1");
+		});
+
+		test("clones fallback element with borderProperties", () => {
+			const ctx = makeGenericContext();
+			ctx.elementIdMap.set("parent-ref", "parent-ref-new");
+			const fieldElement = {
+				id: "field-2",
+				type: ElementType.Field,
+				borderProperties: {
+					id: "fbp-1",
+					borderColor: { id: "fbc-1", value: "#000", source: "INHERITED", reference: "parent-ref" },
+				},
+			};
+			const result = clonePrintModelElement(fieldElement, ctx);
+			expect(result.length).toBe(1);
+			const cloned = result[0] as Field;
+			expect(cloned.borderProperties?.id).not.toBe("fbp-1");
+			expect(cloned.borderProperties?.borderColor?.reference).toBe("parent-ref-new");
 		});
 	});
 });
@@ -968,5 +1143,283 @@ describe("cloneWatermarks", () => {
 		const ctx = makeGenericContext({ e1: elem1, e2: elem2 });
 		const result = cloneWatermarks(["wm-1", "wm-2"], watermarks, ctx);
 		expect(result.clonedElements.length).toBe(2);
+	});
+});
+
+function measure(unit = "Millimeter", value = 10) {
+	return { id: nanoid(), value, unit };
+}
+
+function findPlacement(model: PrintModel) {
+	const area = model.content.elementDefinitions.find(element => element.type === ElementType.Area);
+	const placement = (area as unknown as PartialArea).area?.elementReferences?.[0];
+	if (!placement) {
+		throw new Error("the model has no area placing anything");
+	}
+	return placement;
+}
+
+function placeable(id: string, rest: Record<string, unknown>) {
+	return {
+		id,
+		position: { id: nanoid(), x: measure(), y: measure() },
+		dimensions: { id: nanoid(), minWidth: measure(), minHeight: measure() },
+		screenReadingOrder: { id: nanoid(), screenReadingOrderWeight: 0 },
+		...rest,
+	};
+}
+
+function createFragmentModel(): PrintModel {
+	const root = {
+		id: "fragmentRoot",
+		type: ElementType.Area,
+		isFragment: true,
+		fragmentDimensions: { id: nanoid(), width: measure(), height: measure() },
+		area: {
+			id: nanoid(),
+			elementReferences: [placeable("childInRoot", { refId: "childText" })],
+		},
+	} as unknown as PrintModelElement;
+
+	const childText = {
+		id: "childText",
+		type: ElementType.Text,
+		text: { id: nanoid(), text: "child", entities: [] },
+		borderProperties: {
+			id: nanoid(),
+			// inherits from an element that is only cloned after this one
+			borderWidth: {
+				id: nanoid(),
+				source: "INHERITED",
+				path: "/content/elementDefinitions/borderProperties/borderWidth/value/",
+				reference: "laterRoot",
+			},
+		},
+	} as unknown as PrintModelElement;
+
+	const laterRoot = {
+		id: "laterRoot",
+		type: ElementType.Area,
+		isFragment: true,
+		fragmentDimensions: { id: nanoid(), width: measure(), height: measure() },
+		area: { id: nanoid(), elementReferences: [] },
+	} as unknown as PrintModelElement;
+
+	return {
+		header: { id: "FragmentModel", modelType: "print", modelVersion: PRINT_MODEL_VERSION },
+		content: {
+			id: "content",
+			general: { id: "general", structure: [], sections: [], watermarks: [], textStyles: [] },
+			segments: { id: nanoid(), definitions: [], references: [], fragmentReferences: [] },
+			elementDefinitions: [root, childText, laterRoot],
+		},
+	} as unknown as PrintModel;
+}
+
+describe("clonePrintModel with fragment models", () => {
+	const FRAGMENT_MODEL = "TheFragment";
+
+	/** A model that places an element, a segment, a section, a watermark and a text style of a fragment model. */
+	function createUsingModel(): PrintModel {
+		const area = {
+			id: "area",
+			type: ElementType.Area,
+			area: {
+				id: nanoid(),
+				elementReferences: [
+					placeable("fragmentPlacement", {
+						refId: "fragmentElement",
+						model: FRAGMENT_MODEL,
+						pageBreakBehavior: {
+							id: nanoid(),
+							source: "INHERITED",
+							path: "/content/elementDefinitions/area/elementReferences/pageBreakBehavior/value/",
+							reference: "areaInSegment",
+						},
+					}),
+				],
+			},
+		} as unknown as PrintModelElement;
+
+		return {
+			header: { id: "UsingModel", modelType: "print", modelVersion: PRINT_MODEL_VERSION },
+			content: {
+				id: "content",
+				general: {
+					id: "general",
+					structure: ["segment", "fragmentSegmentReference"],
+					sections: ["sectionReference"],
+					watermarks: ["watermarkReference"],
+					textStyles: ["localStyle", "textStyleReference"],
+				},
+				segments: {
+					id: nanoid(),
+					definitions: [
+						{
+							id: "segment",
+							title: "Segment",
+							type: "Default",
+							elementReferences: [placeable("areaInSegment", { refId: "area" })],
+						},
+					],
+					fragmentReferences: [
+						{ id: "fragmentSegmentReference", refId: "fragmentSegment", model: FRAGMENT_MODEL },
+					],
+					references: [],
+				},
+				sections: {
+					id: nanoid(),
+					definitions: [],
+					references: [{ id: "sectionReference", refId: "fragmentSection", model: FRAGMENT_MODEL }],
+				},
+				watermarks: {
+					id: nanoid(),
+					definitions: [],
+					references: [{ id: "watermarkReference", refId: "fragmentWatermark", model: FRAGMENT_MODEL }],
+				},
+				textStyles: {
+					id: nanoid(),
+					definitions: [{ id: "localStyle", name: "local", fontSize: 12, lineHeight: 18, semantic: "P" }],
+					references: [{ id: "textStyleReference", refId: "fragmentStyle", model: FRAGMENT_MODEL }],
+				},
+				elementDefinitions: [area],
+			},
+		} as unknown as PrintModel;
+	}
+
+	test("keeps a reference into a fragment model pointing at the same element", () => {
+		const model = createUsingModel();
+		const placement = findPlacement(clonePrintModel(model));
+
+		expect(placement.refId).toBe("fragmentElement");
+		expect((placement as unknown as { model: string }).model).toBe(FRAGMENT_MODEL);
+		expect(placement.id).not.toBe("fragmentPlacement");
+	});
+
+	test("resolves the inherited pageBreakBehavior of a fragment placement to the copied parent", () => {
+		const clone = clonePrintModel(createUsingModel());
+
+		const segmentReferenceId = clone.content.segments?.definitions?.[0]?.elementReferences?.[0]?.id;
+		const placement = findPlacement(clone);
+
+		expect(placement.pageBreakBehavior?.reference).toBe(segmentReferenceId);
+		expect(placement.pageBreakBehavior?.reference).not.toBe("areaInSegment");
+	});
+
+	test("keeps the entries a fragment model contributes to the id lists", () => {
+		const clone = clonePrintModel(createUsingModel());
+		const { general } = clone.content;
+
+		expect(general.structure).toHaveLength(2);
+		expect(general.sections).toHaveLength(1);
+		expect(general.watermarks).toHaveLength(1);
+		expect(general.textStyles).toHaveLength(2);
+
+		// the list entry addresses the cloned reference, not the one of the original
+		expect(general.structure?.[1]).toBe(clone.content.segments?.fragmentReferences?.[0]?.id);
+		expect(general.sections?.[0]).toBe(clone.content.sections?.references?.[0]?.id);
+		expect(general.watermarks?.[0]).toBe(clone.content.watermarks?.references?.[0]?.id);
+		expect(general.textStyles?.[1]).toBe(clone.content.textStyles?.references?.[0]?.id);
+		expect(general.structure?.[1]).not.toBe("fragmentSegmentReference");
+	});
+
+	test("keeps what the contributed references point at", () => {
+		const clone = clonePrintModel(createUsingModel());
+
+		expect(clone.content.segments?.fragmentReferences?.[0]?.refId).toBe("fragmentSegment");
+		expect(clone.content.sections?.references?.[0]?.refId).toBe("fragmentSection");
+		expect(clone.content.watermarks?.references?.[0]?.refId).toBe("fragmentWatermark");
+		expect(clone.content.textStyles?.references?.[0]?.refId).toBe("fragmentStyle");
+	});
+
+	test("clones the elements a fragment model exports, although nothing places them", () => {
+		const model = createFragmentModel();
+		const clone = clonePrintModel(model);
+
+		expect(clone.content.elementDefinitions).toHaveLength(model.content.elementDefinitions.length);
+		expect(clone.content.elementDefinitions.filter(element => element.isFragment)).toHaveLength(2);
+		expect(clone.content.elementDefinitions.map(element => element.id)).not.toContain("fragmentRoot");
+	});
+
+	test("resolves an inherited source pointing at an element that is cloned later", () => {
+		const clone = clonePrintModel(createFragmentModel());
+
+		const child = clone.content.elementDefinitions.find(element => element.type === ElementType.Text);
+		const laterRoot = clone.content.elementDefinitions.find(
+			element => element.isFragment && element.id !== clone.content.elementDefinitions[0]?.id
+		);
+		const reference = (child as unknown as { borderProperties: PartialBorderProperties }).borderProperties
+			.borderWidth?.reference;
+
+		expect(reference).not.toBe("laterRoot");
+		expect(clone.content.elementDefinitions.map(element => element.id)).toContain(reference);
+		expect(laterRoot).toBeDefined();
+	});
+});
+
+describe("clonePrintModelElement with the context an editor action builds", () => {
+	// the editor's copy/paste handlers hand in a bare context: no reserved ids, no clonedElements cache
+	const editorContext = (elements: PrintModelElement[]): CloneContext => ({
+		cloneObject: clonePrintModelEntity,
+		getElement: elementId => elements.find(element => element.id === elementId),
+		elementIdMap: new Map(),
+	});
+
+	const text = (id: string, borderReference?: string) =>
+		({
+			id,
+			type: ElementType.Text,
+			text: { id: `${id}-text`, text: "<p>x</p>", entities: [] },
+			...(borderReference && {
+				borderProperties: {
+					id: `${id}-bp`,
+					borderWidth: { id: `${id}-bw`, source: "INHERITED", reference: borderReference },
+				},
+			}),
+		}) as unknown as PrintModelElement;
+
+	const area = (id: string, refIds: string[]) =>
+		({
+			id,
+			type: ElementType.Area,
+			area: {
+				id: `${id}-area`,
+				elementReferences: refIds.map((refId, index) => ({ id: `${id}-ref-${index}`, refId })),
+			},
+		}) as unknown as PrintModelElement;
+
+	test("copies an element two references point at once", () => {
+		const shared = text("shared-text");
+		const root = area("area-1", ["shared-text", "shared-text"]);
+
+		const cloned = clonePrintModelElement(root, editorContext([shared, root]));
+
+		const texts = cloned.filter(element => element.type === ElementType.Text);
+		expect(texts).toHaveLength(1);
+
+		const [first, second] = (cloned[0] as PartialArea).area?.elementReferences ?? [];
+		expect(first?.refId).toBe(texts[0].id);
+		expect(second?.refId).toBe(texts[0].id);
+	});
+
+	test("resolves an inherited source pointing at an element that is cloned later", () => {
+		const inheriting = text("text-1", "later-layout");
+		const later = {
+			id: "later-layout",
+			type: ElementType.TableLayout,
+			tableLayout: { id: "tl", cells: [] },
+		} as unknown as PrintModelElement;
+		const root = area("area-1", ["text-1", "later-layout"]);
+
+		const cloned = clonePrintModelElement(root, editorContext([inheriting, later, root]));
+
+		const clonedText = cloned.find(element => element.type === ElementType.Text);
+		const clonedLayout = cloned.find(element => element.type === ElementType.TableLayout);
+		const reference = (clonedText as unknown as { borderProperties: PartialBorderProperties }).borderProperties
+			.borderWidth?.reference;
+
+		expect(clonedLayout).toBeDefined();
+		expect(reference).toBe(clonedLayout?.id);
+		expect(reference).not.toBe("later-layout");
 	});
 });

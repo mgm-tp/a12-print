@@ -31,6 +31,9 @@
  */
 import { type PrintModel, type Watermark } from "../model/index.js";
 
+import { resolveFragmentDefinitions } from "./fragment-definition-resolver.js";
+import type { PrintModelResolver } from "./print-model-resolver.js";
+
 export interface WatermarkMap {
 	[key: string]: Watermark;
 }
@@ -40,20 +43,39 @@ export interface WatermarkIdResolver {
 }
 
 export class DefaultWatermarkIdResolver implements WatermarkIdResolver {
-	constructor(private watermarkList: ReadonlyArray<Watermark>) {}
+	constructor(
+		private readonly watermarkList: ReadonlyArray<Watermark>,
+		private readonly fragmentWatermarks: ReadonlyMap<string, Watermark> = new Map()
+	) {}
 
-	public static fromModel(printModel: PrintModel) {
-		return new this(printModel.content.watermarks?.definitions || []);
+	/** @param fragmentModelResolver Without it only locally defined watermarks are resolvable.
+	 * @remarks
+	 * The signature will change in the next major release to `fromModel(printModel: PrintModel, fragmentModelResolver: PrintModelResolver)`.
+	 */
+	public static fromModel(printModel: PrintModel, fragmentModelResolver?: PrintModelResolver) {
+		const watermarks = printModel.content.watermarks;
+		return new this(
+			watermarks?.definitions || [],
+			fragmentModelResolver
+				? resolveFragmentDefinitions(
+						watermarks?.references || [],
+						fragmentModelResolver,
+						fragmentModel => fragmentModel.content.watermarks?.definitions || [],
+						// Each reference is an independent instance, keyed by its own id.
+						(watermark, _reference, referenceId) => ({ ...watermark, id: referenceId })
+					)
+				: undefined
+		);
 	}
 
 	resolveWatermarkId(id: string): Watermark | undefined {
-		return this.watermarkList.find(el => el.id === id);
+		return this.watermarkList.find(el => el.id === id) || this.fragmentWatermarks.get(id);
 	}
 }
 
 export class CachedWatermarkIdResolver implements WatermarkIdResolver {
-	private watermarksResolver: WatermarkIdResolver;
-	private watermarkMap: WatermarkMap = {};
+	private readonly watermarksResolver: WatermarkIdResolver;
+	private readonly watermarkMap: WatermarkMap = {};
 
 	constructor(referenceResolver: WatermarkIdResolver) {
 		this.watermarksResolver = referenceResolver;

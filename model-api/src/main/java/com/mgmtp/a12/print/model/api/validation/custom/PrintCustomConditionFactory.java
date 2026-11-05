@@ -52,6 +52,8 @@ public class PrintCustomConditionFactory implements ICustomConditionFactory {
             case "print_RoleNotEmpty" -> Optional.of(new IsRoleNotEmptyCustomCondition());
             case "print_ElementReferenceOverlapped" -> Optional.of(new IsElementReferenceOverlapped());
             case "print_OnlyOneIsSortingColumn" -> Optional.of(new OnlyOneIsSortingColumn());
+            case "print_IsPrintModel" -> Optional.of(new IsPrintModel());
+            case "print_IsFragmentModel" -> Optional.of(new IsFragmentModel());
             default -> Optional.empty();
         };
     }

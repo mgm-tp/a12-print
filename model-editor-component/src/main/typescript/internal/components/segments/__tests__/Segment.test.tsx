@@ -29,6 +29,8 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import type { ReactElement } from "react";
+import { jest } from "@jest/globals";
 import { fireEvent, screen, within } from "@testing-library/react";
 
 import type { SegmentsStoreEntryMapWithId } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
@@ -38,9 +40,11 @@ import {
 	createTransactionLogState,
 	renderWithProviders,
 	initialStateLogStoreMock,
+	mockSegment,
 } from "../../../../../../test/typescript/test-utils/index.js";
 
 import { Segments } from "../Segment.js";
+import { SegmentCard } from "../SegmentCard.js";
 
 describe("SegmentCard", () => {
 	const setupTest = (segments: SegmentsStoreEntryMapWithId<PartialSegment> = initialStateLogStoreMock.segments) =>
@@ -54,6 +58,10 @@ describe("SegmentCard", () => {
 			},
 			["startInteractionSaga", "loadDocumentModelDataSaga"]
 		);
+	const setupSegmentCardTest = (component: ReactElement) =>
+		renderWithProviders(component, {
+			TransactionLogState: createTransactionLogState(initialStateLogStoreMock),
+		});
 
 	it("should render correctly", () => {
 		const { queryAllByTestId } = setupTest();
@@ -165,5 +173,51 @@ describe("SegmentCard", () => {
 		fireEvent.click(screen.getByText("Delete"));
 
 		expect(screen.queryByText(/confirm to delete/i)).toBeInTheDocument();
+	});
+
+	describe("readonly mode", () => {
+		it("makes name input readonly when a reference is provided", () => {
+			const { getByDisplayValue } = setupSegmentCardTest(
+				<SegmentCard
+					segment={mockSegment}
+					isOpenSetting={true}
+					setOpenSetting={jest.fn()}
+					reference={{ id: "refId123" }}
+				/>
+			);
+
+			expect(getByDisplayValue("my first segment")).toHaveAttribute("readonly");
+		});
+
+		it("shows reference link icon when a reference is provided", () => {
+			const { getByTitle } = setupSegmentCardTest(
+				<SegmentCard
+					segment={mockSegment}
+					isOpenSetting={false}
+					setOpenSetting={jest.fn()}
+					reference={{ id: "refId123" }}
+				/>
+			);
+
+			expect(getByTitle(/Referenced/i)).toBeInTheDocument();
+		});
+
+		it("still shows action buttons when referenced", () => {
+			const { getByLabelText } = setupSegmentCardTest(
+				<SegmentCard
+					segment={mockSegment}
+					isOpenSetting={false}
+					setOpenSetting={jest.fn()}
+					reference={{ id: "refId123" }}
+				/>
+			);
+
+			expect(getByLabelText(/open setting/i)).toBeInTheDocument();
+			expect(getByLabelText(/open setting/i)).not.toBeDisabled();
+			expect(getByLabelText("Open Editor")).toBeInTheDocument();
+			expect(getByLabelText("Open Editor")).not.toBeDisabled();
+			expect(getByLabelText(/open menu/i)).toBeInTheDocument();
+			expect(getByLabelText(/open menu/i)).not.toBeDisabled();
+		});
 	});
 });

@@ -539,6 +539,346 @@ exports[`validateDocumentModelReferences should have errors in all paths 1`] = `
 }
 `;
 
+exports[`validateDocumentModelReferences should have errors in the element fragments of a fragment model for a path deleted in its document model 1`] = `
+{
+  "content": {
+    "elementDefinitions": [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {
+        "field": {
+          "path": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable/stringField' can not be resolved in the Document Model (ExampleDM)",
+            ],
+          },
+        },
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {
+        "field": {
+          "path": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable/stringField' can not be resolved in the Document Model (ExampleDM)",
+            ],
+          },
+        },
+      },
+      {},
+      {},
+      {
+        "pieChart": {
+          "data": {
+            "keyField": {
+              "@error": [
+                "The path 'ExampleDM/example/repeatable/stringField' can not be resolved in the Document Model (ExampleDM)",
+              ],
+            },
+          },
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`validateDocumentModelReferences should have errors in the element fragments of a fragment model for a path renamed in its document model 1`] = `
+{
+  "content": {
+    "elementDefinitions": [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {
+        "field": {
+          "path": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable/stringField' can not be resolved in the Document Model (ExampleDM)",
+            ],
+          },
+        },
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {
+        "field": {
+          "path": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable/stringField' can not be resolved in the Document Model (ExampleDM)",
+            ],
+          },
+        },
+      },
+      {},
+      {},
+      {
+        "pieChart": {
+          "data": {
+            "keyField": {
+              "@error": [
+                "The path 'ExampleDM/example/repeatable/stringField' can not be resolved in the Document Model (ExampleDM)",
+              ],
+            },
+          },
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`validateDocumentModelReferences should have errors in the element fragments of a fragment model without its document model 1`] = `
+{
+  "content": {
+    "elementDefinitions": [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {
+        "expression": {
+          "model": {
+            "basePath": {
+              "@error": [
+                "The path 'ExampleDM/' can not be resolved in the Document Model (No Document Model given)",
+              ],
+            },
+          },
+        },
+      },
+      {
+        "table": {
+          "basePath": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable' can not be resolved in the Document Model (No Document Model given)",
+            ],
+          },
+        },
+      },
+      {
+        "field": {
+          "path": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable/stringField' can not be resolved in the Document Model (No Document Model given)",
+            ],
+          },
+        },
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {
+        "listing": {
+          "basePath": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable' can not be resolved in the Document Model (No Document Model given)",
+            ],
+          },
+          "columns": [
+            {
+              "default": {
+                "valueComputationAlternatives": [
+                  {
+                    "operation": {
+                      "@error": [
+                        "The path 'value' can not be resolved in the Document Model (No Document Model given)",
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {},
+      {},
+      {
+        "table": {
+          "basePath": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable' can not be resolved in the Document Model (No Document Model given)",
+            ],
+          },
+        },
+      },
+      {
+        "field": {
+          "path": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable/stringField' can not be resolved in the Document Model (No Document Model given)",
+            ],
+          },
+        },
+      },
+      {
+        "lineChart": {
+          "basePath": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable' can not be resolved in the Document Model (No Document Model given)",
+            ],
+          },
+        },
+      },
+      {
+        "barChart": {
+          "basePath": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable' can not be resolved in the Document Model (No Document Model given)",
+            ],
+          },
+        },
+      },
+      {
+        "pieChart": {
+          "basePath": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable' can not be resolved in the Document Model (No Document Model given)",
+            ],
+          },
+          "data": {
+            "keyField": {
+              "@error": [
+                "The path 'ExampleDM/example/repeatable/stringField' can not be resolved in the Document Model (No Document Model given)",
+              ],
+            },
+            "valueField": {
+              "@error": [
+                "The path 'ExampleDM/example/repeatable/numberField' can not be resolved in the Document Model (No Document Model given)",
+              ],
+            },
+          },
+        },
+      },
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {
+        "image": {
+          "fieldSource": {
+            "path": {
+              "@error": [
+                "The path 'ExampleDM/example/imageField/content' can not be resolved in the Document Model (No Document Model given)",
+              ],
+            },
+          },
+        },
+      },
+      {
+        "listing": {
+          "basePath": {
+            "@error": [
+              "The path 'ExampleDM/example/repeatable' can not be resolved in the Document Model (No Document Model given)",
+            ],
+          },
+          "columns": [
+            {
+              "default": {
+                "valueComputationAlternatives": [
+                  {
+                    "operation": {
+                      "@error": [
+                        "The path 'value' can not be resolved in the Document Model (No Document Model given)",
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+      {},
+      {},
+      {},
+      {
+        "image": {
+          "fieldSource": {
+            "path": {
+              "@error": [
+                "The path 'ExampleDM/example/imageField/content' can not be resolved in the Document Model (No Document Model given)",
+              ],
+            },
+          },
+        },
+      },
+    ],
+    "segments": {
+      "definitions": [
+        {},
+        {
+          "dataContexts": [
+            {
+              "path": {
+                "@error": [
+                  "The path 'ExampleDM/example/repeatable' can not be resolved in the Document Model (No Document Model given)",
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
 exports[`validateDocumentModelReferences should have no errors in all paths 1`] = `
 {
   "content": {
@@ -580,3 +920,5 @@ exports[`validateDocumentModelReferences should have no errors in all paths 1`] 
   },
 }
 `;
+
+exports[`validateDocumentModelReferences should have no errors in the element fragments of a fragment model with its document model 1`] = `{}`;

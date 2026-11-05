@@ -95,7 +95,7 @@ export const SegmentLayoutEditor = () => {
 			let topOffset = 0;
 			elementReferences.forEach(otherReference => {
 				if (
-					otherReference.refId === reference.refId ||
+					otherReference.id === reference.id ||
 					!EditorUtils.isHorizontallyOverlap(reference, otherReference)
 				) {
 					return;

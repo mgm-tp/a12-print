@@ -46,6 +46,7 @@ import type {
 import { ElementType, isPartialSection, isPartialWatermark } from "@com.mgmtp.a12.print/print-model-api/model";
 import { PossibleInputSource } from "@com.mgmtp.a12.print/print-model-api/input-source";
 import type { DeepPartialRecursive, PlainDeepPartial } from "@com.mgmtp.a12.print/print-model-api/utils";
+import { PRINT_MODEL_METADATA_MAP } from "@com.mgmtp.a12.print/print-model-api/generated";
 
 import { EditorContext } from "../../editor-stage/editor-context.js";
 import { InteractionLogActions, TransactionLogStateActions } from "../../../redux/index.js";
@@ -99,7 +100,7 @@ export const useGroupElements = () => {
 			const newAreaId = nanoid();
 			const newAreaPlaceableId = nanoid();
 
-			const selectedPlaceables = elementReferences.filter(ref => selected.includes(ref.refId));
+			const selectedPlaceables = elementReferences.filter(ref => selected.includes(ref.id));
 			const { containerBox, adjustedPlaceables } = createContainerBox(
 				selectedPlaceables,
 				getSectionOffset,
@@ -123,6 +124,7 @@ export const useGroupElements = () => {
 			const newArea: PartialArea = {
 				id: newAreaId,
 				type: ElementType.Area,
+				name: "newArea",
 				area: {
 					id: nanoid(),
 					elementReferences: adjustedPlaceables,
@@ -159,7 +161,7 @@ export const useGroupElements = () => {
 					transactionLogActions: [
 						TransactionLogStateActions.updatePrintModelElements({ data: [newArea] }),
 						TransactionLogStateActions.updateReferenceElements({
-							data: elementReferences.filter(el => !selected.includes(el.refId)).concat([newPlaceable]),
+							data: elementReferences.filter(el => !selected.includes(el.id)).concat([newPlaceable]),
 						}),
 					],
 				})
@@ -306,12 +308,16 @@ function adaptPageBreakBehavior(
 	pageBreak: (DeepPartialRecursive<InputSource<PageBreakBehavior>> & PrintModelEntity) | undefined,
 	areaPlaceableId: string
 ) {
+	const areaPath =
+		PRINT_MODEL_METADATA_MAP.RootGroup.content.elementDefinitions.area.elementReferences.pageBreakBehavior.value
+			.path;
+
 	if (pageBreak?.source === PossibleInputSource.INHERITED) {
-		return { ...pageBreak, reference: areaPlaceableId };
+		return { ...pageBreak, reference: areaPlaceableId, path: areaPath };
 	}
 
 	if (pageBreak?.source === PossibleInputSource.DEFAULT) {
-		return { ...pageBreak, source: PossibleInputSource.INHERITED, reference: areaPlaceableId };
+		return { ...pageBreak, source: PossibleInputSource.INHERITED, reference: areaPlaceableId, path: areaPath };
 	}
 
 	return pageBreak;

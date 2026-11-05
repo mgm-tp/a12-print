@@ -42,7 +42,8 @@ export interface CaseConfigResource {
 	printModel: string;
 	documentModels?: string;
 	templatePrintModels?: string;
-	typesettingModel?: string;
+	fragmentPrintModels?: string | string[];
+	typesettingModel?: string | string[];
 	documents?: string;
 	walFile?: string; // If undefined then the same path as defined in `printModel` is used
 	store?: string;
@@ -53,6 +54,7 @@ export interface ResolvedCaseConfigResource {
 	printModel: Model;
 	documentModels: Model[];
 	templatePrintModels?: Model[];
+	fragmentPrintModels?: Model[];
 	typesettingModels?: Model[];
 	documentNames: string[];
 	store?: PrintEngineState;
@@ -67,3 +69,14 @@ export namespace CaseConfig {
 
 const dataContext = require.context("@use-cases", true, /\/case\.config\.json$/);
 export const caseConfigs: CaseConfig[] = dataContext.keys().map(path => ({ ...dataContext(path), path }));
+
+const resourceDataContext = require.context("@use-cases", true, /\/case\.config\.resource\.json$/);
+export const caseConfigResources: Record<string, ResolvedCaseConfigResource> = Object.fromEntries(
+	resourceDataContext.keys().map(resourcePath => {
+		const configPath = resourcePath.replace("case.config.resource.json", "case.config.json");
+		const rawModule = resourceDataContext(resourcePath) as
+			ResolvedCaseConfigResource | { default: ResolvedCaseConfigResource };
+		const resolved = "default" in rawModule ? rawModule.default : rawModule;
+		return [configPath, resolved];
+	})
+);

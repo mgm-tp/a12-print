@@ -77,6 +77,8 @@ val pnpmTypedoc = tasks.register<PnpmTask>("pnpmTypedoc") {
 
 	args.set(listOf("run", "typedoc"))
 
+	inputs.files(project(":model-api").tasks.named("frontendBuild"))
+	inputs.files(project(":engine-runtime-kernel").tasks.named("frontendBuild"))
 	inputs.files("tsconfig.build.json", "tsconfig.json", "../pnpm-lock.yaml")
 	inputs.dir("src/main/typescript")
 	inputs.files(fileTree("../print-dev-tools") {

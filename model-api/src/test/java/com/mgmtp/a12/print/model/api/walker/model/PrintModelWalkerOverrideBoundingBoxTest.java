@@ -47,14 +47,18 @@ import com.mgmtp.a12.print.model.api.model.internal.dto.element.type.override.Ov
 import com.mgmtp.a12.print.model.api.model.internal.dto.element.type.override.OverrideElementDto;
 import com.mgmtp.a12.print.model.api.model.internal.dto.element.type.override.OverridePropertiesDto;
 import com.mgmtp.a12.print.model.api.model.internal.dto.reference.PlaceableReferenceDto;
+import com.mgmtp.a12.print.model.api.model.section.ModelSection;
 import com.mgmtp.a12.print.model.api.model.segment.ModelSegment;
 import com.mgmtp.a12.print.model.api.model.internal.dto.segment.ModelSegmentDto;
 import com.mgmtp.a12.print.model.api.walker.TraversalCommand;
 import com.mgmtp.a12.print.model.api.walker.model.resolver.ReferenceMultiModelResolver;
+import com.mgmtp.a12.print.model.api.walker.model.resolver.SectionIdResolver;
+import com.mgmtp.a12.print.model.api.walker.model.resolver.SectionWithUsage;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -78,6 +82,18 @@ public class PrintModelWalkerOverrideBoundingBoxTest {
 	// PrintModel IDs
 	private static final String TEMPLATE_PM_ID = "template-pm";
 	private static final String CONSUMER_PM_ID = "consumer-pm";
+
+	private static final SectionIdResolver SECTION_ID_RESOLVER = new SectionIdResolver() {
+		@Override
+		public Optional<PrintModelTreeTrace<ModelSection>> resolveSectionId(String id) {
+			return Optional.empty();
+		}
+
+		@Override
+		public Optional<SectionWithUsage> resolveSectionIdWithUsage(String id) {
+			return Optional.empty();
+		}
+	};
 
 	private static PlaceableReferenceDto placeableRef(String id, String refId) {
 		return PlaceableReferenceDto.builder().id(id).refId(refId).build();
@@ -169,14 +185,14 @@ public class PrintModelWalkerOverrideBoundingBoxTest {
 		var templatePM = templatePrintModel(List.of(bb1));
 		var consumerPM = consumerPrintModel(List.of(override1));
 
-		var referenceResolver = new ReferenceMultiModelResolver(templatePM, consumerPM);
+		var referenceResolver = new ReferenceMultiModelResolver(id -> Optional.empty(), templatePM, consumerPM);
 		var capturingVisitor = new CapturingVisitor();
 
 		var walker = new PrintModelWalker(
 			capturingVisitor,
 			referenceResolver,
 			segmentId -> java.util.Optional.empty(),
-			sectionId -> java.util.Optional.empty(),
+			SECTION_ID_RESOLVER,
 			watermarkId -> java.util.Optional.empty(),
 			templateId -> java.util.Optional.empty(),
 			id -> java.util.Optional.empty()
@@ -224,14 +240,14 @@ public class PrintModelWalkerOverrideBoundingBoxTest {
 		var templatePM = templatePrintModel(List.of(bb1, bb2));
 		var consumerPM = consumerPrintModel(List.of(override1, override2));
 
-		var referenceResolver = new ReferenceMultiModelResolver(templatePM, consumerPM);
+		var referenceResolver = new ReferenceMultiModelResolver(id -> Optional.empty(), templatePM, consumerPM);
 		var capturingVisitor = new CapturingVisitor();
 
 		var walker = new PrintModelWalker(
 			capturingVisitor,
 			referenceResolver,
 			segmentId -> java.util.Optional.empty(),
-			sectionId -> java.util.Optional.empty(),
+			SECTION_ID_RESOLVER,
 			watermarkId -> java.util.Optional.empty(),
 			templateId -> java.util.Optional.empty(),
 			id -> java.util.Optional.empty()

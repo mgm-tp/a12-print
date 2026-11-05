@@ -33,18 +33,27 @@ import { Button, ButtonGroup } from "@com.mgmtp.a12.widgets/widgets-core";
 
 import { PrintLocalizer, RESOURCE_KEYS } from "../../../localization/index.js";
 
+import { useFormReadonly } from "../FormContext.js";
+
 interface AddButtonGroupProps {
 	onClick(): void;
 	className?: string;
+	disabled?: boolean;
 }
 
-export const AddButtonGroup = ({ onClick, className = "" }: AddButtonGroupProps) => {
+export const AddButtonGroup = ({ onClick, className = "", disabled = false }: AddButtonGroupProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
 	const addButtonLabel = localizer(RESOURCE_KEYS.button.add);
+	const isFormReadonly = useFormReadonly();
 
 	return (
 		<ButtonGroup className={className}>
-			<Button label={addButtonLabel} title={addButtonLabel} onClick={onClick} />
+			<Button
+				label={addButtonLabel}
+				title={addButtonLabel}
+				onClick={onClick}
+				disabled={disabled || isFormReadonly}
+			/>
 		</ButtonGroup>
 	);
 };

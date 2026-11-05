@@ -111,6 +111,34 @@ public class PrintModelWalkerTest {
 	}
 
 	@Test
+	public void givenPrintModel_whenWalkPrintModelWithDefaultResolverWithFragmentResolver_thenReturnVisitor() {
+		PrintFragmentModelResolver fragmentResolver = mock(PrintFragmentModelResolver.class);
+		try (
+			MockedConstruction<PrintModelWalker> mockConstruction = mockConstruction(PrintModelWalker.class);
+			MockedStatic<ReferenceMultiModelResolver> modelResolver = mockStatic(ReferenceMultiModelResolver.class);
+			MockedStatic<SegmentIdListResolver> segmentResolver = mockStatic(SegmentIdListResolver.class);
+			MockedStatic<SectionIdListResolver> sectionResolver = mockStatic(SectionIdListResolver.class);
+			MockedStatic<WatermarkIdListResolver> watermarkResolver = mockStatic(WatermarkIdListResolver.class);
+			MockedStatic<ReferenceElementListResolver> listResolver = mockStatic(ReferenceElementListResolver.class);
+		) {
+			PrintModelVisitor resultVisitor = walkPrintModelWithDefaultResolver(
+				printModel,
+				printModelResolver,
+				fragmentResolver,
+				printModelVisitor
+			);
+			var walker = mockConstruction.constructed().get(0);
+			when(walker.walkPrintModel(printModel)).thenReturn(TraversalCommand.CONTINUE);
+
+			verify(walker).walkPrintModel(printModel);
+			assertThat(resultVisitor).isEqualTo(printModelVisitor);
+			segmentResolver.verify(() -> SegmentIdListResolver.fromModel(printModel, fragmentResolver));
+			sectionResolver.verify(() -> SectionIdListResolver.fromModel(printModel, fragmentResolver));
+			watermarkResolver.verify(() -> WatermarkIdListResolver.fromModel(printModel, fragmentResolver));
+		}
+	}
+
+	@Test
 	public void givenPrintModel_whenWalkPrintModelWithDefaultResolver_thenReturnVisitor() {
 		try (
 			MockedConstruction<PrintModelWalker> mockConstruction = mockConstruction(PrintModelWalker.class);
@@ -123,6 +151,7 @@ public class PrintModelWalkerTest {
 			PrintModelVisitor resultVisitor = walkPrintModelWithDefaultResolver(
 				printModel,
 				printModelResolver,
+				null,
 				printModelVisitor
 			);
 			var printModelWalker = mockConstruction.constructed().get(0);
@@ -205,6 +234,7 @@ public class PrintModelWalkerTest {
 				printModel,
 				basePath,
 				printModelResolver,
+				null,
 				printModelVisitor);
 
 			var walker = mockConstruction.constructed().get(0);
@@ -407,6 +437,7 @@ public class PrintModelWalkerTest {
 				mockTextElement,
 				basePath,
 				printModelResolver,
+				null,
 				printModelVisitor
 			);
 			var printModelWalker = mockConstruction.constructed().get(0);
@@ -645,13 +676,12 @@ public class PrintModelWalkerTest {
 		List<String> sections = List.of(SECTION_ID);
 		when(printModel.getContent().getGeneral()).thenReturn(general);
 		when(general.getSections()).thenReturn(sections);
-		Optional<PrintModelTreeTrace<ModelSection>> modelSectionTrace = Optional.empty();
-		when(sectionIdResolver.resolveSectionId(SECTION_ID)).thenReturn(modelSectionTrace);
+		when(sectionIdResolver.resolveSectionIdWithUsage(SECTION_ID)).thenReturn(Optional.empty());
 		when(printModelVisitor.visitUnresolvedSection(SECTION_ID, 0)).thenReturn(TraversalCommand.STOP);
 
 		TraversalCommand result = underTest.walkSections(printModelPath, sections);
 
-		verify(sectionIdResolver).resolveSectionId(SECTION_ID);
+		verify(sectionIdResolver).resolveSectionIdWithUsage(SECTION_ID);
 		verify(printModelVisitor).visitUnresolvedSection(SECTION_ID, 0);
 		verify(underTest, never()).walkContainer(any(BaseReferenceContainer.class), any(PrintModelPath.class), anyInt());
 		assertThat(result).isEqualTo(TraversalCommand.CONTINUE);
@@ -664,15 +694,17 @@ public class PrintModelWalkerTest {
 		List<String> sections = List.of(SECTION_ID);
 		when(printModel.getContent().getGeneral()).thenReturn(general);
 		when(general.getSections()).thenReturn(sections);
-		Optional<PrintModelTreeTrace<ModelSection>> modelSectionTraceOpt = mock(Optional.class);
+		Optional<SectionWithUsage> modelSectionWithUsageOpt = mock(Optional.class);
+		SectionWithUsage modelSectionWithUsage = mock(SectionWithUsage.class);
 		PrintModelTreeTrace<ModelSection> modelSectionTrace = mock(PrintModelTreeTrace.class);
-		when(modelSectionTraceOpt.get()).thenReturn(modelSectionTrace);
-		when(sectionIdResolver.resolveSectionId(SECTION_ID)).thenReturn(modelSectionTraceOpt);
+		when(modelSectionWithUsage.getSection()).thenReturn(modelSectionTrace);
+		when(modelSectionWithUsageOpt.get()).thenReturn(modelSectionWithUsage);
+		when(sectionIdResolver.resolveSectionIdWithUsage(SECTION_ID)).thenReturn(modelSectionWithUsageOpt);
 		doReturn(TraversalCommand.HALT).when(underTest).walkContainer(any(), any(), anyInt());
 
 		TraversalCommand result = underTest.walkSections(printModelPath, sections);
 
-		verify(sectionIdResolver).resolveSectionId(SECTION_ID);
+		verify(sectionIdResolver).resolveSectionIdWithUsage(SECTION_ID);
 		verify(underTest).walkContainer(any(), any(), anyInt());
 		verify(printModelVisitor, never()).visitUnresolvedSegment(SECTION_ID, 0);
 		assertThat(result).isEqualTo(TraversalCommand.HALT);

@@ -313,7 +313,7 @@ describe("PrintModelWalker (isolation)", () => {
 			const resolveSectionIdStub = jest
 				.spyOn(segmentResolver, "resolveSegmentId")
 				.mockClear()
-				.mockReturnValue(printContentWithSection.segments.definitions[0]);
+				.mockReturnValue(printContentWithSection?.segments?.definitions[0]);
 			const walkContainerStub = jest
 				.spyOn(underTest, "walkContainer" as any)
 				.mockClear()
@@ -330,7 +330,7 @@ describe("PrintModelWalker (isolation)", () => {
 			const resolveSectionIdStub = jest
 				.spyOn(segmentResolver, "resolveSegmentId")
 				.mockClear()
-				.mockReturnValue(printContentWithSection.segments.definitions[0]);
+				.mockReturnValue(printContentWithSection?.segments?.definitions[0]);
 			const walkContainerStub = jest
 				.spyOn(underTest, "walkContainer" as any)
 				.mockClear()

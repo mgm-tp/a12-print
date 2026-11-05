@@ -37,11 +37,20 @@ The `JobManager` is an interface for the creation of new <<print_job, PrintJobs>
 and the _preparation_ of the Print Models.
 Preparing a Print Model optimizes the Print Model beforehand, analyzing its Calculations, Conditions and other dynamic elements to optimize the print operations that use the given Print Model.
 
-It is also possible to get a <<print_report, PrintMessageReport>> as result, which catches the semanticall issues during the _preparation_ of the Print Models.
+The _preparation_ result is stored asynchronously and retrieved without blocking execution or propagating exceptions.
+
+To explicitly await the result and propagate any exceptions, call `awaitPreparation()`
+
+It is also possible to get a <<print_report, PrintMessageReport>> as result, which catches only the semantic issues during the _preparation_ of the Print Models.
 
 NOTE: The preparation is necessary for the execution of a PrintJob, but needs to be only done once for each Print Model.
-If not done manually beforehand, it will be automatically done before the start of the first PrintJob of a given Print Model.
-To optimize the calculation time of a PrintJob, is recommended to prepare all necessary Print Models manually before the PrintJob is started.
+To optimize the calculation time of a PrintJob, it is recommended to prepare all necessary Print Models before the PrintJob is started.
+
+There are two other helper methods:
+
+* `isPrepared`: Checks if a Print Model Preperation is already started
+* `invalidatePreparedPrintModel`:
+Removes the current Print Model from the internal cache, which can be helpfull when another process needs to know if the Print Model is prepared already
 
 [source,java,title="JobManager interface"]
 ----

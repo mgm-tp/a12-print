@@ -2,7 +2,7 @@
   "header": {
     "id": "SerializationPM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [
@@ -29,6 +29,12 @@
         "modelType": "document",
         "purpose": "SerializationDM",
         "reference": "SerializationDM"
+      },
+      {
+        "alias": "DomainDINTemplate",
+        "modelType": "document",
+        "purpose": "DINTemplate",
+        "reference": "DomainDINTemplate"
       }
     ],
     "description": "Description"
@@ -629,7 +635,8 @@
               "refId": "ElWhHoZ0wNgf5pSrf8CI7"
             }
           ]
-        }
+        },
+        "name": "Text_ba982"
       },
       {
         "id": "ElWhHoZ0wNgf5pSrf8CI7",
@@ -661,7 +668,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_bc482"
       },
       {
         "id": "w-JrKXi1kCC4FX6fO5eNI",
@@ -686,7 +694,8 @@
             "value": "Solid",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Line_4a567"
       },
       {
         "id": "bqf4VuHpr41Gk30NKTS8W",
@@ -846,7 +855,8 @@
               "path": "/content/elementDefinitions/table/headerTextProperties/backgroundColor/value/"
             }
           }
-        }
+        },
+        "name": "Table_de1ad"
       },
       {
         "id": "XQb1_kB49cI_jiCnsfm9G",
@@ -878,7 +888,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_bf5ac"
       },
       {
         "id": "UHE48-ovqezIPmUmjgbdX",
@@ -951,7 +962,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Expression_a4e68"
       },
       {
         "id": "2amybZOnmNDo9DvmvKEYt",
@@ -978,7 +990,8 @@
             "model": "SerializationDM",
             "path": "/general/agb"
           }
-        }
+        },
+        "name": "Image_bff9d"
       },
       {
         "id": "0TliMMs4n_-s7id2Y-iZz",
@@ -1052,7 +1065,8 @@
           "text": "\"de\"",
           "basePath": "/",
           "hideIfEmpty": true
-        }
+        },
+        "name": "Expression_1c668"
       },
       {
         "id": "8LfoST0P5f7sR7QblqnlX",
@@ -1253,7 +1267,8 @@
               "path": "/content/elementDefinitions/listing/headerTextProperties/backgroundColor/value/"
             }
           }
-        }
+        },
+        "name": "Listing_bf847"
       },
       {
         "id": "tQZNSz-cHsbbkkop02KWA",
@@ -1314,7 +1329,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "TableLayout_7754f"
       },
       {
         "id": "_KpdmuXFhSMe4Gwzsj-R1",
@@ -1363,7 +1379,8 @@
               "refId": "1ScEbq6F4fQ9JVzcY7A6e"
             }
           ]
-        }
+        },
+        "name": "Text_e48ee"
       },
       {
         "id": "1ScEbq6F4fQ9JVzcY7A6e",
@@ -1395,7 +1412,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_c1d2d"
       },
       {
         "id": "PGmhxVRsN7Irx-xycOImq",
@@ -1461,7 +1479,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "LineChart_f98d6"
       },
       {
         "id": "mXAMlmTX19QauICNU0otL",
@@ -1529,7 +1548,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "BarChart_887d8"
       },
       {
         "id": "pEUZhtUiGEcCAl4dEF-NM",
@@ -1581,7 +1601,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "PieChart_4f9dc"
       },
       {
         "id": "P90Tk-4EVbr-Av7zhSBWn",
@@ -1665,7 +1686,8 @@
             "value": "Dotted",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "BoundingBox_3bf39"
       },
       {
         "id": "2qqA3IvxbRhf3gHvL2k8E",
@@ -1711,7 +1733,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_0f3b9"
       },
       {
         "id": "03tji6ltDDXNcBtqeIc51",
@@ -1738,7 +1761,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Field_20957"
       },
       {
         "id": "9HBSz3IDAgVqbWvODU4H6",
@@ -1774,7 +1798,8 @@
             "id": "OvRRpyGThgEIVvdPKEvQp",
             "resourceName": "Detail 3_resized_23cb0aba.png"
           }
-        }
+        },
+        "name": "Image_01680"
       },
       {
         "id": "OverrideYellowBox",
@@ -1834,7 +1859,8 @@
               }
             ]
           }
-        }
+        },
+        "name": "Override_543f1"
       }
     ],
     "textStyles": {

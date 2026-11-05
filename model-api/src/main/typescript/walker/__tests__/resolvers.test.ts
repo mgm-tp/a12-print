@@ -36,6 +36,8 @@ import {
 	type Segment,
 	type Section,
 	type SegmentReference,
+	type TextStyle,
+	Semantic,
 	type Watermark,
 	type PartialPrintModel,
 	type PartialPrintModelElement,
@@ -53,7 +55,14 @@ import {
 import { ReferenceListResolver, CachedReferenceResolver } from "../reference-resolver.js";
 import { ReferenceElementListResolver, CachedReferenceElementListResolver } from "../reference-element-resolver.js";
 import { DefaultSegmentIdResolver, CachedSegmentIdResolver } from "../segment-id-resolver.js";
-import { DefaultSectionIdResolver, CachedSectionIdResolver } from "../section-id-resolver.js";
+import {
+	DefaultSectionIdResolver,
+	CachedSectionIdResolver,
+	resolveSectionWithUsage,
+	type SectionIdResolver,
+} from "../section-id-resolver.js";
+import { collectFragmentModels } from "../fragment-definition-resolver.js";
+import { DefaultTextStyleIdResolver, CachedTextStyleIdResolver } from "../text-style-id-resolver.js";
 import { DefaultWatermarkIdResolver, CachedWatermarkIdResolver } from "../watermark-id-resolver.js";
 import { PrintModelListResolver, CachedPrintModelListResolver } from "../print-model-resolver.js";
 import { PartialReferenceListResolver, PartialCachedReferenceResolver } from "../partial/partial-reference-resolver.js";
@@ -91,6 +100,17 @@ function makeSection(id: string): Section {
 			value: 10,
 			unit: MeasureUnit.Millimeter,
 		},
+	};
+}
+
+function makeTextStyle(id: string): TextStyle {
+	return {
+		id,
+		name: `TextStyle ${id}`,
+		font: "Helvetica",
+		fontSize: 10,
+		lineHeight: 12,
+		semantic: Semantic.P,
 	};
 }
 
@@ -384,6 +404,52 @@ describe("CachedWatermarkIdResolver", () => {
 	});
 });
 
+describe("DefaultTextStyleIdResolver", () => {
+	const ts1 = makeTextStyle("ts-1");
+	const ts2 = makeTextStyle("ts-2");
+	const resolver = new DefaultTextStyleIdResolver([ts1, ts2]);
+
+	it("resolves a text style by id", () => {
+		expect(resolver.resolveTextStyleId("ts-1")).toBe(ts1);
+		expect(resolver.resolveTextStyleId("ts-2")).toBe(ts2);
+	});
+
+	it("returns undefined for unknown id", () => {
+		expect(resolver.resolveTextStyleId("unknown")).toBeUndefined();
+	});
+
+	it("creates from model with and without text styles", () => {
+		const model = {
+			header: { id: "m1" },
+			content: { textStyles: { definitions: [ts1, ts2] } },
+		} as unknown as PrintModel;
+
+		expect(DefaultTextStyleIdResolver.fromModel(model).resolveTextStyleId("ts-1")).toBe(ts1);
+		expect(
+			DefaultTextStyleIdResolver.fromModel({
+				header: { id: "m1" },
+				content: {},
+			} as unknown as PrintModel).resolveTextStyleId("ts-1")
+		).toBeUndefined();
+	});
+});
+
+describe("CachedTextStyleIdResolver", () => {
+	const ts1 = makeTextStyle("ts-1");
+	const cached = new CachedTextStyleIdResolver(new DefaultTextStyleIdResolver([ts1]));
+
+	it("resolves and caches a text style", () => {
+		expect(cached.resolveTextStyleId("ts-1")).toBe(ts1);
+		// Second call uses cache
+		expect(cached.resolveTextStyleId("ts-1")).toBe(ts1);
+	});
+
+	it("returns undefined for unknown id and does not cache", () => {
+		expect(cached.resolveTextStyleId("unknown")).toBeUndefined();
+		expect(cached.resolveTextStyleId("unknown")).toBeUndefined();
+	});
+});
+
 describe("PrintModelListResolver", () => {
 	const pm1 = makePrintModel("pm-1");
 	const pm2 = makePrintModel("pm-2");
@@ -563,5 +629,220 @@ describe("CachedPartialReferenceElementListResolver", () => {
 	it("returns undefined for unknown id and does not cache", () => {
 		expect(cached.resolveReferenceElement("unknown")).toBeUndefined();
 		expect(cached.resolveReferenceElement("unknown")).toBeUndefined();
+	});
+});
+
+const fragmentSegment = makeSegment("frag-seg");
+const fragmentSection = makeSection("frag-sec");
+const fragmentWatermark = makeWatermark("frag-wm");
+const fragmentTextStyle = makeTextStyle("frag-ts");
+const fragmentElement = makeElement("frag-el");
+
+function createFragmentModel(): PrintModel {
+	const fragmentModel = makePrintModel("fragment-model");
+	return {
+		header: { ...fragmentModel.header, modelSubType: "fragment" },
+		content: {
+			...fragmentModel.content,
+			segments: { id: "frag-segments", definitions: [fragmentSegment], references: [] },
+			sections: { id: "frag-sections", definitions: [fragmentSection] },
+			watermarks: { id: "frag-watermarks", definitions: [fragmentWatermark] },
+			textStyles: { id: "frag-text-styles", definitions: [fragmentTextStyle] },
+			elementDefinitions: [fragmentElement],
+		},
+	};
+}
+
+function createUsingModel(): PrintModel {
+	const usingModel = makePrintModel("using-model");
+	return {
+		header: {
+			...usingModel.header,
+			modelReferences: [
+				{ id: "mr-1", modelType: "print", purpose: "print-fragment", reference: "fragment-model" },
+			],
+		},
+		content: {
+			...usingModel.content,
+			segments: {
+				id: "segments",
+				definitions: [],
+				references: [],
+				fragmentReferences: [{ id: "seg-ref", refId: "frag-seg", model: "fragment-model" }],
+			},
+			sections: {
+				id: "sections",
+				definitions: [],
+				references: [
+					{
+						id: "sec-ref",
+						refId: "frag-sec",
+						model: "fragment-model",
+						sectionUsage: SectionUsage.Remaining,
+					},
+				],
+			},
+			watermarks: {
+				id: "watermarks",
+				definitions: [],
+				references: [{ id: "wm-ref", refId: "frag-wm", model: "fragment-model" }],
+			},
+			textStyles: {
+				id: "text-styles",
+				definitions: [],
+				references: [{ id: "ts-ref", refId: "frag-ts", model: "fragment-model" }],
+			},
+		},
+	};
+}
+
+describe("resolving definitions referenced from print fragment models", () => {
+	const fragmentModel = createFragmentModel();
+	const usingModel = createUsingModel();
+	const fragmentModelResolver = new PrintModelListResolver([fragmentModel]);
+
+	it("collects the fragment models a print model references in its header", () => {
+		expect(collectFragmentModels(usingModel, fragmentModelResolver)).toEqual([fragmentModel]);
+	});
+
+	it("skips fragment models the resolver does not know", () => {
+		expect(collectFragmentModels(usingModel, new PrintModelListResolver([]))).toEqual([]);
+	});
+
+	it("resolves a referenced segment under the id of its reference", () => {
+		const resolver = DefaultSegmentIdResolver.fromModel(usingModel, fragmentModelResolver);
+
+		expect(resolver.resolveSegmentId("seg-ref")).toEqual({ ...fragmentSegment, id: "seg-ref" });
+		expect(resolver.resolveSegmentId("frag-seg")).toBeUndefined();
+	});
+
+	it("resolves a referenced section with the usage of the reference, not of the definition", () => {
+		const resolver = DefaultSectionIdResolver.fromModel(usingModel, fragmentModelResolver);
+
+		expect(fragmentSection.sectionUsage).toBe(SectionUsage.First);
+		expect(resolver.resolveSectionIdWithUsage("sec-ref")).toEqual({
+			section: { ...fragmentSection, id: "sec-ref" },
+			sectionUsage: SectionUsage.Remaining,
+		});
+	});
+
+	it("resolves a referenced watermark under the id of its reference", () => {
+		const resolver = DefaultWatermarkIdResolver.fromModel(usingModel, fragmentModelResolver);
+
+		expect(resolver.resolveWatermarkId("wm-ref")).toEqual({ ...fragmentWatermark, id: "wm-ref" });
+	});
+
+	it("resolves a referenced text style under the id of its reference", () => {
+		const resolver = DefaultTextStyleIdResolver.fromModel(usingModel, fragmentModelResolver);
+
+		expect(resolver.resolveTextStyleId("ts-ref")).toEqual({ ...fragmentTextStyle, id: "ts-ref" });
+		expect(resolver.resolveTextStyleId("frag-ts")).toBeUndefined();
+		expect(
+			DefaultTextStyleIdResolver.fromModel(usingModel, new PrintModelListResolver([])).resolveTextStyleId(
+				"ts-ref"
+			)
+		).toBeUndefined();
+	});
+
+	it("resolves the elements defined in the fragment models", () => {
+		const resolver = ReferenceListResolver.fromModel(usingModel, fragmentModelResolver);
+
+		expect(resolver.resolveReference(makeReference("frag-el"))).toBe(fragmentElement);
+	});
+
+	it("resolves a placement that names its model in exactly that fragment model", () => {
+		const localHomonym = makeElement("frag-el");
+		const modelWithHomonym: PrintModel = {
+			...usingModel,
+			content: { ...usingModel.content, elementDefinitions: [localHomonym] },
+		};
+		const resolver = ReferenceListResolver.fromModel(modelWithHomonym, fragmentModelResolver);
+
+		expect(resolver.resolveReference({ id: "ref-1", refId: "frag-el", model: "fragment-model" })).toBe(
+			fragmentElement
+		);
+		expect(resolver.resolveReference(makeReference("frag-el"))).toBe(localHomonym);
+	});
+
+	it("falls back to the element list when the named fragment model is not available", () => {
+		const resolver = ReferenceListResolver.fromModel(usingModel, fragmentModelResolver);
+
+		expect(resolver.resolveReference({ id: "ref-1", refId: "frag-el", model: "unknown-model" })).toBe(
+			fragmentElement
+		);
+	});
+
+	it("skips references whose fragment model is not available", () => {
+		const emptyResolver = new PrintModelListResolver([]);
+
+		expect(
+			DefaultSegmentIdResolver.fromModel(usingModel, emptyResolver).resolveSegmentId("seg-ref")
+		).toBeUndefined();
+		expect(
+			DefaultSectionIdResolver.fromModel(usingModel, emptyResolver).resolveSectionId("sec-ref")
+		).toBeUndefined();
+		expect(
+			DefaultWatermarkIdResolver.fromModel(usingModel, emptyResolver).resolveWatermarkId("wm-ref")
+		).toBeUndefined();
+	});
+
+	it("skips references whose refId does not exist in the fragment model", () => {
+		const modelWithUnknownRefId: PrintModel = {
+			...usingModel,
+			content: {
+				...usingModel.content,
+				sections: {
+					id: "sections",
+					definitions: [],
+					references: [
+						{ id: "sec-ref", refId: "unknown", model: "fragment-model", sectionUsage: SectionUsage.First },
+					],
+				},
+			},
+		};
+
+		const resolver = DefaultSectionIdResolver.fromModel(modelWithUnknownRefId, fragmentModelResolver);
+		expect(resolver.resolveSectionId("sec-ref")).toBeUndefined();
+	});
+
+	it("keeps local definitions resolvable and takes precedence over references", () => {
+		const localSection = makeSection("sec-ref");
+		const modelWithLocalDefinition: PrintModel = {
+			...usingModel,
+			content: {
+				...usingModel.content,
+				sections: { ...usingModel.content.sections!, definitions: [localSection] },
+			},
+		};
+
+		const resolver = DefaultSectionIdResolver.fromModel(modelWithLocalDefinition, fragmentModelResolver);
+		expect(resolver.resolveSectionId("sec-ref")).toBe(localSection);
+		expect(resolver.resolveSectionIdWithUsage("sec-ref")).toEqual({
+			section: localSection,
+			sectionUsage: SectionUsage.First,
+		});
+	});
+
+	it("resolves referenced sections without usage support through resolveSectionWithUsage", () => {
+		const localSection = makeSection("sec-1");
+		const resolverWithoutUsage: SectionIdResolver = {
+			resolveSectionId: id => (id === "sec-1" ? localSection : undefined),
+		};
+
+		expect(resolveSectionWithUsage(resolverWithoutUsage, "sec-1")).toEqual({
+			section: localSection,
+			sectionUsage: SectionUsage.First,
+		});
+		expect(resolveSectionWithUsage(resolverWithoutUsage, "unknown")).toBeUndefined();
+	});
+
+	it("caches the usage of a resolved section", () => {
+		const cached = new CachedSectionIdResolver(
+			DefaultSectionIdResolver.fromModel(usingModel, fragmentModelResolver)
+		);
+
+		expect(cached.resolveSectionIdWithUsage("sec-ref")?.sectionUsage).toBe(SectionUsage.Remaining);
+		expect(cached.resolveSectionIdWithUsage("sec-ref")?.sectionUsage).toBe(SectionUsage.Remaining);
+		expect(cached.resolveSectionId("sec-ref")).toEqual({ ...fragmentSection, id: "sec-ref" });
 	});
 });

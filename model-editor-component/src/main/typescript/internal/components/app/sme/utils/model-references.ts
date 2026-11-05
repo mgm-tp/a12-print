@@ -31,6 +31,7 @@
  */
 import type { Model } from "@com.mgmtp.a12.base/base-model-api";
 import type { PrintModel } from "@com.mgmtp.a12.print/print-model-api/model";
+import { FRAGMENT_MODEL_REFERENCE_PURPOSE } from "@com.mgmtp.a12.print/print-model-api/model";
 
 export function getModelReferencesMaps(printModel: PrintModel, documentModels: Model[], printModels: Model[]) {
 	const referencedDocumentModels = getReferencedDocumentModels(documentModels, printModel);
@@ -68,7 +69,10 @@ function getReferencedDocumentModels(expandedDocumentModels: Model[], printModel
 function getReferencedPrintModels(printModels: Model[], printModel: Model): Model[] {
 	const referencedPrintModels: Model[] = [];
 	printModel.header.modelReferences?.forEach(reference => {
-		if (reference.modelType === "print" && reference.purpose === "DINTemplate") {
+		if (
+			reference.modelType === "print" &&
+			(reference.purpose === "DINTemplate" || reference.purpose === FRAGMENT_MODEL_REFERENCE_PURPOSE)
+		) {
 			const referencedDocumentModel = printModels.find(model => model.header.id === reference.reference);
 			if (!referencedDocumentModel) {
 				console.error(`Referenced print model ${reference.reference} not found`);

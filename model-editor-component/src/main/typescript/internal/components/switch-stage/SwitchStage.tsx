@@ -44,6 +44,7 @@ import { createMmMeasure } from "../../utils/index.js";
 
 import { AddButtonGroup } from "../forms/shared-components/AddButtonGroup.js";
 import { BreadcrumbNavigation } from "../breadcrumb-navigation/BreadcrumbNavigation.js";
+import { EditorContext } from "../editor-stage/editor-context.js";
 
 import { SwitchStageContainer } from "./SwitchStage.styled.js";
 import { SwitchCaseList } from "./SwitchCaseList.js";
@@ -51,6 +52,7 @@ import { SwitchCaseList } from "./SwitchCaseList.js";
 export const SwitchStage = () => {
 	const dispatch = useDispatch();
 	const wrapperElement = useSelector(PrintEngineSelectors.currentWrapperContainer);
+	const { isReadonly } = React.useContext(EditorContext);
 
 	if (!wrapperElement || !PartialSwitch.isInstance(wrapperElement)) {
 		throw Error(`Expected switch element but got ${wrapperElement}`);
@@ -61,6 +63,7 @@ export const SwitchStage = () => {
 		const newAreaElement: PartialArea = {
 			id: newAreaId,
 			type: ElementType.Area,
+			name: "newArea",
 			area: {
 				id: nanoid(),
 				dimensions: { id: nanoid(), ...wrapperElement.switch?.dimensions, overflowHeight: createMmMeasure(0) },
@@ -95,8 +98,8 @@ export const SwitchStage = () => {
 	return (
 		<SwitchStageContainer>
 			<BreadcrumbNavigation />
-			<SwitchCaseList switchElement={wrapperElement} />
-			<AddButtonGroup onClick={onAddClick} />
+			<SwitchCaseList switchElement={wrapperElement} isReadonly={isReadonly} />
+			<AddButtonGroup onClick={onAddClick} disabled={isReadonly} />
 		</SwitchStageContainer>
 	);
 };

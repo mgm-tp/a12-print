@@ -40,7 +40,7 @@ type BoundingBoxProps = BaseElementProps;
 
 export const BoundingBox = ({ element, styles, ElementContainer }: BoundingBoxProps) => {
 	if (!PartialBoundingBox.isInstance(element)) {
-		throw Error(`Expected element of type Bounding Box but got ${element.type}`);
+		throw new Error(`Expected element of type Bounding Box but got ${element?.type}`);
 	}
 
 	return (

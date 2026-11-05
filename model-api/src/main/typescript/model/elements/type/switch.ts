@@ -43,6 +43,9 @@ export interface Switch extends PrintModelElement {
 }
 
 export interface SwitchProperties extends PrintModelEntity {
+	/**
+	 * @deprecated Use {@link PrintModelElement.name} instead. This property will be removed in the next major release.
+	 */
 	readonly name: string;
 	readonly model: string;
 	readonly dimensions: SwitchDimensions;

@@ -52,6 +52,7 @@ describe("ExpressionFormContainer", () => {
 
 	const mockExpressionElement: PartialExpression = {
 		id: EXPRESSION_ID,
+		name: "mockExpression",
 		type: ElementType.Expression,
 		expression: {
 			id: "exp-id",

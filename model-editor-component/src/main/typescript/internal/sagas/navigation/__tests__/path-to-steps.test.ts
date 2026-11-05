@@ -54,9 +54,11 @@ import type {
 	ElementNavigationStep,
 	ReferenceNavigationStep,
 	RootNavigationStep,
+	TextStyleNavigationStep,
 	WrapperElementNavigationStep,
 } from "../navigation-steps.js";
 import { parsePath } from "../path-to-steps.js";
+import { stepsToNavigationState } from "../steps-to-navigation-state.js";
 
 const modelWithAllElements = testPrintModelWithAllElements as unknown as PartialPrintModel;
 const modelWithHideConditions = testPrintModelWithHideConditions as unknown as PartialPrintModel;
@@ -346,5 +348,207 @@ describe("parsePath", () => {
 			SidebarItem.SECTION,
 			(modelWithHideConditions.content?.sections?.definitions ?? []) as PartialSection[]
 		);
+	});
+
+	describe("model reference paths", () => {
+		const modelWithModelReferences = {
+			header: {
+				modelReferences: [
+					{ modelType: "document", reference: "DomainText" },
+					{ modelType: "typesetting", reference: "Typesetting" },
+					{ modelType: "print", reference: "Fragment", purpose: "print-fragment" },
+					{ modelType: "print", reference: "DinTemplate", purpose: "DINTemplate" },
+				],
+			},
+		} as unknown as PartialPrintModel;
+
+		function expandedSectionsFor(referenceIndex: number) {
+			const path = [p("header", 1), p("modelReferences", referenceIndex), p("reference", 1)];
+			return stepsToNavigationState(parsePath(path, modelWithModelReferences))[SidebarItem.SCHEMA]
+				?.expandedSections;
+		}
+
+		it("expands the section of a Model Reference whose index is marked as given", () => {
+			const path = [p("header", 1), { elementName: "modelReferences", index: 3, isRepeatable: true }];
+
+			const steps = parsePath(path, modelWithModelReferences);
+
+			expect(stepsToNavigationState(steps)[SidebarItem.SCHEMA]?.expandedSections).toEqual(["fragment"]);
+		});
+
+		it("only opens the Schema tab for a path ending at the Model References", () => {
+			const steps = parsePath([p("header", 1), p("modelReferences", 1)], modelWithModelReferences);
+
+			expect(steps).toEqual([expect.objectContaining({ kind: "root", type: SidebarItem.SCHEMA })]);
+		});
+
+		it.each([
+			[1, "document"],
+			[2, "typesetting"],
+			[3, "fragment"],
+			[4, "print"],
+		])("expands the section of the Model Reference %i: %s", (referenceIndex, section) => {
+			expect(expandedSectionsFor(referenceIndex)).toEqual([section]);
+		});
+
+		it("only opens the Schema tab for a Model Reference the model does not have", () => {
+			const steps = parsePath(
+				[p("header", 1), p("modelReferences", 5), p("reference", 1)],
+				modelWithModelReferences
+			);
+
+			expect(steps).toHaveLength(1);
+			expect(expandedSectionsFor(5)).toBeUndefined();
+		});
+	});
+
+	describe("text style paths", () => {
+		const modelWithTextStyles = {
+			content: {
+				textStyles: {
+					definitions: [{ id: "ts-def-1" }, { id: "ts-def-2" }],
+					references: [{ id: "ts-ref-1", refId: "frag-ts-def-1", model: "fragment-model-1" }],
+				},
+			},
+		} as unknown as PartialPrintModel;
+
+		it("maps [content, textStyles] with a resolvable index to [root, textStyle] steps", () => {
+			const steps = parsePath([CONTENT, p("textStyles", 1)], modelWithTextStyles);
+			expect(steps).toHaveLength(2);
+			expect(steps[0].kind).toBe("root");
+			expect((steps[0] as RootNavigationStep).type).toBe(SidebarItem.TEXT_STYLES);
+			expect(steps[1].kind).toBe("textStyle");
+			expect((steps[1] as TextStyleNavigationStep).textStyleId).toBe("ts-def-1");
+		});
+
+		it("maps [content, textStyles] with an out-of-range index to a single root step", () => {
+			const steps = parsePath([CONTENT, p("textStyles", 99)], modelWithTextStyles);
+			expect(steps).toHaveLength(1);
+			expect(steps[0].kind).toBe("root");
+			expect((steps[0] as RootNavigationStep).type).toBe(SidebarItem.TEXT_STYLES);
+		});
+
+		it("maps [content, textStyleReferences] with a resolvable reference to [root, textStyle] steps", () => {
+			const steps = parsePath([CONTENT, p("textStyleReferences", 1)], modelWithTextStyles);
+			expect(steps).toHaveLength(2);
+			expect(steps[0].kind).toBe("root");
+			expect((steps[0] as RootNavigationStep).type).toBe(SidebarItem.TEXT_STYLES);
+			expect(steps[1].kind).toBe("textStyle");
+			// resolves to the reference's own id, not refId — matches PrintEngineSelectors.textStyle's convention.
+			expect((steps[1] as TextStyleNavigationStep).textStyleId).toBe("ts-ref-1");
+		});
+
+		it("maps [content, textStyleReferences] with an out-of-range index to a single root step", () => {
+			const steps = parsePath([CONTENT, p("textStyleReferences", 99)], modelWithTextStyles);
+			expect(steps).toHaveLength(1);
+			expect(steps[0].kind).toBe("root");
+		});
+	});
+
+	describe("fragment reference paths (segmentReferences/sectionReferences/watermarkReferences)", () => {
+		const modelWithFragmentReferences = {
+			content: {
+				segments: {
+					fragmentReferences: [{ id: "seg-ref-1", refId: "frag-seg-def-1", model: "fragment-model-1" }],
+				},
+				sections: {
+					references: [{ id: "sec-ref-1", refId: "frag-sec-def-1", model: "fragment-model-1" }],
+				},
+				watermarks: {
+					references: [{ id: "wm-ref-1", refId: "frag-wm-def-1", model: "fragment-model-1" }],
+				},
+			},
+		} as unknown as PartialPrintModel;
+
+		it("maps [content, segmentReferences] to a single canvasRoot SEGMENT step at the reference's own id", () => {
+			const steps = parsePath([CONTENT, p("segmentReferences", 1)], modelWithFragmentReferences);
+			expect(steps).toHaveLength(1);
+			expect(steps[0].kind).toBe("canvasRoot");
+			expect((steps[0] as CanvasRootNavigationStep).type).toBe(SidebarItem.SEGMENT);
+			expect((steps[0] as CanvasRootNavigationStep).entityId).toBe("seg-ref-1");
+		});
+
+		it("maps [content, sectionReferences] to a single canvasRoot SECTION step", () => {
+			const steps = parsePath([CONTENT, p("sectionReferences", 1)], modelWithFragmentReferences);
+			expect(steps).toHaveLength(1);
+			expect(steps[0].kind).toBe("canvasRoot");
+			expect((steps[0] as CanvasRootNavigationStep).type).toBe(SidebarItem.SECTION);
+			expect((steps[0] as CanvasRootNavigationStep).entityId).toBe("sec-ref-1");
+		});
+
+		it("maps [content, watermarkReferences] to a single canvasRoot WATERMARK step", () => {
+			const steps = parsePath([CONTENT, p("watermarkReferences", 1)], modelWithFragmentReferences);
+			expect(steps).toHaveLength(1);
+			expect(steps[0].kind).toBe("canvasRoot");
+			expect((steps[0] as CanvasRootNavigationStep).type).toBe(SidebarItem.WATERMARK);
+			expect((steps[0] as CanvasRootNavigationStep).entityId).toBe("wm-ref-1");
+		});
+
+		it("returns [] for an out-of-range reference index", () => {
+			expect(parsePath([CONTENT, p("segmentReferences", 99)], modelWithFragmentReferences)).toEqual([]);
+		});
+
+		it("returns [] when the referenced canvas type has no fragment references at all", () => {
+			const emptyModel = { content: {} } as unknown as PartialPrintModel;
+			expect(parsePath([CONTENT, p("sectionReferences", 1)], emptyModel)).toEqual([]);
+		});
+	});
+
+	describe("element fragment placements (elementReferences carrying a model)", () => {
+		// Unlike a local placement, a fragment placement is navigable without a sub-path.
+		const SEGMENT_ID = "seg-with-fragment-placement";
+		const modelWithElementFragmentPlacement = {
+			content: {
+				segments: {
+					definitions: [
+						{
+							id: SEGMENT_ID,
+							elementReferences: [
+								{ id: "local-placement", refId: "local-element" },
+								{ id: "fragment-placement", refId: "frag-element", model: "fragment-model-1" },
+							],
+						},
+					],
+				},
+			},
+		} as unknown as PartialPrintModel;
+
+		const basePath: EntityInstancePath = [CONTENT, p("segments", 1)];
+
+		it("maps a fragment placement without a sub-path to [canvasRoot, reference] steps", () => {
+			const steps = parsePath([...basePath, p("elementReferences", 2)], modelWithElementFragmentPlacement);
+
+			expect(steps).toHaveLength(2);
+			expect(steps[0].kind).toBe("canvasRoot");
+			expect((steps[0] as CanvasRootNavigationStep).entityId).toBe(SEGMENT_ID);
+			expect(steps[1].kind).toBe("reference");
+			expect((steps[1] as ReferenceNavigationStep).referenceId).toBe("fragment-placement");
+			expect((steps[1] as ReferenceNavigationStep).reference.refId).toBe("frag-element");
+		});
+
+		it("still maps a local placement without a sub-path to a single canvasRoot step", () => {
+			const steps = parsePath([...basePath, p("elementReferences", 1)], modelWithElementFragmentPlacement);
+
+			expect(steps).toHaveLength(1);
+			expect(steps[0].kind).toBe("canvasRoot");
+		});
+
+		it("maps a fragment placement with a pageBreakBehavior sub-path to [canvasRoot, reference] steps", () => {
+			const steps = parsePath(
+				[...basePath, p("elementReferences", 2), p("pageBreakBehavior", 1)],
+				modelWithElementFragmentPlacement
+			);
+
+			expect(steps).toHaveLength(2);
+			expect(steps[1].kind).toBe("reference");
+			expect((steps[1] as ReferenceNavigationStep).referenceId).toBe("fragment-placement");
+		});
+
+		it("maps an out-of-range placement index to a single canvasRoot step instead of throwing", () => {
+			const steps = parsePath([...basePath, p("elementReferences", 99)], modelWithElementFragmentPlacement);
+
+			expect(steps).toHaveLength(1);
+			expect(steps[0].kind).toBe("canvasRoot");
+		});
 	});
 });

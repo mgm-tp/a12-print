@@ -29,22 +29,32 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
-import type {
-	DOMConversionMap,
-	DOMConversionOutput,
-	EditorConfig,
-	LexicalEditor,
-	SerializedParagraphNode,
-} from "lexical";
+import type { DOMConversionOutput, DOMExportOutput, EditorConfig, LexicalEditor } from "lexical";
 import { $applyNodeReplacement, ParagraphNode } from "lexical";
 
-export class PrintParagraphNode extends ParagraphNode {
-	static getType(): string {
-		return "print-paragraph";
-	}
+import { DOM_ATTRIBUTES } from "../constants.js";
 
-	static clone(node: PrintParagraphNode) {
-		return new PrintParagraphNode(node.__key);
+function removeManagedLineBreak(generatedElement: HTMLElement | DocumentFragment | Text | null | undefined): undefined {
+	if (generatedElement instanceof HTMLElement) {
+		const lastChild = generatedElement.lastElementChild;
+		if (lastChild?.tagName === "BR" && lastChild.hasAttribute(DOM_ATTRIBUTES.MANAGED_LINEBREAK)) {
+			lastChild.remove();
+		}
+	}
+	return undefined;
+}
+
+export class PrintParagraphNode extends ParagraphNode {
+	$config() {
+		return this.config("print-paragraph", {
+			extends: ParagraphNode,
+			importDOM: {
+				p: () => ({
+					conversion: (): DOMConversionOutput => ({ node: $createPrintParagraphNode() }),
+					priority: 0 as const,
+				}),
+			},
+		});
 	}
 
 	createDOM(config: EditorConfig): HTMLElement {
@@ -54,7 +64,7 @@ export class PrintParagraphNode extends ParagraphNode {
 		return element;
 	}
 
-	exportDOM(_editor: LexicalEditor): { element: HTMLParagraphElement } {
+	exportDOM(_editor: LexicalEditor): DOMExportOutput {
 		const element = document.createElement("p");
 
 		const isEmpty =
@@ -65,20 +75,7 @@ export class PrintParagraphNode extends ParagraphNode {
 			element.appendChild(br);
 		}
 
-		return { element };
-	}
-
-	static importDOM(): DOMConversionMap | null {
-		return {
-			p: () => ({
-				conversion: (): DOMConversionOutput => ({ node: $createPrintParagraphNode() }),
-				priority: 0,
-			}),
-		};
-	}
-
-	static importJSON(serializedNode: SerializedParagraphNode): ParagraphNode {
-		return ParagraphNode.importJSON(serializedNode);
+		return { element, after: removeManagedLineBreak };
 	}
 }
 

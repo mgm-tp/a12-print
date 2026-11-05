@@ -50,10 +50,10 @@ const { MM_TO_CM, CM_TO_MM } = EditorConst;
 
 export const LayoutQuickEditorBar = ({ referenceId, onUpdateMargin }: LayoutQuickEditorBarProps) => {
 	const localizer = PrintLocalizer.useLocalizer();
-	const { elementReferences } = React.useContext(EditorContext);
+	const { elementReferences, isReadonly } = React.useContext(EditorContext);
 
 	const selectedReference = React.useMemo(() => {
-		return elementReferences.find(ref => ref.refId === referenceId);
+		return elementReferences.find(ref => ref.id === referenceId);
 	}, [elementReferences, referenceId]);
 
 	const onBlurMarginInput = React.useCallback(
@@ -76,6 +76,7 @@ export const LayoutQuickEditorBar = ({ referenceId, onUpdateMargin }: LayoutQuic
 				label={localizer(RESOURCE_KEYS.layoutEditor.topMenu.topMargin)}
 				placeholder={localizer(RESOURCE_KEYS.layoutEditor.topMenu.topMargin)}
 				disable={isDisable}
+				readonly={isReadonly}
 				onBlur={e => onBlurMarginInput(e, "top")}
 				value={String(topMarginValue || "")}
 				width={120}
@@ -85,6 +86,7 @@ export const LayoutQuickEditorBar = ({ referenceId, onUpdateMargin }: LayoutQuic
 				label={localizer(RESOURCE_KEYS.layoutEditor.topMenu.bottomMargin)}
 				placeholder={localizer(RESOURCE_KEYS.layoutEditor.topMenu.bottomMargin)}
 				disable={isDisable}
+				readonly={isReadonly}
 				onBlur={e => onBlurMarginInput(e, "bottom")}
 				value={String(bottomMarginValue || "")}
 				width={120}

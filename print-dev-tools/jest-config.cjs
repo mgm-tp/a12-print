@@ -69,6 +69,11 @@ module.exports = {
 		],
 	},
 
+	// Resolve dependencies the way Node does, not the way a bundler does.
+	testEnvironmentOptions: {
+		customExportConditions: ["node", "node-addons"],
+	},
+
 	moduleNameMapper: {
 		"^(\\.{1,2}/.*)\\.js$": "$1",
 	},

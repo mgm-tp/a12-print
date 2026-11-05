@@ -56,7 +56,7 @@ public class PrintValidationTest {
 		IPrintModelValidator printModelValidator = new PrintModelValidator();
 		String path = "/print-models/PrintModel-with-custom-type.json";
 		String printModel = ResourceFile.loadFileFromResources(path);
-		IPrintModelIntegrityReport report = printModelValidator.validate(printModel.replace("<dateFormat>", format),
+		IPrintModelIntegrityReport report = printModelValidator.validate(printModel.replace("'<dateFormat>'", format),
 			Locale.GERMAN);
 
 		assertValidationResultError(report, errorText, 1, IPrintModelIntegrityMessage.SeverityType.ERROR);
@@ -72,9 +72,9 @@ public class PrintValidationTest {
 
 		assertValidationResultError(report, "", 0, IPrintModelIntegrityMessage.SeverityType.ERROR);
 
-		path = "/print-models/Listing-with-multiple-sorting-columns.json";
-		printModel = ResourceFile.loadFileFromResources(path);
-		report = printModelValidator.validate(printModel, Locale.GERMAN);
+		// the same model with a second sorting column, so that only valid models are kept as resources
+		report = printModelValidator.validate(
+			printModel.replace("\"isSortingIndex\": false", "\"isSortingIndex\": true"), Locale.GERMAN);
 
 		assertValidationResultError(
 			report,

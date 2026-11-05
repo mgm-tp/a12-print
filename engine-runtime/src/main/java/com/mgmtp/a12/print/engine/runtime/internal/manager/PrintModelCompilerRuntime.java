@@ -38,10 +38,10 @@ import com.mgmtp.a12.model.header.ModelReference;
 import com.mgmtp.a12.model.notification.Severity;
 import com.mgmtp.a12.print.engine.api.PrintJobConfig;
 import com.mgmtp.a12.print.engine.api.PrintModelId;
+import com.mgmtp.a12.print.engine.api.StaticImageProvider;
 import com.mgmtp.a12.print.engine.api.exception.impl.PrintCompilerException;
 import com.mgmtp.a12.print.engine.api.exception.impl.PrintDomainException;
 import com.mgmtp.a12.print.engine.runtime.PrintJobManager;
-import com.mgmtp.a12.print.engine.api.StaticImageProvider;
 import com.mgmtp.a12.print.engine.runtime.internal.engine.constant.Constants;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.PrintModelCompilationContext;
 import com.mgmtp.a12.print.engine.runtime.internal.manager.compiler.PrintModelCompilationUpdate;
@@ -139,6 +139,15 @@ public class PrintModelCompilerRuntime implements com.mgmtp.a12.print.engine.run
 		}
 	}
 
+	public boolean isPrepared(PrintModelId id) {
+		final var context = cache.getOrDefault(id, null);
+		return context != null;
+	}
+
+	public void invalidatePreparedPrintModel(PrintModelId id) {
+		cache.remove(id);
+	}
+
 	public Optional<PrintModelCompilationContext> get(PrintModelId id) {
 		return PrintModelCompilerRuntime.await(
 			executorService.submit(
@@ -154,7 +163,7 @@ public class PrintModelCompilerRuntime implements com.mgmtp.a12.print.engine.run
 
 	public Future<PrintModelCompilationContext> compileAsync(String printModel) throws PrintCompilerException {
 		return PrintModelCompilerRuntime.await(executorService.submit(() -> {
-			var dto = await(executorService.submit(() -> validateAndMarshallDto(printModel)));
+			var dto = await(executorService.submit(() -> validateAndMarshallPrintModelDto(printModel)));
 			final var referencedModels = await(executorService.submit(() -> findAllReferencedPrintModels(dto)));
 
 			if(referencedModels.containsKey(dto.getHeader().getId())){
@@ -193,14 +202,16 @@ public class PrintModelCompilerRuntime implements com.mgmtp.a12.print.engine.run
 
 	private void appendReferencedPrintModels(PrintModel printModel, LinkedHashMap<String, PrintModel> models) {
 		for (var printModelReference : printModel.getHeader().getModelReferences()) {
-			if(Constants.PRINT_MODEL_TYPE.equals(printModelReference.getModelType())) {
+			if(Constants.PRINT_MODEL_TYPE.equals(printModelReference.getModelType()) &&
+				Constants.DIN_PURPOSE.equals(printModelReference.getPurpose())
+			) {
 				final var printModelReferenceId = printModelReference.getReference();
 				if(models.containsKey(printModelReferenceId)) {
 					continue;
 				}
 				models.put(printModelReferenceId, null);
 				final var referencedPrintModelLiteral = managerApi.loadPrintModel(printModelReference.getReference());
-				final var referencedPrintModelDto = validateAndMarshallDto(referencedPrintModelLiteral);
+				final var referencedPrintModelDto = validateAndMarshallPrintModelDto(referencedPrintModelLiteral);
 				appendReferencedPrintModels(referencedPrintModelDto, models);
 				models.put(printModelReferenceId, referencedPrintModelDto);
 			}
@@ -270,14 +281,18 @@ public class PrintModelCompilerRuntime implements com.mgmtp.a12.print.engine.run
 		return result;
 	}
 
-	private PrintModelDto validateAndMarshallDto(String printModel) {
+	private PrintModelDto validateAndMarshallPrintModelDto(String printModel) {
+		return validateAndMarshallDto(printModel, PrintModelDto.class);
+	}
+
+	public <T extends PrintModelDto> T validateAndMarshallDto(String printModel, Class<T> dtoClass) {
 		try {
 			var validation = printModelValidator.validate(printModel, Locale.ENGLISH);
 			if (!validation.noErrorOccurred()) {
 				throw new PrintDomainException("The Print Model Validation finished with errors: {}",
 					validation.getMessages().stream().map(IPrintModelIntegrityMessage::getText).collect(Collectors.joining("\n")));
 			}
-			return objectMapper.readValue(printModel, PrintModelDto.class);
+			return objectMapper.readValue(printModel, dtoClass);
 		} catch (JacksonIOException e) {
 			throw new PrintDomainException("The Print Model could not be loaded", e);
 		}

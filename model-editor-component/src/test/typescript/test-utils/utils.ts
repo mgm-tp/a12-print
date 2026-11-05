@@ -207,6 +207,8 @@ export function createNavigationStateWithForm(
 		[SidebarItem.SEGMENT]: tab === SidebarItem.SEGMENT ? activeTabState : emptyTabState,
 		[SidebarItem.SECTION]: tab === SidebarItem.SECTION ? activeTabState : emptyTabState,
 		[SidebarItem.WATERMARK]: tab === SidebarItem.WATERMARK ? activeTabState : emptyTabState,
+		[SidebarItem.FRAGMENT]: tab === SidebarItem.FRAGMENT ? activeTabState : emptyTabState,
 		[SidebarItem.TEXT_STYLES]: {},
+		[SidebarItem.SCHEMA]: { expandedSections: [] },
 	};
 }

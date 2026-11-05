@@ -64,10 +64,11 @@ import {
 	PartialTableLayout,
 	type PartialTableLayoutCellReference,
 	PartialText,
+	type PartialTextStyle,
 	type PartialWatermark,
 } from "../../model/partial.js";
 import { isReference } from "../../model/reference/reference.js";
-import type { Segment } from "../../model/print-model.js";
+import type { Segment, SectionUsage } from "../../model/print-model.js";
 import { PrintModelElement } from "../../model/elements/print-model-element.js";
 import type { BoundingBox } from "../../model/elements/type/index.js";
 import type { ExtendedEntityInstancePathBuilder } from "../../errors/extended-entity-instance-path.js";
@@ -149,6 +150,16 @@ export abstract class PartialPrintModelVisitor {
 		return TraversalCommand.CONTINUE;
 	}
 
+	/** Called before descending into a used section, with the usage it has in this print model. */
+	preVisitSectionWithUsage(
+		section: PartialSection,
+		sectionUsage: SectionUsage | undefined,
+		printModelTrace: PartialPrintModelTrace,
+		printModelPath: ExtendedEntityInstancePathBuilder
+	): TraversalCommand {
+		return TraversalCommand.CONTINUE;
+	}
+
 	visitSection(
 		section: PartialSection,
 		printModelTrace: PartialPrintModelTrace,
@@ -161,6 +172,14 @@ export abstract class PartialPrintModelVisitor {
 		watermark: PartialWatermark,
 		printModelTrace: PartialPrintModelTrace,
 		printModelPath: ExtendedEntityInstancePathBuilder
+	): TraversalCommand {
+		return TraversalCommand.CONTINUE;
+	}
+
+	visitTextStyle(
+		textStyle: PartialTextStyle,
+		printModelPath: ExtendedEntityInstancePathBuilder,
+		index?: number
 	): TraversalCommand {
 		return TraversalCommand.CONTINUE;
 	}
@@ -498,7 +517,8 @@ export abstract class PartialPrintModelVisitor {
 	visitUnresolvedElement(
 		reference: PartialReference,
 		printModelTrace: PartialPrintModelTrace,
-		index?: number
+		index?: number,
+		printModelPath?: ExtendedEntityInstancePathBuilder
 	): TraversalCommand {
 		return TraversalCommand.HALT;
 	}
@@ -513,6 +533,11 @@ export abstract class PartialPrintModelVisitor {
 
 	visitUnresolvedWatermark(id: string, index?: number): TraversalCommand {
 		return TraversalCommand.HALT;
+	}
+
+	visitUnresolvedTextStyle(id: string, index?: number): TraversalCommand {
+		// CONTINUE instead of the usual HALT to avoid breaking behavior
+		return TraversalCommand.CONTINUE;
 	}
 
 	visitUnresolvedDinTemplate(templateId: string): TraversalCommand {

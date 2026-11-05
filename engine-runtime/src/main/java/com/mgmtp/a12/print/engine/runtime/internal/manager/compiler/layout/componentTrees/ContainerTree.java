@@ -97,12 +97,17 @@ public class ContainerTree {
 			currentPageCount = sectionDocumentHandle.getCurrentPageCount();
 		}
 
-		final var elementReferences = componentTreeReferences.stream().map(ref ->
-			ref.getReferenceTrace().getTracedElement()
+		final var referenceTotalPageCount = totalPageCount;
+		final var referenceCurrentPageCount = currentPageCount;
+		final var components = runtime.streamReferenceComponentDependency(
+			componentTreeReferences.stream().map(ref -> new ReferenceComponentDependency(
+				ref.getReferenceTrace(),
+				printDocumentContext,
+				containerDocumentHandle.getDocument(),
+				referenceTotalPageCount,
+				referenceCurrentPageCount
+			))
 		).toList();
-		final var components = runtime.streamReferenceComponentDependency(ReferenceComponentDependency.ofReferences(
-			containerTrace, elementReferences, printDocumentContext, containerDocumentHandle.getDocument(), totalPageCount, currentPageCount
-		)).toList();
 
 		final var dependentSpreadsResult = renderComponents(components);
 

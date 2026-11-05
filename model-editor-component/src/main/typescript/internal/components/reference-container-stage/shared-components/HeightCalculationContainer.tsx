@@ -30,17 +30,21 @@
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
 import * as React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import type {
 	PartialAnyPrintModelElement,
 	PartialValidPlaceableReference,
 } from "@com.mgmtp.a12.print/print-model-api/model";
+import { GlobalRegion } from "@com.mgmtp.a12.print/print-model-api-utils/a12internal";
 
-import { changeMmMeasureValue, ElementsUtils } from "../../../utils/index.js";
+import { assertExists, changeMmMeasureValue, ElementsUtils } from "../../../utils/index.js";
 import { EditorContext } from "../../editor-stage/editor-context.js";
 import { FIXED_DIMENSIONS_ELEMENTS } from "../../../constant/elements.js";
-import { InteractionLogActions } from "../../../redux/index.js";
+import { InteractionLogActions, TransactionLogStateActions } from "../../../redux/index.js";
+import { RESOURCE_KEYS } from "../../../localization/index.js";
+import { PrintEngineSelectors } from "../../../store/selectors.js";
+import type { PrintEngineState } from "../../../../a12internal/api/PrintEngineState.js";
 
 import { useMeasuredHeight } from "../hooks/use-measured-height.js";
 
@@ -59,14 +63,66 @@ export const HeightCalculationContainer: React.FunctionComponent<HeightContainer
 }) => {
 	const dispatch = useDispatch();
 
-	const { setElementReferences } = React.useContext(EditorContext);
+	// On a referenced stage measuring is fine, but writing a correction would turn the reference into a definition.
+	const { setElementReferences, isReadonly: isReadonlyStage } = React.useContext(EditorContext);
 
-	const { ref, heightMm } = useMeasuredHeight(item.dimensions.minHeight.value);
+	// On the fragment stage item.dimensions lags redux by a render, so read the committed height instead - except
+	// while resizing, where item.dimensions is the live drag value and the redux value would never converge.
+	const committedFragmentHeight = useSelector((state: PrintEngineState) => {
+		const fragmentElement = PrintEngineSelectors.currentFragmentElement(state);
+		return fragmentElement?.id === item.refId ? fragmentElement.fragmentDimensions?.height.value : undefined;
+	});
+	const committedHeight = isResizing
+		? item.dimensions.minHeight.value
+		: (committedFragmentHeight ?? item.dimensions.minHeight.value);
+
+	const { ref, heightMm } = useMeasuredHeight(committedHeight);
+
+	// update wrong element fragment reference dimensions in case the user has discarded the automatically applied updates
+	React.useEffect(() => {
+		if (!item.model || isResizing || isReadonlyStage) {
+			return;
+		}
+		assertExists(itemElement.fragmentDimensions, "Fragment element must have fragmentDimensions set");
+		const ownWidth = itemElement.fragmentDimensions.width.value;
+		const ownHeight = ElementsUtils.isFixedHeightElement(itemElement)
+			? itemElement.fragmentDimensions.height.value
+			: undefined; // non-fixed height elements are already corrected by the measurement useEffect below
+
+		const widthMismatch = ownWidth !== item.dimensions.minWidth.value;
+		const heightMismatch = ownHeight !== undefined && ownHeight !== item.dimensions.minHeight.value;
+		if (!widthMismatch && !heightMismatch) {
+			return;
+		}
+		dispatch(
+			InteractionLogActions.start({
+				description: RESOURCE_KEYS.interaction.other.fixInvalidElementHeights,
+				region: GlobalRegion.SIDEBAR,
+				preventUndo: true,
+				transactionLogActions: [
+					TransactionLogStateActions.updateReferenceElement({
+						data: {
+							...item,
+							dimensions: {
+								...item.dimensions,
+								minWidth: widthMismatch
+									? changeMmMeasureValue(ownWidth, item.dimensions.minWidth)
+									: item.dimensions.minWidth,
+								minHeight: heightMismatch
+									? changeMmMeasureValue(ownHeight, item.dimensions.minHeight)
+									: item.dimensions.minHeight,
+							},
+						},
+					}),
+				],
+			})
+		);
+	}, [dispatch, isReadonlyStage, isResizing, item, itemElement]);
 
 	React.useEffect(() => {
 		if (
 			FIXED_DIMENSIONS_ELEMENTS.includes(itemElement.type) ||
-			item.dimensions.minHeight.value === heightMm ||
+			committedHeight === heightMm ||
 			ElementsUtils.isWrapperElement(itemElement)
 		) {
 			return;
@@ -75,7 +131,7 @@ export const HeightCalculationContainer: React.FunctionComponent<HeightContainer
 		if (isResizing) {
 			setElementReferences(oldList =>
 				oldList.map(el =>
-					el.refId !== item.refId
+					el.id !== item.id
 						? el
 						: {
 								...el,
@@ -88,6 +144,9 @@ export const HeightCalculationContainer: React.FunctionComponent<HeightContainer
 			);
 			return;
 		}
+		if (isReadonlyStage) {
+			return;
+		}
 		dispatch(
 			InteractionLogActions.updateElementHeightDomNode({
 				...item,
@@ -97,7 +156,7 @@ export const HeightCalculationContainer: React.FunctionComponent<HeightContainer
 				},
 			})
 		);
-	}, [dispatch, heightMm, isResizing, item, itemElement, setElementReferences]);
+	}, [dispatch, heightMm, isReadonlyStage, isResizing, item, itemElement, setElementReferences, committedHeight]);
 
 	return (
 		<div ref={ref} style={ElementsUtils.isWrapperElement(itemElement) ? { height: "100%" } : undefined}>

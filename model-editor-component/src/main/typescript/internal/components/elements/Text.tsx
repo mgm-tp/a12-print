@@ -57,7 +57,7 @@ export const Text = React.memo(
 		const theme = useTheme();
 
 		if (!PartialText.isInstance(element)) {
-			throw Error(`Expected element of type Text but got ${element.type}`);
+			throw new Error(`Expected element of type Text but got ${element?.type}`);
 		}
 		const applyTypesetting = useTypesettingApplier(
 			InputValueSourceResolver.getSourceStringValue(

@@ -202,11 +202,14 @@ public class InputValueSourceResolver {
 			throw new InputSourceException("The input source have to be inherited");
 		}
 
-		final var referencedEntity = referenceResolver.resolve(inputSource.getReference().orElseThrow()).orElseThrow().getTracedElement();
+		// reference id is optional: placeable references (e.g. pageBreakBehavior) resolve via the trace instead,
+		// since the id can't be known upfront for elements defined inside a fragment
+		final var resolvedReference = referenceResolver.resolve(inputSource.getReference().orElse(null)).orElseThrow();
+		final var referencedEntity = resolvedReference.trace().getTracedElement();
 		final String inputSourcePath = cleanPath(inputSource.getPath(), referencedEntity);
 		final InputSource<T> referencedInput = getInputSourceByPath(referencedEntity, inputSourcePath);
 
-		return getInputValue(referencedInput, convertValue, referenceResolver);
+		return getInputValue(referencedInput, convertValue, resolvedReference.continuedResolver());
 	}
 
 	public static <T> InputSource<T> getInputSourceByPath(Object obj, String path) {
@@ -250,9 +253,15 @@ public class InputValueSourceResolver {
 	public interface ConvertValue<T> {
 		T convert(String defaultString);
 	}
+
+	/**
+	 * @param continuedResolver Resolver to use if {@code trace}'s own value is INHERITED too.
+	 */
+	public record ResolvedReference(PrintModelTreeTrace<PrintModelEntity> trace, ReferenceResolver continuedResolver) {}
+
 	@FunctionalInterface
 	public interface ReferenceResolver {
-		Optional<PrintModelTreeTrace<PrintModelEntity>> resolve(String referenceId);
+		Optional<ResolvedReference> resolve(String referenceId);
 	}
 
 }

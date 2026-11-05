@@ -31,8 +31,6 @@
  */
 package com.mgmtp.a12.print.engine.runtime.test.internal;
 
-import tools.jackson.core.JacksonException;
-import tools.jackson.databind.ObjectMapper;
 import com.mgmtp.a12.kernel.md.document.apiV2.immutable.DocumentV2;
 import com.mgmtp.a12.kernel.md.model.a12internal.services.DocumentModelService;
 import com.mgmtp.a12.kernel.md.model.api.IDocumentModel;
@@ -43,6 +41,8 @@ import com.mgmtp.a12.print.model.api.utils.serialization.ObjectMapperFactory;
 import lombok.NonNull;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -112,7 +112,7 @@ public class PrintTestUtil {
 
 	public static AbstractExecutorService getPrintPool() {
 		// tag::ExecutorService[]
-		return new ForkJoinPool( // <1>
+		return new ForkJoinPool(
 			Runtime.getRuntime().availableProcessors(),
 			p -> {
 				final ForkJoinWorkerThread worker = ForkJoinPool.defaultForkJoinWorkerThreadFactory.newThread(p);

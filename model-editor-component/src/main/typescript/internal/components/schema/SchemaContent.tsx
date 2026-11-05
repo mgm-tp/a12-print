@@ -29,15 +29,26 @@
  * NON-INFRINGEMENT, EXCEPT WHERE SUCH DISCLAIMERS ARE HELD TO BE
  * LEGALLY INVALID. SEE THE RESPECTIVE LICENSE TEXT FOR DETAILS.
  */
+import React from "react";
+
+import { EditorComponentContext } from "../../api/index.js";
+
 import { PrintModelReferences } from "./PrintModelReferences.js";
 import { DocumentModelReferences } from "./DocumentModelReferences.js";
 import { TypesettingModelReferences } from "./TypesettingModelReferences.js";
+import { FragmentModelReferences } from "./FragmentModelReferences.js";
 
 export const SchemaContent = () => {
+	const { isFragmentModel } = React.useContext(EditorComponentContext);
 	return (
 		<>
 			<DocumentModelReferences />
-			<PrintModelReferences />
+			{!isFragmentModel && (
+				<>
+					<PrintModelReferences />
+					<FragmentModelReferences />
+				</>
+			)}
 			<TypesettingModelReferences />
 		</>
 	);

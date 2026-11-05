@@ -31,6 +31,7 @@
  */
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { styled } from "styled-components";
 
 import type {
 	PartialAnyPrintModelElement,
@@ -52,12 +53,20 @@ import { TEXT_PROPERTIES_PATH } from "../../constant/element-property-path.js";
 import { useTextStyleSelector } from "../../hooks/use-text-style-selector.js";
 
 import { TableLayout } from "../elements/index.js";
+import { EditorContext } from "../editor-stage/editor-context.js";
 
 import { OpenWrapperStageButton } from "./OpenWrapperStageButton.js";
 import { StyledFloatingButtonContainer } from "./FloatingButtonContainer.styled.js";
 import type { ElementContainerProps } from "./base.js";
 import { RepeatableAreaIconButton } from "./RepeatableAreaIconButton.js";
+import { FragmentReferenceIconButton } from "./FragmentReferenceIconButton.js";
 import { ElementComponent } from "./ElementComponent.js";
+
+const StyledReadonlyContentWrapper = styled.div`
+	& * {
+		background-color: transparent !important;
+	}
+`;
 
 export const DefaultElementContainer = React.memo(
 	function DefaultElementContainer({
@@ -67,13 +76,16 @@ export const DefaultElementContainer = React.memo(
 		isNestedElement = false,
 	}: ElementContainerProps) {
 		const dispatch = useDispatch();
-
-		const element: PartialAnyPrintModelElement & {
-			textProperties?: PartialTextProperties;
-			borderProperties?: PartialBorderProperties;
-		} = useSelector((state: PrintEngineState) =>
+		const { isReadonly: isReadonlyStage } = React.useContext(EditorContext);
+		const element:
+			| (PartialAnyPrintModelElement & {
+					textProperties?: PartialTextProperties;
+					borderProperties?: PartialBorderProperties;
+			  })
+			| undefined = useSelector((state: PrintEngineState) =>
 			PrintEngineSelectors.printModelElement(state, reference.refId || "")
 		);
+		const isReadonly = isReadonlyStage || !!reference.model;
 
 		const textStyle = useTextStyleSelector(element);
 
@@ -129,32 +141,54 @@ export const DefaultElementContainer = React.memo(
 					styles={styles}
 					hovered={wrapperHovered}
 					isNestedElement={isNestedElement}
-					floatingButton={<HideConditionButton />}
+					disabled={isReadonly}
+					floatingButton={
+						<>
+							<HideConditionButton />
+							<FragmentReferenceIconButton reference={reference} />
+						</>
+					}
 				/>
 			);
 		}
+		const ContentWrapper = isReadonly ? StyledReadonlyContentWrapper : React.Fragment;
 		return (
 			<>
-				<ElementComponent
-					reference={reference}
-					element={element}
-					styles={styles}
-					hovered={wrapperHovered}
-					isNestedElement={isNestedElement}
-					ElementContainer={DefaultElementContainer}
-				/>
+				<ContentWrapper>
+					<ElementComponent
+						reference={reference}
+						element={element}
+						styles={styles}
+						hovered={wrapperHovered}
+						isNestedElement={isNestedElement}
+						ElementContainer={DefaultElementContainer}
+					/>
+				</ContentWrapper>
 				{!isNestedElement && (
 					<StyledFloatingButtonContainer offset={offset} element={element}>
-						{(isAreaWithZeroHeight || wrapperHovered) && isPartialValidPlaceableReference(reference) && (
-							<OpenWrapperStageButton element={element} reference={reference} />
-						)}
+						{element &&
+							(isAreaWithZeroHeight || wrapperHovered) &&
+							isPartialValidPlaceableReference(reference) && (
+								<OpenWrapperStageButton element={element} reference={reference} />
+							)}
 						<HideConditionButton />
 						<RepeatableAreaIconButton
 							element={element}
-							disabled={!isAreaWithZeroHeight}
+							disabled={isReadonly || !isAreaWithZeroHeight}
 							buttonAttributes={{
 								onDoubleClick: () =>
-									reference?.refId && dispatch(DetailViewActions.openElementForm(reference?.refId)),
+									!isReadonly &&
+									reference?.refId &&
+									dispatch(DetailViewActions.openElementForm(reference?.refId)),
+							}}
+						/>
+						<FragmentReferenceIconButton
+							reference={reference}
+							buttonAttributes={{
+								onDoubleClick: () =>
+									!isReadonly &&
+									reference?.refId &&
+									dispatch(DetailViewActions.openElementForm(reference?.refId)),
 							}}
 						/>
 					</StyledFloatingButtonContainer>
@@ -169,6 +203,7 @@ export const DefaultElementContainer = React.memo(
 			preProps.isNestedElement === nextProps.isNestedElement &&
 			preProps.reference.id === nextProps.reference.id &&
 			preProps.reference.refId === nextProps.reference.refId &&
+			preProps.reference.model === nextProps.reference.model &&
 			preProps.reference.hideConditions === nextProps.reference.hideConditions &&
 			preProps.reference.dimensions?.minHeight === nextProps.reference.dimensions?.minHeight &&
 			preProps.reference.dimensions?.minWidth === nextProps.reference.dimensions?.minWidth

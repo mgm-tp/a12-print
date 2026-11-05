@@ -38,6 +38,7 @@ import type {
 	PieChartProperties,
 	BarChartProperties,
 	LineChartProperties,
+	FragmentType,
 } from "@com.mgmtp.a12.print/print-model-api/model";
 import type { DeepPartialRecursive } from "@com.mgmtp.a12.print/print-model-api/utils";
 
@@ -60,3 +61,24 @@ export type CollectedFieldReference = DeepPartialRecursive<
 	| LineChartProperties
 > &
 	PrintModelEntity;
+
+export interface MissingFragmentReference {
+	type: FragmentType;
+	model: string;
+	refId: string;
+	index?: number;
+	printModelPath: ExtendedEntityInstancePathBuilder;
+}
+
+/** A Typesetting Model as it is used by a text style, which may be a local one or one of a fragment model. */
+export interface CollectedTypesettingUsage {
+	typesettingModelName: string;
+	textStyleId?: string;
+	printModelPath: ExtendedEntityInstancePathBuilder;
+}
+
+export interface ReferenceCollectorResult {
+	collectedPaths: CollectedPath[];
+	missingFragmentReferences: MissingFragmentReference[];
+	typesettingUsages: CollectedTypesettingUsage[];
+}

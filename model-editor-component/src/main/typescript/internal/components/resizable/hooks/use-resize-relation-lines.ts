@@ -195,7 +195,7 @@ export function useResizeRelationLines() {
 			const vertLines: IRsLine[] = [];
 			const horLines: IRsLine[] = [];
 			elementReferences.forEach(el => {
-				if (el.refId === newEl.refId) {
+				if (el.id === newEl.id) {
 					return;
 				}
 				calcVerticalResizeRelationLines(el, newEl, side, vertLines);

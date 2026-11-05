@@ -53,7 +53,7 @@ export const StyledSegmentCard = styled.div<StyledSegmentCardProps>`
 			: props.theme.colors.background.primaryBackground};
 `;
 
-export const StyledRightSideSegmentSetting = styled.div`
+export const StyledRightSidebarItemActionButtons = styled.div`
 	display: flex;
 	align-items: center;
 	gap: 6px;
@@ -83,12 +83,12 @@ export const StyledSegmentTitle = styled.span`
 	padding: 0 12px;
 `;
 
-export const StyledOpenCollapsibleSegment = styled.div`
+export const StyledOpenCollapsibleSegment = styled.div<{ isFragmentModel: boolean | undefined }>`
 	background: ${props => props.theme.colors.background.secondaryBackground};
-	padding: 16px;
+	padding: 0.5rem 0.75rem;
 	display: flex;
 	flex-direction: column;
-	row-gap: 5px;
+	row-gap: 3px;
 `;
 
 export const StyledSegmentActionColumn = styled.div`

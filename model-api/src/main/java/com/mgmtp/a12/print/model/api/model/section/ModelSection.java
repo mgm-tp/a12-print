@@ -39,6 +39,9 @@ import com.mgmtp.a12.print.model.api.model.element.base.Measure;
 @OnlyForUsage
 public interface ModelSection extends TopLevelReferenceContainer {
 	String getTitle();
+	/**
+	 * @apiNote Will become optional in the next major release and the return type will change to {@code Optional<SectionUsage>}.
+	 */
 	SectionUsage getSectionUsage();
 	Measure getHeaderHeight();
 	Measure getFooterHeight();

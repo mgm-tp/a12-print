@@ -2,7 +2,7 @@
   "header": {
     "id": "TemplatePM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "annotations": [
       {
         "name": "roles",
@@ -10,11 +10,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "labels": [],
@@ -28,7 +28,7 @@
         "modelType": "document",
         "reference": "DomainDINTemplate",
         "alias": "DomainDINTemplate",
-        "purpose": "DomainDINTemplate"
+        "purpose": "DINTemplate"
       }
     ],
     "description": "Test Beschreibung"
@@ -278,7 +278,8 @@
             "value": "Solid",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "BoundingBox_e7507"
       },
       {
         "id": "YellowBox",
@@ -320,7 +321,8 @@
             "value": "Solid",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "BoundingBox_5699d"
       },
       {
         "id": "GreenBox",
@@ -362,7 +364,8 @@
             "value": "Solid",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "BoundingBox_1fc71"
       }
     ],
     "textStyles": {

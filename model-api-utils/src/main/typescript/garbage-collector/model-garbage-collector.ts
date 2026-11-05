@@ -65,7 +65,7 @@ export namespace PrintModelGarbageCollector {
 	export function filterUnusedObjects(printModel: PrintModel, isClean: boolean = false): PrintModel {
 		const content = printModel.content;
 		const { general, segments, sections, watermarks, textStyles, elementDefinitions } = content;
-		const usedSegments = segments.definitions.filter(segment => general.structure.includes(segment.id));
+		const usedSegments = segments?.definitions.filter(segment => general.structure?.includes(segment.id));
 		const usedSections = sections?.definitions.filter(section => general.sections?.includes(section.id));
 		const usedWatermarks = watermarks?.definitions.filter(watermark => general.watermarks?.includes(watermark.id));
 		const usedTextStyles = textStyles?.definitions.filter(textStyle => general.textStyles?.includes(textStyle.id));
@@ -81,15 +81,32 @@ export namespace PrintModelGarbageCollector {
 			...printModel,
 			content: {
 				...content,
-				segments: { ...content.segments, definitions: usedSegments },
+				segments: {
+					...(content.segments || {
+						id: nanoid(),
+						definitions: [],
+						references: [],
+						fragmentReferences: [],
+					}),
+					definitions: usedSegments,
+				},
 				sections: usedSections
-					? { ...(content.sections || { id: nanoid(), definitions: [] }), definitions: usedSections }
+					? {
+							...(content.sections || { id: nanoid(), definitions: [], references: [] }),
+							definitions: usedSections,
+						}
 					: undefined,
 				watermarks: usedWatermarks
-					? { ...(content.watermarks || { id: nanoid(), definitions: [] }), definitions: usedWatermarks }
+					? {
+							...(content.watermarks || { id: nanoid(), definitions: [], references: [] }),
+							definitions: usedWatermarks,
+						}
 					: undefined,
 				textStyles: usedTextStyles
-					? { ...(content.textStyles || { id: nanoid(), definitions: [] }), definitions: usedTextStyles }
+					? {
+							...(content.textStyles || { id: nanoid(), definitions: [], references: [] }),
+							definitions: usedTextStyles,
+						}
 					: undefined,
 				elementDefinitions: usedElements,
 			},
@@ -149,7 +166,7 @@ export namespace PrintModelGarbageCollector {
 
 function filterUnusedElements(
 	elementDefinitions: ReadonlyArray<PrintModelElement>,
-	segments: ReadonlyArray<Segment>,
+	segments: ReadonlyArray<Segment> = [],
 	sections: ReadonlyArray<Section> = [],
 	watermarks: ReadonlyArray<Watermark> = [],
 	isClean: boolean = false
@@ -166,6 +183,12 @@ function filterUnusedElements(
 				log.error(`Element with id ${placeable.refId} does not exist`);
 				continue;
 			}
+			usedElementIds.add(element.id);
+			getNestedElements(element, elementDefinitions, usedElementIds);
+		}
+	}
+	for (const element of elementDefinitions) {
+		if (element.isFragment) {
 			usedElementIds.add(element.id);
 			getNestedElements(element, elementDefinitions, usedElementIds);
 		}

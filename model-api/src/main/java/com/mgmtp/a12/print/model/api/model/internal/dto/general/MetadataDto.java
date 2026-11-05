@@ -33,18 +33,16 @@ package com.mgmtp.a12.print.model.api.model.internal.dto.general;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import tools.jackson.databind.annotation.JsonDeserialize;
 import com.mgmtp.a12.print.model.api.model.element.base.ComputationAlternative;
 import com.mgmtp.a12.print.model.api.model.general.Metadata;
-import com.mgmtp.a12.print.model.api.model.internal.dto.element.base.ComputationAlternativeDto;
 import com.mgmtp.a12.print.model.api.model.internal.dto.JsonModel;
 import com.mgmtp.a12.print.model.api.model.internal.dto.PrintModelEntityDto;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.Value;
+import com.mgmtp.a12.print.model.api.model.internal.dto.element.base.ComputationAlternativeDto;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Value
@@ -57,19 +55,23 @@ public class MetadataDto extends PrintModelEntityDto implements Metadata, JsonMo
 
 	@JsonProperty(value = "titleComputation", required = true)
 	@JsonDeserialize(contentAs = ComputationAlternativeDto.class)
-	List<ComputationAlternative> titleComputation;
+	@Builder.Default
+	List<ComputationAlternative> titleComputation = new ArrayList<>();
 
 	@JsonProperty(value = "descriptionComputation", required = true)
 	@JsonDeserialize(contentAs = ComputationAlternativeDto.class)
-	List<ComputationAlternative> descriptionComputation;
+	@Builder.Default
+	List<ComputationAlternative> descriptionComputation = new ArrayList<>();
 
 	@JsonProperty(value = "authorComputation", required = true)
 	@JsonDeserialize(contentAs = ComputationAlternativeDto.class)
-	List<ComputationAlternative> authorComputation;
+	@Builder.Default
+	List<ComputationAlternative> authorComputation = new ArrayList<>();
 
 	@JsonProperty(value = "languageComputation", required = true)
 	@JsonDeserialize(contentAs = ComputationAlternativeDto.class)
-	List<ComputationAlternative> languageComputation;
+	@Builder.Default
+	List<ComputationAlternative> languageComputation = new ArrayList<>();
 
 	@JsonIgnore
 	@Override

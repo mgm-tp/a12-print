@@ -2,7 +2,7 @@
   "header": {
     "id": "ExamplePM",
     "modelType": "print",
-    "modelVersion": "4.0.0",
+    "modelVersion": "4.1.0",
     "locales": [
       {
         "code": "de"
@@ -16,11 +16,11 @@
       },
       {
         "name": "lastMigratedVersion",
-        "value": "4.0.0"
+        "value": "4.1.0"
       },
       {
         "name": "previousMigratedVersion",
-        "value": "4.0.0-rc.3"
+        "value": "4.1.0-rc.1"
       }
     ],
     "modelReferences": [],
@@ -666,7 +666,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_755fa"
       },
       {
         "id": "8kJ7x5ooqiBJ1Ymn2eTnM",
@@ -707,7 +708,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_fa667"
       },
       {
         "id": "av2T1_WAK9kC2akI2y14n",
@@ -743,7 +745,8 @@
             "id": "mX9hWjHfKGHS7NOh16YjS",
             "resourceName": "dummy-image (1)_69da5d98.png"
           }
-        }
+        },
+        "name": "Image_6ef0a"
       },
       {
         "id": "ZHvMODvAMWXDt_ZPRj3va",
@@ -779,7 +782,8 @@
             "id": "ebQmc18D-63SgWGEIjq5J",
             "resourceName": "dummy-image_80c86022.png"
           }
-        }
+        },
+        "name": "Image_a5c70"
       },
       {
         "id": "ItpqDRAPy_QVpH_uZQVJd",
@@ -815,7 +819,8 @@
             "id": "2xz1Onjl3Ge7lS--_-zuL",
             "resourceName": "dummy-image_80c86022.png"
           }
-        }
+        },
+        "name": "Image_92528"
       },
       {
         "id": "734NyZrvkvdj35ZPRclDg",
@@ -851,7 +856,8 @@
             "id": "WaIawp861NmVFpn7KHEeH",
             "resourceName": "dummy-image (1)_69da5d98.png"
           }
-        }
+        },
+        "name": "Image_2e375"
       },
       {
         "id": "MrBgFzaE-Zof2eyrzw0Ez",
@@ -892,7 +898,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_2d8f4"
       },
       {
         "id": "-vkS0YEPUwvrcN_UjPtLd",
@@ -917,7 +924,8 @@
             "value": "Solid",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Line_06fd0"
       },
       {
         "id": "qbhdqGVGb4u2YW0zpQHxJ",
@@ -967,15 +975,18 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_1179c"
       },
       {
         "id": "iIzIyxpDxhJ3g_fQvogjS",
-        "type": "PageNumber"
+        "type": "PageNumber",
+        "name": "PageNumber_ecd45"
       },
       {
         "id": "Ws1d_iLn63ZSrJJ_aajxj",
-        "type": "PageNumberTotal"
+        "type": "PageNumberTotal",
+        "name": "PageNumberTotal_8e477"
       },
       {
         "id": "cbffML8VUTZLt09uwa5O0",
@@ -1016,7 +1027,8 @@
             "source": "UNSET",
             "path": "/content/elementDefinitions/borderProperties/borderStyle/value/"
           }
-        }
+        },
+        "name": "Text_3f36a"
       }
     ],
     "textStyles": {

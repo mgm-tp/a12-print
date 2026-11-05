@@ -55,6 +55,7 @@ import { BORDER_PROPERTIES_PATH } from "../../constant/element-property-path.js"
 import { TextPropertiesForm, BorderPropertiesForm, FormContainerHeadline } from "./shared-components/index.js";
 import { DocumentModelSelect } from "./shared-components/DocumentModelSelect.js";
 import { CustomCheckbox, CustomTextAreaStateful } from "./custom-base-input-components/index.js";
+import { useFormReadonly } from "./FormContext.js";
 
 export const ExpressionFormContainer = () => {
 	const dispatch = useDispatch();
@@ -64,6 +65,7 @@ export const ExpressionFormContainer = () => {
 	const textPropertiesErrors = useSelector(
 		(state: PrintEngineState) => ValidationSelectors.styleableElement(state, element?.id)?.textProperties
 	);
+	const isFormReadonly = useFormReadonly();
 
 	if (!element || !PartialExpression.isInstance(element)) {
 		throw Error("Expected element of type Expression");
@@ -141,6 +143,7 @@ export const ExpressionFormContainer = () => {
 				value={element.expression?.model}
 				onValueChanged={onChangeDocumentModel}
 				errorMessage={getExpressionErrorMessage("model")}
+				disabled={isFormReadonly}
 			/>
 			<CustomTextAreaStateful
 				value={expression?.text}

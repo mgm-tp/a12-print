@@ -55,6 +55,7 @@ export const useSidebarTabs = (hiddenItems: readonly SidebarItem[] = []): TabPan
 				icon: <Icon>schema</Icon>,
 				value: SidebarItem.SCHEMA,
 				title: localizer(RESOURCE_KEYS.sidebar.schema.name),
+				children: getErrorBadgeCounter(SidebarItem.SCHEMA),
 			},
 			{
 				icon: <Icon>text_format</Icon>,
@@ -79,6 +80,12 @@ export const useSidebarTabs = (hiddenItems: readonly SidebarItem[] = []): TabPan
 				value: SidebarItem.WATERMARK,
 				title: localizer(RESOURCE_KEYS.sidebar.watermark.name),
 				children: getErrorBadgeCounter(SidebarItem.WATERMARK),
+			},
+			{
+				icon: <Icon>browse</Icon>,
+				value: SidebarItem.FRAGMENT,
+				title: localizer(RESOURCE_KEYS.sidebar.fragment.name),
+				children: getErrorBadgeCounter(SidebarItem.FRAGMENT),
 			},
 			{
 				icon: <Icon>commit</Icon>,
