@@ -47,7 +47,9 @@ val generatePnpmLock = tasks.register<PnpmTask>("generatePnpmLock") {
 			"--fix-lockfile",
 			"--filter=./",
 			"--no-link-workspace-packages",
-			"--config.dedupe-peer-dependents=false"
+			"--config.dedupe-peer-dependents=false",
+			"--config.minimum-release-age=10140",
+			"--config.minimum-release-age-exclude=@com.mgmtp.*"
 		)
 	)
 

@@ -39,7 +39,7 @@ The following tools are required in order to build this repository.
 | [JDK]    | `21.0.1` |
 | [Gradle] | `8.14.5` |
 | [Node]   | `22.14` |
-| [pnpm]   | `10.4.1` |
+| [pnpm]   | `10.34.7` |
 | [Trivy]  | `Latest` |
 
 > **Note**: Trivy is only required for the SBOM-generation of the Node.js modules.
